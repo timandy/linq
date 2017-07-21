@@ -8,11 +8,11 @@ import com.bestvike.linq.exception.Errors;
  * @date 2017/7/17
  */
 public final class EmptyEnumerator<TSource> implements IEnumerator<TSource> {
-    public static <TSource> IEnumerator<TSource> Instance() {
-        return new EmptyEnumerator<>();
+    private EmptyEnumerator() {
     }
 
-    private EmptyEnumerator() {
+    public static <TSource> IEnumerator<TSource> Instance() {
+        return new EmptyEnumerator<>();
     }
 
     @Override

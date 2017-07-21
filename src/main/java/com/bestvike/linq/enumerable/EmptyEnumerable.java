@@ -16,11 +16,11 @@ import java.util.List;
  * @date 2017/7/11
  */
 public final class EmptyEnumerable<TElement> implements IListEnumerable<TElement> {
-    public static <TElement> IEnumerable<TElement> Instance() {
-        return new EmptyEnumerable<>();
+    private EmptyEnumerable() {
     }
 
-    private EmptyEnumerable() {
+    public static <TElement> IEnumerable<TElement> Instance() {
+        return new EmptyEnumerable<>();
     }
 
     @Override

@@ -10,10 +10,10 @@ import com.bestvike.linq.exception.Errors;
  * @date 2017/7/12
  */
 public abstract class AbstractEnumerator<TSource> implements IEnumerator<TSource> {
-    private boolean checkedNext;
-    private boolean hasNext;
     protected int state;
     protected TSource current;
+    private boolean checkedNext;
+    private boolean hasNext;
 
     @Override
     public abstract boolean moveNext();

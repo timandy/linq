@@ -6,5 +6,5 @@ package com.bestvike.linq.function;
  */
 @FunctionalInterface
 public interface Action1<T> {
-    void  apply(T arg);
+    void apply(T arg);
 }

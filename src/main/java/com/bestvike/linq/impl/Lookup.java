@@ -25,6 +25,13 @@ public class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey, TElem
     private Grouping lastGrouping;
     private int count;
 
+    private Lookup(IEqualityComparer<TKey> comparer) {
+        if (comparer == null)
+            comparer = EqualityComparer.Default();
+        this.comparer = comparer;
+        this.groupings = Array.create(7);
+    }
+
     public static <TSource, TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
             throw Errors.argumentNull("source");
@@ -47,13 +54,6 @@ public class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey, TElem
                 lookup.getGrouping(key, true).add(item);
         }
         return lookup;
-    }
-
-    private Lookup(IEqualityComparer<TKey> comparer) {
-        if (comparer == null)
-            comparer = EqualityComparer.Default();
-        this.comparer = comparer;
-        this.groupings = Array.create(7);
     }
 
     @Override
