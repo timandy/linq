@@ -1,12 +1,12 @@
-package com.bestvike.linq;
+package com.bestvike.linq.iterator;
 
+import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.enumerable.ArrayEnumerable;
 import com.bestvike.linq.enumerable.CollectionEnumerable;
 import com.bestvike.linq.enumerable.IterableEnumerable;
 import com.bestvike.linq.enumerable.ListEnumerable;
 import com.bestvike.linq.enumerable.SingletonEnumerable;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.iterator.AppendIterator;
 import com.bestvike.linq.util.Array;
 
 import java.util.Collection;
