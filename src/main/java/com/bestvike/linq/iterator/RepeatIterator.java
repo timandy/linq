@@ -37,9 +37,4 @@ public class RepeatIterator<TSource> extends AbstractIterator<TSource> {
                 return false;
         }
     }
-
-    @Override
-    public void close() {
-        super.close();
-    }
 }

@@ -52,9 +52,4 @@ public class WhereArrayIterator<TSource> extends Iterator<TSource> {
                 return false;
         }
     }
-
-    @Override
-    public void close() {
-        super.close();
-    }
 }

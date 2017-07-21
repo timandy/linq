@@ -37,9 +37,4 @@ public class RangeIterator extends AbstractIterator<Integer> {
                 return false;
         }
     }
-
-    @Override
-    public void close() {
-        super.close();
-    }
 }
