@@ -10,8 +10,8 @@ import com.bestvike.linq.util.LambdaUtils;
  * @date 2017/7/17
  */
 public class WhereArrayIterator<TSource> extends Iterator<TSource> {
-    private Array<TSource> source;
-    private Func1<TSource, Boolean> predicate;
+    private final Array<TSource> source;
+    private final Func1<TSource, Boolean> predicate;
     private int index;
 
     public WhereArrayIterator(Array<TSource> source, Func1<TSource, Boolean> predicate) {

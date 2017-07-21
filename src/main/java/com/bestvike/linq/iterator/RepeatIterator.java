@@ -5,8 +5,8 @@ package com.bestvike.linq.iterator;
  * @date 2017/7/21
  */
 public class RepeatIterator<TSource> extends AbstractIterator<TSource> {
-    private TSource element;
-    private int count;
+    private final TSource element;
+    private final int count;
     private int index;
 
     public RepeatIterator(TSource element, int count) {

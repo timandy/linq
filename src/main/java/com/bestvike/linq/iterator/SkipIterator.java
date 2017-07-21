@@ -8,8 +8,8 @@ import com.bestvike.linq.IEnumerator;
  * @date 2017/7/17
  */
 public class SkipIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> source;
-    private int count;
+    private final IEnumerable<TSource> source;
+    private final int count;
     private IEnumerator<TSource> enumerator;
 
     public SkipIterator(IEnumerable<TSource> source, int count) {
@@ -26,10 +26,11 @@ public class SkipIterator<TSource> extends AbstractIterator<TSource> {
     public boolean moveNext() {
         switch (this.state) {
             case 1:
+                int count = this.count;
                 this.enumerator = this.source.enumerator();
-                while (this.count > 0 && this.enumerator.moveNext())
-                    this.count--;
-                if (this.count > 0) {
+                while (count > 0 && this.enumerator.moveNext())
+                    count--;
+                if (count > 0) {
                     this.close();
                     return false;
                 }

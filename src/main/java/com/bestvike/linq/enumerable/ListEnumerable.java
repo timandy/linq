@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2017/7/19
  */
 public final class ListEnumerable<TElement> implements IListEnumerable<TElement> {
-    private List<TElement> source;
+    private final List<TElement> source;
 
     public ListEnumerable(List<TElement> source) {
         this.source = source;

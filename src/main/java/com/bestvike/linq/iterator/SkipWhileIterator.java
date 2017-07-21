@@ -9,8 +9,8 @@ import com.bestvike.linq.function.Func1;
  * @date 2017/7/17
  */
 public class SkipWhileIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> source;
-    private Func1<TSource, Boolean> predicate;
+    private final IEnumerable<TSource> source;
+    private final Func1<TSource, Boolean> predicate;
     private IEnumerator<TSource> enumerator;
 
     public SkipWhileIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {

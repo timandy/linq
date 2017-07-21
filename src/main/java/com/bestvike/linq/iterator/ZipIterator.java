@@ -9,9 +9,9 @@ import com.bestvike.linq.function.Func2;
  * @date 2017/7/18
  */
 public class ZipIterator<TFirst, TSecond, TResult> extends AbstractIterator<TResult> {
-    private IEnumerable<TFirst> first;
-    private IEnumerable<TSecond> second;
-    private Func2<TFirst, TSecond, TResult> resultSelector;
+    private final IEnumerable<TFirst> first;
+    private final IEnumerable<TSecond> second;
+    private final Func2<TFirst, TSecond, TResult> resultSelector;
     private IEnumerator<TFirst> firstEnumerator;
     private IEnumerator<TSecond> secondEnumerator;
 

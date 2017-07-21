@@ -10,9 +10,9 @@ import com.bestvike.linq.impl.Set;
  * @date 2017/7/18
  */
 public class UnionIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> first;
-    private IEnumerable<TSource> second;
-    private IEqualityComparer<TSource> comparer;
+    private final IEnumerable<TSource> first;
+    private final IEnumerable<TSource> second;
+    private final IEqualityComparer<TSource> comparer;
     private Set<TSource> set;
     private IEnumerator<TSource> enumerator;
 

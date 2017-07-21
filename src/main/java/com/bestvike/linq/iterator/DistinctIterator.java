@@ -10,8 +10,8 @@ import com.bestvike.linq.impl.Set;
  * @date 2017/7/18
  */
 public class DistinctIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> source;
-    private IEqualityComparer<TSource> comparer;
+    private final IEnumerable<TSource> source;
+    private final IEqualityComparer<TSource> comparer;
     private Set<TSource> set;
     private IEnumerator<TSource> enumerator;
 

@@ -11,8 +11,8 @@ import com.bestvike.linq.util.LambdaUtils;
  */
 
 public class WhereEnumerableIterator<TSource> extends Iterator<TSource> {
-    private IEnumerable<TSource> source;
-    private Func1<TSource, Boolean> predicate;
+    private final IEnumerable<TSource> source;
+    private final Func1<TSource, Boolean> predicate;
     private IEnumerator<TSource> enumerator;
 
     public WhereEnumerableIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {

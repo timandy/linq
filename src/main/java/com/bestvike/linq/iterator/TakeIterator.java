@@ -8,9 +8,10 @@ import com.bestvike.linq.IEnumerator;
  * @date 2017/7/16
  */
 public class TakeIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> source;
-    private int count;
+    private final IEnumerable<TSource> source;
+    private final int count;
     private IEnumerator<TSource> enumerator;
+    private int counter;
 
     public TakeIterator(IEnumerable<TSource> source, int count) {
         this.source = source;
@@ -26,15 +27,16 @@ public class TakeIterator<TSource> extends AbstractIterator<TSource> {
     public boolean moveNext() {
         switch (this.state) {
             case 1:
-                if (this.count <= 0) {
+                this.counter = this.count;
+                if (this.counter <= 0) {
                     this.close();
                     return false;
                 }
                 this.enumerator = this.source.enumerator();
                 this.state = 2;
             case 2:
-                this.count--;
-                if (this.count >= 0 && this.enumerator.moveNext()) {
+                this.counter--;
+                if (this.counter >= 0 && this.enumerator.moveNext()) {
                     this.current = this.enumerator.current();
                     return true;
                 }

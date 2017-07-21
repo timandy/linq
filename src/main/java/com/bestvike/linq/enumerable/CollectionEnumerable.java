@@ -14,7 +14,7 @@ import java.util.List;
  * @date 2017/7/17
  */
 public final class CollectionEnumerable<TElement> implements ICollectionEnumerable<TElement> {
-    private Collection<TElement> source;
+    private final Collection<TElement> source;
 
     public CollectionEnumerable(Collection<TElement> source) {
         this.source = source;

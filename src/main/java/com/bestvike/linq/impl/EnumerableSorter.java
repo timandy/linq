@@ -10,10 +10,10 @@ import java.util.Comparator;
  * @date 2017/7/11
  */
 public class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TElement> {
-    private Func1<TElement, TKey> keySelector;
-    private Comparator<TKey> comparer;
-    private boolean descending;
-    private AbstractEnumerableSorter<TElement> next;
+    private final Func1<TElement, TKey> keySelector;
+    private final Comparator<TKey> comparer;
+    private final boolean descending;
+    private final AbstractEnumerableSorter<TElement> next;
     private Array<TKey> keys;
 
     public EnumerableSorter(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractEnumerableSorter<TElement> next) {

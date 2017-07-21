@@ -9,8 +9,8 @@ import com.bestvike.linq.util.Array;
  * @date 2017/7/17
  */
 public class Buffer<TElement> {
-    private Array<TElement> items;
-    private int count;
+    private final Array<TElement> items;
+    private final int count;
 
     public Buffer(IEnumerable<TElement> source) {
         Array<TElement> items = null;

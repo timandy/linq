@@ -5,7 +5,7 @@ package com.bestvike.linq.enumerator;
  * @date 2017/7/21
  */
 public final class SingletonEnumerator<TSource> extends AbstractEnumerator<TSource> {
-    private TSource element;
+    private final TSource element;
 
     public SingletonEnumerator(TSource element) {
         this.element = element;

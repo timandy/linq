@@ -12,12 +12,12 @@ import com.bestvike.linq.impl.Lookup;
  * @date 2017/7/17
  */
 public class GroupJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator<TResult> {
-    private IEnumerable<TOuter> outer;
-    private IEnumerable<TInner> inner;
-    private Func1<TOuter, TKey> outerKeySelector;
-    private Func1<TInner, TKey> innerKeySelector;
-    private Func2<TOuter, IEnumerable<TInner>, TResult> resultSelector;
-    private IEqualityComparer<TKey> comparer;
+    private final IEnumerable<TOuter> outer;
+    private final IEnumerable<TInner> inner;
+    private final Func1<TOuter, TKey> outerKeySelector;
+    private final Func1<TInner, TKey> innerKeySelector;
+    private final Func2<TOuter, IEnumerable<TInner>, TResult> resultSelector;
+    private final IEqualityComparer<TKey> comparer;
     private Lookup<TKey, TInner> lookup;
     private IEnumerator<TOuter> outerEnumerator;
 

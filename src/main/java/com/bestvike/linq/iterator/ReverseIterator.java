@@ -8,7 +8,7 @@ import com.bestvike.linq.impl.Buffer;
  * @date 2017/7/18
  */
 public class ReverseIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> source;
+    private final IEnumerable<TSource> source;
     private Buffer<TSource> buffer;
     private int index;
 

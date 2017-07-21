@@ -8,8 +8,8 @@ import com.bestvike.linq.IEnumerator;
  * @date 2017/7/18
  */
 public class DefaultIfEmptyIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> source;
-    private TSource defaultValue;
+    private final IEnumerable<TSource> source;
+    private final TSource defaultValue;
     private IEnumerator<TSource> enumerator;
 
     public DefaultIfEmptyIterator(IEnumerable<TSource> source, TSource defaultValue) {

@@ -12,10 +12,10 @@ import java.util.Comparator;
  * @date 2017/7/17
  */
 public class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<TElement> {
+    private final Func1<TElement, TKey> keySelector;
+    private final Comparator<TKey> comparer;
+    private final boolean descending;
     AbstractOrderedEnumerable<TElement> parent;
-    private Func1<TElement, TKey> keySelector;
-    private Comparator<TKey> comparer;
-    private boolean descending;
 
     public OrderedEnumerable(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending) {
         if (source == null) throw Errors.argumentNull("source");

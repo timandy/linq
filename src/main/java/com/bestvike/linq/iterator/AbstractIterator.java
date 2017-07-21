@@ -11,7 +11,7 @@ import com.bestvike.linq.enumerator.AbstractEnumerator;
  * @date 2017/7/13
  */
 public abstract class AbstractIterator<TSource> extends AbstractEnumerator<TSource> implements IEnumerable<TSource> {
-    private long threadId;
+    private final long threadId;
 
     public AbstractIterator() {
         this.threadId = Thread.currentThread().getId();

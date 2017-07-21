@@ -8,8 +8,8 @@ import com.bestvike.linq.IEnumerator;
  * @date 2017/7/18
  */
 public class ConcatIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> first;
-    private IEnumerable<TSource> second;
+    private final IEnumerable<TSource> first;
+    private final IEnumerable<TSource> second;
     private IEnumerator<TSource> enumerator;
 
     public ConcatIterator(IEnumerable<TSource> first, IEnumerable<TSource> second) {

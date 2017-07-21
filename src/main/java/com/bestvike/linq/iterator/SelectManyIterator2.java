@@ -9,8 +9,8 @@ import com.bestvike.linq.function.Func2;
  * @date 2017/7/16
  */
 public class SelectManyIterator2<TSource, TResult> extends AbstractIterator<TResult> {
-    public IEnumerable<TSource> source;
-    private Func2<TSource, Integer, IEnumerable<TResult>> selector;
+    private final IEnumerable<TSource> source;
+    private final Func2<TSource, Integer, IEnumerable<TResult>> selector;
     private IEnumerator<TSource> enumerator;
     private IEnumerator<TResult> enumerator2;
     private int index;

@@ -7,7 +7,7 @@ import java.util.Iterator;
  * @date 2017/7/17
  */
 public final class IterableEnumerator<TSource> extends AbstractEnumerator<TSource> {
-    private Iterable<TSource> source;
+    private final Iterable<TSource> source;
     private Iterator<TSource> iterator;
 
     public IterableEnumerator(Iterable<TSource> source) {

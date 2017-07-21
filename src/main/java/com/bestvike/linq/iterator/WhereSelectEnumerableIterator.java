@@ -10,9 +10,9 @@ import com.bestvike.linq.util.LambdaUtils;
  * @date 2017/7/16
  */
 public class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TResult> {
-    private IEnumerable<TSource> source;
-    private Func1<TSource, Boolean> predicate;
-    private Func1<TSource, TResult> selector;
+    private final IEnumerable<TSource> source;
+    private final Func1<TSource, Boolean> predicate;
+    private final Func1<TSource, TResult> selector;
     private IEnumerator<TSource> enumerator;
 
     public WhereSelectEnumerableIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate, Func1<TSource, TResult> selector) {

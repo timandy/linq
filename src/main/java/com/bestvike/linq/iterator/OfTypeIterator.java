@@ -8,8 +8,8 @@ import com.bestvike.linq.IEnumerator;
  * @date 2017/7/18
  */
 public class OfTypeIterator<TResult> extends AbstractIterator<TResult> {
-    private IEnumerable source;
-    private Class<TResult> clazz;
+    private final IEnumerable source;
+    private final Class<TResult> clazz;
     private IEnumerator enumerator;
 
     public OfTypeIterator(IEnumerable source, Class<TResult> clazz) {

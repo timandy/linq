@@ -5,8 +5,8 @@ package com.bestvike.linq.iterator;
  * @date 2017/7/21
  */
 public class RangeIterator extends AbstractIterator<Integer> {
-    private int start;
-    private int count;
+    private final int start;
+    private final int count;
     private int index;
 
     public RangeIterator(int start, int count) {

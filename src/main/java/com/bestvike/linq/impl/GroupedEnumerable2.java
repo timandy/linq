@@ -12,11 +12,11 @@ import com.bestvike.linq.function.Func2;
  * @date 2017/7/12
  */
 public class GroupedEnumerable2<TSource, TKey, TElement, TResult> implements IEnumerable<TResult> {
-    private IEnumerable<TSource> source;
-    private Func1<TSource, TKey> keySelector;
-    private Func1<TSource, TElement> elementSelector;
-    private IEqualityComparer<TKey> comparer;
-    private Func2<TKey, IEnumerable<TElement>, TResult> resultSelector;
+    private final IEnumerable<TSource> source;
+    private final Func1<TSource, TKey> keySelector;
+    private final Func1<TSource, TElement> elementSelector;
+    private final IEqualityComparer<TKey> comparer;
+    private final Func2<TKey, IEnumerable<TElement>, TResult> resultSelector;
 
     public GroupedEnumerable2(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)

@@ -16,7 +16,7 @@ import java.util.Objects;
  * @date 2017/7/21
  */
 public final class SingletonEnumerable<TElement> implements IListEnumerable<TElement> {
-    TElement element;
+    private final TElement element;
 
     public SingletonEnumerable(TElement element) {
         this.element = element;

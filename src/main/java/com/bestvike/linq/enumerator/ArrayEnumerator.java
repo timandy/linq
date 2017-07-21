@@ -7,9 +7,9 @@ import com.bestvike.linq.util.Array;
  * @date 2017/7/13
  */
 public final class ArrayEnumerator<TSource> extends AbstractEnumerator<TSource> {
-    protected Array<TSource> source;
-    protected int index;
-    protected int endIndex;
+    private final Array<TSource> source;
+    private final int endIndex;
+    private int index;
 
     public ArrayEnumerator(Array<TSource> source) {
         this(source, 0, source.length());

@@ -9,7 +9,7 @@ import com.bestvike.linq.enumerator.IterableEnumerator;
  * @date 2017/7/17
  */
 public final class IterableEnumerable<TElement> implements IEnumerable<TElement> {
-    private Iterable<TElement> source;
+    private final Iterable<TElement> source;
 
     public IterableEnumerable(Iterable<TElement> source) {
         this.source = source;

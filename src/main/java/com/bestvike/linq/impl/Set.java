@@ -9,11 +9,11 @@ import com.bestvike.linq.util.EqualityComparer;
  * @date 2017/7/18
  */
 public class Set<TElement> {
+    private final IEqualityComparer<TElement> comparer;
     private int[] buckets;
     private Array<Slot> slots;
     private int count;
     private int freeList;
-    private IEqualityComparer<TElement> comparer;
 
     public Set() {
         this(null);

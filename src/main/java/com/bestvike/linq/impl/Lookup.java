@@ -20,7 +20,7 @@ import com.bestvike.linq.util.EqualityComparer;
  * @date 2017/7/11
  */
 public class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement> {
-    private IEqualityComparer<TKey> comparer;
+    private final IEqualityComparer<TKey> comparer;
     private Array<Grouping> groupings;
     private Grouping lastGrouping;
     private int count;
@@ -167,7 +167,7 @@ public class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey, TElem
     }
 
     private class ApplyResultSelector<TResult> extends AbstractIterator<TResult> {
-        private Func2<TKey, IEnumerable<TElement>, TResult> resultSelector;
+        private final Func2<TKey, IEnumerable<TElement>, TResult> resultSelector;
         private IEnumerator<IGrouping<TKey, TElement>> enumerator;
 
         public ApplyResultSelector(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {

@@ -8,8 +8,8 @@ import com.bestvike.linq.IEnumerator;
  * @date 2017/7/21
  */
 public class AppendIterator<TSource> extends AbstractIterator<TSource> {
-    private IEnumerable<TSource> source;
-    private TSource element;
+    private final IEnumerable<TSource> source;
+    private final TSource element;
     private IEnumerator<TSource> enumerator;
 
     public AppendIterator(IEnumerable<TSource> source, TSource element) {
