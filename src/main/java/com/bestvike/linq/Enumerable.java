@@ -56,7 +56,6 @@ import java.util.Map;
  * @author 许崇雷
  * @date 2017/7/10
  */
-@SuppressWarnings("unused")
 public final class Enumerable {
     private Enumerable() {
     }
