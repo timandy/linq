@@ -12,7 +12,6 @@ public class SkipWhileIterator2<TSource> extends AbstractIterator<TSource> {
     private IEnumerable<TSource> source;
     private Func2<TSource, Integer, Boolean> predicate;
     private IEnumerator<TSource> enumerator;
-    private int index;
 
     public SkipWhileIterator2(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
         this.source = source;
@@ -28,12 +27,12 @@ public class SkipWhileIterator2<TSource> extends AbstractIterator<TSource> {
     public boolean moveNext() {
         switch (this.state) {
             case 1:
-                this.index = -1;
+                int index = -1;
                 this.enumerator = this.source.enumerator();
                 while (this.enumerator.moveNext()) {
                     TSource item = this.enumerator.current();
-                    this.index = Math.addExact(this.index, 1);
-                    if (!this.predicate.apply(item, this.index)) {
+                    index = Math.addExact(index, 1);
+                    if (!this.predicate.apply(item, index)) {
                         this.current = item;
                         this.state = 2;
                         return true;
