@@ -1,0 +1,175 @@
+package com.bestvike.linq.util;
+
+import com.bestvike.linq.exception.ArgumentException;
+import com.bestvike.linq.exception.ArgumentOutOfRangeException;
+import com.bestvike.linq.exception.Errors;
+
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * @author 许崇雷
+ * @date 2017/7/19
+ */
+public final class Array<T> implements Cloneable {
+    private Object[] elements;
+
+    private Array(Object[] elements) {
+        this.elements = elements;
+    }
+
+    public int length() {
+        return this.elements.length;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T get(int index) {
+        return (T) this.elements[index];
+    }
+
+    public void set(int index, T item) {
+        this.elements[index] = item;
+    }
+
+    public void resize(int newSize) {
+        if (newSize < 0)
+            throw new ArgumentOutOfRangeException("newSize");
+        if (this.elements.length == newSize)
+            return;
+        Object[] newArray = new Object[newSize];
+        System.arraycopy(this.elements, 0, newArray, 0, this.elements.length > newSize ? newSize : this.elements.length);
+        this.elements = newArray;
+    }
+
+    public boolean contains(T value) {
+        return ArrayUtils.contains(this.elements, value);
+    }
+
+    public T[] toArray(Class<T> clazz) {
+        return ArrayUtils.toArray(this.elements, clazz);
+    }
+
+    public List<T> toList() {
+        return ArrayUtils.toList(this.elements);
+    }
+
+    @Override
+    public Array<T> clone() {
+        return new Array<>(this.elements.clone());
+    }
+
+
+    //region static
+
+    public static <T> Array<T> create(int length) {
+        Object[] objects = new Object[length];
+        return new Array<>(objects);
+    }
+
+    public static <T> Array<T> create(T[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        return new Array<>(array);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Boolean> create(boolean[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Byte> create(byte[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Short> create(short[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Integer> create(int[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Long> create(long[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Float> create(float[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Double> create(double[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    @SuppressWarnings("Duplicates")
+    public static Array<Character> create(char[] array) {
+        if (array == null) throw Errors.argumentNull("elements");
+        int length = array.length;
+        Object[] objects = new Object[length];
+        for (int i = 0; i < length; i++)
+            objects[i] = array[i];
+        return new Array<>(objects);
+    }
+
+    public static <T> void copy(Array<T> src, int srcPos, Array<T> dest, int destPos, int length) {
+        System.arraycopy(src.elements, srcPos, dest.elements, destPos, length);
+    }
+
+    public static <T> void copy(Object[] src, int srcPos, Array<T> dest, int destPos, int length) {
+        System.arraycopy(src, srcPos, dest.elements, destPos, length);
+    }
+
+    public static <T> void copy(Array<T> src, int srcPos, Object[] dest, int destPos, int length) {
+        System.arraycopy(src.elements, srcPos, dest, destPos, length);
+    }
+
+    public static <T> void copy(Collection<T> src, Array<T> dest) {
+        if (dest.length() < src.size())
+            throw new ArgumentException("dest", "the size of dest less than size of src.");
+        int index = 0;
+        for (T item : src)
+            dest.set(index++, item);
+    }
+
+    //endregion
+}
