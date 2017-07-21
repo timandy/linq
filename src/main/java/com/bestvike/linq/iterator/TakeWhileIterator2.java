@@ -8,7 +8,7 @@ import com.bestvike.linq.function.Func2;
  * @author 许崇雷
  * @date 2017/7/16
  */
-public class TakeWhileIterator2<TSource> extends AbstractIterator<TSource> {
+final class TakeWhileIterator2<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
     private final Func2<TSource, Integer, Boolean> predicate;
     private IEnumerator<TSource> enumerator;

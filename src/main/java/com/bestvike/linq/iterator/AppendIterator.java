@@ -7,7 +7,7 @@ import com.bestvike.linq.IEnumerator;
  * @author 许崇雷
  * @date 2017/7/21
  */
-public class AppendIterator<TSource> extends AbstractIterator<TSource> {
+final class AppendIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
     private final TSource element;
     private IEnumerator<TSource> enumerator;

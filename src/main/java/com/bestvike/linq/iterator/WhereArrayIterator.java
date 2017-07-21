@@ -9,7 +9,7 @@ import com.bestvike.linq.util.LambdaUtils;
  * @author 许崇雷
  * @date 2017/7/17
  */
-public class WhereArrayIterator<TSource> extends Iterator<TSource> {
+final class WhereArrayIterator<TSource> extends Iterator<TSource> {
     private final Array<TSource> source;
     private final Func1<TSource, Boolean> predicate;
     private int index;

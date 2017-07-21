@@ -9,7 +9,7 @@ import com.bestvike.linq.impl.Set;
  * @author 许崇雷
  * @date 2017/7/18
  */
-public class IntersectIterator<TSource> extends AbstractIterator<TSource> {
+final class IntersectIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> first;
     private final IEnumerable<TSource> second;
     private final IEqualityComparer<TSource> comparer;

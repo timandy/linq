@@ -4,7 +4,7 @@ package com.bestvike.linq.iterator;
  * @author 许崇雷
  * @date 2017/7/21
  */
-public class RepeatIterator<TSource> extends AbstractIterator<TSource> {
+final class RepeatIterator<TSource> extends AbstractIterator<TSource> {
     private final TSource element;
     private final int count;
     private int index;

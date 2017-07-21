@@ -7,7 +7,7 @@ import com.bestvike.linq.IEnumerator;
  * @author 许崇雷
  * @date 2017/7/16
  */
-public class TakeIterator<TSource> extends AbstractIterator<TSource> {
+final class TakeIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
     private final int count;
     private IEnumerator<TSource> enumerator;

@@ -7,7 +7,7 @@ import com.bestvike.linq.IEnumerator;
  * @author 许崇雷
  * @date 2017/7/18
  */
-public class CastIterator<TResult> extends AbstractIterator<TResult> {
+final class CastIterator<TResult> extends AbstractIterator<TResult> {
     private final IEnumerable source;
     private final Class<TResult> clazz;
     private IEnumerator enumerator;

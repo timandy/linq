@@ -11,7 +11,7 @@ import com.bestvike.linq.impl.Lookup;
  * @author 许崇雷
  * @date 2017/7/17
  */
-public class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator<TResult> {
+final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TOuter> outer;
     private final IEnumerable<TInner> inner;
     private final Func1<TOuter, TKey> outerKeySelector;

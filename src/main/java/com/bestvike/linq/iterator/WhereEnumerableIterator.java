@@ -10,7 +10,7 @@ import com.bestvike.linq.util.LambdaUtils;
  * @date 2017/7/16
  */
 
-public class WhereEnumerableIterator<TSource> extends Iterator<TSource> {
+final class WhereEnumerableIterator<TSource> extends Iterator<TSource> {
     private final IEnumerable<TSource> source;
     private final Func1<TSource, Boolean> predicate;
     private IEnumerator<TSource> enumerator;

@@ -7,7 +7,7 @@ import com.bestvike.linq.IEnumerator;
  * @author 许崇雷
  * @date 2017/7/18
  */
-public class ConcatIterator<TSource> extends AbstractIterator<TSource> {
+final class ConcatIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> first;
     private final IEnumerable<TSource> second;
     private IEnumerator<TSource> enumerator;
