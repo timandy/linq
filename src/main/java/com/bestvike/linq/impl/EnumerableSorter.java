@@ -9,7 +9,7 @@ import java.util.Comparator;
  * @author 许崇雷
  * @date 2017/7/11
  */
-public class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TElement> {
+public final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TElement> {
     private final Func1<TElement, TKey> keySelector;
     private final Comparator<TKey> comparer;
     private final boolean descending;

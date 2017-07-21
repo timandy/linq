@@ -11,7 +11,7 @@ import com.bestvike.linq.function.Func1;
  * @author 许崇雷
  * @date 2017/7/11
  */
-public class GroupedEnumerable<TSource, TKey, TElement> implements IEnumerable<IGrouping<TKey, TElement>> {
+public final class GroupedEnumerable<TSource, TKey, TElement> implements IEnumerable<IGrouping<TKey, TElement>> {
     private final IEnumerable<TSource> source;
     private final Func1<TSource, TKey> keySelector;
     private final Func1<TSource, TElement> elementSelector;

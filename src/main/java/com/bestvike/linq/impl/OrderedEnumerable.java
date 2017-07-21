@@ -11,7 +11,7 @@ import java.util.Comparator;
  * @author 许崇雷
  * @date 2017/7/17
  */
-public class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<TElement> {
+public final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<TElement> {
     private final Func1<TElement, TKey> keySelector;
     private final Comparator<TKey> comparer;
     private final boolean descending;

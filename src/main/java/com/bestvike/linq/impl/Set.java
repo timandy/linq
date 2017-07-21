@@ -8,7 +8,7 @@ import com.bestvike.linq.util.EqualityComparer;
  * @author 许崇雷
  * @date 2017/7/18
  */
-public class Set<TElement> {
+public final class Set<TElement> {
     private final IEqualityComparer<TElement> comparer;
     private int[] buckets;
     private Array<Slot> slots;

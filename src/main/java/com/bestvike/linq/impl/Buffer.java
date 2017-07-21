@@ -8,7 +8,7 @@ import com.bestvike.linq.util.Array;
  * @author 许崇雷
  * @date 2017/7/17
  */
-public class Buffer<TElement> {
+public final class Buffer<TElement> {
     private final Array<TElement> items;
     private final int count;
 

@@ -19,7 +19,7 @@ import com.bestvike.linq.util.EqualityComparer;
  * @author 许崇雷
  * @date 2017/7/11
  */
-public class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement> {
+public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement> {
     private final IEqualityComparer<TKey> comparer;
     private Array<Grouping> groupings;
     private Grouping lastGrouping;
