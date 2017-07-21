@@ -1,9 +1,7 @@
 package com.bestvike.linq.enumerator;
 
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.NotSupportedException;
-
-import java.util.NoSuchElementException;
+import com.bestvike.linq.exception.Errors;
 
 /**
  * 迭代器,初始 state 为 0
@@ -40,12 +38,12 @@ public abstract class AbstractEnumerator<TSource> implements IEnumerator<TSource
             this.checkedNext = false;
             return this.current();
         }
-        throw new NoSuchElementException();
+        throw Errors.noSuchElement();
     }
 
     @Override
     public void reset() {
-        throw new NotSupportedException();
+        throw Errors.notSupported();
     }
 
     @Override

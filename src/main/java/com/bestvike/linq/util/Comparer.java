@@ -1,6 +1,6 @@
 package com.bestvike.linq.util;
 
-import com.bestvike.linq.exception.ArgumentException;
+import com.bestvike.linq.exception.Errors;
 
 import java.util.Comparator;
 
@@ -25,7 +25,7 @@ public final class Comparer {
                 return ((Comparable) x).compareTo(y);
             if (y instanceof Comparable)
                 return -((Comparable) y).compareTo(x);
-            throw new ArgumentException("argument should implement Comparable.");
+            throw Errors.argumentNotValid("x or y");//should implement Comparable
         };
     }
 }

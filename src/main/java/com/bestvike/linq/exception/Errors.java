@@ -1,6 +1,8 @@
 package com.bestvike.linq.exception;
 
 
+import java.util.NoSuchElementException;
+
 /**
  * @author 许崇雷
  * @date 2017/7/10
@@ -79,5 +81,9 @@ public final class Errors {
 
     public static RuntimeException notSupported() {
         return new NotSupportedException();
+    }
+
+    public static RuntimeException noSuchElement() {
+        return new NoSuchElementException("No such element");
     }
 }

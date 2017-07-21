@@ -1,7 +1,5 @@
 package com.bestvike.linq.util;
 
-import com.bestvike.linq.exception.ArgumentException;
-import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.Errors;
 
 import java.util.Collection;
@@ -33,7 +31,7 @@ public final class Array<T> implements Cloneable {
 
     public void resize(int newSize) {
         if (newSize < 0)
-            throw new ArgumentOutOfRangeException("newSize");
+            throw Errors.argumentOutOfRange("newSize");
         if (this.elements.length == newSize)
             return;
         Object[] newArray = new Object[newSize];
@@ -165,7 +163,7 @@ public final class Array<T> implements Cloneable {
 
     public static <T> void copy(Collection<T> src, Array<T> dest) {
         if (dest.length() < src.size())
-            throw new ArgumentException("dest", "the size of dest less than size of src.");
+            throw Errors.argumentNotValid("dest");//dest is too small
         int index = 0;
         for (T item : src)
             dest.set(index++, item);

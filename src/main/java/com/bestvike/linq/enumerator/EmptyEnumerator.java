@@ -1,9 +1,7 @@
 package com.bestvike.linq.enumerator;
 
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.NotSupportedException;
-
-import java.util.NoSuchElementException;
+import com.bestvike.linq.exception.Errors;
 
 /**
  * @author 许崇雷
@@ -34,12 +32,12 @@ public final class EmptyEnumerator<TSource> implements IEnumerator<TSource> {
 
     @Override
     public TSource next() {
-        throw new NoSuchElementException();
+        throw Errors.noSuchElement();
     }
 
     @Override
     public void reset() {
-        throw new NotSupportedException();
+        throw Errors.notSupported();
     }
 
     @Override
