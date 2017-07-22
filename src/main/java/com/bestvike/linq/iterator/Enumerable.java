@@ -632,7 +632,7 @@ public final class Enumerable {
         return null;
     }
 
-    public static IEnumerable<Integer> range(Integer start, Integer count) {
+    public static IEnumerable<Integer> range(int start, int count) {
         long max = ((long) start) + count - 1;
         if (count < 0 || max > Integer.MAX_VALUE) throw Errors.argumentOutOfRange("count");
         return new RangeIterator(start, count);
