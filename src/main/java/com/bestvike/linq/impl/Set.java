@@ -104,7 +104,7 @@ public final class Set<TElement> {
         return (value == null) ? 0 : this.comparer.getHashCode(value) & 0x7FFFFFFF;
     }
 
-    private class Slot {
+    private final class Slot {
         private int hashCode;
         private TElement value;
         private int next;
