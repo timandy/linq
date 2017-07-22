@@ -40,7 +40,7 @@ public final class Enumerable {
     public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null) throw Errors.argumentNull("source");
         if (predicate == null) throw Errors.argumentNull("predicate");
-        if (source instanceof Iterator) return ((Iterator<TSource>) source).where(predicate);
+        if (source instanceof Iterator) return ((Iterator<TSource>) source).internalWhere(predicate);
         if (source instanceof ArrayEnumerable) return new WhereArrayIterator<>(((ArrayEnumerable<TSource>) source).internalSource(), predicate);
         return new WhereEnumerableIterator<>(source, predicate);
     }
@@ -54,7 +54,7 @@ public final class Enumerable {
     public static <TSource, TResult> IEnumerable<TResult> select(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
         if (source == null) throw Errors.argumentNull("source");
         if (selector == null) throw Errors.argumentNull("selector");
-        if (source instanceof Iterator) return ((Iterator<TSource>) source).select(selector);
+        if (source instanceof Iterator) return ((Iterator<TSource>) source).internalSelect(selector);
         if (source instanceof ArrayEnumerable) return new WhereSelectArrayIterator<>(((ArrayEnumerable<TSource>) source).internalSource(), null, selector);
         return new WhereSelectEnumerableIterator<>(source, null, selector);
     }

@@ -8,7 +8,7 @@ import com.bestvike.linq.function.Func1;
  * @date 2017/7/10
  */
 public abstract class Iterator<TSource> extends AbstractIterator<TSource> {
-    public abstract <TResult> IEnumerable<TResult> select(Func1<TSource, TResult> selector);
+    public abstract <TResult> IEnumerable<TResult> internalSelect(Func1<TSource, TResult> selector);
 
-    public abstract IEnumerable<TSource> where(Func1<TSource, Boolean> predicate);
+    public abstract IEnumerable<TSource> internalWhere(Func1<TSource, Boolean> predicate);
 }
