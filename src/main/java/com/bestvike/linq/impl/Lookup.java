@@ -77,7 +77,7 @@ public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey,
     }
 
     @Override
-    public boolean contains(TKey key) {
+    public boolean containsKey(TKey key) {
         return this.getGrouping(key, false) != null;
     }
 

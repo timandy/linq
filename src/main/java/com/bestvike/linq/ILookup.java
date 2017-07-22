@@ -9,5 +9,5 @@ public interface ILookup<TKey, TElement> extends IEnumerable<IGrouping<TKey, TEl
 
     int count();
 
-    boolean contains(TKey key);
+    boolean containsKey(TKey key);
 }
