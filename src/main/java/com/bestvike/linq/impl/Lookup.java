@@ -1,9 +1,11 @@
 package com.bestvike.linq.impl;
 
+import com.bestvike.linq.ICollectionEnumerable;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IEqualityComparer;
 import com.bestvike.linq.IGrouping;
+import com.bestvike.linq.IListEnumerable;
 import com.bestvike.linq.ILookup;
 import com.bestvike.linq.enumerable.EmptyEnumerable;
 import com.bestvike.linq.enumerator.AbstractEnumerator;
@@ -13,13 +15,18 @@ import com.bestvike.linq.function.Func1;
 import com.bestvike.linq.function.Func2;
 import com.bestvike.linq.iterator.AbstractIterator;
 import com.bestvike.linq.util.Array;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.EqualityComparer;
+import com.bestvike.linq.util.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 许崇雷
  * @date 2017/7/11
  */
-public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement> {
+public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement> {
     private final IEqualityComparer<TKey> comparer;
     private Array<Grouping> groupings;
     private Grouping lastGrouping;
@@ -56,33 +63,26 @@ public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey,
         return lookup;
     }
 
-    @Override
-    public IEnumerator<IGrouping<TKey, TElement>> enumerator() {
-        return new LookupEnumerator();
+    private void resize() {
+        int newSize = Math.addExact(Math.multiplyExact(this.count, 2), 1);
+        Array<Grouping> newGroupings = Array.create(newSize);
+        Grouping g = this.lastGrouping;
+        do {
+            g = g.next;
+            int index = g.hashCode % newSize;
+            g.hashNext = newGroupings.get(index);
+            newGroupings.set(index, g);
+        } while (g != this.lastGrouping);
+        this.groupings = newGroupings;
     }
 
-    public <TResult> IEnumerable<TResult> applyResultSelector(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
-        return new ApplyResultSelector<>(resultSelector);
-    }
-
-    @Override
-    public IEnumerable<TElement> get(TKey key) {
-        Grouping grouping = this.getGrouping(key, false);
-        return grouping == null ? EmptyEnumerable.Instance() : grouping;
-    }
-
-    @Override
-    public int count() {
-        return this.count;
-    }
-
-    @Override
-    public boolean containsKey(TKey key) {
-        return this.getGrouping(key, false) != null;
+    private int getHashCode(TKey key) {
+        //Microsoft DevDivBugs 171937. work around comparer implementations that throw when passed null
+        return (key == null) ? 0 : this.comparer.getHashCode(key) & 0x7FFFFFFF;
     }
 
     public Grouping getGrouping(TKey key, boolean create) {
-        int hashCode = this.internalGetHashCode(key);
+        int hashCode = this.getHashCode(key);
         for (Grouping g = this.groupings.get(hashCode % this.groupings.length()); g != null; g = g.hashNext)
             if (g.hashCode == hashCode && this.comparer.equals(g.key, key))
                 return g;
@@ -109,25 +109,65 @@ public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey,
         return null;
     }
 
-    private void resize() {
-        int newSize = Math.addExact(Math.multiplyExact(this.count, 2), 1);
-        Array<Grouping> newGroupings = Array.create(newSize);
-        Grouping g = this.lastGrouping;
-        do {
-            g = g.next;
-            int index = g.hashCode % newSize;
-            g.hashNext = newGroupings.get(index);
-            newGroupings.set(index, g);
-        } while (g != this.lastGrouping);
-        this.groupings = newGroupings;
+    public <TResult> IEnumerable<TResult> applyResultSelector(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
+        return new ApplyResultSelector<>(resultSelector);
     }
 
-    private int internalGetHashCode(TKey key) {
-        //Microsoft DevDivBugs 171937. work around comparer implementations that throw when passed null
-        return (key == null) ? 0 : this.comparer.getHashCode(key) & 0x7FFFFFFF;
+    @Override
+    public IEnumerator<IGrouping<TKey, TElement>> enumerator() {
+        return new LookupEnumerator();
     }
 
-    private class LookupEnumerator extends AbstractEnumerator<IGrouping<TKey, TElement>> {
+    @Override
+    public IEnumerable<TElement> get(TKey key) {
+        Grouping grouping = this.getGrouping(key, false);
+        return grouping == null ? EmptyEnumerable.Instance() : grouping;
+    }
+
+    @Override
+    public boolean containsKey(TKey key) {
+        return this.getGrouping(key, false) != null;
+    }
+
+    @Override
+    public int internalSize() {
+        return this.count;
+    }
+
+    @Override
+    public boolean internalContains(IGrouping<TKey, TElement> value) {
+        for (IGrouping<TKey, TElement> g : this)
+            if (ObjectUtils.equals(g, value)) return true;
+        return false;
+    }
+
+    @Override
+    public Array<IGrouping<TKey, TElement>> internalToArray() {
+        Array<IGrouping<TKey, TElement>> array = Array.create(this.count);
+        int index = 0;
+        for (IGrouping<TKey, TElement> g : this)
+            array.set(index++, g);
+        return array;
+    }
+
+    @Override
+    public IGrouping<TKey, TElement>[] internalToArray(Class<IGrouping<TKey, TElement>> clazz) {
+        IGrouping<TKey, TElement>[] array = ArrayUtils.newInstance(clazz, this.count);
+        int index = 0;
+        for (IGrouping<TKey, TElement> g : this)
+            array[index++] = g;
+        return array;
+    }
+
+    @Override
+    public List<IGrouping<TKey, TElement>> internalToList() {
+        List<IGrouping<TKey, TElement>> list = new ArrayList<>(this.count);
+        for (IGrouping<TKey, TElement> g : this)
+            list.add(g);
+        return list;
+    }
+
+    private final class LookupEnumerator extends AbstractEnumerator<IGrouping<TKey, TElement>> {
         private Grouping g;
 
         @Override
@@ -166,11 +206,11 @@ public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey,
         }
     }
 
-    private class ApplyResultSelector<TResult> extends AbstractIterator<TResult> {
+    private final class ApplyResultSelector<TResult> extends AbstractIterator<TResult> {
         private final Func2<TKey, IEnumerable<TElement>, TResult> resultSelector;
         private IEnumerator<IGrouping<TKey, TElement>> enumerator;
 
-        public ApplyResultSelector(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
+        private ApplyResultSelector(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
             this.resultSelector = resultSelector;
         }
 
@@ -208,13 +248,20 @@ public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey,
         }
     }
 
-    public class Grouping implements IGrouping<TKey, TElement> {
+    public final class Grouping implements IListEnumerable<TElement>, IGrouping<TKey, TElement> {
         private TKey key;
         private int hashCode;
         private Array<TElement> elements;
         private int count;
         private Grouping hashNext;
         private Grouping next;
+
+        private void add(TElement element) {
+            if (this.elements.length() == this.count)
+                this.elements.resize(Math.multiplyExact(this.count, 2));
+            this.elements.set(this.count, element);
+            this.count++;
+        }
 
         @Override
         public IEnumerator<TElement> enumerator() {
@@ -226,21 +273,43 @@ public final class Lookup<TKey, TElement> implements IEnumerable<IGrouping<TKey,
             return this.key;
         }
 
-        public int count() {
-            return this.count;
-        }
-
-        public void add(TElement element) {
-            if (this.elements.length() == this.count)
-                this.elements.resize(Math.multiplyExact(this.count, 2));
-            this.elements.set(this.count, element);
-            this.count++;
-        }
-
-        public TElement get(int index) {
+        @Override
+        public TElement internalGet(int index) {
             if (index < 0 || index >= this.count)
                 throw Errors.argumentOutOfRange("index");
             return this.elements.get(index);
+        }
+
+        @Override
+        public int internalSize() {
+            return this.count;
+        }
+
+        @Override
+        public boolean internalContains(TElement value) {
+            return this.elements.contains(value, 0, this.count);
+        }
+
+        @Override
+        public Array<TElement> internalToArray() {
+            Array<TElement> array = Array.create(this.count);
+            Array.copy(this.elements, 0, array, 0, this.count);
+            return array;
+        }
+
+        @Override
+        public TElement[] internalToArray(Class<TElement> clazz) {
+            TElement[] array = ArrayUtils.newInstance(clazz, this.count);
+            Array.copy(this.elements, 0, array, 0, this.count);
+            return array;
+        }
+
+        @Override
+        public List<TElement> internalToList() {
+            List<TElement> list = new ArrayList<>(this.count);
+            for (int i = 0; i < this.count; i++)
+                list.add(this.elements.get(i));
+            return list;
         }
     }
 }

@@ -63,8 +63,8 @@ final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator
                     break;
                 case 3:
                     this.index++;
-                    if (this.index < this.g.count()) {
-                        this.current = this.resultSelector.apply(this.item, this.g.get(this.index));
+                    if (this.index < this.g.internalSize()) {
+                        this.current = this.resultSelector.apply(this.item, this.g.internalGet(this.index));
                         return true;
                     }
                     this.state = 2;
