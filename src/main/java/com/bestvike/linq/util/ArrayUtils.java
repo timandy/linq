@@ -2,7 +2,6 @@ package com.bestvike.linq.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author 许崇雷
@@ -27,7 +26,7 @@ public final class ArrayUtils {
 
     public static <T> int indexOf(T[] array, T item, int startIndex, int count) {
         for (int i = startIndex, len = startIndex + count; i < len; i++) {
-            if (Objects.equals(item, array[i]))
+            if (ObjectUtils.equals(item, array[i]))
                 return i;
         }
         return -1;

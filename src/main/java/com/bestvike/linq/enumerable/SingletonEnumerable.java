@@ -6,10 +6,10 @@ import com.bestvike.linq.enumerator.SingletonEnumerator;
 import com.bestvike.linq.exception.Errors;
 import com.bestvike.linq.util.Array;
 import com.bestvike.linq.util.ArrayUtils;
+import com.bestvike.linq.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author 许崇雷
@@ -35,7 +35,7 @@ public final class SingletonEnumerable<TElement> implements IListEnumerable<TEle
 
     @Override
     public boolean internalContains(TElement value) {
-        return Objects.equals(this.element, value);
+        return ObjectUtils.equals(this.element, value);
     }
 
     @Override

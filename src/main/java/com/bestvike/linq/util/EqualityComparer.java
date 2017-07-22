@@ -14,7 +14,7 @@ public final class EqualityComparer {
         return new IEqualityComparer<T>() {
             @Override
             public boolean equals(T x, T y) {
-                return x == null ? y == null : x.equals(y);
+                return ObjectUtils.equals(x, y);
             }
 
             @Override
