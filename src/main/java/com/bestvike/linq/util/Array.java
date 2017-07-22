@@ -17,6 +17,8 @@ public final class Array<T> implements Cloneable {
         this.elements = elements;
     }
 
+    //region static
+
     public static <T> Array<T> create(int length) {
         Object[] objects = new Object[length];
         return new Array<>(objects);
@@ -119,6 +121,8 @@ public final class Array<T> implements Cloneable {
             dest.set(index++, item);
     }
 
+    //endregion
+
     public int length() {
         return this.elements.length;
     }
@@ -144,6 +148,10 @@ public final class Array<T> implements Cloneable {
 
     public boolean contains(T value) {
         return ArrayUtils.contains(this.elements, value);
+    }
+
+    public boolean contains(T value, int startIndex, int count) {
+        return ArrayUtils.contains(this.elements, value, startIndex, count);
     }
 
     public T[] toArray(Class<T> clazz) {

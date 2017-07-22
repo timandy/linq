@@ -1,5 +1,7 @@
 package com.bestvike.linq.util;
 
+import com.bestvike.linq.exception.Errors;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +22,21 @@ public final class ArrayUtils {
         return indexOf(array, item) != -1;
     }
 
+    public static <T> boolean contains(T[] array, T item, int startIndex, int count) {
+        return indexOf(array, item, startIndex, count) != -1;
+    }
+
     public static <T> int indexOf(T[] array, T item) {
         return indexOf(array, item, 0, array.length);
     }
 
     public static <T> int indexOf(T[] array, T item, int startIndex, int count) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+        if (startIndex > array.length)
+            throw Errors.argumentOutOfRange("startIndex");
+        if (count < 0 || startIndex > array.length - count)
+            throw Errors.argumentOutOfRange("count");
         for (int i = startIndex, len = startIndex + count; i < len; i++) {
             if (ObjectUtils.equals(item, array[i]))
                 return i;
