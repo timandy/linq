@@ -7,7 +7,5 @@ package com.bestvike.linq;
 public interface ILookup<TKey, TElement> extends IEnumerable<IGrouping<TKey, TElement>> {
     IEnumerable<TElement> get(TKey key);
 
-    int count();
-
     boolean containsKey(TKey key);
 }
