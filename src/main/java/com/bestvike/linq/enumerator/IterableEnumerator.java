@@ -17,10 +17,10 @@ public final class IterableEnumerator<TSource> extends AbstractEnumerator<TSourc
     @Override
     public boolean moveNext() {
         switch (this.state) {
-            case 1:
+            case 0:
                 this.iterator = this.source.iterator();
-                this.state = 2;
-            case 2:
+                this.state = 1;
+            case 1:
                 if (this.iterator.hasNext()) {
                     this.current = this.iterator.next();
                     return true;
