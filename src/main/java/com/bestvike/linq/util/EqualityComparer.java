@@ -18,7 +18,7 @@ public final class EqualityComparer {
             }
 
             @Override
-            public int getHashCode(T obj) {
+            public int hashCode(T obj) {
                 return obj == null ? 0 : obj.hashCode();
             }
         };

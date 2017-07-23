@@ -76,13 +76,13 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         this.groupings = newGroupings;
     }
 
-    private int getHashCode(TKey key) {
+    private int hashCode(TKey key) {
         //Microsoft DevDivBugs 171937. work around comparer implementations that throw when passed null
-        return (key == null) ? 0 : this.comparer.getHashCode(key) & 0x7FFFFFFF;
+        return (key == null) ? 0 : this.comparer.hashCode(key) & 0x7FFFFFFF;
     }
 
     public Grouping getGrouping(TKey key, boolean create) {
-        int hashCode = this.getHashCode(key);
+        int hashCode = this.hashCode(key);
         for (Grouping g = this.groupings.get(hashCode % this.groupings.length()); g != null; g = g.hashNext)
             if (g.hashCode == hashCode && this.comparer.equals(g.key, key))
                 return g;

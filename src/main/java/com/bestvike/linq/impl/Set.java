@@ -39,7 +39,7 @@ public final class Set<TElement> {
 
     // If value is in set, remove it and return true; otherwise return false
     public boolean remove(TElement value) {
-        int hashCode = this.internalGetHashCode(value);
+        int hashCode = this.hashCode(value);
         int bucket = hashCode % this.buckets.length;
         int last = -1;
         for (int i = this.buckets[bucket] - 1; i >= 0; last = i, i = this.slots.get(i).next) {
@@ -60,7 +60,7 @@ public final class Set<TElement> {
     }
 
     private boolean find(TElement value, boolean add) {
-        int hashCode = this.internalGetHashCode(value);
+        int hashCode = this.hashCode(value);
         for (int i = this.buckets[hashCode % this.buckets.length] - 1; i >= 0; i = this.slots.get(i).next) {
             if (this.slots.get(i).hashCode == hashCode && this.comparer.equals(this.slots.get(i).value, value))
                 return true;
@@ -99,9 +99,9 @@ public final class Set<TElement> {
         this.slots = newSlots;
     }
 
-    private int internalGetHashCode(TElement value) {
+    private int hashCode(TElement value) {
         //Microsoft DevDivBugs 171937. work around comparer implementations that throw when passed null
-        return (value == null) ? 0 : this.comparer.getHashCode(value) & 0x7FFFFFFF;
+        return (value == null) ? 0 : this.comparer.hashCode(value) & 0x7FFFFFFF;
     }
 
     private final class Slot {

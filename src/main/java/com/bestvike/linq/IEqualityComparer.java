@@ -7,5 +7,5 @@ package com.bestvike.linq;
 public interface IEqualityComparer<T> {
     boolean equals(T x, T y);
 
-    int getHashCode(T obj);
+    int hashCode(T obj);
 }
