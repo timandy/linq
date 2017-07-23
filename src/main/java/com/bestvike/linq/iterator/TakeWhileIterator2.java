@@ -29,7 +29,7 @@ final class TakeWhileIterator2<TSource> extends AbstractIterator<TSource> {
         switch (this.state) {
             case 1:
                 this.index = -1;
-                this.enumerator = this.enumerator();
+                this.enumerator = this.source.enumerator();
                 this.state = 2;
             case 2:
                 if (this.enumerator.moveNext()) {
