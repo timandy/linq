@@ -49,7 +49,7 @@ final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator
                 case 2:
                     while (this.outerEnumerator.moveNext()) {
                         this.item = this.outerEnumerator.current();
-                        this.g = this.lookup.getGrouping(this.outerKeySelector.apply(this.item), false);
+                        this.g = this.lookup.fetchGrouping(this.outerKeySelector.apply(this.item));
                         if (this.g != null) {
                             this.index = -1;
                             this.state = 3;

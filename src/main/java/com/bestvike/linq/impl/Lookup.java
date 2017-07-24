@@ -30,6 +30,7 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
     private final IEqualityComparer<TKey> comparer;
     private Array<Grouping> groupings;
     private Grouping lastGrouping;
+    private Grouping nullKeyGrouping;
     private int count;
 
     private Lookup(IEqualityComparer<TKey> comparer) {
@@ -37,6 +38,18 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
             comparer = EqualityComparer.Default();
         this.comparer = comparer;
         this.groupings = Array.create(7);
+    }
+
+    public static <TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+        if (source == null)
+            throw Errors.argumentNull("source");
+        if (keySelector == null)
+            throw Errors.argumentNull("keySelector");
+        Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
+        for (TElement item : source) {
+            lookup.getGrouping(keySelector.apply(item), true).add(item);
+        }
+        return lookup;
     }
 
     public static <TSource, TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
@@ -63,6 +76,18 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         return lookup;
     }
 
+    public static <TKey, TElement> Lookup<TKey, TElement> createForFullJoin(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+        Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
+        for (TElement item : source) {
+            TKey key = keySelector.apply(item);
+            if (key == null)
+                lookup.getNullKeyGrouping().add(item);
+            else
+                lookup.getGrouping(key, true).add(item);
+        }
+        return lookup;
+    }
+
     private void resize() {
         int newSize = Math.addExact(Math.multiplyExact(this.count, 2), 1);
         Array<Grouping> newGroupings = Array.create(newSize);
@@ -81,7 +106,15 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         return (key == null) ? 0 : this.comparer.hashCode(key) & 0x7FFFFFFF;
     }
 
-    public Grouping getGrouping(TKey key, boolean create) {
+    private Grouping getNullKeyGrouping() {
+        if (this.nullKeyGrouping == null) {
+            this.nullKeyGrouping = new Grouping();
+            this.nullKeyGrouping.elements = Array.create(1);
+        }
+        return this.nullKeyGrouping;
+    }
+
+    private Grouping getGrouping(TKey key, boolean create) {
         int hashCode = this.hashCode(key);
         for (Grouping g = this.groupings.get(hashCode % this.groupings.length()); g != null; g = g.hashNext)
             if (g.hashCode == hashCode && this.comparer.equals(g.key, key))
@@ -109,8 +142,21 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         return null;
     }
 
+    public Grouping fetchGrouping(TKey key) {
+        if (key == null)
+            return null;
+        Grouping g = this.getGrouping(key, false);
+        if (g != null)
+            g.fetched = true;
+        return g;
+    }
+
     public <TResult> IEnumerable<TResult> applyResultSelector(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
         return new ApplyResultSelector<>(resultSelector);
+    }
+
+    public IEnumerator<Grouping> unfetchedEnumerator() {
+        return new UnfetchedLookupEnumerator();
     }
 
     @Override
@@ -206,6 +252,54 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         }
     }
 
+    private final class UnfetchedLookupEnumerator extends AbstractEnumerator<Grouping> {
+        private Grouping g;
+
+        @Override
+        public boolean moveNext() {
+            do {
+                switch (this.state) {
+                    case 0:
+                        this.state = 1;
+                        this.g = Lookup.this.nullKeyGrouping;
+                        if (this.g != null) {
+                            this.current = this.g;
+                            return true;
+                        }
+                    case 1:
+                        this.g = Lookup.this.lastGrouping;
+                        if (this.g == null) {
+                            this.close();
+                            return false;
+                        }
+                        this.state = 3;
+                        break;
+                    case 2:
+                        if (this.g == Lookup.this.lastGrouping) {
+                            this.close();
+                            return false;
+                        }
+                        this.state = 3;
+                    case 3:
+                        this.state = 2;
+                        this.g = this.g.next;
+                        if (this.g.fetched)
+                            break;
+                        this.current = this.g;
+                        return true;
+                    default:
+                        return false;
+                }
+            } while (true);
+        }
+
+        @Override
+        public void close() {
+            this.g = null;
+            super.close();
+        }
+    }
+
     private final class ApplyResultSelector<TResult> extends AbstractIterator<TResult> {
         private final Func2<TKey, IEnumerable<TElement>, TResult> resultSelector;
         private IEnumerator<IGrouping<TKey, TElement>> enumerator;
@@ -255,6 +349,10 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         private int count;
         private Grouping hashNext;
         private Grouping next;
+        private boolean fetched;
+
+        private Grouping() {
+        }
 
         private void add(TElement element) {
             if (this.elements.length() == this.count)

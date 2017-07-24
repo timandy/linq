@@ -343,11 +343,11 @@ public final class Enumerable {
     }
 
     public static <TSource, TKey> ILookup<TKey, TSource> toLookup(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
-        return Lookup.create(source, keySelector, IdentityFunction.Instance(), null);
+        return Lookup.create(source, keySelector, null);
     }
 
     public static <TSource, TKey> ILookup<TKey, TSource> toLookup(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return Lookup.create(source, keySelector, IdentityFunction.Instance(), comparer);
+        return Lookup.create(source, keySelector, comparer);
     }
 
     public static <TSource, TKey, TElement> ILookup<TKey, TElement> toLookup(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
