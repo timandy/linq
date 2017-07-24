@@ -5,6 +5,7 @@ import com.bestvike.linq.iterator.EnumerableEx;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 许崇雷
@@ -59,6 +60,10 @@ public final class Linq {
     }
 
     public static <TSource> IEnumerable<TSource> asEnumerable(Iterable<TSource> source) {
+        return EnumerableEx.asEnumerable(source);
+    }
+
+    public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {
         return EnumerableEx.asEnumerable(source);
     }
 

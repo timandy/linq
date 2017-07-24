@@ -14,6 +14,7 @@ import com.bestvike.linq.util.Array;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 许崇雷
@@ -82,6 +83,11 @@ public final class EnumerableEx {
     public static <TSource> IEnumerable<TSource> asEnumerable(Iterable<TSource> source) {
         if (source == null) throw Errors.argumentNull("source");
         return new IterableEnumerable<>(source);
+    }
+
+    public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {
+        if (source == null) throw Errors.argumentNull("source");
+        return new CollectionEnumerable<>(source.entrySet());
     }
 
     public static <TSource> IEnumerable<TSource> singletonEnumerable(TSource item) {
