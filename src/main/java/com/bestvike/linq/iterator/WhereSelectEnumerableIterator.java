@@ -51,9 +51,10 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
                     }
                 }
                 this.close();
-                break;
+                return false;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override

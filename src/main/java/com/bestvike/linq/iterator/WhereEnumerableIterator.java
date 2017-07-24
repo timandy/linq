@@ -50,9 +50,10 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> {
                     }
                 }
                 this.close();
-                break;
+                return false;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override

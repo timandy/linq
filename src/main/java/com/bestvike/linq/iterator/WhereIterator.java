@@ -41,9 +41,10 @@ final class WhereIterator<TSource> extends AbstractIterator<TSource> {
                     }
                 }
                 this.close();
-                break;
+                return false;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override

@@ -39,9 +39,10 @@ final class SelectIterator<TSource, TResult> extends AbstractIterator<TResult> {
                     return true;
                 }
                 this.close();
-                break;
+                return false;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override
