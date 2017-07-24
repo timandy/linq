@@ -33,13 +33,15 @@ final class DefaultIfEmptyIterator<TSource> extends AbstractIterator<TSource> {
                     return true;
                 }
                 this.current = this.defaultValue;
-                this.close();
+                this.state = 3;
                 return true;
             case 2:
                 if (this.enumerator.moveNext()) {
                     this.current = this.enumerator.current();
                     return true;
                 }
+                this.state = 3;
+            case 3:
                 this.close();
                 return false;
             default:

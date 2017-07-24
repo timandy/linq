@@ -16,8 +16,11 @@ public final class SingletonEnumerator<TSource> extends AbstractEnumerator<TSour
         switch (this.state) {
             case 0:
                 this.current = this.element;
-                this.close();
+                this.state = 1;
                 return true;
+            case 1:
+                this.close();
+                return false;
             default:
                 return false;
         }
