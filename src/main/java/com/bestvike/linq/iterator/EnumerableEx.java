@@ -3,6 +3,7 @@ package com.bestvike.linq.iterator;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEqualityComparer;
 import com.bestvike.linq.enumerable.ArrayEnumerable;
+import com.bestvike.linq.enumerable.CharSequenceEnumerable;
 import com.bestvike.linq.enumerable.CollectionEnumerable;
 import com.bestvike.linq.enumerable.IterableEnumerable;
 import com.bestvike.linq.enumerable.ListEnumerable;
@@ -83,6 +84,11 @@ public final class EnumerableEx {
     public static <TSource> IEnumerable<TSource> asEnumerable(Iterable<TSource> source) {
         if (source == null) throw Errors.argumentNull("source");
         return new IterableEnumerable<>(source);
+    }
+
+    public static IEnumerable<Character> asEnumerable(CharSequence source) {
+        if (source == null) throw Errors.argumentNull("source");
+        return new CharSequenceEnumerable(source);
     }
 
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {

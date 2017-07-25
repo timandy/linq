@@ -63,6 +63,10 @@ public final class Linq {
         return EnumerableEx.asEnumerable(source);
     }
 
+    public static IEnumerable<Character> asEnumerable(CharSequence source) {
+        return EnumerableEx.asEnumerable(source);
+    }
+
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {
         return EnumerableEx.asEnumerable(source);
     }
