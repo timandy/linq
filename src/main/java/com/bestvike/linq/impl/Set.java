@@ -24,6 +24,8 @@ public final class Set<TElement> {
         this.comparer = comparer;
         this.buckets = new int[7];
         this.slots = Array.create(7);
+        for (int i = 0; i < 7; i++)
+            this.slots.set(i, new Slot());
         this.freeList = -1;
     }
 
@@ -90,6 +92,8 @@ public final class Set<TElement> {
         int[] newBuckets = new int[newSize];
         Array<Slot> newSlots = Array.create(newSize);
         Array.copy(this.slots, 0, newSlots, 0, this.count);
+        for (int i = this.count; i < newSize; i++)
+            newSlots.set(i, new Slot());
         for (int i = 0; i < this.count; i++) {
             int bucket = newSlots.get(i).hashCode % newSize;
             newSlots.get(i).next = newBuckets[bucket] - 1;
