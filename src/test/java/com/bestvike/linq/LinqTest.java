@@ -140,6 +140,17 @@ public class LinqTest {
     }
 
     @Test
+    public void testCharSequence() {
+        final String str = "123";
+        final char[] chars = {'1', '2', '3'};
+        char c = Linq.asEnumerable(str).elementAt(1);
+        Assert.assertEquals('2', c);
+        Assert.assertEquals(3, Linq.asEnumerable(str).count());
+        Assert.assertEquals(3, Linq.asEnumerable(chars).count());
+        Assert.assertTrue(Linq.asEnumerable(str).sequenceEqual(Linq.asEnumerable(str)));
+    }
+
+    @Test
     public void testMap() {
         final Map<Integer, String> map = new HashMap<>();
         map.put(1, "1");
