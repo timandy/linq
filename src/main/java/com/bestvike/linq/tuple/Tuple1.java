@@ -52,7 +52,7 @@ public final class Tuple1<T1> implements IStructuralEquatable, IStructuralCompar
         if (other == null)
             return 1;
         if (!(other instanceof Tuple1))
-            throw Errors.argumentNotValid("other");
+            throw Errors.tupleIncorrectType(this.getClass().toString(), "other");
         return comparer.compare(this.item1, ((Tuple1) other).item1);
     }
 

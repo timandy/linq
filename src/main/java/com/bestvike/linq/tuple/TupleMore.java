@@ -104,7 +104,7 @@ public class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest extends ITuple> impleme
         if (other == null)
             return 1;
         if (!(other instanceof TupleMore))
-            throw Errors.argumentNotValid("other");
+            throw Errors.tupleIncorrectType(this.getClass().toString(), "other");
         TupleMore that = (TupleMore) other;
         int num = comparer.compare(this.item1, that.item1);
         if (num != 0)

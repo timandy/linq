@@ -114,8 +114,6 @@ public final class Array<T> implements Cloneable {
     }
 
     public static <T> void copy(Collection<T> src, Array<T> dest) {
-        if (dest.length() < src.size())
-            throw Errors.argumentNotValid("dest");//dest is too small
         int index = 0;
         for (T item : src)
             dest.set(index++, item);

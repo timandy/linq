@@ -60,7 +60,7 @@ public class Tuple2<T1, T2> implements IStructuralEquatable, IStructuralComparab
         if (other == null)
             return 1;
         if (!(other instanceof Tuple2))
-            throw Errors.argumentNotValid("other");
+            throw Errors.tupleIncorrectType(this.getClass().toString(), "other");
         Tuple2 that = (Tuple2) other;
         int num = comparer.compare(this.item1, that.item1);
         if (num != 0)

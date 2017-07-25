@@ -74,7 +74,7 @@ public class Tuple4<T1, T2, T3, T4> implements IStructuralEquatable, IStructural
         if (other == null)
             return 1;
         if (!(other instanceof Tuple4))
-            throw Errors.argumentNotValid("other");
+            throw Errors.tupleIncorrectType(this.getClass().toString(), "other");
         Tuple4 that = (Tuple4) other;
         int num = comparer.compare(this.item1, that.item1);
         if (num != 0)

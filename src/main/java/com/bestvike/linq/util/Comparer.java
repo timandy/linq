@@ -25,7 +25,7 @@ public final class Comparer {
                 return ((Comparable) x).compareTo(y);
             if (y instanceof Comparable)
                 return -((Comparable) y).compareTo(x);
-            throw Errors.argumentNotValid("x or y");//should implement Comparable
+            throw Errors.implementComparable();
         };
     }
 }

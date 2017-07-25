@@ -81,7 +81,7 @@ public class Tuple5<T1, T2, T3, T4, T5> implements IStructuralEquatable, IStruct
         if (other == null)
             return 1;
         if (!(other instanceof Tuple5))
-            throw Errors.argumentNotValid("other");
+            throw Errors.tupleIncorrectType(this.getClass().toString(), "other");
         Tuple5 that = (Tuple5) other;
         int num = comparer.compare(this.item1, that.item1);
         if (num != 0)
