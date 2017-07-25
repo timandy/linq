@@ -6,10 +6,14 @@ package com.bestvike.linq.exception;
  */
 public final class NotImplementedException extends RuntimeException {
     public NotImplementedException() {
-        super("not implemented.");
+        super("The method or operation is not implemented.");
     }
 
     public NotImplementedException(String message) {
         super(message);
+    }
+
+    public NotImplementedException(String message, Exception inner) {
+        super(message, inner);
     }
 }

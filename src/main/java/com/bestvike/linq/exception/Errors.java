@@ -1,6 +1,5 @@
 package com.bestvike.linq.exception;
 
-
 import java.util.NoSuchElementException;
 
 /**
@@ -84,6 +83,14 @@ public final class Errors {
     }
 
     public static RuntimeException noSuchElement() {
-        return new NoSuchElementException("No such element");
+        return new NoSuchElementException("There is no such element.");
+    }
+
+    public static RuntimeException implementComparable() {
+        return new ArgumentException("At least one object must implement Comparable.");
+    }
+
+    public static RuntimeException tupleIncorrectType(String className, String paramName) {
+        return new ArgumentException(String.format("Argument must be of type %s.", className), paramName);
     }
 }

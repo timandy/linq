@@ -6,10 +6,14 @@ package com.bestvike.linq.exception;
  */
 public final class NotSupportedException extends RuntimeException {
     public NotSupportedException() {
-        super("not supported.");
+        super("Specified method is not supported.");
     }
 
     public NotSupportedException(String message) {
         super(message);
+    }
+
+    public NotSupportedException(String message, Exception innerException) {
+        super(message, innerException);
     }
 }

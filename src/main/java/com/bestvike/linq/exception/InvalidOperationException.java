@@ -6,10 +6,14 @@ package com.bestvike.linq.exception;
  */
 public final class InvalidOperationException extends RuntimeException {
     public InvalidOperationException() {
-        super("invalid operation.");
+        super("Operation is not valid due to the current state of the object.");
     }
 
     public InvalidOperationException(String message) {
         super(message);
+    }
+
+    public InvalidOperationException(String message, Exception innerException) {
+        super(message, innerException);
     }
 }
