@@ -166,7 +166,7 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
 
     @Override
     public IEnumerable<TElement> get(TKey key) {
-        Grouping grouping = this.getGrouping(key, false);
+        Grouping grouping = this.fetchGrouping(key);
         return grouping == null ? EmptyEnumerable.Instance() : grouping;
     }
 
