@@ -691,6 +691,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return EnumerableEx.fullJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, comparer);
     }
 
+    default <TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<TInner> inner, Func2<TSource, TInner, TResult> resultSelector) {
+        return EnumerableEx.crossJoin(this, inner, resultSelector);
+    }
+
     default IEnumerable<TSource> append(TSource item) {
         return EnumerableEx.append(this, item);
     }

@@ -202,6 +202,13 @@ public final class EnumerableEx {
         return new FullJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, comparer);
     }
 
+    public static <TOuter, TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func2<TOuter, TInner, TResult> resultSelector) {
+        if (outer == null) throw Errors.argumentNull("outer");
+        if (inner == null) throw Errors.argumentNull("inner");
+        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
+        return new CrossJoinIterator<>(outer, inner, resultSelector);
+    }
+
     public static <TSource> IEnumerable<TSource> append(IEnumerable<TSource> source, TSource item) {
         if (source == null) throw Errors.argumentNull("source");
         return new AppendIterator<>(source, item);
