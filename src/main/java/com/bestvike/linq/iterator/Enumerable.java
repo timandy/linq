@@ -217,12 +217,12 @@ public final class Enumerable {
         return new GroupedEnumerable2<>(source, keySelector, IdentityFunction.Instance(), resultSelector, null);
     }
 
-    public static <TSource, TKey, TElement, TResult> IEnumerable<TResult> groupBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
-        return new GroupedEnumerable2<>(source, keySelector, elementSelector, resultSelector, null);
-    }
-
     public static <TSource, TKey, TResult> IEnumerable<TResult> groupBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         return new GroupedEnumerable2<>(source, keySelector, IdentityFunction.Instance(), resultSelector, comparer);
+    }
+
+    public static <TSource, TKey, TElement, TResult> IEnumerable<TResult> groupBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
+        return new GroupedEnumerable2<>(source, keySelector, elementSelector, resultSelector, null);
     }
 
     public static <TSource, TKey, TElement, TResult> IEnumerable<TResult> groupBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {

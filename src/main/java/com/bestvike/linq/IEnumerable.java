@@ -131,12 +131,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Enumerable.groupBy(this, keySelector, resultSelector);
     }
 
-    default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
-        return Enumerable.groupBy(this, keySelector, elementSelector, resultSelector);
-    }
-
     default <TKey, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         return Enumerable.groupBy(this, keySelector, resultSelector, comparer);
+    }
+
+    default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
+        return Enumerable.groupBy(this, keySelector, elementSelector, resultSelector);
     }
 
     default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
