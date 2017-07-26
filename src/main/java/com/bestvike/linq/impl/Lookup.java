@@ -17,10 +17,10 @@ import com.bestvike.linq.iterator.AbstractIterator;
 import com.bestvike.linq.util.Array;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.EqualityComparer;
-import com.bestvike.linq.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 许崇雷
@@ -183,7 +183,7 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
     @Override
     public boolean internalContains(IGrouping<TKey, TElement> value) {
         for (IGrouping<TKey, TElement> g : this)
-            if (ObjectUtils.equals(g, value)) return true;
+            if (Objects.equals(g, value)) return true;
         return false;
     }
 

@@ -2,6 +2,8 @@ package com.bestvike.linq.util;
 
 import com.bestvike.linq.IEqualityComparer;
 
+import java.util.Objects;
+
 /**
  * @author 许崇雷
  * @date 2017/7/18
@@ -14,7 +16,7 @@ public final class EqualityComparer {
         return new IEqualityComparer<T>() {
             @Override
             public boolean equals(T x, T y) {
-                return ObjectUtils.equals(x, y);
+                return Objects.equals(x, y);
             }
 
             @Override

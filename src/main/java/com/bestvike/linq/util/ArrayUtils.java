@@ -4,6 +4,7 @@ import com.bestvike.linq.exception.Errors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 许崇雷
@@ -38,7 +39,7 @@ public final class ArrayUtils {
         if (count < 0 || startIndex > array.length - count)
             throw Errors.argumentOutOfRange("count");
         for (int i = startIndex, len = startIndex + count; i < len; i++) {
-            if (ObjectUtils.equals(item, array[i]))
+            if (Objects.equals(item, array[i]))
                 return i;
         }
         return -1;

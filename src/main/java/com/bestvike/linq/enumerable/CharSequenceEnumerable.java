@@ -4,10 +4,10 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IListEnumerable;
 import com.bestvike.linq.enumerator.CharSequenceEnumerator;
 import com.bestvike.linq.util.Array;
-import com.bestvike.linq.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 许崇雷
@@ -38,7 +38,7 @@ public class CharSequenceEnumerable implements IListEnumerable<Character> {
     public boolean internalContains(Character value) {
         int length = this.source.length();
         for (int i = 0; i < length; i++) {
-            if (ObjectUtils.equals(this.source.charAt(i), value))
+            if (Objects.equals(this.source.charAt(i), value))
                 return true;
         }
         return false;
