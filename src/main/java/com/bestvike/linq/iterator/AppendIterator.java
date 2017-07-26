@@ -34,6 +34,7 @@ final class AppendIterator<TSource> extends AbstractIterator<TSource> {
                     return true;
                 }
                 this.enumerator.close();
+                this.enumerator = null;
                 this.state = 3;
             case 3:
                 this.current = this.element;

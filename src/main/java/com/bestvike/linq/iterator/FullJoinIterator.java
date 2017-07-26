@@ -63,6 +63,8 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
                         this.state = 4;
                         break;
                     }
+                    this.outerEnumerator.close();
+                    this.outerEnumerator = null;
                     this.unfetchedGroupingEnumerator = this.lookup.unfetchedEnumerator();
                     this.state = 3;
                 case 3:
