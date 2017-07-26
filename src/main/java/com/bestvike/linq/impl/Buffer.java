@@ -3,6 +3,7 @@ package com.bestvike.linq.impl;
 import com.bestvike.linq.ICollectionEnumerable;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.util.Array;
+import com.bestvike.linq.util.ArrayUtils;
 
 /**
  * @author 许崇雷
@@ -43,6 +44,8 @@ public final class Buffer<TElement> {
     }
 
     public TElement[] toArray(Class<TElement> clazz) {
-        return this.items.toArray(clazz);
+        TElement[] array = ArrayUtils.newInstance(clazz, this.count);
+        Array.copy(this.items, 0, array, 0, this.count);
+        return array;
     }
 }
