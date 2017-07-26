@@ -1,5 +1,7 @@
 package com.bestvike.linq.exception;
 
+import com.bestvike.linq.util.Environment;
+
 /**
  * @author 许崇雷
  * @date 2017/7/11

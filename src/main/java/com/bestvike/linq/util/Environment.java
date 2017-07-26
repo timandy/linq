@@ -1,10 +1,13 @@
-package com.bestvike.linq.exception;
+package com.bestvike.linq.util;
 
 /**
  * @author 许崇雷
  * @date 2017/7/25
  */
-final class Environment {
+public final class Environment {
+    private Environment() {
+    }
+
     /**
      * 获取当前系统换行符
      */
