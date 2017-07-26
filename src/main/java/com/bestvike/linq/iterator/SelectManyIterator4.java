@@ -13,7 +13,7 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends AbstractI
     private final Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector;
     private final Func2<TSource, TCollection, TResult> resultSelector;
     private IEnumerator<TSource> enumerator;
-    private IEnumerator<TCollection> enumerator2;
+    private IEnumerator<TCollection> selectorEnumerator;
     private TSource cursor;
     private int index;
 
@@ -41,19 +41,19 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends AbstractI
                     if (this.enumerator.moveNext()) {
                         this.cursor = this.enumerator.current();
                         this.index = Math.addExact(this.index, 1);
-                        this.enumerator2 = this.collectionSelector.apply(this.cursor, this.index).enumerator();
+                        this.selectorEnumerator = this.collectionSelector.apply(this.cursor, this.index).enumerator();
                         this.state = 3;
                         break;
                     }
                     this.close();
                     return false;
                 case 3:
-                    if (this.enumerator2.moveNext()) {
-                        TCollection item = this.enumerator2.current();
+                    if (this.selectorEnumerator.moveNext()) {
+                        TCollection item = this.selectorEnumerator.current();
                         this.current = this.resultSelector.apply(this.cursor, item);
                         return true;
                     }
-                    this.enumerator2.close();
+                    this.selectorEnumerator.close();
                     this.state = 2;
                     break;
                 default:
@@ -68,9 +68,9 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends AbstractI
             this.enumerator.close();
             this.enumerator = null;
         }
-        if (this.enumerator2 != null) {
-            this.enumerator2.close();
-            this.enumerator2 = null;
+        if (this.selectorEnumerator != null) {
+            this.selectorEnumerator.close();
+            this.selectorEnumerator = null;
         }
         this.cursor = null;
         super.close();

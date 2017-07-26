@@ -12,7 +12,7 @@ final class SelectManyIterator<TSource, TResult> extends AbstractIterator<TResul
     private final IEnumerable<TSource> source;
     private final Func1<TSource, IEnumerable<TResult>> selector;
     private IEnumerator<TSource> enumerator;
-    private IEnumerator<TResult> enumerator2;
+    private IEnumerator<TResult> selectorEnumerator;
 
     public SelectManyIterator(IEnumerable<TSource> source, Func1<TSource, IEnumerable<TResult>> selector) {
         this.source = source;
@@ -34,18 +34,18 @@ final class SelectManyIterator<TSource, TResult> extends AbstractIterator<TResul
                 case 2:
                     if (this.enumerator.moveNext()) {
                         TSource item = this.enumerator.current();
-                        this.enumerator2 = this.selector.apply(item).enumerator();
+                        this.selectorEnumerator = this.selector.apply(item).enumerator();
                         this.state = 3;
                         break;
                     }
                     this.close();
                     return false;
                 case 3:
-                    if (this.enumerator2.moveNext()) {
-                        this.current = this.enumerator2.current();
+                    if (this.selectorEnumerator.moveNext()) {
+                        this.current = this.selectorEnumerator.current();
                         return true;
                     }
-                    this.enumerator2.close();
+                    this.selectorEnumerator.close();
                     this.state = 2;
                     break;
                 default:
@@ -60,9 +60,9 @@ final class SelectManyIterator<TSource, TResult> extends AbstractIterator<TResul
             this.enumerator.close();
             this.enumerator = null;
         }
-        if (this.enumerator2 != null) {
-            this.enumerator2.close();
-            this.enumerator2 = null;
+        if (this.selectorEnumerator != null) {
+            this.selectorEnumerator.close();
+            this.selectorEnumerator = null;
         }
         super.close();
     }
