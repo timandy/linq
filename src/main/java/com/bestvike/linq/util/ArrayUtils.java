@@ -49,8 +49,7 @@ public final class ArrayUtils {
     public static <T> T[] toArray(Object[] source, Class<T> clazz) {
         int length = source.length;
         T[] array = newInstance(clazz, length);
-        if (length > 0)
-            System.arraycopy(source, 0, array, 0, length);
+        System.arraycopy(source, 0, array, 0, length);
         return array;
     }
 
