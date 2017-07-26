@@ -36,7 +36,7 @@ final class IntersectIterator<TSource> extends AbstractIterator<TSource> {
                     this.set.add(item);
                 this.enumerator = this.first.enumerator();
                 this.state = 2;
-            case 3:
+            case 2:
                 while (this.enumerator.moveNext()) {
                     TSource item = this.enumerator.current();
                     if (this.set.remove(item)) {

@@ -60,7 +60,7 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
                             return true;
                         }
                         this.index = -1;
-                        this.state = 5;
+                        this.state = 4;
                         break;
                     }
                     this.unfetchedGroupingEnumerator = this.lookup.unfetchedEnumerator();
@@ -69,12 +69,12 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
                     if (this.unfetchedGroupingEnumerator.moveNext()) {
                         this.g = this.unfetchedGroupingEnumerator.current();
                         this.index = -1;
-                        this.state = 6;
+                        this.state = 5;
                         break;
                     }
                     this.close();
                     return false;
-                case 5:
+                case 4:
                     this.index++;
                     if (this.index < this.g.internalSize()) {
                         this.current = this.resultSelector.apply(this.item, this.g.internalGet(this.index));
@@ -82,7 +82,7 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
                     }
                     this.state = 2;
                     break;
-                case 6:
+                case 5:
                     this.index++;
                     if (this.index < this.g.internalSize()) {
                         this.current = this.resultSelector.apply(this.defaultOuter, this.g.internalGet(this.index));
