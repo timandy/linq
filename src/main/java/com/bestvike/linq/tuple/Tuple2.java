@@ -14,7 +14,7 @@ import java.util.Comparator;
  * @date 2017/7/23
  */
 @SuppressWarnings({"unchecked", "EqualsWhichDoesntCheckParameterClass"})
-public class Tuple2<T1, T2> implements IStructuralEquatable, IStructuralComparable, Comparable, ITuple {
+public final class Tuple2<T1, T2> implements IStructuralEquatable, IStructuralComparable, Comparable, ITuple {
     private final T1 item1;
     private final T2 item2;
 
