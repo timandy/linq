@@ -28,7 +28,7 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
 
     @Override
     public <TResult2> IEnumerable<TResult2> internalSelect(Func1<TResult, TResult2> selector) {
-        return new WhereSelectEnumerableIterator<>(this.source, this.predicate, LambdaUtils.CombineSelectors(this.selector, selector));
+        return new WhereSelectEnumerableIterator<>(this.source, this.predicate, LambdaUtils.combineSelectors(this.selector, selector));
     }
 
     @Override

@@ -32,7 +32,7 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> {
 
     @Override
     public IEnumerable<TSource> internalWhere(Func1<TSource, Boolean> predicate) {
-        return new WhereEnumerableIterator<>(this.source, LambdaUtils.CombinePredicates(this.predicate, predicate));
+        return new WhereEnumerableIterator<>(this.source, LambdaUtils.combinePredicates(this.predicate, predicate));
     }
 
     @Override
