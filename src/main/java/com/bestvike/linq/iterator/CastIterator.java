@@ -31,7 +31,7 @@ final class CastIterator<TResult> extends AbstractIterator<TResult> {
                 this.state = 2;
             case 2:
                 if (this.enumerator.moveNext()) {
-                    this.current = (TResult) this.enumerator.current();
+                    this.current = this.clazz.cast(this.enumerator.current());
                     return true;
                 }
                 this.close();
