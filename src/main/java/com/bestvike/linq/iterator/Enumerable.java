@@ -315,6 +315,7 @@ public final class Enumerable {
 
     public static <TSource> TSource[] toArray(IEnumerable<TSource> source, Class<TSource> clazz) {
         if (source == null) throw Errors.argumentNull("source");
+        if (clazz == null) throw Errors.argumentNull("clazz");
         if (source instanceof ICollectionEnumerable) return ((ICollectionEnumerable<TSource>) source).internalToArray(clazz);
         return new Buffer<>(source).toArray(clazz);
     }
@@ -369,11 +370,13 @@ public final class Enumerable {
 
     public static <TResult> IEnumerable<TResult> ofType(IEnumerable source, Class<TResult> clazz) {
         if (source == null) throw Errors.argumentNull("source");
+        if (clazz == null) throw Errors.argumentNull("clazz");
         return new OfTypeIterator<>(source, clazz);
     }
 
     public static <TResult> IEnumerable<TResult> cast(IEnumerable source, Class<TResult> clazz) {
         if (source == null) throw Errors.argumentNull("source");
+        if (clazz == null) throw Errors.argumentNull("clazz");
         return new CastIterator<>(source, clazz);
     }
 
