@@ -1,12 +1,12 @@
 package com.bestvike.linq;
 
+import com.bestvike.linq.entity.IterableDemo;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -133,7 +133,7 @@ public class LinqTest {
         set.add("1");
         set.add("2");
         set.add("3");
-        final Iterable<String> iterableDemo = new IterableDemo();
+        final Iterable<String> iterableDemo = new IterableDemo(3);
         Assert.assertEquals(3, Linq.asEnumerable(set).count());
         Assert.assertEquals(3, Linq.asEnumerable(iterableDemo).count());
         Assert.assertTrue(Linq.asEnumerable(set).sequenceEqual(Linq.asEnumerable(iterableDemo)));
@@ -200,28 +200,5 @@ public class LinqTest {
         final IEnumerable<Integer> integers = Linq.empty();
         Assert.assertEquals(0, integers.count());
         Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
-    }
-
-    static final class IterableDemo implements Iterable<String> {
-        @Override
-        public Iterator<String> iterator() {
-            return new IteratorDemo();
-        }
-    }
-
-    static final class IteratorDemo implements Iterator<String> {
-        int current = 0;
-
-
-        @Override
-        public boolean hasNext() {
-            return this.current < 3;
-        }
-
-        @Override
-        public String next() {
-            this.current++;
-            return String.valueOf(this.current);
-        }
     }
 }
