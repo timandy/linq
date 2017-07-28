@@ -6,15 +6,15 @@ import java.util.Iterator;
  * @author 许崇雷
  * @date 2017/7/28
  */
-public final class IterableDemo implements Iterable<String> {
-    private final int count;
+public final class IterableDemo implements Iterable<Long> {
+    private final long count;
 
-    public IterableDemo(int count) {
+    public IterableDemo(long count) {
         this.count = count;
     }
 
     @Override
-    public Iterator<String> iterator() {
+    public Iterator<Long> iterator() {
         return new IteratorDemo(this.count);
     }
 }

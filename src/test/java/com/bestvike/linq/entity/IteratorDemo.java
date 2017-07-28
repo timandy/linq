@@ -6,11 +6,11 @@ import java.util.Iterator;
  * @author 许崇雷
  * @date 2017/7/28
  */
-public final class IteratorDemo implements Iterator<String> {
-    private final int count;
-    private int current = 0;
+public final class IteratorDemo implements Iterator<Long> {
+    private final long count;
+    private long current = 0;
 
-    public IteratorDemo(int count) {
+    IteratorDemo(long count) {
         this.count = count;
     }
 
@@ -20,8 +20,8 @@ public final class IteratorDemo implements Iterator<String> {
     }
 
     @Override
-    public String next() {
+    public Long next() {
         this.current++;
-        return String.valueOf(this.current);
+        return this.current;
     }
 }

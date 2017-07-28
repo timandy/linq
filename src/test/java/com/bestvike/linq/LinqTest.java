@@ -129,11 +129,11 @@ public class LinqTest {
 
     @Test
     public void testCollectionAndIterable() {
-        final Set<String> set = new HashSet<>();
-        set.add("1");
-        set.add("2");
-        set.add("3");
-        final Iterable<String> iterableDemo = new IterableDemo(3);
+        final Set<Long> set = new HashSet<>();
+        set.add(1L);
+        set.add(2L);
+        set.add(3L);
+        final Iterable<Long> iterableDemo = new IterableDemo(3);
         Assert.assertEquals(3, Linq.asEnumerable(set).count());
         Assert.assertEquals(3, Linq.asEnumerable(iterableDemo).count());
         Assert.assertTrue(Linq.asEnumerable(set).sequenceEqual(Linq.asEnumerable(iterableDemo)));
