@@ -421,7 +421,7 @@ public final class Enumerable {
         for (TSource element : source) {
             if (predicate.apply(element)) return element;
         }
-        throw Errors.noMatch();
+        return null;
     }
 
     public static <TSource> TSource last(IEnumerable<TSource> source) {
