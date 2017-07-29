@@ -427,6 +427,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Enumerable.minDecimalNull((IEnumerable<BigDecimal>) this);
     }
 
+    default TSource min() {
+        return Enumerable.min(this);
+    }
+
     default TSource minNull() {
         return Enumerable.minNull(this);
     }
@@ -469,6 +473,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default BigDecimal minDecimalNull(Func1<TSource, BigDecimal> selector) {
         return Enumerable.minDecimalNull(this, selector);
+    }
+
+    default <TResult> TResult min(Func1<TSource, TResult> selector) {
+        return Enumerable.min(this, selector);
     }
 
     default <TResult> TResult minNull(Func1<TSource, TResult> selector) {
@@ -515,6 +523,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Enumerable.maxDecimalNull((IEnumerable<BigDecimal>) this);
     }
 
+    default TSource max() {
+        return Enumerable.max(this);
+    }
+
     default TSource maxNull() {
         return Enumerable.maxNull(this);
     }
@@ -557,6 +569,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default BigDecimal maxDecimalNull(Func1<TSource, BigDecimal> selector) {
         return Enumerable.maxDecimalNull(this, selector);
+    }
+
+    default <TResult> TResult max(Func1<TSource, TResult> selector) {
+        return Enumerable.max(this, selector);
     }
 
     default <TResult> TResult maxNull(Func1<TSource, TResult> selector) {

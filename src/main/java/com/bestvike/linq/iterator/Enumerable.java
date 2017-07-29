@@ -958,6 +958,25 @@ public final class Enumerable {
         return value;
     }
 
+    public static <TSource> TSource min(IEnumerable<TSource> source) {
+        if (source == null) throw Errors.argumentNull("source");
+        Comparator<TSource> comparer = Comparer.Default();
+        TSource value = null;
+        boolean hasValue = false;
+        for (TSource x : source) {
+            if (x == null) continue;
+            if (hasValue) {
+                if (comparer.compare(x, value) < 0)
+                    value = x;
+            } else {
+                value = x;
+                hasValue = true;
+            }
+        }
+        if (hasValue) return value;
+        throw Errors.noElements();
+    }
+
     public static <TSource> TSource minNull(IEnumerable<TSource> source) {
         if (source == null) throw Errors.argumentNull("source");
         Comparator<TSource> comparer = Comparer.Default();
@@ -1007,6 +1026,10 @@ public final class Enumerable {
 
     public static <TSource> BigDecimal minDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         return Enumerable.minDecimalNull(Enumerable.select(source, selector));
+    }
+
+    public static <TSource, TResult> TResult min(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
+        return Enumerable.min(Enumerable.select(source, selector));
     }
 
     public static <TSource, TResult> TResult minNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
@@ -1148,6 +1171,25 @@ public final class Enumerable {
         return value;
     }
 
+    public static <TSource> TSource max(IEnumerable<TSource> source) {
+        if (source == null) throw Errors.argumentNull("source");
+        Comparator<TSource> comparer = Comparer.Default();
+        TSource value = null;
+        boolean hasValue = false;
+        for (TSource x : source) {
+            if (x == null) continue;
+            if (hasValue) {
+                if (comparer.compare(x, value) > 0)
+                    value = x;
+            } else {
+                value = x;
+                hasValue = true;
+            }
+        }
+        if (hasValue) return value;
+        throw Errors.noElements();
+    }
+
     public static <TSource> TSource maxNull(IEnumerable<TSource> source) {
         if (source == null) throw Errors.argumentNull("source");
         Comparator<TSource> comparer = Comparer.Default();
@@ -1197,6 +1239,10 @@ public final class Enumerable {
 
     public static <TSource> BigDecimal maxDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         return Enumerable.maxDecimalNull(Enumerable.select(source, selector));
+    }
+
+    public static <TSource, TResult> TResult max(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
+        return Enumerable.max(Enumerable.select(source, selector));
     }
 
     public static <TSource, TResult> TResult maxNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
