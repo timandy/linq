@@ -1097,7 +1097,7 @@ public final class Enumerable {
         for (Float x : source) {
             if (x == null) continue;
             if (hasValue) {
-                if (x > value || Double.isNaN(value)) value = x;
+                if (x > value || Float.isNaN(value)) value = x;
             } else {
                 value = x;
                 hasValue = true;
