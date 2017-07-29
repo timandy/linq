@@ -23,6 +23,7 @@ import com.bestvike.linq.util.Comparer;
 import com.bestvike.linq.util.EqualityComparer;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -1371,7 +1372,7 @@ public final class Enumerable {
                 count = Math.addExact(count, 1);
             }
         }
-        if (count > 0) return sum.divide(BigDecimal.valueOf(count), 28, BigDecimal.ROUND_HALF_EVEN);
+        if (count > 0) return sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL128);
         throw Errors.noElements();
     }
 
@@ -1385,7 +1386,7 @@ public final class Enumerable {
                 count = Math.addExact(count, 1);
             }
         }
-        if (count > 0) return sum.divide(BigDecimal.valueOf(count), 28, BigDecimal.ROUND_HALF_EVEN);
+        if (count > 0) return sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL128);
         return null;
     }
 
