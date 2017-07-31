@@ -106,40 +106,39 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         return (key == null) ? 0 : this.comparer.hashCode(key) & 0x7FFFFFFF;
     }
 
-    private Grouping getNullKeyGrouping() {
-        if (this.nullKeyGrouping == null) {
-            this.nullKeyGrouping = new Grouping();
-            this.nullKeyGrouping.elements = Array.create(1);
+    private Grouping createGrouping(TKey key, int hashCode) {
+        if (this.count == this.groupings.length())
+            this.resize();
+        int index = hashCode % this.groupings.length();
+        Grouping g = new Grouping();
+        g.key = key;
+        g.hashCode = hashCode;
+        g.elements = Array.create(1);
+        g.hashNext = this.groupings.get(index);
+        this.groupings.set(index, g);
+        if (this.lastGrouping == null) {
+            g.next = g;
+        } else {
+            g.next = this.lastGrouping.next;
+            this.lastGrouping.next = g;
         }
+        this.lastGrouping = g;
+        this.count++;
+        return g;
+    }
+
+    private Grouping getNullKeyGrouping() {
+        if (this.nullKeyGrouping == null)
+            this.nullKeyGrouping = this.createGrouping(null, this.hashCode(null));
         return this.nullKeyGrouping;
     }
 
     private Grouping getGrouping(TKey key, boolean create) {
         int hashCode = this.hashCode(key);
         for (Grouping g = this.groupings.get(hashCode % this.groupings.length()); g != null; g = g.hashNext)
-            if (g.hashCode == hashCode && this.comparer.equals(g.key, key))
+            if (g.hashCode == hashCode && this.comparer.equals(g.key, key) && g != this.nullKeyGrouping)
                 return g;
-        if (create) {
-            if (this.count == this.groupings.length())
-                this.resize();
-            int index = hashCode % this.groupings.length();
-            Grouping g = new Grouping();
-            g.key = key;
-            g.hashCode = hashCode;
-            g.elements = Array.create(1);
-            g.hashNext = this.groupings.get(index);
-            this.groupings.set(index, g);
-            if (this.lastGrouping == null) {
-                g.next = g;
-            } else {
-                g.next = this.lastGrouping.next;
-                this.lastGrouping.next = g;
-            }
-            this.lastGrouping = g;
-            this.count++;
-            return g;
-        }
-        return null;
+        return create ? this.createGrouping(key, hashCode) : null;
     }
 
     public Grouping fetchGrouping(TKey key) {
@@ -149,6 +148,11 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
         if (g != null)
             g.fetched = true;
         return g;
+    }
+
+    public IEnumerable<TElement> fetch(TKey key) {
+        Grouping grouping = this.fetchGrouping(key);
+        return grouping == null ? EmptyEnumerable.Instance() : grouping;
     }
 
     public <TResult> IEnumerable<TResult> applyResultSelector(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
@@ -166,7 +170,7 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
 
     @Override
     public IEnumerable<TElement> get(TKey key) {
-        Grouping grouping = this.fetchGrouping(key);
+        Grouping grouping = this.getGrouping(key, false);
         return grouping == null ? EmptyEnumerable.Instance() : grouping;
     }
 
@@ -260,28 +264,21 @@ public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrou
             do {
                 switch (this.state) {
                     case 0:
-                        this.state = 1;
-                        this.g = Lookup.this.nullKeyGrouping;
-                        if (this.g != null) {
-                            this.current = this.g;
-                            return true;
-                        }
-                    case 1:
                         this.g = Lookup.this.lastGrouping;
                         if (this.g == null) {
                             this.close();
                             return false;
                         }
-                        this.state = 3;
+                        this.state = 2;
                         break;
-                    case 2:
+                    case 1:
                         if (this.g == Lookup.this.lastGrouping) {
                             this.close();
                             return false;
                         }
-                        this.state = 3;
-                    case 3:
                         this.state = 2;
+                    case 2:
+                        this.state = 1;
                         this.g = this.g.next;
                         if (this.g.fetched)
                             break;

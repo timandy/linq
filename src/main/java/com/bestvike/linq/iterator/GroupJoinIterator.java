@@ -45,7 +45,7 @@ final class GroupJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
             case 2:
                 if (this.outerEnumerator.moveNext()) {
                     TOuter item = this.outerEnumerator.current();
-                    this.current = this.resultSelector.apply(item, this.lookup.get(this.outerKeySelector.apply(item)));
+                    this.current = this.resultSelector.apply(item, this.lookup.fetch(this.outerKeySelector.apply(item)));
                     return true;
                 }
                 this.close();
