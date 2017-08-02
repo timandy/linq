@@ -91,6 +91,8 @@ System.out.println(avg);
 
 - crossJoin
 ```
+String[] users = {"Fred", "Bill"};
+String[] subjects = {"English", "Information"};
 String cross = Linq.asEnumerable(users)
         .crossJoin(Linq.asEnumerable(subjects), (user, subject) -> String.format("%s's %s score is 0", user, subject))
         .toList()
