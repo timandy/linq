@@ -29,8 +29,8 @@
 
     <scm>
         <url>https://github.com/timandy/linq</url>
-        <connection>scm:git:https://github.com/timandy/fy_directui.git</connection>
-        <developerConnection>scm:git:https://github.com/timandy/fy_directui.git</developerConnection>
+        <connection>scm:git:https://github.com/timandy/linq.git</connection>
+        <developerConnection>scm:git:https://github.com/timandy/linq.git</developerConnection>
     </scm>
 
     <developers>
