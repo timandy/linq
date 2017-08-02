@@ -12,8 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author 许崇雷
- * @date 2017/7/11
+ * Created by 许崇雷 on 2017/7/11.
  */
 public final class EmptyEnumerable<TElement> implements IListEnumerable<TElement> {
     private EmptyEnumerable() {

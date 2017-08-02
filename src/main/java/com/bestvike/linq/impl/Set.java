@@ -5,8 +5,7 @@ import com.bestvike.linq.util.Array;
 import com.bestvike.linq.util.EqualityComparer;
 
 /**
- * @author 许崇雷
- * @date 2017/7/18
+ * Created by 许崇雷 on 2017/7/18.
  */
 public final class Set<TElement> {
     private final IEqualityComparer<TElement> comparer;

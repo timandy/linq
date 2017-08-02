@@ -5,8 +5,7 @@ import com.bestvike.linq.util.Array;
 import java.util.List;
 
 /**
- * @author 许崇雷
- * @date 2017/7/20
+ * Created by 许崇雷 on 2017/7/20.
  */
 public interface ICollectionEnumerable<TElement> extends IEnumerable<TElement> {
     int internalSize();

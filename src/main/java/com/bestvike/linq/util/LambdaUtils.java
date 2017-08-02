@@ -3,8 +3,7 @@ package com.bestvike.linq.util;
 import com.bestvike.linq.function.Func1;
 
 /**
- * @author 许崇雷
- * @date 2017/7/16
+ * Created by 许崇雷 on 2017/7/16.
  */
 public final class LambdaUtils {
     private LambdaUtils() {

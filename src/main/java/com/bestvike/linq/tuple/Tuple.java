@@ -1,8 +1,7 @@
 package com.bestvike.linq.tuple;
 
 /**
- * @author 许崇雷
- * @date 2017/7/23
+ * Created by 许崇雷 on 2017/7/23.
  */
 public final class Tuple {
     private Tuple() {

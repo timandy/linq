@@ -5,9 +5,8 @@ import com.bestvike.linq.exception.Errors;
 
 /**
  * 迭代器,初始 state 为 0
- *
- * @author 许崇雷
- * @date 2017/7/12
+ * <p>
+ * Created by 许崇雷 on 2017/7/12.
  */
 public abstract class AbstractEnumerator<TSource> implements IEnumerator<TSource> {
     protected int state;

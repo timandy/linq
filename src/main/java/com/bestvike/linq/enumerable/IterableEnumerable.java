@@ -5,8 +5,7 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.enumerator.IterableEnumerator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/17
+ * Created by 许崇雷 on 2017/7/17.
  */
 public final class IterableEnumerable<TElement> implements IEnumerable<TElement> {
     private final Iterable<TElement> source;

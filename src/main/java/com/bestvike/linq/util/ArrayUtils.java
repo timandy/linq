@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author 许崇雷
- * @date 2017/7/19
+ * Created by 许崇雷 on 2017/7/19.
  */
 public final class ArrayUtils {
     private ArrayUtils() {

@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author 许崇雷
- * @date 2017/7/21
+ * Created by 许崇雷 on 2017/7/21.
  */
 public final class SingletonEnumerable<TElement> implements IListEnumerable<TElement> {
     private final TElement element;

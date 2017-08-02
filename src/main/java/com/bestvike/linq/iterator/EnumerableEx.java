@@ -18,8 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 许崇雷
- * @date 2017/7/21
+ * Created by 许崇雷 on 2017/7/21.
  */
 @SuppressWarnings("Duplicates")
 public final class EnumerableEx {

@@ -5,8 +5,7 @@ import com.bestvike.linq.exception.Errors;
 import java.util.Comparator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/18
+ * Created by 许崇雷 on 2017/7/18.
  */
 public final class Comparer {
     private Comparer() {

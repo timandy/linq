@@ -1,8 +1,7 @@
 package com.bestvike.linq.iterator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/21
+ * Created by 许崇雷 on 2017/7/21.
  */
 final class RangeIterator extends AbstractIterator<Integer> {
     private final int start;

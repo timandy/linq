@@ -10,8 +10,7 @@ import com.bestvike.linq.util.EqualityComparer;
 import java.util.Comparator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/23
+ * Created by 许崇雷 on 2017/7/23.
  */
 @SuppressWarnings({"unchecked", "EqualsWhichDoesntCheckParameterClass"})
 public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructuralComparable, Comparable, ITuple {

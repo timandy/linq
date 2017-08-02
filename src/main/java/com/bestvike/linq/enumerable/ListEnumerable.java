@@ -9,8 +9,7 @@ import com.bestvike.linq.util.CollectionUtils;
 import java.util.List;
 
 /**
- * @author 许崇雷
- * @date 2017/7/19
+ * Created by 许崇雷 on 2017/7/19.
  */
 public final class ListEnumerable<TElement> implements IListEnumerable<TElement> {
     private final List<TElement> source;

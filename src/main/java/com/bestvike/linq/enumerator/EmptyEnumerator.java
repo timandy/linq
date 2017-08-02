@@ -4,8 +4,7 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;
 
 /**
- * @author 许崇雷
- * @date 2017/7/17
+ * Created by 许崇雷 on 2017/7/17.
  */
 public final class EmptyEnumerator<TSource> implements IEnumerator<TSource> {
     private EmptyEnumerator() {

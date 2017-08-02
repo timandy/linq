@@ -5,8 +5,7 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.function.Func2;
 
 /**
- * @author 许崇雷
- * @date 2017/7/16
+ * Created by 许崇雷 on 2017/7/16.
  */
 final class SelectManyIterator2<TSource, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TSource> source;

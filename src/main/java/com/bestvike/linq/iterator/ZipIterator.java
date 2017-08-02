@@ -5,8 +5,7 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.function.Func2;
 
 /**
- * @author 许崇雷
- * @date 2017/7/18
+ * Created by 许崇雷 on 2017/7/18.
  */
 final class ZipIterator<TFirst, TSecond, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TFirst> first;

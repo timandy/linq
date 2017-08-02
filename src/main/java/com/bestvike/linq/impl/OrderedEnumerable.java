@@ -8,8 +8,7 @@ import com.bestvike.linq.util.Comparer;
 import java.util.Comparator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/17
+ * Created by 许崇雷 on 2017/7/17.
  */
 public final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<TElement> {
     private final Func1<TElement, TKey> keySelector;

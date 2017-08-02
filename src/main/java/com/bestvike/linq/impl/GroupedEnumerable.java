@@ -8,8 +8,7 @@ import com.bestvike.linq.exception.Errors;
 import com.bestvike.linq.function.Func1;
 
 /**
- * @author 许崇雷
- * @date 2017/7/11
+ * Created by 许崇雷 on 2017/7/11.
  */
 public final class GroupedEnumerable<TSource, TKey, TElement> implements IEnumerable<IGrouping<TKey, TElement>> {
     private final IEnumerable<TSource> source;

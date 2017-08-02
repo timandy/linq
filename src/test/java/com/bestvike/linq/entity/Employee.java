@@ -3,7 +3,7 @@ package com.bestvike.linq.entity;
 import java.util.Objects;
 
 /**
- * Employee.
+ * Created by 许崇雷 on 2017/7/24.
  */
 public final class Employee {
     public final int empno;

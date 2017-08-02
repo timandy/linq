@@ -6,8 +6,7 @@ import com.bestvike.linq.function.Func1;
 import com.bestvike.linq.util.LambdaUtils;
 
 /**
- * @author 许崇雷
- * @date 2017/7/16
+ * Created by 许崇雷 on 2017/7/16.
  */
 
 final class WhereEnumerableIterator<TSource> extends Iterator<TSource> {

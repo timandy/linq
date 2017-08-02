@@ -6,8 +6,7 @@ import com.bestvike.linq.iterator.Enumerable;
 import java.util.Comparator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/11
+ * Created by 许崇雷 on 2017/7/11.
  */
 public interface IOrderedEnumerable<TElement> extends IEnumerable<TElement> {
     <TKey> IOrderedEnumerable<TElement> createOrderedEnumerable(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending);

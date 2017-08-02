@@ -1,8 +1,7 @@
 package com.bestvike.linq.util;
 
 /**
- * @author 许崇雷
- * @date 2017/7/25
+ * Created by 许崇雷 on 2017/7/25.
  */
 public final class Environment {
     /**

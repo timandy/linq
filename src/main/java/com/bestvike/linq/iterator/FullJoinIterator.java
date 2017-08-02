@@ -8,8 +8,7 @@ import com.bestvike.linq.function.Func2;
 import com.bestvike.linq.impl.Lookup;
 
 /**
- * @author 许崇雷
- * @date 2017/7/24
+ * Created by 许崇雷 on 2017/7/24.
  */
 final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TOuter> outer;

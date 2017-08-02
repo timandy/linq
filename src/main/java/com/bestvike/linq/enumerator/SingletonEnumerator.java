@@ -1,8 +1,7 @@
 package com.bestvike.linq.enumerator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/21
+ * Created by 许崇雷 on 2017/7/21.
  */
 public final class SingletonEnumerator<TSource> extends AbstractEnumerator<TSource> {
     private final TSource element;

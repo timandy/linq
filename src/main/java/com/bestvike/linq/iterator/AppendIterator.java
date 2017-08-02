@@ -4,8 +4,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/21
+ * Created by 许崇雷 on 2017/7/21.
  */
 final class AppendIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;

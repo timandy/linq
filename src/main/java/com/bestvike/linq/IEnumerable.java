@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 许崇雷
- * @date 2017/7/10
+ * Created by 许崇雷 on 2017/7/10.
  */
 @SuppressWarnings("unchecked")
 public interface IEnumerable<TSource> extends Iterable<TSource> {

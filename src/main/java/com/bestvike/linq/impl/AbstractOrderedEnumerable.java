@@ -9,8 +9,7 @@ import com.bestvike.linq.function.Func1;
 import java.util.Comparator;
 
 /**
- * @author 许崇雷
- * @date 2017/7/17
+ * Created by 许崇雷 on 2017/7/17.
  */
 public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable<TElement> {
     protected IEnumerable<TElement> source;

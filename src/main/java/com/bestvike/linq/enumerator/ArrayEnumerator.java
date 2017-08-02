@@ -3,8 +3,7 @@ package com.bestvike.linq.enumerator;
 import com.bestvike.linq.util.Array;
 
 /**
- * @author 许崇雷
- * @date 2017/7/13
+ * Created by 许崇雷 on 2017/7/13.
  */
 public final class ArrayEnumerator<TSource> extends AbstractEnumerator<TSource> {
     private final Array<TSource> source;

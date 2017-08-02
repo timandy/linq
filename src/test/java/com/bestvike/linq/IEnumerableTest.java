@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * Created by 许崇雷 on 2017/7/24.
+ */
 public class IEnumerableTest {
     private static final Employee[] badEmps = {
             new Employee(140, "Cedric", 40),

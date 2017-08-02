@@ -5,8 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @author 许崇雷
- * @date 2017/7/19
+ * Created by 许崇雷 on 2017/7/19.
  */
 public final class CollectionUtils {
     private CollectionUtils() {

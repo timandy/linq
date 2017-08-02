@@ -6,8 +6,7 @@ import com.bestvike.linq.util.Array;
 import com.bestvike.linq.util.ArrayUtils;
 
 /**
- * @author 许崇雷
- * @date 2017/7/17
+ * Created by 许崇雷 on 2017/7/17.
  */
 public final class Buffer<TElement> {
     private final Array<TElement> items;

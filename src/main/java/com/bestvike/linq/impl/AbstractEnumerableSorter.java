@@ -3,8 +3,7 @@ package com.bestvike.linq.impl;
 import com.bestvike.linq.util.Array;
 
 /**
- * @author 许崇雷
- * @date 2017/7/11
+ * Created by 许崇雷 on 2017/7/11.
  */
 public abstract class AbstractEnumerableSorter<TElement> {
     protected abstract void computeKeys(Array<TElement> elements, int count);

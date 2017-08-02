@@ -3,8 +3,7 @@ package com.bestvike.linq.impl;
 import com.bestvike.linq.function.Func1;
 
 /**
- * @author 许崇雷
- * @date 2017/7/18
+ * Created by 许崇雷 on 2017/7/18.
  */
 public final class IdentityFunction {
     private IdentityFunction() {

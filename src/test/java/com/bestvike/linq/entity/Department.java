@@ -3,7 +3,7 @@ package com.bestvike.linq.entity;
 import java.util.List;
 
 /**
- * Department.
+ * Created by 许崇雷 on 2017/7/24.
  */
 public final class Department {
     public final String name;

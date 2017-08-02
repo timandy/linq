@@ -4,8 +4,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.impl.Buffer;
 
 /**
- * @author 许崇雷
- * @date 2017/7/18
+ * Created by 许崇雷 on 2017/7/18.
  */
 final class ReverseIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;

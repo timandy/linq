@@ -4,8 +4,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.function.Func1;
 
 /**
- * @author 许崇雷
- * @date 2017/7/10
+ * Created by 许崇雷 on 2017/7/10.
  */
 abstract class Iterator<TSource> extends AbstractIterator<TSource> {
     public abstract <TResult> IEnumerable<TResult> internalSelect(Func1<TSource, TResult> selector);

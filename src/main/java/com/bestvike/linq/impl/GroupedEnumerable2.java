@@ -8,8 +8,7 @@ import com.bestvike.linq.function.Func1;
 import com.bestvike.linq.function.Func2;
 
 /**
- * @author 许崇雷
- * @date 2017/7/12
+ * Created by 许崇雷 on 2017/7/12.
  */
 public final class GroupedEnumerable2<TSource, TKey, TElement, TResult> implements IEnumerable<TResult> {
     private final IEnumerable<TSource> source;

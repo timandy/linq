@@ -23,8 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author 许崇雷
- * @date 2017/7/11
+ * Created by 许崇雷 on 2017/7/11.
  */
 public final class Lookup<TKey, TElement> implements ICollectionEnumerable<IGrouping<TKey, TElement>>, ILookup<TKey, TElement> {
     private final IEqualityComparer<TKey> comparer;

@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author 许崇雷
- * @date 2017/7/18
+ * Created by 许崇雷 on 2017/7/18.
  */
 public final class Linq {
     private Linq() {

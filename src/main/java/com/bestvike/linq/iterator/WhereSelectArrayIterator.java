@@ -6,8 +6,7 @@ import com.bestvike.linq.util.Array;
 import com.bestvike.linq.util.LambdaUtils;
 
 /**
- * @author 许崇雷
- * @date 2017/7/17
+ * Created by 许崇雷 on 2017/7/17.
  */
 final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult> {
     private final Array<TSource> source;
