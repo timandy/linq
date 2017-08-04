@@ -1,7 +1,8 @@
 language: java
 jdk:
   - oraclejdk8
-before_install:
-  - pip install --user codecov
+
+script: "mvn cobertura:cobertura"
+
 after_success:
-  - codecov
+  - bash <(curl -s https://codecov.io/bash)
