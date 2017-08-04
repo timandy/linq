@@ -14,10 +14,12 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by 许崇雷 on 2017/7/24.
@@ -57,6 +59,24 @@ public class IEnumerableTest {
                 .select(a -> a.name)
                 .toList();
         Assert.assertEquals("[Fred, Eric, Janet]", names.toString());
+
+        List<String> names2 = Linq.asEnumerable(emps)
+                .where(employee -> employee.deptno < 15)
+                .where(employee -> employee.name.length() == 4)
+                .select(a -> a.name)
+                .toList();
+        Assert.assertEquals("[Fred, Eric]", names2.toString());
+
+        List<Integer> even = Linq.range(1, 10)
+                .where(n -> n % 2 == 0)
+                .toList();
+        Assert.assertEquals("[2, 4, 6, 8, 10]", even.toString());
+
+        Integer[] numbs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        List<Integer> even2 = Linq.asEnumerable(numbs)
+                .where(n -> n % 2 == 0)
+                .toList();
+        Assert.assertEquals("[2, 4, 6, 8, 10]", even2.toString());
     }
 
     @Test
@@ -75,6 +95,12 @@ public class IEnumerableTest {
                 .select(emp -> emp.name)
                 .toList();
         Assert.assertEquals("[Fred, Bill, Eric, Janet]", names.toString());
+
+        List<Character> names2 = Linq.asEnumerable(emps)
+                .select(emp -> emp.name)
+                .select(name -> name.charAt(0))
+                .toList();
+        Assert.assertEquals("[F, B, E, J]", names2.toString());
     }
 
     @Test
@@ -177,7 +203,10 @@ public class IEnumerableTest {
 
     @Test
     public void testSkipWhileIndexed() {
-        Assert.assertEquals(1, Linq.asEnumerable(depts).skipWhile((dept, index) -> dept.name.equals("Sales") || index == 1).count());
+        int count = Linq.asEnumerable(depts)
+                .skipWhile((dept, index) -> dept.name.equals("Sales") || index == 1)
+                .count();
+        Assert.assertEquals(1, count);
     }
 
     @Test
@@ -322,6 +351,14 @@ public class IEnumerableTest {
                 .toList()
                 .toString();
         Assert.assertEquals("[Gates, Janet, Fred, Eric, Bill, Cedric]", sss);
+
+        Set<Integer> set = new HashSet<>();
+        set.add(3);
+        set.add(1);
+        set.add(2);
+        IEnumerable<Integer> ordered = Linq.asEnumerable(set).orderBy(a -> a);
+        Integer[] orderedArr = {1, 2, 3};
+        Assert.assertTrue(ordered.sequenceEqual(Linq.asEnumerable(orderedArr)));
     }
 
     @Test
@@ -676,6 +713,11 @@ public class IEnumerableTest {
         Assert.assertEquals(3, Linq.asEnumerable(emps)
                 .except(Linq.asEnumerable(emps2))
                 .count());
+
+        final IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
+        final IEnumerable<Integer> oneToFifty = Linq.range(1, 50);
+        final IEnumerable<Integer> fiftyOneToHundred = Linq.range(51, 50);
+        Assert.assertTrue(oneToHundred.except(oneToFifty).sequenceEqual(fiftyOneToHundred));
     }
 
     @Test
@@ -718,6 +760,26 @@ public class IEnumerableTest {
                 .toList()
                 .toString();
         Assert.assertEquals("[Cedric, Bill, Janet, Eric, Fred, Gates]", ss);
+
+        Character[] lst = Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).reverse().toArray(Character.class);
+        Assert.assertEquals(5, lst.length);
+        Assert.assertEquals("h", lst[4].toString());
+
+        Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
+        Character[] arr = Linq.asEnumerable(arrChar).reverse().toArray(Character.class);
+        Assert.assertEquals(5, arr.length);
+        Assert.assertEquals("h", arr[4].toString());
+
+        Character[] hello = Linq.asEnumerable("hello").reverse().toArray(Character.class);
+        Assert.assertEquals(5, hello.length);
+        Assert.assertEquals("h", hello[4].toString());
+
+        Character[] h = Linq.singletonEnumerable('h').reverse().toArray(Character.class);
+        Assert.assertEquals(1, h.length);
+        Assert.assertEquals("h", h[0].toString());
+
+        Character[] empty = Linq.<Character>empty().reverse().toArray(Character.class);
+        Assert.assertEquals(0, empty.length);
     }
 
     @Test
@@ -749,18 +811,74 @@ public class IEnumerableTest {
 
     @Test
     public void testToArray() {
-        Object[] array = {1, 2, 3};
-        Integer[] res = Linq.asEnumerable(array).cast(Integer.class).toArray(Integer.class);
-        Assert.assertEquals(3, res.length);
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(res)));
+        Object[] source = {1, 2, 3};
+        Integer[] target = Linq.asEnumerable(source).cast(Integer.class).toArray(Integer.class);
+        Assert.assertEquals(3, target.length);
+        Assert.assertTrue(Linq.asEnumerable(source).sequenceEqual(Linq.asEnumerable(target)));
+
+        Set<Integer> source2 = new HashSet<>();
+        source2.add(1);
+        source2.add(2);
+        source2.add(3);
+        Integer[] target2 = Linq.asEnumerable(source2).toArray(Integer.class);
+        Assert.assertEquals(3, target2.length);
+        Assert.assertTrue(Linq.asEnumerable(target2).sequenceEqual(Linq.asEnumerable(source2)));
+
+        Character[] lst = Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).toArray(Character.class);
+        Assert.assertEquals(5, lst.length);
+        Assert.assertEquals("o", lst[4].toString());
+
+        Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
+        Character[] arr = Linq.asEnumerable(arrChar).toArray(Character.class);
+        Assert.assertEquals(5, arr.length);
+        Assert.assertEquals("o", arr[4].toString());
+
+        Character[] hello = Linq.asEnumerable("hello").toArray(Character.class);
+        Assert.assertEquals(5, hello.length);
+        Assert.assertEquals("o", hello[4].toString());
+
+        Character[] h = Linq.singletonEnumerable('h').toArray(Character.class);
+        Assert.assertEquals(1, h.length);
+        Assert.assertEquals("h", h[0].toString());
+
+        Character[] empty = Linq.<Character>empty().toArray(Character.class);
+        Assert.assertEquals(0, empty.length);
     }
 
     @Test
     public void testToList() {
-        Object[] array = {1, 2, 3};
-        List<Integer> res = Linq.asEnumerable(array).cast(Integer.class).toList();
-        Assert.assertEquals(3, res.size());
-        Assert.assertTrue(Linq.asEnumerable(array).cast(Integer.class).sequenceEqual(Linq.asEnumerable(res)));
+        Object[] source = {1, 2, 3};
+        List<Integer> target = Linq.asEnumerable(source).cast(Integer.class).toList();
+        Assert.assertEquals(3, target.size());
+        Assert.assertTrue(Linq.asEnumerable(source).cast(Integer.class).sequenceEqual(Linq.asEnumerable(target)));
+
+        Set<Integer> source2 = new HashSet<>();
+        source2.add(1);
+        source2.add(2);
+        source2.add(3);
+        List<Integer> target2 = Linq.asEnumerable(source2).toList();
+        Assert.assertEquals(3, target2.size());
+        Assert.assertTrue(Linq.asEnumerable(target2).sequenceEqual(Linq.asEnumerable(source2)));
+
+        List<Character> lst = Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).toList();
+        Assert.assertEquals(5, lst.size());
+        Assert.assertEquals("o", lst.get(4).toString());
+
+        Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
+        List<Character> arr = Linq.asEnumerable(arrChar).toList();
+        Assert.assertEquals(5, arr.size());
+        Assert.assertEquals("o", arr.get(4).toString());
+
+        List<Character> hello = Linq.asEnumerable("hello").toList();
+        Assert.assertEquals(5, hello.size());
+        Assert.assertEquals("o", hello.get(4).toString());
+
+        List<Character> h = Linq.singletonEnumerable('h').toList();
+        Assert.assertEquals(1, h.size());
+        Assert.assertEquals("h", h.get(0).toString());
+
+        List<Character> empty = Linq.<Character>empty().toList();
+        Assert.assertEquals(0, empty.size());
     }
 
     @Test
@@ -1296,6 +1414,16 @@ public class IEnumerableTest {
             Assert.fail();
         } catch (ArgumentOutOfRangeException ignored) {
         }
+
+        IEnumerable<Integer> one = Linq.singletonEnumerable(1);
+        Assert.assertEquals((Integer) 1, one.elementAt(0));
+
+        IEnumerable<Integer> empty = Linq.empty();
+        try {
+            Integer num = empty.elementAt(0);
+            Assert.fail("expect error,but got " + num);
+        } catch (ArgumentOutOfRangeException ignored) {
+        }
     }
 
     @Test
@@ -1369,6 +1497,18 @@ public class IEnumerableTest {
         Assert.assertTrue(Linq.asEnumerable(emps).contains(e));
         Assert.assertTrue(Linq.asEnumerable(emps).contains(employeeClone));
         Assert.assertFalse(Linq.asEnumerable(emps).contains(employeeOther));
+
+        Assert.assertTrue(Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).contains('h'));
+
+        Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
+        Assert.assertTrue(Linq.asEnumerable(arrChar).contains('h'));
+
+        Assert.assertTrue(Linq.asEnumerable("hello").contains('h'));
+
+        Assert.assertTrue(Linq.singletonEnumerable('h').contains('h'));
+        Assert.assertFalse(Linq.singletonEnumerable('h').contains('o'));
+
+        Assert.assertFalse(Linq.empty().contains(1));
     }
 
     @Test
