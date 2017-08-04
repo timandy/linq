@@ -9,11 +9,12 @@
 
 Linq to Objects for Java.
 
-![linq](logo.png "linq")
-
 ## Features
 - Implemented all API of Linq to Objects.
 - More API supported.
+- Tuple supported.
+
+![bestvike](logo.jpg "济南百思为科信息工程有限公司")
 
 ## API of Linq
 - asEnumerable
