@@ -44,7 +44,8 @@ public final class Buffer<TElement> {
 
     public TElement[] toArray(Class<TElement> clazz) {
         TElement[] array = ArrayUtils.newInstance(clazz, this.count);
-        Array.copy(this.items, 0, array, 0, this.count);
+        if (this.count > 0)
+            Array.copy(this.items, 0, array, 0, this.count);
         return array;
     }
 }
