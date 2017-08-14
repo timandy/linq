@@ -710,6 +710,134 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return EnumerableEx.crossJoin(this, inner, resultSelector);
     }
 
+    default <TKey> IEnumerable<TSource> distinctBy(Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.distinctBy(this, keySelector);
+    }
+
+    default <TKey> IEnumerable<TSource> distinctBy(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+        return EnumerableEx.distinctBy(this, keySelector, comparer);
+    }
+
+    default <TKey> IEnumerable<TSource> unionBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.unionBy(this, second, keySelector);
+    }
+
+    default <TKey> IEnumerable<TSource> unionBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+        return EnumerableEx.unionBy(this, second, keySelector, comparer);
+    }
+
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.intersectBy(this, second, keySelector);
+    }
+
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+        return EnumerableEx.intersectBy(this, second, keySelector, comparer);
+    }
+
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.exceptBy(this, second, keySelector);
+    }
+
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+        return EnumerableEx.exceptBy(this, second, keySelector, comparer);
+    }
+
+    default TSource minByInt(Func1<TSource, Integer> keySelector) {
+        return EnumerableEx.minByInt(this, keySelector);
+    }
+
+    default TSource minByIntNull(Func1<TSource, Integer> keySelector) {
+        return EnumerableEx.minByIntNull(this, keySelector);
+    }
+
+    default TSource minByLong(Func1<TSource, Long> keySelector) {
+        return EnumerableEx.minByLong(this, keySelector);
+    }
+
+    default TSource minByLongNull(Func1<TSource, Long> keySelector) {
+        return EnumerableEx.minByLongNull(this, keySelector);
+    }
+
+    default TSource minByFloat(Func1<TSource, Float> keySelector) {
+        return EnumerableEx.minByFloat(this, keySelector);
+    }
+
+    default TSource minByFloatNull(Func1<TSource, Float> keySelector) {
+        return EnumerableEx.minByFloatNull(this, keySelector);
+    }
+
+    default TSource minByDouble(Func1<TSource, Double> keySelector) {
+        return EnumerableEx.minByDouble(this, keySelector);
+    }
+
+    default TSource minByDoubleNull(Func1<TSource, Double> keySelector) {
+        return EnumerableEx.minByDoubleNull(this, keySelector);
+    }
+
+    default TSource minByDecimal(Func1<TSource, BigDecimal> keySelector) {
+        return EnumerableEx.minByDecimal(this, keySelector);
+    }
+
+    default TSource minByDecimalNull(Func1<TSource, BigDecimal> keySelector) {
+        return EnumerableEx.minByDecimalNull(this, keySelector);
+    }
+
+    default <TKey> TSource minBy(Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.minBy(this, keySelector);
+    }
+
+    default <TKey> TSource minByNull(Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.minByNull(this, keySelector);
+    }
+
+    default TSource maxByInt(Func1<TSource, Integer> keySelector) {
+        return EnumerableEx.maxByInt(this, keySelector);
+    }
+
+    default TSource maxByIntNull(Func1<TSource, Integer> keySelector) {
+        return EnumerableEx.maxByIntNull(this, keySelector);
+    }
+
+    default TSource maxByLong(Func1<TSource, Long> keySelector) {
+        return EnumerableEx.maxByLong(this, keySelector);
+    }
+
+    default TSource maxByLongNull(Func1<TSource, Long> keySelector) {
+        return EnumerableEx.maxByLongNull(this, keySelector);
+    }
+
+    default TSource maxByFloat(Func1<TSource, Float> keySelector) {
+        return EnumerableEx.maxByFloat(this, keySelector);
+    }
+
+    default TSource maxByFloatNull(Func1<TSource, Float> keySelector) {
+        return EnumerableEx.maxByFloatNull(this, keySelector);
+    }
+
+    default TSource maxByDouble(Func1<TSource, Double> keySelector) {
+        return EnumerableEx.maxByDouble(this, keySelector);
+    }
+
+    default TSource maxByDoubleNull(Func1<TSource, Double> keySelector) {
+        return EnumerableEx.maxByDoubleNull(this, keySelector);
+    }
+
+    default TSource maxByDecimal(Func1<TSource, BigDecimal> keySelector) {
+        return EnumerableEx.maxByDecimal(this, keySelector);
+    }
+
+    default TSource maxByDecimalNull(Func1<TSource, BigDecimal> keySelector) {
+        return EnumerableEx.maxByDecimalNull(this, keySelector);
+    }
+
+    default <TKey> TSource maxBy(Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.maxBy(this, keySelector);
+    }
+
+    default <TKey> TSource maxByNull(Func1<TSource, TKey> keySelector) {
+        return EnumerableEx.maxByNull(this, keySelector);
+    }
+
     default IEnumerable<TSource> append(TSource item) {
         return EnumerableEx.append(this, item);
     }
