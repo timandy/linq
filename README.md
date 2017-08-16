@@ -100,13 +100,13 @@ Linq to Objects for Java.
 <dependency>
     <groupId>com.bestvike</groupId>
     <artifactId>linq</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
 ## Gradle
 ```
-compile 'com.bestvike:linq:1.0.0'
+compile 'com.bestvike:linq:1.0.1'
 ```
 
 ## Demos
