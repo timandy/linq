@@ -6,6 +6,7 @@ import com.bestvike.linq.entity.IterableDemo;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.tuple.Tuple;
+import com.bestvike.linq.tuple.Tuple1;
 import com.bestvike.linq.util.Comparer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -2825,6 +2826,403 @@ public class IEnumerableTest {
                 .toList()
                 .toString();
         Assert.assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Gates works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Gates works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing, Gates works in Marketing, Fred works in Manager, Bill works in Manager, Eric works in Manager, Janet works in Manager, Cedric works in Manager, Gates works in Manager]", ss);
+    }
+
+    @Test
+    public void testDistinctBy() {
+        final Employee[] emps2 = {
+                new Employee(150, "Theodore", 10),
+                emps[3],
+                emps[0],
+                emps[3],
+        };
+        Assert.assertEquals(1, Linq.asEnumerable(emps2).distinctBy(emp -> emp.deptno).count());
+    }
+
+    @Test
+    public void testDistinctByWithEqualityComparer() {
+        IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
+            @Override
+            public boolean equals(Integer x, Integer y) {
+                return true;
+            }
+
+            @Override
+            public int hashCode(Integer obj) {
+                return 0;
+            }
+        };
+
+        final Employee[] emps2 = {
+                new Employee(150, "Theodore", 10),
+                emps[3],
+                emps[1],
+                emps[3]
+        };
+        Assert.assertEquals(1, Linq.asEnumerable(emps2).distinctBy(emp -> emp.empno, comparer).count());
+    }
+
+    @Test
+    public void testUnionBy() {
+        Assert.assertEquals(4, Linq.asEnumerable(emps)
+                .unionBy(Linq.asEnumerable(badEmps), emp -> emp.deptno)
+                .unionBy(Linq.asEnumerable(emps), emp -> emp.deptno)
+                .count());
+    }
+
+    @Test
+    public void testUnionByWithComparer() {
+        IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
+            @Override
+            public boolean equals(Integer x, Integer y) {
+                return true;
+            }
+
+            @Override
+            public int hashCode(Integer obj) {
+                return 0;
+            }
+        };
+
+        Assert.assertEquals(1, Linq.asEnumerable(emps)
+                .unionBy(Linq.asEnumerable(badEmps), emp -> emp.deptno, comparer)
+                .unionBy(Linq.asEnumerable(emps), emp -> emp.deptno, comparer)
+                .count());
+    }
+
+    @Test
+    public void testIntersectBy() {
+        final Employee[] emps2 = {
+                new Employee(150, "Theodore", 30),
+                emps[3],
+        };
+        Assert.assertEquals(2, Linq.asEnumerable(emps)
+                .intersectBy(Linq.asEnumerable(emps2), emp -> emp.deptno)
+                .count());
+    }
+
+    @Test
+    public void testIntersectByWithComparer() {
+        IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
+            @Override
+            public boolean equals(Integer x, Integer y) {
+                return true;
+            }
+
+            @Override
+            public int hashCode(Integer obj) {
+                return 0;
+            }
+        };
+
+        final Employee[] emps2 = {
+                new Employee(150, "Theodore", 10)
+        };
+        Assert.assertEquals(1, Linq.asEnumerable(emps)
+                .intersectBy(Linq.asEnumerable(emps2), emp -> emp.deptno, comparer)
+                .count());
+    }
+
+    @Test
+    public void testExceptBy() {
+        final Employee[] emps2 = {
+                new Employee(150, "Theodore", 10),
+                emps[3],
+        };
+        Assert.assertEquals(1, Linq.asEnumerable(emps)
+                .exceptBy(Linq.asEnumerable(emps2), emp -> emp.deptno)
+                .count());
+
+        final IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
+        final IEnumerable<Integer> oneToFifty = Linq.range(1, 50);
+        final IEnumerable<Integer> fiftyOneToHundred = Linq.range(51, 50);
+        Assert.assertTrue(oneToHundred.exceptBy(oneToFifty, a -> a).sequenceEqual(fiftyOneToHundred));
+    }
+
+    @Test
+    public void testExceptByWithComparer() {
+        IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
+            @Override
+            public boolean equals(Integer x, Integer y) {
+                return true;
+            }
+
+            @Override
+            public int hashCode(Integer obj) {
+                return 0;
+            }
+        };
+
+        final Employee[] emps2 = {
+                new Employee(150, "Theodore", 10),
+        };
+        Assert.assertEquals(0, Linq.asEnumerable(emps)
+                .exceptBy(Linq.asEnumerable(emps2), emp -> emp.deptno, comparer)
+                .count());
+    }
+
+    @Test
+    public void testMinByInt() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
+        Assert.assertEquals(Tuple.create(0), Linq.asEnumerable(tuple1s).minByInt(tuple -> (Integer) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 min = Linq.asEnumerable(tuple1s2).minByInt(tuple -> (Integer) tuple.getItem1());
+            Assert.fail("expect error,but got " + min);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMinByIntNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
+        Assert.assertEquals(Tuple.create(0), Linq.asEnumerable(tuple1s).minByIntNull(tuple -> (Integer) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).minByIntNull(tuple -> (Integer) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMinByLong() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
+        Assert.assertEquals(Tuple.create(0L), Linq.asEnumerable(tuple1s).minByLong(tuple -> (Long) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 min = Linq.asEnumerable(tuple1s2).minByLong(tuple -> (Long) tuple.getItem1());
+            Assert.fail("expect error,but got " + min);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMinByLongNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
+        Assert.assertEquals(Tuple.create(0L), Linq.asEnumerable(tuple1s).minByLongNull(tuple -> (Long) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).minByLongNull(tuple -> (Long) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMinByFloat() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(Float.NaN), Linq.asEnumerable(tuple1s).minByFloat(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 min = Linq.asEnumerable(tuple1s2).minByFloat(tuple -> (Float) tuple.getItem1());
+            Assert.fail("expect error,but got " + min);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMinByFloatNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(Float.NaN), Linq.asEnumerable(tuple1s).minByFloatNull(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).minByFloatNull(tuple -> (Float) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMinByDouble() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
+        Assert.assertEquals(Tuple.create(Double.NaN), Linq.asEnumerable(tuple1s).minByDouble(tuple -> (Double) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 min = Linq.asEnumerable(tuple1s2).minByDouble(tuple -> (Double) tuple.getItem1());
+            Assert.fail("expect error,but got " + min);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMinByDoubleNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
+        Assert.assertEquals(Tuple.create(Double.NaN), Linq.asEnumerable(tuple1s).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMinByDecimal() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(new BigDecimal("0")), Tuple.create(new BigDecimal("2")), Tuple.create(new BigDecimal("3"))};
+        Assert.assertEquals(Tuple.create(new BigDecimal("0")), Linq.asEnumerable(tuple1s).minByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 min = Linq.asEnumerable(tuple1s2).minByDecimal(tuple -> (BigDecimal) tuple.getItem1());
+            Assert.fail("expect error,but got " + min);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMinByDecimalNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(new BigDecimal("0")), Tuple.create(new BigDecimal("2")), Tuple.create(new BigDecimal("3"))};
+        Assert.assertEquals(Tuple.create(new BigDecimal("0")), Linq.asEnumerable(tuple1s).minByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).minByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMinBy() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(0f), Linq.asEnumerable(tuple1s).minBy(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 min = Linq.asEnumerable(tuple1s2).minBy(tuple -> (Float) tuple.getItem1());
+            Assert.fail("expect error,but got " + min);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMinByNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(0f), Linq.asEnumerable(tuple1s).minByNull(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).minByNull(tuple -> (Float) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMaxByInt() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
+        Assert.assertEquals(Tuple.create(3), Linq.asEnumerable(tuple1s).maxByInt(tuple -> (Integer) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 max = Linq.asEnumerable(tuple1s2).maxByInt(tuple -> (Integer) tuple.getItem1());
+            Assert.fail("expect error,but got " + max);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMaxByIntNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
+        Assert.assertEquals(Tuple.create(3), Linq.asEnumerable(tuple1s).maxByIntNull(tuple -> (Integer) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).maxByIntNull(tuple -> (Integer) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMaxByLong() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
+        Assert.assertEquals(Tuple.create(3L), Linq.asEnumerable(tuple1s).maxByLong(tuple -> (Long) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 max = Linq.asEnumerable(tuple1s2).maxByLong(tuple -> (Long) tuple.getItem1());
+            Assert.fail("expect error,but got " + max);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMaxByLongNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
+        Assert.assertEquals(Tuple.create(3L), Linq.asEnumerable(tuple1s).maxByLongNull(tuple -> (Long) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).maxByLongNull(tuple -> (Long) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMaxByFloat() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(2f), Linq.asEnumerable(tuple1s).maxByFloat(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 max = Linq.asEnumerable(tuple1s2).maxByFloat(tuple -> (Float) tuple.getItem1());
+            Assert.fail("expect error,but got " + max);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMaxByFloatNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(2f), Linq.asEnumerable(tuple1s).maxByFloatNull(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).maxByFloatNull(tuple -> (Float) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMaxByDouble() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
+        Assert.assertEquals(Tuple.create(2d), Linq.asEnumerable(tuple1s).maxByDouble(tuple -> (Double) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 max = Linq.asEnumerable(tuple1s2).maxByDouble(tuple -> (Double) tuple.getItem1());
+            Assert.fail("expect error,but got " + max);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMaxByDoubleNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
+        Assert.assertEquals(Tuple.create(2d), Linq.asEnumerable(tuple1s).maxByDoubleNull(tuple -> (Double) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).maxByDoubleNull(tuple -> (Double) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMaxByDecimal() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(new BigDecimal("0")), Tuple.create(new BigDecimal("2")), Tuple.create(new BigDecimal("3"))};
+        Assert.assertEquals(Tuple.create(new BigDecimal("3")), Linq.asEnumerable(tuple1s).maxByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 max = Linq.asEnumerable(tuple1s2).maxByDecimal(tuple -> (BigDecimal) tuple.getItem1());
+            Assert.fail("expect error,but got " + max);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMaxByDecimalNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(new BigDecimal("0")), Tuple.create(new BigDecimal("2")), Tuple.create(new BigDecimal("3"))};
+        Assert.assertEquals(Tuple.create(new BigDecimal("3")), Linq.asEnumerable(tuple1s).maxByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).maxByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
+    }
+
+    @Test
+    public void testMaxBy() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(Float.NaN), Linq.asEnumerable(tuple1s).maxBy(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        try {
+            Tuple1 max = Linq.asEnumerable(tuple1s2).maxBy(tuple -> (Float) tuple.getItem1());
+            Assert.fail("expect error,but got " + max);
+        } catch (InvalidOperationException ignored) {
+        }
+    }
+
+    @Test
+    public void testMaxByNull() {
+        final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
+        Assert.assertEquals(Tuple.create(Float.NaN), Linq.asEnumerable(tuple1s).maxByNull(tuple -> (Float) tuple.getItem1()));
+
+        final Tuple1[] tuple1s2 = {Tuple.create(null)};
+        Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).maxByNull(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
