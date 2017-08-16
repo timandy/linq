@@ -73,6 +73,12 @@ Linq to Objects for Java.
 - rightJoin
 - fullJoin
 - crossJoin
+- distinctBy
+- unionBy
+- intersectBy
+- exceptBy
+- minBy
+- maxBy
 - append
 
 ## API of IOrderedEnumerable
@@ -122,6 +128,16 @@ String cross = Linq.asEnumerable(users)
 System.out.println(cross);
 ----
 [Fred's English score is 0, Fred's Information score is 0, Bill's English score is 0, Bill's Information score is 0]
+```
+- distinctBy
+```
+Tuple2[] tuples = {Tuple.create("1", "Fred"), Tuple.create("1", "Bill"), Tuple.create("2", "Eric")};
+Linq.asEnumerable(tuples)
+        .distinctBy(Tuple2::getItem1)
+        .forEach(System.out::println);
+----
+(1, Fred)
+(2, Eric)
 ```
 
 ## *License*
