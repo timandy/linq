@@ -8,7 +8,6 @@ import com.bestvike.linq.util.LambdaUtils;
 /**
  * Created by 许崇雷 on 2017/7/16.
  */
-
 final class WhereEnumerableIterator<TSource> extends Iterator<TSource> {
     private final IEnumerable<TSource> source;
     private final Func1<TSource, Boolean> predicate;
