@@ -1,5 +1,6 @@
 package com.bestvike.linq.exception;
 
+import com.bestvike.linq.resources.SR;
 import com.bestvike.linq.util.Environment;
 
 /**
@@ -9,7 +10,7 @@ public class ArgumentException extends RuntimeException {
     private String paramName;
 
     public ArgumentException() {
-        super("Value does not fall within the expected range.");
+        super(SR.Arg_ArgumentException);
     }
 
     public ArgumentException(String message) {
@@ -38,7 +39,7 @@ public class ArgumentException extends RuntimeException {
     public String getMessage() {
         String message = super.getMessage();
         if (this.paramName != null && this.paramName.length() > 0) {
-            String resourceString = String.format("Parameter name: %s.", this.paramName);
+            String resourceString = String.format(SR.Arg_ParamName_Name, this.paramName);
             return message + Environment.NewLine + resourceString;
         }
         return message;

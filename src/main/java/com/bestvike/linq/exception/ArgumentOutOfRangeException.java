@@ -1,5 +1,6 @@
 package com.bestvike.linq.exception;
 
+import com.bestvike.linq.resources.SR;
 import com.bestvike.linq.util.Environment;
 
 /**
@@ -9,11 +10,11 @@ public final class ArgumentOutOfRangeException extends ArgumentException {
     private Object actualValue;
 
     public ArgumentOutOfRangeException() {
-        super("Specified argument was out of the range of valid values.");
+        super(SR.Arg_ArgumentOutOfRangeException);
     }
 
     public ArgumentOutOfRangeException(String paramName) {
-        super("Specified argument was out of the range of valid values.", paramName);
+        super(SR.Arg_ArgumentOutOfRangeException, paramName);
     }
 
     public ArgumentOutOfRangeException(String paramName, String message) {
@@ -37,7 +38,7 @@ public final class ArgumentOutOfRangeException extends ArgumentException {
     public String getMessage() {
         String s = super.getMessage();
         if (this.actualValue != null) {
-            String valueMessage = String.format("Actual value was %s.", this.actualValue.toString());
+            String valueMessage = String.format(SR.ArgumentOutOfRange_ActualValue, this.actualValue.toString());
             if (s == null)
                 return valueMessage;
             return s + Environment.NewLine + valueMessage;

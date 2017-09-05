@@ -4,7 +4,6 @@ import com.bestvike.linq.exception.ArgumentException;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.exception.NotImplementedException;
 import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.util.Environment;
 import org.junit.Assert;
@@ -64,14 +63,6 @@ public class ExceptionTest {
             Linq.asEnumerable("hello").enumerator().reset();
             Assert.fail("should throw exception");
         } catch (NotSupportedException ignored) {
-        }
-    }
-
-    @Test
-    public void testNotImplementedException() {
-        try {
-            throw Errors.notImplemented();
-        } catch (NotImplementedException ignored) {
         }
     }
 }
