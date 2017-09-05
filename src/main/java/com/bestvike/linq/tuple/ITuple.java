@@ -1,14 +1,10 @@
 package com.bestvike.linq.tuple;
 
-import com.bestvike.linq.IEqualityComparer;
-
 /**
  * Created by 许崇雷 on 2017/7/23.
  */
-interface ITuple {
+public interface ITuple {
     int size();
 
-    String toString(StringBuilder sb);
-
-    int hashCode(IEqualityComparer comparer);
+    Object get(int index);
 }

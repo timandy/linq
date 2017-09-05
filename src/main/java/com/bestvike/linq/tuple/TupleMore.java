@@ -13,7 +13,7 @@ import java.util.Comparator;
  * Created by 许崇雷 on 2017/7/23.
  */
 @SuppressWarnings({"unchecked", "EqualsWhichDoesntCheckParameterClass"})
-public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest extends ITuple> implements IStructuralEquatable, IStructuralComparable, Comparable, ITuple {
+public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
     private final T1 item1;
     private final T2 item2;
     private final T3 item3;
@@ -24,8 +24,8 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest extends ITuple> i
     private final TRest rest;
 
     public TupleMore(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest) {
-        if (rest == null)
-            throw Errors.argumentNull("rest");
+        if (!(rest instanceof ITupleInternal))
+            throw Errors.tupleLastArgumentNotATuple();
         this.item1 = item1;
         this.item2 = item2;
         this.item3 = item3;
@@ -70,7 +70,29 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest extends ITuple> i
 
     @Override
     public int size() {
-        return 7 + this.rest.size();
+        return 7 + ((ITupleInternal) this.rest).size();
+    }
+
+    @Override
+    public Object get(int index) {
+        switch (index) {
+            case 0:
+                return this.item1;
+            case 1:
+                return this.item2;
+            case 2:
+                return this.item3;
+            case 3:
+                return this.item4;
+            case 4:
+                return this.item5;
+            case 5:
+                return this.item6;
+            case 6:
+                return this.item7;
+            default:
+                return ((ITupleInternal) this.rest).get(index - 7);
+        }
     }
 
     @Override
@@ -103,29 +125,29 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest extends ITuple> i
         if (other == null)
             return 1;
         if (!(other instanceof TupleMore))
-            throw Errors.tupleIncorrectType(this.getClass().toString(), "other");
+            throw Errors.tupleIncorrectType(this.getClass(), "other");
         TupleMore that = (TupleMore) other;
-        int num = comparer.compare(this.item1, that.item1);
-        if (num != 0)
-            return num;
-        num = comparer.compare(this.item2, that.item2);
-        if (num != 0)
-            return num;
-        num = comparer.compare(this.item3, that.item3);
-        if (num != 0)
-            return num;
-        num = comparer.compare(this.item4, that.item4);
-        if (num != 0)
-            return num;
-        num = comparer.compare(this.item5, that.item5);
-        if (num != 0)
-            return num;
-        num = comparer.compare(this.item6, that.item6);
-        if (num != 0)
-            return num;
-        num = comparer.compare(this.item7, that.item7);
-        if (num != 0)
-            return num;
+        int c = comparer.compare(this.item1, that.item1);
+        if (c != 0)
+            return c;
+        c = comparer.compare(this.item2, that.item2);
+        if (c != 0)
+            return c;
+        c = comparer.compare(this.item3, that.item3);
+        if (c != 0)
+            return c;
+        c = comparer.compare(this.item4, that.item4);
+        if (c != 0)
+            return c;
+        c = comparer.compare(this.item5, that.item5);
+        if (c != 0)
+            return c;
+        c = comparer.compare(this.item6, that.item6);
+        if (c != 0)
+            return c;
+        c = comparer.compare(this.item7, that.item7);
+        if (c != 0)
+            return c;
         return comparer.compare(this.rest, that.rest);
     }
 
@@ -136,50 +158,25 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest extends ITuple> i
 
     @Override
     public int hashCode(IEqualityComparer comparer) {
-        if (this.rest.size() >= 8)
-            return this.rest.hashCode(comparer);
-        switch (8 - this.rest.size()) {
+        ITupleInternal t = (ITupleInternal) this.rest;
+        if (t.size() >= 8)
+            return t.hashCode(comparer);
+        int k = 8 - t.size();
+        switch (k) {
             case 1:
-                return Tuple.combineHashCodes(comparer.hashCode(this.item7), this.rest.hashCode(comparer));
+                return Tuple.combineHashCodes(comparer.hashCode(this.item7), t.hashCode(comparer));
             case 2:
-                return Tuple.combineHashCodes(comparer.hashCode(this.item6),
-                        comparer.hashCode(this.item7),
-                        this.rest.hashCode(comparer));
+                return Tuple.combineHashCodes(comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 3:
-                return Tuple.combineHashCodes(comparer.hashCode(this.item5),
-                        comparer.hashCode(this.item6),
-                        comparer.hashCode(this.item7),
-                        this.rest.hashCode(comparer));
+                return Tuple.combineHashCodes(comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 4:
-                return Tuple.combineHashCodes(comparer.hashCode(this.item4),
-                        comparer.hashCode(this.item5),
-                        comparer.hashCode(this.item6),
-                        comparer.hashCode(this.item7),
-                        this.rest.hashCode(comparer));
+                return Tuple.combineHashCodes(comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 5:
-                return Tuple.combineHashCodes(comparer.hashCode(this.item3),
-                        comparer.hashCode(this.item4),
-                        comparer.hashCode(this.item5),
-                        comparer.hashCode(this.item6),
-                        comparer.hashCode(this.item7),
-                        this.rest.hashCode(comparer));
+                return Tuple.combineHashCodes(comparer.hashCode(this.item3), comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 6:
-                return Tuple.combineHashCodes(comparer.hashCode(this.item2),
-                        comparer.hashCode(this.item3),
-                        comparer.hashCode(this.item4),
-                        comparer.hashCode(this.item5),
-                        comparer.hashCode(this.item6),
-                        comparer.hashCode(this.item7),
-                        this.rest.hashCode(comparer));
+                return Tuple.combineHashCodes(comparer.hashCode(this.item2), comparer.hashCode(this.item3), comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 7:
-                return Tuple.combineHashCodes(comparer.hashCode(this.item1),
-                        comparer.hashCode(this.item2),
-                        comparer.hashCode(this.item3),
-                        comparer.hashCode(this.item4),
-                        comparer.hashCode(this.item5),
-                        comparer.hashCode(this.item6),
-                        comparer.hashCode(this.item7),
-                        this.rest.hashCode(comparer));
+                return Tuple.combineHashCodes(comparer.hashCode(this.item1), comparer.hashCode(this.item2), comparer.hashCode(this.item3), comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             default:
                 return -1;
         }
@@ -208,6 +205,6 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest extends ITuple> i
         builder.append(", ");
         builder.append(this.item7);
         builder.append(", ");
-        return this.rest.toString(builder);
+        return ((ITupleInternal) this.rest).toString(builder);
     }
 }

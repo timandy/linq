@@ -13,7 +13,7 @@ import java.util.Comparator;
  * Created by 许崇雷 on 2017/7/23.
  */
 @SuppressWarnings({"unchecked", "EqualsWhichDoesntCheckParameterClass"})
-public final class Tuple1<T1> implements IStructuralEquatable, IStructuralComparable, Comparable, ITuple {
+public final class Tuple1<T1> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
     private final T1 item1;
 
     public Tuple1(T1 item1) {
@@ -27,6 +27,16 @@ public final class Tuple1<T1> implements IStructuralEquatable, IStructuralCompar
     @Override
     public int size() {
         return 1;
+    }
+
+    @Override
+    public Object get(int index) {
+        switch (index) {
+            case 0:
+                return this.item1;
+            default:
+                throw Errors.indexOutOfRange();
+        }
     }
 
     @Override
@@ -51,7 +61,7 @@ public final class Tuple1<T1> implements IStructuralEquatable, IStructuralCompar
         if (other == null)
             return 1;
         if (!(other instanceof Tuple1))
-            throw Errors.tupleIncorrectType(this.getClass().toString(), "other");
+            throw Errors.tupleIncorrectType(this.getClass(), "other");
         return comparer.compare(this.item1, ((Tuple1) other).item1);
     }
 
