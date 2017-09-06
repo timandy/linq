@@ -8,22 +8,10 @@ import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.resources.SR;
 import com.bestvike.linq.util.Environment;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.NoSuchElementException;
-
-import static com.bestvike.linq.resources.SR.Arg_ArgumentOutOfRangeException;
-import static com.bestvike.linq.resources.SR.Arg_IndexOutOfRangeException;
-import static com.bestvike.linq.resources.SR.Arg_InvalidOperationException;
-import static com.bestvike.linq.resources.SR.Arg_NotSupportedException;
-import static com.bestvike.linq.resources.SR.Arg_ParamName_Name;
-import static com.bestvike.linq.resources.SR.ArgumentOutOfRange_ActualValue;
-import static com.bestvike.linq.resources.SR.MoreThanOneElement;
-import static com.bestvike.linq.resources.SR.MoreThanOneMatch;
-import static com.bestvike.linq.resources.SR.NoElements;
-import static com.bestvike.linq.resources.SR.NoMatch;
-import static com.bestvike.linq.resources.SR.NoSuchElement;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by 许崇雷 on 2017/8/4.
@@ -34,57 +22,57 @@ public class ExceptionTest {
         try {
             throw new ArgumentException();
         } catch (ArgumentException e) {
-            assertEquals(SR.Arg_ArgumentException, e.getMessage());
-            assertEquals(null, e.getParamName());
+            Assert.assertEquals(SR.Arg_ArgumentException, e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
         }
 
         try {
             throw new ArgumentException("arg error");
         } catch (ArgumentException e) {
-            assertEquals("arg error", e.getMessage());
-            assertEquals(null, e.getParamName());
+            Assert.assertEquals("arg error", e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
         }
 
         try {
             throw new ArgumentException("arg error", new NullPointerException());
         } catch (ArgumentException e) {
-            assertEquals("arg error", e.getMessage());
-            assertEquals(null, e.getParamName());
+            Assert.assertEquals("arg error", e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
         }
 
         try {
             throw new ArgumentException("arg error", "id", new NullPointerException());
         } catch (ArgumentException e) {
-            assertEquals("arg error" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
-            assertEquals("id", e.getParamName());
+            Assert.assertEquals("arg error" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
+            Assert.assertEquals("id", e.getParamName());
         }
 
         try {
             throw new ArgumentException("arg error", "id");
         } catch (ArgumentException e) {
-            assertEquals("arg error" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
-            assertEquals("id", e.getParamName());
+            Assert.assertEquals("arg error" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
+            Assert.assertEquals("id", e.getParamName());
         }
 
         try {
             throw Errors.implementComparable();
         } catch (ArgumentException e) {
-            assertEquals(SR.Argument_ImplementComparable, e.getMessage());
-            assertEquals(null, e.getParamName());
+            Assert.assertEquals(SR.Argument_ImplementComparable, e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
         }
 
         try {
             throw Errors.tupleIncorrectType(String.class, "id");
         } catch (ArgumentException e) {
-            assertEquals(String.format(SR.ArgumentException_TupleIncorrectType, String.class) + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
-            assertEquals("id", e.getParamName());
+            Assert.assertEquals(String.format(SR.ArgumentException_TupleIncorrectType, String.class) + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
+            Assert.assertEquals("id", e.getParamName());
         }
 
         try {
             throw Errors.tupleLastArgumentNotATuple();
         } catch (ArgumentException e) {
-            assertEquals(SR.ArgumentException_TupleLastArgumentNotATuple, e.getMessage());
-            assertEquals(null, e.getParamName());
+            Assert.assertEquals(SR.ArgumentException_TupleLastArgumentNotATuple, e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
         }
     }
 
@@ -93,36 +81,36 @@ public class ExceptionTest {
         try {
             throw new ArgumentNullException();
         } catch (ArgumentNullException e) {
-            assertEquals(SR.ArgumentNull_Generic, e.getMessage());
-            assertEquals(null, e.getParamName());
+            Assert.assertEquals(SR.ArgumentNull_Generic, e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
         }
 
         try {
             throw new ArgumentNullException("id");
         } catch (ArgumentNullException e) {
-            assertEquals(SR.ArgumentNull_Generic + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
-            assertEquals("id", e.getParamName());
+            Assert.assertEquals(SR.ArgumentNull_Generic + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
+            Assert.assertEquals("id", e.getParamName());
         }
 
         try {
             throw new ArgumentNullException("null error", new NullPointerException());
         } catch (ArgumentNullException e) {
-            assertEquals("null error", e.getMessage());
-            assertEquals(null, e.getParamName());
+            Assert.assertEquals("null error", e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
         }
 
         try {
             throw new ArgumentNullException("id", "null error");
         } catch (ArgumentNullException e) {
-            assertEquals("null error" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
-            assertEquals("id", e.getParamName());
+            Assert.assertEquals("null error" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
+            Assert.assertEquals("id", e.getParamName());
         }
 
         try {
             throw Errors.argumentNull("id");
         } catch (ArgumentNullException e) {
-            assertEquals(SR.ArgumentNull_Generic + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
-            assertEquals("id", e.getParamName());
+            Assert.assertEquals(SR.ArgumentNull_Generic + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "id"), e.getMessage());
+            Assert.assertEquals("id", e.getParamName());
         }
     }
 
@@ -131,49 +119,49 @@ public class ExceptionTest {
         try {
             throw new ArgumentOutOfRangeException();
         } catch (ArgumentOutOfRangeException e) {
-            assertEquals(Arg_ArgumentOutOfRangeException, e.getMessage());
-            assertEquals(null, e.getParamName());
-            assertEquals(null, e.getActualValue());
+            Assert.assertEquals(SR.Arg_ArgumentOutOfRangeException, e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
+            Assert.assertEquals(null, e.getActualValue());
         }
 
         try {
             throw new ArgumentOutOfRangeException("index");
         } catch (ArgumentOutOfRangeException e) {
-            assertEquals(Arg_ArgumentOutOfRangeException + Environment.NewLine + String.format(Arg_ParamName_Name, "index"), e.getMessage());
-            assertEquals("index", e.getParamName());
-            assertEquals(null, e.getActualValue());
+            Assert.assertEquals(SR.Arg_ArgumentOutOfRangeException + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "index"), e.getMessage());
+            Assert.assertEquals("index", e.getParamName());
+            Assert.assertEquals(null, e.getActualValue());
         }
 
         try {
             throw new ArgumentOutOfRangeException("index", "out of range");
         } catch (ArgumentOutOfRangeException e) {
-            assertEquals("out of range" + Environment.NewLine + String.format(Arg_ParamName_Name, "index"), e.getMessage());
-            assertEquals("index", e.getParamName());
-            assertEquals(null, e.getActualValue());
+            Assert.assertEquals("out of range" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "index"), e.getMessage());
+            Assert.assertEquals("index", e.getParamName());
+            Assert.assertEquals(null, e.getActualValue());
         }
 
         try {
             throw new ArgumentOutOfRangeException("out of range", new NullPointerException());
         } catch (ArgumentOutOfRangeException e) {
-            assertEquals("out of range", e.getMessage());
-            assertEquals(null, e.getParamName());
-            assertEquals(null, e.getActualValue());
+            Assert.assertEquals("out of range", e.getMessage());
+            Assert.assertEquals(null, e.getParamName());
+            Assert.assertEquals(null, e.getActualValue());
         }
 
         try {
             throw new ArgumentOutOfRangeException("index", -1, "out of range");
         } catch (ArgumentOutOfRangeException e) {
-            assertEquals("out of range" + Environment.NewLine + String.format(Arg_ParamName_Name, "index") + Environment.NewLine + String.format(ArgumentOutOfRange_ActualValue, "-1"), e.getMessage());
-            assertEquals("index", e.getParamName());
-            assertEquals(-1, e.getActualValue());
+            Assert.assertEquals("out of range" + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "index") + Environment.NewLine + String.format(SR.ArgumentOutOfRange_ActualValue, "-1"), e.getMessage());
+            Assert.assertEquals("index", e.getParamName());
+            Assert.assertEquals(-1, e.getActualValue());
         }
 
         try {
             throw Errors.argumentOutOfRange("index");
         } catch (ArgumentOutOfRangeException e) {
-            assertEquals(Arg_ArgumentOutOfRangeException + Environment.NewLine + String.format(Arg_ParamName_Name, "index"), e.getMessage());
-            assertEquals("index", e.getParamName());
-            assertEquals(null, e.getActualValue());
+            Assert.assertEquals(SR.Arg_ArgumentOutOfRangeException + Environment.NewLine + String.format(SR.Arg_ParamName_Name, "index"), e.getMessage());
+            Assert.assertEquals("index", e.getParamName());
+            Assert.assertEquals(null, e.getActualValue());
         }
     }
 
@@ -182,42 +170,42 @@ public class ExceptionTest {
         try {
             throw new InvalidOperationException();
         } catch (InvalidOperationException e) {
-            assertEquals(Arg_InvalidOperationException, e.getMessage());
+            Assert.assertEquals(SR.Arg_InvalidOperationException, e.getMessage());
         }
 
         try {
             throw new InvalidOperationException("invalid operation");
         } catch (InvalidOperationException e) {
-            assertEquals("invalid operation", e.getMessage());
+            Assert.assertEquals("invalid operation", e.getMessage());
         }
 
         try {
             throw new InvalidOperationException("invalid operation", new RuntimeException());
         } catch (InvalidOperationException e) {
-            assertEquals("invalid operation", e.getMessage());
+            Assert.assertEquals("invalid operation", e.getMessage());
         }
 
         try {
             throw Errors.moreThanOneElement();
         } catch (InvalidOperationException e) {
-            assertEquals(MoreThanOneElement, e.getMessage());
+            Assert.assertEquals(SR.MoreThanOneElement, e.getMessage());
         }
 
         try {
             throw Errors.moreThanOneMatch();
         } catch (InvalidOperationException e) {
-            assertEquals(MoreThanOneMatch, e.getMessage());
+            Assert.assertEquals(SR.MoreThanOneMatch, e.getMessage());
         }
 
         try {
             throw Errors.noElements();
         } catch (InvalidOperationException e) {
-            assertEquals(NoElements, e.getMessage());
+            Assert.assertEquals(SR.NoElements, e.getMessage());
         }
         try {
             throw Errors.noMatch();
         } catch (InvalidOperationException e) {
-            assertEquals(NoMatch, e.getMessage());
+            Assert.assertEquals(SR.NoMatch, e.getMessage());
         }
     }
 
@@ -226,25 +214,25 @@ public class ExceptionTest {
         try {
             throw new NotSupportedException();
         } catch (NotSupportedException e) {
-            assertEquals(Arg_NotSupportedException, e.getMessage());
+            Assert.assertEquals(SR.Arg_NotSupportedException, e.getMessage());
         }
 
         try {
             throw new NotSupportedException("not supported");
         } catch (NotSupportedException e) {
-            assertEquals("not supported", e.getMessage());
+            Assert.assertEquals("not supported", e.getMessage());
         }
 
         try {
             throw new NotSupportedException("not supported", new NullPointerException());
         } catch (NotSupportedException e) {
-            assertEquals("not supported", e.getMessage());
+            Assert.assertEquals("not supported", e.getMessage());
         }
 
         try {
             throw Errors.notSupported();
         } catch (NotSupportedException e) {
-            assertEquals(Arg_NotSupportedException, e.getMessage());
+            Assert.assertEquals(SR.Arg_NotSupportedException, e.getMessage());
         }
     }
 
@@ -253,13 +241,13 @@ public class ExceptionTest {
         try {
             throw Errors.noSuchElement();
         } catch (NoSuchElementException e) {
-            assertEquals(NoSuchElement, e.getMessage());
+            Assert.assertEquals(SR.NoSuchElement, e.getMessage());
         }
 
         try {
             throw Errors.indexOutOfRange();
         } catch (IndexOutOfBoundsException e) {
-            assertEquals(Arg_IndexOutOfRangeException, e.getMessage());
+            Assert.assertEquals(SR.Arg_IndexOutOfRangeException, e.getMessage());
         }
     }
 }
