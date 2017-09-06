@@ -17,6 +17,7 @@ public final class SR {
     public static final String NoElements = "Sequence contains no elements.";
     public static final String NoMatch = "Sequence contains no matching element.";
     public static final String NoSuchElement = "Sequence contains no such element.";
+    public static final String Arg_IndexOutOfRangeException = "Index was outside the bounds of the array.";
     public static final String Argument_ImplementComparable = "At least one object must implement Comparable.";
     public static final String ArgumentException_TupleIncorrectType = "Argument must be of type %s.";
     public static final String ArgumentException_TupleLastArgumentNotATuple = "The last element of an eight element tuple must be a Tuple.";

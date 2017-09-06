@@ -44,7 +44,7 @@ public final class Errors {
     }
 
     public static RuntimeException indexOutOfRange() {
-        return new IndexOutOfBoundsException();
+        return new IndexOutOfBoundsException(SR.Arg_IndexOutOfRangeException);
     }
 
     public static RuntimeException implementComparable() {
