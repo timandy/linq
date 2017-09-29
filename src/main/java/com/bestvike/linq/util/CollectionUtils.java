@@ -1,5 +1,7 @@
 package com.bestvike.linq.util;
 
+import com.bestvike.collections.generic.Array;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

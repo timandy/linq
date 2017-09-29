@@ -1,6 +1,7 @@
-package com.bestvike.linq.util;
+package com.bestvike.collections.generic;
 
 import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,13 +11,18 @@ import java.util.List;
  */
 @SuppressWarnings("Duplicates")
 public final class Array<T> implements Cloneable {
-    private Object[] elements;
+    private Object[] _elements;
 
     private Array(Object[] elements) {
-        this.elements = elements;
+        this._elements = elements;
     }
 
     //region static
+
+    public static <T> Array<T> empty() {
+        Object[] objects = new Object[0];
+        return new Array<>(objects);
+    }
 
     public static <T> Array<T> create(int length) {
         Object[] objects = new Object[length];
@@ -24,12 +30,12 @@ public final class Array<T> implements Cloneable {
     }
 
     public static <T> Array<T> create(T[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         return new Array<>(array);
     }
 
     public static Array<Boolean> create(boolean[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -38,7 +44,7 @@ public final class Array<T> implements Cloneable {
     }
 
     public static Array<Byte> create(byte[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -47,7 +53,7 @@ public final class Array<T> implements Cloneable {
     }
 
     public static Array<Short> create(short[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -56,7 +62,7 @@ public final class Array<T> implements Cloneable {
     }
 
     public static Array<Integer> create(int[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -65,7 +71,7 @@ public final class Array<T> implements Cloneable {
     }
 
     public static Array<Long> create(long[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -74,7 +80,7 @@ public final class Array<T> implements Cloneable {
     }
 
     public static Array<Float> create(float[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -83,7 +89,7 @@ public final class Array<T> implements Cloneable {
     }
 
     public static Array<Double> create(double[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -92,7 +98,7 @@ public final class Array<T> implements Cloneable {
     }
 
     public static Array<Character> create(char[] array) {
-        if (array == null) throw Errors.argumentNull("elements");
+        if (array == null) throw Errors.argumentNull("array");
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -101,15 +107,15 @@ public final class Array<T> implements Cloneable {
     }
 
     public static <T> void copy(Array<T> src, int srcPos, Array<T> dest, int destPos, int length) {
-        System.arraycopy(src.elements, srcPos, dest.elements, destPos, length);
+        System.arraycopy(src._elements, srcPos, dest._elements, destPos, length);
     }
 
     public static <T> void copy(Object[] src, int srcPos, Array<T> dest, int destPos, int length) {
-        System.arraycopy(src, srcPos, dest.elements, destPos, length);
+        System.arraycopy(src, srcPos, dest._elements, destPos, length);
     }
 
     public static <T> void copy(Array<T> src, int srcPos, Object[] dest, int destPos, int length) {
-        System.arraycopy(src.elements, srcPos, dest, destPos, length);
+        System.arraycopy(src._elements, srcPos, dest, destPos, length);
     }
 
     public static <T> void copy(Collection<T> src, Array<T> dest) {
@@ -121,46 +127,46 @@ public final class Array<T> implements Cloneable {
     //endregion
 
     public int length() {
-        return this.elements.length;
+        return this._elements.length;
     }
 
     @SuppressWarnings("unchecked")
     public T get(int index) {
-        return (T) this.elements[index];
+        return (T) this._elements[index];
     }
 
     public void set(int index, T item) {
-        this.elements[index] = item;
+        this._elements[index] = item;
     }
 
     public void resize(int newSize) {
         if (newSize < 0)
             throw Errors.argumentOutOfRange("newSize");
-        if (this.elements.length == newSize)
+        if (this._elements.length == newSize)
             return;
         Object[] newArray = new Object[newSize];
-        System.arraycopy(this.elements, 0, newArray, 0, this.elements.length > newSize ? newSize : this.elements.length);
-        this.elements = newArray;
+        System.arraycopy(this._elements, 0, newArray, 0, this._elements.length > newSize ? newSize : this._elements.length);
+        this._elements = newArray;
     }
 
     public boolean contains(T value) {
-        return ArrayUtils.contains(this.elements, value);
+        return ArrayUtils.contains(this._elements, value);
     }
 
     public boolean contains(T value, int startIndex, int count) {
-        return ArrayUtils.contains(this.elements, value, startIndex, count);
+        return ArrayUtils.contains(this._elements, value, startIndex, count);
     }
 
     public T[] toArray(Class<T> clazz) {
-        return ArrayUtils.toArray(this.elements, clazz);
+        return ArrayUtils.toArray(this._elements, clazz);
     }
 
     public List<T> toList() {
-        return ArrayUtils.toList(this.elements);
+        return ArrayUtils.toList(this._elements);
     }
 
     @Override
     public Array<T> clone() {
-        return new Array<>(this.elements.clone());
+        return new Array<>(this._elements.clone());
     }
 }
