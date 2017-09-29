@@ -1,10 +1,10 @@
-package com.bestvike.tuple;
+package com.bestvike;
 
+import com.bestvike.collections.IStructuralComparable;
+import com.bestvike.collections.IStructuralEquatable;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.linq.IStructuralComparable;
-import com.bestvike.linq.IStructuralEquatable;
 import com.bestvike.linq.exception.Errors;
 
 import java.util.Comparator;

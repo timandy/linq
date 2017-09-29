@@ -1,4 +1,6 @@
-package com.bestvike.linq;
+package com.bestvike.collections;
+
+import com.bestvike.collections.generic.IEqualityComparer;
 
 /**
  * Created by 许崇雷 on 2017/7/23.

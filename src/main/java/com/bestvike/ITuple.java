@@ -1,4 +1,4 @@
-package com.bestvike.tuple;
+package com.bestvike;
 
 /**
  * Created by 许崇雷 on 2017/7/23.

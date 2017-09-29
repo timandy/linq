@@ -1,4 +1,4 @@
-package com.bestvike.linq;
+package com.bestvike.collections;
 
 import java.util.Comparator;
 
