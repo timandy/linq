@@ -1,4 +1,4 @@
-package com.bestvike.tuple;
+package com.bestvike;
 
 import org.junit.Assert;
 import org.junit.Test;
