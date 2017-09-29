@@ -1,4 +1,4 @@
-package com.bestvike.linq.util;
+package com.bestvike.collections.generic;
 
 import com.bestvike.linq.exception.Errors;
 

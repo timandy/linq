@@ -1,6 +1,4 @@
-package com.bestvike.linq.util;
-
-import com.bestvike.linq.IEqualityComparer;
+package com.bestvike.collections.generic;
 
 import java.util.Objects;
 
