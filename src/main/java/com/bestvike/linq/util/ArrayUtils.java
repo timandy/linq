@@ -13,6 +13,10 @@ public final class ArrayUtils {
     private ArrayUtils() {
     }
 
+    public static <T> T[] empty(Class<T> clazz) {
+        return newInstance(clazz, 0);
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> T[] newInstance(Class<T> clazz, int length) {
         return (T[]) java.lang.reflect.Array.newInstance(clazz, length);
