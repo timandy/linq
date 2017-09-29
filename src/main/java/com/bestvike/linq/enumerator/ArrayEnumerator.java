@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerator;
 
-import com.bestvike.linq.util.Array;
+import com.bestvike.collections.generic.Array;
 
 /**
  * Created by 许崇雷 on 2017/7/13.
