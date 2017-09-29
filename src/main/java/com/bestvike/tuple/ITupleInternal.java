@@ -1,6 +1,6 @@
-package com.bestvike.linq.tuple;
+package com.bestvike.tuple;
 
-import com.bestvike.linq.IEqualityComparer;
+import com.bestvike.collections.generic.IEqualityComparer;
 
 /**
  * Created by 许崇雷 on 2017-09-05.
