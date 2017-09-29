@@ -11,10 +11,10 @@ import java.util.List;
  */
 @SuppressWarnings("Duplicates")
 public final class Array<T> implements Cloneable {
-    private Object[] _elements;
+    private Object[] elements;
 
     private Array(Object[] elements) {
-        this._elements = elements;
+        this.elements = elements;
     }
 
     //region static
@@ -107,15 +107,15 @@ public final class Array<T> implements Cloneable {
     }
 
     public static <T> void copy(Array<T> src, int srcPos, Array<T> dest, int destPos, int length) {
-        System.arraycopy(src._elements, srcPos, dest._elements, destPos, length);
+        System.arraycopy(src.elements, srcPos, dest.elements, destPos, length);
     }
 
     public static <T> void copy(Object[] src, int srcPos, Array<T> dest, int destPos, int length) {
-        System.arraycopy(src, srcPos, dest._elements, destPos, length);
+        System.arraycopy(src, srcPos, dest.elements, destPos, length);
     }
 
     public static <T> void copy(Array<T> src, int srcPos, Object[] dest, int destPos, int length) {
-        System.arraycopy(src._elements, srcPos, dest, destPos, length);
+        System.arraycopy(src.elements, srcPos, dest, destPos, length);
     }
 
     public static <T> void copy(Collection<T> src, Array<T> dest) {
@@ -127,46 +127,46 @@ public final class Array<T> implements Cloneable {
     //endregion
 
     public int length() {
-        return this._elements.length;
+        return this.elements.length;
     }
 
     @SuppressWarnings("unchecked")
     public T get(int index) {
-        return (T) this._elements[index];
+        return (T) this.elements[index];
     }
 
     public void set(int index, T item) {
-        this._elements[index] = item;
+        this.elements[index] = item;
     }
 
     public void resize(int newSize) {
         if (newSize < 0)
             throw Errors.argumentOutOfRange("newSize");
-        if (this._elements.length == newSize)
+        if (this.elements.length == newSize)
             return;
         Object[] newArray = new Object[newSize];
-        System.arraycopy(this._elements, 0, newArray, 0, this._elements.length > newSize ? newSize : this._elements.length);
-        this._elements = newArray;
+        System.arraycopy(this.elements, 0, newArray, 0, this.elements.length > newSize ? newSize : this.elements.length);
+        this.elements = newArray;
     }
 
     public boolean contains(T value) {
-        return ArrayUtils.contains(this._elements, value);
+        return ArrayUtils.contains(this.elements, value);
     }
 
     public boolean contains(T value, int startIndex, int count) {
-        return ArrayUtils.contains(this._elements, value, startIndex, count);
+        return ArrayUtils.contains(this.elements, value, startIndex, count);
     }
 
     public T[] toArray(Class<T> clazz) {
-        return ArrayUtils.toArray(this._elements, clazz);
+        return ArrayUtils.toArray(this.elements, clazz);
     }
 
     public List<T> toList() {
-        return ArrayUtils.toList(this._elements);
+        return ArrayUtils.toList(this.elements);
     }
 
     @Override
     public Array<T> clone() {
-        return new Array<>(this._elements.clone());
+        return new Array<>(this.elements.clone());
     }
 }
