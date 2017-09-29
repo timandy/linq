@@ -1,9 +1,9 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IListEnumerable;
 import com.bestvike.linq.enumerator.ArrayEnumerator;
-import com.bestvike.linq.util.Array;
 
 import java.util.List;
 

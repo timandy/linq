@@ -1,11 +1,11 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IListEnumerable;
 import com.bestvike.linq.enumerator.EmptyEnumerator;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.util.Array;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public final class EmptyEnumerable<TElement> implements IListEnumerable<TElement
 
     @Override
     public Array<TElement> internalToArray() {
-        return Array.create(0);
+        return Array.empty();
     }
 
     @Override
