@@ -51,7 +51,7 @@ public final class Comparer<T> implements Comparator<T> {
             if (y instanceof String)
                 sy = (String) y;
             if (sx != null && sy != null)
-                this.collator.compare(sx, sy);
+                return this.collator.compare(sx, sy);
         }
         if (x instanceof Comparable)
             return ((Comparable) x).compareTo(y);
