@@ -21,11 +21,11 @@ public final class ArrayBuilder<T> {//struct
             this.array = Array.create(capacity);
     }
 
-    public int capacity() {
+    public int getCapacity() {
         return this.array == null ? 0 : this.array.length();
     }
 
-    public int count() {
+    public int getCount() {
         return this.count;
     }
 
@@ -40,7 +40,7 @@ public final class ArrayBuilder<T> {//struct
     }
 
     public void add(T item) {
-        if (this.count == this.capacity())
+        if (this.count == this.getCapacity())
             this.ensureCapacity(this.count + 1);
         this.uncheckedAdd(item);
     }
@@ -55,32 +55,9 @@ public final class ArrayBuilder<T> {//struct
         return this.array.get(this.count - 1);
     }
 
-    public T[] toArray(Class<T> clazz) {
-        if (this.count == 0)
-            return ArrayUtils.empty(clazz);
-
-        assert this.array != null; // Nonzero count should imply this
-        T[] result;
-        if (this.count < this.array.length()) {
-            // Avoid a bit of overhead (method call, some branches, extra codegen)
-            // which would be incurred by using Array.Resize
-            result = ArrayUtils.newInstance(clazz, this.count);
-            Array.copy(this.array, 0, result, 0, this.count);
-        } else {
-            result = this.array.toArray(clazz);
-        }
-//#if DEBUG
-//        // Try to prevent callers from using the ArrayBuilder after toArray, if count != 0.
-//        count = -1;
-//        array = null;
-//#endif
-        return result;
-    }
-
     public Array<T> toArray() {
         if (this.count == 0)
             return Array.empty();
-
         assert this.array != null; // Nonzero count should imply this
         Array<T> result = this.array;
         if (this.count < this.array.length()) {
@@ -97,14 +74,35 @@ public final class ArrayBuilder<T> {//struct
         return result;
     }
 
+    public T[] toArray(Class<T> clazz) {
+        if (this.count == 0)
+            return ArrayUtils.empty(clazz);
+        assert this.array != null; // Nonzero count should imply this
+        T[] result;
+        if (this.count < this.array.length()) {
+            // Avoid a bit of overhead (method call, some branches, extra codegen)
+            // which would be incurred by using Array.Resize
+            result = ArrayUtils.newInstance(clazz, this.count);
+            Array.copy(this.array, 0, result, 0, this.count);
+        } else {
+            result = this.array._toArray(clazz);
+        }
+//#if DEBUG
+//        // Try to prevent callers from using the ArrayBuilder after toArray, if count != 0.
+//        count = -1;
+//        array = null;
+//#endif
+        return result;
+    }
+
     public void uncheckedAdd(T item) {
-        assert this.count < this.capacity();
+        assert this.count < this.getCapacity();
         this.array.set(this.count++, item);
     }
 
     private void ensureCapacity(int minimum) {
-        assert minimum > this.capacity();
-        int capacity = this.capacity();
+        assert minimum > this.getCapacity();
+        int capacity = this.getCapacity();
         int nextCapacity = capacity == 0 ? DefaultCapacity : 2 * capacity;
         if (nextCapacity > MaxCoreClrArrayLength)
             nextCapacity = Math.max(capacity + 1, MaxCoreClrArrayLength);

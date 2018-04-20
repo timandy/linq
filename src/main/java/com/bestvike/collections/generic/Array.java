@@ -10,7 +10,7 @@ import java.util.List;
  * Created by 许崇雷 on 2017/7/19.
  */
 @SuppressWarnings("Duplicates")
-public final class Array<T> implements Cloneable {
+public final class Array<T> implements ICollection<T>, Cloneable {
     private Object[] elements;
 
     private Array(Object[] elements) {
@@ -21,6 +21,11 @@ public final class Array<T> implements Cloneable {
 
     public static <T> Array<T> empty() {
         Object[] objects = new Object[0];
+        return new Array<>(objects);
+    }
+
+    public static <T> Array<T> singleton(T element) {
+        Object[] objects = new Object[]{element};
         return new Array<>(objects);
     }
 
@@ -142,27 +147,44 @@ public final class Array<T> implements Cloneable {
     public void resize(int newSize) {
         if (newSize < 0)
             throw Errors.argumentOutOfRange("newSize");
-        if (this.elements.length == newSize)
+        if (this.length() == newSize)
             return;
         Object[] newArray = new Object[newSize];
-        System.arraycopy(this.elements, 0, newArray, 0, this.elements.length > newSize ? newSize : this.elements.length);
+        System.arraycopy(this.elements, 0, newArray, 0, this.length() > newSize ? newSize : this.length());
         this.elements = newArray;
     }
 
-    public boolean contains(T value) {
-        return ArrayUtils.contains(this.elements, value);
+    public void fill(T value) {
+        for (int i = 0, length = this.length(); i < length; i++)
+            this.elements[i] = value;
     }
 
-    public boolean contains(T value, int startIndex, int count) {
-        return ArrayUtils.contains(this.elements, value, startIndex, count);
-    }
-
-    public T[] toArray(Class<T> clazz) {
+    public T[] _toArray(Class<T> clazz) {
         return ArrayUtils.toArray(this.elements, clazz);
     }
 
-    public List<T> toList() {
+    public List<T> _toList() {
         return ArrayUtils.toList(this.elements);
+    }
+
+    @Override
+    public int _getCount() {
+        return this.length();
+    }
+
+    @Override
+    public boolean _contains(T value) {
+        return ArrayUtils.contains(this.elements, value);
+    }
+
+    @Override
+    public void _copyTo(T[] array, int arrayIndex) {
+        copy(this, 0, array, arrayIndex, this.length());
+    }
+
+    @Override
+    public void _copyTo(Array<T> array, int arrayIndex) {
+        copy(this, 0, array, arrayIndex, this.length());
     }
 
     @Override

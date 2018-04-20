@@ -1,9 +1,11 @@
 package com.bestvike.collections.generic;
 
-import com.bestvike.Tuple;
-import com.bestvike.Tuple2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
+import com.bestvike.out;
+import com.bestvike.ref;
+
+import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2017-09-11.
@@ -19,21 +21,37 @@ final class CopyPosition {//struct
         this.column = column;
     }
 
-    public int row() {
+    public static CopyPosition start() {
+        return new CopyPosition(0, 0);
+    }
+
+    public int getRow() {
         return this.row;
     }
 
-    public int column() {
+    public int getColumn() {
         return this.column;
-    }
-
-    public static CopyPosition start() {
-        return new CopyPosition(0, 0);
     }
 
     public CopyPosition normalize(int endColumn) {
         assert this.column <= endColumn;
         return this.column == endColumn ? new CopyPosition(this.row + 1, 0) : this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        CopyPosition that = (CopyPosition) obj;
+        return Objects.equals(this.row, that.row)
+                && Objects.equals(this.column, that.column);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + this.row;
+        result = prime * result + this.column;
+        return result;
     }
 
     @Override
@@ -54,7 +72,7 @@ final class LargeArrayBuilder<T> {//struct
     private ArrayBuilder<Array<T>> buffers = new ArrayBuilder<>();      // After ResizeLimit * 2, we store previous buffers we've filled out here.
     private Array<T> current;                                           // Current buffer we're reading into. If count <= ResizeLimit, this is first.
     private int index;                                                  // Index into the current buffer.
-    private int count;                                                  // size of all of the items in this builder.
+    private int count;                                                  // count of all of the items in this builder.
 
     public LargeArrayBuilder() {
         this(Integer.MAX_VALUE);
@@ -66,48 +84,60 @@ final class LargeArrayBuilder<T> {//struct
         this.maxCapacity = maxCapacity;
     }
 
-    public int count() {
+    public int getCount() {
         return this.count;
     }
 
     public void add(T item) {
         assert this.maxCapacity > this.count;
-        if (this.index == this.current.length())
-            this.allocateBuffer();
-        this.current.set(this.index++, item);
+        if (this.index >= this.current.length())
+            this.addWithBufferAllocation(item);
+        else
+            this.current.set(this.index++, item);
         this.count++;
+    }
+
+    private void addWithBufferAllocation(T item) {
+        this.allocateBuffer();
+        this.current.set(this.index++, item);
     }
 
     public void addRange(IEnumerable<T> items) {
         assert items != null;
         try (IEnumerator<T> enumerator = items.enumerator()) {
-            Array<T> destination = this.current;
-            int index = this.index;
+            ref<Array<T>> destination = ref.init(this.current);
+            ref<Integer> index = ref.init(this.index);
 
             // Continuously read in items from the enumerator, updating count
             // and index when we run out of space.
             while (enumerator.moveNext()) {
-                if (index == destination.length()) {
-                    // No more space in this buffer. Resize.
-                    this.count += index - this.index;
-                    this.index = index;
-                    this.allocateBuffer();
-                    destination = this.current;
-                    index = this.index; // May have been reset to 0
-                }
-                destination.set(index++, enumerator.current());
+                T item = enumerator.current();
+                if (index.getValue() >= destination.getValue().length())
+                    this.addWithBufferAllocation(item, destination, index);
+                else
+                    destination.getValue().set(index.getValue(), item);
+                index.setValue(index.getValue() + 1);
             }
 
             // Final update to count and index.
-            this.count += index - this.index;
-            this.index = index;
+            this.count += index.getValue() - this.index;
+            this.index = index.getValue();
         }
+    }
+
+    private void addWithBufferAllocation(T item, ref<Array<T>> destination, ref<Integer> index) {
+        this.count += index.getValue() - this.index;
+        this.index = index.getValue();
+        this.allocateBuffer();
+        destination.setValue(this.current);
+        index.setValue(this.index);
+        this.current.set(index.getValue(), item);
     }
 
     public void copyTo(Array<T> array, int arrayIndex, int count) {
         assert array != null;
         assert arrayIndex >= 0;
-        assert count >= 0 && count <= this.count();
+        assert count >= 0 && count <= this.getCount();
         assert array.length() - arrayIndex >= count;
 
         for (int i = 0; count > 0; i++) {
@@ -124,11 +154,11 @@ final class LargeArrayBuilder<T> {//struct
         }
     }
 
-    public CopyPosition copyTo(CopyPosition position, T[] array, int arrayIndex, int count) {
+    public CopyPosition copyTo(CopyPosition position, Array<T> array, int arrayIndex, int count) {
         assert array != null;
         assert arrayIndex >= 0;
-        assert count > 0 && count <= this.count();
-        assert array.length - arrayIndex >= count;
+        assert count > 0 && count <= this.getCount();
+        assert array.length() - arrayIndex >= count;
 
         // Go through each buffer, which contains one 'row' of items.
         // The index in each buffer is referred to as the 'column'.
@@ -140,39 +170,39 @@ final class LargeArrayBuilder<T> {//struct
          * R1: [32] [33] [34] .. [63]
          * R2: [64] [65] [66] .. [95] .. [127]
          */
-        int row = position.row();
-        int column = position.column();
-
+        int row = position.getRow();
+        int column = position.getColumn();
+        ref<Integer> arrayIndexRef = ref.init(arrayIndex);
+        ref<Integer> countRef = ref.init(count);
         Array<T> buffer = this.getBuffer(row);
-        int copied = this.copyToCore(buffer, column, array, arrayIndex, count);
-        arrayIndex += copied;
-        count -= copied;
-        if (count == 0)
+
+        int copied = this.copyToCore(buffer, column, array, arrayIndexRef, countRef);
+        if (countRef.getValue() == 0)
             return new CopyPosition(row, column + copied).normalize(buffer.length());
 
         do {
             buffer = this.getBuffer(++row);
-            copied = this.copyToCore(buffer, 0, array, arrayIndex, count);
-            arrayIndex += copied;
-            count -= copied;
-        } while (count > 0);
+            copied = this.copyToCore(buffer, 0, array, arrayIndexRef, countRef);
+        } while (countRef.getValue() > 0);
 
         return new CopyPosition(row, copied).normalize(buffer.length());
     }
 
-    private int copyToCore(Array<T> sourceBuffer, int sourceIndex, T[] array, int arrayIndex, int count) {
+    private int copyToCore(Array<T> sourceBuffer, int sourceIndex, Array<T> array, ref<Integer> arrayIndex, ref<Integer> count) {
         assert sourceBuffer.length() > sourceIndex;
         // Copy until we satisfy `count` or reach the end of the current buffer.
-        int copyCount = Math.min(sourceBuffer.length() - sourceIndex, count);
-        Array.copy(sourceBuffer, sourceIndex, array, arrayIndex, copyCount);
+        int copyCount = Math.min(sourceBuffer.length() - sourceIndex, count.getValue());
+        Array.copy(sourceBuffer, sourceIndex, array, arrayIndex.getValue(), copyCount);
+        arrayIndex.setValue(arrayIndex.getValue() + copyCount);
+        count.setValue(count.getValue() - copyCount);
         return copyCount;
     }
 
     public Array<T> getBuffer(int index) {
-        assert index >= 0 && index < this.buffers.count() + 2;
+        assert index >= 0 && index < this.buffers.getCount() + 2;
 
         return index == 0 ? this.first :
-                index <= this.buffers.count() ? this.buffers.get(index - 1) :
+                index <= this.buffers.getCount() ? this.buffers.get(index - 1) :
                         this.current;
     }
 
@@ -181,19 +211,18 @@ final class LargeArrayBuilder<T> {//struct
     }
 
     public Array<T> toArray() {
-        Tuple2<Boolean, Array<T>> move = this.tryMove();
-        if (move.getItem1()) {
-            // No resizing to do.
-            return move.getItem2();
-        }
+        out<Array<T>> arrayOut = out.init();
+        if (this.tryMove(arrayOut))
+            return arrayOut.getValue();
 
         Array<T> array = Array.create(this.count);
         this.copyTo(array, 0, this.count);
         return array;
     }
 
-    public Tuple2<Boolean, Array<T>> tryMove() {
-        return Tuple.create(this.count == this.first.length(), this.first);
+    public boolean tryMove(out<Array<T>> array) {
+        array.setValue(this.first);
+        return this.count == this.first.length();
     }
 
     private void allocateBuffer() {

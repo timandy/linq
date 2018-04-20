@@ -2,7 +2,6 @@ package com.bestvike.collections.generic;
 
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.enumerator.ArrayEnumerator;
-import com.bestvike.linq.util.ArrayUtils;
 
 /**
  * Created by 许崇雷 on 2017-09-11.
@@ -53,20 +52,6 @@ public final class SingleLinkedNode<TSource> {
 
         assert node != null;
         return node;
-    }
-
-    private TSource[] toArray(Class<TSource> clazz, int count) {
-        assert count == this.getCount();
-
-        TSource[] array = ArrayUtils.newInstance(clazz, count);
-        int index = count;
-        for (SingleLinkedNode<TSource> node = this; node != null; node = node.linked) {
-            --index;
-            array[index] = node.item;
-        }
-
-        assert index == 0;
-        return array;
     }
 
     private Array<TSource> toArray(int count) {
