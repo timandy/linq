@@ -1,4 +1,4 @@
-package com.bestvike;
+package com.bestvike.tuple;
 
 import com.bestvike.collections.generic.IEqualityComparer;
 
