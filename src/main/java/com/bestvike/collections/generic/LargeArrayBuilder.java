@@ -105,23 +105,23 @@ final class LargeArrayBuilder<T> {//struct
     public void addRange(IEnumerable<T> items) {
         assert items != null;
         try (IEnumerator<T> enumerator = items.enumerator()) {
-            ref<Array<T>> destination = ref.init(this.current);
-            ref<Integer> index = ref.init(this.index);
+            ref<Array<T>> destinationRef = ref.init(this.current);
+            ref<Integer> indexRef = ref.init(this.index);
 
             // Continuously read in items from the enumerator, updating count
             // and index when we run out of space.
             while (enumerator.moveNext()) {
                 T item = enumerator.current();
-                if (index.getValue() >= destination.getValue().length())
-                    this.addWithBufferAllocation(item, destination, index);
+                if (indexRef.getValue() >= destinationRef.getValue().length())
+                    this.addWithBufferAllocation(item, destinationRef, indexRef);
                 else
-                    destination.getValue().set(index.getValue(), item);
-                index.setValue(index.getValue() + 1);
+                    destinationRef.getValue().set(indexRef.getValue(), item);
+                indexRef.setValue(indexRef.getValue() + 1);
             }
 
             // Final update to count and index.
-            this.count += index.getValue() - this.index;
-            this.index = index.getValue();
+            this.count += indexRef.getValue() - this.index;
+            this.index = indexRef.getValue();
         }
     }
 
@@ -211,9 +211,9 @@ final class LargeArrayBuilder<T> {//struct
     }
 
     public Array<T> toArray() {
-        out<Array<T>> arrayOut = out.init();
-        if (this.tryMove(arrayOut))
-            return arrayOut.getValue();
+        out<Array<T>> arrayRef = out.init();
+        if (this.tryMove(arrayRef))
+            return arrayRef.getValue();
 
         Array<T> array = Array.create(this.count);
         this.copyTo(array, 0, this.count);
