@@ -2,7 +2,7 @@ package com.bestvike.collections.generic;
 
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.partition.IIListProvider;
+import com.bestvike.linq.impl.partition.IIListProvider;
 import com.bestvike.out;
 
 /**
