@@ -1,4 +1,4 @@
-package com.bestvike.linq.function;
+package com.bestvike.function;
 
 /**
  * Created by 许崇雷 on 2017/7/10.
