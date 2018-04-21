@@ -7,7 +7,7 @@ import java.util.Comparator;
 /**
  * Created by 许崇雷 on 2018-04-18.
  */
-public class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TElement, TKey> {
+public final class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TElement, TKey> {
     private final AbstractCachingComparer<TElement> child;
 
     public CachingComparerWithChild(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractCachingComparer<TElement> child) {
