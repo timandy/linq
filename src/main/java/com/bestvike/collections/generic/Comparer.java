@@ -34,6 +34,12 @@ public final class Comparer<T> implements Comparator<T> {
         return new Comparer<>(Collator.getInstance(Locale.CHINA));
     }
 
+    public static <T> Comparator<T> Create(Comparison<T> comparison) {
+        if (comparison == null)
+            throw Errors.argumentNull("comparison");
+        return new ComparisonComparer<>(comparison);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public int compare(T x, T y) {
