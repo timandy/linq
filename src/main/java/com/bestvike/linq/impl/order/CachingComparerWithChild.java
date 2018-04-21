@@ -1,6 +1,6 @@
 package com.bestvike.linq.impl.order;
 
-import com.bestvike.linq.function.Func1;
+import com.bestvike.function.Func1;
 
 import java.util.Comparator;
 
