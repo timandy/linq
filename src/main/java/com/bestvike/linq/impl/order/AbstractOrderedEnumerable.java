@@ -53,11 +53,11 @@ public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnu
         return new OrderedEnumerable<>(this.source, keySelector, comparer, descending, this);
     }
 
-    protected IEnumerator<TElement> enumerator(int minIdx, int maxIdx) {
+    public IEnumerator<TElement> enumerator(int minIdx, int maxIdx) {
         return new OrderedEnumerableRangeEnumerator(minIdx, maxIdx);
     }
 
-    protected int _getCount(int minIdx, int maxIdx, boolean onlyIfCheap) {
+    public int _getCount(int minIdx, int maxIdx, boolean onlyIfCheap) {
         int count = this._getCount(onlyIfCheap);
         if (count <= 0)
             return count;
@@ -68,7 +68,31 @@ public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnu
         return (count <= maxIdx ? count : maxIdx + 1) - minIdx;
     }
 
-    protected Array<TElement> _toArray(int minIdx, int maxIdx) {
+    public TElement[] _toArray(int minIdx, int maxIdx, Class<TElement> clazz) {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.getCount();
+        if (count <= minIdx)
+            return ArrayUtils.empty(clazz);
+
+        if (count <= maxIdx)
+            maxIdx = count - 1;
+
+        if (minIdx == maxIdx)
+            return ArrayUtils.singleton(clazz, this.getEnumerableSorter().elementAt(buffer.getItems(), count, minIdx));
+
+        Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
+        TElement[] array = ArrayUtils.newInstance(clazz, maxIdx - minIdx + 1);
+        int idx = 0;
+        while (minIdx <= maxIdx) {
+            array[idx] = buffer.getItems().get(map[minIdx]);
+            ++idx;
+            ++minIdx;
+        }
+
+        return array;
+    }
+
+    public Array<TElement> _toArray(int minIdx, int maxIdx) {
         Buffer<TElement> buffer = new Buffer<>(this.source);
         int count = buffer.getCount();
         if (count <= minIdx)
@@ -92,7 +116,7 @@ public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnu
         return array;
     }
 
-    protected List<TElement> _toList(int minIdx, int maxIdx) {
+    public List<TElement> _toList(int minIdx, int maxIdx) {
         Buffer<TElement> buffer = new Buffer<>(this.source);
         int count = buffer.getCount();
         if (count <= minIdx) {
