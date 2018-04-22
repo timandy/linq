@@ -2,6 +2,7 @@ package com.bestvike.collections.generic;
 
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 import com.bestvike.ref;
 
@@ -63,7 +64,7 @@ final class CopyPosition {//struct
 /**
  * Created by 许崇雷 on 2017-09-11.
  */
-final class LargeArrayBuilder<T> {//struct
+public final class LargeArrayBuilder<T> {//struct
     private static final int StartingCapacity = 4;
     private static final int ResizeLimit = 8;
 
@@ -132,6 +133,26 @@ final class LargeArrayBuilder<T> {//struct
         destination.setValue(this.current);
         index.setValue(this.index);
         this.current.set(index.getValue(), item);
+    }
+
+    public void copyTo(T[] array, int arrayIndex, int count) {
+        assert array != null;
+        assert arrayIndex >= 0;
+        assert count >= 0 && count <= this.getCount();
+        assert array.length - arrayIndex >= count;
+
+        for (int i = 0; count > 0; i++) {
+            // Find the buffer we're copying from.
+            Array<T> buffer = this.getBuffer(i);
+
+            // Copy until we satisfy count, or we reach the end of the buffer.
+            int toCopy = Math.min(count, buffer.length());
+            Array.copy(buffer, 0, array, arrayIndex, toCopy);
+
+            // Increment variables to that position.
+            count -= toCopy;
+            arrayIndex += toCopy;
+        }
     }
 
     public void copyTo(Array<T> array, int arrayIndex, int count) {
@@ -210,6 +231,16 @@ final class LargeArrayBuilder<T> {//struct
         this.add(item);
     }
 
+    public T[] toArray(Class<T> clazz) {
+        out<T[]> arrayRef = out.init();
+        if (this.tryMove(arrayRef, clazz))
+            return arrayRef.getValue();
+
+        T[] array = ArrayUtils.newInstance(clazz, this.count);
+        this.copyTo(array, 0, this.count);
+        return array;
+    }
+
     public Array<T> toArray() {
         out<Array<T>> arrayRef = out.init();
         if (this.tryMove(arrayRef))
@@ -218,6 +249,11 @@ final class LargeArrayBuilder<T> {//struct
         Array<T> array = Array.create(this.count);
         this.copyTo(array, 0, this.count);
         return array;
+    }
+
+    public boolean tryMove(out<T[]> array, Class<T> clazz) {
+        array.setValue(this.first._toArray(clazz));
+        return this.count == this.first.length();
     }
 
     public boolean tryMove(out<Array<T>> array) {
