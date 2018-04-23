@@ -1,12 +1,14 @@
-package com.bestvike.linq;
+package com.bestvike.linq.iterator;
 
+import com.bestvike.function.Func1;
+import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.function.Func1;
 
 /**
  * Created by 许崇雷 on 2017-09-11.
  */
-final class AnyAll {
+public final class AnyAll {
     private AnyAll() {
     }
 
