@@ -1,13 +1,15 @@
-package com.bestvike.linq;
+package com.bestvike.linq.iterator;
 
+import com.bestvike.function.Func1;
+import com.bestvike.function.Func2;
+import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.function.Func1;
-import com.bestvike.linq.function.Func2;
 
 /**
  * Created by 许崇雷 on 2017-09-11.
  */
-final class Aggregate {
+public final class Aggregate {
     private Aggregate() {
     }
 
@@ -16,12 +18,15 @@ final class Aggregate {
             throw Errors.argumentNull("source");
         if (func == null)
             throw Errors.argumentNull("func");
+
         try (IEnumerator<TSource> e = source.enumerator()) {
             if (!e.moveNext())
                 throw Errors.noElements();
+
             TSource result = e.current();
             while (e.moveNext())
                 result = func.apply(result, e.current());
+
             return result;
         }
     }
@@ -31,9 +36,11 @@ final class Aggregate {
             throw Errors.argumentNull("source");
         if (func == null)
             throw Errors.argumentNull("func");
+
         TAccumulate result = seed;
         for (TSource element : source)
             result = func.apply(result, element);
+
         return result;
     }
 
@@ -44,9 +51,11 @@ final class Aggregate {
             throw Errors.argumentNull("func");
         if (resultSelector == null)
             throw Errors.argumentNull("resultSelector");
+
         TAccumulate result = seed;
         for (TSource element : source)
             result = func.apply(result, element);
+
         return resultSelector.apply(result);
     }
 }
