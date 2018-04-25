@@ -135,7 +135,7 @@ public final class LargeArrayBuilder<T> {//struct
         this.current.set(index.getValue(), item);
     }
 
-    public void copyTo(T[] array, int arrayIndex, int count) {
+    private void copyTo(T[] array, int arrayIndex, int count) {
         assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0 && count <= this.getCount();
@@ -155,7 +155,7 @@ public final class LargeArrayBuilder<T> {//struct
         }
     }
 
-    public void copyTo(Array<T> array, int arrayIndex, int count) {
+    private void copyTo(Array<T> array, int arrayIndex, int count) {
         assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0 && count <= this.getCount();
@@ -173,6 +173,40 @@ public final class LargeArrayBuilder<T> {//struct
             count -= toCopy;
             arrayIndex += toCopy;
         }
+    }
+
+    public CopyPosition copyTo(CopyPosition position, T[] array, int arrayIndex, int count) {
+        assert array != null;
+        assert arrayIndex >= 0;
+        assert count > 0 && count <= this.getCount();
+        assert array.length - arrayIndex >= count;
+
+        // Go through each buffer, which contains one 'row' of items.
+        // The index in each buffer is referred to as the 'column'.
+        /*
+         * Visual representation:
+         *
+         *       C0   C1   C2 ..  C31 ..   C63
+         * R0:  [0]  [1]  [2] .. [31]
+         * R1: [32] [33] [34] .. [63]
+         * R2: [64] [65] [66] .. [95] .. [127]
+         */
+        int row = position.getRow();
+        int column = position.getColumn();
+        ref<Integer> arrayIndexRef = ref.init(arrayIndex);
+        ref<Integer> countRef = ref.init(count);
+        Array<T> buffer = this.getBuffer(row);
+
+        int copied = this.copyToCore(buffer, column, array, arrayIndexRef, countRef);
+        if (countRef.getValue() == 0)
+            return new CopyPosition(row, column + copied).normalize(buffer.length());
+
+        do {
+            buffer = this.getBuffer(++row);
+            copied = this.copyToCore(buffer, 0, array, arrayIndexRef, countRef);
+        } while (countRef.getValue() > 0);
+
+        return new CopyPosition(row, copied).normalize(buffer.length());
     }
 
     public CopyPosition copyTo(CopyPosition position, Array<T> array, int arrayIndex, int count) {
@@ -209,6 +243,16 @@ public final class LargeArrayBuilder<T> {//struct
         return new CopyPosition(row, copied).normalize(buffer.length());
     }
 
+    private int copyToCore(Array<T> sourceBuffer, int sourceIndex, T[] array, ref<Integer> arrayIndex, ref<Integer> count) {
+        assert sourceBuffer.length() > sourceIndex;
+        // Copy until we satisfy `count` or reach the end of the current buffer.
+        int copyCount = Math.min(sourceBuffer.length() - sourceIndex, count.getValue());
+        Array.copy(sourceBuffer, sourceIndex, array, arrayIndex.getValue(), copyCount);
+        arrayIndex.setValue(arrayIndex.getValue() + copyCount);
+        count.setValue(count.getValue() - copyCount);
+        return copyCount;
+    }
+
     private int copyToCore(Array<T> sourceBuffer, int sourceIndex, Array<T> array, ref<Integer> arrayIndex, ref<Integer> count) {
         assert sourceBuffer.length() > sourceIndex;
         // Copy until we satisfy `count` or reach the end of the current buffer.
@@ -219,7 +263,7 @@ public final class LargeArrayBuilder<T> {//struct
         return copyCount;
     }
 
-    public Array<T> getBuffer(int index) {
+    private Array<T> getBuffer(int index) {
         assert index >= 0 && index < this.buffers.getCount() + 2;
 
         return index == 0 ? this.first :
@@ -233,7 +277,7 @@ public final class LargeArrayBuilder<T> {//struct
 
     public T[] toArray(Class<T> clazz) {
         out<T[]> arrayRef = out.init();
-        if (this.tryMove(arrayRef, clazz))
+        if (this.tryMove(clazz, arrayRef))
             return arrayRef.getValue();
 
         T[] array = ArrayUtils.newInstance(clazz, this.count);
@@ -251,7 +295,7 @@ public final class LargeArrayBuilder<T> {//struct
         return array;
     }
 
-    public boolean tryMove(out<T[]> array, Class<T> clazz) {
+    public boolean tryMove(Class<T> clazz, out<T[]> array) {
         array.setValue(this.first._toArray(clazz));
         return this.count == this.first.length();
     }

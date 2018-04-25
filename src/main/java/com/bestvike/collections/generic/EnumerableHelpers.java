@@ -28,6 +28,23 @@ public final class EnumerableHelpers {
     }
 
     //Copies items from an enumerable to an array.
+    public static <T> void copy(IEnumerable<T> source, T[] array, int arrayIndex, int count) {
+        assert source != null;
+        assert array != null;
+        assert arrayIndex >= 0;
+        assert count >= 0;
+        assert array.length - arrayIndex >= count;
+
+        if (source instanceof ICollection) {
+            ICollection<T> collection = (ICollection<T>) source;
+            assert collection._getCount() == count;
+            collection._copyTo(array, arrayIndex);
+            return;
+        }
+        iterativeCopy(source, array, arrayIndex, count);
+    }
+
+    //Copies items from an enumerable to an array.
     public static <T> void copy(IEnumerable<T> source, Array<T> array, int arrayIndex, int count) {
         assert source != null;
         assert array != null;
@@ -42,6 +59,21 @@ public final class EnumerableHelpers {
             return;
         }
         iterativeCopy(source, array, arrayIndex, count);
+    }
+
+    //Copies items from a non-collection enumerable to an array.
+    public static <T> void iterativeCopy(IEnumerable<T> source, T[] array, int arrayIndex, int count) {
+        assert source != null && !(source instanceof ICollection);
+        assert array != null;
+        assert arrayIndex >= 0;
+        assert count >= 0;
+        assert array.length - arrayIndex >= count;
+
+        int endIndex = arrayIndex + count;
+        for (T item : source)
+            array[arrayIndex++] = item;
+
+        assert arrayIndex == endIndex;
     }
 
     //Copies items from a non-collection enumerable to an array.

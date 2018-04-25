@@ -1,6 +1,7 @@
 package com.bestvike.collections.generic;
 
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 
 /**
@@ -33,7 +34,7 @@ final class Marker {//struct
 }
 
 
-final class SparseArrayBuilder<T> {//struct
+public final class SparseArrayBuilder<T> {//struct
     private LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
     private ArrayBuilder<Marker> markers = new ArrayBuilder<>();
     private int reservedCount;
@@ -58,6 +59,46 @@ final class SparseArrayBuilder<T> {//struct
         this.builder.addRange(items);
     }
 
+
+    public void copyTo(T[] array, int arrayIndex, int count) {
+        assert array != null;
+        assert arrayIndex >= 0;
+        assert count >= 0 && count <= this.getCount();
+        assert array.length - arrayIndex >= count;
+
+        int copied = 0;
+        CopyPosition position = CopyPosition.start();
+
+        for (int i = 0; i < this.markers.getCount(); i++) {
+            Marker marker = this.markers.get(i);
+
+            // During this iteration, copy until we satisfy `count` or reach the marker.
+            int toCopy = Math.min(marker.getIndex() - copied, count);
+
+            if (toCopy > 0) {
+                position = this.builder.copyTo(position, array, arrayIndex, toCopy);
+
+                arrayIndex += toCopy;
+                copied += toCopy;
+                count -= toCopy;
+            }
+
+            if (count == 0)
+                return;
+
+            // We hit our marker. Advance until we satisfy `count` or fulfill `marker.Count`.
+            int reservedCount = Math.min(marker.getCount(), count);
+
+            arrayIndex += reservedCount;
+            copied += reservedCount;
+            count -= reservedCount;
+        }
+
+        if (count > 0) {
+            // Finish copying after the final marker.
+            this.builder.copyTo(position, array, arrayIndex, count);
+        }
+    }
 
     public void copyTo(Array<T> array, int arrayIndex, int count) {
         assert array != null;
@@ -99,7 +140,6 @@ final class SparseArrayBuilder<T> {//struct
         }
     }
 
-
     // Reserves a region starting from the current index.
     public void reserve(int count) {
         assert count >= 0;
@@ -123,6 +163,20 @@ final class SparseArrayBuilder<T> {//struct
         return false;
     }
 
+
+    // Creates an array from the contents of this builder.
+    public T[] toArray(Class<T> clazz) {
+        // If no regions were reserved, there are no 'gaps' we need to add to the array.
+        // In that case, we can just call ToArray on the underlying builder.
+        if (this.markers.getCount() == 0) {
+            assert this.reservedCount == 0;
+            return this.builder.toArray(clazz);
+        }
+
+        T[] array = ArrayUtils.newInstance(clazz, this.getCount());
+        this.copyTo(array, 0, array.length);
+        return array;
+    }
 
     // Creates an array from the contents of this builder.
     public Array<T> toArray() {

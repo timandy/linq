@@ -39,7 +39,7 @@ public final class SingleLinkedNode<TSource> {
         return count;
     }
 
-    public IEnumerator<TSource> getEnumerator(int count) {
+    public IEnumerator<TSource> enumerator(int count) {
         return new ArrayEnumerator<>(this.toArray(count));
     }
 
