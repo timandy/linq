@@ -1,5 +1,6 @@
 package com.bestvike.linq.iterator;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.EnumerableHelpers;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.LargeArrayBuilder;
@@ -83,6 +84,8 @@ final class AppendPrepend {
 
         public abstract TSource[] _toArray(Class<TSource> clazz);
 
+        public abstract Array<TSource> _toArray();
+
         public abstract List<TSource> _toList();
 
         public abstract int _getCount(boolean onlyIfCheap);
@@ -151,6 +154,18 @@ final class AppendPrepend {
             return builder.toArray(clazz);
         }
 
+        private Array<TSource> lazyToArray() {
+            assert this._getCount(true) == -1;
+
+            LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
+            if (!this.appending)
+                builder.slowAdd(this.item);
+            builder.addRange(this.source);
+            if (this.appending)
+                builder.slowAdd(this.item);
+            return builder.toArray();
+        }
+
         @Override
         public TSource[] _toArray(Class<TSource> clazz) {
             int count = this._getCount(true);
@@ -173,6 +188,29 @@ final class AppendPrepend {
             return array;
         }
 
+        @Override
+        public Array<TSource> _toArray() {
+            int count = this._getCount(true);
+            if (count == -1)
+                return this.lazyToArray();
+
+            Array<TSource> array = Array.create(count);
+            int index;
+            if (this.appending) {
+                index = 0;
+            } else {
+                array.set(0, this.item);
+                index = 1;
+            }
+
+            EnumerableHelpers.copy(this.source, array, index, count - 1);
+            if (this.appending)
+                array.set(array.length() - 1, this.item);
+
+            return array;
+        }
+
+        @Override
         public List<TSource> _toList() {
             int count = this._getCount(true);
             List<TSource> list = count == -1 ? new ArrayList<>() : new ArrayList<>(count);
@@ -284,6 +322,30 @@ final class AppendPrepend {
             return array;
         }
 
+        private Array<TSource> lazyToArray() {
+            assert this._getCount(true) == -1;
+
+            SparseArrayBuilder<TSource> builder = new SparseArrayBuilder<>();
+            if (this.prepended != null)
+                builder.reserve(this.prependCount);
+
+            builder.addRange(this.source);
+            if (this.appended != null)
+                builder.reserve(this.appendCount);
+
+            Array<TSource> array = builder.toArray();
+            int index = 0;
+            for (SingleLinkedNode<TSource> node = this.prepended; node != null; node = node.getLinked())
+                array.set(index++, node.getItem());
+
+            index = array.length() - 1;
+            for (SingleLinkedNode<TSource> node = this.appended; node != null; node = node.getLinked())
+                array.set(index--, node.getItem());
+
+            return array;
+        }
+
+        @Override
         public TSource[] _toArray(Class<TSource> clazz) {
             int count = this._getCount(true);
             if (count == -1)
@@ -317,6 +379,41 @@ final class AppendPrepend {
             return array;
         }
 
+        @Override
+        public Array<TSource> _toArray() {
+            int count = this._getCount(true);
+            if (count == -1)
+                return this.lazyToArray();
+
+            Array<TSource> array = Array.create(count);
+            int index = 0;
+            for (SingleLinkedNode<TSource> node = this.prepended; node != null; node = node.getLinked()) {
+                array.set(index, node.getItem());
+                ++index;
+            }
+
+            if (this.source instanceof ICollection) {
+                ICollection<TSource> sourceCollection = (ICollection<TSource>) this.source;
+                sourceCollection._copyTo(array, index);
+            } else {
+                try (IEnumerator<TSource> e = this.source.enumerator()) {
+                    while (e.moveNext()) {
+                        array.set(index, e.current());
+                        ++index;
+                    }
+                }
+            }
+
+            index = array.length();
+            for (SingleLinkedNode<TSource> node = this.appended; node != null; node = node.getLinked()) {
+                --index;
+                array.set(index, node.getItem());
+            }
+
+            return array;
+        }
+
+        @Override
         public List<TSource> _toList() {
             int count = this._getCount(true);
             List<TSource> list = count == -1 ? new ArrayList<>() : new ArrayList<>(count);
