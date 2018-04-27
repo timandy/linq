@@ -1,4 +1,4 @@
-package com.bestvike.linq.impl.cache;
+package com.bestvike.linq.impl.collections;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.EnumerableHelpers;
