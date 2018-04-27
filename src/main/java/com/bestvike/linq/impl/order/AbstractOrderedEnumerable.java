@@ -7,10 +7,10 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IOrderedEnumerable;
 import com.bestvike.linq.enumerator.AbstractEnumerator;
-import com.bestvike.linq.impl.cache.Buffer;
+import com.bestvike.linq.impl.collections.Buffer;
 import com.bestvike.linq.impl.partition.IIListProvider;
 import com.bestvike.linq.impl.partition.IPartition;
-import com.bestvike.linq.iterator.Enumerable;
+import com.bestvike.linq.impl.partition.OrderedPartition;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 import com.bestvike.out;
@@ -209,7 +209,7 @@ public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnu
             IIListProvider<TElement> listProv = (IIListProvider<TElement>) this.source;
             return listProv._getCount(onlyIfCheap);
         }
-        return !onlyIfCheap || this.source instanceof ICollection ? Enumerable.count(this) : -1;
+        return !onlyIfCheap || this.source instanceof ICollection ? this.count() : -1;
     }
 
     @Override
@@ -255,12 +255,12 @@ public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnu
 
     @Override
     public IPartition<TElement> _skip(int count) {
-        return new OrderedPartition<TElement>(this, count, Integer.MAX_VALUE);
+        return new OrderedPartition<>(this, count, Integer.MAX_VALUE);
     }
 
     @Override
     public IPartition<TElement> _take(int count) {
-        return new OrderedPartition<TElement>(this, 0, count - 1);
+        return new OrderedPartition<>(this, 0, count - 1);
     }
 
     @Override
