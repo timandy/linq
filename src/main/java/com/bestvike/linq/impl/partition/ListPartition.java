@@ -115,6 +115,7 @@ public final class ListPartition<TSource> extends Iterator<TSource> implements I
         return array;
     }
 
+    @Override
     public Array<TSource> _toArray() {
         int count = this.getCount();
         if (count == 0)
@@ -126,7 +127,6 @@ public final class ListPartition<TSource> extends Iterator<TSource> implements I
 
         return array;
     }
-
 
     public List<TSource> _toList() {
         int count = this.getCount();

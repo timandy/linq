@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-04-18.
  */
-final class OrderedPartition<TElement> implements IPartition<TElement> {
+public final class OrderedPartition<TElement> implements IPartition<TElement> {
     private final AbstractOrderedEnumerable<TElement> source;
     private final int minIndexInclusive;
     private final int maxIndexInclusive;
