@@ -1,8 +1,11 @@
 package com.bestvike.collections.generic;
 
+import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.enumerator.ArrayEnumerator;
 import com.bestvike.linq.exception.Errors;
 import com.bestvike.linq.util.ArrayUtils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * Created by 许崇雷 on 2017/7/19.
  */
 @SuppressWarnings("Duplicates")
-public final class Array<T> implements ICollection<T>, Cloneable {
+public final class Array<T> implements IList<T>, Cloneable {
     private Object[] elements;
 
     private Array(Object[] elements) {
@@ -34,7 +37,7 @@ public final class Array<T> implements ICollection<T>, Cloneable {
         return new Array<>(objects);
     }
 
-    public static <T> Array<T> create(T[] array) {
+    public static <T> Array<T> create(Object[] array) {
         if (array == null) throw Errors.argumentNull("array");
         return new Array<>(array);
     }
@@ -163,8 +166,19 @@ public final class Array<T> implements ICollection<T>, Cloneable {
         return ArrayUtils.toArray(this.elements, clazz);
     }
 
+    @Override
+    public Array<T> _toArray() {
+        return this;
+    }
+
     public List<T> _toList() {
         return ArrayUtils.toList(this.elements);
+    }
+
+
+    @Override
+    public Collection<T> getCollection() {
+        return (Collection<T>) Arrays.asList(this.elements);
     }
 
     @Override
@@ -190,5 +204,10 @@ public final class Array<T> implements ICollection<T>, Cloneable {
     @Override
     public Array<T> clone() {
         return new Array<>(this.elements.clone());
+    }
+
+    @Override
+    public IEnumerator<T> enumerator() {
+        return new ArrayEnumerator<>(this);
     }
 }
