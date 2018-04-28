@@ -217,7 +217,7 @@ final class AppendPrepend {
             if (!this.appending)
                 list.add(this.item);
 
-            ListUtils.addAll(list, this.source);
+            ListUtils.addRange(list, this.source);
 
             if (this.appending)
                 list.add(this.item);
@@ -420,7 +420,7 @@ final class AppendPrepend {
             for (SingleLinkedNode<TSource> node = this.prepended; node != null; node = node.getLinked())
                 list.add(node.getItem());
 
-            ListUtils.addAll(list, this.source);
+            ListUtils.addRange(list, this.source);
             if (this.appended != null) {
                 IEnumerator<TSource> e = this.appended.enumerator(this.appendCount);
                 while (e.moveNext())
