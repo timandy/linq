@@ -11,6 +11,10 @@ import java.util.Locale;
  * Created by 许崇雷 on 2017/7/18.
  */
 public final class Comparer<T> implements Comparator<T> {
+    private static final Comparer DEFAULT = new Comparer();
+    private static final Comparer DEFAULT_INVARIANT = new Comparer(Collator.getInstance(Locale.ROOT));
+    private static final Comparer DEFAULT_CURRENT = new Comparer(Collator.getInstance(Locale.CHINA));
+
     private final Collator collator;
 
     private Comparer() {
@@ -23,19 +27,22 @@ public final class Comparer<T> implements Comparator<T> {
         this.collator = collator;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Comparator<T> Default() {
-        return new Comparer<>();
+        return DEFAULT;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Comparator<T> DefaultInvariant() {
-        return new Comparer<>(Collator.getInstance(Locale.ROOT));
+        return DEFAULT_INVARIANT;
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> Comparator<T> DefaultCurrent() {
-        return new Comparer<>(Collator.getInstance(Locale.CHINA));
+        return DEFAULT_CURRENT;
     }
 
-    public static <T> Comparator<T> Create(IComparison<T> comparison) {
+    public static <T> Comparator<T> create(IComparison<T> comparison) {
         if (comparison == null)
             throw Errors.argumentNull("comparison");
         return new ComparisonComparer<>(comparison);
