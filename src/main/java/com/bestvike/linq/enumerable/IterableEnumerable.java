@@ -14,10 +14,6 @@ public final class IterableEnumerable<TElement> implements IEnumerable<TElement>
         this.source = source;
     }
 
-    public Iterable<TElement> internalSource() {
-        return this.source;
-    }
-
     @Override
     public IEnumerator<TElement> enumerator() {
         return new IterableEnumerator<>(this.source);

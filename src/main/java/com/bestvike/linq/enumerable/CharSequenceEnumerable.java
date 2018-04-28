@@ -1,40 +1,44 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.IListEnumerable;
 import com.bestvike.linq.enumerator.CharSequenceEnumerator;
+import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2017/7/25.
  */
-public final class CharSequenceEnumerable implements IListEnumerable<Character> {
+public final class CharSequenceEnumerable implements IList<Character> {
     private final CharSequence source;
 
     public CharSequenceEnumerable(CharSequence source) {
         this.source = source;
     }
 
-    public CharSequence internalSource() {
-        return this.source;
+    @Override
+    public IEnumerator<Character> enumerator() {
+        return new CharSequenceEnumerator(this.source);
     }
 
     @Override
-    public Character internalGet(int index) {
-        return this.source.charAt(index);
+    public Collection<Character> getCollection() {
+        return Arrays.asList(this._toArray(Character.class));
     }
 
     @Override
-    public int internalSize() {
+    public int _getCount() {
         return this.source.length();
     }
 
     @Override
-    public boolean internalContains(Character value) {
+    public boolean _contains(Character value) {
         int length = this.source.length();
         for (int i = 0; i < length; i++) {
             if (Objects.equals(this.source.charAt(i), value))
@@ -44,7 +48,30 @@ public final class CharSequenceEnumerable implements IListEnumerable<Character> 
     }
 
     @Override
-    public Array<Character> internalToArray() {
+    public void _copyTo(Character[] array, int arrayIndex) {
+        int length = this.source.length();
+        for (int i = 0; i < length; i++)
+            array[arrayIndex++] = this.source.charAt(i);
+    }
+
+    @Override
+    public void _copyTo(Array<Character> array, int arrayIndex) {
+        int length = this.source.length();
+        for (int i = 0; i < length; i++)
+            array.set(arrayIndex++, this.source.charAt(i));
+    }
+
+    @Override
+    public Character[] _toArray(Class<Character> clazz) {
+        int length = this.source.length();
+        Character[] array = ArrayUtils.newInstance(clazz, length);
+        for (int i = 0; i < length; i++)
+            array[i] = this.source.charAt(i);
+        return array;
+    }
+
+    @Override
+    public Array<Character> _toArray() {
         int length = this.source.length();
         Array<Character> array = Array.create(length);
         for (int i = 0; i < length; i++)
@@ -53,16 +80,7 @@ public final class CharSequenceEnumerable implements IListEnumerable<Character> 
     }
 
     @Override
-    public Character[] internalToArray(Class<Character> clazz) {
-        int length = this.source.length();
-        Character[] array = new Character[length];
-        for (int i = 0; i < length; i++)
-            array[i] = this.source.charAt(i);
-        return array;
-    }
-
-    @Override
-    public List<Character> internalToList() {
+    public List<Character> _toList() {
         int length = this.source.length();
         List<Character> list = new ArrayList<>(length);
         for (int i = 0; i < length; i++)
@@ -71,7 +89,7 @@ public final class CharSequenceEnumerable implements IListEnumerable<Character> 
     }
 
     @Override
-    public IEnumerator<Character> enumerator() {
-        return new CharSequenceEnumerator(this.source);
+    public Character get(int index) {
+        return this.source.charAt(index);
     }
 }
