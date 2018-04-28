@@ -175,7 +175,6 @@ public final class Array<T> implements IList<T>, Cloneable {
         return ArrayUtils.toList(this.elements);
     }
 
-
     @Override
     public Collection<T> getCollection() {
         return (Collection<T>) Arrays.asList(this.elements);
@@ -189,6 +188,26 @@ public final class Array<T> implements IList<T>, Cloneable {
     @Override
     public boolean _contains(T value) {
         return ArrayUtils.contains(this.elements, value);
+    }
+
+    public boolean _contains(T value, int startIndex) {
+        return ArrayUtils.contains(this.elements, value, startIndex);
+    }
+
+    public boolean _contains(T value, int startIndex, int count) {
+        return ArrayUtils.contains(this.elements, value, startIndex, count);
+    }
+
+    public int indexOf(T value) {
+        return ArrayUtils.indexOf(this.elements, value);
+    }
+
+    public int indexOf(T value, int startIndex) {
+        return ArrayUtils.indexOf(this.elements, value, startIndex);
+    }
+
+    public int indexOf(T value, int startIndex, int count) {
+        return ArrayUtils.indexOf(this.elements, value, startIndex, count);
     }
 
     @Override
@@ -210,4 +229,5 @@ public final class Array<T> implements IList<T>, Cloneable {
     public IEnumerator<T> enumerator() {
         return new ArrayEnumerator<>(this);
     }
+
 }
