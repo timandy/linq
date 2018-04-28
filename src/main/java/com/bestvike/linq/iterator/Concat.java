@@ -105,7 +105,7 @@ public final class Concat {
                 if (source == null)
                     break;
 
-                ListUtils.addAll(list, source);
+                ListUtils.addRange(list, source);
             }
 
             return list;
