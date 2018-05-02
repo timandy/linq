@@ -14,6 +14,9 @@ import java.util.List;
  * Created by 许崇雷 on 2018-04-27.
  */
 public final class Distinct {
+    private Distinct() {
+    }
+
     public static <TSource> IEnumerable<TSource> distinct(IEnumerable<TSource> source) {
         return distinct(source, null);
     }

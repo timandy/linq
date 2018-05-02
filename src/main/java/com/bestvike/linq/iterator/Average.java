@@ -11,7 +11,7 @@ import java.math.MathContext;
 /**
  * Created by 许崇雷 on 2018-04-22.
  */
-final class Average {
+public final class Average {
     private Average() {
     }
 

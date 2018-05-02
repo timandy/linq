@@ -10,6 +10,9 @@ import com.bestvike.linq.exception.Errors;
  * Created by 许崇雷 on 2018-04-27.
  */
 public final class Contains {
+    private Contains() {
+    }
+
     public static <TSource> boolean contains(IEnumerable<TSource> source, TSource value) {
         return source instanceof ICollection
                 ? ((ICollection<TSource>) source)._contains(value)

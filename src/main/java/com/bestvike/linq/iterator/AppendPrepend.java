@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2017-09-11.
  */
-final class AppendPrepend {
+public final class AppendPrepend {
     private AppendPrepend() {
     }
 

@@ -14,6 +14,9 @@ import java.util.List;
  * Created by 许崇雷 on 2018-04-27.
  */
 public final class DefaultIfEmpty {
+    private DefaultIfEmpty() {
+    }
+
     public static <TSource> IEnumerable<TSource> defaultIfEmpty(IEnumerable<TSource> source) {
         return defaultIfEmpty(source, null);
     }

@@ -11,6 +11,9 @@ import com.bestvike.out;
  * Created by 许崇雷 on 2018-04-27.
  */
 public final class ElementAt {
+    private ElementAt() {
+    }
+
     public static <TSource> TSource elementAt(IEnumerable<TSource> source, int index) {
         if (source == null)
             throw Errors.argumentNull("source");

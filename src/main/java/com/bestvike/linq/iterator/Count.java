@@ -11,6 +11,9 @@ import com.bestvike.linq.impl.partition.IIListProvider;
  * Created by 许崇雷 on 2018-04-27.
  */
 public final class Count {
+    private Count() {
+    }
+
     public static <TSource> int count(IEnumerable<TSource> source) {
         if (source == null)
             throw Errors.argumentNull("source");
