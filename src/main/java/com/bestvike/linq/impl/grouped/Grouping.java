@@ -14,14 +14,15 @@ import java.util.List;
  * Created by 许崇雷 on 2018-04-28.
  */
 public class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IList<TElement> {
-    private TKey key;
-    private int hashCode;
-    private Array<TElement> elements;
-    private int count;
-    private Grouping<TKey, TElement> hashNext;
-    private Grouping<TKey, TElement> next;
+    TKey key;
+    int hashCode;
+    Array<TElement> elements;
+    int count;
+    Grouping<TKey, TElement> hashNext;
+    Grouping<TKey, TElement> next;
+    boolean fetched;
 
-    private Grouping() {
+    Grouping() {
     }
 
     void add(TElement element) {
@@ -31,7 +32,7 @@ public class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, ILis
         this.count++;
     }
 
-    private void trim() {
+    public void trim() {
         if (this.elements.length() != this.count)
             this.elements.resize(this.count);
     }
