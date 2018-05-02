@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-02.
  */
-public class GroupedResultEnumerable<TSource, TKey, TResult> implements IIListProvider<TResult> {
+public final class GroupedResultEnumerable<TSource, TKey, TResult> implements IIListProvider<TResult> {
     private final IEnumerable<TSource> source;
     private final Func1<TSource, TKey> keySelector;
     private final IEqualityComparer<TKey> comparer;
