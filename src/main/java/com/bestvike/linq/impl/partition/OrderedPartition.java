@@ -2,7 +2,7 @@ package com.bestvike.linq.impl.partition;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.impl.order.AbstractOrderedEnumerable;
+import com.bestvike.linq.impl.ordered.AbstractOrderedEnumerable;
 import com.bestvike.out;
 
 import java.util.List;

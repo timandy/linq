@@ -1,4 +1,4 @@
-package com.bestvike.linq.impl.order;
+package com.bestvike.linq.impl.ordered;
 
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.function.Func1;

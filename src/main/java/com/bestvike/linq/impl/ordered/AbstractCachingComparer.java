@@ -1,4 +1,4 @@
-package com.bestvike.linq.impl.order;
+package com.bestvike.linq.impl.ordered;
 
 /**
  * Created by 许崇雷 on 2018-04-18.
