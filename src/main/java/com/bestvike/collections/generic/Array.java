@@ -5,7 +5,6 @@ import com.bestvike.linq.enumerator.ArrayEnumerator;
 import com.bestvike.linq.exception.Errors;
 import com.bestvike.linq.util.ArrayUtils;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -38,12 +37,16 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static <T> Array<T> create(Object[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         return new Array<>(array);
     }
 
     public static Array<Boolean> create(boolean[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -52,7 +55,9 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static Array<Byte> create(byte[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -61,7 +66,9 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static Array<Short> create(short[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -70,7 +77,9 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static Array<Integer> create(int[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -79,7 +88,9 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static Array<Long> create(long[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -88,7 +99,9 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static Array<Float> create(float[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -97,7 +110,9 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static Array<Double> create(double[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -106,7 +121,9 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     public static Array<Character> create(char[] array) {
-        if (array == null) throw Errors.argumentNull("array");
+        if (array == null)
+            throw Errors.argumentNull("array");
+
         int length = array.length;
         Object[] objects = new Object[length];
         for (int i = 0; i < length; i++)
@@ -166,18 +183,38 @@ public final class Array<T> implements IList<T>, Cloneable {
         return ArrayUtils.toArray(this.elements, clazz);
     }
 
+    public T[] _toArray(Class<T> clazz, int startIndex, int count) {
+        return ArrayUtils.toArray(this.elements, clazz, startIndex, count);
+    }
+
     @Override
     public Array<T> _toArray() {
         return this;
+    }
+
+    public Array<T> _toArray(int startIndex, int count) {
+        if (startIndex == 0 && count == this.elements.length)
+            return this;
+        Array<T> array = Array.create(count);
+        copy(this.elements, startIndex, array, 0, count);
+        return array;
     }
 
     public List<T> _toList() {
         return ArrayUtils.toList(this.elements);
     }
 
+    public List<T> _toList(int startIndex, int count) {
+        return ArrayUtils.toList(this.elements, startIndex, count);
+    }
+
     @Override
     public Collection<T> getCollection() {
-        return (Collection<T>) Arrays.asList(this.elements);
+        return ArrayUtils.toCollection(this.elements);
+    }
+
+    public Collection<T> getCollection(int startIndex, int count) {
+        return ArrayUtils.toCollection(this.elements, startIndex, count);
     }
 
     @Override
@@ -229,5 +266,4 @@ public final class Array<T> implements IList<T>, Cloneable {
     public IEnumerator<T> enumerator() {
         return new ArrayEnumerator<>(this);
     }
-
 }
