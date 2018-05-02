@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-04-28.
  */
-public class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IList<TElement> {
+public final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IList<TElement> {
     TKey key;
     int hashCode;
     Array<TElement> elements;
