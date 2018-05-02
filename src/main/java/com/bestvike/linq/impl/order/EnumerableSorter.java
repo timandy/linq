@@ -52,7 +52,7 @@ public final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSo
     }
 
     protected void quickSort(Integer[] keys, int lo, int hi) {
-        Arrays.sort(keys, lo, hi - lo + 1, Comparer.Create(this::compareAnyKeys)); // TODO #24115: Remove Create call when delegate-based overload is available
+        Arrays.sort(keys, lo, hi - lo + 1, Comparer.create(this::compareAnyKeys)); // TODO #24115: Remove Create call when delegate-based overload is available
     }
 
     // Sorts the k elements between minIdx and maxIdx without sorting all elements
