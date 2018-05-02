@@ -7,7 +7,6 @@ import com.bestvike.linq.enumerator.CharSequenceEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -29,7 +28,7 @@ public final class CharSequenceEnumerable implements IList<Character> {
 
     @Override
     public Collection<Character> getCollection() {
-        return Arrays.asList(this._toArray(Character.class));
+        return ArrayUtils.toCollection(this._toArray(Character.class));
     }
 
     @Override
