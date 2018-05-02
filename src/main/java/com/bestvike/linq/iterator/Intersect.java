@@ -54,10 +54,8 @@ public final class Intersect {
             switch (this.state) {
                 case 1:
                     this.set = new Set<>(this.comparer);
-                    try (IEnumerator<TSource> secondEnumerator = this.second.enumerator()) {
-                        while (secondEnumerator.moveNext())
-                            this.set.add(secondEnumerator.current());
-                    }
+                    for (TSource element : this.second)
+                        this.set.add(element);
                     this.enumerator = this.first.enumerator();
                     this.state = 2;
                 case 2:
