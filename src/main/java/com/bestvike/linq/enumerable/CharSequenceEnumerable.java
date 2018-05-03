@@ -63,7 +63,7 @@ public final class CharSequenceEnumerable implements IList<Character> {
     @Override
     public Character[] _toArray(Class<Character> clazz) {
         int length = this.source.length();
-        Character[] array = ArrayUtils.newInstance(clazz, length);
+        Character[] array = new Character[length];
         for (int i = 0; i < length; i++)
             array[i] = this.source.charAt(i);
         return array;
