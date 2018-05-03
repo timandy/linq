@@ -70,19 +70,16 @@ public final class Range {
 
         @Override
         public IPartition<Integer> _skip(int count) {
-            if (count >= this.end - this.start)
-                return EmptyPartition.instance();
-
-            return new RangeIterator(this.start + count, this.end - this.start - count);
+            return count >= this.end - this.start
+                    ? EmptyPartition.instance()
+                    : new RangeIterator(this.start + count, this.end - this.start - count);
         }
 
         @Override
         public IPartition<Integer> _take(int count) {
-            int curCount = this.end - this.start;
-            if (count >= curCount)
-                return this;
-
-            return new RangeIterator(this.start, count);
+            return count >= this.end - this.start
+                    ? this
+                    : new RangeIterator(this.start, count);
         }
 
         @Override
