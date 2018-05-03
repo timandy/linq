@@ -179,6 +179,10 @@ public final class Array<T> implements IList<T>, Cloneable {
             this.elements[i] = value;
     }
 
+    public void _reverse() {
+        ArrayUtils.reverse(this.elements);
+    }
+
     public T[] _toArray(Class<T> clazz) {
         return ArrayUtils.toArray(this.elements, clazz);
     }
