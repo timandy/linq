@@ -15,11 +15,13 @@ import java.util.List;
  * Created by 许崇雷 on 2017-09-30.
  */
 public final class EmptyPartition<TElement> extends Iterator<TElement> implements IPartition<TElement> {
+    private static final IPartition INSTANCE = new EmptyPartition();
+
     private EmptyPartition() {
     }
 
     public static <TElement> IPartition<TElement> instance() {
-        return new EmptyPartition<>();
+        return INSTANCE;
     }
 
 
