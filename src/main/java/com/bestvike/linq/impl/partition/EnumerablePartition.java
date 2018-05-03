@@ -38,21 +38,6 @@ public class EnumerablePartition<TSource> extends Iterator<TSource> implements I
         this.maxIndexInclusive = maxIndexInclusive;
     }
 
-    private static <TSource> boolean skipBefore(int index, IEnumerator<TSource> en) {
-        return skipAndCount(index, en) == index;
-    }
-
-    private static <TSource> int skipAndCount(int index, IEnumerator<TSource> en) {
-        assert en != null;
-
-        for (int i = 0; i < index; i++) {
-            if (!en.moveNext())
-                return i;
-        }
-
-        return index;
-    }
-
     // If this is true (e.g. at least one Take call was made), then we have an upper bound
     // on how many elements we can have.
     private boolean hasLimit() {
@@ -302,5 +287,20 @@ public class EnumerablePartition<TSource> extends Iterator<TSource> implements I
 
     private boolean skipBeforeFirst(IEnumerator<TSource> en) {
         return skipBefore(this.minIndexInclusive, en);
+    }
+
+    private static <TSource> boolean skipBefore(int index, IEnumerator<TSource> en) {
+        return skipAndCount(index, en) == index;
+    }
+
+    private static <TSource> int skipAndCount(int index, IEnumerator<TSource> en) {
+        assert en != null;
+
+        for (int i = 0; i < index; i++) {
+            if (!en.moveNext())
+                return i;
+        }
+
+        return index;
     }
 }
