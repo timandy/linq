@@ -49,6 +49,18 @@ public final class ArrayUtils {
             array[i] = value;
     }
 
+    public static <T> void reverse(T[] array) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+
+        int length = array.length;
+        for (int i = 0, mid = length >> 1, j = length - 1; i < mid; i++, j--) {
+            T tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
+        }
+    }
+
     public static <T> int indexOf(T[] array, T item) {
         return indexOf(array, item, 0, array.length);
     }
