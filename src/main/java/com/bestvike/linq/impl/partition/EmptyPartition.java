@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2017-09-30.
  */
-final class EmptyPartition<TElement> extends Iterator<TElement> implements IPartition<TElement> {
+public final class EmptyPartition<TElement> extends Iterator<TElement> implements IPartition<TElement> {
     private EmptyPartition() {
     }
 
