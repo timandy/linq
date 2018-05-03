@@ -16,7 +16,7 @@ public final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnum
     private final Comparator<TKey> comparer;
     private final boolean descending;
 
-    OrderedEnumerable(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractOrderedEnumerable<TElement> parent) {
+    public OrderedEnumerable(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractOrderedEnumerable<TElement> parent) {
         if (source == null)
             throw Errors.argumentNull("source");
         if (keySelector == null)
