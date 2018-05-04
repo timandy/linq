@@ -28,95 +28,97 @@ public final class Cast {
 
         return new CastIterator<>(source, clazz);
     }
+}
 
-    private static final class OfTypeIterator<TResult> extends AbstractIterator<TResult> {
-        private final IEnumerable source;
-        private final Class<TResult> clazz;
-        private IEnumerator enumerator;
 
-        private OfTypeIterator(IEnumerable source, Class<TResult> clazz) {
-            this.source = source;
-            this.clazz = clazz;
-        }
+final class OfTypeIterator<TResult> extends AbstractIterator<TResult> {
+    private final IEnumerable source;
+    private final Class<TResult> clazz;
+    private IEnumerator enumerator;
 
-        @Override
-        public AbstractIterator<TResult> clone() {
-            return new OfTypeIterator<>(this.source, this.clazz);
-        }
+    OfTypeIterator(IEnumerable source, Class<TResult> clazz) {
+        this.source = source;
+        this.clazz = clazz;
+    }
 
-        @SuppressWarnings("unchecked")
-        @Override
-        public boolean moveNext() {
-            switch (this.state) {
-                case 1:
-                    this.enumerator = this.source.enumerator();
-                    this.state = 2;
-                case 2:
-                    while (this.enumerator.moveNext()) {
-                        Object item = this.enumerator.current();
-                        if (this.clazz.isInstance(item)) {
-                            this.current = (TResult) item;
-                            return true;
-                        }
+    @Override
+    public AbstractIterator<TResult> clone() {
+        return new OfTypeIterator<>(this.source, this.clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean moveNext() {
+        switch (this.state) {
+            case 1:
+                this.enumerator = this.source.enumerator();
+                this.state = 2;
+            case 2:
+                while (this.enumerator.moveNext()) {
+                    Object item = this.enumerator.current();
+                    if (this.clazz.isInstance(item)) {
+                        this.current = (TResult) item;
+                        return true;
                     }
-                    this.close();
-                    return false;
-                default:
-                    return false;
-            }
-        }
-
-        @Override
-        public void close() {
-            if (this.enumerator != null) {
-                this.enumerator.close();
-                this.enumerator = null;
-            }
-            super.close();
+                }
+                this.close();
+                return false;
+            default:
+                return false;
         }
     }
 
-    private static final class CastIterator<TResult> extends AbstractIterator<TResult> {
-        private final IEnumerable source;
-        private final Class<TResult> clazz;
-        private IEnumerator enumerator;
-
-        private CastIterator(IEnumerable source, Class<TResult> clazz) {
-            this.source = source;
-            this.clazz = clazz;
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
         }
+        super.close();
+    }
+}
 
-        @Override
-        public AbstractIterator<TResult> clone() {
-            return new CastIterator<>(this.source, this.clazz);
-        }
 
-        @SuppressWarnings("unchecked")
-        @Override
-        public boolean moveNext() {
-            switch (this.state) {
-                case 1:
-                    this.enumerator = this.source.enumerator();
-                    this.state = 2;
-                case 2:
-                    if (this.enumerator.moveNext()) {
-                        this.current = this.clazz.cast(this.enumerator.current());
-                        return true;
-                    }
-                    this.close();
-                    return false;
-                default:
-                    return false;
-            }
-        }
+final class CastIterator<TResult> extends AbstractIterator<TResult> {
+    private final IEnumerable source;
+    private final Class<TResult> clazz;
+    private IEnumerator enumerator;
 
-        @Override
-        public void close() {
-            if (this.enumerator != null) {
-                this.enumerator.close();
-                this.enumerator = null;
-            }
-            super.close();
+    CastIterator(IEnumerable source, Class<TResult> clazz) {
+        this.source = source;
+        this.clazz = clazz;
+    }
+
+    @Override
+    public AbstractIterator<TResult> clone() {
+        return new CastIterator<>(this.source, this.clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean moveNext() {
+        switch (this.state) {
+            case 1:
+                this.enumerator = this.source.enumerator();
+                this.state = 2;
+            case 2:
+                if (this.enumerator.moveNext()) {
+                    this.current = this.clazz.cast(this.enumerator.current());
+                    return true;
+                }
+                this.close();
+                return false;
+            default:
+                return false;
         }
+    }
+
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+        }
+        super.close();
     }
 }

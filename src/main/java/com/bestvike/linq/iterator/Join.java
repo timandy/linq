@@ -45,91 +45,92 @@ public final class Join {
 
         return new JoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
     }
+}
 
-    private static final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator<TResult> {
-        private final IEnumerable<TOuter> outer;
-        private final IEnumerable<TInner> inner;
-        private final Func1<TOuter, TKey> outerKeySelector;
-        private final Func1<TInner, TKey> innerKeySelector;
-        private final Func2<TOuter, TInner, TResult> resultSelector;
-        private final IEqualityComparer<TKey> comparer;
-        private Lookup<TKey, TInner> lookup;
-        private IEnumerator<TOuter> outerEnumerator;
-        private TOuter item;
-        private Grouping<TKey, TInner> g;
-        private int index;
 
-        public JoinIterator(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-            this.outer = outer;
-            this.inner = inner;
-            this.outerKeySelector = outerKeySelector;
-            this.innerKeySelector = innerKeySelector;
-            this.resultSelector = resultSelector;
-            this.comparer = comparer;
-        }
+final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator<TResult> {
+    private final IEnumerable<TOuter> outer;
+    private final IEnumerable<TInner> inner;
+    private final Func1<TOuter, TKey> outerKeySelector;
+    private final Func1<TInner, TKey> innerKeySelector;
+    private final Func2<TOuter, TInner, TResult> resultSelector;
+    private final IEqualityComparer<TKey> comparer;
+    private Lookup<TKey, TInner> lookup;
+    private IEnumerator<TOuter> outerEnumerator;
+    private TOuter item;
+    private Grouping<TKey, TInner> g;
+    private int index;
 
-        @Override
-        public AbstractIterator<TResult> clone() {
-            return new JoinIterator<>(this.outer, this.inner, this.outerKeySelector, this.innerKeySelector, this.resultSelector, this.comparer);
-        }
+    public JoinIterator(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+        this.outer = outer;
+        this.inner = inner;
+        this.outerKeySelector = outerKeySelector;
+        this.innerKeySelector = innerKeySelector;
+        this.resultSelector = resultSelector;
+        this.comparer = comparer;
+    }
 
-        @Override
-        public boolean moveNext() {
-            do {
-                switch (this.state) {
-                    case 1:
-                        this.outerEnumerator = this.outer.enumerator();
-                        if (!this.outerEnumerator.moveNext()) {
-                            this.close();
-                            return false;
-                        }
-                        this.lookup = Lookup.createForJoin(this.inner, this.innerKeySelector, this.comparer);
-                        if (this.lookup.getCount() == 0) {
-                            this.close();
-                            return false;
-                        }
-                        this.state = 2;
-                    case 2:
-                        this.item = this.outerEnumerator.current();
-                        this.g = this.lookup.fetchGrouping(this.outerKeySelector.apply(this.item));
-                        if (this.g == null) {
-                            this.state = 3;
-                            break;
-                        }
-                        this.index = -1;
-                        this.state = 4;
-                        break;
-                    case 3:
-                        if (!this.outerEnumerator.moveNext()) {
-                            this.close();
-                            return false;
-                        }
-                        this.state = 2;
-                        break;
-                    case 4:
-                        this.index++;
-                        if (this.index < this.g._getCount()) {
-                            this.current = this.resultSelector.apply(this.item, this.g.get(this.index));
-                            return true;
-                        }
+    @Override
+    public AbstractIterator<TResult> clone() {
+        return new JoinIterator<>(this.outer, this.inner, this.outerKeySelector, this.innerKeySelector, this.resultSelector, this.comparer);
+    }
+
+    @Override
+    public boolean moveNext() {
+        do {
+            switch (this.state) {
+                case 1:
+                    this.outerEnumerator = this.outer.enumerator();
+                    if (!this.outerEnumerator.moveNext()) {
+                        this.close();
+                        return false;
+                    }
+                    this.lookup = Lookup.createForJoin(this.inner, this.innerKeySelector, this.comparer);
+                    if (this.lookup.getCount() == 0) {
+                        this.close();
+                        return false;
+                    }
+                    this.state = 2;
+                case 2:
+                    this.item = this.outerEnumerator.current();
+                    this.g = this.lookup.fetchGrouping(this.outerKeySelector.apply(this.item));
+                    if (this.g == null) {
                         this.state = 3;
                         break;
-                    default:
+                    }
+                    this.index = -1;
+                    this.state = 4;
+                    break;
+                case 3:
+                    if (!this.outerEnumerator.moveNext()) {
+                        this.close();
                         return false;
-                }
-            } while (true);
-        }
-
-        @Override
-        public void close() {
-            this.lookup = null;
-            if (this.outerEnumerator != null) {
-                this.outerEnumerator.close();
-                this.outerEnumerator = null;
+                    }
+                    this.state = 2;
+                    break;
+                case 4:
+                    this.index++;
+                    if (this.index < this.g._getCount()) {
+                        this.current = this.resultSelector.apply(this.item, this.g.get(this.index));
+                        return true;
+                    }
+                    this.state = 3;
+                    break;
+                default:
+                    return false;
             }
-            this.item = null;
-            this.g = null;
-            super.close();
+        } while (true);
+    }
+
+    @Override
+    public void close() {
+        this.lookup = null;
+        if (this.outerEnumerator != null) {
+            this.outerEnumerator.close();
+            this.outerEnumerator = null;
         }
+        this.item = null;
+        this.g = null;
+        super.close();
     }
 }

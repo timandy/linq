@@ -27,83 +27,83 @@ public final class Distinct {
 
         return new DistinctIterator<>(source, comparer);
     }
+}
 
-    // An iterator that yields the distinct values in an <see cref="IEnumerable{TSource}"/>.
-    private static final class DistinctIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
-        private final IEnumerable<TSource> source;
-        private final IEqualityComparer<TSource> comparer;
-        private Set<TSource> set;
-        private IEnumerator<TSource> enumerator;
 
-        private DistinctIterator(IEnumerable<TSource> source, IEqualityComparer<TSource> comparer) {
-            assert source != null;
-            this.source = source;
-            this.comparer = comparer;
-        }
+final class DistinctIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
+    private final IEnumerable<TSource> source;
+    private final IEqualityComparer<TSource> comparer;
+    private Set<TSource> set;
+    private IEnumerator<TSource> enumerator;
 
-        public Iterator<TSource> clone() {
-            return new DistinctIterator<>(this.source, this.comparer);
-        }
+    DistinctIterator(IEnumerable<TSource> source, IEqualityComparer<TSource> comparer) {
+        assert source != null;
+        this.source = source;
+        this.comparer = comparer;
+    }
 
-        public boolean moveNext() {
-            switch (this.state) {
-                case 1:
-                    this.enumerator = this.source.enumerator();
-                    if (!this.enumerator.moveNext()) {
-                        this.close();
-                        return false;
-                    }
+    public Iterator<TSource> clone() {
+        return new DistinctIterator<>(this.source, this.comparer);
+    }
 
-                    TSource element = this.enumerator.current();
-                    this.set = new Set<>(this.comparer);
-                    this.set.add(element);
-                    this.current = element;
-                    this.state = 2;
-                    return true;
-                case 2:
-                    while (this.enumerator.moveNext()) {
-                        element = this.enumerator.current();
-                        if (this.set.add(element)) {
-                            this.current = element;
-                            return true;
-                        }
-                    }
+    public boolean moveNext() {
+        switch (this.state) {
+            case 1:
+                this.enumerator = this.source.enumerator();
+                if (!this.enumerator.moveNext()) {
                     this.close();
                     return false;
-                default:
-                    return false;
-            }
-        }
+                }
 
-        public void close() {
-            if (this.enumerator != null) {
-                this.enumerator.close();
-                this.enumerator = null;
-                this.set = null;
-            }
-            super.close();
+                TSource element = this.enumerator.current();
+                this.set = new Set<>(this.comparer);
+                this.set.add(element);
+                this.current = element;
+                this.state = 2;
+                return true;
+            case 2:
+                while (this.enumerator.moveNext()) {
+                    element = this.enumerator.current();
+                    if (this.set.add(element)) {
+                        this.current = element;
+                        return true;
+                    }
+                }
+                this.close();
+                return false;
+            default:
+                return false;
         }
+    }
 
-        public TSource[] _toArray(Class<TSource> clazz) {
-            return this.fillSet().toArray(clazz);
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+            this.set = null;
         }
+        super.close();
+    }
 
-        public Array<TSource> _toArray() {
-            return this.fillSet().toArray();
-        }
+    public TSource[] _toArray(Class<TSource> clazz) {
+        return this.fillSet().toArray(clazz);
+    }
 
-        public List<TSource> _toList() {
-            return this.fillSet().toList();
-        }
+    public Array<TSource> _toArray() {
+        return this.fillSet().toArray();
+    }
 
-        public int _getCount(boolean onlyIfCheap) {
-            return onlyIfCheap ? -1 : this.fillSet().getCount();
-        }
+    public List<TSource> _toList() {
+        return this.fillSet().toList();
+    }
 
-        private Set<TSource> fillSet() {
-            Set<TSource> set = new Set<>(this.comparer);
-            set.unionWith(this.source);
-            return set;
-        }
+    public int _getCount(boolean onlyIfCheap) {
+        return onlyIfCheap ? -1 : this.fillSet().getCount();
+    }
+
+    private Set<TSource> fillSet() {
+        Set<TSource> set = new Set<>(this.comparer);
+        set.unionWith(this.source);
+        return set;
     }
 }

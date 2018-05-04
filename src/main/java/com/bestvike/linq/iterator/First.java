@@ -16,7 +16,7 @@ public final class First {
     private First() {
     }
 
-    public static <TSource> TSource First(IEnumerable<TSource> source) {
+    public static <TSource> TSource first(IEnumerable<TSource> source) {
         out<Boolean> foundRef = out.init();
         TSource first = tryGetFirst(source, foundRef);
         if (!foundRef.getValue())
@@ -24,7 +24,7 @@ public final class First {
         return first;
     }
 
-    public static <TSource> TSource First(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> TSource first(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         out<Boolean> foundRef = out.init();
         TSource first = tryGetFirst(source, predicate, foundRef);
         if (!foundRef.getValue())
@@ -32,12 +32,12 @@ public final class First {
         return first;
     }
 
-    public static <TSource> TSource FirstOrDefault(IEnumerable<TSource> source) {
+    public static <TSource> TSource firstOrDefault(IEnumerable<TSource> source) {
         out<Boolean> foundRef = out.init();
         return tryGetFirst(source, foundRef);
     }
 
-    public static <TSource> TSource FirstOrDefault(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> TSource firstOrDefault(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         out<Boolean> foundRef = out.init();
         return tryGetFirst(source, predicate, foundRef);
     }
