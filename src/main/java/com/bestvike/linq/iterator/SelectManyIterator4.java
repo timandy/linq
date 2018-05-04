@@ -1,23 +1,27 @@
 package com.bestvike.linq.iterator;
 
+import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.function.Func2;
 
 /**
  * Created by 许崇雷 on 2017/7/16.
  */
-final class SelectManyIterator4<TSource, TCollection, TResult> extends AbstractIterator<TResult> {
+final class SelectManyIterator4<TSource, TCollection, TResult> extends Iterator<TResult> {
     private final IEnumerable<TSource> source;
     private final Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector;
     private final Func2<TSource, TCollection, TResult> resultSelector;
     private IEnumerator<TSource> enumerator;
-    private IEnumerator<TCollection> selectorEnumerator;
-    private TSource cursor;
+    private IEnumerator<TCollection> subEnumerator;
+    private TSource element;
     private int index;
 
 
-    public SelectManyIterator4(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
+    SelectManyIterator4(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
+        assert source != null;
+        assert collectionSelector != null;
+        assert resultSelector != null;
+
         this.source = source;
         this.collectionSelector = collectionSelector;
         this.resultSelector = resultSelector;
@@ -38,21 +42,21 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends AbstractI
                     this.state = 2;
                 case 2:
                     if (this.enumerator.moveNext()) {
-                        this.cursor = this.enumerator.current();
+                        this.element = this.enumerator.current();
                         this.index = Math.addExact(this.index, 1);
-                        this.selectorEnumerator = this.collectionSelector.apply(this.cursor, this.index).enumerator();
+                        this.subEnumerator = this.collectionSelector.apply(this.element, this.index).enumerator();
                         this.state = 3;
                         break;
                     }
                     this.close();
                     return false;
                 case 3:
-                    if (this.selectorEnumerator.moveNext()) {
-                        TCollection item = this.selectorEnumerator.current();
-                        this.current = this.resultSelector.apply(this.cursor, item);
+                    if (this.subEnumerator.moveNext()) {
+                        TCollection item = this.subEnumerator.current();
+                        this.current = this.resultSelector.apply(this.element, item);
                         return true;
                     }
-                    this.selectorEnumerator.close();
+                    this.subEnumerator.close();
                     this.state = 2;
                     break;
                 default:
@@ -67,11 +71,11 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends AbstractI
             this.enumerator.close();
             this.enumerator = null;
         }
-        if (this.selectorEnumerator != null) {
-            this.selectorEnumerator.close();
-            this.selectorEnumerator = null;
+        if (this.subEnumerator != null) {
+            this.subEnumerator.close();
+            this.subEnumerator = null;
         }
-        this.cursor = null;
+        this.element = null;
         super.close();
     }
 }
