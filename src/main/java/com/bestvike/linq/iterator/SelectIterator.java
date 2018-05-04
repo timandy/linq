@@ -1,11 +1,11 @@
 package com.bestvike.linq.iterator;
 
+import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.function.Func2;
 
 /**
- * Created by 许崇雷 on 2017/7/16.
+ * Created by 许崇雷 on 2018-05-04.
  */
 final class SelectIterator<TSource, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TSource> source;
@@ -13,7 +13,7 @@ final class SelectIterator<TSource, TResult> extends AbstractIterator<TResult> {
     private IEnumerator<TSource> enumerator;
     private int index;
 
-    public SelectIterator(IEnumerable<TSource> source, Func2<TSource, Integer, TResult> selector) {
+    SelectIterator(IEnumerable<TSource> source, Func2<TSource, Integer, TResult> selector) {
         this.source = source;
         this.selector = selector;
     }
