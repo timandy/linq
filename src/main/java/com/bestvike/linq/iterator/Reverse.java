@@ -11,7 +11,9 @@ public final class Reverse {
     }
 
     public static <TSource> IEnumerable<TSource> reverse(IEnumerable<TSource> source) {
-        if (source == null) throw Errors.argumentNull("source");
+        if (source == null)
+            throw Errors.argumentNull("source");
+
         return new ReverseIterator<>(source);
     }
 }
