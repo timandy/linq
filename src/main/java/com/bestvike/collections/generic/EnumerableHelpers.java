@@ -156,7 +156,7 @@ public final class EnumerableHelpers {
                             int newLength = count << 1;
                             if (newLength > MaxArrayLength)
                                 newLength = MaxArrayLength <= count ? count + 1 : MaxArrayLength;
-                            arr.resize(newLength);
+                            arr = Array.resize(arr, newLength);
                         }
                         arr.set(count++, en.current());
                     }

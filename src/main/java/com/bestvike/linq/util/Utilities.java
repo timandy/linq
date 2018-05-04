@@ -1,12 +1,12 @@
 package com.bestvike.linq.util;
 
-import com.bestvike.linq.function.Func1;
+import com.bestvike.function.Func1;
 
 /**
  * Created by 许崇雷 on 2017/7/16.
  */
-public final class LambdaUtils {
-    private LambdaUtils() {
+public final class Utilities {
+    private Utilities() {
     }
 
     public static <TSource> Func1<TSource, Boolean> combinePredicates(Func1<TSource, Boolean> predicate1, Func1<TSource, Boolean> predicate2) {

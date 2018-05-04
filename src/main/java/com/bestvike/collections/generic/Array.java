@@ -13,7 +13,8 @@ import java.util.List;
  */
 @SuppressWarnings("Duplicates")
 public final class Array<T> implements IList<T>, Cloneable {
-    private Object[] elements;
+    private static final Array EMPTY = new Array(new Object[0]);
+    private final Object[] elements;
 
     private Array(Object[] elements) {
         this.elements = elements;
@@ -21,9 +22,9 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     //region static
 
+    @SuppressWarnings("unchecked")
     public static <T> Array<T> empty() {
-        Object[] objects = new Object[0];
-        return new Array<>(objects);
+        return EMPTY;
     }
 
     public static <T> Array<T> singleton(T element) {
@@ -143,10 +144,53 @@ public final class Array<T> implements IList<T>, Cloneable {
         System.arraycopy(src.elements, srcPos, dest, destPos, length);
     }
 
-    public static <T> void copy(Collection<T> src, Array<T> dest) {
-        int index = 0;
-        for (T item : src)
-            dest.set(index++, item);
+    public static <T> int indexOf(Array<T> array, T value) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+
+        return ArrayUtils.indexOf(array.elements, value);
+    }
+
+    public static <T> int indexOf(Array<T> array, T value, int startIndex) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+
+        return ArrayUtils.indexOf(array.elements, value, startIndex);
+    }
+
+    public static <T> int indexOf(Array<T> array, T value, int startIndex, int count) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+
+        return ArrayUtils.indexOf(array.elements, value, startIndex, count);
+    }
+
+    public static <T> void fill(Array<T> array, T value) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+
+        for (int i = 0, length = array.length(); i < length; i++)
+            array.elements[i] = value;
+    }
+
+    public static <T> void reverse(Array<T> array) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+
+        ArrayUtils.reverse(array.elements);
+    }
+
+    public static <T> Array<T> resize(Array<T> array, int newSize) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+        if (newSize < 0)
+            throw Errors.argumentOutOfRange("newSize");
+
+        if (array.length() == newSize)
+            return array;
+        Object[] newArray = new Object[newSize];
+        System.arraycopy(array.elements, 0, newArray, 0, array.length() > newSize ? newSize : array.length());
+        return new Array<>(newArray);
     }
 
     //endregion
@@ -162,25 +206,6 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     public void set(int index, T item) {
         this.elements[index] = item;
-    }
-
-    public void resize(int newSize) {
-        if (newSize < 0)
-            throw Errors.argumentOutOfRange("newSize");
-        if (this.length() == newSize)
-            return;
-        Object[] newArray = new Object[newSize];
-        System.arraycopy(this.elements, 0, newArray, 0, this.length() > newSize ? newSize : this.length());
-        this.elements = newArray;
-    }
-
-    public void fill(T value) {
-        for (int i = 0, length = this.length(); i < length; i++)
-            this.elements[i] = value;
-    }
-
-    public void _reverse() {
-        ArrayUtils.reverse(this.elements);
     }
 
     public T[] _toArray(Class<T> clazz) {
@@ -222,6 +247,7 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     @Override
+    @Deprecated
     public int _getCount() {
         return this.length();
     }
@@ -237,18 +263,6 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     public boolean _contains(T value, int startIndex, int count) {
         return ArrayUtils.contains(this.elements, value, startIndex, count);
-    }
-
-    public int indexOf(T value) {
-        return ArrayUtils.indexOf(this.elements, value);
-    }
-
-    public int indexOf(T value, int startIndex) {
-        return ArrayUtils.indexOf(this.elements, value, startIndex);
-    }
-
-    public int indexOf(T value, int startIndex, int count) {
-        return ArrayUtils.indexOf(this.elements, value, startIndex, count);
     }
 
     @Override

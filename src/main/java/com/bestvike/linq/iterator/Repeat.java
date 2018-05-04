@@ -127,7 +127,7 @@ public final class Repeat {
         public Array<TResult> _toArray() {
             Array<TResult> array = Array.create(this.count);
             if (this.current != null)
-                array.fill(this.current);
+                Array.fill(array, this.current);
 
             return array;
         }

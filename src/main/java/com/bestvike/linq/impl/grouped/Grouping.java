@@ -27,14 +27,14 @@ public final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>
 
     void add(TElement element) {
         if (this.elements.length() == this.count)
-            this.elements.resize(Math.multiplyExact(this.count, 2));
+            this.elements = Array.resize(this.elements, Math.multiplyExact(this.count, 2));
         this.elements.set(this.count, element);
         this.count++;
     }
 
     public void trim() {
         if (this.elements.length() != this.count)
-            this.elements.resize(this.count);
+            this.elements = Array.resize(this.elements, this.count);
     }
 
     public IEnumerator<TElement> enumerator() {
@@ -79,7 +79,7 @@ public final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>
     }
 
     public int indexOf(TElement item) {
-        return this.elements.indexOf(item, 0, this.count);
+        return Array.indexOf(this.elements, item, 0, this.count);
     }
 
     @Override
