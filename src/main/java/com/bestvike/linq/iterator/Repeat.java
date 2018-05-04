@@ -71,7 +71,7 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
 
     @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
-        return new Select.SelectIPartitionIterator<TResult, TResult2>(this, selector);
+        return new SelectIPartitionIterator<>(this, selector);
     }
 
     @Override

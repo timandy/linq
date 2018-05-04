@@ -67,7 +67,7 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
 
     @Override
     public <TResult> IEnumerable<TResult> _select(Func1<Integer, TResult> selector) {
-        return new Select.SelectIPartitionIterator<>(this, selector);
+        return new SelectIPartitionIterator<>(this, selector);
     }
 
     @Override
