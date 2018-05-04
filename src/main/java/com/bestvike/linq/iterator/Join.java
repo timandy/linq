@@ -61,7 +61,7 @@ final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator
     private Grouping<TKey, TInner> g;
     private int index;
 
-    public JoinIterator(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+    JoinIterator(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         this.outer = outer;
         this.inner = inner;
         this.outerKeySelector = outerKeySelector;

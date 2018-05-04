@@ -52,7 +52,7 @@ abstract class AppendPrependIterator<TSource> extends Iterator<TSource> implemen
     protected final IEnumerable<TSource> source;
     protected IEnumerator<TSource> enumerator;
 
-    protected AppendPrependIterator(IEnumerable<TSource> source) {
+    AppendPrependIterator(IEnumerable<TSource> source) {
         assert source != null;
         this.source = source;
     }
