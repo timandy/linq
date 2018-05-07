@@ -1,6 +1,7 @@
 package com.bestvike.linq.impl.partition;
 
 import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.iterator.Iterator;
@@ -15,11 +16,11 @@ import java.util.List;
  * Created by 许崇雷 on 2018-04-21.
  */
 public final class ListPartition<TSource> extends Iterator<TSource> implements IPartition<TSource> {
-    private final List<TSource> source;
+    private final IList<TSource> source;
     private final int minIndexInclusive;
     private final int maxIndexInclusive;
 
-    public ListPartition(List<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
+    public ListPartition(IList<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
         assert minIndexInclusive >= 0;
         assert minIndexInclusive <= maxIndexInclusive;
@@ -40,7 +41,7 @@ public final class ListPartition<TSource> extends Iterator<TSource> implements I
         if (this.state == -1)
             return false;
         int index = this.state - 1;
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source.size() - this.minIndexInclusive) {
+        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
             this.current = this.source.get(this.minIndexInclusive + index);
             ++this.state;
             return true;
@@ -65,7 +66,7 @@ public final class ListPartition<TSource> extends Iterator<TSource> implements I
     }
 
     public TSource _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source.size() - this.minIndexInclusive) {
+        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
             found.setValue(true);
             return this.source.get(this.minIndexInclusive + index);
         }
@@ -75,7 +76,7 @@ public final class ListPartition<TSource> extends Iterator<TSource> implements I
     }
 
     public TSource _tryGetFirst(out<Boolean> found) {
-        if (this.source.size() > this.minIndexInclusive) {
+        if (this.source._getCount() > this.minIndexInclusive) {
             found.setValue(true);
             return this.source.get(this.minIndexInclusive);
         }
@@ -85,7 +86,7 @@ public final class ListPartition<TSource> extends Iterator<TSource> implements I
     }
 
     public TSource _tryGetLast(out<Boolean> found) {
-        int lastIndex = this.source.size() - 1;
+        int lastIndex = this.source._getCount() - 1;
         if (lastIndex >= this.minIndexInclusive) {
             found.setValue(true);
             return this.source.get(Math.min(lastIndex, this.maxIndexInclusive));
@@ -96,7 +97,7 @@ public final class ListPartition<TSource> extends Iterator<TSource> implements I
     }
 
     private int getCount() {
-        int count = this.source.size();
+        int count = this.source._getCount();
         if (count <= this.minIndexInclusive)
             return 0;
 
