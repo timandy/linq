@@ -4,7 +4,6 @@ import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IOrderedEnumerable;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.impl.ordered.OrderedEnumerable;
 
 import java.util.Comparator;
 

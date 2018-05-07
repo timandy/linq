@@ -4,8 +4,6 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.impl.collections.Buffer;
-import com.bestvike.linq.impl.partition.IIListProvider;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.Collections;

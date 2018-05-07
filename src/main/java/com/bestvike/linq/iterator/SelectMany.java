@@ -2,7 +2,6 @@ package com.bestvike.linq.iterator;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ArrayBuilder;
-import com.bestvike.collections.generic.EnumerableHelpers;
 import com.bestvike.collections.generic.Marker;
 import com.bestvike.collections.generic.SparseArrayBuilder;
 import com.bestvike.function.Func1;
@@ -10,7 +9,6 @@ import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.impl.partition.IIListProvider;
 import com.bestvike.linq.util.ListUtils;
 
 import java.util.ArrayList;

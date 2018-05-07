@@ -4,8 +4,6 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.impl.partition.EmptyPartition;
-import com.bestvike.linq.impl.partition.IPartition;
 import com.bestvike.out;
 
 import java.util.ArrayList;

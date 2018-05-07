@@ -1,28 +1,33 @@
-package com.bestvike.linq.impl.ordered;
+package com.bestvike.linq.iterator;
 
 import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IOrderedEnumerable;
 import com.bestvike.linq.enumerator.AbstractEnumerator;
-import com.bestvike.linq.impl.collections.Buffer;
-import com.bestvike.linq.impl.partition.IIListProvider;
-import com.bestvike.linq.impl.partition.IPartition;
-import com.bestvike.linq.impl.partition.OrderedPartition;
+import com.bestvike.linq.exception.Errors;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 import com.bestvike.out;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * Created by 许崇雷 on 2017/7/17.
+ * Created by 许崇雷 on 2018-05-07.
  */
-public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable<TElement>, IPartition<TElement> {
+final class _OrderedEnumerable {
+    private _OrderedEnumerable() {
+    }
+}
+
+
+abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable<TElement>, IPartition<TElement> {
     IEnumerable<TElement> source;
 
     private Integer[] sortedMap(Buffer<TElement> buffer) {
@@ -419,5 +424,299 @@ public abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnu
                     return false;
             }
         }
+    }
+}
+
+
+final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<TElement> {
+    private final AbstractOrderedEnumerable<TElement> parent;
+    private final Func1<TElement, TKey> keySelector;
+    private final Comparator<TKey> comparer;
+    private final boolean descending;
+
+    public OrderedEnumerable(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractOrderedEnumerable<TElement> parent) {
+        if (source == null)
+            throw Errors.argumentNull("source");
+        if (keySelector == null)
+            throw Errors.argumentNull("keySelector");
+
+        this.source = source;
+        this.parent = parent;
+        this.keySelector = keySelector;
+        this.comparer = comparer == null ? Comparer.Default() : comparer;
+        this.descending = descending;
+    }
+
+    protected AbstractEnumerableSorter<TElement> getEnumerableSorter(AbstractEnumerableSorter<TElement> next) {
+        AbstractEnumerableSorter<TElement> sorter = new EnumerableSorter<>(this.keySelector, this.comparer, this.descending, next);
+        if (this.parent != null)
+            sorter = this.parent.getEnumerableSorter(sorter);
+        return sorter;
+    }
+
+    protected AbstractCachingComparer<TElement> getComparer(AbstractCachingComparer<TElement> childComparer) {
+        AbstractCachingComparer<TElement> cmp = childComparer == null
+                ? new CachingComparer<>(this.keySelector, this.comparer, this.descending)
+                : new CachingComparerWithChild<>(this.keySelector, this.comparer, this.descending, childComparer);
+        return this.parent != null ? this.parent.getComparer(cmp) : cmp;
+    }
+}
+
+
+abstract class AbstractCachingComparer<TElement> {
+    abstract int compare(TElement element, boolean cacheLower);
+
+    abstract void setElement(TElement element);
+}
+
+
+class CachingComparer<TElement, TKey> extends AbstractCachingComparer<TElement> {
+    protected final Func1<TElement, TKey> keySelector;
+    protected final Comparator<TKey> comparer;
+    protected final boolean descending;
+    protected TKey lastKey;
+
+    public CachingComparer(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending) {
+        this.keySelector = keySelector;
+        this.comparer = comparer;
+        this.descending = descending;
+    }
+
+    int compare(TElement element, boolean cacheLower) {
+        TKey newKey = this.keySelector.apply(element);
+        int cmp = this.descending ? this.comparer.compare(this.lastKey, newKey) : this.comparer.compare(newKey, this.lastKey);
+        if (cacheLower == cmp < 0)
+            this.lastKey = newKey;
+        return cmp;
+    }
+
+    void setElement(TElement element) {
+        this.lastKey = this.keySelector.apply(element);
+    }
+}
+
+
+final class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TElement, TKey> {
+    private final AbstractCachingComparer<TElement> child;
+
+    public CachingComparerWithChild(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractCachingComparer<TElement> child) {
+        super(keySelector, comparer, descending);
+        this.child = child;
+    }
+
+    protected int compare(TElement element, boolean cacheLower) {
+        TKey newKey = this.keySelector.apply(element);
+        int cmp = this.descending ? this.comparer.compare(this.lastKey, newKey) : this.comparer.compare(newKey, this.lastKey);
+        if (cmp == 0)
+            return this.child.compare(element, cacheLower);
+        if (cacheLower == cmp < 0) {
+            this.lastKey = newKey;
+            this.child.setElement(element);
+        }
+        return cmp;
+    }
+
+    protected void setElement(TElement element) {
+        super.setElement(element);
+        this.child.setElement(element);
+    }
+}
+
+
+abstract class AbstractEnumerableSorter<TElement> {
+    protected abstract void computeKeys(Array<TElement> elements, int count);
+
+    protected abstract int compareAnyKeys(int index1, int index2);
+
+    private Integer[] computeMap(Array<TElement> elements, int count) {
+        this.computeKeys(elements, count);
+        Integer[] map = new Integer[count];
+        for (int i = 0; i < map.length; i++)
+            map[i] = i;
+        return map;
+    }
+
+    protected Integer[] sort(Array<TElement> elements, int count) {
+        Integer[] map = this.computeMap(elements, count);
+        this.quickSort(map, 0, count - 1);
+        return map;
+    }
+
+    protected Integer[] sort(Array<TElement> elements, int count, int minIdx, int maxIdx) {
+        Integer[] map = this.computeMap(elements, count);
+        this.partialQuickSort(map, 0, count - 1, minIdx, maxIdx);
+        return map;
+    }
+
+    protected TElement elementAt(Array<TElement> elements, int count, int idx) {
+        return elements.get(this.quickSelect(this.computeMap(elements, count), count - 1, idx));
+    }
+
+    protected abstract void quickSort(Integer[] map, int left, int right);
+
+    // Sorts the k elements between minIdx and maxIdx without sorting all elements
+    // Time complexity: O(n + k log k) best and average case. O(n^2) worse case.
+    protected abstract void partialQuickSort(Integer[] map, int left, int right, int minIdx, int maxIdx);
+
+    // Finds the element that would be at idx if the collection was sorted.
+    // Time complexity: O(n) best and average case. O(n^2) worse case.
+    protected abstract int quickSelect(Integer[] map, int right, int idx);
+}
+
+
+final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TElement> {
+    private final Func1<TElement, TKey> keySelector;
+    private final Comparator<TKey> comparer;
+    private final boolean descending;
+    private final AbstractEnumerableSorter<TElement> next;
+    private Array<TKey> keys;
+
+    EnumerableSorter(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractEnumerableSorter<TElement> next) {
+        this.keySelector = keySelector;
+        this.comparer = comparer;
+        this.descending = descending;
+        this.next = next;
+    }
+
+    protected void computeKeys(Array<TElement> elements, int count) {
+        this.keys = Array.create(count);
+        for (int i = 0; i < count; i++)
+            this.keys.set(i, this.keySelector.apply(elements.get(i)));
+        if (this.next == null)
+            return;
+        this.next.computeKeys(elements, count);
+    }
+
+    protected int compareAnyKeys(int index1, int index2) {
+        int c = this.comparer.compare(this.keys.get(index1), this.keys.get(index2));
+        if (c == 0) {
+            if (this.next == null)
+                return index1 - index2; // ensure stability of sort
+            return this.next.compareAnyKeys(index1, index2);
+        }
+
+        // -c will result in a negative value for int.MinValue (-int.MinValue == int.MinValue).
+        // Flipping keys earlier is more likely to trigger something strange in a comparer,
+        // particularly as it comes to the sort being stable.
+        return (this.descending != (c > 0)) ? 1 : -1;
+    }
+
+    private int compareKeys(int index1, int index2) {
+        return index1 == index2 ? 0 : this.compareAnyKeys(index1, index2);
+    }
+
+    protected void quickSort(Integer[] keys, int lo, int hi) {
+        Arrays.sort(keys, lo, hi - lo + 1, Comparer.create(this::compareAnyKeys)); // TODO #24115: Remove Create call when delegate-based overload is available
+    }
+
+    // Sorts the k elements between minIdx and maxIdx without sorting all elements
+    // Time complexity: O(n + k log k) best and average case. O(n^2) worse case.
+    protected void partialQuickSort(Integer[] map, int left, int right, int minIdx, int maxIdx) {
+        do {
+            int i = left;
+            int j = right;
+            int x = map[i + ((j - i) >> 1)];
+            do {
+                while (i < map.length && this.compareKeys(x, map[i]) > 0) {
+                    i++;
+                }
+
+                while (j >= 0 && this.compareKeys(x, map[j]) < 0) {
+                    j--;
+                }
+
+                if (i > j) {
+                    break;
+                }
+
+                if (i < j) {
+                    int temp = map[i];
+                    map[i] = map[j];
+                    map[j] = temp;
+                }
+
+                i++;
+                j--;
+            }
+            while (i <= j);
+
+            if (minIdx >= i) {
+                left = i + 1;
+            } else if (maxIdx <= j) {
+                right = j - 1;
+            }
+
+            if (j - left <= right - i) {
+                if (left < j) {
+                    this.partialQuickSort(map, left, j, minIdx, maxIdx);
+                }
+
+                left = i;
+            } else {
+                if (i < right) {
+                    this.partialQuickSort(map, i, right, minIdx, maxIdx);
+                }
+
+                right = j;
+            }
+        }
+        while (left < right);
+    }
+
+    // Finds the element that would be at idx if the collection was sorted.
+    // Time complexity: O(n) best and average case. O(n^2) worse case.
+    protected int quickSelect(Integer[] map, int right, int idx) {
+        int left = 0;
+        do {
+            int i = left;
+            int j = right;
+            int x = map[i + ((j - i) >> 1)];
+            do {
+                while (i < map.length && this.compareKeys(x, map[i]) > 0) {
+                    i++;
+                }
+
+                while (j >= 0 && this.compareKeys(x, map[j]) < 0) {
+                    j--;
+                }
+
+                if (i > j) {
+                    break;
+                }
+
+                if (i < j) {
+                    int temp = map[i];
+                    map[i] = map[j];
+                    map[j] = temp;
+                }
+
+                i++;
+                j--;
+            }
+            while (i <= j);
+
+            if (i <= idx) {
+                left = i + 1;
+            } else {
+                right = j - 1;
+            }
+
+            if (j - left <= right - i) {
+                if (left < j) {
+                    right = j;
+                }
+
+                left = i;
+            } else {
+                if (i < right) {
+                    left = i;
+                }
+
+                right = j;
+            }
+        }
+        while (left < right);
+
+        return map[idx];
     }
 }

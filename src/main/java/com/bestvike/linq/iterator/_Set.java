@@ -1,4 +1,4 @@
-package com.bestvike.linq.impl.collections;
+package com.bestvike.linq.iterator;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.EqualityComparer;
@@ -10,9 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by 许崇雷 on 2017/7/18.
+ * Created by 许崇雷 on 2018-05-07.
  */
-public final class Set<TElement> {
+final class _Set {
+    private _Set() {
+    }
+}
+
+final class Set<TElement> {
     private final IEqualityComparer<TElement> comparer;
     private int[] buckets;
     private Array<Slot> slots;

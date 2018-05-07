@@ -4,7 +4,6 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.impl.partition.IPartition;
 import com.bestvike.out;
 
 /**

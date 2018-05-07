@@ -1,20 +1,23 @@
-package com.bestvike.linq.impl.collections;
+package com.bestvike.linq.iterator;
 
 import com.bestvike.collections.generic.Array;
-import com.bestvike.collections.generic.EnumerableHelpers;
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.impl.partition.IIListProvider;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 
 /**
- * Created by 许崇雷 on 2017/7/17.
+ * Created by 许崇雷 on 2018-05-07.
  */
-public final class Buffer<TElement> {//struct
+final class _Buffer {
+    private _Buffer() {
+    }
+}
+
+final class Buffer<TElement> {//struct
     private final Array<TElement> items;
     private final int count;
 
-    public Buffer(IEnumerable<TElement> source) {
+    Buffer(IEnumerable<TElement> source) {
         if (source instanceof IIListProvider) {
             IIListProvider<TElement> iterator = (IIListProvider<TElement>) source;
             this.items = iterator._toArray();

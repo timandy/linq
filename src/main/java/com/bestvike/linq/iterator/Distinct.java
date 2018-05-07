@@ -5,8 +5,6 @@ import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.impl.collections.Set;
-import com.bestvike.linq.impl.partition.IIListProvider;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import com.bestvike.linq.iteratorold.WhereEnumerableIterator;
  */
 public abstract class Iterator<TSource> extends AbstractIterator<TSource> {
     public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
-        return new Select.SelectEnumerableIterator<TSource, TResult>(this, selector);
+        return new SelectEnumerableIterator<TSource, TResult>(this, selector);
     }
 
     public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
