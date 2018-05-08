@@ -100,17 +100,27 @@ final class EnumerableHelpers {
     }
 
     //Converts an enumerable to an array.
+    public static <T> T[] toArray(IEnumerable<T> source, Class<T> clazz) {
+        assert source != null;
+        assert clazz != null;
+
+        if (source instanceof ICollection) {
+            ICollection<T> collection = (ICollection<T>) source;
+            return collection._toArray(clazz);
+        }
+
+        LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
+        builder.addRange(source);
+        return builder.toArray(clazz);
+    }
+
+    //Converts an enumerable to an array.
     public static <T> Array<T> toArray(IEnumerable<T> source) {
         assert source != null;
 
         if (source instanceof ICollection) {
             ICollection<T> collection = (ICollection<T>) source;
-            int count = collection._getCount();
-            if (count == 0)
-                return Array.empty();
-            Array<T> result = Array.create(count);
-            collection._copyTo(result, 0);
-            return result;
+            return collection._toArray();
         }
 
         LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
