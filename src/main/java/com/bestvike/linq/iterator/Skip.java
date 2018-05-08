@@ -186,8 +186,8 @@ final class SkipWhileIterator2<TSource> extends AbstractIterator<TSource> {
 final class SkipLastIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
     private final int count;
-    private Queue<TSource> queue;
     private IEnumerator<TSource> enumerator;
+    private Queue<TSource> queue;
 
     SkipLastIterator(IEnumerable<TSource> source, int count) {
         assert source != null;
@@ -232,11 +232,11 @@ final class SkipLastIterator<TSource> extends AbstractIterator<TSource> {
 
     @Override
     public void close() {
-        this.queue = null;
         if (this.enumerator != null) {
             this.enumerator.close();
             this.enumerator = null;
         }
+        this.queue = null;
         super.close();
     }
 }
