@@ -28,7 +28,7 @@ public final class Skip {
             count = 0;
         } else if (source instanceof IPartition) {
             IPartition<TSource> partition = (IPartition<TSource>) source;
-            return partition.skip(count);
+            return partition._skip(count);
         }
 
         if (source instanceof IList) {
