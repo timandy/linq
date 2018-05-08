@@ -347,9 +347,9 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 
 final class EnumerablePartition<TSource> extends Iterator<TSource> implements IPartition<TSource> {
     private final IEnumerable<TSource> source;
-    private final int minIndexInclusive;
-    private final int maxIndexInclusive; // -1 if we want everything past _minIndexInclusive.
-    // If this is -1, it's impossible to set a limit on the count.
+    private final int minIndexInclusive;// -1 if we want everything past _minIndexInclusive.
+    private final int maxIndexInclusive;// If this is -1, it's impossible to set a limit on the count.
+
     private IEnumerator<TSource> enumerator;
 
     EnumerablePartition(IEnumerable<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
