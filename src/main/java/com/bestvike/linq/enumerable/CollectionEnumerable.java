@@ -42,14 +42,14 @@ public final class CollectionEnumerable<TElement> implements ICollection<TElemen
 
     @Override
     public void _copyTo(TElement[] array, int arrayIndex) {
-        for (TElement element : this.source)
-            array[arrayIndex++] = element;
+        Object[] src = this.source.toArray();
+        System.arraycopy(src, 0, array, arrayIndex, src.length);
     }
 
     @Override
     public void _copyTo(Array<TElement> array, int arrayIndex) {
-        for (TElement element : this.source)
-            array.set(arrayIndex++, element);
+        Object[] src = this.source.toArray();
+        Array.copy(src, 0, array, arrayIndex, src.length);
     }
 
     @Override

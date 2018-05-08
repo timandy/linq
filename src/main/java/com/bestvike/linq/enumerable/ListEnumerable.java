@@ -48,13 +48,13 @@ public final class ListEnumerable<TElement> implements IList<TElement> {
     @Override
     public void _copyTo(TElement[] array, int arrayIndex) {
         Object[] src = this.source.toArray();
-        System.arraycopy(src, 0, array, arrayIndex, this.source.size());
+        System.arraycopy(src, 0, array, arrayIndex, src.length);
     }
 
     @Override
     public void _copyTo(Array<TElement> array, int arrayIndex) {
         Object[] src = this.source.toArray();
-        Array.copy(src, 0, array, arrayIndex, this.source.size());
+        Array.copy(src, 0, array, arrayIndex, src.length);
     }
 
     @Override
