@@ -28,7 +28,7 @@ public final class AppendPrepend {
 
         if (source instanceof AppendPrependIterator) {
             AppendPrependIterator<TSource> appendable = (AppendPrependIterator<TSource>) source;
-            return appendable.append(element);
+            return appendable._append(element);
         }
         return new AppendPrepend1Iterator<>(source, element, true);
     }
@@ -39,7 +39,7 @@ public final class AppendPrepend {
 
         if (source instanceof AppendPrependIterator) {
             AppendPrependIterator<TSource> appendable = (AppendPrependIterator<TSource>) source;
-            return appendable.prepend(element);
+            return appendable._prepend(element);
         }
         return new AppendPrepend1Iterator<>(source, element, false);
     }
@@ -60,9 +60,9 @@ abstract class AppendPrependIterator<TSource> extends Iterator<TSource> implemen
         this.enumerator = this.source.enumerator();
     }
 
-    public abstract AppendPrependIterator<TSource> append(TSource item);
+    public abstract AppendPrependIterator<TSource> _append(TSource item);
 
-    public abstract AppendPrependIterator<TSource> prepend(TSource item);
+    public abstract AppendPrependIterator<TSource> _prepend(TSource item);
 
     protected boolean loadFromEnumerator() {
         if (this.enumerator.moveNext()) {
@@ -131,13 +131,13 @@ final class AppendPrepend1Iterator<TSource> extends AppendPrependIterator<TSourc
         return false;
     }
 
-    public AppendPrependIterator<TSource> append(TSource item) {
+    public AppendPrependIterator<TSource> _append(TSource item) {
         return this.appending
                 ? new AppendPrependNIterator<>(this.source, null, new SingleLinkedNode<>(this.item).add(item), 0, 2)
                 : new AppendPrependNIterator<>(this.source, new SingleLinkedNode<>(this.item), new SingleLinkedNode<>(item), 1, 1);
     }
 
-    public AppendPrependIterator<TSource> prepend(TSource item) {
+    public AppendPrependIterator<TSource> _prepend(TSource item) {
         return this.appending
                 ? new AppendPrependNIterator<>(this.source, new SingleLinkedNode<>(item), new SingleLinkedNode<>(this.item), 1, 1)
                 : new AppendPrependNIterator<>(this.source, new SingleLinkedNode<>(this.item).add(item), null, 2, 0);
@@ -291,12 +291,12 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
         return false;
     }
 
-    public AppendPrependIterator<TSource> append(TSource item) {
+    public AppendPrependIterator<TSource> _append(TSource item) {
         SingleLinkedNode<TSource> appended = this.appended != null ? this.appended.add(item) : new SingleLinkedNode<>(item);
         return new AppendPrependNIterator<>(this.source, this.prepended, appended, this.prependCount, this.appendCount + 1);
     }
 
-    public AppendPrependIterator<TSource> prepend(TSource item) {
+    public AppendPrependIterator<TSource> _prepend(TSource item) {
         SingleLinkedNode<TSource> prepended = this.prepended != null ? this.prepended.add(item) : new SingleLinkedNode<>(item);
         return new AppendPrependNIterator<>(this.source, prepended, this.appended, this.prependCount + 1, this.appendCount);
     }
