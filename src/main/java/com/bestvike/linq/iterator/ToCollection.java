@@ -34,6 +34,18 @@ public final class ToCollection {
         return EnumerableHelpers.toArray(source, clazz);
     }
 
+    public static <TSource> Array<TSource> toArray(IEnumerable<TSource> source) {
+        if (source == null)
+            throw Errors.argumentNull("source");
+
+        if (source instanceof IIListProvider) {
+            IIListProvider<TSource> listProvider = (IIListProvider<TSource>) source;
+            return listProvider._toArray();
+        }
+
+        return EnumerableHelpers.toArray(source);
+    }
+
     public static <TSource> List<TSource> toList(IEnumerable<TSource> source) {
         if (source == null)
             throw Errors.argumentNull("source");
