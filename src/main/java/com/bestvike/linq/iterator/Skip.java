@@ -10,7 +10,6 @@ import com.bestvike.linq.exception.Errors;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-
 /**
  * Created by 许崇雷 on 2018-05-04.
  */
@@ -66,8 +65,6 @@ public final class Skip {
 
         return new SkipLastIterator<>(source, count);
     }
-
-
 }
 
 
