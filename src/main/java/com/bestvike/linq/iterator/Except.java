@@ -13,25 +13,17 @@ public final class Except {
     }
 
     public static <TSource> IEnumerable<TSource> except(IEnumerable<TSource> first, IEnumerable<TSource> second) {
-        if (first == null)
-            throw Errors.argumentNull("first");
-
-        if (second == null)
-            throw Errors.argumentNull("second");
-
-        return new ExceptIterator<>(first, second, null);
+        return except(first, second, null);
     }
 
     public static <TSource> IEnumerable<TSource> except(IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
         if (first == null)
             throw Errors.argumentNull("first");
-
         if (second == null)
             throw Errors.argumentNull("second");
 
         return new ExceptIterator<>(first, second, comparer);
     }
-
 }
 
 
