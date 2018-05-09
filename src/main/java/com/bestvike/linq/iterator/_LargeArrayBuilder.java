@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-class _LargeArrayBuilder {
+final class _LargeArrayBuilder {
     private _LargeArrayBuilder() {
     }
 }
