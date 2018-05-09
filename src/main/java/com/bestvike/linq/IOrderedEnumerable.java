@@ -1,7 +1,7 @@
 package com.bestvike.linq;
 
-import com.bestvike.linq.function.Func1;
-import com.bestvike.linq.iterator.Enumerable;
+import com.bestvike.function.Func1;
+import com.bestvike.linq.iterator.OrderBy;
 
 import java.util.Comparator;
 
@@ -12,18 +12,18 @@ public interface IOrderedEnumerable<TElement> extends IEnumerable<TElement> {
     <TKey> IOrderedEnumerable<TElement> createOrderedEnumerable(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending);
 
     default <TKey> IOrderedEnumerable<TElement> thenBy(Func1<TElement, TKey> keySelector) {
-        return Enumerable.thenBy(this, keySelector);
+        return OrderBy.thenBy(this, keySelector);
     }
 
     default <TKey> IOrderedEnumerable<TElement> thenBy(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer) {
-        return Enumerable.thenBy(this, keySelector, comparer);
+        return OrderBy.thenBy(this, keySelector, comparer);
     }
 
     default <TKey> IOrderedEnumerable<TElement> thenByDescending(Func1<TElement, TKey> keySelector) {
-        return Enumerable.thenByDescending(this, keySelector);
+        return OrderBy.thenByDescending(this, keySelector);
     }
 
     default <TKey> IOrderedEnumerable<TElement> thenByDescending(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer) {
-        return Enumerable.thenByDescending(this, keySelector, comparer);
+        return OrderBy.thenByDescending(this, keySelector, comparer);
     }
 }
