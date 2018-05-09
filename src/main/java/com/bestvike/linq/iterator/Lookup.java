@@ -109,7 +109,7 @@ public final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, II
 
     @Override
     public IEnumerable<TElement> get(TKey key) {
-        Grouping grouping = this.getGrouping(key, false);
+        Grouping<TKey, TElement> grouping = this.getGrouping(key, false);
         return grouping == null ? Array.empty() : grouping;
     }
 
@@ -289,11 +289,11 @@ public final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, II
     }
 
     public IEnumerable<TElement> fetch(TKey key) {
-        Grouping grouping = this.fetchGrouping(key);
+        Grouping<TKey, TElement> grouping = this.fetchGrouping(key);
         return grouping == null ? Array.empty() : grouping;
     }
 
-    public IEnumerator<Grouping> unfetchedEnumerator() {
+    public IEnumerator<Grouping<TKey, TElement>> unfetchedEnumerator() {
         return new UnfetchedLookupEnumerator();
     }
 
@@ -386,8 +386,8 @@ public final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, II
         }
     }
 
-    private final class UnfetchedLookupEnumerator extends AbstractEnumerator<Grouping> {
-        private Grouping g;
+    private final class UnfetchedLookupEnumerator extends AbstractEnumerator<Grouping<TKey, TElement>> {
+        private Grouping<TKey, TElement> g;
 
         @Override
         public boolean moveNext() {
