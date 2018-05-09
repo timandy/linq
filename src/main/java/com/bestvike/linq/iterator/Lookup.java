@@ -31,7 +31,7 @@ public final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, II
         this.groupings = Array.create(7);
     }
 
-    public static <TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+    static <TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         assert source != null;
         assert keySelector != null;
 
@@ -41,7 +41,7 @@ public final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, II
         return lookup;
     }
 
-    public static <TSource, TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
+    static <TSource, TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
         assert source != null;
         assert keySelector != null;
         assert elementSelector != null;
@@ -52,7 +52,7 @@ public final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, II
         return lookup;
     }
 
-    public static <TKey, TElement> Lookup<TKey, TElement> createForJoin(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+    static <TKey, TElement> Lookup<TKey, TElement> createForJoin(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
         for (TElement item : source) {
             TKey key = keySelector.apply(item);
@@ -62,7 +62,7 @@ public final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, II
         return lookup;
     }
 
-    public static <TKey, TElement> Lookup<TKey, TElement> createForFullJoin(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+    static <TKey, TElement> Lookup<TKey, TElement> createForFullJoin(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
         for (TElement item : source) {
             TKey key = keySelector.apply(item);
