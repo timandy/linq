@@ -29,8 +29,11 @@ public final class Select {
             throw Errors.argumentNull("source");
         if (selector == null)
             throw Errors.argumentNull("selector");
-        if (source instanceof Iterator)
-            return ((Iterator<TSource>) source)._select(selector);
+
+        if (source instanceof Iterator) {
+            Iterator<TSource> iterator = (Iterator<TSource>) source;
+            return iterator._select(selector);
+        }
 
         if (source instanceof IList) {
             if (source instanceof Array) {
