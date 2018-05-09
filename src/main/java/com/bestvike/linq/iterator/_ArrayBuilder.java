@@ -1,11 +1,18 @@
-package com.bestvike.collections.generic;
+package com.bestvike.linq.iterator;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.util.ArrayUtils;
 
 /**
- * Created by 许崇雷 on 2017-09-11.
+ * Created by 许崇雷 on 2018-05-09.
  */
-public final class ArrayBuilder<T> {//struct
+final class _ArrayBuilder {
+    private _ArrayBuilder() {
+    }
+}
+
+
+final class ArrayBuilder<T> {//struct
     private static final int DefaultCapacity = 4;
     private static final int MaxCoreClrArrayLength = 0x7fefffff; // For byte arrays the limit is slightly larger
 

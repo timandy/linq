@@ -1,13 +1,45 @@
-package com.bestvike.collections.generic;
+package com.bestvike.linq.iterator;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 
 /**
- * Created by 许崇雷 on 2017-09-30.
+ * Created by 许崇雷 on 2018-05-09.
  */
-public final class SparseArrayBuilder<T> {//struct
+final class _SparseArrayBuilder {
+    private _SparseArrayBuilder() {
+    }
+}
+
+final class Marker {//struct
+    private final int count;
+    private final int index;
+
+    public Marker(int count, int index) {
+        assert count >= 0;
+        assert index >= 0;
+
+        this.count = count;
+        this.index = index;
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+
+    public int getIndex() {
+        return this.index;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("index: %s, count: %s", this.index, this.count);
+    }
+}
+
+final class SparseArrayBuilder<T> {//struct
     private LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
     private ArrayBuilder<Marker> markers = new ArrayBuilder<>();
     private int reservedCount;

@@ -2,7 +2,6 @@ package com.bestvike.linq.iterator;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.collections.generic.SingleLinkedNode;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;

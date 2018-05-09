@@ -2,7 +2,6 @@ package com.bestvike.linq.iterator;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IList;
-import com.bestvike.collections.generic.LargeArrayBuilder;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;

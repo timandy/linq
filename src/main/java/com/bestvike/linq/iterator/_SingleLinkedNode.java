@@ -1,12 +1,19 @@
-package com.bestvike.collections.generic;
+package com.bestvike.linq.iterator;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.enumerator.ArrayEnumerator;
 
 /**
- * Created by 许崇雷 on 2017-09-11.
+ * Created by 许崇雷 on 2018-05-09.
  */
-public final class SingleLinkedNode<TSource> {
+final class _SingleLinkedNode {
+    private _SingleLinkedNode() {
+    }
+}
+
+
+final class SingleLinkedNode<TSource> {
     private SingleLinkedNode<TSource> linked;
     private TSource item;
 
