@@ -12,7 +12,6 @@ public final class Zip {
     private Zip() {
     }
 
-
     public static <TFirst, TSecond, TResult> IEnumerable<TResult> zip(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func2<TFirst, TSecond, TResult> resultSelector) {
         if (first == null)
             throw Errors.argumentNull("first");
