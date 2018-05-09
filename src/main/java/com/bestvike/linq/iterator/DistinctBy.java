@@ -14,12 +14,7 @@ public final class DistinctBy {
     }
 
     public static <TSource, TKey> IEnumerable<TSource> distinctBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
-
-        return new DistinctByIterator<>(source, keySelector, null);
+        return distinctBy(source, keySelector, null);
     }
 
     public static <TSource, TKey> IEnumerable<TSource> distinctBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
