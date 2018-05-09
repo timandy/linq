@@ -52,7 +52,6 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
                     this.close();
                     return false;
                 }
-
                 TSource element = this.enumerator.current();
                 this.set = new Set<>(this.comparer);
                 this.set.add(element);
