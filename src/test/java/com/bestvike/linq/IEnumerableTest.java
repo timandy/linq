@@ -1,13 +1,14 @@
 package com.bestvike.linq;
 
+import com.bestvike.collections.generic.Comparer;
+import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.entity.IterableDemo;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
-import com.bestvike.linq.tuple.Tuple;
-import com.bestvike.linq.tuple.Tuple1;
-import com.bestvike.linq.util.Comparer;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple1;
 import org.junit.Assert;
 import org.junit.Test;
 
