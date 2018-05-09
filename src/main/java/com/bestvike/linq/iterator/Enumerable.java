@@ -107,10 +107,6 @@ public final class Enumerable {
         return new IterableEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(IEnumerable<TSource> source) {
-        return source;
-    }
-
     public static IEnumerable<Character> asEnumerable(CharSequence source) {
         if (source == null)
             throw Errors.argumentNull("source");
