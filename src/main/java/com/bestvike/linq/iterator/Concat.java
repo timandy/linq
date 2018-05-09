@@ -29,7 +29,7 @@ public final class Concat {
             throw Errors.argumentNull("second");
 
         return first instanceof ConcatIterator
-                ? ((ConcatIterator<TSource>) first).concat(second)
+                ? ((ConcatIterator<TSource>) first)._concat(second)
                 : new Concat2Iterator<>(first, second);
     }
 }
@@ -48,7 +48,7 @@ abstract class ConcatIterator<TSource> extends Iterator<TSource> implements IILi
 
     public abstract IEnumerable<TSource> getEnumerable(int index);
 
-    public abstract ConcatIterator<TSource> concat(IEnumerable<TSource> next);
+    public abstract ConcatIterator<TSource> _concat(IEnumerable<TSource> next);
 
     public boolean moveNext() {
         if (this.state == 1) {
@@ -116,7 +116,7 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
         return new Concat2Iterator<>(this.first, this.second);
     }
 
-    public ConcatIterator<TSource> concat(IEnumerable<TSource> next) {
+    public ConcatIterator<TSource> _concat(IEnumerable<TSource> next) {
         boolean hasOnlyCollections = next instanceof ICollection &&
                 this.first instanceof ICollection &&
                 this.second instanceof ICollection;
@@ -226,7 +226,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         return new ConcatNIterator<>(this.tail, this.head, this.headIndex, this.hasOnlyCollections);
     }
 
-    public ConcatIterator<TSource> concat(IEnumerable<TSource> next) {
+    public ConcatIterator<TSource> _concat(IEnumerable<TSource> next) {
         if (this.headIndex == Integer.MAX_VALUE - 2) {
             // In the unlikely case of this many concatenations, if we produced a ConcatNIterator
             // with int.MaxValue then state would overflow before it matched its index.
