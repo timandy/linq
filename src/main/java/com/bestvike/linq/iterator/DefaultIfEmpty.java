@@ -40,10 +40,12 @@ final class DefaultIfEmptyIterator<TSource> extends Iterator<TSource> implements
         this.defaultValue = defaultValue;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new DefaultIfEmptyIterator<>(this.source, this.defaultValue);
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -70,6 +72,7 @@ final class DefaultIfEmptyIterator<TSource> extends Iterator<TSource> implements
         }
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -78,16 +81,19 @@ final class DefaultIfEmptyIterator<TSource> extends Iterator<TSource> implements
         super.close();
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         TSource[] array = this.source.toArray(clazz);
         return array.length == 0 ? ArrayUtils.singleton(clazz, this.defaultValue) : array;
     }
 
+    @Override
     public Array<TSource> _toArray() {
         Array<TSource> array = this.source.toArray();
         return array.length() == 0 ? Array.singleton(this.defaultValue) : array;
     }
 
+    @Override
     public List<TSource> _toList() {
         List<TSource> list = this.source.toList();
         if (list.isEmpty())
@@ -95,6 +101,7 @@ final class DefaultIfEmptyIterator<TSource> extends Iterator<TSource> implements
         return list;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         int count;
         if (!onlyIfCheap || this.source instanceof ICollection)

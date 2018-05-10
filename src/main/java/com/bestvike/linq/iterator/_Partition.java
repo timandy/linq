@@ -157,15 +157,18 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
         this.maxIndexInclusive = maxIdxInclusive;
     }
 
+    @Override
     public IEnumerator<TElement> enumerator() {
         return this.source.enumerator(this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public IPartition<TElement> _skip(int count) {
         int minIndex = this.minIndexInclusive + count;
         return minIndex > this.maxIndexInclusive ? EmptyPartition.instance() : new OrderedPartition<>(this.source, minIndex, this.maxIndexInclusive);
     }
 
+    @Override
     public IPartition<TElement> _take(int count) {
         int maxIndex = this.minIndexInclusive + count - 1;
         if (maxIndex >= this.maxIndexInclusive)
@@ -174,6 +177,7 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
         return new OrderedPartition<>(this.source, this.minIndexInclusive, maxIndex);
     }
 
+    @Override
     public TElement _tryGetElementAt(int index, out<Boolean> found) {
         if (index <= (this.maxIndexInclusive - this.minIndexInclusive)) {
             return this.source._tryGetElementAt(index + this.minIndexInclusive, found);
@@ -183,10 +187,12 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
         return null;
     }
 
+    @Override
     public TElement _tryGetFirst(out<Boolean> found) {
         return this.source._tryGetElementAt(this.minIndexInclusive, found);
     }
 
+    @Override
     public TElement _tryGetLast(out<Boolean> found) {
         return this.source._tryGetLast(this.minIndexInclusive, this.maxIndexInclusive, found);
     }
@@ -196,14 +202,17 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
         return this.source._toArray(this.minIndexInclusive, this.maxIndexInclusive, clazz);
     }
 
+    @Override
     public Array<TElement> _toArray() {
         return this.source._toArray(this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public List<TElement> _toList() {
         return this.source._toList(this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return this.source._getCount(this.minIndexInclusive, this.maxIndexInclusive, onlyIfCheap);
     }
@@ -225,10 +234,12 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         this.maxIndexInclusive = maxIndexInclusive;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new ListPartition<>(this.source, this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public boolean moveNext() {
         // _state - 1 represents the zero-based index into the list.
         // Having a separate field for the index would be more readable. However, we save it
@@ -246,20 +257,24 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         return false;
     }
 
+    @Override
     public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
         return new SelectListPartitionIterator<TSource, TResult>(this.source, selector, this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public IPartition<TSource> _skip(int count) {
         int minIndex = this.minIndexInclusive + count;
         return minIndex > this.maxIndexInclusive ? EmptyPartition.instance() : new ListPartition<>(this.source, minIndex, this.maxIndexInclusive);
     }
 
+    @Override
     public IPartition<TSource> _take(int count) {
         int maxIndex = this.minIndexInclusive + count - 1;
         return maxIndex >= this.maxIndexInclusive ? this : new ListPartition<>(this.source, this.minIndexInclusive, maxIndex);
     }
 
+    @Override
     public TSource _tryGetElementAt(int index, out<Boolean> found) {
         if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
             found.setValue(true);
@@ -270,6 +285,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         return null;
     }
 
+    @Override
     public TSource _tryGetFirst(out<Boolean> found) {
         if (this.source._getCount() > this.minIndexInclusive) {
             found.setValue(true);
@@ -280,6 +296,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         return null;
     }
 
+    @Override
     public TSource _tryGetLast(out<Boolean> found) {
         int lastIndex = this.source._getCount() - 1;
         if (lastIndex >= this.minIndexInclusive) {
@@ -299,6 +316,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         return Math.min(count - 1, this.maxIndexInclusive) - this.minIndexInclusive + 1;
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         int count = this.getCount();
         if (count == 0)
@@ -324,6 +342,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         return array;
     }
 
+    @Override
     public List<TSource> _toList() {
         int count = this.getCount();
         if (count == 0) {
@@ -338,6 +357,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         return list;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return this.getCount();
     }
@@ -392,10 +412,12 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return (this.maxIndexInclusive + 1) - this.minIndexInclusive; // This is that upper bound.
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new EnumerablePartition<>(this.source, this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -405,6 +427,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         super.close();
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         if (onlyIfCheap)
             return -1;
@@ -430,6 +453,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         }
     }
 
+    @Override
     public boolean moveNext() {
         // Cases where GetEnumerator has not been called or Dispose has already
         // been called need to be handled explicitly, due to the default: clause.
@@ -467,10 +491,12 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return false;
     }
 
+    @Override
     public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
         return new SelectIPartitionIterator<TSource, TResult>(this, selector);
     }
 
+    @Override
     public IPartition<TSource> _skip(int count) {
         int minIndex = this.minIndexInclusive + count;
 
@@ -492,6 +518,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return new EnumerablePartition<>(this.source, minIndex, this.maxIndexInclusive);
     }
 
+    @Override
     public IPartition<TSource> _take(int count) {
         int maxIndex = this.minIndexInclusive + count - 1;
         if (!this.hasLimit()) {
@@ -515,6 +542,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return new EnumerablePartition<>(this.source, this.minIndexInclusive, maxIndex);
     }
 
+    @Override
     public TSource _tryGetElementAt(int index, out<Boolean> found) {
         // If the index is negative or >= our max count, return early.
         if (index >= 0 && (!this.hasLimit() || index < this.getLimit())) {
@@ -532,6 +560,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return null;
     }
 
+    @Override
     public TSource _tryGetFirst(out<Boolean> found) {
         try (IEnumerator<TSource> en = this.source.enumerator()) {
             if (this.skipBeforeFirst(en) && en.moveNext()) {
@@ -544,6 +573,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return null;
     }
 
+    @Override
     public TSource _tryGetLast(out<Boolean> found) {
         try (IEnumerator<TSource> en = this.source.enumerator()) {
             if (this.skipBeforeFirst(en) && en.moveNext()) {
@@ -566,6 +596,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return null;
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         try (IEnumerator<TSource> en = this.source.enumerator()) {
             if (this.skipBeforeFirst(en) && en.moveNext()) {
@@ -588,6 +619,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return ArrayUtils.empty(clazz);
     }
 
+    @Override
     public Array<TSource> _toArray() {
         try (IEnumerator<TSource> en = this.source.enumerator()) {
             if (this.skipBeforeFirst(en) && en.moveNext()) {
@@ -610,6 +642,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         return Array.empty();
     }
 
+    @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
 

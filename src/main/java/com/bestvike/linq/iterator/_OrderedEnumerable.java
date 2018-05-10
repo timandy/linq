@@ -38,6 +38,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         return this.getEnumerableSorter().sort(buffer.getItems(), buffer.getCount(), minIdx, maxIdx);
     }
 
+    @Override
     public IEnumerator<TElement> enumerator() {
         return new OrderedEnumerableEnumerator();
     }
@@ -54,6 +55,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
 
     protected abstract AbstractCachingComparer<TElement> getComparer(AbstractCachingComparer<TElement> childComparer);
 
+    @Override
     public <TKey> IOrderedEnumerable<TElement> createOrderedEnumerable(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending) {
         return new OrderedEnumerable<>(this.source, keySelector, comparer, descending, this);
     }
@@ -447,6 +449,7 @@ final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<
         this.descending = descending;
     }
 
+    @Override
     protected AbstractEnumerableSorter<TElement> getEnumerableSorter(AbstractEnumerableSorter<TElement> next) {
         AbstractEnumerableSorter<TElement> sorter = new EnumerableSorter<>(this.keySelector, this.comparer, this.descending, next);
         if (this.parent != null)
@@ -454,6 +457,7 @@ final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<
         return sorter;
     }
 
+    @Override
     protected AbstractCachingComparer<TElement> getComparer(AbstractCachingComparer<TElement> childComparer) {
         AbstractCachingComparer<TElement> cmp = childComparer == null
                 ? new CachingComparer<>(this.keySelector, this.comparer, this.descending)
@@ -482,6 +486,7 @@ class CachingComparer<TElement, TKey> extends AbstractCachingComparer<TElement> 
         this.descending = descending;
     }
 
+    @Override
     int compare(TElement element, boolean cacheLower) {
         TKey newKey = this.keySelector.apply(element);
         int cmp = this.descending ? this.comparer.compare(this.lastKey, newKey) : this.comparer.compare(newKey, this.lastKey);
@@ -490,6 +495,7 @@ class CachingComparer<TElement, TKey> extends AbstractCachingComparer<TElement> 
         return cmp;
     }
 
+    @Override
     void setElement(TElement element) {
         this.lastKey = this.keySelector.apply(element);
     }
@@ -504,6 +510,7 @@ final class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TEl
         this.child = child;
     }
 
+    @Override
     protected int compare(TElement element, boolean cacheLower) {
         TKey newKey = this.keySelector.apply(element);
         int cmp = this.descending ? this.comparer.compare(this.lastKey, newKey) : this.comparer.compare(newKey, this.lastKey);
@@ -516,6 +523,7 @@ final class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TEl
         return cmp;
     }
 
+    @Override
     protected void setElement(TElement element) {
         super.setElement(element);
         this.child.setElement(element);
@@ -578,6 +586,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
         this.next = next;
     }
 
+    @Override
     protected void computeKeys(Array<TElement> elements, int count) {
         this.keys = Array.create(count);
         for (int i = 0; i < count; i++)
@@ -587,6 +596,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
         this.next.computeKeys(elements, count);
     }
 
+    @Override
     protected int compareAnyKeys(int index1, int index2) {
         int c = this.comparer.compare(this.keys.get(index1), this.keys.get(index2));
         if (c == 0) {
@@ -605,12 +615,14 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
         return index1 == index2 ? 0 : this.compareAnyKeys(index1, index2);
     }
 
+    @Override
     protected void quickSort(Integer[] keys, int lo, int hi) {
         Arrays.sort(keys, lo, hi - lo + 1, Comparer.create(this::compareAnyKeys)); // TODO #24115: Remove Create call when delegate-based overload is available
     }
 
     // Sorts the k elements between minIdx and maxIdx without sorting all elements
     // Time complexity: O(n + k log k) best and average case. O(n^2) worse case.
+    @Override
     protected void partialQuickSort(Integer[] map, int left, int right, int minIdx, int maxIdx) {
         do {
             int i = left;
@@ -665,6 +677,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
     // Finds the element that would be at idx if the collection was sorted.
     // Time complexity: O(n) best and average case. O(n^2) worse case.
+    @Override
     protected int quickSelect(Integer[] map, int right, int idx) {
         int left = 0;
         do {

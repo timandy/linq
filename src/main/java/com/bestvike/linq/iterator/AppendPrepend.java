@@ -71,6 +71,7 @@ abstract class AppendPrependIterator<TSource> extends Iterator<TSource> implemen
         return false;
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -79,12 +80,16 @@ abstract class AppendPrependIterator<TSource> extends Iterator<TSource> implemen
         super.close();
     }
 
+    @Override
     public abstract TSource[] _toArray(Class<TSource> clazz);
 
+    @Override
     public abstract Array<TSource> _toArray();
 
+    @Override
     public abstract List<TSource> _toList();
 
+    @Override
     public abstract int _getCount(boolean onlyIfCheap);
 }
 
@@ -99,10 +104,12 @@ final class AppendPrepend1Iterator<TSource> extends AppendPrependIterator<TSourc
         this.appending = appending;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new AppendPrepend1Iterator<>(this.source, this.item, this.appending);
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -128,12 +135,14 @@ final class AppendPrepend1Iterator<TSource> extends AppendPrependIterator<TSourc
         return false;
     }
 
+    @Override
     public AppendPrependIterator<TSource> _append(TSource item) {
         return this.appending
                 ? new AppendPrependNIterator<>(this.source, null, new SingleLinkedNode<>(this.item).add(item), 0, 2)
                 : new AppendPrependNIterator<>(this.source, new SingleLinkedNode<>(this.item), new SingleLinkedNode<>(item), 1, 1);
     }
 
+    @Override
     public AppendPrependIterator<TSource> _prepend(TSource item) {
         return this.appending
                 ? new AppendPrependNIterator<>(this.source, new SingleLinkedNode<>(item), new SingleLinkedNode<>(this.item), 1, 1)
@@ -222,6 +231,7 @@ final class AppendPrepend1Iterator<TSource> extends AppendPrependIterator<TSourc
         return list;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         if (this.source instanceof IIListProvider) {
             IIListProvider<TSource> listProv = (IIListProvider<TSource>) this.source;
@@ -256,10 +266,12 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
         this.appendCount = appendCount;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new AppendPrependNIterator<>(this.source, this.prepended, this.appended, this.prependCount, this.appendCount);
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -288,11 +300,13 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
         return false;
     }
 
+    @Override
     public AppendPrependIterator<TSource> _append(TSource item) {
         SingleLinkedNode<TSource> appended = this.appended != null ? this.appended.add(item) : new SingleLinkedNode<>(item);
         return new AppendPrependNIterator<>(this.source, this.prepended, appended, this.prependCount, this.appendCount + 1);
     }
 
+    @Override
     public AppendPrependIterator<TSource> _prepend(TSource item) {
         SingleLinkedNode<TSource> prepended = this.prepended != null ? this.prepended.add(item) : new SingleLinkedNode<>(item);
         return new AppendPrependNIterator<>(this.source, prepended, this.appended, this.prependCount + 1, this.appendCount);
@@ -429,6 +443,7 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
         return list;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         if (this.source instanceof IIListProvider) {
             IIListProvider<TSource> listProv = (IIListProvider<TSource>) this.source;

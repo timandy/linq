@@ -73,6 +73,7 @@ public final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>
             this.elements = Array.resize(this.elements, this.count);
     }
 
+    @Override
     public IEnumerator<TElement> enumerator() {
         return new ArrayEnumerator<>(this.elements, 0, this.count);
     }
@@ -151,26 +152,31 @@ final class GroupedEnumerable<TSource, TKey> implements IIListProvider<IGrouping
         this.comparer = comparer;
     }
 
+    @Override
     public IEnumerator<IGrouping<TKey, TSource>> enumerator() {
 
         return Lookup.create(this.source, this.keySelector, this.comparer).enumerator();
     }
 
+    @Override
     public IGrouping<TKey, TSource>[] _toArray(Class<IGrouping<TKey, TSource>> clazz) {
         IIListProvider<IGrouping<TKey, TSource>> lookup = Lookup.create(this.source, this.keySelector, this.comparer);
         return lookup._toArray(clazz);
     }
 
+    @Override
     public Array<IGrouping<TKey, TSource>> _toArray() {
         IIListProvider<IGrouping<TKey, TSource>> lookup = Lookup.create(this.source, this.keySelector, this.comparer);
         return lookup._toArray();
     }
 
+    @Override
     public List<IGrouping<TKey, TSource>> _toList() {
         IIListProvider<IGrouping<TKey, TSource>> lookup = Lookup.create(this.source, this.keySelector, this.comparer);
         return lookup._toList();
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return onlyIfCheap ? -1 : Lookup.create(this.source, this.keySelector, this.comparer).getCount();
     }
@@ -197,25 +203,30 @@ final class GroupedEnumerable2<TSource, TKey, TElement> implements IIListProvide
         this.comparer = comparer;
     }
 
+    @Override
     public IEnumerator<IGrouping<TKey, TElement>> enumerator() {
         return Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer).enumerator();
     }
 
+    @Override
     public IGrouping<TKey, TElement>[] _toArray(Class<IGrouping<TKey, TElement>> clazz) {
         IIListProvider<IGrouping<TKey, TElement>> lookup = Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer);
         return lookup._toArray(clazz);
     }
 
+    @Override
     public Array<IGrouping<TKey, TElement>> _toArray() {
         IIListProvider<IGrouping<TKey, TElement>> lookup = Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer);
         return lookup._toArray();
     }
 
+    @Override
     public List<IGrouping<TKey, TElement>> _toList() {
         IIListProvider<IGrouping<TKey, TElement>> lookup = Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer);
         return lookup._toList();
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return onlyIfCheap ? -1 : Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer).getCount();
     }
@@ -242,23 +253,28 @@ final class GroupedResultEnumerable<TSource, TKey, TResult> implements IIListPro
         this.comparer = comparer;
     }
 
+    @Override
     public IEnumerator<TResult> enumerator() {
         Lookup<TKey, TSource> lookup = Lookup.create(this.source, this.keySelector, this.comparer);
         return lookup.applyResultSelector(this.resultSelector).enumerator();
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         return Lookup.create(this.source, this.keySelector, this.comparer)._toArray(clazz, this.resultSelector);
     }
 
+    @Override
     public Array<TResult> _toArray() {
         return Lookup.create(this.source, this.keySelector, this.comparer)._toArray(this.resultSelector);
     }
 
+    @Override
     public List<TResult> _toList() {
         return Lookup.create(this.source, this.keySelector, this.comparer)._toList(this.resultSelector);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return onlyIfCheap ? -1 : Lookup.create(this.source, this.keySelector, this.comparer).getCount();
     }
@@ -289,23 +305,28 @@ final class GroupedResultEnumerable2<TSource, TKey, TElement, TResult> implement
         this.resultSelector = resultSelector;
     }
 
+    @Override
     public IEnumerator<TResult> enumerator() {
         Lookup<TKey, TElement> lookup = Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer);
         return lookup.applyResultSelector(this.resultSelector).enumerator();
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         return Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer)._toArray(clazz, this.resultSelector);
     }
 
+    @Override
     public Array<TResult> _toArray() {
         return Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer)._toArray(this.resultSelector);
     }
 
+    @Override
     public List<TResult> _toList() {
         return Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer)._toList(this.resultSelector);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return onlyIfCheap ? -1 : Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer).getCount();
     }

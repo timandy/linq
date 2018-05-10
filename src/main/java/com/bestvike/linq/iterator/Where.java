@@ -170,6 +170,7 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
         return count;
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source.length());
         for (TSource item : this.source) {
@@ -180,6 +181,7 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
         return builder.toArray(clazz);
     }
 
+    @Override
     public Array<TSource> _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source.length());
         for (TSource item : this.source) {
@@ -190,6 +192,7 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
         return builder.toArray();
     }
 
+    @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
         for (TSource item : this.source) {
@@ -214,18 +217,22 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
         this.predicate = predicate;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new WhereListIterator<>(this.source, this.predicate);
     }
 
+    @Override
     public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
         return new WhereSelectListIterator<>(this.source, this.predicate, selector);
     }
 
+    @Override
     public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
         return new WhereListIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -246,6 +253,7 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
         }
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         if (onlyIfCheap)
             return -1;
@@ -259,6 +267,7 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
         return count;
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
         for (TSource item : this.source) {
@@ -270,6 +279,7 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
         return builder.toArray(clazz);
     }
 
+    @Override
     public Array<TSource> _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
         for (TSource item : this.source) {
@@ -281,6 +291,7 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
         return builder.toArray();
     }
 
+    @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
         for (TSource item : this.source)
@@ -350,6 +361,7 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
         }
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         if (onlyIfCheap)
             return -1;
@@ -363,6 +375,7 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
         return count;
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source) {
@@ -373,6 +386,7 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
         return builder.toArray(clazz);
     }
 
+    @Override
     public Array<TSource> _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source) {
@@ -383,6 +397,7 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
         return builder.toArray();
     }
 
+    @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
         for (TSource item : this.source) {
@@ -419,10 +434,12 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
         this.selector = selector;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new WhereSelectArrayIterator<>(this.source, this.predicate, this.selector);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
@@ -440,6 +457,7 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
         return count;
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -460,11 +478,13 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
         }
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return
                 new WhereSelectArrayIterator<>(this.source, this.predicate, Utilities.combineSelectors(this.selector, selector));
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source.length());
         for (TSource item : this.source) {
@@ -475,6 +495,7 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
         return builder.toArray(clazz);
     }
 
+    @Override
     public Array<TResult> _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source.length());
         for (TSource item : this.source) {
@@ -485,6 +506,7 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
         return builder.toArray();
     }
 
+    @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
         for (TSource item : this.source) {
@@ -512,10 +534,12 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
         this.selector = selector;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new WhereSelectListIterator<>(this.source, this.predicate, this.selector);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
@@ -533,6 +557,7 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
         return count;
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -553,10 +578,12 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
         }
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new WhereSelectListIterator<>(this.source, this.predicate, Utilities.combineSelectors(this.selector, selector));
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source._getCount());
         for (TSource item : this.source) {
@@ -567,6 +594,7 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
         return builder.toArray(clazz);
     }
 
+    @Override
     public Array<TResult> _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source._getCount());
         for (TSource item : this.source) {
@@ -577,6 +605,7 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
         return builder.toArray();
     }
 
+    @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
         for (TSource item : this.source) {
@@ -613,10 +642,12 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
         this.selector = selector;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new WhereSelectEnumerableIterator<>(this.source, this.predicate, this.selector);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
@@ -634,6 +665,7 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
         return count;
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -654,10 +686,12 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
         }
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new WhereSelectEnumerableIterator<>(this.source, this.predicate, Utilities.combineSelectors(this.selector, selector));
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source) {
@@ -668,6 +702,7 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
         return builder.toArray(clazz);
     }
 
+    @Override
     public Array<TResult> _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source) {
@@ -678,6 +713,7 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
         return builder.toArray();
     }
 
+    @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
         for (TSource item : this.source) {
@@ -688,6 +724,7 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
         return list;
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();

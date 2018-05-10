@@ -43,6 +43,7 @@ abstract class UnionIterator<TSource> extends Iterator<TSource> implements IILis
         this.comparer = comparer;
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -85,6 +86,7 @@ abstract class UnionIterator<TSource> extends Iterator<TSource> implements IILis
         return false;
     }
 
+    @Override
     public boolean moveNext() {
         if (this.state == 1) {
             for (IEnumerable<TSource> enumerable = this.getEnumerable(0); enumerable != null; enumerable = this.getEnumerable(this.state - 1)) {
@@ -124,18 +126,22 @@ abstract class UnionIterator<TSource> extends Iterator<TSource> implements IILis
         }
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         return this.fillSet().toArray(clazz);
     }
 
+    @Override
     public Array<TSource> _toArray() {
         return this.fillSet().toArray();
     }
 
+    @Override
     public List<TSource> _toList() {
         return this.fillSet().toList();
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return onlyIfCheap ? -1 : this.fillSet().getCount();
     }
@@ -154,10 +160,12 @@ final class UnionIterator2<TSource> extends UnionIterator<TSource> {
         this.second = second;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new UnionIterator2<>(this.first, this.second, this.comparer);
     }
 
+    @Override
     IEnumerable<TSource> getEnumerable(int index) {
         assert index >= 0 && index <= 2;
         switch (index) {
@@ -170,6 +178,7 @@ final class UnionIterator2<TSource> extends UnionIterator<TSource> {
         }
     }
 
+    @Override
     UnionIterator<TSource> _union(IEnumerable<TSource> next) {
         SingleLinkedNode<IEnumerable<TSource>> sources = new SingleLinkedNode<>(this.first).add(this.second).add(next);
         return new UnionIteratorN<>(sources, 2, this.comparer);
@@ -189,14 +198,17 @@ final class UnionIteratorN<TSource> extends UnionIterator<TSource> {
         this.headIndex = headIndex;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new UnionIteratorN<>(this.sources, this.headIndex, this.comparer);
     }
 
+    @Override
     IEnumerable<TSource> getEnumerable(int index) {
         return index > this.headIndex ? null : this.sources.getNode(this.headIndex - index).getItem();
     }
 
+    @Override
     UnionIterator<TSource> _union(IEnumerable<TSource> next) {
         if (this.headIndex == Integer.MAX_VALUE - 2) {
             // In the unlikely case of this many unions, if we produced a UnionIteratorN

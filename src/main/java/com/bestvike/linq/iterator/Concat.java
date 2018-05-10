@@ -35,6 +35,7 @@ public final class Concat {
 abstract class ConcatIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
     private IEnumerator<TSource> enumerator;
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -47,6 +48,7 @@ abstract class ConcatIterator<TSource> extends Iterator<TSource> implements IILi
 
     public abstract ConcatIterator<TSource> _concat(IEnumerable<TSource> next);
 
+    @Override
     public boolean moveNext() {
         if (this.state == 1) {
             this.enumerator = this.getEnumerable(0).enumerator();
@@ -75,10 +77,13 @@ abstract class ConcatIterator<TSource> extends Iterator<TSource> implements IILi
         return false;
     }
 
+    @Override
     public abstract int _getCount(boolean onlyIfCheap);
 
+    @Override
     public abstract TSource[] _toArray(Class<TSource> clazz);
 
+    @Override
     public List<TSource> _toList() {
         int count = this._getCount(true);
         List<TSource> list = count != -1 ? new ArrayList<>(count) : new ArrayList<>();
@@ -109,10 +114,12 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
         this.second = second;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new Concat2Iterator<>(this.first, this.second);
     }
 
+    @Override
     public ConcatIterator<TSource> _concat(IEnumerable<TSource> next) {
         boolean hasOnlyCollections = next instanceof ICollection &&
                 this.first instanceof ICollection &&
@@ -120,6 +127,7 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
         return new ConcatNIterator<>(this, next, 2, hasOnlyCollections);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         out<Integer> firstCountRef = out.init();
         out<Integer> secondCountRef = out.init();
@@ -138,6 +146,7 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
         return Math.addExact(firstCountRef.getValue(), secondCountRef.getValue());
     }
 
+    @Override
     public IEnumerable<TSource> getEnumerable(int index) {
         assert index >= 0 && index <= 2;
 
@@ -151,6 +160,7 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
         }
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         SparseArrayBuilder<TSource> builder = new SparseArrayBuilder<>();
 
@@ -219,10 +229,12 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         return this.tail instanceof ConcatNIterator ? (ConcatNIterator<TSource>) this.tail : null;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new ConcatNIterator<>(this.tail, this.head, this.headIndex, this.hasOnlyCollections);
     }
 
+    @Override
     public ConcatIterator<TSource> _concat(IEnumerable<TSource> next) {
         if (this.headIndex == Integer.MAX_VALUE - 2) {
             // In the unlikely case of this many concatenations, if we produced a ConcatNIterator
@@ -235,6 +247,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         return new ConcatNIterator<>(this, next, this.headIndex + 1, hasOnlyCollections);
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         if (onlyIfCheap && !this.hasOnlyCollections) {
             return -1;
@@ -261,6 +274,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         return Math.addExact(count, node.tail._getCount(onlyIfCheap));
     }
 
+    @Override
     public IEnumerable<TSource> getEnumerable(int index) {
         assert index >= 0;
 
@@ -280,6 +294,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         return node.tail.getEnumerable(index);
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         return this.hasOnlyCollections ? this.preallocatingToArray(clazz) : this.lazyToArray(clazz);
     }

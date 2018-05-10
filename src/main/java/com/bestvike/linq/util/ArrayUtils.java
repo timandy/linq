@@ -209,15 +209,18 @@ public final class ArrayUtils {
             this.endIndex = Math.addExact(index, count);
         }
 
+        @Override
         public boolean hasNext() {
             return this.index < this.endIndex;
         }
 
+        @Override
         @SuppressWarnings("unchecked")
         public E next() {
             return (E) this.source[this.index++];
         }
 
+        @Override
         public void remove() {
             throw Errors.notSupported();
         }

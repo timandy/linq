@@ -127,10 +127,12 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
         this.selector = selector;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new SelectEnumerableIterator<>(this.source, this.selector);
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -139,6 +141,7 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
         super.close();
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -157,10 +160,12 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
         }
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new SelectEnumerableIterator<>(this.source, Utilities.combineSelectors(this.selector, selector));
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source)
@@ -169,6 +174,7 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
         return builder.toArray(clazz);
     }
 
+    @Override
     public Array<TResult> _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source)
@@ -177,6 +183,7 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
         return builder.toArray();
     }
 
+    @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
         for (TSource item : this.source)
@@ -185,6 +192,7 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
         return list;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
@@ -214,10 +222,12 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         this.selector = selector;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new SelectArrayIterator<>(this.source, this.selector);
     }
 
+    @Override
     public boolean moveNext() {
         if (this.state < 1 | this.state == this.source.length() + 1) {
             this.close();
@@ -229,10 +239,12 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         return true;
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new SelectArrayIterator<>(this.source, Utilities.combineSelectors(this.selector, selector));
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         // See assert : constructor.
         // Since source should never be empty, we don't check for 0/return Array.Empty.
@@ -245,6 +257,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         return results;
     }
 
+    @Override
     public Array<TResult> _toArray() {
         // See assert : constructor.
         // Since source should never be empty, we don't check for 0/return Array.Empty.
@@ -257,6 +270,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         return results;
     }
 
+    @Override
     public List<TResult> _toList() {
         Array<TSource> source = this.source;
         List<TResult> results = new ArrayList<>(source.length());
@@ -266,6 +280,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         return results;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
@@ -277,6 +292,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         return this.source.length();
     }
 
+    @Override
     public IPartition<TResult> _skip(int count) {
         assert count > 0;
         return count >= this.source.length()
@@ -284,12 +300,14 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
                 : new SelectListPartitionIterator<>(this.source, this.selector, count, Integer.MAX_VALUE);
     }
 
+    @Override
     public IPartition<TResult> _take(int count) {
         return count >= this.source.length()
                 ? this
                 : new SelectListPartitionIterator<>(this.source, this.selector, 0, count - 1);
     }
 
+    @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         if (index < this.source.length()) {
             found.setValue(true);
@@ -300,6 +318,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         return null;
     }
 
+    @Override
     public TResult _tryGetFirst(out<Boolean> found) {
         assert this.source.length() > 0; // See assert : constructor
 
@@ -307,6 +326,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         return this.selector.apply(this.source.get(0));
     }
 
+    @Override
     public TResult _tryGetLast(out<Boolean> found) {
         assert this.source.length() > 0; // See assert : constructor
 
@@ -328,10 +348,12 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         this.selector = selector;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new SelectIListIterator<>(this.source, this.selector);
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -349,6 +371,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         }
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -357,10 +380,12 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         super.close();
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new SelectIListIterator<>(this.source, Utilities.combineSelectors(this.selector, selector));
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         int count = this.source._getCount();
         if (count == 0)
@@ -373,6 +398,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         return results;
     }
 
+    @Override
     public Array<TResult> _toArray() {
         int count = this.source._getCount();
         if (count == 0)
@@ -385,6 +411,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         return results;
     }
 
+    @Override
     public List<TResult> _toList() {
         int count = this.source._getCount();
         ArrayList<TResult> results = new ArrayList<>(count);
@@ -394,6 +421,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         return results;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
@@ -407,15 +435,18 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         return count;
     }
 
+    @Override
     public IPartition<TResult> _skip(int count) {
         assert count > 0;
         return new SelectListPartitionIterator<>(this.source, this.selector, count, Integer.MAX_VALUE);
     }
 
+    @Override
     public IPartition<TResult> _take(int count) {
         return new SelectListPartitionIterator<>(this.source, this.selector, 0, count - 1);
     }
 
+    @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         if (index < this.source._getCount()) {
             found.setValue(true);
@@ -426,6 +457,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         return null;
     }
 
+    @Override
     public TResult _tryGetFirst(out<Boolean> found) {
         if (this.source._getCount() != 0) {
             found.setValue(true);
@@ -436,6 +468,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         return null;
     }
 
+    @Override
     public TResult _tryGetLast(out<Boolean> found) {
         int len = this.source._getCount();
         if (len != 0) {
@@ -461,10 +494,12 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         this.selector = selector;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new SelectIPartitionIterator<>(this.source, this.selector);
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -482,6 +517,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         }
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -490,29 +526,35 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         super.close();
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new SelectIPartitionIterator<>(this.source, Utilities.combineSelectors(this.selector, selector));
     }
 
+    @Override
     public IPartition<TResult> _skip(int count) {
         assert count > 0;
         return new SelectIPartitionIterator<>(this.source._skip(count), this.selector);
     }
 
+    @Override
     public IPartition<TResult> _take(int count) {
         return new SelectIPartitionIterator<>(this.source._take(count), this.selector);
     }
 
+    @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         TSource input = this.source._tryGetElementAt(index, found);
         return found.getValue() ? this.selector.apply(input) : null;
     }
 
+    @Override
     public TResult _tryGetFirst(out<Boolean> found) {
         TSource input = this.source._tryGetFirst(found);
         return found.getValue() ? this.selector.apply(input) : null;
     }
 
+    @Override
     public TResult _tryGetLast(out<Boolean> found) {
         TSource input = this.source._tryGetLast(found);
         return found.getValue() ? this.selector.apply(input) : null;
@@ -566,6 +608,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         return array;
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         int count = this.source._getCount(true);
         switch (count) {
@@ -591,6 +634,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         }
     }
 
+    @Override
     public List<TResult> _toList() {
         int count = this.source._getCount(true);
         List<TResult> list;
@@ -611,6 +655,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         return list;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
@@ -641,10 +686,12 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         this.maxIndexInclusive = maxIndexInclusive;
     }
 
+    @Override
     public Iterator<TResult> clone() {
         return new SelectListPartitionIterator<>(this.source, this.selector, this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public boolean moveNext() {
         // this.state - 1 represents the zero-based index into the list.
         // Having a separate field for the index would be more readable. However, we save it
@@ -660,10 +707,12 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         return false;
     }
 
+    @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new SelectListPartitionIterator<>(this.source, Utilities.combineSelectors(this.selector, selector), this.minIndexInclusive, this.maxIndexInclusive);
     }
 
+    @Override
     public IPartition<TResult> _skip(int count) {
         assert count > 0;
         int minIndex = this.minIndexInclusive + count;
@@ -672,6 +721,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
                 : new SelectListPartitionIterator<>(this.source, this.selector, minIndex, this.maxIndexInclusive);
     }
 
+    @Override
     public IPartition<TResult> _take(int count) {
         int maxIndex = this.minIndexInclusive + count - 1;
         return maxIndex >= this.maxIndexInclusive
@@ -679,6 +729,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
                 : new SelectListPartitionIterator<>(this.source, this.selector, this.minIndexInclusive, maxIndex);
     }
 
+    @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
             found.setValue(true);
@@ -689,6 +740,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         return null;
     }
 
+    @Override
     public TResult _tryGetFirst(out<Boolean> found) {
         if (this.source._getCount() > this.minIndexInclusive) {
             found.setValue(true);
@@ -699,6 +751,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         return null;
     }
 
+    @Override
     public TResult _tryGetLast(out<Boolean> found) {
         int lastIndex = this.source._getCount() - 1;
         if (lastIndex >= this.minIndexInclusive) {
@@ -718,6 +771,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         return Math.min(count - 1, this.maxIndexInclusive) - this.minIndexInclusive + 1;
     }
 
+    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         int count = this._getCount();
         if (count == 0)
@@ -743,6 +797,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         return array;
     }
 
+    @Override
     public List<TResult> _toList() {
         int count = this._getCount();
         if (count == 0)
@@ -756,6 +811,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         return list;
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.

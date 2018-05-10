@@ -16,6 +16,7 @@ public abstract class AbstractIterator<TSource> extends AbstractEnumerator<TSour
         this.threadId = Thread.currentThread().getId();
     }
 
+    @Override
     public abstract AbstractIterator<TSource> clone();
 
     @Override

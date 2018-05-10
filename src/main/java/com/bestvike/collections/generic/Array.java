@@ -199,6 +199,7 @@ public final class Array<T> implements IList<T>, Cloneable {
         return this.elements.length;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public T get(int index) {
         return (T) this.elements[index];
@@ -208,6 +209,7 @@ public final class Array<T> implements IList<T>, Cloneable {
         this.elements[index] = item;
     }
 
+    @Override
     public T[] _toArray(Class<T> clazz) {
         return ArrayUtils.toArray(this.elements, clazz);
     }
@@ -229,6 +231,7 @@ public final class Array<T> implements IList<T>, Cloneable {
         return array;
     }
 
+    @Override
     public List<T> _toList() {
         return ArrayUtils.toList(this.elements);
     }

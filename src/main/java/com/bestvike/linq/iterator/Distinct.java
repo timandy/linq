@@ -40,10 +40,12 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
         this.comparer = comparer;
     }
 
+    @Override
     public Iterator<TSource> clone() {
         return new DistinctIterator<>(this.source, this.comparer);
     }
 
+    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -73,6 +75,7 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
         }
     }
 
+    @Override
     public void close() {
         if (this.enumerator != null) {
             this.enumerator.close();
@@ -82,18 +85,22 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
         super.close();
     }
 
+    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         return this.fillSet().toArray(clazz);
     }
 
+    @Override
     public Array<TSource> _toArray() {
         return this.fillSet().toArray();
     }
 
+    @Override
     public List<TSource> _toList() {
         return this.fillSet().toList();
     }
 
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         return onlyIfCheap ? -1 : this.fillSet().getCount();
     }
