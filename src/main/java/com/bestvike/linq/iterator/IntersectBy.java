@@ -13,7 +13,6 @@ public final class IntersectBy {
     private IntersectBy() {
     }
 
-
     public static <TSource, TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
         return intersectBy(first, second, keySelector, null);
     }
