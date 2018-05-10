@@ -15,18 +15,7 @@ public final class Join {
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null)
-            throw Errors.argumentNull("outer");
-        if (inner == null)
-            throw Errors.argumentNull("inner");
-        if (outerKeySelector == null)
-            throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null)
-            throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
-
-        return new JoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, resultSelector, null);
+        return join(outer, inner, outerKeySelector, innerKeySelector, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
@@ -45,117 +34,94 @@ public final class Join {
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new LeftJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, null);
+        return leftJoin(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new LeftJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector, null);
+        return leftJoin(outer, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new LeftJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, comparer);
+        return leftJoin(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, comparer);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
+        if (outer == null)
+            throw Errors.argumentNull("outer");
+        if (inner == null)
+            throw Errors.argumentNull("inner");
+        if (outerKeySelector == null)
+            throw Errors.argumentNull("outerKeySelector");
+        if (innerKeySelector == null)
+            throw Errors.argumentNull("innerKeySelector");
+        if (resultSelector == null)
+            throw Errors.argumentNull("resultSelector");
+
         return new LeftJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector, comparer);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new RightJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, null);
+        return rightJoin(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TOuter defaultOuter, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new RightJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector, null);
+        return rightJoin(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new RightJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, comparer);
+        return rightJoin(outer, inner, outerKeySelector, innerKeySelector, null, resultSelector, comparer);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TOuter defaultOuter, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
+        if (outer == null)
+            throw Errors.argumentNull("outer");
+        if (inner == null)
+            throw Errors.argumentNull("inner");
+        if (outerKeySelector == null)
+            throw Errors.argumentNull("outerKeySelector");
+        if (innerKeySelector == null)
+            throw Errors.argumentNull("innerKeySelector");
+        if (resultSelector == null)
+            throw Errors.argumentNull("resultSelector");
+
         return new RightJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector, comparer);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new FullJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, null, null, resultSelector, null);
+        return fullJoin(outer, inner, outerKeySelector, innerKeySelector, null, null, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TOuter defaultOuter, TInner defaultInner, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new FullJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, null);
+        return fullJoin(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
-        return new FullJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, null, null, resultSelector, comparer);
+        return fullJoin(outer, inner, outerKeySelector, innerKeySelector, null, null, resultSelector, comparer);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TOuter defaultOuter, TInner defaultInner, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (outerKeySelector == null) throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null) throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
+        if (outer == null)
+            throw Errors.argumentNull("outer");
+        if (inner == null)
+            throw Errors.argumentNull("inner");
+        if (outerKeySelector == null)
+            throw Errors.argumentNull("outerKeySelector");
+        if (innerKeySelector == null)
+            throw Errors.argumentNull("innerKeySelector");
+        if (resultSelector == null)
+            throw Errors.argumentNull("resultSelector");
+
         return new FullJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, comparer);
     }
 
     public static <TOuter, TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func2<TOuter, TInner, TResult> resultSelector) {
-        if (outer == null) throw Errors.argumentNull("outer");
-        if (inner == null) throw Errors.argumentNull("inner");
-        if (resultSelector == null) throw Errors.argumentNull("resultSelector");
+        if (outer == null)
+            throw Errors.argumentNull("outer");
+        if (inner == null)
+            throw Errors.argumentNull("inner");
+        if (resultSelector == null)
+            throw Errors.argumentNull("resultSelector");
+
         return new CrossJoinIterator<>(outer, inner, resultSelector);
     }
 }
