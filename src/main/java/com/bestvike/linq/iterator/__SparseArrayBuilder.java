@@ -8,8 +8,8 @@ import com.bestvike.out;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-final class _SparseArrayBuilder {
-    private _SparseArrayBuilder() {
+final class __SparseArrayBuilder {
+    private __SparseArrayBuilder() {
     }
 }
 

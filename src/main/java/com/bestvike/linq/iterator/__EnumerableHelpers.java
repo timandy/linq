@@ -9,8 +9,8 @@ import com.bestvike.out;
 /**
  * Created by 许崇雷 on 2018-05-07.
  */
-final class _EnumerableHelpers {
-    private _EnumerableHelpers() {
+final class __EnumerableHelpers {
+    private __EnumerableHelpers() {
     }
 }
 

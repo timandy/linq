@@ -12,8 +12,8 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-final class _LargeArrayBuilder {
-    private _LargeArrayBuilder() {
+final class __LargeArrayBuilder {
+    private __LargeArrayBuilder() {
     }
 }
 

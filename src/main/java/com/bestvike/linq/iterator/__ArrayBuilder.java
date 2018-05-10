@@ -6,8 +6,8 @@ import com.bestvike.linq.util.ArrayUtils;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-final class _ArrayBuilder {
-    private _ArrayBuilder() {
+final class __ArrayBuilder {
+    private __ArrayBuilder() {
     }
 }
 
