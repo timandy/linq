@@ -209,7 +209,7 @@ public final class MinBy {
                 return value;
             }
         }
-        return null;
+        throw Errors.noElements();
     }
 
     public static <TSource> TSource minByDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
