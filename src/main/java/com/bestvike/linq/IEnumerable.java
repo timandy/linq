@@ -19,8 +19,8 @@ import com.bestvike.linq.iterator.ElementAt;
 import com.bestvike.linq.iterator.Except;
 import com.bestvike.linq.iterator.ExceptBy;
 import com.bestvike.linq.iterator.First;
+import com.bestvike.linq.iterator.GroupBy;
 import com.bestvike.linq.iterator.GroupJoin;
-import com.bestvike.linq.iterator.Grouping;
 import com.bestvike.linq.iterator.Intersect;
 import com.bestvike.linq.iterator.IntersectBy;
 import com.bestvike.linq.iterator.Join;
@@ -276,35 +276,35 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
     }
 
     default <TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(Func1<TSource, TKey> keySelector) {
-        return Grouping.groupBy(this, keySelector);
+        return GroupBy.groupBy(this, keySelector);
     }
 
     default <TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return Grouping.groupBy(this, keySelector, comparer);
+        return GroupBy.groupBy(this, keySelector, comparer);
     }
 
     default <TKey, TElement> IEnumerable<IGrouping<TKey, TElement>> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return Grouping.groupBy(this, keySelector, elementSelector);
+        return GroupBy.groupBy(this, keySelector, elementSelector);
     }
 
     default <TKey, TElement> IEnumerable<IGrouping<TKey, TElement>> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
-        return Grouping.groupBy(this, keySelector, elementSelector, comparer);
+        return GroupBy.groupBy(this, keySelector, elementSelector, comparer);
     }
 
     default <TKey, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector) {
-        return Grouping.groupBy(this, keySelector, resultSelector);
+        return GroupBy.groupBy(this, keySelector, resultSelector);
     }
 
     default <TKey, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Grouping.groupBy(this, keySelector, resultSelector, comparer);
+        return GroupBy.groupBy(this, keySelector, resultSelector, comparer);
     }
 
     default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
-        return Grouping.groupBy(this, keySelector, elementSelector, resultSelector);
+        return GroupBy.groupBy(this, keySelector, elementSelector, resultSelector);
     }
 
     default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Grouping.groupBy(this, keySelector, elementSelector, resultSelector, comparer);
+        return GroupBy.groupBy(this, keySelector, elementSelector, resultSelector, comparer);
     }
 
     default <TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, IEnumerable<TInner>, TResult> resultSelector) {

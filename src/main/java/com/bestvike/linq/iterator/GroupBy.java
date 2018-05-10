@@ -2,31 +2,20 @@ package com.bestvike.linq.iterator;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
-import com.bestvike.linq.enumerator.ArrayEnumerator;
 import com.bestvike.linq.exception.Errors;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by 许崇雷 on 2018-04-28.
+ * Created by 许崇雷 on 2018-05-10.
  */
-public final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IList<TElement> {
-    TKey key;
-    int hashCode;
-    Array<TElement> elements;
-    int count;
-    Grouping<TKey, TElement> hashNext;
-    Grouping<TKey, TElement> next;
-    boolean fetched;
-
-    Grouping() {
+public final class GroupBy {
+    private GroupBy() {
     }
 
     public static <TSource, TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
@@ -59,79 +48,6 @@ public final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>
 
     public static <TSource, TKey, TElement, TResult> IEnumerable<TResult> groupBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         return new GroupedResultEnumerable2<>(source, keySelector, elementSelector, resultSelector, comparer);
-    }
-
-    void add(TElement element) {
-        if (this.elements.length() == this.count)
-            this.elements = Array.resize(this.elements, Math.multiplyExact(this.count, 2));
-        this.elements.set(this.count, element);
-        this.count++;
-    }
-
-    public void trim() {
-        if (this.elements.length() != this.count)
-            this.elements = Array.resize(this.elements, this.count);
-    }
-
-    @Override
-    public IEnumerator<TElement> enumerator() {
-        return new ArrayEnumerator<>(this.elements, 0, this.count);
-    }
-
-    @Override
-    public TKey getKey() {
-        return this.key;
-    }
-
-    @Override
-    public TElement get(int index) {
-        if (index < 0 || index >= this.count)
-            throw Errors.argumentOutOfRange("index");
-        return this.elements.get(index);
-    }
-
-    @Override
-    public Collection<TElement> getCollection() {
-        return this.elements.getCollection(0, this.count);
-    }
-
-    @Override
-    public int _getCount() {
-        return this.count;
-    }
-
-    @Override
-    public boolean _contains(TElement item) {
-        return this.elements._contains(item, 0, this.count);
-    }
-
-    @Override
-    public void _copyTo(TElement[] array, int arrayIndex) {
-        Array.copy(this.elements, 0, array, arrayIndex, this.count);
-    }
-
-    @Override
-    public void _copyTo(Array<TElement> array, int arrayIndex) {
-        Array.copy(this.elements, 0, array, arrayIndex, this.count);
-    }
-
-    public int indexOf(TElement item) {
-        return Array.indexOf(this.elements, item, 0, this.count);
-    }
-
-    @Override
-    public TElement[] _toArray(Class<TElement> clazz) {
-        return this.elements._toArray(clazz, 0, this.count);
-    }
-
-    @Override
-    public Array<TElement> _toArray() {
-        return this.elements._toArray(0, this.count);
-    }
-
-    @Override
-    public List<TElement> _toList() {
-        return this.elements._toList(0, this.count);
     }
 }
 
