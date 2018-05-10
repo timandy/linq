@@ -209,7 +209,7 @@ public final class MaxBy {
                 return value;
             }
         }
-        return null;
+        throw Errors.noElements();
     }
 
     public static <TSource> TSource maxByDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
