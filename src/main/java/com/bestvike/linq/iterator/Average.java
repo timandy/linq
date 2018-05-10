@@ -16,10 +16,10 @@ public final class Average {
     }
 
     public static double averageInt(IEnumerable<Integer> source) {
-        Double avg = averageIntNull(source);
-        if (avg == null)
+        Double value = averageIntNull(source);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static Double averageIntNull(IEnumerable<Integer> source) {
@@ -47,10 +47,10 @@ public final class Average {
     }
 
     public static double averageLong(IEnumerable<Long> source) {
-        Double avg = averageLongNull(source);
-        if (avg == null)
+        Double value = averageLongNull(source);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static Double averageLongNull(IEnumerable<Long> source) {
@@ -78,10 +78,10 @@ public final class Average {
     }
 
     public static float averageFloat(IEnumerable<Float> source) {
-        Float avg = averageFloatNull(source);
-        if (avg == null)
+        Float value = averageFloatNull(source);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static Float averageFloatNull(IEnumerable<Float> source) {
@@ -109,10 +109,10 @@ public final class Average {
     }
 
     public static double averageDouble(IEnumerable<Double> source) {
-        Double avg = averageDoubleNull(source);
-        if (avg == null)
+        Double value = averageDoubleNull(source);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static Double averageDoubleNull(IEnumerable<Double> source) {
@@ -140,10 +140,10 @@ public final class Average {
     }
 
     public static BigDecimal averageDecimal(IEnumerable<BigDecimal> source) {
-        BigDecimal avg = averageDecimalNull(source);
-        if (avg == null)
+        BigDecimal value = averageDecimalNull(source);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static BigDecimal averageDecimalNull(IEnumerable<BigDecimal> source) {
@@ -172,10 +172,10 @@ public final class Average {
     }
 
     public static <TSource> double averageInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
-        Double avg = averageIntNull(source, selector);
-        if (avg == null)
+        Double value = averageIntNull(source, selector);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static <TSource> Double averageIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
@@ -206,10 +206,10 @@ public final class Average {
     }
 
     public static <TSource> double averageLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
-        Double avg = averageLongNull(source, selector);
-        if (avg == null)
+        Double value = averageLongNull(source, selector);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static <TSource> Double averageLongNull(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
@@ -240,10 +240,10 @@ public final class Average {
     }
 
     public static <TSource> float averageFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
-        Float avg = averageFloatNull(source, selector);
-        if (avg == null)
+        Float value = averageFloatNull(source, selector);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static <TSource> Float averageFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
@@ -274,10 +274,10 @@ public final class Average {
     }
 
     public static <TSource> double averageDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
-        Double avg = averageDoubleNull(source, selector);
-        if (avg == null)
+        Double value = averageDoubleNull(source, selector);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static <TSource> Double averageDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
@@ -308,10 +308,10 @@ public final class Average {
     }
 
     public static <TSource> BigDecimal averageDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
-        BigDecimal avg = averageDecimalNull(source, selector);
-        if (avg == null)
+        BigDecimal value = averageDecimalNull(source, selector);
+        if (value == null)
             throw Errors.noElements();
-        return avg;
+        return value;
     }
 
     public static <TSource> BigDecimal averageDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
