@@ -1424,7 +1424,7 @@ public class IEnumerableTest {
         try {
             Integer num = empty.elementAt(0);
             Assert.fail("expect error,but got " + num);
-        } catch (ArgumentOutOfRangeException ignored) {
+        } catch (IndexOutOfBoundsException ignored) {
         }
     }
 
