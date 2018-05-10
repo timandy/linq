@@ -23,7 +23,7 @@ public final class Enumerable {
         return Array.empty();
     }
 
-    public static <TSource> IEnumerable<TSource> singletonEnumerable(TSource item) {
+    public static <TSource> IEnumerable<TSource> singleton(TSource item) {
         return Array.singleton(item);
     }
 

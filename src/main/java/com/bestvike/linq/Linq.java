@@ -19,8 +19,8 @@ public final class Linq {
         return Enumerable.empty();
     }
 
-    public static <TSource> IEnumerable<TSource> singletonEnumerable(TSource item) {
-        return Enumerable.singletonEnumerable(item);
+    public static <TSource> IEnumerable<TSource> singleton(TSource item) {
+        return Enumerable.singleton(item);
     }
 
     public static IEnumerable<Boolean> asEnumerable(boolean[] source) {
