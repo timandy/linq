@@ -13,11 +13,12 @@ final class _SparseArrayBuilder {
     }
 }
 
+
 final class Marker {//struct
     private final int count;
     private final int index;
 
-    public Marker(int count, int index) {
+    Marker(int count, int index) {
         assert count >= 0;
         assert index >= 0;
 
@@ -39,31 +40,27 @@ final class Marker {//struct
     }
 }
 
+
 final class SparseArrayBuilder<T> {//struct
     private LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
     private ArrayBuilder<Marker> markers = new ArrayBuilder<>();
     private int reservedCount;
 
-    // The total number of items in this builder, including reserved regions.
     public int getCount() {
         return Math.addExact(this.builder.getCount(), this.reservedCount);
     }
 
-    // The list of reserved regions in this builder.
     public ArrayBuilder<Marker> getMarkers() {
         return this.markers;
     }
 
-    // Adds an item to this builder.
     public void add(T item) {
         this.builder.add(item);
     }
 
-
     public void addRange(IEnumerable<T> items) {
         this.builder.addRange(items);
     }
-
 
     public void copyTo(T[] array, int arrayIndex, int count) {
         assert array != null;
@@ -145,15 +142,12 @@ final class SparseArrayBuilder<T> {//struct
         }
     }
 
-    // Reserves a region starting from the current index.
     public void reserve(int count) {
         assert count >= 0;
         this.markers.add(new Marker(count, this.getCount()));
         this.reservedCount = Math.addExact(this.reservedCount, count);
     }
 
-
-    // Reserves a region if the items' count can be predetermined; otherwise, adds the items to this builder.
     public boolean reserveOrAdd(IEnumerable<T> items) {
         out<Integer> itemCountRef = out.init();
         if (EnumerableHelpers.tryGetCount(items, itemCountRef)) {
@@ -168,8 +162,6 @@ final class SparseArrayBuilder<T> {//struct
         return false;
     }
 
-
-    // Creates an array from the contents of this builder.
     public T[] toArray(Class<T> clazz) {
         // If no regions were reserved, there are no 'gaps' we need to add to the array.
         // In that case, we can just call ToArray on the underlying builder.
@@ -183,7 +175,6 @@ final class SparseArrayBuilder<T> {//struct
         return array;
     }
 
-    // Creates an array from the contents of this builder.
     public Array<T> toArray() {
         // If no regions were reserved, there are no 'gaps' we need to add to the array.
         // In that case, we can just call ToArray on the underlying builder.
