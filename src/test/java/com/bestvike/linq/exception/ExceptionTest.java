@@ -1,11 +1,5 @@
-package com.bestvike.linq;
+package com.bestvike.linq.exception;
 
-import com.bestvike.linq.exception.ArgumentException;
-import com.bestvike.linq.exception.ArgumentNullException;
-import com.bestvike.linq.exception.ArgumentOutOfRangeException;
-import com.bestvike.linq.exception.Errors;
-import com.bestvike.linq.exception.InvalidOperationException;
-import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.resources.SR;
 import com.bestvike.linq.util.Environment;
 import org.junit.Assert;
