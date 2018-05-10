@@ -6,7 +6,6 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.enumerable.ListEnumerable;
 import com.bestvike.linq.exception.Errors;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
@@ -41,7 +40,7 @@ public final class Select {
                         ? EmptyPartition.instance()
                         : new SelectArrayIterator<>(array, selector);
             }
-            ListEnumerable<TSource> list = (ListEnumerable<TSource>) source;
+            IList<TSource> list = (IList<TSource>) source;
             return list._getCount() == 0
                     ? EmptyPartition.instance()
                     : new SelectIListIterator<>(list, selector);
