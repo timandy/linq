@@ -1,7 +1,7 @@
 package com.bestvike.linq;
 
 import com.bestvike.function.Func1;
-import com.bestvike.linq.iterator.OrderBy;
+import com.bestvike.linq.enumerable.OrderBy;
 
 import java.util.Comparator;
 

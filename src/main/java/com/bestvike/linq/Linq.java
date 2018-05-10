@@ -1,8 +1,8 @@
 package com.bestvike.linq;
 
-import com.bestvike.linq.iterator.Enumerable;
-import com.bestvike.linq.iterator.Range;
-import com.bestvike.linq.iterator.Repeat;
+import com.bestvike.linq.enumerable.Enumerable;
+import com.bestvike.linq.enumerable.Range;
+import com.bestvike.linq.enumerable.Repeat;
 
 import java.util.Collection;
 import java.util.List;
