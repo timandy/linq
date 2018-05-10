@@ -17,24 +17,10 @@ public final class Min {
     }
 
     public static int minInt(IEnumerable<Integer> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        Integer value;
-        try (IEnumerator<Integer> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = e.current();
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Integer x = e.current();
-                    if (x != null && x < value)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Integer value = minIntNull(source);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static Integer minIntNull(IEnumerable<Integer> source) {
@@ -59,24 +45,10 @@ public final class Min {
     }
 
     public static long minLong(IEnumerable<Long> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        Long value;
-        try (IEnumerator<Long> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = e.current();
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Long x = e.current();
-                    if (x != null && x < value)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Long value = minLongNull(source);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static Long minLongNull(IEnumerable<Long> source) {
@@ -101,24 +73,10 @@ public final class Min {
     }
 
     public static float minFloat(IEnumerable<Float> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        Float value;
-        try (IEnumerator<Float> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = e.current();
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Float x = e.current();
-                    if (x != null && (x < value || Float.isNaN(x)))
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Float value = minFloatNull(source);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static Float minFloatNull(IEnumerable<Float> source) {
@@ -143,24 +101,10 @@ public final class Min {
     }
 
     public static double minDouble(IEnumerable<Double> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        Double value;
-        try (IEnumerator<Double> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = e.current();
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Double x = e.current();
-                    if (x != null && (x < value || Double.isNaN(x)))
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Double value = minDoubleNull(source);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static Double minDoubleNull(IEnumerable<Double> source) {
@@ -185,24 +129,10 @@ public final class Min {
     }
 
     public static BigDecimal minDecimal(IEnumerable<BigDecimal> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        BigDecimal value;
-        try (IEnumerator<BigDecimal> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = e.current();
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    BigDecimal x = e.current();
-                    if (x != null && x.compareTo(value) < 0)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        BigDecimal value = minDecimalNull(source);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static BigDecimal minDecimalNull(IEnumerable<BigDecimal> source) {
@@ -227,25 +157,10 @@ public final class Min {
     }
 
     public static <TSource> TSource min(IEnumerable<TSource> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        Comparator<TSource> comparer = Comparer.Default();
-        TSource value;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = e.current();
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource x = e.current();
-                    if (x != null && comparer.compare(x, value) < 0)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        TSource value = minNull(source);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static <TSource> TSource minNull(IEnumerable<TSource> source) {
@@ -271,26 +186,10 @@ public final class Min {
     }
 
     public static <TSource> int minInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        Integer value;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = selector.apply(e.current());
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Integer x = selector.apply(e.current());
-                    if (x != null && x < value)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Integer value = minIntNull(source, selector);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static <TSource> Integer minIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
@@ -317,26 +216,10 @@ public final class Min {
     }
 
     public static <TSource> long minLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        Long value;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = selector.apply(e.current());
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Long x = selector.apply(e.current());
-                    if (x != null && x < value)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Long value = minLongNull(source, selector);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static <TSource> Long minLongNull(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
@@ -363,26 +246,10 @@ public final class Min {
     }
 
     public static <TSource> float minFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        Float value;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = selector.apply(e.current());
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Float x = selector.apply(e.current());
-                    if (x != null && (x < value || Float.isNaN(x)))
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Float value = minFloatNull(source, selector);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static <TSource> Float minFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
@@ -409,26 +276,10 @@ public final class Min {
     }
 
     public static <TSource> double minDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        Double value;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = selector.apply(e.current());
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    Double x = selector.apply(e.current());
-                    if (x != null && (x < value || Double.isNaN(x)))
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        Double value = minDoubleNull(source, selector);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static <TSource> Double minDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
@@ -455,26 +306,10 @@ public final class Min {
     }
 
     public static <TSource> BigDecimal minDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        BigDecimal value;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = selector.apply(e.current());
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    BigDecimal x = selector.apply(e.current());
-                    if (x != null && x.compareTo(value) < 0)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        BigDecimal value = minDecimalNull(source, selector);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static <TSource> BigDecimal minDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
@@ -501,27 +336,10 @@ public final class Min {
     }
 
     public static <TSource, TResult> TResult min(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        Comparator<TResult> comparer = Comparer.Default();
-        TResult value;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                value = selector.apply(e.current());
-                if (value == null)
-                    continue;
-                while (e.moveNext()) {
-                    TResult x = selector.apply(e.current());
-                    if (x != null && comparer.compare(x, value) < 0)
-                        value = x;
-                }
-                return value;
-            }
-        }
-        throw Errors.noElements();
+        TResult value = minNull(source, selector);
+        if (value == null)
+            throw Errors.noElements();
+        return value;
     }
 
     public static <TSource, TResult> TResult minNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
