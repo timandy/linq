@@ -16,22 +16,10 @@ public final class Average {
     }
 
     public static double averageInt(IEnumerable<Integer> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        try (IEnumerator<Integer> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            long sum = e.current();
-            long count = 1;
-            while (e.moveNext()) {
-                sum = Math.addExact(sum, e.current());
-                count = Math.addExact(count, 1);
-            }
-
-            return (double) sum / count;
-        }
+        Double avg = averageIntNull(source);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static Double averageIntNull(IEnumerable<Integer> source) {
@@ -55,27 +43,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static double averageLong(IEnumerable<Long> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        try (IEnumerator<Long> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            long sum = e.current();
-            long count = 1;
-            while (e.moveNext()) {
-                sum = Math.addExact(sum, e.current());
-                count = Math.addExact(count, 1);
-            }
-
-            return (double) sum / count;
-        }
+        Double avg = averageLongNull(source);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static Double averageLongNull(IEnumerable<Long> source) {
@@ -99,27 +74,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static float averageFloat(IEnumerable<Float> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        try (IEnumerator<Float> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            double sum = e.current();
-            long count = 1;
-            while (e.moveNext()) {
-                sum += e.current();
-                count = Math.addExact(count, 1);
-            }
-
-            return (float) (sum / count);
-        }
+        Float avg = averageFloatNull(source);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static Float averageFloatNull(IEnumerable<Float> source) {
@@ -143,30 +105,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static double averageDouble(IEnumerable<Double> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        try (IEnumerator<Double> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            double sum = e.current();
-            long count = 1;
-            while (e.moveNext()) {
-                // There is an opportunity to short-circuit here, in that if e.current() is
-                // ever NaN then the result will always be NaN. Assuming that this case is
-                // rare enough that not checking is the better approach generally.
-                sum += e.current();
-                count = Math.addExact(count, 1);
-            }
-
-            return sum / count;
-        }
+        Double avg = averageDoubleNull(source);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static Double averageDoubleNull(IEnumerable<Double> source) {
@@ -190,27 +136,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static BigDecimal averageDecimal(IEnumerable<BigDecimal> source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        try (IEnumerator<BigDecimal> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            BigDecimal sum = e.current();
-            long count = 1;
-            while (e.moveNext()) {
-                sum = sum.add(e.current());
-                count = Math.addExact(count, 1);
-            }
-
-            return sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL128);
-        }
+        BigDecimal avg = averageDecimalNull(source);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static BigDecimal averageDecimalNull(IEnumerable<BigDecimal> source) {
@@ -235,29 +168,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static <TSource> double averageInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            long sum = selector.apply(e.current());
-            long count = 1;
-            while (e.moveNext()) {
-                sum = Math.addExact(sum, selector.apply(e.current()));
-                count = Math.addExact(count, 1);
-            }
-
-            return (double) sum / count;
-        }
+        Double avg = averageIntNull(source, selector);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static <TSource> Double averageIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
@@ -284,29 +202,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static <TSource> double averageLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            long sum = selector.apply(e.current());
-            long count = 1;
-            while (e.moveNext()) {
-                sum = Math.addExact(sum, selector.apply(e.current()));
-                count = Math.addExact(count, 1);
-            }
-
-            return (double) sum / count;
-        }
+        Double avg = averageLongNull(source, selector);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static <TSource> Double averageLongNull(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
@@ -333,29 +236,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static <TSource> float averageFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            double sum = selector.apply(e.current());
-            long count = 1;
-            while (e.moveNext()) {
-                sum += selector.apply(e.current());
-                count = Math.addExact(count, 1);
-            }
-
-            return (float) (sum / count);
-        }
+        Float avg = averageFloatNull(source, selector);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static <TSource> Float averageFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
@@ -382,32 +270,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static <TSource> double averageDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            double sum = selector.apply(e.current());
-            long count = 1;
-            while (e.moveNext()) {
-                // There is an opportunity to short-circuit here, in that if e.current() is
-                // ever NaN then the result will always be NaN. Assuming that this case is
-                // rare enough that not checking is the better approach generally.
-                sum += selector.apply(e.current());
-                count = Math.addExact(count, 1);
-            }
-
-            return sum / count;
-        }
+        Double avg = averageDoubleNull(source, selector);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static <TSource> Double averageDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
@@ -434,29 +304,14 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 
     public static <TSource> BigDecimal averageDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-        if (selector == null)
-            throw Errors.argumentNull("selector");
-
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            if (!e.moveNext())
-                throw Errors.noElements();
-
-            BigDecimal sum = selector.apply(e.current());
-            long count = 1;
-            while (e.moveNext()) {
-                sum = sum.add(selector.apply(e.current()));
-                count = Math.addExact(count, 1);
-            }
-
-            return sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL128);
-        }
+        BigDecimal avg = averageDecimalNull(source, selector);
+        if (avg == null)
+            throw Errors.noElements();
+        return avg;
     }
 
     public static <TSource> BigDecimal averageDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
@@ -483,7 +338,6 @@ public final class Average {
                 }
             }
         }
-
         return null;
     }
 }
