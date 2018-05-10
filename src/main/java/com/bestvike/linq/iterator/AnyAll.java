@@ -15,6 +15,7 @@ public final class AnyAll {
     public static <TSource> boolean any(IEnumerable<TSource> source) {
         if (source == null)
             throw Errors.argumentNull("source");
+
         try (IEnumerator<TSource> e = source.enumerator()) {
             return e.moveNext();
         }
@@ -25,9 +26,12 @@ public final class AnyAll {
             throw Errors.argumentNull("source");
         if (predicate == null)
             throw Errors.argumentNull("predicate");
-        for (TSource element : source) {
-            if (predicate.apply(element))
-                return true;
+
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                if (predicate.apply(e.current()))
+                    return true;
+            }
         }
         return false;
     }
@@ -37,9 +41,12 @@ public final class AnyAll {
             throw Errors.argumentNull("source");
         if (predicate == null)
             throw Errors.argumentNull("predicate");
-        for (TSource element : source) {
-            if (!predicate.apply(element))
-                return false;
+
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                if (!predicate.apply(e.current()))
+                    return false;
+            }
         }
         return true;
     }
