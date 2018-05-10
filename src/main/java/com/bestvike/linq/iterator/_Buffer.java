@@ -13,6 +13,7 @@ final class _Buffer {
     }
 }
 
+
 final class Buffer<TElement> {//struct
     private final Array<TElement> items;
     private final int count;
