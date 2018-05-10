@@ -25,7 +25,6 @@ import com.bestvike.linq.iterator.Intersect;
 import com.bestvike.linq.iterator.IntersectBy;
 import com.bestvike.linq.iterator.Join;
 import com.bestvike.linq.iterator.Last;
-import com.bestvike.linq.iterator.Lookup;
 import com.bestvike.linq.iterator.Max;
 import com.bestvike.linq.iterator.MaxBy;
 import com.bestvike.linq.iterator.Min;
@@ -40,6 +39,7 @@ import com.bestvike.linq.iterator.Skip;
 import com.bestvike.linq.iterator.Sum;
 import com.bestvike.linq.iterator.Take;
 import com.bestvike.linq.iterator.ToCollection;
+import com.bestvike.linq.iterator.ToLookup;
 import com.bestvike.linq.iterator.Union;
 import com.bestvike.linq.iterator.UnionBy;
 import com.bestvike.linq.iterator.Where;
@@ -408,19 +408,19 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
     }
 
     default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector) {
-        return Lookup.toLookup(this, keySelector);
+        return ToLookup.toLookup(this, keySelector);
     }
 
     default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return Lookup.toLookup(this, keySelector, comparer);
+        return ToLookup.toLookup(this, keySelector, comparer);
     }
 
     default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return Lookup.toLookup(this, keySelector, elementSelector);
+        return ToLookup.toLookup(this, keySelector, elementSelector);
     }
 
     default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
-        return Lookup.toLookup(this, keySelector, elementSelector, comparer);
+        return ToLookup.toLookup(this, keySelector, elementSelector, comparer);
     }
 
     default int maxInt() {
