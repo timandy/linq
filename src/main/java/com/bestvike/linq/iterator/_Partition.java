@@ -51,6 +51,7 @@ final class EmptyPartition<TElement> extends Iterator<TElement> implements IPart
     private EmptyPartition() {
     }
 
+    @SuppressWarnings("unchecked")
     public static <TElement> IPartition<TElement> instance() {
         return INSTANCE;
     }
