@@ -26,7 +26,6 @@ public final class Aggregate {
             TSource result = e.current();
             while (e.moveNext())
                 result = func.apply(result, e.current());
-
             return result;
         }
     }
@@ -40,7 +39,6 @@ public final class Aggregate {
         TAccumulate result = seed;
         for (TSource element : source)
             result = func.apply(result, element);
-
         return result;
     }
 
@@ -55,7 +53,6 @@ public final class Aggregate {
         TAccumulate result = seed;
         for (TSource element : source)
             result = func.apply(result, element);
-
         return resultSelector.apply(result);
     }
 }
