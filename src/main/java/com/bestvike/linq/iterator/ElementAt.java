@@ -1,6 +1,6 @@
 package com.bestvike.linq.iterator;
 
-import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.Errors;
@@ -24,9 +24,9 @@ public final class ElementAt {
             if (foundRef.getValue())
                 return element;
         } else {
-            if (source instanceof Array) {
-                Array<TSource> array = (Array<TSource>) source;
-                return array.get(index);
+            if (source instanceof IList) {
+                IList<TSource> list = (IList<TSource>) source;
+                return list.get(index);
             }
 
             if (index >= 0) {
@@ -39,7 +39,6 @@ public final class ElementAt {
                 }
             }
         }
-
         throw Errors.argumentOutOfRange("index");
     }
 
@@ -54,24 +53,20 @@ public final class ElementAt {
         }
 
         if (index >= 0) {
-            if (source instanceof Array) {
-                Array<TSource> array = (Array<TSource>) source;
-                if (index < array.length()) {
-                    return array.get(index);
-                }
+            if (source instanceof IList) {
+                IList<TSource> list = (IList<TSource>) source;
+                if (index < list._getCount())
+                    return list.get(index);
             } else {
                 try (IEnumerator<TSource> e = source.enumerator()) {
                     while (e.moveNext()) {
-                        if (index == 0) {
+                        if (index == 0)
                             return e.current();
-                        }
-
                         index--;
                     }
                 }
             }
         }
-
         return null;
     }
 }
