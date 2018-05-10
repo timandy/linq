@@ -55,8 +55,7 @@ public final class Tuple2<T1, T2> implements IStructuralEquatable, IStructuralCo
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
         Tuple2 that;
-        return other != null
-                && other instanceof Tuple2
+        return other instanceof Tuple2
                 && comparer.equals(this.item1, (that = (Tuple2) other).item1)
                 && comparer.equals(this.item2, that.item2);
     }

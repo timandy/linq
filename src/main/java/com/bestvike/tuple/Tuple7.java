@@ -95,8 +95,7 @@ public final class Tuple7<T1, T2, T3, T4, T5, T6, T7> implements IStructuralEqua
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
         Tuple7 that;
-        return other != null
-                && other instanceof Tuple7
+        return other instanceof Tuple7
                 && comparer.equals(this.item1, (that = (Tuple7) other).item1)
                 && comparer.equals(this.item2, that.item2)
                 && comparer.equals(this.item3, that.item3)

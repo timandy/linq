@@ -103,8 +103,7 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStru
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
         TupleMore that;
-        return other != null
-                && other instanceof TupleMore
+        return other instanceof TupleMore
                 && comparer.equals(this.item1, (that = (TupleMore) other).item1)
                 && comparer.equals(this.item2, that.item2)
                 && comparer.equals(this.item3, that.item3)
