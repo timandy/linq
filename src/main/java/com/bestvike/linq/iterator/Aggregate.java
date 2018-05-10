@@ -37,8 +37,10 @@ public final class Aggregate {
             throw Errors.argumentNull("func");
 
         TAccumulate result = seed;
-        for (TSource element : source)
-            result = func.apply(result, element);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                result = func.apply(result, e.current());
+        }
         return result;
     }
 
@@ -51,8 +53,10 @@ public final class Aggregate {
             throw Errors.argumentNull("resultSelector");
 
         TAccumulate result = seed;
-        for (TSource element : source)
-            result = func.apply(result, element);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                result = func.apply(result, e.current());
+        }
         return resultSelector.apply(result);
     }
 }
