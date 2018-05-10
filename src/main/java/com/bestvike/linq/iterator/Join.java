@@ -261,6 +261,7 @@ final class LeftJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
                     this.g = this.lookup.fetchGrouping(this.outerKeySelector.apply(this.item));
                     if (this.g == null) {
                         this.current = this.resultSelector.apply(this.item, this.defaultInner);
+                        this.state = 3;
                         return true;
                     }
                     this.index = -1;
@@ -347,6 +348,7 @@ final class RightJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
                     this.g = this.lookup.fetchGrouping(this.innerKeySelector.apply(this.item));
                     if (this.g == null) {
                         this.current = this.resultSelector.apply(this.defaultOuter, this.item);
+                        this.state = 3;
                         return true;
                     }
                     this.index = -1;
