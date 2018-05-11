@@ -23,39 +23,43 @@ public final class Linq {
         return Enumerable.singleton(item);
     }
 
-    public static IEnumerable<Boolean> asEnumerable(boolean[] source) {
+    public static IEnumerable<Boolean> asEnumerable(boolean... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static IEnumerable<Byte> asEnumerable(byte[] source) {
+    public static IEnumerable<Byte> asEnumerable(byte... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static IEnumerable<Short> asEnumerable(short[] source) {
+    public static IEnumerable<Short> asEnumerable(short... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static IEnumerable<Integer> asEnumerable(int[] source) {
+    public static IEnumerable<Integer> asEnumerable(int... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static IEnumerable<Long> asEnumerable(long[] source) {
+    public static IEnumerable<Long> asEnumerable(long... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static IEnumerable<Float> asEnumerable(float[] source) {
+    public static IEnumerable<Float> asEnumerable(float... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static IEnumerable<Double> asEnumerable(double[] source) {
+    public static IEnumerable<Double> asEnumerable(double... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static IEnumerable<Character> asEnumerable(char[] source) {
+    public static IEnumerable<Character> asEnumerable(char... source) {
         return Enumerable.asEnumerable(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(TSource[] source) {
+    public static IEnumerable<Character> asEnumerable(CharSequence source) {
+        return Enumerable.asEnumerable(source);
+    }
+
+    public static <TSource> IEnumerable<TSource> asEnumerable(TSource... source) {
         return Enumerable.asEnumerable(source);
     }
 
@@ -68,10 +72,6 @@ public final class Linq {
     }
 
     public static <TSource> IEnumerable<TSource> asEnumerable(Iterable<TSource> source) {
-        return Enumerable.asEnumerable(source);
-    }
-
-    public static IEnumerable<Character> asEnumerable(CharSequence source) {
         return Enumerable.asEnumerable(source);
     }
 

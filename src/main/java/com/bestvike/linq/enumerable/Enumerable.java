@@ -81,6 +81,13 @@ public final class Enumerable {
         return Array.create(source);
     }
 
+    public static IEnumerable<Character> asEnumerable(CharSequence source) {
+        if (source == null)
+            throw Errors.argumentNull("source");
+
+        return new CharSequenceEnumerable(source);
+    }
+
     public static <TSource> IEnumerable<TSource> asEnumerable(TSource[] source) {
         if (source == null) throw Errors.argumentNull("source");
         return Array.create(source);
@@ -105,13 +112,6 @@ public final class Enumerable {
             throw Errors.argumentNull("source");
 
         return new IterableEnumerable<>(source);
-    }
-
-    public static IEnumerable<Character> asEnumerable(CharSequence source) {
-        if (source == null)
-            throw Errors.argumentNull("source");
-
-        return new CharSequenceEnumerable(source);
     }
 
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {
