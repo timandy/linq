@@ -96,6 +96,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return AppendPrepend.prepend(this, element);
     }
 
+    default IEnumerable<TSource> asEnumerable() {
+        return this;
+    }
+
     default double averageInt() {
         return Average.averageInt((IEnumerable<Integer>) this);
     }
