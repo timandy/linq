@@ -31,6 +31,7 @@ import com.bestvike.linq.enumerable.Min;
 import com.bestvike.linq.enumerable.MinBy;
 import com.bestvike.linq.enumerable.OrderBy;
 import com.bestvike.linq.enumerable.Reverse;
+import com.bestvike.linq.enumerable.RunOnce;
 import com.bestvike.linq.enumerable.Select;
 import com.bestvike.linq.enumerable.SelectMany;
 import com.bestvike.linq.enumerable.SequenceEqual;
@@ -729,6 +730,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default IEnumerable<TSource> reverse() {
         return Reverse.reverse(this);
+    }
+
+    default IEnumerable<TSource> runOnce() {
+        return RunOnce.runOnce(this);
     }
 
     default <TResult> IEnumerable<TResult> select(Func1<TSource, TResult> selector) {
