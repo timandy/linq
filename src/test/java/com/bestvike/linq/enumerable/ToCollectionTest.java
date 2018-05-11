@@ -19,7 +19,7 @@ public class ToCollectionTest extends IteratorTest {
     @Test
     public void testToArray() {
         Object[] source = {1, 2, 3};
-        Integer[] target = Linq.asEnumerable(source).cast(Integer.class).toArray(Integer.class);
+        Object[] target = Linq.asEnumerable(source).cast(Integer.class).toArray(Integer.class);
         Assert.assertEquals(3, target.length);
         Assert.assertTrue(Linq.asEnumerable(source).sequenceEqual(Linq.asEnumerable(target)));
 
