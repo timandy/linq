@@ -33,7 +33,6 @@ public class AllTest extends EnumerableTest {
     public void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
-
         Func1<String, Boolean> predicate = EnumerableTest::IsNullOrEmpty;
         Assert.assertEquals(q.all(predicate), q.all(predicate));
     }
