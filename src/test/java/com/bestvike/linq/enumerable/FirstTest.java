@@ -11,7 +11,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class FirstTest extends IteratorTest {
+public class FirstTest extends EnumerableTest {
 
     @Test
     public void testFirst() {

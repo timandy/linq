@@ -12,7 +12,7 @@ import java.util.Arrays;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ElementAtTest extends IteratorTest {
+public class ElementAtTest extends EnumerableTest {
 
     @Test
     public void testElementAt() {

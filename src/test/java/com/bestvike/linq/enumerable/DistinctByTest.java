@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class DistinctByTest extends IteratorTest {
+public class DistinctByTest extends EnumerableTest {
 
     @Test
     public void testDistinctBy() {

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class CastTest extends IteratorTest {
+public class CastTest extends EnumerableTest {
 
     @Test
     public void testOfType() {

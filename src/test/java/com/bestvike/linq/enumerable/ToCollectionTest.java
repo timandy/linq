@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ToCollectionTest extends IteratorTest {
+public class ToCollectionTest extends EnumerableTest {
 
     @Test
     public void testToArray() {

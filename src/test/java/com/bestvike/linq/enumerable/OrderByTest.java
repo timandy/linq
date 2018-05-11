@@ -13,7 +13,7 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class OrderByTest extends IteratorTest {
+public class OrderByTest extends EnumerableTest {
 
     @Test
     public void testOrderBy() {

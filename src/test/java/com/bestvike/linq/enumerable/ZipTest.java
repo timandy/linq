@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ZipTest extends IteratorTest {
+public class ZipTest extends EnumerableTest {
 
     @Test
     public void testZip() {

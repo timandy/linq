@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class CountTest extends IteratorTest {
+public class CountTest extends EnumerableTest {
 
     @Test
     public void testCount() {

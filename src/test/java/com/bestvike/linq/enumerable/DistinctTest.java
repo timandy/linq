@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class DistinctTest extends IteratorTest {
+public class DistinctTest extends EnumerableTest {
 
     @Test
     public void testDistinct() {

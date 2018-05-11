@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SelectManyTest extends IteratorTest {
+public class SelectManyTest extends EnumerableTest {
 
     @Test
     public void testSelectMany() {

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SumTest extends IteratorTest {
+public class SumTest extends EnumerableTest {
 
     @Test
     public void testSumLong() {

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SelectTest extends IteratorTest {
+public class SelectTest extends EnumerableTest {
 
     @Test
     public void testSelectIndexed() {

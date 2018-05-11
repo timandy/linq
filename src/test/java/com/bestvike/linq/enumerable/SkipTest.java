@@ -7,7 +7,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SkipTest extends IteratorTest {
+public class SkipTest extends EnumerableTest {
 
     @Test
     public void testSkip() {

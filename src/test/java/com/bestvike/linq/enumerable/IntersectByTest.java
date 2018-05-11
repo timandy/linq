@@ -9,7 +9,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class IntersectByTest extends IteratorTest {
+public class IntersectByTest extends EnumerableTest {
 
     @Test
     public void testIntersectBy() {

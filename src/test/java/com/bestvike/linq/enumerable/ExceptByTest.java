@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ExceptByTest extends IteratorTest {
+public class ExceptByTest extends EnumerableTest {
 
     @Test
     public void testExceptBy() {

@@ -12,7 +12,7 @@ import java.util.Collections;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class JoinTest extends IteratorTest {
+public class JoinTest extends EnumerableTest {
 
     @Test
     public void testJoin() {

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class TakeTest extends IteratorTest {
+public class TakeTest extends EnumerableTest {
 
 
     @Test

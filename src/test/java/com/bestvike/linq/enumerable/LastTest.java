@@ -12,7 +12,7 @@ import java.util.Collections;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class LastTest extends IteratorTest {
+public class LastTest extends EnumerableTest {
 
     @Test
     public void testLast() {

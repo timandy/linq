@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ReverseTest extends IteratorTest {
+public class ReverseTest extends EnumerableTest {
 
     @Test
     public void testReverse() {

@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SingleTest extends IteratorTest {
+public class SingleTest extends EnumerableTest {
 
 
     @Test

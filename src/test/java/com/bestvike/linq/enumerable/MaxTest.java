@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class MaxTest extends IteratorTest {
+public class MaxTest extends EnumerableTest {
 
     @Test
     public void testMaxInt() {

@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ToLookupTest extends IteratorTest {
+public class ToLookupTest extends EnumerableTest {
 
     @Test
     public void testToLookup() {
