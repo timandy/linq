@@ -43,7 +43,7 @@ public class ReverseTest extends IteratorTest {
         Assert.assertEquals(5, hello.length);
         Assert.assertEquals("h", hello[4].toString());
 
-        Character[] h = Linq.singletonEnumerable('h').reverse().toArray(Character.class);
+        Character[] h = Linq.singleton('h').reverse().toArray(Character.class);
         Assert.assertEquals(1, h.length);
         Assert.assertEquals("h", h[0].toString());
 

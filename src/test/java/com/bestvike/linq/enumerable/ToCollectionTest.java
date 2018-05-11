@@ -44,7 +44,7 @@ public class ToCollectionTest extends IteratorTest {
         Assert.assertEquals(5, hello.length);
         Assert.assertEquals("o", hello[4].toString());
 
-        Character[] h = Linq.singletonEnumerable('h').toArray(Character.class);
+        Character[] h = Linq.singleton('h').toArray(Character.class);
         Assert.assertEquals(1, h.length);
         Assert.assertEquals("h", h[0].toString());
 
@@ -80,7 +80,7 @@ public class ToCollectionTest extends IteratorTest {
         Assert.assertEquals(5, hello.size());
         Assert.assertEquals("o", hello.get(4).toString());
 
-        List<Character> h = Linq.singletonEnumerable('h').toList();
+        List<Character> h = Linq.singleton('h').toList();
         Assert.assertEquals(1, h.size());
         Assert.assertEquals("h", h.get(0).toString());
 

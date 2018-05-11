@@ -81,7 +81,7 @@ public class ToLookupTest extends IteratorTest {
             }
         };
         final Employee badEmp = new Employee(160, "Tim", null);
-        final ILookup<Integer, Employee> lookup2 = Linq.singletonEnumerable(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, comparer2);
+        final ILookup<Integer, Employee> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, comparer2);
         Assert.assertTrue(lookup2.containsKey(null));
         Assert.assertEquals(5, lookup2.get(null).count());
         int n2 = 0;
@@ -174,7 +174,7 @@ public class ToLookupTest extends IteratorTest {
             }
         };
         final Employee badEmp = new Employee(160, "Tim", null);
-        final ILookup<Integer, String> lookup2 = Linq.singletonEnumerable(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, emp -> emp.name, comparer2);
+        final ILookup<Integer, String> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, emp -> emp.name, comparer2);
         Assert.assertTrue(lookup2.containsKey(null));
         Assert.assertEquals(5, lookup2.get(null).count());
         int n2 = 0;

@@ -31,8 +31,8 @@ public class ContainsTest extends IteratorTest {
 
         Assert.assertTrue(Linq.asEnumerable("hello").contains('h'));
 
-        Assert.assertTrue(Linq.singletonEnumerable('h').contains('h'));
-        Assert.assertFalse(Linq.singletonEnumerable('h').contains('o'));
+        Assert.assertTrue(Linq.singleton('h').contains('h'));
+        Assert.assertFalse(Linq.singleton('h').contains('o'));
 
         Assert.assertFalse(Linq.empty().contains(1));
     }

@@ -173,8 +173,8 @@ public class LinqTest {
     public void testSingleton() {
         final String[] array = {"1"};
         Assert.assertEquals(1, Linq.asEnumerable(array).count());
-        Assert.assertEquals(1, Linq.singletonEnumerable("1").count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.singletonEnumerable("1")));
+        Assert.assertEquals(1, Linq.singleton("1").count());
+        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.singleton("1")));
     }
 
     @Test

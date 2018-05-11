@@ -18,7 +18,7 @@ Linq to Objects for Java.
 
 ## API of Linq
 - asEnumerable
-- singletonEnumerable
+- singleton
 - range
 - repeat
 - empty

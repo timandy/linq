@@ -43,7 +43,7 @@ public class ElementAtTest extends IteratorTest {
         } catch (ArgumentOutOfRangeException ignored) {
         }
 
-        IEnumerable<Integer> one = Linq.singletonEnumerable(1);
+        IEnumerable<Integer> one = Linq.singleton(1);
         Assert.assertEquals((Integer) 1, one.elementAt(0));
 
         IEnumerable<Integer> empty = Linq.empty();
