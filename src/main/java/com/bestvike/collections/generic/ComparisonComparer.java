@@ -10,7 +10,7 @@ import java.util.Comparator;
 final class ComparisonComparer<T> implements Comparator<T> {
     private final IComparison<T> comparison;
 
-    public ComparisonComparer(IComparison<T> comparison) {
+    ComparisonComparer(IComparison<T> comparison) {
         this.comparison = comparison;
     }
 

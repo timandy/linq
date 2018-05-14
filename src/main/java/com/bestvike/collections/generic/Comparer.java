@@ -11,19 +11,13 @@ import java.util.Locale;
  * Created by 许崇雷 on 2017/7/18.
  */
 public final class Comparer<T> implements Comparator<T> {
-    private static final Comparer DEFAULT = new Comparer();
+    private static final Comparer DEFAULT = new Comparer(null);
     private static final Comparer DEFAULT_INVARIANT = new Comparer(Collator.getInstance(Locale.ROOT));
     private static final Comparer DEFAULT_CURRENT = new Comparer(Collator.getInstance(Locale.CHINA));
 
     private final Collator collator;
 
-    private Comparer() {
-        this.collator = null;
-    }
-
-    public Comparer(Collator collator) {
-        if (collator == null)
-            throw Errors.argumentNull("collator");
+    private Comparer(Collator collator) {
         this.collator = collator;
     }
 
@@ -40,6 +34,12 @@ public final class Comparer<T> implements Comparator<T> {
     @SuppressWarnings("unchecked")
     public static <T> Comparator<T> DefaultCurrent() {
         return DEFAULT_CURRENT;
+    }
+
+    public static <T> Comparator<T> create(Collator collator) {
+        if (collator == null)
+            throw Errors.argumentNull("collator");
+        return new Comparer<>(collator);
     }
 
     public static <T> Comparator<T> create(IComparison<T> comparison) {
