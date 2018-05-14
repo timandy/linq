@@ -51,6 +51,6 @@ public class AsEnumerableTest extends EnumerableTest {
     public void SomeElementsRunOnce() {
         IEnumerable<Integer> source = Linq.asEnumerable(-5, 0, 1, -4, 3, null, 10);
 
-        Assert.assertEquals(source, source.runOnce().asEnumerable());
+        assertEquals(source, source.runOnce().asEnumerable());
     }
 }
