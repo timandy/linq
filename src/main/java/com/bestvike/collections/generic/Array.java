@@ -195,6 +195,11 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     //endregion
 
+    @Override
+    public IEnumerator<T> enumerator() {
+        return new ArrayEnumerator<>(this);
+    }
+
     public int length() {
         return this.elements.length;
     }
@@ -207,37 +212,6 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     public void set(int index, T item) {
         this.elements[index] = item;
-    }
-
-    @Override
-    public T[] _toArray(Class<T> clazz) {
-        return ArrayUtils.toArray(this.elements, clazz);
-    }
-
-    public T[] _toArray(Class<T> clazz, int startIndex, int count) {
-        return ArrayUtils.toArray(this.elements, clazz, startIndex, count);
-    }
-
-    @Override
-    public Array<T> _toArray() {
-        return this;
-    }
-
-    public Array<T> _toArray(int startIndex, int count) {
-        if (startIndex == 0 && count == this.elements.length)
-            return this;
-        Array<T> array = Array.create(count);
-        copy(this.elements, startIndex, array, 0, count);
-        return array;
-    }
-
-    @Override
-    public List<T> _toList() {
-        return ArrayUtils.toList(this.elements);
-    }
-
-    public List<T> _toList(int startIndex, int count) {
-        return ArrayUtils.toList(this.elements, startIndex, count);
     }
 
     @Override
@@ -279,12 +253,38 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     @Override
-    public Array<T> clone() {
-        return new Array<>(this.elements.clone());
+    public T[] _toArray(Class<T> clazz) {
+        return ArrayUtils.toArray(this.elements, clazz);
+    }
+
+    public T[] _toArray(Class<T> clazz, int startIndex, int count) {
+        return ArrayUtils.toArray(this.elements, clazz, startIndex, count);
     }
 
     @Override
-    public IEnumerator<T> enumerator() {
-        return new ArrayEnumerator<>(this);
+    public Array<T> _toArray() {
+        return this;
+    }
+
+    public Array<T> _toArray(int startIndex, int count) {
+        if (startIndex == 0 && count == this.elements.length)
+            return this;
+        Array<T> array = Array.create(count);
+        copy(this.elements, startIndex, array, 0, count);
+        return array;
+    }
+
+    @Override
+    public List<T> _toList() {
+        return ArrayUtils.toList(this.elements);
+    }
+
+    public List<T> _toList(int startIndex, int count) {
+        return ArrayUtils.toList(this.elements, startIndex, count);
+    }
+
+    @Override
+    public Array<T> clone() {
+        return new Array<>(this.elements.clone());
     }
 }
