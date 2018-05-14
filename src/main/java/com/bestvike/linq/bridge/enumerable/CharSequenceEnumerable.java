@@ -27,6 +27,11 @@ public final class CharSequenceEnumerable implements IList<Character> {
     }
 
     @Override
+    public Character get(int index) {
+        return this.source.charAt(index);
+    }
+
+    @Override
     public Collection<Character> getCollection() {
         return ArrayUtils.toCollection(this._toArray(Character.class));
     }
@@ -85,10 +90,5 @@ public final class CharSequenceEnumerable implements IList<Character> {
         for (int i = 0; i < length; i++)
             list.add(this.source.charAt(i));
         return list;
-    }
-
-    @Override
-    public Character get(int index) {
-        return this.source.charAt(index);
     }
 }
