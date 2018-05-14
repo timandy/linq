@@ -62,25 +62,6 @@ final class ArrayBuilder<T> {//struct
         return this.array.get(this.count - 1);
     }
 
-    public Array<T> toArray() {
-        if (this.count == 0)
-            return Array.empty();
-        assert this.array != null; // Nonzero count should imply this
-        Array<T> result = this.array;
-        if (this.count < this.array.length()) {
-            // Avoid a bit of overhead (method call, some branches, extra codegen)
-            // which would be incurred by using Array.Resize
-            result = Array.create(this.count);
-            Array.copy(this.array, 0, result, 0, this.count);
-        }
-//#if DEBUG
-//        // Try to prevent callers from using the ArrayBuilder after toArray, if count != 0.
-//        count = -1;
-//        array = null;
-//#endif
-        return result;
-    }
-
     public T[] toArray(Class<T> clazz) {
         if (this.count == 0)
             return ArrayUtils.empty(clazz);
@@ -93,6 +74,25 @@ final class ArrayBuilder<T> {//struct
             Array.copy(this.array, 0, result, 0, this.count);
         } else {
             result = this.array._toArray(clazz);
+        }
+//#if DEBUG
+//        // Try to prevent callers from using the ArrayBuilder after toArray, if count != 0.
+//        count = -1;
+//        array = null;
+//#endif
+        return result;
+    }
+
+    public Array<T> toArray() {
+        if (this.count == 0)
+            return Array.empty();
+        assert this.array != null; // Nonzero count should imply this
+        Array<T> result = this.array;
+        if (this.count < this.array.length()) {
+            // Avoid a bit of overhead (method call, some branches, extra codegen)
+            // which would be incurred by using Array.Resize
+            result = Array.create(this.count);
+            Array.copy(this.array, 0, result, 0, this.count);
         }
 //#if DEBUG
 //        // Try to prevent callers from using the ArrayBuilder after toArray, if count != 0.
