@@ -199,11 +199,11 @@ public final class ArrayUtils {
         private final int endIndex;
         private int index;
 
-        public ArrayIterator(final Object[] source) {
+        ArrayIterator(final Object[] source) {
             this(source, 0, source.length);
         }
 
-        public ArrayIterator(final Object[] source, final int index, final int count) {
+        ArrayIterator(final Object[] source, final int index, final int count) {
             this.source = source;
             this.index = index;
             this.endIndex = Math.addExact(index, count);
