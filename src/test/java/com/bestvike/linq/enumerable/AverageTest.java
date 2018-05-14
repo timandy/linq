@@ -449,7 +449,6 @@ public class AverageTest extends EnumerableTest {
         Assert.assertEquals(expected, source.averageFloat(e -> e.getItem2()), DELTA);
     }
 
-
     @Test
     public void testAverageInt() {
         final Integer[] numbers = {null, 0, 3, 3};
