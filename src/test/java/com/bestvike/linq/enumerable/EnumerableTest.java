@@ -16,6 +16,7 @@ import java.util.Iterator;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class EnumerableTest {
+    static final double DELTA = 0d;
     static final String Empty = "";
     static final Employee[] badEmps = {
             new Employee(140, "Cedric", 40),
