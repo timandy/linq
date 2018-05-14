@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.util.ArrayUtils;
 
 /**
@@ -16,7 +15,7 @@ final class ArrayBuilder<T> {//struct
     private static final int DefaultCapacity = 4;
     private static final int MaxCoreClrArrayLength = 0x7fefffff; // For byte arrays the limit is slightly larger
 
-    private Array<T> array;     // Starts out null, initialized on first Add.
+    private Object[] array;     // Starts out null, initialized on first Add.
     private int count;          // Number of items into array we're using.
 
     public ArrayBuilder() {
@@ -25,25 +24,26 @@ final class ArrayBuilder<T> {//struct
     public ArrayBuilder(int capacity) {
         assert capacity >= 0;
         if (capacity > 0)
-            this.array = Array.create(capacity);
+            this.array = new Object[capacity];
     }
 
     public int getCapacity() {
-        return this.array == null ? 0 : this.array.length();
+        return this.array == null ? 0 : this.array.length;
     }
 
     public int getCount() {
         return this.count;
     }
 
+    @SuppressWarnings("unchecked")
     public T get(int index) {
         assert index >= 0 && index < this.count;
-        return this.array.get(index);
+        return (T) this.array[index];
     }
 
     public void set(int index, T value) {
         assert index >= 0 && index < this.count;
-        this.array.set(index, value);
+        this.array[index] = value;
     }
 
     public void add(T item) {
@@ -52,59 +52,28 @@ final class ArrayBuilder<T> {//struct
         this.uncheckedAdd(item);
     }
 
+    @SuppressWarnings("unchecked")
     public T first() {
         assert this.count > 0;
-        return this.array.get(0);
+        return (T) this.array[0];
     }
 
+    @SuppressWarnings("unchecked")
     public T last() {
         assert this.count > 0;
-        return this.array.get(this.count - 1);
+        return (T) this.array[this.count - 1];
     }
 
     public T[] toArray(Class<T> clazz) {
         if (this.count == 0)
             return ArrayUtils.empty(clazz);
         assert this.array != null; // Nonzero count should imply this
-        T[] result;
-        if (this.count < this.array.length()) {
-            // Avoid a bit of overhead (method call, some branches, extra codegen)
-            // which would be incurred by using Array.Resize
-            result = ArrayUtils.newInstance(clazz, this.count);
-            Array.copy(this.array, 0, result, 0, this.count);
-        } else {
-            result = this.array._toArray(clazz);
-        }
-//#if DEBUG
-//        // Try to prevent callers from using the ArrayBuilder after toArray, if count != 0.
-//        count = -1;
-//        array = null;
-//#endif
-        return result;
-    }
-
-    public Array<T> toArray() {
-        if (this.count == 0)
-            return Array.empty();
-        assert this.array != null; // Nonzero count should imply this
-        Array<T> result = this.array;
-        if (this.count < this.array.length()) {
-            // Avoid a bit of overhead (method call, some branches, extra codegen)
-            // which would be incurred by using Array.Resize
-            result = Array.create(this.count);
-            Array.copy(this.array, 0, result, 0, this.count);
-        }
-//#if DEBUG
-//        // Try to prevent callers from using the ArrayBuilder after toArray, if count != 0.
-//        count = -1;
-//        array = null;
-//#endif
-        return result;
+        return ArrayUtils.toArray(this.array, clazz, 0, this.count);
     }
 
     public void uncheckedAdd(T item) {
         assert this.count < this.getCapacity();
-        this.array.set(this.count++, item);
+        this.array[this.count++] = item;
     }
 
     private void ensureCapacity(int minimum) {
@@ -114,9 +83,9 @@ final class ArrayBuilder<T> {//struct
         if (nextCapacity > MaxCoreClrArrayLength)
             nextCapacity = Math.max(capacity + 1, MaxCoreClrArrayLength);
         nextCapacity = Math.max(nextCapacity, minimum);
-        Array<T> next = Array.create(nextCapacity);
+        Object[] next = new Object[nextCapacity];
         if (this.count > 0)
-            Array.copy(this.array, 0, next, 0, this.count);
+            System.arraycopy(this.array, 0, next, 0, this.count);
         this.array = next;
     }
 }
