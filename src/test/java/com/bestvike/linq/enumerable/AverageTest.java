@@ -351,12 +351,12 @@ public class AverageTest extends EnumerableTest {
     public void Decimal() {
         this.DecimalCore(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
         this.DecimalCore(Linq.asEnumerable(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
-        this.DecimalCore(Linq.asEnumerable(new BigDecimal("5.5"), new BigDecimal("-10"), new BigDecimal("15.5"), new BigDecimal("40.5"), new BigDecimal("28.5")), new BigDecimal("16"));
+        this.DecimalCore(Linq.asEnumerable(new BigDecimal("5.5"), new BigDecimal("-10"), new BigDecimal("15.5"), new BigDecimal("40.5"), new BigDecimal("28.5")), new BigDecimal("16.0"));
     }
 
     private void DecimalCore(IEnumerable<BigDecimal> source, BigDecimal expected) {
-        Assert.assertEquals(0, expected.compareTo(source.averageDecimal()));
-        Assert.assertEquals(0, expected.compareTo(source.averageDecimal(x -> x)));
+        Assert.assertEquals(expected, source.averageDecimal());
+        Assert.assertEquals(expected, source.averageDecimal(x -> x));
     }
 
     @Test
@@ -378,8 +378,8 @@ public class AverageTest extends EnumerableTest {
     }
 
     private void NullableDecimalCore(IEnumerable<BigDecimal> source, BigDecimal expected) {
-        Assert.assertEquals(0, expected.compareTo(source.averageDecimal()));
-        Assert.assertEquals(0, expected.compareTo(source.averageDecimal(x -> x)));
+        Assert.assertEquals(expected, source.averageDecimalNull());
+        Assert.assertEquals(expected, source.averageDecimalNull(x -> x));
     }
 
     @Test
