@@ -24,7 +24,7 @@ public class AggregateTest extends EnumerableTest {
     @Test
     public void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
-                .where(a -> a != null && !a.isEmpty());
+                .where(x -> !IsNullOrEmpty(x));
 
         Assert.assertEquals(q.aggregate((x, y) -> x + y), q.aggregate((x, y) -> x + y));
     }
