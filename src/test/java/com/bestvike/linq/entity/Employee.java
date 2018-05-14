@@ -48,13 +48,8 @@ public final class Employee {
         if (this.empno != other.empno) {
             return false;
         }
-        if (this.name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!this.name.equals(other.name)) {
-            return false;
-        }
-        return true;
+        if (this.name == null)
+            return other.name == null;
+        return this.name.equals(other.name);
     }
 }
