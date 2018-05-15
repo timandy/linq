@@ -4,6 +4,7 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 
 /**
@@ -21,7 +22,8 @@ final class EnumerableHelpers {
         assert source != null;
 
         if (source instanceof ICollection) {
-            count.setValue(source.count());
+            ICollection collection = (ICollection<T>) source;
+            count.setValue(collection._getCount());
             return true;
         }
 
@@ -37,10 +39,9 @@ final class EnumerableHelpers {
     //Copies items from an enumerable to an array.
     public static <T> void copy(IEnumerable<T> source, T[] array, int arrayIndex, int count) {
         assert source != null;
-        assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0;
-        assert array.length - arrayIndex >= count;
+        assert array != null && array.length - arrayIndex >= count;
 
         if (source instanceof ICollection) {
             ICollection<T> collection = (ICollection<T>) source;
@@ -54,10 +55,9 @@ final class EnumerableHelpers {
     //Copies items from an enumerable to an array.
     public static <T> void copy(IEnumerable<T> source, Array<T> array, int arrayIndex, int count) {
         assert source != null;
-        assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0;
-        assert array.length() - arrayIndex >= count;
+        assert array != null && array.length() - arrayIndex >= count;
 
         if (source instanceof ICollection) {
             ICollection<T> collection = (ICollection<T>) source;
@@ -71,10 +71,9 @@ final class EnumerableHelpers {
     //Copies items from a non-collection enumerable to an array.
     public static <T> void iterativeCopy(IEnumerable<T> source, T[] array, int arrayIndex, int count) {
         assert source != null && !(source instanceof ICollection);
-        assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0;
-        assert array.length - arrayIndex >= count;
+        assert array != null && array.length - arrayIndex >= count;
 
         int endIndex = arrayIndex + count;
         for (T item : source)
@@ -86,10 +85,9 @@ final class EnumerableHelpers {
     //Copies items from a non-collection enumerable to an array.
     public static <T> void iterativeCopy(IEnumerable<T> source, Array<T> array, int arrayIndex, int count) {
         assert source != null && !(source instanceof ICollection);
-        assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0;
-        assert array.length() - arrayIndex >= count;
+        assert array != null && array.length() - arrayIndex >= count;
 
         int endIndex = arrayIndex + count;
         for (T item : source)
@@ -105,7 +103,8 @@ final class EnumerableHelpers {
 
         if (source instanceof ICollection) {
             ICollection<T> collection = (ICollection<T>) source;
-            return collection._toArray(clazz);
+            int count = collection._getCount();
+            return count == 0 ? ArrayUtils.empty(clazz) : collection._toArray(clazz);
         }
 
         LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
@@ -119,7 +118,8 @@ final class EnumerableHelpers {
 
         if (source instanceof ICollection) {
             ICollection<T> collection = (ICollection<T>) source;
-            return collection._toArray();
+            int count = collection._getCount();
+            return count == 0 ? Array.empty() : collection._toArray();
         }
 
         LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
@@ -139,10 +139,8 @@ final class EnumerableHelpers {
                 // exception from overrunning the array (if the count went up) or we could end up not filling as many
                 // items as 'count' suggests (if the count went down).  This instanceof only an issue for concurrent collections
                 // that implement ICollection<T>, which as of .NET 4.6 instanceof just ConcurrentDictionary<TKey, TValue>.
-                Array<T> arr = Array.create(count);
-                ic._copyTo(arr, 0);
                 length.setValue(count);
-                return arr;
+                return ic._toArray();
             }
         } else {
             try (IEnumerator<T> en = source.enumerator()) {
