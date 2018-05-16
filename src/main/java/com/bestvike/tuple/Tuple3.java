@@ -12,7 +12,7 @@ import java.util.Comparator;
 /**
  * Created by 许崇雷 on 2017/7/23.
  */
-@SuppressWarnings({"unchecked", "EqualsWhichDoesntCheckParameterClass"})
+@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
     private final T1 item1;
     private final T2 item2;
@@ -63,6 +63,7 @@ public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructur
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
         Tuple3 that;
+        //noinspection unchecked
         return other instanceof Tuple3
                 && comparer.equals(this.item1, (that = (Tuple3) other).item1)
                 && comparer.equals(this.item2, that.item2)
@@ -81,12 +82,15 @@ public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructur
         if (!(other instanceof Tuple3))
             throw Errors.tupleIncorrectType(this.getClass(), "other");
         Tuple3 that = (Tuple3) other;
+        //noinspection unchecked
         int num = comparer.compare(this.item1, that.item1);
         if (num != 0)
             return num;
+        //noinspection unchecked
         num = comparer.compare(this.item2, that.item2);
         if (num != 0)
             return num;
+        //noinspection unchecked
         return comparer.compare(this.item3, that.item3);
     }
 
@@ -97,6 +101,7 @@ public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructur
 
     @Override
     public int hashCode(IEqualityComparer comparer) {
+        //noinspection unchecked
         return Tuple.combineHashCodes(comparer.hashCode(this.item1),
                 comparer.hashCode(this.item2),
                 comparer.hashCode(this.item3));

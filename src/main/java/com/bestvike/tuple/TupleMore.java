@@ -12,7 +12,7 @@ import java.util.Comparator;
 /**
  * Created by 许崇雷 on 2017/7/23.
  */
-@SuppressWarnings({"unchecked", "EqualsWhichDoesntCheckParameterClass"})
+@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
     private final T1 item1;
     private final T2 item2;
@@ -103,6 +103,7 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStru
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
         TupleMore that;
+        //noinspection unchecked
         return other instanceof TupleMore
                 && comparer.equals(this.item1, (that = (TupleMore) other).item1)
                 && comparer.equals(this.item2, that.item2)
@@ -126,27 +127,35 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStru
         if (!(other instanceof TupleMore))
             throw Errors.tupleIncorrectType(this.getClass(), "other");
         TupleMore that = (TupleMore) other;
+        //noinspection unchecked
         int c = comparer.compare(this.item1, that.item1);
         if (c != 0)
             return c;
+        //noinspection unchecked
         c = comparer.compare(this.item2, that.item2);
         if (c != 0)
             return c;
+        //noinspection unchecked
         c = comparer.compare(this.item3, that.item3);
         if (c != 0)
             return c;
+        //noinspection unchecked
         c = comparer.compare(this.item4, that.item4);
         if (c != 0)
             return c;
+        //noinspection unchecked
         c = comparer.compare(this.item5, that.item5);
         if (c != 0)
             return c;
+        //noinspection unchecked
         c = comparer.compare(this.item6, that.item6);
         if (c != 0)
             return c;
+        //noinspection unchecked
         c = comparer.compare(this.item7, that.item7);
         if (c != 0)
             return c;
+        //noinspection unchecked
         return comparer.compare(this.rest, that.rest);
     }
 
@@ -163,18 +172,25 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStru
         int k = 8 - t.size();
         switch (k) {
             case 1:
+                //noinspection unchecked
                 return Tuple.combineHashCodes(comparer.hashCode(this.item7), t.hashCode(comparer));
             case 2:
+                //noinspection unchecked
                 return Tuple.combineHashCodes(comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 3:
+                //noinspection unchecked
                 return Tuple.combineHashCodes(comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 4:
+                //noinspection unchecked
                 return Tuple.combineHashCodes(comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 5:
+                //noinspection unchecked
                 return Tuple.combineHashCodes(comparer.hashCode(this.item3), comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 6:
+                //noinspection unchecked
                 return Tuple.combineHashCodes(comparer.hashCode(this.item2), comparer.hashCode(this.item3), comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             case 7:
+                //noinspection unchecked
                 return Tuple.combineHashCodes(comparer.hashCode(this.item1), comparer.hashCode(this.item2), comparer.hashCode(this.item3), comparer.hashCode(this.item4), comparer.hashCode(this.item5), comparer.hashCode(this.item6), comparer.hashCode(this.item7), t.hashCode(comparer));
             default:
                 return -1;

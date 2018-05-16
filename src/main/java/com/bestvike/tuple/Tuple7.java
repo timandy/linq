@@ -12,7 +12,7 @@ import java.util.Comparator;
 /**
  * Created by 许崇雷 on 2017/7/23.
  */
-@SuppressWarnings({"unchecked", "EqualsWhichDoesntCheckParameterClass"})
+@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 public final class Tuple7<T1, T2, T3, T4, T5, T6, T7> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
     private final T1 item1;
     private final T2 item2;
@@ -95,6 +95,7 @@ public final class Tuple7<T1, T2, T3, T4, T5, T6, T7> implements IStructuralEqua
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
         Tuple7 that;
+        //noinspection unchecked
         return other instanceof Tuple7
                 && comparer.equals(this.item1, (that = (Tuple7) other).item1)
                 && comparer.equals(this.item2, that.item2)
@@ -117,24 +118,31 @@ public final class Tuple7<T1, T2, T3, T4, T5, T6, T7> implements IStructuralEqua
         if (!(other instanceof Tuple7))
             throw Errors.tupleIncorrectType(this.getClass(), "other");
         Tuple7 that = (Tuple7) other;
+        //noinspection unchecked
         int num = comparer.compare(this.item1, that.item1);
         if (num != 0)
             return num;
+        //noinspection unchecked
         num = comparer.compare(this.item2, that.item2);
         if (num != 0)
             return num;
+        //noinspection unchecked
         num = comparer.compare(this.item3, that.item3);
         if (num != 0)
             return num;
+        //noinspection unchecked
         num = comparer.compare(this.item4, that.item4);
         if (num != 0)
             return num;
+        //noinspection unchecked
         num = comparer.compare(this.item5, that.item5);
         if (num != 0)
             return num;
+        //noinspection unchecked
         num = comparer.compare(this.item6, that.item6);
         if (num != 0)
             return num;
+        //noinspection unchecked
         return comparer.compare(this.item7, that.item7);
     }
 
@@ -145,6 +153,7 @@ public final class Tuple7<T1, T2, T3, T4, T5, T6, T7> implements IStructuralEqua
 
     @Override
     public int hashCode(IEqualityComparer comparer) {
+        //noinspection unchecked
         return Tuple.combineHashCodes(comparer.hashCode(this.item1),
                 comparer.hashCode(this.item2),
                 comparer.hashCode(this.item3),
