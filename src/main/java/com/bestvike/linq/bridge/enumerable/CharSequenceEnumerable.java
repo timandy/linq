@@ -1,6 +1,5 @@
 package com.bestvike.linq.bridge.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.bridge.enumerator.CharSequenceEnumerator;
@@ -52,34 +51,27 @@ public final class CharSequenceEnumerable implements IList<Character> {
     }
 
     @Override
-    public void _copyTo(Character[] array, int arrayIndex) {
+    public void _copyTo(Object[] array, int arrayIndex) {
         int length = this.source.length();
         for (int i = 0; i < length; i++)
             array[arrayIndex++] = this.source.charAt(i);
     }
 
     @Override
-    public void _copyTo(Array<Character> array, int arrayIndex) {
-        int length = this.source.length();
-        for (int i = 0; i < length; i++)
-            array.set(arrayIndex++, this.source.charAt(i));
-    }
-
-    @Override
     public Character[] _toArray(Class<Character> clazz) {
         int length = this.source.length();
-        Character[] array = new Character[length];
+        Character[] array = ArrayUtils.newInstance(clazz, length);
         for (int i = 0; i < length; i++)
             array[i] = this.source.charAt(i);
         return array;
     }
 
     @Override
-    public Array<Character> _toArray() {
+    public Object[] _toArray() {
         int length = this.source.length();
-        Array<Character> array = Array.create(length);
+        Object[] array = new Object[length];
         for (int i = 0; i < length; i++)
-            array.set(i, this.source.charAt(i));
+            array[i] = this.source.charAt(i);
         return array;
     }
 

@@ -1,21 +1,20 @@
 package com.bestvike.linq.bridge.enumerator;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.enumerable.AbstractEnumerator;
 
 /**
  * Created by 许崇雷 on 2017/7/13.
  */
 public final class ArrayEnumerator<TSource> extends AbstractEnumerator<TSource> {
-    private final Array<TSource> source;
+    private final Object[] source;
     private final int endIndex;
     private int index;
 
-    public ArrayEnumerator(Array<TSource> source) {
-        this(source, 0, source.length());
+    public ArrayEnumerator(Object[] source) {
+        this(source, 0, source.length);
     }
 
-    public ArrayEnumerator(Array<TSource> source, int index, int count) {
+    public ArrayEnumerator(Object[] source, int index, int count) {
         this.source = source;
         this.index = index;
         this.endIndex = Math.addExact(index, count);
@@ -26,7 +25,8 @@ public final class ArrayEnumerator<TSource> extends AbstractEnumerator<TSource> 
         switch (this.state) {
             case 0:
                 if (this.index < this.endIndex) {
-                    this.current = this.source.get(this.index++);
+                    //noinspection unchecked
+                    this.current = (TSource) this.source[this.index++];
                     return true;
                 }
                 this.close();

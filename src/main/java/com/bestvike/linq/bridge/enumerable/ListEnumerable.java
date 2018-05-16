@@ -1,6 +1,5 @@
 package com.bestvike.linq.bridge.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.bridge.enumerator.IterableEnumerator;
@@ -46,15 +45,9 @@ public final class ListEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public void _copyTo(TElement[] array, int arrayIndex) {
+    public void _copyTo(Object[] array, int arrayIndex) {
         Object[] src = this.source.toArray();
         System.arraycopy(src, 0, array, arrayIndex, src.length);
-    }
-
-    @Override
-    public void _copyTo(Array<TElement> array, int arrayIndex) {
-        Object[] src = this.source.toArray();
-        Array.copy(src, 0, array, arrayIndex, src.length);
     }
 
     @Override
@@ -65,9 +58,8 @@ public final class ListEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public Array<TElement> _toArray() {
-        Object[] array = this.source.toArray();
-        return Array.create(array);
+    public Object[] _toArray() {
+        return this.source.toArray();
     }
 
     @Override
