@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
@@ -16,13 +15,13 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-07.
  */
 interface IIListProvider<TElement> extends IEnumerable<TElement> {
-    int _getCount(boolean onlyIfCheap);
-
     TElement[] _toArray(Class<TElement> clazz);
 
-    Array<TElement> _toArray();
+    Object[] _toArray();
 
     List<TElement> _toList();
+
+    int _getCount(boolean onlyIfCheap);
 }
 
 
@@ -51,13 +50,10 @@ final class EmptyPartition<TElement> extends Iterator<TElement> implements IPart
     private EmptyPartition() {
     }
 
-    @SuppressWarnings("unchecked")
     public static <TElement> IPartition<TElement> instance() {
+        //noinspection unchecked
         return INSTANCE;
     }
-
-
-    //region IEnumerator
 
     @Override
     public AbstractIterator<TElement> clone() {
@@ -69,35 +65,16 @@ final class EmptyPartition<TElement> extends Iterator<TElement> implements IPart
         return false;
     }
 
-    //endregion
-
-
-    //region IListProvider
-
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        return 0;
+    public <TResult> IEnumerable<TResult> _select(Func1<TElement, TResult> selector) {
+        //noinspection unchecked
+        return (IEnumerable<TResult>) this;
     }
 
     @Override
-    public TElement[] _toArray(Class<TElement> clazz) {
-        return ArrayUtils.empty(clazz);
+    public IEnumerable<TElement> _where(Func1<TElement, Boolean> predicate) {
+        return this;
     }
-
-    @Override
-    public Array<TElement> _toArray() {
-        return Array.empty();
-    }
-
-    @Override
-    public List<TElement> _toList() {
-        return ListUtils.empty();
-    }
-
-    //endregion
-
-
-    //region IPartition
 
     @Override
     public IPartition<TElement> _skip(int count) {
@@ -127,23 +104,25 @@ final class EmptyPartition<TElement> extends Iterator<TElement> implements IPart
         return null;
     }
 
-    //endregion
-
-
-    //region Iterator
-
-    @SuppressWarnings("unchecked")
     @Override
-    public <TResult> IEnumerable<TResult> _select(Func1<TElement, TResult> selector) {
-        return (IEnumerable<TResult>) this;
+    public TElement[] _toArray(Class<TElement> clazz) {
+        return ArrayUtils.empty(clazz);
     }
 
     @Override
-    public IEnumerable<TElement> _where(Func1<TElement, Boolean> predicate) {
-        return this;
+    public Object[] _toArray() {
+        return ArrayUtils.empty();
     }
 
-    //endregion
+    @Override
+    public List<TElement> _toList() {
+        return ListUtils.empty();
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        return 0;
+    }
 }
 
 
@@ -174,7 +153,6 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
         int maxIndex = this.minIndexInclusive + count - 1;
         if (maxIndex >= this.maxIndexInclusive)
             return this;
-
         return new OrderedPartition<>(this.source, this.minIndexInclusive, maxIndex);
     }
 
@@ -200,11 +178,11 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
 
     @Override
     public TElement[] _toArray(Class<TElement> clazz) {
-        return this.source._toArray(this.minIndexInclusive, this.maxIndexInclusive, clazz);
+        return this.source._toArray(clazz, this.minIndexInclusive, this.maxIndexInclusive);
     }
 
     @Override
-    public Array<TElement> _toArray() {
+    public Object[] _toArray() {
         return this.source._toArray(this.minIndexInclusive, this.maxIndexInclusive);
     }
 
@@ -260,7 +238,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 
     @Override
     public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
-        return new SelectListPartitionIterator<TSource, TResult>(this.source, selector, this.minIndexInclusive, this.maxIndexInclusive);
+        return new SelectListPartitionIterator<>(this.source, selector, this.minIndexInclusive, this.maxIndexInclusive);
     }
 
     @Override
@@ -331,14 +309,14 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
     }
 
     @Override
-    public Array<TSource> _toArray() {
+    public Object[] _toArray() {
         int count = this.getCount();
         if (count == 0)
-            return Array.empty();
+            return ArrayUtils.empty();
 
-        Array<TSource> array = Array.create(count);
-        for (int i = 0, curIdx = this.minIndexInclusive; i != array.length(); ++i, ++curIdx)
-            array.set(i, this.source.get(curIdx));
+        Object[] array = new Object[count];
+        for (int i = 0, curIdx = this.minIndexInclusive; i != array.length; ++i, ++curIdx)
+            array[i] = this.source.get(curIdx);
 
         return array;
     }
@@ -399,7 +377,6 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             if (!en.moveNext())
                 return i;
         }
-
         return index;
     }
 
@@ -449,7 +426,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             // At the same time, however, we are guaranteed that our max count can fit
             // in an int because if that is true, then _minIndexInclusive must > 0.
             int count = skipAndCount(this.maxIndexInclusive + 1, en);
-            assert count != Integer.MAX_VALUE + 1 || this.minIndexInclusive > 0;// "Our return value will be incorrect.");
+            assert (long) count != (long) Integer.MAX_VALUE + 1 || this.minIndexInclusive > 0;// "Our return value will be incorrect.");
             return Math.max(count - this.minIndexInclusive, 0);
         }
     }
@@ -494,7 +471,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
 
     @Override
     public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
-        return new SelectIPartitionIterator<TSource, TResult>(this, selector);
+        return new SelectIPartitionIterator<>(this, selector);
     }
 
     @Override
@@ -621,7 +598,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
     }
 
     @Override
-    public Array<TSource> _toArray() {
+    public Object[] _toArray() {
         try (IEnumerator<TSource> en = this.source.enumerator()) {
             if (this.skipBeforeFirst(en) && en.moveNext()) {
                 int remaining = this.getLimit() - 1; // Max number of items left, not counting the current element.
@@ -640,7 +617,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             }
         }
 
-        return Array.empty();
+        return ArrayUtils.empty();
     }
 
     @Override

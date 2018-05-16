@@ -15,13 +15,11 @@ public interface ICollection<T> extends IEnumerable<T> {
 
     boolean _contains(T item);
 
-    void _copyTo(T[] array, int arrayIndex);
-
-    void _copyTo(Array<T> array, int arrayIndex);
+    void _copyTo(Object[] array, int arrayIndex);
 
     T[] _toArray(Class<T> clazz);
 
-    Array<T> _toArray();
+    Object[] _toArray();
 
     List<T> _toList();
 }
