@@ -11,8 +11,8 @@ public final class EqualityComparer<T> implements IEqualityComparer<T> {
     private EqualityComparer() {
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> EqualityComparer<T> Default() {
+        //noinspection unchecked
         return DEFAULT;
     }
 

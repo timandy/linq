@@ -21,18 +21,18 @@ public final class Comparer<T> implements Comparator<T> {
         this.collator = collator;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> Comparator<T> Default() {
+        //noinspection unchecked
         return DEFAULT;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> Comparator<T> DefaultInvariant() {
+        //noinspection unchecked
         return DEFAULT_INVARIANT;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> Comparator<T> DefaultCurrent() {
+        //noinspection unchecked
         return DEFAULT_CURRENT;
     }
 
@@ -48,7 +48,6 @@ public final class Comparer<T> implements Comparator<T> {
         return new ComparisonComparer<>(comparison);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public int compare(T x, T y) {
         if (x == y)
@@ -68,8 +67,10 @@ public final class Comparer<T> implements Comparator<T> {
                 return this.collator.compare(sx, sy);
         }
         if (x instanceof Comparable)
+            //noinspection unchecked
             return ((Comparable) x).compareTo(y);
         if (y instanceof Comparable)
+            //noinspection unchecked
             return -((Comparable) y).compareTo(x);
         throw Errors.implementComparable();
     }
