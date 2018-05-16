@@ -3,6 +3,7 @@ package com.bestvike.linq.util;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.linq.exception.Errors;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -12,11 +13,23 @@ import java.util.List;
  * Created by 许崇雷 on 2017/7/19.
  */
 public final class ArrayUtils {
+    private static final Object[] EMPTY = new Object[0];
+
     private ArrayUtils() {
+    }
+
+    public static Object[] empty() {
+        return EMPTY;
     }
 
     public static <T> T[] empty(Class<T> clazz) {
         return newInstance(clazz, 0);
+    }
+
+    public static Object[] singleton(Object item) {
+        Object[] array = new Object[1];
+        array[0] = item;
+        return array;
     }
 
     public static <T> T[] singleton(Class<T> clazz, T item) {
@@ -25,26 +38,52 @@ public final class ArrayUtils {
         return array;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T[] newInstance(Class<T> clazz, int length) {
-        return (T[]) java.lang.reflect.Array.newInstance(clazz, length);
+        //noinspection unchecked
+        return (T[]) Array.newInstance(clazz, length);
     }
 
     public static <T> boolean contains(T[] array, T item) {
         return indexOf(array, item) != -1;
     }
 
-    public static <T> boolean contains(T[] array, T item, int startIndex) {
-        return indexOf(array, item, startIndex) != -1;
-    }
-
     public static <T> boolean contains(T[] array, T item, int startIndex, int count) {
         return indexOf(array, item, startIndex, count) != -1;
+    }
+
+    public static <T> int indexOf(T[] array, T item) {
+        return indexOf(array, item, 0, array.length);
+    }
+
+    public static <T> int indexOf(T[] array, T item, int startIndex, int count) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+        if (startIndex > array.length)
+            throw Errors.argumentOutOfRange("startIndex");
+        if (count < 0 || startIndex > array.length - count)
+            throw Errors.argumentOutOfRange("count");
+
+        return EqualityComparer.Default().indexOf(array, item, startIndex, count);
+    }
+
+    public static Object[] resize(Object[] array, int newSize) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+        if (newSize < 0)
+            throw Errors.argumentOutOfRange("newSize");
+
+        int oldSize = array.length;
+        if (oldSize == newSize)
+            return array;
+        Object[] newArray = new Object[newSize];
+        System.arraycopy(array, 0, newArray, 0, oldSize > newSize ? newSize : oldSize);
+        return newArray;
     }
 
     public static <T> void fill(T[] array, T value) {
         if (array == null)
             throw Errors.argumentNull("array");
+
         for (int i = 0, length = array.length; i < length; i++)
             array[i] = value;
     }
@@ -61,39 +100,19 @@ public final class ArrayUtils {
         }
     }
 
-    public static <T> int indexOf(T[] array, T item) {
-        return indexOf(array, item, 0, array.length);
-    }
-
-    public static <T> int indexOf(T[] array, T item, int startIndex) {
-        return indexOf(array, item, startIndex, array.length - startIndex);
-    }
-
-    public static <T> int indexOf(T[] array, T item, int startIndex, int count) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-        if (startIndex > array.length)
-            throw Errors.argumentOutOfRange("startIndex");
-        if (count < 0 || startIndex > array.length - count)
-            throw Errors.argumentOutOfRange("count");
-        return EqualityComparer.Default().indexOf(array, item, startIndex, count);
-    }
-
-    @SuppressWarnings("SuspiciousSystemArraycopy")
     public static <T> T[] toArray(Object[] source, Class<T> clazz) {
         return toArray(source, clazz, 0, source.length);
     }
 
-    @SuppressWarnings("SuspiciousSystemArraycopy")
     public static <T> T[] toArray(Object[] source, Class<T> clazz, int startIndex, int count) {
         T[] array = newInstance(clazz, count);
+        //noinspection SuspiciousSystemArraycopy
         System.arraycopy(source, startIndex, array, 0, count);
         return array;
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> List<T> toList(Object[] source) {
-        return new ArrayList(toCollection(source));
+        return new ArrayList<>(toCollection(source));
     }
 
     public static <T> List<T> toList(Object[] source, int startIndex, int count) {
@@ -215,8 +234,8 @@ public final class ArrayUtils {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public E next() {
+            //noinspection unchecked
             return (E) this.source[this.index++];
         }
 
