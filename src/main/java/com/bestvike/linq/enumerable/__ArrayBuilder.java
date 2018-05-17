@@ -35,9 +35,9 @@ final class ArrayBuilder<T> {//struct
         return this.count;
     }
 
-    @SuppressWarnings("unchecked")
     public T get(int index) {
         assert index >= 0 && index < this.count;
+        //noinspection unchecked
         return (T) this.array[index];
     }
 
@@ -52,15 +52,15 @@ final class ArrayBuilder<T> {//struct
         this.uncheckedAdd(item);
     }
 
-    @SuppressWarnings("unchecked")
     public T first() {
         assert this.count > 0;
+        //noinspection unchecked
         return (T) this.array[0];
     }
 
-    @SuppressWarnings("unchecked")
     public T last() {
         assert this.count > 0;
+        //noinspection unchecked
         return (T) this.array[this.count - 1];
     }
 

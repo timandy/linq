@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -37,7 +36,7 @@ final class EnumerableHelpers {
     }
 
     //Copies items from an enumerable to an array.
-    public static <T> void copy(IEnumerable<T> source, T[] array, int arrayIndex, int count) {
+    public static <T> void copy(IEnumerable<T> source, Object[] array, int arrayIndex, int count) {
         assert source != null;
         assert arrayIndex >= 0;
         assert count >= 0;
@@ -52,24 +51,8 @@ final class EnumerableHelpers {
         iterativeCopy(source, array, arrayIndex, count);
     }
 
-    //Copies items from an enumerable to an array.
-    public static <T> void copy(IEnumerable<T> source, Array<T> array, int arrayIndex, int count) {
-        assert source != null;
-        assert arrayIndex >= 0;
-        assert count >= 0;
-        assert array != null && array.length() - arrayIndex >= count;
-
-        if (source instanceof ICollection) {
-            ICollection<T> collection = (ICollection<T>) source;
-            assert collection._getCount() == count;
-            collection._copyTo(array, arrayIndex);
-            return;
-        }
-        iterativeCopy(source, array, arrayIndex, count);
-    }
-
     //Copies items from a non-collection enumerable to an array.
-    public static <T> void iterativeCopy(IEnumerable<T> source, T[] array, int arrayIndex, int count) {
+    public static <T> void iterativeCopy(IEnumerable<T> source, Object[] array, int arrayIndex, int count) {
         assert source != null && !(source instanceof ICollection);
         assert arrayIndex >= 0;
         assert count >= 0;
@@ -78,20 +61,6 @@ final class EnumerableHelpers {
         int endIndex = arrayIndex + count;
         for (T item : source)
             array[arrayIndex++] = item;
-
-        assert arrayIndex == endIndex;
-    }
-
-    //Copies items from a non-collection enumerable to an array.
-    public static <T> void iterativeCopy(IEnumerable<T> source, Array<T> array, int arrayIndex, int count) {
-        assert source != null && !(source instanceof ICollection);
-        assert arrayIndex >= 0;
-        assert count >= 0;
-        assert array != null && array.length() - arrayIndex >= count;
-
-        int endIndex = arrayIndex + count;
-        for (T item : source)
-            array.set(arrayIndex++, item);
 
         assert arrayIndex == endIndex;
     }
@@ -113,13 +82,13 @@ final class EnumerableHelpers {
     }
 
     //Converts an enumerable to an array.
-    public static <T> Array<T> toArray(IEnumerable<T> source) {
+    public static <T> Object[] toArray(IEnumerable<T> source) {
         assert source != null;
 
         if (source instanceof ICollection) {
             ICollection<T> collection = (ICollection<T>) source;
             int count = collection._getCount();
-            return count == 0 ? Array.empty() : collection._toArray();
+            return count == 0 ? ArrayUtils.empty() : collection._toArray();
         }
 
         LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
@@ -128,7 +97,7 @@ final class EnumerableHelpers {
     }
 
     //Converts an enumerable to an array using the same logic as List{T}.
-    public static <T> Array<T> toArray(IEnumerable<T> source, out<Integer> length) {
+    public static <T> Object[] toArray(IEnumerable<T> source, out<Integer> length) {
         if (source instanceof ICollection) {
             ICollection<T> ic = (ICollection<T>) source;
             int count = ic._getCount();
@@ -146,12 +115,12 @@ final class EnumerableHelpers {
             try (IEnumerator<T> en = source.enumerator()) {
                 if (en.moveNext()) {
                     final int DefaultCapacity = 4;
-                    Array<T> arr = Array.create(DefaultCapacity);
-                    arr.set(0, en.current());
+                    Object[] arr = new Object[DefaultCapacity];
+                    arr[0] = en.current();
                     int count = 1;
 
                     while (en.moveNext()) {
-                        if (count == arr.length()) {
+                        if (count == arr.length) {
                             // MaxArrayLength instanceof defined : Array.MaxArrayLength and : gchelpers : CoreCLR.
                             // It represents the maximum number of elements that can be : an array where
                             // the count of the element instanceof greater than one byte; a separate, slightly larger constant,
@@ -171,9 +140,9 @@ final class EnumerableHelpers {
                             int newLength = count << 1;
                             if (newLength > MaxArrayLength)
                                 newLength = MaxArrayLength <= count ? count + 1 : MaxArrayLength;
-                            arr = Array.resize(arr, newLength);
+                            arr = ArrayUtils.resize(arr, newLength);
                         }
-                        arr.set(count++, en.current());
+                        arr[count++] = en.current();
                     }
                     length.setValue(count);
                     return arr;
@@ -182,6 +151,6 @@ final class EnumerableHelpers {
         }
 
         length.setValue(0);
-        return Array.empty();
+        return ArrayUtils.empty();
     }
 }

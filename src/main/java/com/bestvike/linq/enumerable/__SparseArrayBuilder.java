@@ -1,9 +1,10 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
+
+import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2018-05-09.
@@ -14,6 +15,7 @@ final class __SparseArrayBuilder {
 }
 
 
+@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 final class Marker {//struct
     private final int count;
     private final int index;
@@ -32,6 +34,22 @@ final class Marker {//struct
 
     public int getIndex() {
         return this.index;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Marker that = (Marker) obj;
+        return Objects.equals(this.count, that.count)
+                && Objects.equals(this.index, that.index);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + this.count;
+        result = prime * result + this.index;
+        return result;
     }
 
     @Override
@@ -62,51 +80,11 @@ final class SparseArrayBuilder<T> {//struct
         this.builder.addRange(items);
     }
 
-    public void copyTo(T[] array, int arrayIndex, int count) {
+    public void copyTo(Object[] array, int arrayIndex, int count) {
         assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0 && count <= this.getCount();
         assert array.length - arrayIndex >= count;
-
-        int copied = 0;
-        CopyPosition position = CopyPosition.start();
-
-        for (int i = 0; i < this.markers.getCount(); i++) {
-            Marker marker = this.markers.get(i);
-
-            // During this iteration, copy until we satisfy `count` or reach the marker.
-            int toCopy = Math.min(marker.getIndex() - copied, count);
-
-            if (toCopy > 0) {
-                position = this.builder.copyTo(position, array, arrayIndex, toCopy);
-
-                arrayIndex += toCopy;
-                copied += toCopy;
-                count -= toCopy;
-            }
-
-            if (count == 0)
-                return;
-
-            // We hit our marker. Advance until we satisfy `count` or fulfill `marker.Count`.
-            int reservedCount = Math.min(marker.getCount(), count);
-
-            arrayIndex += reservedCount;
-            copied += reservedCount;
-            count -= reservedCount;
-        }
-
-        if (count > 0) {
-            // Finish copying after the final marker.
-            this.builder.copyTo(position, array, arrayIndex, count);
-        }
-    }
-
-    public void copyTo(Array<T> array, int arrayIndex, int count) {
-        assert array != null;
-        assert arrayIndex >= 0;
-        assert count >= 0 && count <= this.getCount();
-        assert array.length() - arrayIndex >= count;
 
         int copied = 0;
         CopyPosition position = CopyPosition.start();
@@ -175,7 +153,7 @@ final class SparseArrayBuilder<T> {//struct
         return array;
     }
 
-    public Array<T> toArray() {
+    public Object[] toArray() {
         // If no regions were reserved, there are no 'gaps' we need to add to the array.
         // In that case, we can just call ToArray on the underlying builder.
         if (this.markers.getCount() == 0) {
@@ -183,8 +161,8 @@ final class SparseArrayBuilder<T> {//struct
             return this.builder.toArray();
         }
 
-        Array<T> array = Array.create(this.getCount());
-        this.copyTo(array, 0, array.length());
+        Object[] array = new Object[this.getCount()];
+        this.copyTo(array, 0, array.length);
         return array;
     }
 }
