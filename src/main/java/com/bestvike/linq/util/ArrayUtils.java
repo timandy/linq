@@ -66,6 +66,16 @@ public final class ArrayUtils {
         return EqualityComparer.Default().indexOf(array, item, startIndex, count);
     }
 
+    public static Object[] clone(Object[] array) {
+        if (array == null)
+            throw Errors.argumentNull("array");
+
+        int length = array.length;
+        Object[] newArray = new Object[length];
+        System.arraycopy(array, 0, newArray, 0, length);
+        return newArray;
+    }
+
     public static Object[] resize(Object[] array, int newSize) {
         if (array == null)
             throw Errors.argumentNull("array");
