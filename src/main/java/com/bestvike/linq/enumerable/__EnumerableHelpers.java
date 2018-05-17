@@ -9,12 +9,6 @@ import com.bestvike.out;
 /**
  * Created by 许崇雷 on 2018-05-07.
  */
-final class __EnumerableHelpers {
-    private __EnumerableHelpers() {
-    }
-}
-
-
 final class EnumerableHelpers {
     // Tries to get the count of the enumerable cheaply.
     public static <T> boolean tryGetCount(IEnumerable<T> source, out<Integer> count) {

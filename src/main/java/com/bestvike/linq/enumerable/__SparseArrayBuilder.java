@@ -9,12 +9,6 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-final class __SparseArrayBuilder {
-    private __SparseArrayBuilder() {
-    }
-}
-
-
 @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 final class Marker {//struct
     private final int count;

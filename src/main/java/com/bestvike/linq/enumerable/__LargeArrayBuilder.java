@@ -11,12 +11,6 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-final class __LargeArrayBuilder {
-    private __LargeArrayBuilder() {
-    }
-}
-
-
 @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 final class CopyPosition {//struct
     private final int row;
