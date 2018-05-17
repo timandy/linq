@@ -32,7 +32,7 @@ public final class CharSequenceEnumerable implements IList<Character> {
 
     @Override
     public Collection<Character> getCollection() {
-        return ArrayUtils.toCollection(this._toArray(Character.class));
+        return ArrayUtils.toCollection(this._toArray());
     }
 
     @Override
