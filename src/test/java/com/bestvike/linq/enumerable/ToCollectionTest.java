@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import org.junit.Assert;
@@ -15,7 +16,6 @@ import java.util.Set;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ToCollectionTest extends EnumerableTest {
-
     @Test
     public void testToArray() {
         Object[] source = {1, 2, 3};
@@ -50,6 +50,12 @@ public class ToCollectionTest extends EnumerableTest {
 
         Character[] empty = Linq.<Character>empty().toArray(Character.class);
         Assert.assertEquals(0, empty.length);
+
+        String[] array = {"a", "b"};
+        Array<String> stringArray = Linq.asEnumerable(array).toArray();
+        stringArray.set(0, "c");
+        Assert.assertEquals("a", array[0]);
+        Assert.assertEquals("c", stringArray.get(0));
     }
 
     @Test
@@ -113,5 +119,4 @@ public class ToCollectionTest extends EnumerableTest {
         Assert.assertEquals(emps[1].name, map2.get(30));
         Assert.assertEquals(2, map2.size());
     }
-
 }

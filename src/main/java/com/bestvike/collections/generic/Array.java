@@ -124,7 +124,7 @@ public final class Array<T> implements IList<T>, Cloneable {
         if (array == null)
             throw Errors.argumentNull("array");
 
-        return new Array<>(array);
+        return new Array<>(ArrayUtils.clone(array));
     }
 
     //endregion
@@ -181,6 +181,6 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     @Override
     public Array<T> clone() {
-        return new Array<>(this.elements.clone());
+        return new Array<>(ArrayUtils.clone(this.elements));
     }
 }
