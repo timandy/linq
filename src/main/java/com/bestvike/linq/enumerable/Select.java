@@ -36,7 +36,7 @@ public final class Select {
         if (source instanceof IList) {
             if (source instanceof Array) {
                 Array<TSource> array = (Array<TSource>) source;
-                return array.length() == 0
+                return array._getCount() == 0
                         ? EmptyPartition.instance()
                         : new SelectArrayIterator<>(array, selector);
             }
@@ -174,7 +174,7 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source)
             builder.add(this.selector.apply(item));
@@ -216,7 +216,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
     SelectArrayIterator(Array<TSource> source, Func1<TSource, TResult> selector) {
         assert source != null;
         assert selector != null;
-        assert source.length() > 0; // Caller should check this beforehand and return a cached result
+        assert source._getCount() > 0; // Caller should check this beforehand and return a cached result
         this.source = source;
         this.selector = selector;
     }
@@ -228,7 +228,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public boolean moveNext() {
-        if (this.state < 1 | this.state == this.source.length() + 1) {
+        if (this.state < 1 | this.state == this.source._getCount() + 1) {
             this.close();
             return false;
         }
@@ -247,9 +247,9 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
     public TResult[] _toArray(Class<TResult> clazz) {
         // See assert : constructor.
         // Since source should never be empty, we don't check for 0/return Array.Empty.
-        assert this.source.length() > 0;
+        assert this.source._getCount() > 0;
 
-        TResult[] results = ArrayUtils.newInstance(clazz, this.source.length());
+        TResult[] results = ArrayUtils.newInstance(clazz, this.source._getCount());
         for (int i = 0; i < results.length; i++)
             results[i] = this.selector.apply(this.source.get(i));
 
@@ -257,25 +257,23 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         // See assert : constructor.
         // Since source should never be empty, we don't check for 0/return Array.Empty.
-        assert this.source.length() > 0;
+        assert this.source._getCount() > 0;
 
-        Array<TResult> results = Array.create(this.source.length());
-        for (int i = 0; i < results.length(); i++)
-            results.set(i, this.selector.apply(this.source.get(i)));
-
+        Object[] results = new Object[this.source._getCount()];
+        for (int i = 0; i < results.length; i++)
+            results[i] = this.selector.apply(this.source.get(i));
         return results;
     }
 
     @Override
     public List<TResult> _toList() {
         Array<TSource> source = this.source;
-        List<TResult> results = new ArrayList<>(source.length());
-        for (int i = 0; i < source.length(); i++)
+        List<TResult> results = new ArrayList<>(source._getCount());
+        for (int i = 0; i < source._getCount(); i++)
             results.add(this.selector.apply(source.get(i)));
-
         return results;
     }
 
@@ -288,27 +286,27 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
                 this.selector.apply(item);
         }
 
-        return this.source.length();
+        return this.source._getCount();
     }
 
     @Override
     public IPartition<TResult> _skip(int count) {
         assert count > 0;
-        return count >= this.source.length()
+        return count >= this.source._getCount()
                 ? EmptyPartition.instance()
                 : new SelectListPartitionIterator<>(this.source, this.selector, count, Integer.MAX_VALUE);
     }
 
     @Override
     public IPartition<TResult> _take(int count) {
-        return count >= this.source.length()
+        return count >= this.source._getCount()
                 ? this
                 : new SelectListPartitionIterator<>(this.source, this.selector, 0, count - 1);
     }
 
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
-        if (index < this.source.length()) {
+        if (index < this.source._getCount()) {
             found.setValue(true);
             return this.selector.apply(this.source.get(index));
         }
@@ -319,7 +317,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public TResult _tryGetFirst(out<Boolean> found) {
-        assert this.source.length() > 0; // See assert : constructor
+        assert this.source._getCount() > 0; // See assert : constructor
 
         found.setValue(true);
         return this.selector.apply(this.source.get(0));
@@ -327,10 +325,10 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public TResult _tryGetLast(out<Boolean> found) {
-        assert this.source.length() > 0; // See assert : constructor
+        assert this.source._getCount() > 0; // See assert : constructor
 
         found.setValue(true);
-        return this.selector.apply(this.source.get(this.source.length() - 1));
+        return this.selector.apply(this.source.get(this.source._getCount() - 1));
     }
 }
 
@@ -398,14 +396,14 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         int count = this.source._getCount();
         if (count == 0)
-            return Array.empty();
+            return ArrayUtils.empty();
 
-        Array<TResult> results = Array.create(count);
-        for (int i = 0; i < results.length(); i++)
-            results.set(i, this.selector.apply(this.source.get(i)));
+        Object[] results = new Object[count];
+        for (int i = 0; i < results.length; i++)
+            results[i] = this.selector.apply(this.source.get(i));
 
         return results;
     }
@@ -569,7 +567,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         return builder.toArray(clazz);
     }
 
-    private Array<TResult> lazyToArray() {
+    private Object[] lazyToArray() {
         assert this.source._getCount(true) == -1;
 
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
@@ -593,14 +591,14 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         return array;
     }
 
-    private Array<TResult> preallocatingToArray(int count) {
+    private Object[] preallocatingToArray(int count) {
         assert count > 0;
         assert count == this.source._getCount(true);
 
-        Array<TResult> array = Array.create(count);
+        Object[] array = new Object[count];
         int index = 0;
         for (TSource input : this.source) {
-            array.set(index, this.selector.apply(input));
+            array[index] = this.selector.apply(input);
             ++index;
         }
 
@@ -621,13 +619,13 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         int count = this.source._getCount(true);
         switch (count) {
             case -1:
                 return this.lazyToArray();
             case 0:
-                return Array.empty();
+                return ArrayUtils.empty();
             default:
                 return this.preallocatingToArray(count);
         }
@@ -784,14 +782,14 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         int count = this._getCount();
         if (count == 0)
-            return Array.empty();
+            return ArrayUtils.empty();
 
-        Array<TResult> array = Array.create(count);
-        for (int i = 0, curIdx = this.minIndexInclusive; i != array.length(); ++i, ++curIdx)
-            array.set(i, this.selector.apply(this.source.get(curIdx)));
+        Object[] array = new Object[count];
+        for (int i = 0, curIdx = this.minIndexInclusive; i != array.length; ++i, ++curIdx)
+            array[i] = this.selector.apply(this.source.get(curIdx));
 
         return array;
     }

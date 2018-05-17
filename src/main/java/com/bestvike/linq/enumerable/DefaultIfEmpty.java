@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -88,9 +87,9 @@ final class DefaultIfEmptyIterator<TSource> extends Iterator<TSource> implements
     }
 
     @Override
-    public Array<TSource> _toArray() {
-        Array<TSource> array = this.source.toArray();
-        return array.length() == 0 ? Array.singleton(this.defaultValue) : array;
+    public Object[] _toArray() {
+        Object[] array = ToCollection.toArray(this.source);
+        return array.length == 0 ? ArrayUtils.singleton(this.defaultValue) : array;
     }
 
     @Override

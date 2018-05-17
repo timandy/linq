@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.Errors;
@@ -27,7 +26,7 @@ public final class Reverse {
 
 final class ReverseIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
     private final IEnumerable<TSource> source;
-    private Array<TSource> buffer;
+    private Object[] buffer;
 
     ReverseIterator(IEnumerable<TSource> source) {
         assert source != null;
@@ -57,15 +56,16 @@ final class ReverseIterator<TSource> extends Iterator<TSource> implements IIList
                 // Having an extra field for the count would be more readable, but we save it into _state with a
                 // bias instead to minimize field size of the iterator.
                 Buffer<TSource> buffer = new Buffer<>(this.source);
-                this.buffer = buffer.getItems();
-                this.state = buffer.getCount() + 2;
+                this.buffer = buffer.items;
+                this.state = buffer.count + 2;
             default:
                 // At this stage, _state starts from 2 + the count. _state - 3 represents the current index into the
                 // buffer. It is continuously decremented until it hits 2, which means that we've run out of items to
                 // yield and should return false.
                 int index = this.state - 3;
                 if (index != -1) {
-                    this.current = this.buffer.get(index);
+                    //noinspection unchecked
+                    this.current = (TSource) this.buffer[index];
                     --this.state;
                     return true;
                 }
@@ -108,9 +108,9 @@ final class ReverseIterator<TSource> extends Iterator<TSource> implements IIList
     }
 
     @Override
-    public Array<TSource> _toArray() {
-        Array<TSource> array = this.source.toArray();
-        Array.reverse(array);
+    public Object[] _toArray() {
+        Object[] array = ToCollection.toArray(this.source);
+        ArrayUtils.reverse(array);
         return array;
     }
 

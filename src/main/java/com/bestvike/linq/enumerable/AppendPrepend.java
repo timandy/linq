@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -84,7 +83,7 @@ abstract class AppendPrependIterator<TSource> extends Iterator<TSource> implemen
     public abstract TSource[] _toArray(Class<TSource> clazz);
 
     @Override
-    public abstract Array<TSource> _toArray();
+    public abstract Object[] _toArray();
 
     @Override
     public abstract List<TSource> _toList();
@@ -161,7 +160,7 @@ final class AppendPrepend1Iterator<TSource> extends AppendPrependIterator<TSourc
         return builder.toArray(clazz);
     }
 
-    private Array<TSource> lazyToArray() {
+    private Object[] lazyToArray() {
         assert this._getCount(true) == -1;
 
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
@@ -196,23 +195,23 @@ final class AppendPrepend1Iterator<TSource> extends AppendPrependIterator<TSourc
     }
 
     @Override
-    public Array<TSource> _toArray() {
+    public Object[] _toArray() {
         int count = this._getCount(true);
         if (count == -1)
             return this.lazyToArray();
 
-        Array<TSource> array = Array.create(count);
+        Object[] array = new Object[count];
         int index;
         if (this.appending) {
             index = 0;
         } else {
-            array.set(0, this.item);
+            array[0] = this.item;
             index = 1;
         }
 
         EnumerableHelpers.copy(this.source, array, index, count - 1);
         if (this.appending)
-            array.set(array.length() - 1, this.item);
+            array[array.length - 1] = this.item;
 
         return array;
     }
@@ -335,7 +334,7 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
         return array;
     }
 
-    private Array<TSource> lazyToArray() {
+    private Object[] lazyToArray() {
         assert this._getCount(true) == -1;
 
         SparseArrayBuilder<TSource> builder = new SparseArrayBuilder<>();
@@ -346,14 +345,14 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
         if (this.appended != null)
             builder.reserve(this.appendCount);
 
-        Array<TSource> array = builder.toArray();
+        Object[] array = builder.toArray();
         int index = 0;
         for (SingleLinkedNode<TSource> node = this.prepended; node != null; node = node.getLinked())
-            array.set(index++, node.getItem());
+            array[index++] = node.getItem();
 
-        index = array.length() - 1;
+        index = array.length - 1;
         for (SingleLinkedNode<TSource> node = this.appended; node != null; node = node.getLinked())
-            array.set(index--, node.getItem());
+            array[index--] = node.getItem();
 
         return array;
     }
@@ -393,15 +392,15 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
     }
 
     @Override
-    public Array<TSource> _toArray() {
+    public Object[] _toArray() {
         int count = this._getCount(true);
         if (count == -1)
             return this.lazyToArray();
 
-        Array<TSource> array = Array.create(count);
+        Object[] array = new Object[count];
         int index = 0;
         for (SingleLinkedNode<TSource> node = this.prepended; node != null; node = node.getLinked()) {
-            array.set(index, node.getItem());
+            array[index] = node.getItem();
             ++index;
         }
 
@@ -411,16 +410,16 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
         } else {
             try (IEnumerator<TSource> e = this.source.enumerator()) {
                 while (e.moveNext()) {
-                    array.set(index, e.current());
+                    array[index] = e.current();
                     ++index;
                 }
             }
         }
 
-        index = array.length();
+        index = array.length;
         for (SingleLinkedNode<TSource> node = this.appended; node != null; node = node.getLinked()) {
             --index;
-            array.set(index, node.getItem());
+            array[index] = node.getItem();
         }
 
         return array;

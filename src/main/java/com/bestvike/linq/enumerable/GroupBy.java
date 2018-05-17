@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
@@ -81,7 +80,7 @@ final class GroupedEnumerable<TSource, TKey> implements IIListProvider<IGrouping
     }
 
     @Override
-    public Array<IGrouping<TKey, TSource>> _toArray() {
+    public Object[] _toArray() {
         IIListProvider<IGrouping<TKey, TSource>> lookup = Lookup.create(this.source, this.keySelector, this.comparer);
         return lookup._toArray();
     }
@@ -131,7 +130,7 @@ final class GroupedEnumerable2<TSource, TKey, TElement> implements IIListProvide
     }
 
     @Override
-    public Array<IGrouping<TKey, TElement>> _toArray() {
+    public Object[] _toArray() {
         IIListProvider<IGrouping<TKey, TElement>> lookup = Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer);
         return lookup._toArray();
     }
@@ -181,7 +180,7 @@ final class GroupedResultEnumerable<TSource, TKey, TResult> implements IIListPro
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         return Lookup.create(this.source, this.keySelector, this.comparer)._toArray(this.resultSelector);
     }
 
@@ -233,7 +232,7 @@ final class GroupedResultEnumerable2<TSource, TKey, TElement, TResult> implement
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         return Lookup.create(this.source, this.keySelector, this.elementSelector, this.comparer)._toArray(this.resultSelector);
     }
 

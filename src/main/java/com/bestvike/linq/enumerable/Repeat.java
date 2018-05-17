@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.Errors;
@@ -92,7 +91,6 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
             found.setValue(true);
             return this.current;
         }
-
         found.setValue(false);
         return null;
     }
@@ -119,16 +117,14 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
         TResult[] array = ArrayUtils.newInstance(clazz, this.count);
         if (this.current != null)
             ArrayUtils.fill(array, this.current);
-
         return array;
     }
 
     @Override
-    public Array<TResult> _toArray() {
-        Array<TResult> array = Array.create(this.count);
+    public Object[] _toArray() {
+        Object[] array = new Object[this.count];
         if (this.current != null)
-            Array.fill(array, this.current);
-
+            ArrayUtils.fill(array, this.current);
         return array;
     }
 
@@ -137,7 +133,6 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
         List<TResult> list = new ArrayList<>(this.count);
         for (int i = 0; i != this.count; ++i)
             list.add(this.current);
-
         return list;
     }
 }

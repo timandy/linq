@@ -46,7 +46,6 @@ final class OfTypeIterator<TResult> extends AbstractIterator<TResult> {
         return new OfTypeIterator<>(this.source, this.clazz);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean moveNext() {
         switch (this.state) {
@@ -94,7 +93,6 @@ final class CastIterator<TResult> extends AbstractIterator<TResult> {
         return new CastIterator<>(this.source, this.clazz);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean moveNext() {
         switch (this.state) {

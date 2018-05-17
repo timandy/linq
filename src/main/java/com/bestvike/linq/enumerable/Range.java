@@ -1,9 +1,9 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
 
     @Override
     public Integer[] _toArray(Class<Integer> clazz) {
-        Integer[] array = new Integer[this.end - this.start];
+        Integer[] array = ArrayUtils.newInstance(clazz, this.end - this.start);
         int cur = this.start;
         for (int i = 0; i != array.length; ++i) {
             array[i] = cur;
@@ -123,11 +123,11 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
     }
 
     @Override
-    public Array<Integer> _toArray() {
-        Array<Integer> array = Array.create(this.end - this.start);
+    public Object[] _toArray() {
+        Object[] array = new Object[this.end - this.start];
         int cur = this.start;
-        for (int i = 0; i != array.length(); ++i) {
-            array.set(i, cur);
+        for (int i = 0; i != array.length; ++i) {
+            array[i] = cur;
             ++cur;
         }
 

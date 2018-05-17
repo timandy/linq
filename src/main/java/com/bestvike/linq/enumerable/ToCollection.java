@@ -34,7 +34,7 @@ public final class ToCollection {
         return EnumerableHelpers.toArray(source, clazz);
     }
 
-    public static <TSource> Array<TSource> toArray(IEnumerable<TSource> source) {
+    public static <TSource> Object[] toArray(IEnumerable<TSource> source) {
         if (source == null)
             throw Errors.argumentNull("source");
 

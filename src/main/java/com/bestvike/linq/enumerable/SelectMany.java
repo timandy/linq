@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
@@ -156,7 +155,7 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
         for (TSource element : this.source) {
@@ -165,7 +164,7 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
                 deferredCopies.add(enumerable);
         }
 
-        Array<TResult> array = builder.toArray();
+        Object[] array = builder.toArray();
         ArrayBuilder<Marker> markers = builder.getMarkers();
         for (int i = 0; i < markers.getCount(); i++) {
             Marker marker = markers.get(i);
@@ -291,7 +290,7 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
     }
 
     @Override
-    public Array<TResult> _toArray() {
+    public Object[] _toArray() {
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
         int index = 0;
@@ -302,7 +301,7 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
                 deferredCopies.add(enumerable);
         }
 
-        Array<TResult> array = builder.toArray();
+        Object[] array = builder.toArray();
         ArrayBuilder<Marker> markers = builder.getMarkers();
         for (int i = 0; i < markers.getCount(); i++) {
             Marker marker = markers.get(i);

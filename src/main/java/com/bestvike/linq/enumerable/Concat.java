@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -82,6 +81,9 @@ abstract class ConcatIterator<TSource> extends Iterator<TSource> implements IILi
 
     @Override
     public abstract TSource[] _toArray(Class<TSource> clazz);
+
+    @Override
+    public abstract Object[] _toArray();
 
     @Override
     public List<TSource> _toList() {
@@ -182,13 +184,13 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
     }
 
     @Override
-    public Array<TSource> _toArray() {
+    public Object[] _toArray() {
         SparseArrayBuilder<TSource> builder = new SparseArrayBuilder<>();
 
         boolean reservedFirst = builder.reserveOrAdd(this.first);
         boolean reservedSecond = builder.reserveOrAdd(this.second);
 
-        Array<TSource> array = builder.toArray();
+        Object[] array = builder.toArray();
         if (reservedFirst) {
             Marker marker = builder.getMarkers().first();
             assert marker.getIndex() == 0;
@@ -300,7 +302,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
     }
 
     @Override
-    public Array<TSource> _toArray() {
+    public Object[] _toArray() {
         return this.hasOnlyCollections ? this.preallocatingToArray() : this.lazyToArray();
     }
 
@@ -336,7 +338,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         return array;
     }
 
-    private Array<TSource> lazyToArray() {
+    private Object[] lazyToArray() {
         assert !this.hasOnlyCollections;
 
         SparseArrayBuilder<TSource> builder = new SparseArrayBuilder<>();
@@ -356,7 +358,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
                 deferredCopies.add(i);
         }
 
-        Array<TSource> array = builder.toArray();
+        Object[] array = builder.toArray();
 
         ArrayBuilder<Marker> markers = builder.getMarkers();
         for (int i = 0; i < markers.getCount(); i++) {
@@ -411,7 +413,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         return array;
     }
 
-    private Array<TSource> preallocatingToArray() {
+    private Object[] preallocatingToArray() {
         // If there are only ICollections in this iterator, then we can just get the count, preallocate the
         // array, and copy them as we go. This has better time complexity than continuously re-walking the
         // linked list via GetEnumerable, and better memory usage than buffering the collections.
@@ -422,10 +424,10 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         assert count >= 0;
 
         if (count == 0)
-            return Array.empty();
+            return ArrayUtils.empty();
 
-        Array<TSource> array = Array.create(count);
-        int arrayIndex = array.length(); // We start copying in collection-sized chunks from the end of the array.
+        Object[] array = new Object[count];
+        int arrayIndex = array.length; // We start copying in collection-sized chunks from the end of the array.
 
         ConcatNIterator<TSource> node, previousN = this;
         do {

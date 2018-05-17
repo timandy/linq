@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -91,7 +90,7 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
     }
 
     @Override
-    public Array<TSource> _toArray() {
+    public Object[] _toArray() {
         return this.fillSet().toArray();
     }
 
