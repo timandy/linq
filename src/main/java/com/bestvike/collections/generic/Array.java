@@ -161,13 +161,13 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     @Override
-    public Object[] _toArray() {
-        return this.elements;
+    public T[] _toArray(Class<T> clazz) {
+        return ArrayUtils.toArray(this.elements, clazz);
     }
 
     @Override
-    public T[] _toArray(Class<T> clazz) {
-        return ArrayUtils.toArray(this.elements, clazz);
+    public Object[] _toArray() {
+        return this.elements;
     }
 
     @Override
