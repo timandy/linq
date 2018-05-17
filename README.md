@@ -17,71 +17,84 @@ Linq to Objects for Java.
 ![bestvike](logo.jpg "济南百思为科信息工程有限公司")
 
 ## API of Linq
-- asEnumerable
+- empty
 - singleton
+- asEnumerable
 - range
 - repeat
-- empty
 
 ## API of IEnumerable
-- where
-- select
-- selectMany
-- take
-- takeWhile
-- skip
-- skipWhile
-- join
-- groupJoin
-- orderBy
-- orderByDescending
-- groupBy
-- concat
-- zip
-- distinct
-- union
-- intersect
-- except
-- reverse
-- sequenceEqual
-- toArray
-- toList
-- toMap
-- toLookup
-- defaultIfEmpty
-- ofType
-- cast
-- first
-- firstOrDefault
-- last
-- lastOrDefault
-- single
-- singleOrDefault
-- elementAt
-- elementAtOrDefault
+- aggregate
 - any
 - all
+- append
+- prepend
+- asEnumerable
+- average
+- ofType
+- cast
+- concat
+- contains
 - count
 - longCount
-- contains
-- aggregate
-- sum
-- min
-- max
-- average
+- defaultIfEmpty
+- distinct
+- distinctBy
+- elementAt
+- elementAtOrDefault
+- except
+- exceptBy
+- first
+- firstOrDefault
+- groupBy
+- groupJoin
+- intersect
+- intersectBy
+- join
 - leftJoin
 - rightJoin
 - fullJoin
 - crossJoin
-- distinctBy
-- unionBy
-- intersectBy
-- exceptBy
-- minBy
+- last
+- lastOrDefault
+- toLookup
+- max
 - maxBy
-- append
+- min
+- minBy
+- orderBy
+- orderByDescending
+- reverse
+- select
+- selectMany
+- sequenceEqual
+- single
+- singleOrDefault
+- skip
+- skipWhile
+- skipLast
+- sum
+- take
+- takeWhile
+- takeLast
+- toArray
+- toList
+- toMap
+- toSet
+- union
+- unionBy
+- where
+- zip
 
-## API of IOrderedEnumerable
+## API of IGrouping extends IEnumerable
+- getKey
+
+## API of ILookup extends IEnumerable
+- getCount
+- get
+- containsKey
+
+## API of IOrderedEnumerable extends IEnumerable
 - thenBy
 - thenByDescending
 
