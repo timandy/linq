@@ -38,12 +38,6 @@ interface IPartition<TElement> extends IIListProvider<TElement> {
 }
 
 
-final class _Partition {
-    private _Partition() {
-    }
-}
-
-
 final class EmptyPartition<TElement> extends Iterator<TElement> implements IPartition<TElement> {
     private static final IPartition INSTANCE = new EmptyPartition();
 
@@ -347,7 +341,6 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
     private final IEnumerable<TSource> source;
     private final int minIndexInclusive;// -1 if we want everything past _minIndexInclusive.
     private final int maxIndexInclusive;// If this is -1, it's impossible to set a limit on the count.
-
     private IEnumerator<TSource> enumerator;
 
     EnumerablePartition(IEnumerable<TSource> source, int minIndexInclusive, int maxIndexInclusive) {

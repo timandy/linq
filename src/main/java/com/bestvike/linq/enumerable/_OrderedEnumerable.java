@@ -1,6 +1,5 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
@@ -20,26 +19,162 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-07.
  */
-final class _OrderedEnumerable {
-    private _OrderedEnumerable() {
-    }
-}
-
-
 abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable<TElement>, IPartition<TElement> {
     IEnumerable<TElement> source;
 
     private Integer[] sortedMap(Buffer<TElement> buffer) {
-        return this.getEnumerableSorter().sort(buffer.getItems(), buffer.getCount());
+        return this.getEnumerableSorter().sort(buffer.items, buffer.count);
     }
 
     private Integer[] sortedMap(Buffer<TElement> buffer, int minIdx, int maxIdx) {
-        return this.getEnumerableSorter().sort(buffer.getItems(), buffer.getCount(), minIdx, maxIdx);
+        return this.getEnumerableSorter().sort(buffer.items, buffer.count, minIdx, maxIdx);
     }
 
     @Override
     public IEnumerator<TElement> enumerator() {
         return new OrderedEnumerableEnumerator();
+    }
+
+    @Override
+    public TElement[] _toArray(Class<TElement> clazz) {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.count;
+        if (count == 0)
+            return buffer.toArray(clazz);
+
+        TElement[] array = ArrayUtils.newInstance(clazz, count);
+        Integer[] map = this.sortedMap(buffer);
+        for (int i = 0; i != array.length; i++)
+            //noinspection unchecked
+            array[i] = (TElement) buffer.items[map[i]];
+        return array;
+    }
+
+    @Override
+    public Object[] _toArray() {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.count;
+        if (count == 0)
+            return buffer.items;
+
+        Object[] array = new Object[count];
+        Integer[] map = this.sortedMap(buffer);
+        for (int i = 0; i != array.length; i++)
+            array[i] = buffer.items[map[i]];
+        return array;
+    }
+
+    @Override
+    public List<TElement> _toList() {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.count;
+        List<TElement> list = new ArrayList<>(count);
+        if (count > 0) {
+            Integer[] map = this.sortedMap(buffer);
+            for (int i = 0; i != count; i++)
+                //noinspection unchecked
+                list.add((TElement) buffer.items[map[i]]);
+        }
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        if (this.source instanceof IIListProvider) {
+            IIListProvider<TElement> listProv = (IIListProvider<TElement>) this.source;
+            return listProv._getCount(onlyIfCheap);
+        }
+        return !onlyIfCheap || this.source instanceof ICollection ? this.count() : -1;
+    }
+
+    public IEnumerator<TElement> enumerator(int minIdx, int maxIdx) {
+        return new OrderedEnumerableRangeEnumerator(minIdx, maxIdx);
+    }
+
+    public TElement[] _toArray(Class<TElement> clazz, int minIdx, int maxIdx) {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.count;
+        if (count <= minIdx)
+            return ArrayUtils.empty(clazz);
+
+        if (count <= maxIdx)
+            maxIdx = count - 1;
+
+        if (minIdx == maxIdx)
+            return ArrayUtils.singleton(clazz, this.getEnumerableSorter().elementAt(buffer.items, count, minIdx));
+
+        Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
+        TElement[] array = ArrayUtils.newInstance(clazz, maxIdx - minIdx + 1);
+        int idx = 0;
+        while (minIdx <= maxIdx) {
+            //noinspection unchecked
+            array[idx] = (TElement) buffer.items[map[minIdx]];
+            ++idx;
+            ++minIdx;
+        }
+
+        return array;
+    }
+
+    public Object[] _toArray(int minIdx, int maxIdx) {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.count;
+        if (count <= minIdx)
+            return ArrayUtils.empty();
+
+        if (count <= maxIdx)
+            maxIdx = count - 1;
+
+        if (minIdx == maxIdx)
+            return ArrayUtils.singleton(this.getEnumerableSorter().elementAt(buffer.items, count, minIdx));
+
+        Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
+        Object[] array = new Object[maxIdx - minIdx + 1];
+        int idx = 0;
+        while (minIdx <= maxIdx) {
+            array[idx] = buffer.items[map[minIdx]];
+            ++idx;
+            ++minIdx;
+        }
+
+        return array;
+    }
+
+    public List<TElement> _toList(int minIdx, int maxIdx) {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.count;
+        if (count <= minIdx) {
+            return ListUtils.empty();
+        }
+
+        if (count <= maxIdx) {
+            maxIdx = count - 1;
+        }
+
+        if (minIdx == maxIdx) {
+            return ListUtils.singleton(this.getEnumerableSorter().elementAt(buffer.items, count, minIdx));
+        }
+
+        Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
+        List<TElement> list = new ArrayList<>(maxIdx - minIdx + 1);
+        while (minIdx <= maxIdx) {
+            //noinspection unchecked
+            list.add((TElement) buffer.items[map[minIdx]]);
+            ++minIdx;
+        }
+
+        return list;
+    }
+
+    public int _getCount(int minIdx, int maxIdx, boolean onlyIfCheap) {
+        int count = this._getCount(onlyIfCheap);
+        if (count <= 0)
+            return count;
+
+        if (count <= minIdx)
+            return 0;
+
+        return (count <= maxIdx ? count : maxIdx + 1) - minIdx;
     }
 
     private AbstractEnumerableSorter<TElement> getEnumerableSorter() {
@@ -59,206 +194,6 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         return new OrderedEnumerable<>(this.source, keySelector, comparer, descending, this);
     }
 
-    public IEnumerator<TElement> enumerator(int minIdx, int maxIdx) {
-        return new OrderedEnumerableRangeEnumerator(minIdx, maxIdx);
-    }
-
-    public int _getCount(int minIdx, int maxIdx, boolean onlyIfCheap) {
-        int count = this._getCount(onlyIfCheap);
-        if (count <= 0)
-            return count;
-
-        if (count <= minIdx)
-            return 0;
-
-        return (count <= maxIdx ? count : maxIdx + 1) - minIdx;
-    }
-
-    public TElement[] _toArray(int minIdx, int maxIdx, Class<TElement> clazz) {
-        Buffer<TElement> buffer = new Buffer<>(this.source);
-        int count = buffer.getCount();
-        if (count <= minIdx)
-            return ArrayUtils.empty(clazz);
-
-        if (count <= maxIdx)
-            maxIdx = count - 1;
-
-        if (minIdx == maxIdx)
-            return ArrayUtils.singleton(clazz, this.getEnumerableSorter().elementAt(buffer.getItems(), count, minIdx));
-
-        Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
-        TElement[] array = ArrayUtils.newInstance(clazz, maxIdx - minIdx + 1);
-        int idx = 0;
-        while (minIdx <= maxIdx) {
-            array[idx] = buffer.getItems().get(map[minIdx]);
-            ++idx;
-            ++minIdx;
-        }
-
-        return array;
-    }
-
-    public Array<TElement> _toArray(int minIdx, int maxIdx) {
-        Buffer<TElement> buffer = new Buffer<>(this.source);
-        int count = buffer.getCount();
-        if (count <= minIdx)
-            return Array.empty();
-
-        if (count <= maxIdx)
-            maxIdx = count - 1;
-
-        if (minIdx == maxIdx)
-            return Array.singleton(this.getEnumerableSorter().elementAt(buffer.getItems(), count, minIdx));
-
-        Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
-        Array<TElement> array = Array.create(maxIdx - minIdx + 1);
-        int idx = 0;
-        while (minIdx <= maxIdx) {
-            array.set(idx, buffer.getItems().get(map[minIdx]));
-            ++idx;
-            ++minIdx;
-        }
-
-        return array;
-    }
-
-    public List<TElement> _toList(int minIdx, int maxIdx) {
-        Buffer<TElement> buffer = new Buffer<>(this.source);
-        int count = buffer.getCount();
-        if (count <= minIdx) {
-            return ListUtils.empty();
-        }
-
-        if (count <= maxIdx) {
-            maxIdx = count - 1;
-        }
-
-        if (minIdx == maxIdx) {
-            return ListUtils.singleton(this.getEnumerableSorter().elementAt(buffer.getItems(), count, minIdx));
-        }
-
-        Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
-        List<TElement> list = new ArrayList<>(maxIdx - minIdx + 1);
-        while (minIdx <= maxIdx) {
-            list.add(buffer.getItems().get(map[minIdx]));
-            ++minIdx;
-        }
-
-        return list;
-    }
-
-    public TElement _tryGetFirst(Func1<TElement, Boolean> predicate, out<Boolean> found) {
-        AbstractCachingComparer<TElement> comparer = this.getComparer();
-        try (IEnumerator<TElement> e = this.source.enumerator()) {
-            TElement value;
-            do {
-                if (!e.moveNext()) {
-                    found.setValue(false);
-                    return null;
-                }
-                value = e.current();
-            }
-            while (!predicate.apply(value));
-
-            comparer.setElement(value);
-            while (e.moveNext()) {
-                TElement x = e.current();
-                if (predicate.apply(x) && comparer.compare(x, true) < 0)
-                    value = x;
-            }
-
-            found.setValue(true);
-            return value;
-        }
-    }
-
-    public TElement _tryGetLast(int minIdx, int maxIdx, out<Boolean> found) {
-        Buffer<TElement> buffer = new Buffer<>(this.source);
-        int count = buffer.getCount();
-        if (minIdx >= count) {
-            found.setValue(false);
-            return null;
-        }
-
-        found.setValue(true);
-        return (maxIdx < count - 1) ? this.getEnumerableSorter().elementAt(buffer.getItems(), count, maxIdx) : this._last(buffer);
-    }
-
-    public TElement _tryGetLast(Func1<TElement, Boolean> predicate, out<Boolean> found) {
-        AbstractCachingComparer<TElement> comparer = this.getComparer();
-        try (IEnumerator<TElement> e = this.source.enumerator()) {
-            TElement value;
-            do {
-                if (!e.moveNext()) {
-                    found.setValue(false);
-                    return null;
-                }
-                value = e.current();
-            }
-            while (!predicate.apply(value));
-
-            comparer.setElement(value);
-            while (e.moveNext()) {
-                TElement x = e.current();
-                if (predicate.apply(x) && comparer.compare(x, false) >= 0)
-                    value = x;
-            }
-
-            found.setValue(true);
-            return value;
-        }
-    }
-
-    @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (this.source instanceof IIListProvider) {
-            IIListProvider<TElement> listProv = (IIListProvider<TElement>) this.source;
-            return listProv._getCount(onlyIfCheap);
-        }
-        return !onlyIfCheap || this.source instanceof ICollection ? this.count() : -1;
-    }
-
-    @Override
-    public TElement[] _toArray(Class<TElement> clazz) {
-        Buffer<TElement> buffer = new Buffer<>(this.source);
-        int count = buffer.getCount();
-        if (count == 0)
-            return buffer.toArray(clazz);
-
-        TElement[] array = ArrayUtils.newInstance(clazz, count);
-        Integer[] map = this.sortedMap(buffer);
-        for (int i = 0; i != array.length; i++)
-            array[i] = buffer.getItems().get(map[i]);
-        return array;
-    }
-
-    @Override
-    public Array<TElement> _toArray() {
-        Buffer<TElement> buffer = new Buffer<>(this.source);
-        int count = buffer.getCount();
-        if (count == 0)
-            return buffer.getItems();
-
-        Array<TElement> array = Array.create(count);
-        Integer[] map = this.sortedMap(buffer);
-        for (int i = 0; i != array.length(); i++)
-            array.set(i, buffer.getItems().get(map[i]));
-        return array;
-    }
-
-    @Override
-    public List<TElement> _toList() {
-        Buffer<TElement> buffer = new Buffer<>(this.source);
-        int count = buffer.getCount();
-        List<TElement> list = new ArrayList<>(count);
-        if (count > 0) {
-            Integer[] map = this.sortedMap(buffer);
-            for (int i = 0; i != count; i++)
-                list.add(buffer.getItems().get(map[i]));
-        }
-        return list;
-    }
-
     @Override
     public IPartition<TElement> _skip(int count) {
         return new OrderedPartition<>(this, count, Integer.MAX_VALUE);
@@ -276,10 +211,10 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
 
         if (index > 0) {
             Buffer<TElement> buffer = new Buffer<>(this.source);
-            int count = buffer.getCount();
+            int count = buffer.count;
             if (index < count) {
                 found.setValue(true);
-                return this.getEnumerableSorter().elementAt(buffer.getItems(), count, index);
+                return this.getEnumerableSorter().elementAt(buffer.items, count, index);
             }
         }
 
@@ -301,6 +236,31 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             while (e.moveNext()) {
                 TElement x = e.current();
                 if (comparer.compare(x, true) < 0)
+                    value = x;
+            }
+
+            found.setValue(true);
+            return value;
+        }
+    }
+
+    public TElement _tryGetFirst(Func1<TElement, Boolean> predicate, out<Boolean> found) {
+        AbstractCachingComparer<TElement> comparer = this.getComparer();
+        try (IEnumerator<TElement> e = this.source.enumerator()) {
+            TElement value;
+            do {
+                if (!e.moveNext()) {
+                    found.setValue(false);
+                    return null;
+                }
+                value = e.current();
+            }
+            while (!predicate.apply(value));
+
+            comparer.setElement(value);
+            while (e.moveNext()) {
+                TElement x = e.current();
+                if (predicate.apply(x) && comparer.compare(x, true) < 0)
                     value = x;
             }
 
@@ -331,19 +291,58 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         }
     }
 
+    public TElement _tryGetLast(int minIdx, int maxIdx, out<Boolean> found) {
+        Buffer<TElement> buffer = new Buffer<>(this.source);
+        int count = buffer.count;
+        if (minIdx >= count) {
+            found.setValue(false);
+            return null;
+        }
+
+        found.setValue(true);
+        return (maxIdx < count - 1) ? this.getEnumerableSorter().elementAt(buffer.items, count, maxIdx) : this._last(buffer);
+    }
+
     private TElement _last(Buffer<TElement> buffer) {
         AbstractCachingComparer<TElement> comparer = this.getComparer();
-        Array<TElement> items = buffer.getItems();
-        int count = buffer.getCount();
-        TElement value = items.get(0);
+        Object[] items = buffer.items;
+        int count = buffer.count;
+        //noinspection unchecked
+        TElement value = (TElement) items[0];
         comparer.setElement(value);
         for (int i = 1; i != count; ++i) {
-            TElement x = items.get(i);
+            //noinspection unchecked
+            TElement x = (TElement) items[i];
             if (comparer.compare(x, false) >= 0)
                 value = x;
         }
 
         return value;
+    }
+
+    public TElement _tryGetLast(Func1<TElement, Boolean> predicate, out<Boolean> found) {
+        AbstractCachingComparer<TElement> comparer = this.getComparer();
+        try (IEnumerator<TElement> e = this.source.enumerator()) {
+            TElement value;
+            do {
+                if (!e.moveNext()) {
+                    found.setValue(false);
+                    return null;
+                }
+                value = e.current();
+            }
+            while (!predicate.apply(value));
+
+            comparer.setElement(value);
+            while (e.moveNext()) {
+                TElement x = e.current();
+                if (predicate.apply(x) && comparer.compare(x, false) >= 0)
+                    value = x;
+            }
+
+            found.setValue(true);
+            return value;
+        }
     }
 
 
@@ -357,7 +356,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             switch (this.state) {
                 case 0:
                     this.buffer = new Buffer<>(AbstractOrderedEnumerable.this.source);
-                    if (this.buffer.getCount() <= 0) {
+                    if (this.buffer.count <= 0) {
                         this.close();
                         return false;
                     }
@@ -366,8 +365,9 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     this.state = 1;
                 case 1:
                     this.index++;
-                    if (this.index < this.buffer.getCount()) {
-                        this.current = this.buffer.getItems().get(this.map[this.index]);
+                    if (this.index < this.buffer.count) {
+                        //noinspection unchecked
+                        this.current = (TElement) this.buffer.items[this.map[this.index]];
                         return true;
                     }
                     this.close();
@@ -395,7 +395,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             switch (this.state) {
                 case 0:
                     this.buffer = new Buffer<>(AbstractOrderedEnumerable.this.source);
-                    this.count = this.buffer.getCount();
+                    this.count = this.buffer.count;
                     if (this.count < this.minIdx) {
                         this.close();
                         return false;
@@ -403,7 +403,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     if (this.count <= this.maxIdx)
                         this.maxIdx = this.count - 1;
                     if (this.minIdx == this.maxIdx) {
-                        this.current = AbstractOrderedEnumerable.this.getEnumerableSorter().elementAt(this.buffer.getItems(), this.count, this.minIdx);
+                        this.current = AbstractOrderedEnumerable.this.getEnumerableSorter().elementAt(this.buffer.items, this.count, this.minIdx);
                         this.state = 2;
                         return true;
                     }
@@ -411,7 +411,8 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     this.state = 1;
                 case 1:
                     if (this.minIdx < this.maxIdx) {
-                        this.current = this.buffer.getItems().get(this.map[this.minIdx]);
+                        //noinspection unchecked
+                        this.current = (TElement) this.buffer.items[this.map[this.minIdx]];
                         ++this.minIdx;
                         return true;
                     }
@@ -531,11 +532,11 @@ final class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TEl
 
 
 abstract class AbstractEnumerableSorter<TElement> {
-    protected abstract void computeKeys(Array<TElement> elements, int count);
+    protected abstract void computeKeys(Object[] elements, int count);
 
     protected abstract int compareAnyKeys(int index1, int index2);
 
-    private Integer[] computeMap(Array<TElement> elements, int count) {
+    private Integer[] computeMap(Object[] elements, int count) {
         this.computeKeys(elements, count);
         Integer[] map = new Integer[count];
         for (int i = 0; i < map.length; i++)
@@ -543,20 +544,21 @@ abstract class AbstractEnumerableSorter<TElement> {
         return map;
     }
 
-    protected Integer[] sort(Array<TElement> elements, int count) {
+    protected Integer[] sort(Object[] elements, int count) {
         Integer[] map = this.computeMap(elements, count);
         this.quickSort(map, 0, count - 1);
         return map;
     }
 
-    protected Integer[] sort(Array<TElement> elements, int count, int minIdx, int maxIdx) {
+    protected Integer[] sort(Object[] elements, int count, int minIdx, int maxIdx) {
         Integer[] map = this.computeMap(elements, count);
         this.partialQuickSort(map, 0, count - 1, minIdx, maxIdx);
         return map;
     }
 
-    protected TElement elementAt(Array<TElement> elements, int count, int idx) {
-        return elements.get(this.quickSelect(this.computeMap(elements, count), count - 1, idx));
+    protected TElement elementAt(Object[] elements, int count, int idx) {
+        //noinspection unchecked
+        return (TElement) elements[this.quickSelect(this.computeMap(elements, count), count - 1, idx)];
     }
 
     protected abstract void quickSort(Integer[] map, int left, int right);
@@ -576,7 +578,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
     private final Comparator<TKey> comparer;
     private final boolean descending;
     private final AbstractEnumerableSorter<TElement> next;
-    private Array<TKey> keys;
+    private Object[] keys;
 
     EnumerableSorter(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractEnumerableSorter<TElement> next) {
         this.keySelector = keySelector;
@@ -586,10 +588,11 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
     }
 
     @Override
-    protected void computeKeys(Array<TElement> elements, int count) {
-        this.keys = Array.create(count);
+    protected void computeKeys(Object[] elements, int count) {
+        this.keys = new Object[count];
         for (int i = 0; i < count; i++)
-            this.keys.set(i, this.keySelector.apply(elements.get(i)));
+            //noinspection unchecked
+            this.keys[i] = this.keySelector.apply((TElement) elements[i]);
         if (this.next == null)
             return;
         this.next.computeKeys(elements, count);
@@ -597,7 +600,8 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
     @Override
     protected int compareAnyKeys(int index1, int index2) {
-        int c = this.comparer.compare(this.keys.get(index1), this.keys.get(index2));
+        //noinspection unchecked
+        int c = this.comparer.compare((TKey) this.keys[index1], (TKey) this.keys[index2]);
         if (c == 0) {
             if (this.next == null)
                 return index1 - index2; // ensure stability of sort

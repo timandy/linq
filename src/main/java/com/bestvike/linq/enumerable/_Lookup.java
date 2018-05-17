@@ -17,22 +17,17 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-02.
  */
-final class _Lookup {
-    private _Lookup() {
-    }
-}
-
-
 final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListProvider<IGrouping<TKey, TElement>> {
     private final IEqualityComparer<TKey> comparer;
-    private Array<Grouping<TKey, TElement>> groupings;
+    private Grouping<TKey, TElement>[] groupings;
     private Grouping<TKey, TElement> lastGrouping;
     private Grouping<TKey, TElement> nullKeyGrouping;
     private int count;
 
     private Lookup(IEqualityComparer<TKey> comparer) {
         this.comparer = comparer == null ? EqualityComparer.Default() : comparer;
-        this.groupings = Array.create(7);
+        //noinspection unchecked
+        this.groupings = new Grouping[7];
     }
 
     static <TKey, TElement> Lookup<TKey, TElement> create(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
@@ -77,7 +72,6 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
         }
         return lookup;
     }
-
 
     @Override
     public int getCount() {
@@ -124,7 +118,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
             do {
                 g = g.next;
                 g.trim();
-                array[index] = resultSelector.apply(g.key, g.elements);
+                array[index] = resultSelector.apply(g.key, Array.create(g.elements));
                 ++index;
             } while (g != this.lastGrouping);
         }
@@ -133,14 +127,14 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
     }
 
     @Override
-    public Array<IGrouping<TKey, TElement>> _toArray() {
-        Array<IGrouping<TKey, TElement>> array = Array.create(this.count);
+    public Object[] _toArray() {
+        Object[] array = new Object[this.count];
         int index = 0;
         Grouping<TKey, TElement> g = this.lastGrouping;
         if (g != null) {
             do {
                 g = g.next;
-                array.set(index, g);
+                array[index] = g;
                 ++index;
             } while (g != this.lastGrouping);
         }
@@ -148,15 +142,15 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
         return array;
     }
 
-    public <TResult> Array<TResult> _toArray(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
-        Array<TResult> array = Array.create(this.count);
+    public <TResult> Object[] _toArray(Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
+        Object[] array = new Object[this.count];
         int index = 0;
         Grouping<TKey, TElement> g = this.lastGrouping;
         if (g != null) {
             do {
                 g = g.next;
                 g.trim();
-                array.set(index, resultSelector.apply(g.key, g.elements));
+                array[index] = resultSelector.apply(g.key, Array.create(g.elements));
                 ++index;
             } while (g != this.lastGrouping);
         }
@@ -186,7 +180,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
             do {
                 g = g.next;
                 g.trim();
-                list.add(resultSelector.apply(g.key, g.elements));
+                list.add(resultSelector.apply(g.key, Array.create(g.elements)));
             }
             while (g != this.lastGrouping);
         }
@@ -210,22 +204,22 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
 
     private Grouping<TKey, TElement> getGrouping(TKey key, boolean create) {
         int hashCode = this.hashCode(key);
-        for (Grouping<TKey, TElement> g = this.groupings.get(hashCode % this.groupings.length()); g != null; g = g.hashNext)
+        for (Grouping<TKey, TElement> g = this.groupings[hashCode % this.groupings.length]; g != null; g = g.hashNext)
             if (g.hashCode == hashCode && this.comparer.equals(g.key, key) && g != this.nullKeyGrouping)
                 return g;
         return create ? this.createGrouping(key, hashCode) : null;
     }
 
     private Grouping<TKey, TElement> createGrouping(TKey key, int hashCode) {
-        if (this.count == this.groupings.length())
+        if (this.count == this.groupings.length)
             this.resize();
-        int index = hashCode % this.groupings.length();
+        int index = hashCode % this.groupings.length;
         Grouping<TKey, TElement> g = new Grouping<>();
         g.key = key;
         g.hashCode = hashCode;
-        g.elements = Array.create(1);
-        g.hashNext = this.groupings.get(index);
-        this.groupings.set(index, g);
+        g.elements = new Object[1];
+        g.hashNext = this.groupings[index];
+        this.groupings[index] = g;
         if (this.lastGrouping == null) {
             g.next = g;
         } else {
@@ -239,13 +233,14 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
 
     private void resize() {
         int newSize = Math.addExact(Math.multiplyExact(this.count, 2), 1);
-        Array<Grouping<TKey, TElement>> newGroupings = Array.create(newSize);
+        //noinspection unchecked
+        Grouping<TKey, TElement>[] newGroupings = new Grouping[newSize];
         Grouping<TKey, TElement> g = this.lastGrouping;
         do {
             g = g.next;
             int index = g.hashCode % newSize;
-            g.hashNext = newGroupings.get(index);
-            newGroupings.set(index, g);
+            g.hashNext = newGroupings[index];
+            newGroupings[index] = g;
         } while (g != this.lastGrouping);
         this.groupings = newGroupings;
     }
@@ -347,7 +342,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
                     case 2:
                         this.g = this.g.next;
                         this.g.trim();
-                        this.current = this.resultSelector.apply(this.g.key, this.g.elements);
+                        this.current = this.resultSelector.apply(this.g.key, Array.create(this.g.elements));
                         this.state = 1;
                         return true;
                     default:

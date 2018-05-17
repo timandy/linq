@@ -1,21 +1,14 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.bridge.enumerator.ArrayEnumerator;
 
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-final class _SingleLinkedNode {
-    private _SingleLinkedNode() {
-    }
-}
-
-
 final class SingleLinkedNode<TSource> {
-    private SingleLinkedNode<TSource> linked;
     private TSource item;
+    private SingleLinkedNode<TSource> linked;
 
     public SingleLinkedNode(TSource item) {
         this.item = item;
@@ -61,14 +54,14 @@ final class SingleLinkedNode<TSource> {
         return node;
     }
 
-    private Array<TSource> toArray(int count) {
+    private Object[] toArray(int count) {
         assert count == this.getCount();
 
-        Array<TSource> array = Array.create(count);
+        Object[] array = new Object[count];
         int index = count;
         for (SingleLinkedNode<TSource> node = this; node != null; node = node.linked) {
             --index;
-            array.set(index, node.item);
+            array[index] = node.item;
         }
 
         assert index == 0;
