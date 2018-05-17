@@ -140,6 +140,10 @@ public final class Array<T> implements IList<T>, Cloneable {
         return (T) this.elements[index];
     }
 
+    public void set(int index, T item) {
+        this.elements[index] = item;
+    }
+
     @Override
     public Collection<T> getCollection() {
         return ArrayUtils.toCollection(this.elements);
