@@ -65,6 +65,13 @@ final class ArrayBuilder<T> {//struct
         return ArrayUtils.toArray(this.array, clazz, 0, this.count);
     }
 
+    public Object[] toArray() {
+        if (this.count == 0)
+            return ArrayUtils.empty();
+        assert this.array != null; // Nonzero count should imply this
+        return ArrayUtils.resize(this.array, this.count);
+    }
+
     public void uncheckedAdd(T item) {
         assert this.count < this.getCapacity();
         this.array[this.count++] = item;
