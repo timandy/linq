@@ -11,7 +11,6 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 final class CopyPosition {//struct
     private final int row;
     private final int column;
@@ -42,8 +41,9 @@ final class CopyPosition {//struct
 
     @Override
     public boolean equals(Object obj) {
-        CopyPosition that = (CopyPosition) obj;
-        return Objects.equals(this.row, that.row)
+        CopyPosition that;
+        return obj instanceof CopyPosition
+                && Objects.equals(this.row, (that = (CopyPosition) obj).row)
                 && Objects.equals(this.column, that.column);
     }
 

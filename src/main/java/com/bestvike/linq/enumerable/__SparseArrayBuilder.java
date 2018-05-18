@@ -9,7 +9,6 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
-@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 final class Marker {//struct
     private final int count;
     private final int index;
@@ -32,8 +31,9 @@ final class Marker {//struct
 
     @Override
     public boolean equals(Object obj) {
-        Marker that = (Marker) obj;
-        return Objects.equals(this.count, that.count)
+        Marker that;
+        return obj instanceof Marker
+                && Objects.equals(this.count, (that = (Marker) obj).count)
                 && Objects.equals(this.index, that.index);
     }
 
