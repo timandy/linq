@@ -107,10 +107,9 @@ final class SparseArrayBuilder<T> {//struct
             count -= reservedCount;
         }
 
-        if (count > 0) {
+        if (count > 0)
             // Finish copying after the final marker.
             this.builder.copyTo(position, array, arrayIndex, count);
-        }
     }
 
     public void reserve(int count) {
