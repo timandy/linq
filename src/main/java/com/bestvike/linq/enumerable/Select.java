@@ -307,11 +307,11 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         if (index < this.source._getCount()) {
-            found.setValue(true);
+            found.value = true;
             return this.selector.apply(this.source.get(index));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -319,7 +319,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
     public TResult _tryGetFirst(out<Boolean> found) {
         assert this.source._getCount() > 0; // See assert : constructor
 
-        found.setValue(true);
+        found.value = true;
         return this.selector.apply(this.source.get(0));
     }
 
@@ -327,7 +327,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
     public TResult _tryGetLast(out<Boolean> found) {
         assert this.source._getCount() > 0; // See assert : constructor
 
-        found.setValue(true);
+        found.value = true;
         return this.selector.apply(this.source.get(this.source._getCount() - 1));
     }
 }
@@ -446,22 +446,22 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         if (index < this.source._getCount()) {
-            found.setValue(true);
+            found.value = true;
             return this.selector.apply(this.source.get(index));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
     @Override
     public TResult _tryGetFirst(out<Boolean> found) {
         if (this.source._getCount() != 0) {
-            found.setValue(true);
+            found.value = true;
             return this.selector.apply(this.source.get(0));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -469,11 +469,11 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
     public TResult _tryGetLast(out<Boolean> found) {
         int len = this.source._getCount();
         if (len != 0) {
-            found.setValue(true);
+            found.value = true;
             return this.selector.apply(this.source.get(len - 1));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 }
@@ -542,19 +542,19 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         TSource input = this.source._tryGetElementAt(index, found);
-        return found.getValue() ? this.selector.apply(input) : null;
+        return found.value ? this.selector.apply(input) : null;
     }
 
     @Override
     public TResult _tryGetFirst(out<Boolean> found) {
         TSource input = this.source._tryGetFirst(found);
-        return found.getValue() ? this.selector.apply(input) : null;
+        return found.value ? this.selector.apply(input) : null;
     }
 
     @Override
     public TResult _tryGetLast(out<Boolean> found) {
         TSource input = this.source._tryGetLast(found);
-        return found.getValue() ? this.selector.apply(input) : null;
+        return found.value ? this.selector.apply(input) : null;
     }
 
     private TResult[] lazyToArray(Class<TResult> clazz) {
@@ -729,22 +729,22 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
-            found.setValue(true);
+            found.value = true;
             return this.selector.apply(this.source.get(this.minIndexInclusive + index));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
     @Override
     public TResult _tryGetFirst(out<Boolean> found) {
         if (this.source._getCount() > this.minIndexInclusive) {
-            found.setValue(true);
+            found.value = true;
             return this.selector.apply(this.source.get(this.minIndexInclusive));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -752,11 +752,11 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
     public TResult _tryGetLast(out<Boolean> found) {
         int lastIndex = this.source._getCount() - 1;
         if (lastIndex >= this.minIndexInclusive) {
-            found.setValue(true);
+            found.value = true;
             return this.selector.apply(this.source.get(Math.min(lastIndex, this.maxIndexInclusive)));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 

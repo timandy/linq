@@ -16,16 +16,16 @@ final class EnumerableHelpers {
 
         if (source instanceof ICollection) {
             ICollection collection = (ICollection<T>) source;
-            count.setValue(collection._getCount());
+            count.value = collection._getCount();
             return true;
         }
 
         if (source instanceof IIListProvider) {
             IIListProvider<T> provider = (IIListProvider<T>) source;
-            return count.setValue(provider._getCount(true)) >= 0;
+            return (count.value = provider._getCount(true)) >= 0;
         }
 
-        count.setValue(-1);
+        count.value = -1;
         return false;
     }
 
@@ -102,7 +102,7 @@ final class EnumerableHelpers {
                 // exception from overrunning the array (if the count went up) or we could end up not filling as many
                 // items as 'count' suggests (if the count went down).  This instanceof only an issue for concurrent collections
                 // that implement ICollection<T>, which as of .NET 4.6 instanceof just ConcurrentDictionary<TKey, TValue>.
-                length.setValue(count);
+                length.value = count;
                 return ic._toArray();
             }
         } else {
@@ -138,13 +138,13 @@ final class EnumerableHelpers {
                         }
                         arr[count++] = en.current();
                     }
-                    length.setValue(count);
+                    length.value = count;
                     return arr;
                 }
             }
         }
 
-        length.setValue(0);
+        length.value = 0;
         return ArrayUtils.empty();
     }
 }

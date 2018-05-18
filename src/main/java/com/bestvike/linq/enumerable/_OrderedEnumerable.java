@@ -213,12 +213,12 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             Buffer<TElement> buffer = new Buffer<>(this.source);
             int count = buffer.count;
             if (index < count) {
-                found.setValue(true);
+                found.value = true;
                 return this.getEnumerableSorter().elementAt(buffer.items, count, index);
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -227,7 +227,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         AbstractCachingComparer<TElement> comparer = this.getComparer();
         try (IEnumerator<TElement> e = this.source.enumerator()) {
             if (!e.moveNext()) {
-                found.setValue(false);
+                found.value = false;
                 return null;
             }
 
@@ -239,7 +239,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     value = x;
             }
 
-            found.setValue(true);
+            found.value = true;
             return value;
         }
     }
@@ -250,7 +250,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             TElement value;
             do {
                 if (!e.moveNext()) {
-                    found.setValue(false);
+                    found.value = false;
                     return null;
                 }
                 value = e.current();
@@ -264,7 +264,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     value = x;
             }
 
-            found.setValue(true);
+            found.value = true;
             return value;
         }
     }
@@ -273,7 +273,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
     public TElement _tryGetLast(out<Boolean> found) {
         try (IEnumerator<TElement> e = this.source.enumerator()) {
             if (!e.moveNext()) {
-                found.setValue(false);
+                found.value = false;
                 return null;
             }
 
@@ -286,7 +286,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     value = current;
             }
 
-            found.setValue(true);
+            found.value = true;
             return value;
         }
     }
@@ -295,11 +295,11 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         Buffer<TElement> buffer = new Buffer<>(this.source);
         int count = buffer.count;
         if (minIdx >= count) {
-            found.setValue(false);
+            found.value = false;
             return null;
         }
 
-        found.setValue(true);
+        found.value = true;
         return (maxIdx < count - 1) ? this.getEnumerableSorter().elementAt(buffer.items, count, maxIdx) : this._last(buffer);
     }
 
@@ -326,7 +326,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             TElement value;
             do {
                 if (!e.moveNext()) {
-                    found.setValue(false);
+                    found.value = false;
                     return null;
                 }
                 value = e.current();
@@ -340,7 +340,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     value = x;
             }
 
-            found.setValue(true);
+            found.value = true;
             return value;
         }
     }

@@ -17,7 +17,7 @@ public final class Last {
     public static <TSource> TSource last(IEnumerable<TSource> source) {
         out<Boolean> foundRef = out.init();
         TSource last = tryGetLast(source, foundRef);
-        if (!foundRef.getValue())
+        if (!foundRef.value)
             throw Errors.noElements();
 
         return last;
@@ -26,7 +26,7 @@ public final class Last {
     public static <TSource> TSource last(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         out<Boolean> foundRef = out.init();
         TSource last = tryGetLast(source, predicate, foundRef);
-        if (!foundRef.getValue())
+        if (!foundRef.value)
             throw Errors.noMatch();
 
         return last;
@@ -55,7 +55,7 @@ public final class Last {
             IList<TSource> list = (IList<TSource>) source;
             int count = list._getCount();
             if (count > 0) {
-                found.setValue(true);
+                found.value = true;
                 return list.get(count - 1);
             }
         } else {
@@ -67,13 +67,13 @@ public final class Last {
                     }
                     while (e.moveNext());
 
-                    found.setValue(true);
+                    found.value = true;
                     return result;
                 }
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -94,7 +94,7 @@ public final class Last {
             for (int i = list._getCount() - 1; i >= 0; --i) {
                 TSource result = list.get(i);
                 if (predicate.apply(result)) {
-                    found.setValue(true);
+                    found.value = true;
                     return result;
                 }
             }
@@ -109,14 +109,14 @@ public final class Last {
                                 result = element;
                         }
 
-                        found.setValue(true);
+                        found.value = true;
                         return result;
                     }
                 }
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 }

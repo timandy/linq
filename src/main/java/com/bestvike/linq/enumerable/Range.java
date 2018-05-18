@@ -85,23 +85,23 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
     @Override
     public Integer _tryGetElementAt(int index, out<Boolean> found) {
         if (index < this.end - this.start) {
-            found.setValue(true);
+            found.value = true;
             return this.start + index;
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
     @Override
     public Integer _tryGetFirst(out<Boolean> found) {
-        found.setValue(true);
+        found.value = true;
         return this.start;
     }
 
     @Override
     public Integer _tryGetLast(out<Boolean> found) {
-        found.setValue(true);
+        found.value = true;
         return this.end - 1;
     }
 

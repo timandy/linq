@@ -21,7 +21,7 @@ public final class ElementAt {
             IPartition<TSource> partition = (IPartition<TSource>) source;
             out<Boolean> foundRef = out.init();
             TSource element = partition._tryGetElementAt(index, foundRef);
-            if (foundRef.getValue())
+            if (foundRef.value)
                 return element;
         } else {
             if (source instanceof IList) {

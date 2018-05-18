@@ -17,7 +17,7 @@ public final class First {
     public static <TSource> TSource first(IEnumerable<TSource> source) {
         out<Boolean> foundRef = out.init();
         TSource first = tryGetFirst(source, foundRef);
-        if (!foundRef.getValue())
+        if (!foundRef.value)
             throw Errors.noElements();
         return first;
     }
@@ -25,7 +25,7 @@ public final class First {
     public static <TSource> TSource first(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         out<Boolean> foundRef = out.init();
         TSource first = tryGetFirst(source, predicate, foundRef);
-        if (!foundRef.getValue())
+        if (!foundRef.value)
             throw Errors.noMatch();
         return first;
     }
@@ -53,19 +53,19 @@ public final class First {
         if (source instanceof IList) {
             IList<TSource> list = (IList<TSource>) source;
             if (list._getCount() > 0) {
-                found.setValue(true);
+                found.value = true;
                 return list.get(0);
             }
         } else {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 if (e.moveNext()) {
-                    found.setValue(true);
+                    found.value = true;
                     return e.current();
                 }
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -83,12 +83,12 @@ public final class First {
 
         for (TSource element : source) {
             if (predicate.apply(element)) {
-                found.setValue(true);
+                found.value = true;
                 return element;
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 }

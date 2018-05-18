@@ -82,19 +82,19 @@ final class EmptyPartition<TElement> extends Iterator<TElement> implements IPart
 
     @Override
     public TElement _tryGetElementAt(int index, out<Boolean> found) {
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
     @Override
     public TElement _tryGetFirst(out<Boolean> found) {
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
     @Override
     public TElement _tryGetLast(out<Boolean> found) {
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -156,7 +156,7 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
             return this.source._tryGetElementAt(index + this.minIndexInclusive, found);
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -250,22 +250,22 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
     @Override
     public TSource _tryGetElementAt(int index, out<Boolean> found) {
         if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
-            found.setValue(true);
+            found.value = true;
             return this.source.get(this.minIndexInclusive + index);
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
     @Override
     public TSource _tryGetFirst(out<Boolean> found) {
         if (this.source._getCount() > this.minIndexInclusive) {
-            found.setValue(true);
+            found.value = true;
             return this.source.get(this.minIndexInclusive);
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -273,11 +273,11 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
     public TSource _tryGetLast(out<Boolean> found) {
         int lastIndex = this.source._getCount() - 1;
         if (lastIndex >= this.minIndexInclusive) {
-            found.setValue(true);
+            found.value = true;
             return this.source.get(Math.min(lastIndex, this.maxIndexInclusive));
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -521,13 +521,13 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 assert this.minIndexInclusive + index >= 0;//$ "Adding {nameof(index)} caused {nameof(_minIndexInclusive)} to overflow.");
 
                 if (skipBefore(this.minIndexInclusive + index, en) && en.moveNext()) {
-                    found.setValue(true);
+                    found.value = true;
                     return en.current();
                 }
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -535,12 +535,12 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
     public TSource _tryGetFirst(out<Boolean> found) {
         try (IEnumerator<TSource> en = this.source.enumerator()) {
             if (this.skipBeforeFirst(en) && en.moveNext()) {
-                found.setValue(true);
+                found.value = true;
                 return en.current();
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
@@ -558,12 +558,12 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 }
                 while (remaining >= comparand && en.moveNext());
 
-                found.setValue(true);
+                found.value = true;
                 return result;
             }
         }
 
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 

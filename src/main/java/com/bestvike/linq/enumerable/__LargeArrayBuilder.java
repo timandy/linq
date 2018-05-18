@@ -113,33 +113,32 @@ final class LargeArrayBuilder<T> {//struct
             // and index when we run out of space.
             while (enumerator.moveNext()) {
                 T item = enumerator.current();
-                if (indexRef.getValue() >= destinationRef.getValue().length)
+                if (indexRef.value >= destinationRef.value.length)
                     this.addWithBufferAllocation(item, destinationRef, indexRef);
                 else
-                    destinationRef.getValue()[indexRef.getValue()] = item;
-                indexRef.setValue(indexRef.getValue() + 1);
+                    destinationRef.value[indexRef.value] = item;
+                indexRef.value++;
             }
 
             // Final update to count and index.
-            this.count += indexRef.getValue() - this.index;
-            this.index = indexRef.getValue();
+            this.count += indexRef.value - this.index;
+            this.index = indexRef.value;
         }
     }
 
     private void addWithBufferAllocation(T item, ref<Object[]> destination, ref<Integer> index) {
-        this.count += index.getValue() - this.index;
-        this.index = index.getValue();
+        this.count += index.value - this.index;
+        this.index = index.value;
         this.allocateBuffer();
-        destination.setValue(this.current);
-        index.setValue(this.index);
-        this.current[index.getValue()] = item;
+        destination.value = this.current;
+        index.value = this.index;
+        this.current[index.value] = item;
     }
 
     private void copyTo(Object[] array, int arrayIndex, int count) {
-        assert array != null;
         assert arrayIndex >= 0;
         assert count >= 0 && count <= this.getCount();
-        assert array.length - arrayIndex >= count;
+        assert array != null && array.length - arrayIndex >= count;
 
         for (int i = 0; count > 0; i++) {
             // Find the buffer we're copying from.
@@ -178,13 +177,13 @@ final class LargeArrayBuilder<T> {//struct
         Object[] buffer = this.getBuffer(row);
 
         int copied = this.copyToCore(buffer, column, array, arrayIndexRef, countRef);
-        if (countRef.getValue() == 0)
+        if (countRef.value == 0)
             return new CopyPosition(row, column + copied).normalize(buffer.length);
 
         do {
             buffer = this.getBuffer(++row);
             copied = this.copyToCore(buffer, 0, array, arrayIndexRef, countRef);
-        } while (countRef.getValue() > 0);
+        } while (countRef.value > 0);
 
         return new CopyPosition(row, copied).normalize(buffer.length);
     }
@@ -192,10 +191,10 @@ final class LargeArrayBuilder<T> {//struct
     private int copyToCore(Object[] sourceBuffer, int sourceIndex, Object[] array, ref<Integer> arrayIndex, ref<Integer> count) {
         assert sourceBuffer.length > sourceIndex;
         // Copy until we satisfy `count` or reach the end of the current buffer.
-        int copyCount = Math.min(sourceBuffer.length - sourceIndex, count.getValue());
-        System.arraycopy(sourceBuffer, sourceIndex, array, arrayIndex.getValue(), copyCount);
-        arrayIndex.setValue(arrayIndex.getValue() + copyCount);
-        count.setValue(count.getValue() - copyCount);
+        int copyCount = Math.min(sourceBuffer.length - sourceIndex, count.value);
+        System.arraycopy(sourceBuffer, sourceIndex, array, arrayIndex.value, copyCount);
+        arrayIndex.value += copyCount;
+        count.value -= copyCount;
         return copyCount;
     }
 
@@ -214,7 +213,7 @@ final class LargeArrayBuilder<T> {//struct
     public T[] toArray(Class<T> clazz) {
         out<Object[]> arrayRef = out.init();
         if (this.tryMove(arrayRef))
-            return ArrayUtils.toArray(arrayRef.getValue(), clazz);
+            return ArrayUtils.toArray(arrayRef.value, clazz);
 
         T[] array = ArrayUtils.newInstance(clazz, this.count);
         this.copyTo(array, 0, this.count);
@@ -224,7 +223,7 @@ final class LargeArrayBuilder<T> {//struct
     public Object[] toArray() {
         out<Object[]> arrayRef = out.init();
         if (this.tryMove(arrayRef))
-            return arrayRef.getValue();
+            return arrayRef.value;
 
         Object[] array = new Object[this.count];
         this.copyTo(array, 0, this.count);
@@ -232,7 +231,7 @@ final class LargeArrayBuilder<T> {//struct
     }
 
     public boolean tryMove(out<Object[]> array) {
-        array.setValue(this.first);
+        array.value = this.first;
         return this.count == this.first.length;
     }
 

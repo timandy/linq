@@ -88,22 +88,22 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
         if (index < this.count) {
-            found.setValue(true);
+            found.value = true;
             return this.current;
         }
-        found.setValue(false);
+        found.value = false;
         return null;
     }
 
     @Override
     public TResult _tryGetFirst(out<Boolean> found) {
-        found.setValue(true);
+        found.value = true;
         return this.current;
     }
 
     @Override
     public TResult _tryGetLast(out<Boolean> found) {
-        found.setValue(true);
+        found.value = true;
         return this.current;
     }
 

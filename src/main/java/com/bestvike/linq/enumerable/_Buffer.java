@@ -19,7 +19,7 @@ final class Buffer<TElement> {//struct
         } else {
             out<Integer> countRef = out.init();
             this.items = EnumerableHelpers.toArray(source, countRef);
-            this.count = countRef.getValue();
+            this.count = countRef.value;
         }
     }
 
