@@ -16,7 +16,6 @@ final class Marker {//struct
     Marker(int count, int index) {
         assert count >= 0;
         assert index >= 0;
-
         this.count = count;
         this.index = index;
     }
