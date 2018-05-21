@@ -127,11 +127,11 @@ final class AppendPrepend1Iterator<TSource> extends AppendPrependIterator<TSourc
                     this.current = this.item;
                     return true;
                 }
-                break;
+                this.close();
+                return false;
+            default:
+                return false;
         }
-
-        this.close();
-        return false;
     }
 
     @Override
@@ -287,16 +287,17 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
             case 3:
                 if (this.loadFromEnumerator())
                     return true;
-                if (this.appended == null)
+                if (this.appended == null) {
+                    this.close();
                     return false;
+                }
                 this.enumerator = this.appended.enumerator(this.appendCount);
                 this.state = 4;
             case 4:
                 return this.loadFromEnumerator();
+            default:
+                return false;
         }
-
-        this.close();
-        return false;
     }
 
     @Override
