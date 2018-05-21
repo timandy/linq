@@ -297,7 +297,6 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         TSource[] array = ArrayUtils.newInstance(clazz, count);
         for (int i = 0, curIdx = this.minIndexInclusive; i != array.length; ++i, ++curIdx)
             array[i] = this.source.get(curIdx);
-
         return array;
     }
 
@@ -310,7 +309,6 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         Object[] array = new Object[count];
         for (int i = 0, curIdx = this.minIndexInclusive; i != array.length; ++i, ++curIdx)
             array[i] = this.source.get(curIdx);
-
         return array;
     }
 
@@ -324,7 +322,6 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         int end = this.minIndexInclusive + count;
         for (int i = this.minIndexInclusive; i != end; ++i)
             list.add(this.source.get(i));
-
         return list;
     }
 
@@ -611,7 +608,6 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
     @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
-
         try (IEnumerator<TSource> en = this.source.enumerator()) {
             if (this.skipBeforeFirst(en) && en.moveNext()) {
                 int remaining = this.getLimit() - 1; // Max number of items left, not counting the current element.
@@ -623,7 +619,6 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 } while (remaining >= comparand && en.moveNext());
             }
         }
-
         return list;
     }
 
