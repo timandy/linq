@@ -542,6 +542,7 @@ final class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TEl
 }
 
 
+@SuppressWarnings("SameParameterValue")
 abstract class AbstractEnumerableSorter<TElement> {
     protected abstract void computeKeys(Object[] elements, int count);
 
