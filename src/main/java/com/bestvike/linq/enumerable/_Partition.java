@@ -553,8 +553,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 do {
                     remaining--;
                     result = en.current();
-                }
-                while (remaining >= comparand && en.moveNext());
+                } while (remaining >= comparand && en.moveNext());
 
                 found.value = true;
                 return result;
@@ -578,8 +577,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 do {
                     remaining--;
                     builder.add(en.current());
-                }
-                while (remaining >= comparand && en.moveNext());
+                } while (remaining >= comparand && en.moveNext());
 
                 return builder.toArray(clazz);
             }
@@ -601,8 +599,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 do {
                     remaining--;
                     builder.add(en.current());
-                }
-                while (remaining >= comparand && en.moveNext());
+                } while (remaining >= comparand && en.moveNext());
 
                 return builder.toArray();
             }
@@ -623,8 +620,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 do {
                     remaining--;
                     list.add(en.current());
-                }
-                while (remaining >= comparand && en.moveNext());
+                } while (remaining >= comparand && en.moveNext());
             }
         }
 

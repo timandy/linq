@@ -166,8 +166,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
             do {
                 g = g.next;
                 list.add(g);
-            }
-            while (g != this.lastGrouping);
+            } while (g != this.lastGrouping);
         }
 
         return list;
@@ -181,8 +180,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
                 g = g.next;
                 g.trim();
                 list.add(resultSelector.apply(g.key, Array.create(g.elements)));
-            }
-            while (g != this.lastGrouping);
+            } while (g != this.lastGrouping);
         }
 
         return list;

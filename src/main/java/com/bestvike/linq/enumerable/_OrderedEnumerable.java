@@ -251,8 +251,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     return null;
                 }
                 value = e.current();
-            }
-            while (!predicate.apply(value));
+            } while (!predicate.apply(value));
 
             comparer.setElement(value);
             while (e.moveNext()) {
@@ -327,8 +326,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     return null;
                 }
                 value = e.current();
-            }
-            while (!predicate.apply(value));
+            } while (!predicate.apply(value));
 
             comparer.setElement(value);
             while (e.moveNext()) {
@@ -661,8 +659,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
                 i++;
                 j--;
-            }
-            while (i <= j);
+            } while (i <= j);
 
             if (minIdx >= i)
                 left = i + 1;
@@ -680,8 +677,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
                 right = j;
             }
-        }
-        while (left < right);
+        } while (left < right);
     }
 
     // Finds the element that would be at idx if the collection was sorted.
@@ -711,8 +707,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
                 i++;
                 j--;
-            }
-            while (i <= j);
+            } while (i <= j);
 
             if (i <= idx)
                 left = i + 1;
@@ -730,8 +725,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
                 right = j;
             }
-        }
-        while (left < right);
+        } while (left < right);
 
         return map[idx];
     }

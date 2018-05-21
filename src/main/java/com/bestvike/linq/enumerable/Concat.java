@@ -268,8 +268,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
             int sourceCount = collection == null ? source.count() : collection._getCount();
 
             count = Math.addExact(count, sourceCount);
-        }
-        while ((previousN = node.getPreviousN()) != null);
+        } while ((previousN = node.getPreviousN()) != null);
 
         assert node.tail instanceof Concat2Iterator;
         return Math.addExact(count, node.tail._getCount(onlyIfCheap));
@@ -287,8 +286,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
             node = previousN;
             if (index == node.headIndex)
                 return node.head;
-        }
-        while ((previousN = node.getPreviousN()) != null);
+        } while ((previousN = node.getPreviousN()) != null);
 
         assert index == 0 || index == 1;
         assert node.tail instanceof Concat2Iterator;
@@ -394,8 +392,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
                 arrayIndex = Math.subtractExact(arrayIndex, sourceCount);
                 source._copyTo(array, arrayIndex);
             }
-        }
-        while ((previousN = node.getPreviousN()) != null);
+        } while ((previousN = node.getPreviousN()) != null);
 
         Concat2Iterator<TSource> previous2 = (Concat2Iterator<TSource>) node.tail;
         ICollection<TSource> second = (ICollection<TSource>) previous2.second;
@@ -437,8 +434,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
                 arrayIndex = Math.subtractExact(arrayIndex, sourceCount);
                 source._copyTo(array, arrayIndex);
             }
-        }
-        while ((previousN = node.getPreviousN()) != null);
+        } while ((previousN = node.getPreviousN()) != null);
 
         Concat2Iterator<TSource> previous2 = (Concat2Iterator<TSource>) node.tail;
         ICollection<TSource> second = (ICollection<TSource>) previous2.second;
