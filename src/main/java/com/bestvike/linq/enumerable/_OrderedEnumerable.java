@@ -373,6 +373,13 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     return false;
             }
         }
+
+        @Override
+        public void close() {
+            this.buffer = null;
+            this.map = null;
+            super.close();
+        }
     }
 
     private class OrderedEnumerableRangeEnumerator extends AbstractEnumerator<TElement> {
@@ -422,6 +429,13 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                 default:
                     return false;
             }
+        }
+
+        @Override
+        public void close() {
+            this.buffer = null;
+            this.map = null;
+            super.close();
         }
     }
 }
