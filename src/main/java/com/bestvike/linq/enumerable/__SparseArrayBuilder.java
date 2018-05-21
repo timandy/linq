@@ -53,8 +53,8 @@ final class Marker {//struct
 
 
 final class SparseArrayBuilder<T> {//struct
-    private LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
-    private ArrayBuilder<Marker> markers = new ArrayBuilder<>();
+    private final LargeArrayBuilder<T> builder = new LargeArrayBuilder<>();
+    private final ArrayBuilder<Marker> markers = new ArrayBuilder<>();
     private int reservedCount;
 
     SparseArrayBuilder() {

@@ -7,10 +7,11 @@ import com.bestvike.linq.bridge.enumerator.ArrayEnumerator;
  * Created by 许崇雷 on 2018-05-09.
  */
 final class SingleLinkedNode<TSource> {
-    private TSource item;
-    private SingleLinkedNode<TSource> linked;
+    private final TSource item;
+    private final SingleLinkedNode<TSource> linked;
 
     SingleLinkedNode(TSource item) {
+        this.linked = null;
         this.item = item;
     }
 
