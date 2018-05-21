@@ -57,6 +57,9 @@ final class SparseArrayBuilder<T> {//struct
     private ArrayBuilder<Marker> markers = new ArrayBuilder<>();
     private int reservedCount;
 
+    SparseArrayBuilder() {
+    }
+
     public int getCount() {
         return Math.addExact(this.builder.getCount(), this.reservedCount);
     }

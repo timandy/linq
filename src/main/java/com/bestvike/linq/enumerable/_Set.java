@@ -18,7 +18,7 @@ final class Set<TElement> {
     private int count;
 
     // Constructs a set that compares items with the specified comparer.
-    public Set(IEqualityComparer<TElement> comparer) {
+    Set(IEqualityComparer<TElement> comparer) {
         this.comparer = comparer == null ? EqualityComparer.Default() : comparer;
         this.buckets = new int[7];
         //noinspection unchecked

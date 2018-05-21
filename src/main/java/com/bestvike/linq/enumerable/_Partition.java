@@ -125,7 +125,7 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
     private final int minIndexInclusive;
     private final int maxIndexInclusive;
 
-    public OrderedPartition(AbstractOrderedEnumerable<TElement> source, int minIdxInclusive, int maxIdxInclusive) {
+    OrderedPartition(AbstractOrderedEnumerable<TElement> source, int minIdxInclusive, int maxIdxInclusive) {
         this.source = source;
         this.minIndexInclusive = minIdxInclusive;
         this.maxIndexInclusive = maxIdxInclusive;
@@ -196,7 +196,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
     private final int minIndexInclusive;
     private final int maxIndexInclusive;
 
-    public ListPartition(IList<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
+    ListPartition(IList<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
         assert minIndexInclusive >= 0;
         assert minIndexInclusive <= maxIndexInclusive;

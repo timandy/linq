@@ -447,7 +447,7 @@ final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<
     private final Comparator<TKey> comparer;
     private final boolean descending;
 
-    public OrderedEnumerable(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractOrderedEnumerable<TElement> parent) {
+    OrderedEnumerable(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractOrderedEnumerable<TElement> parent) {
         if (source == null)
             throw Errors.argumentNull("source");
         if (keySelector == null)
@@ -491,7 +491,7 @@ class CachingComparer<TElement, TKey> extends AbstractCachingComparer<TElement> 
     protected final boolean descending;
     protected TKey lastKey;
 
-    public CachingComparer(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending) {
+    CachingComparer(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending) {
         this.keySelector = keySelector;
         this.comparer = comparer;
         this.descending = descending;
@@ -516,7 +516,7 @@ class CachingComparer<TElement, TKey> extends AbstractCachingComparer<TElement> 
 final class CachingComparerWithChild<TElement, TKey> extends CachingComparer<TElement, TKey> {
     private final AbstractCachingComparer<TElement> child;
 
-    public CachingComparerWithChild(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractCachingComparer<TElement> child) {
+    CachingComparerWithChild(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractCachingComparer<TElement> child) {
         super(keySelector, comparer, descending);
         this.child = child;
     }

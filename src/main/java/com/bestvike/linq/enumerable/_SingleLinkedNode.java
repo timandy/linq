@@ -10,7 +10,7 @@ final class SingleLinkedNode<TSource> {
     private TSource item;
     private SingleLinkedNode<TSource> linked;
 
-    public SingleLinkedNode(TSource item) {
+    SingleLinkedNode(TSource item) {
         this.item = item;
     }
 

@@ -12,10 +12,10 @@ final class ArrayBuilder<T> {//struct
     private Object[] array;     // Starts out null, initialized on first Add.
     private int count;          // Number of items into array we're using.
 
-    public ArrayBuilder() {
+    ArrayBuilder() {
     }
 
-    public ArrayBuilder(int capacity) {
+    ArrayBuilder(int capacity) {
         assert capacity >= 0;
         if (capacity > 0)
             this.array = new Object[capacity];

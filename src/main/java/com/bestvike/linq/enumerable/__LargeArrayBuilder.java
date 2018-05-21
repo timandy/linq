@@ -75,11 +75,11 @@ final class LargeArrayBuilder<T> {//struct
     private int index;                                                  // Index into the current buffer.
     private int count;                                                  // count of all of the items in this builder.
 
-    public LargeArrayBuilder() {
+    LargeArrayBuilder() {
         this(Integer.MAX_VALUE);
     }
 
-    public LargeArrayBuilder(int maxCapacity) {
+    LargeArrayBuilder(int maxCapacity) {
         assert maxCapacity >= 0;
         this.first = this.current = ArrayUtils.empty();
         this.maxCapacity = maxCapacity;
