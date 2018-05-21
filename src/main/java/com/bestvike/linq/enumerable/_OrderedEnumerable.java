@@ -84,7 +84,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             IIListProvider<TElement> listProv = (IIListProvider<TElement>) this.source;
             return listProv._getCount(onlyIfCheap);
         }
-        return !onlyIfCheap || this.source instanceof ICollection ? this.count() : -1;
+        return !onlyIfCheap || this.source instanceof ICollection ? this.source.count() : -1;
     }
 
     public IEnumerator<TElement> enumerator(int minIdx, int maxIdx) {
