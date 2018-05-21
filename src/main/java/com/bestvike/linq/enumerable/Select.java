@@ -694,7 +694,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         // Having a separate field for the index would be more readable. However, we save it
         // into this.state with a bias to minimize field size of the iterator.
         int index = this.state - 1;
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
+        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
             this.current = this.selector.apply(this.source.get(this.minIndexInclusive + index));
             ++this.state;
             return true;
@@ -728,7 +728,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
 
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
+        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
             found.value = true;
             return this.selector.apply(this.source.get(this.minIndexInclusive + index));
         }

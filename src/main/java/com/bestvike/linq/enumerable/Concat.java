@@ -263,7 +263,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
 
             // Enumerable.Count() handles ICollections in O(1) time, but check for them here anyway
             // to avoid a method call because 1) they're common and 2) this code is run in a loop.
-            ICollection<TSource> collection = source instanceof ICollection ? ((ICollection<TSource>) source) : null;
+            ICollection<TSource> collection = source instanceof ICollection ? (ICollection<TSource>) source : null;
             assert !this.hasOnlyCollections || collection != null;
             int sourceCount = collection == null ? source.count() : collection._getCount();
 

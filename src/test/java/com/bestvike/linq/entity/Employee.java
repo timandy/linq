@@ -26,7 +26,7 @@ public final class Employee {
         int result = 1;
         result = prime * result + (this.deptno == null ? 0 : this.deptno.hashCode());
         result = prime * result + this.empno;
-        result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+        result = prime * result + (this.name == null ? 0 : this.name.hashCode());
         return result;
     }
 

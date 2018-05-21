@@ -152,7 +152,7 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
 
     @Override
     public TElement _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive))
+        if (index <= this.maxIndexInclusive - this.minIndexInclusive)
             return this.source._tryGetElementAt(index + this.minIndexInclusive, found);
 
         found.value = false;
@@ -219,7 +219,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         if (this.state == -1)
             return false;
         int index = this.state - 1;
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
+        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
             this.current = this.source.get(this.minIndexInclusive + index);
             ++this.state;
             return true;
@@ -248,7 +248,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 
     @Override
     public TSource _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive) && index < this.source._getCount() - this.minIndexInclusive) {
+        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
             found.value = true;
             return this.source.get(this.minIndexInclusive + index);
         }
@@ -349,7 +349,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         // Note that although maxIndexInclusive can't grow, it can still be int.MaxValue.
         // We support partitioning enumerables with > 2B elements. For example, e.Skip(1).Take(int.MaxValue) should work.
         // But if it is int.MaxValue, then minIndexInclusive must != 0. Otherwise, our count may overflow.
-        assert maxIndexInclusive == -1 || (maxIndexInclusive - minIndexInclusive < Integer.MAX_VALUE);//, $"{nameof(Limit)} will overflow!");
+        assert maxIndexInclusive == -1 || maxIndexInclusive - minIndexInclusive < Integer.MAX_VALUE;//, $"{nameof(Limit)} will overflow!");
         assert maxIndexInclusive == -1 || minIndexInclusive <= maxIndexInclusive;
 
         this.source = source;
@@ -378,7 +378,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
     }
 
     private int getLimit() {
-        return (this.maxIndexInclusive + 1) - this.minIndexInclusive; // This is that upper bound.
+        return this.maxIndexInclusive + 1 - this.minIndexInclusive; // This is that upper bound.
     }
 
     @Override

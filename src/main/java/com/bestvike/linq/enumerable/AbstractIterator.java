@@ -20,7 +20,7 @@ public abstract class AbstractIterator<TSource> extends AbstractEnumerator<TSour
 
     @Override
     public IEnumerator<TSource> enumerator() {
-        AbstractIterator<TSource> enumerator = (this.state == 0 && this.threadId == Thread.currentThread().getId()) ? this : this.clone();
+        AbstractIterator<TSource> enumerator = this.state == 0 && this.threadId == Thread.currentThread().getId() ? this : this.clone();
         enumerator.state = 1;
         return enumerator;
     }

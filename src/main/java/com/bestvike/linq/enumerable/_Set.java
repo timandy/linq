@@ -128,7 +128,7 @@ final class Set<TElement> {
 
     // Gets the hash code of the provided value with its sign bit zeroed out, so that modulo has a positive result.
     private int internalGetHashCode(TElement value) {
-        return (value == null) ? 0 : this.comparer.hashCode(value) & 0x7FFFFFFF;
+        return value == null ? 0 : this.comparer.hashCode(value) & 0x7FFFFFFF;
     }
 
 

@@ -17,7 +17,7 @@ public final class Range {
     }
 
     public static IEnumerable<Integer> range(int start, int count) {
-        long max = ((long) start) + count - 1;
+        long max = (long) start + count - 1;
         if (count < 0 || max > Integer.MAX_VALUE)
             throw Errors.argumentOutOfRange("count");
 

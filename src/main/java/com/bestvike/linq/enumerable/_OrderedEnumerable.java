@@ -297,7 +297,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         }
 
         found.value = true;
-        return (maxIdx < count - 1) ? this.getEnumerableSorter().elementAt(buffer.items, count, maxIdx) : this._last(buffer);
+        return maxIdx < count - 1 ? this.getEnumerableSorter().elementAt(buffer.items, count, maxIdx) : this._last(buffer);
     }
 
     private TElement _last(Buffer<TElement> buffer) {
@@ -623,7 +623,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
         // -c will result in a negative value for int.MinValue (-int.MinValue == int.MinValue).
         // Flipping keys earlier is more likely to trigger something strange in a comparer,
         // particularly as it comes to the sort being stable.
-        return (this.descending != (c > 0)) ? 1 : -1;
+        return this.descending != (c > 0) ? 1 : -1;
     }
 
     private int compareKeys(int index1, int index2) {

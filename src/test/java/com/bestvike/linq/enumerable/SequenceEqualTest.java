@@ -33,7 +33,7 @@ public class SequenceEqualTest extends EnumerableTest {
 
             @Override
             public int hashCode(Integer obj) {
-                return (obj % 10);
+                return obj % 10;
             }
         };
 

@@ -199,7 +199,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
 
     private int hashCode(TKey key) {
         // Handle comparer implementations that throw when passed null
-        return (key == null) ? 0 : this.comparer.hashCode(key) & 0x7FFFFFFF;
+        return key == null ? 0 : this.comparer.hashCode(key) & 0x7FFFFFFF;
     }
 
     private Grouping<TKey, TElement> getGrouping(TKey key, boolean create) {
