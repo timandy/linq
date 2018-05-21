@@ -31,14 +31,12 @@ final class Set<TElement> {
     public boolean add(TElement value) {
         int hashCode = this.internalGetHashCode(value);
         for (int i = this.buckets[hashCode % this.buckets.length] - 1; i >= 0; i = this.slots[i].next) {
-            if (this.slots[i].hashCode == hashCode && this.comparer.equals(this.slots[i].value, value)) {
+            if (this.slots[i].hashCode == hashCode && this.comparer.equals(this.slots[i].value, value))
                 return false;
-            }
         }
 
-        if (this.count == this.slots.length) {
+        if (this.count == this.slots.length)
             this.resize();
-        }
 
         int index = this.count;
         this.count++;
@@ -57,11 +55,10 @@ final class Set<TElement> {
         int last = -1;
         for (int i = this.buckets[bucket] - 1; i >= 0; last = i, i = this.slots[i].next) {
             if (this.slots[i].hashCode == hashCode && this.comparer.equals(this.slots[i].value, value)) {
-                if (last < 0) {
+                if (last < 0)
                     this.buckets[bucket] = this.slots[i].next + 1;
-                } else {
+                else
                     this.slots[last].next = this.slots[i].next;
-                }
 
                 this.slots[i].hashCode = -1;
                 this.slots[i].value = null;

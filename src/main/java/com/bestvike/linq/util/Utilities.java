@@ -23,9 +23,8 @@ public final class Utilities {
             return right == defaultComparer || right.equals(defaultComparer);
         }
 
-        if (right == null) {
+        if (right == null)
             return left == defaultComparer || left.equals(defaultComparer);
-        }
 
         return left.equals(right);
     }

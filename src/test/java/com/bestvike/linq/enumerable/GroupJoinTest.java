@@ -22,9 +22,8 @@ public class GroupJoinTest extends EnumerableTest {
                     final StringBuilder buf = new StringBuilder("[");
                     int n = 0;
                     for (Employee employee : emps) {
-                        if (n++ > 0) {
+                        if (n++ > 0)
                             buf.append(", ");
-                        }
                         buf.append(employee.name);
                     }
                     return buf.append("] work(s) in ").append(dept.name).toString();
@@ -57,9 +56,8 @@ public class GroupJoinTest extends EnumerableTest {
                             final StringBuilder buf = new StringBuilder("[");
                             int n = 0;
                             for (Employee employee : emps) {
-                                if (n++ > 0) {
+                                if (n++ > 0)
                                     buf.append(", ");
-                                }
                                 buf.append(employee.name);
                             }
                             return buf.append("] work(s) in ").append(dept.name)

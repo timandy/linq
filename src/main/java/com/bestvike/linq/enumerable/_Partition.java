@@ -152,9 +152,8 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
 
     @Override
     public TElement _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= (this.maxIndexInclusive - this.minIndexInclusive)) {
+        if (index <= (this.maxIndexInclusive - this.minIndexInclusive))
             return this.source._tryGetElementAt(index + this.minIndexInclusive, found);
-        }
 
         found.value = false;
         return null;
@@ -318,9 +317,8 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
     @Override
     public List<TSource> _toList() {
         int count = this.getCount();
-        if (count == 0) {
+        if (count == 0)
             return ListUtils.empty();
-        }
 
         List<TSource> list = new ArrayList<>(count);
         int end = this.minIndexInclusive + count;

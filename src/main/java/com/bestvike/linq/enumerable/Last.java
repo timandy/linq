@@ -64,8 +64,7 @@ public final class Last {
                     TSource result;
                     do {
                         result = e.current();
-                    }
-                    while (e.moveNext());
+                    } while (e.moveNext());
 
                     found.value = true;
                     return result;

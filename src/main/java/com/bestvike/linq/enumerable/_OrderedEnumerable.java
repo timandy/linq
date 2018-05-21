@@ -644,17 +644,14 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
             int j = right;
             int x = map[i + ((j - i) >> 1)];
             do {
-                while (i < map.length && this.compareKeys(x, map[i]) > 0) {
+                while (i < map.length && this.compareKeys(x, map[i]) > 0)
                     i++;
-                }
 
-                while (j >= 0 && this.compareKeys(x, map[j]) < 0) {
+                while (j >= 0 && this.compareKeys(x, map[j]) < 0)
                     j--;
-                }
 
-                if (i > j) {
+                if (i > j)
                     break;
-                }
 
                 if (i < j) {
                     int temp = map[i];
@@ -667,22 +664,19 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
             }
             while (i <= j);
 
-            if (minIdx >= i) {
+            if (minIdx >= i)
                 left = i + 1;
-            } else if (maxIdx <= j) {
+            else if (maxIdx <= j)
                 right = j - 1;
-            }
 
             if (j - left <= right - i) {
-                if (left < j) {
+                if (left < j)
                     this.partialQuickSort(map, left, j, minIdx, maxIdx);
-                }
 
                 left = i;
             } else {
-                if (i < right) {
+                if (i < right)
                     this.partialQuickSort(map, i, right, minIdx, maxIdx);
-                }
 
                 right = j;
             }
@@ -700,17 +694,14 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
             int j = right;
             int x = map[i + ((j - i) >> 1)];
             do {
-                while (i < map.length && this.compareKeys(x, map[i]) > 0) {
+                while (i < map.length && this.compareKeys(x, map[i]) > 0)
                     i++;
-                }
 
-                while (j >= 0 && this.compareKeys(x, map[j]) < 0) {
+                while (j >= 0 && this.compareKeys(x, map[j]) < 0)
                     j--;
-                }
 
-                if (i > j) {
+                if (i > j)
                     break;
-                }
 
                 if (i < j) {
                     int temp = map[i];
@@ -723,22 +714,19 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
             }
             while (i <= j);
 
-            if (i <= idx) {
+            if (i <= idx)
                 left = i + 1;
-            } else {
+            else
                 right = j - 1;
-            }
 
             if (j - left <= right - i) {
-                if (left < j) {
+                if (left < j)
                     right = j;
-                }
 
                 left = i;
             } else {
-                if (i < right) {
+                if (i < right)
                     left = i;
-                }
 
                 right = j;
             }

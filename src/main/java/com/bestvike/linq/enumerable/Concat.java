@@ -251,9 +251,8 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
 
     @Override
     public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap && !this.hasOnlyCollections) {
+        if (onlyIfCheap && !this.hasOnlyCollections)
             return -1;
-        }
 
         int count = 0;
         ConcatNIterator<TSource> node, previousN = this;

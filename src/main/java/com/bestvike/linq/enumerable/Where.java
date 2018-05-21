@@ -271,9 +271,8 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
         for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
+            if (this.predicate.apply(item))
                 builder.add(item);
-            }
         }
 
         return builder.toArray(clazz);
@@ -283,9 +282,8 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     public Object[] _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
         for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
+            if (this.predicate.apply(item))
                 builder.add(item);
-            }
         }
 
         return builder.toArray();
@@ -294,10 +292,10 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
-        for (TSource item : this.source)
-            if (this.predicate.apply(item)) {
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
                 list.add(item);
-            }
+        }
 
         return list;
     }

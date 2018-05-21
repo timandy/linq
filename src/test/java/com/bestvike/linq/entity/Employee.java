@@ -32,22 +32,17 @@ public final class Employee {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (this.getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass())
             return false;
-        }
         Employee other = (Employee) obj;
-        if (!Objects.equals(this.deptno, other.deptno)) {
+        if (!Objects.equals(this.deptno, other.deptno))
             return false;
-        }
-        if (this.empno != other.empno) {
+        if (this.empno != other.empno)
             return false;
-        }
         if (this.name == null)
             return other.name == null;
         return this.name.equals(other.name);

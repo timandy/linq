@@ -19,9 +19,8 @@ public class ZipTest extends EnumerableTest {
 
         final IEnumerable<String> zipped = e1.zip(e2, (v0, v1) -> v0 + v1);
         Assert.assertEquals(3, zipped.count());
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
             Assert.assertEquals("" + (char) ('a' + i) + (char) ('1' + i), zipped.elementAt(i));
-        }
     }
 
     @Test
@@ -32,15 +31,13 @@ public class ZipTest extends EnumerableTest {
 
         final IEnumerable<String> zipped1 = e1.zip(e2, (v0, v1) -> v0 + v1);
         Assert.assertEquals(2, zipped1.count());
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++)
             Assert.assertEquals("" + (char) ('a' + i) + (char) ('1' + i), zipped1.elementAt(i));
-        }
 
         final IEnumerable<String> zipped2 = e2.zip(e1, (v0, v1) -> v0 + v1);
         Assert.assertEquals(2, zipped2.count());
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++)
             Assert.assertEquals("" + (char) ('1' + i) + (char) ('a' + i), zipped2.elementAt(i));
-        }
     }
 
 }

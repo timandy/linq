@@ -52,11 +52,10 @@ public class AnyTest extends EnumerableTest {
     }
 
     private void AnyCore(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
-        if (predicate == null) {
+        if (predicate == null)
             Assert.assertEquals(expected, source.any());
-        } else {
+        else
             Assert.assertEquals(expected, source.any(predicate));
-        }
     }
 
     @Test
@@ -80,11 +79,10 @@ public class AnyTest extends EnumerableTest {
     }
 
     private void AnyRunOnceCore(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
-        if (predicate == null) {
+        if (predicate == null)
             Assert.assertEquals(expected, source.runOnce().any());
-        } else {
+        else
             Assert.assertEquals(expected, source.runOnce().any(predicate));
-        }
     }
 
     @Test

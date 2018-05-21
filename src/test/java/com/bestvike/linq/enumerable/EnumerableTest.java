@@ -52,9 +52,8 @@ public class EnumerableTest {
         final Iterator<String> iterator = group.iterator();
         if (iterator.hasNext()) {
             builder.append(iterator.next());
-            while (iterator.hasNext()) {
+            while (iterator.hasNext())
                 builder.append("+").append(iterator.next());
-            }
         }
         return builder.toString();
     }
@@ -88,27 +87,21 @@ public class EnumerableTest {
     }
 
     private static void fail(String message) {
-        if (message == null) {
+        if (message == null)
             throw new AssertionError();
-        }
         throw new AssertionError(message);
     }
 
     private static <T> String format(String message, IEnumerable<T> expected, IEnumerable<T> actual) {
         String formatted = "";
-        if (message != null && !message.equals("")) {
+        if (message != null && !message.equals(""))
             formatted = message + " ";
-        }
         String expectedString = expected == null ? "null" : expected.toList().toString();
         String actualString = actual == null ? "null" : actual.toList().toString();
-        if (expectedString.equals(actualString)) {
-            return formatted + "expected: "
-                    + formatClassAndValue(expected, expectedString)
-                    + " but was: " + formatClassAndValue(actual, actualString);
-        } else {
-            return formatted + "expected:<" + expectedString + "> but was:<"
-                    + actualString + ">";
-        }
+        if (expectedString.equals(actualString))
+            return formatted + "expected: " + formatClassAndValue(expected, expectedString) + " but was: " + formatClassAndValue(actual, actualString);
+        else
+            return formatted + "expected:<" + expectedString + "> but was:<" + actualString + ">";
     }
 
     private static String formatClassAndValue(Object value, String valueString) {
