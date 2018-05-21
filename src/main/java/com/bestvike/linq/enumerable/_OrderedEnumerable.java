@@ -143,17 +143,14 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
     public List<TElement> _toList(int minIdx, int maxIdx) {
         Buffer<TElement> buffer = new Buffer<>(this.source);
         int count = buffer.count;
-        if (count <= minIdx) {
+        if (count <= minIdx)
             return ListUtils.empty();
-        }
 
-        if (count <= maxIdx) {
+        if (count <= maxIdx)
             maxIdx = count - 1;
-        }
 
-        if (minIdx == maxIdx) {
+        if (minIdx == maxIdx)
             return ListUtils.singleton(this.getEnumerableSorter().elementAt(buffer.items, count, minIdx));
-        }
 
         Integer[] map = this.sortedMap(buffer, minIdx, maxIdx);
         List<TElement> list = new ArrayList<>(maxIdx - minIdx + 1);
