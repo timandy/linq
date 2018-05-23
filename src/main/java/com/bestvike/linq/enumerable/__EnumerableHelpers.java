@@ -99,12 +99,12 @@ final class EnumerableHelpers {
             ICollection<T> ic = (ICollection<T>) source;
             int count = ic._getCount();
             if (count != 0) {
-                // Allocate an array of the desired count, then copy the elements into it. Note that this has the same
-                // issue regarding concurrency as other existing collections like List<T>. If the collection count
+                // Allocate an array of the desired size, then copy the elements into it. Note that this has the same
+                // issue regarding concurrency as other existing collections like List<T>. If the collection size
                 // concurrently changes between the array allocation and the CopyTo, we could end up either getting an
-                // exception from overrunning the array (if the count went up) or we could end up not filling as many
-                // items as 'count' suggests (if the count went down).  This instanceof only an issue for concurrent collections
-                // that implement ICollection<T>, which as of .NET 4.6 instanceof just ConcurrentDictionary<TKey, TValue>.
+                // exception from overrunning the array (if the size went up) or we could end up not filling as many
+                // items as 'count' suggests (if the size went down).  This is only an issue for concurrent collections
+                // that implement ICollection<T>, which as of .NET 4.6 is just ConcurrentDictionary<TKey, TValue>.
                 length.value = count;
                 return ic._toArray();
             }
@@ -118,22 +118,22 @@ final class EnumerableHelpers {
 
                     while (en.moveNext()) {
                         if (count == arr.length) {
-                            // MaxArrayLength instanceof defined : Array.MaxArrayLength and : gchelpers : CoreCLR.
-                            // It represents the maximum number of elements that can be : an array where
-                            // the count of the element instanceof greater than one byte; a separate, slightly larger constant,
-                            // instanceof used when the count of the element instanceof one.
+                            // MaxArrayLength is defined in Array.MaxArrayLength and in gchelpers in CoreCLR.
+                            // It represents the maximum number of elements that can be in an array where
+                            // the size of the element is greater than one byte; a separate, slightly larger constant,
+                            // is used when the size of the element is one.
                             final int MaxArrayLength = 0x7FEFFFFF;
-                            // This instanceof the same growth logic as : List<T>:
-                            // If the array instanceof currently empty, we make it a default count.  Otherwise, we attempt to
-                            // double the count of the array.  Doubling will overflow once the count of the array reaches
-                            // 2^30, since doubling to 2^31 instanceof 1 larger than Int32.MaxValue.  In that case, we instead
+                            // This is the same growth logic as in List<T>:
+                            // If the array is currently empty, we make it a default size.  Otherwise, we attempt to
+                            // double the size of the array.  Doubling will overflow once the size of the array reaches
+                            // 2^30, since doubling to 2^31 is 1 larger than Int32.MaxValue.  In that case, we instead
                             // constrain the length to be MaxArrayLength (this overflow check works because of the
-                            // cast to uint).  Because a slightly larger constant instanceof used when T instanceof one byte : count, we
-                            // could then end up : a situation where arr.Length instanceof MaxArrayLength or slightly larger, such
-                            // that we constrain newLength to be MaxArrayLength but the needed number of elements instanceof actually
-                            // larger than that.  For that case, we then ensure that the newLength instanceof large enough to hold
-                            // the desired capacity.  This does mean that : the very rare case where we've grown to such a
-                            // large count, each new element added after MaxArrayLength will end up doing a resize.
+                            // cast to uint).  Because a slightly larger constant is used when T is one byte in size, we
+                            // could then end up in a situation where arr.Length is MaxArrayLength or slightly larger, such
+                            // that we constrain newLength to be MaxArrayLength but the needed number of elements is actually
+                            // larger than that.  For that case, we then ensure that the newLength is large enough to hold
+                            // the desired capacity.  This does mean that in the very rare case where we've grown to such a
+                            // large size, each new element added after MaxArrayLength will end up doing a resize.
                             int newLength = count << 1;
                             if (newLength > MaxArrayLength)
                                 newLength = MaxArrayLength <= count ? count + 1 : MaxArrayLength;
