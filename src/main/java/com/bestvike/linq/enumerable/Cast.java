@@ -56,6 +56,7 @@ final class OfTypeIterator<TResult> extends AbstractIterator<TResult> {
                 while (this.enumerator.moveNext()) {
                     Object item = this.enumerator.current();
                     if (this.clazz.isInstance(item)) {
+                        //noinspection unchecked
                         this.current = (TResult) item;
                         return true;
                     }
