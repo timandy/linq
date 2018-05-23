@@ -24,9 +24,11 @@ public final class Concat {
         if (second == null)
             throw Errors.argumentNull("second");
 
-        return first instanceof ConcatIterator
-                ? ((ConcatIterator<TSource>) first)._concat(second)
-                : new Concat2Iterator<>(first, second);
+        if (first instanceof ConcatIterator) {
+            ConcatIterator<TSource> firstConcat = (ConcatIterator<TSource>) first;
+            return firstConcat._concat(second);
+        }
+        return new Concat2Iterator<>(first, second);
     }
 }
 

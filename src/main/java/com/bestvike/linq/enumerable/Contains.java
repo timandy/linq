@@ -14,10 +14,11 @@ public final class Contains {
     }
 
     public static <TSource> boolean contains(IEnumerable<TSource> source, TSource value) {
-        return source instanceof ICollection
-                ? ((ICollection<TSource>) source)._contains(value)
-                : contains(source, value, null);
-
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            return collection._contains(value);
+        }
+        return contains(source, value, null);
     }
 
     public static <TSource> boolean contains(IEnumerable<TSource> source, TSource value, IEqualityComparer<TSource> comparer) {
