@@ -70,7 +70,9 @@ public final class Enumerable {
     }
 
     public static IEnumerable<Double> asEnumerable(double[] source) {
-        if (source == null) throw Errors.argumentNull("source");
+        if (source == null)
+            throw Errors.argumentNull("source");
+
         return Array.create(source);
     }
 
@@ -89,7 +91,9 @@ public final class Enumerable {
     }
 
     public static <TSource> IEnumerable<TSource> asEnumerable(TSource[] source) {
-        if (source == null) throw Errors.argumentNull("source");
+        if (source == null)
+            throw Errors.argumentNull("source");
+
         return Array.create(source);
     }
 
