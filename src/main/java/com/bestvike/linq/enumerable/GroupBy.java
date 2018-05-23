@@ -56,7 +56,7 @@ final class GroupedEnumerable<TSource, TKey> implements IIListProvider<IGrouping
     private final Func1<TSource, TKey> keySelector;
     private final IEqualityComparer<TKey> comparer;
 
-    public GroupedEnumerable(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+    GroupedEnumerable(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
             throw Errors.argumentNull("source");
         if (keySelector == null)
@@ -104,7 +104,7 @@ final class GroupedEnumerable2<TSource, TKey, TElement> implements IIListProvide
     private final Func1<TSource, TElement> elementSelector;
     private final IEqualityComparer<TKey> comparer;
 
-    public GroupedEnumerable2(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
+    GroupedEnumerable2(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
             throw Errors.argumentNull("source");
         if (keySelector == null)
@@ -154,7 +154,7 @@ final class GroupedResultEnumerable<TSource, TKey, TResult> implements IIListPro
     private final IEqualityComparer<TKey> comparer;
     private final Func2<TKey, IEnumerable<TSource>, TResult> resultSelector;
 
-    public GroupedResultEnumerable(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+    GroupedResultEnumerable(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
             throw Errors.argumentNull("source");
         if (keySelector == null)
@@ -203,7 +203,7 @@ final class GroupedResultEnumerable2<TSource, TKey, TElement, TResult> implement
     private final IEqualityComparer<TKey> comparer;
     private final Func2<TKey, IEnumerable<TElement>, TResult> resultSelector;
 
-    public GroupedResultEnumerable2(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+    GroupedResultEnumerable2(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
             throw Errors.argumentNull("source");
         if (keySelector == null)
