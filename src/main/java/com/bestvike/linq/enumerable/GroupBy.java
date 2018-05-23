@@ -69,7 +69,6 @@ final class GroupedEnumerable<TSource, TKey> implements IIListProvider<IGrouping
 
     @Override
     public IEnumerator<IGrouping<TKey, TSource>> enumerator() {
-
         return Lookup.create(this.source, this.keySelector, this.comparer).enumerator();
     }
 
