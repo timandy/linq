@@ -320,6 +320,7 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
             builder.reserve(this.prependCount);
 
         builder.addRange(this.source);
+
         if (this.appended != null)
             builder.reserve(this.appendCount);
 
@@ -343,6 +344,7 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
             builder.reserve(this.prependCount);
 
         builder.addRange(this.source);
+
         if (this.appended != null)
             builder.reserve(this.appendCount);
 
