@@ -107,7 +107,6 @@ abstract class ConcatIterator<TSource> extends Iterator<TSource> implements IILi
 
 final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
     final IEnumerable<TSource> first;
-
     final IEnumerable<TSource> second;
 
     Concat2Iterator(IEnumerable<TSource> first, IEnumerable<TSource> second) {
@@ -211,11 +210,8 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
 
 final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
     private final ConcatIterator<TSource> tail;
-
     private final IEnumerable<TSource> head;
-
     private final int headIndex;
-
     private final boolean hasOnlyCollections;
 
     ConcatNIterator(ConcatIterator<TSource> tail, IEnumerable<TSource> head, int headIndex, boolean hasOnlyCollections) {
