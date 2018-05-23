@@ -85,10 +85,10 @@ final class UnionByIterator<TSource, TKey> extends AbstractIterator<TSource> {
 
     @Override
     public void close() {
-        this.set = null;
         if (this.enumerator != null) {
             this.enumerator.close();
             this.enumerator = null;
+            this.set = null;
         }
         super.close();
     }

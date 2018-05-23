@@ -47,8 +47,8 @@ abstract class UnionIterator<TSource> extends Iterator<TSource> implements IILis
         if (this.enumerator != null) {
             this.enumerator.close();
             this.enumerator = null;
+            this.set = null;
         }
-        this.set = null;
         super.close();
     }
 
