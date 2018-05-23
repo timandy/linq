@@ -36,6 +36,7 @@ public final class Where {
                     ? EmptyPartition.instance()
                     : new WhereArrayIterator<>(array, predicate);
         }
+
         if (source instanceof ICollection) {
             ICollection<TSource> collection = (ICollection<TSource>) source;
             return collection._getCount() == 0
