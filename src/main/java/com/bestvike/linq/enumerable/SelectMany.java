@@ -122,18 +122,6 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        for (TSource element : this.source)
-            count = Math.addExact(count, this.selector.apply(element).count());
-
-        return count;
-    }
-
-    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
@@ -182,6 +170,18 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
             ListUtils.addRange(list, this.selector.apply(element));
 
         return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource element : this.source)
+            count = Math.addExact(count, this.selector.apply(element).count());
+
+        return count;
     }
 }
 
@@ -252,21 +252,6 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        int index = 0;
-        for (TSource element : this.source) {
-            count = Math.addExact(count, this.selector.apply(element, index).count());
-            index = Math.addExact(index, 1);
-        }
-
-        return count;
-    }
-
-    @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
@@ -322,6 +307,21 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
         }
 
         return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        int index = 0;
+        for (TSource element : this.source) {
+            count = Math.addExact(count, this.selector.apply(element, index).count());
+            index = Math.addExact(index, 1);
+        }
+
+        return count;
     }
 }
 
