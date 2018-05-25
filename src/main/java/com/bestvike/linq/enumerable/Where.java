@@ -127,16 +127,6 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
     }
 
     @Override
-    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
-        return new WhereSelectArrayIterator<>(this.source, this.predicate, selector);
-    }
-
-    @Override
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
-        return new WhereArrayIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
-    }
-
-    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -158,17 +148,13 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap)
-            return -1;
+    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
+        return new WhereSelectArrayIterator<>(this.source, this.predicate, selector);
+    }
 
-        int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                count = Math.addExact(count, 1);
-        }
-
-        return count;
+    @Override
+    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+        return new WhereArrayIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
     }
 
     @Override
@@ -202,6 +188,20 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
         }
 
         return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
+                count = Math.addExact(count, 1);
+        }
+
+        return count;
     }
 }
 
@@ -224,16 +224,6 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     }
 
     @Override
-    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
-        return new WhereSelectListIterator<>(this.source, this.predicate, selector);
-    }
-
-    @Override
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
-        return new WhereListIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
-    }
-
-    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -255,17 +245,22 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                count = Math.addExact(count, 1);
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
         }
+        super.close();
+    }
 
-        return count;
+    @Override
+    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
+        return new WhereSelectListIterator<>(this.source, this.predicate, selector);
+    }
+
+    @Override
+    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+        return new WhereListIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
     }
 
     @Override
@@ -302,12 +297,17 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     }
 
     @Override
-    public void close() {
-        if (this.enumerator != null) {
-            this.enumerator.close();
-            this.enumerator = null;
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
+                count = Math.addExact(count, 1);
         }
-        super.close();
+
+        return count;
     }
 }
 
@@ -330,16 +330,6 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     }
 
     @Override
-    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
-        return new WhereSelectEnumerableIterator<>(this.source, this.predicate, selector);
-    }
-
-    @Override
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
-        return new WhereEnumerableIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
-    }
-
-    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -361,17 +351,22 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                count = Math.addExact(count, 1);
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
         }
+        super.close();
+    }
 
-        return count;
+    @Override
+    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
+        return new WhereSelectEnumerableIterator<>(this.source, this.predicate, selector);
+    }
+
+    @Override
+    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+        return new WhereEnumerableIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
     }
 
     @Override
@@ -408,12 +403,17 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     }
 
     @Override
-    public void close() {
-        if (this.enumerator != null) {
-            this.enumerator.close();
-            this.enumerator = null;
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
+                count = Math.addExact(count, 1);
         }
-        super.close();
+
+        return count;
     }
 }
 
@@ -436,24 +436,6 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public Iterator<TResult> clone() {
         return new WhereSelectArrayIterator<>(this.source, this.predicate, this.selector);
-    }
-
-    @Override
-    public int _getCount(boolean onlyIfCheap) {
-        // In case someone uses Count() to force evaluation of
-        // the selector, run it provided `onlyIfCheap` is false.
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
-                this.selector.apply(item);
-                count = Math.addExact(count, 1);
-            }
-        }
-
-        return count;
     }
 
     @Override
@@ -515,6 +497,24 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
 
         return list;
     }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        // In case someone uses Count() to force evaluation of
+        // the selector, run it provided `onlyIfCheap` is false.
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item)) {
+                this.selector.apply(item);
+                count = Math.addExact(count, 1);
+            }
+        }
+
+        return count;
+    }
 }
 
 
@@ -539,24 +539,6 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        // In case someone uses Count() to force evaluation of
-        // the selector, run it provided `onlyIfCheap` is false.
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
-                this.selector.apply(item);
-                count = Math.addExact(count, 1);
-            }
-        }
-
-        return count;
-    }
-
-    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -575,6 +557,15 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+        }
+        super.close();
     }
 
     @Override
@@ -616,12 +607,21 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
     }
 
     @Override
-    public void close() {
-        if (this.enumerator != null) {
-            this.enumerator.close();
-            this.enumerator = null;
+    public int _getCount(boolean onlyIfCheap) {
+        // In case someone uses Count() to force evaluation of
+        // the selector, run it provided `onlyIfCheap` is false.
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item)) {
+                this.selector.apply(item);
+                count = Math.addExact(count, 1);
+            }
         }
-        super.close();
+
+        return count;
     }
 }
 
@@ -647,24 +647,6 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        // In case someone uses Count() to force evaluation of
-        // the selector, run it provided `onlyIfCheap` is false.
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
-                this.selector.apply(item);
-                count = Math.addExact(count, 1);
-            }
-        }
-
-        return count;
-    }
-
-    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -683,6 +665,15 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+        }
+        super.close();
     }
 
     @Override
@@ -724,11 +715,20 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
     }
 
     @Override
-    public void close() {
-        if (this.enumerator != null) {
-            this.enumerator.close();
-            this.enumerator = null;
+    public int _getCount(boolean onlyIfCheap) {
+        // In case someone uses Count() to force evaluation of
+        // the selector, run it provided `onlyIfCheap` is false.
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item)) {
+                this.selector.apply(item);
+                count = Math.addExact(count, 1);
+            }
         }
-        super.close();
+
+        return count;
     }
 }
