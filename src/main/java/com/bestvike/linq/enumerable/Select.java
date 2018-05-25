@@ -132,15 +132,6 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
     }
 
     @Override
-    public void close() {
-        if (this.enumerator != null) {
-            this.enumerator.close();
-            this.enumerator = null;
-        }
-        super.close();
-    }
-
-    @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
@@ -151,12 +142,20 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
                     this.current = this.selector.apply(this.enumerator.current());
                     return true;
                 }
-
                 this.close();
                 return false;
             default:
                 return false;
         }
+    }
+
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+        }
+        super.close();
     }
 
     @Override
