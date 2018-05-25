@@ -232,8 +232,8 @@ final class SkipLastIterator<TSource> extends AbstractIterator<TSource> {
         if (this.enumerator != null) {
             this.enumerator.close();
             this.enumerator = null;
+            this.queue = null;
         }
-        this.queue = null;
         super.close();
     }
 }

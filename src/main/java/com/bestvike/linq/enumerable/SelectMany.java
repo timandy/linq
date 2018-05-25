@@ -385,12 +385,12 @@ final class SelectManyIterator3<TSource, TCollection, TResult> extends Iterator<
         if (this.enumerator != null) {
             this.enumerator.close();
             this.enumerator = null;
+            this.element = null;
         }
         if (this.subEnumerator != null) {
             this.subEnumerator.close();
             this.subEnumerator = null;
         }
-        this.element = null;
         super.close();
     }
 }
@@ -459,12 +459,12 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends Iterator<
         if (this.enumerator != null) {
             this.enumerator.close();
             this.enumerator = null;
+            this.element = null;
         }
         if (this.subEnumerator != null) {
             this.subEnumerator.close();
             this.subEnumerator = null;
         }
-        this.element = null;
         super.close();
     }
 }

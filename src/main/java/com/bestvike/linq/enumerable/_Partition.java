@@ -389,7 +389,6 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             this.enumerator.close();
             this.enumerator = null;
         }
-
         super.close();
     }
 
