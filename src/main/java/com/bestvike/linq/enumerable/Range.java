@@ -69,6 +69,41 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
     }
 
     @Override
+    public Integer[] _toArray(Class<Integer> clazz) {
+        Integer[] array = ArrayUtils.newInstance(clazz, this.end - this.start);
+        int cur = this.start;
+        for (int i = 0; i != array.length; ++i) {
+            array[i] = cur;
+            ++cur;
+        }
+        return array;
+    }
+
+    @Override
+    public Object[] _toArray() {
+        Object[] array = new Object[this.end - this.start];
+        int cur = this.start;
+        for (int i = 0; i != array.length; ++i) {
+            array[i] = cur;
+            ++cur;
+        }
+        return array;
+    }
+
+    @Override
+    public List<Integer> _toList() {
+        List<Integer> list = new ArrayList<>(this.end - this.start);
+        for (int cur = this.start; cur != this.end; cur++)
+            list.add(cur);
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        return this.end - this.start;
+    }
+
+    @Override
     public IPartition<Integer> _skip(int count) {
         return count >= this.end - this.start
                 ? EmptyPartition.instance()
@@ -102,40 +137,5 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
     public Integer _tryGetLast(out<Boolean> found) {
         found.value = true;
         return this.end - 1;
-    }
-
-    @Override
-    public int _getCount(boolean onlyIfCheap) {
-        return this.end - this.start;
-    }
-
-    @Override
-    public Integer[] _toArray(Class<Integer> clazz) {
-        Integer[] array = ArrayUtils.newInstance(clazz, this.end - this.start);
-        int cur = this.start;
-        for (int i = 0; i != array.length; ++i) {
-            array[i] = cur;
-            ++cur;
-        }
-        return array;
-    }
-
-    @Override
-    public Object[] _toArray() {
-        Object[] array = new Object[this.end - this.start];
-        int cur = this.start;
-        for (int i = 0; i != array.length; ++i) {
-            array[i] = cur;
-            ++cur;
-        }
-        return array;
-    }
-
-    @Override
-    public List<Integer> _toList() {
-        List<Integer> list = new ArrayList<>(this.end - this.start);
-        for (int cur = this.start; cur != this.end; cur++)
-            list.add(cur);
-        return list;
     }
 }

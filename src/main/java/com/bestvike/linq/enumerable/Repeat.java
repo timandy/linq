@@ -72,6 +72,35 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
     }
 
     @Override
+    public TResult[] _toArray(Class<TResult> clazz) {
+        TResult[] array = ArrayUtils.newInstance(clazz, this.count);
+        if (this.current != null)
+            ArrayUtils.fill(array, this.current);
+        return array;
+    }
+
+    @Override
+    public Object[] _toArray() {
+        Object[] array = new Object[this.count];
+        if (this.current != null)
+            ArrayUtils.fill(array, this.current);
+        return array;
+    }
+
+    @Override
+    public List<TResult> _toList() {
+        List<TResult> list = new ArrayList<>(this.count);
+        for (int i = 0; i != this.count; ++i)
+            list.add(this.current);
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        return this.count;
+    }
+
+    @Override
     public IPartition<TResult> _skip(int count) {
         return count >= this.count
                 ? EmptyPartition.instance()
@@ -105,34 +134,5 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
     public TResult _tryGetLast(out<Boolean> found) {
         found.value = true;
         return this.current;
-    }
-
-    @Override
-    public int _getCount(boolean onlyIfCheap) {
-        return this.count;
-    }
-
-    @Override
-    public TResult[] _toArray(Class<TResult> clazz) {
-        TResult[] array = ArrayUtils.newInstance(clazz, this.count);
-        if (this.current != null)
-            ArrayUtils.fill(array, this.current);
-        return array;
-    }
-
-    @Override
-    public Object[] _toArray() {
-        Object[] array = new Object[this.count];
-        if (this.current != null)
-            ArrayUtils.fill(array, this.current);
-        return array;
-    }
-
-    @Override
-    public List<TResult> _toList() {
-        List<TResult> list = new ArrayList<>(this.count);
-        for (int i = 0; i != this.count; ++i)
-            list.add(this.current);
-        return list;
     }
 }
