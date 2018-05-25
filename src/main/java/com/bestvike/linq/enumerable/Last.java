@@ -79,7 +79,6 @@ public final class Last {
     private static <TSource> TSource tryGetLast(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate, out<Boolean> found) {
         if (source == null)
             throw Errors.argumentNull("source");
-
         if (predicate == null)
             throw Errors.argumentNull("predicate");
 
