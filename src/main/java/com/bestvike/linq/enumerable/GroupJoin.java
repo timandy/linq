@@ -53,8 +53,8 @@ final class GroupJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
     private final Func1<TInner, TKey> innerKeySelector;
     private final Func2<TOuter, IEnumerable<TInner>, TResult> resultSelector;
     private final IEqualityComparer<TKey> comparer;
-    private Lookup<TKey, TInner> lookup;
     private IEnumerator<TOuter> outerEnumerator;
+    private Lookup<TKey, TInner> lookup;
 
     GroupJoinIterator(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, IEnumerable<TInner>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         this.outer = outer;
@@ -99,10 +99,10 @@ final class GroupJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
 
     @Override
     public void close() {
-        this.lookup = null;
         if (this.outerEnumerator != null) {
             this.outerEnumerator.close();
             this.outerEnumerator = null;
+            this.lookup = null;
         }
         super.close();
     }
