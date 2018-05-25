@@ -20,13 +20,13 @@ public final class SequenceEqual {
     }
 
     public static <TSource> boolean sequenceEqual(IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
-        if (comparer == null)
-            comparer = EqualityComparer.Default();
         if (first == null)
             throw Errors.argumentNull("first");
         if (second == null)
             throw Errors.argumentNull("second");
-
+        if (comparer == null)
+            comparer = EqualityComparer.Default();
+        
         if (first instanceof ICollection && second instanceof ICollection) {
             ICollection<TSource> firstCol = (ICollection<TSource>) first;
             ICollection<TSource> secondCol = (ICollection<TSource>) second;
