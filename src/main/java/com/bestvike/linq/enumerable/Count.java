@@ -39,7 +39,6 @@ public final class Count {
     public static <TSource> int count(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
             throw Errors.argumentNull("source");
-
         if (predicate == null)
             throw Errors.argumentNull("predicate");
 
@@ -68,7 +67,6 @@ public final class Count {
     public static <TSource> long longCount(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
             throw Errors.argumentNull("source");
-
         if (predicate == null)
             throw Errors.argumentNull("predicate");
 
