@@ -43,7 +43,7 @@ public final class SelectMany {
         if (resultSelector == null)
             throw Errors.argumentNull("resultSelector");
 
-        return new SelectManyIterator3<>(source, collectionSelector, resultSelector);
+        return new SelectManyResultIterator<>(source, collectionSelector, resultSelector);
     }
 
     public static <TSource, TCollection, TResult> IEnumerable<TResult> selectMany(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
@@ -54,7 +54,7 @@ public final class SelectMany {
         if (resultSelector == null)
             throw Errors.argumentNull("resultSelector");
 
-        return new SelectManyIterator4<>(source, collectionSelector, resultSelector);
+        return new SelectManyResultIterator2<>(source, collectionSelector, resultSelector);
     }
 }
 
@@ -326,7 +326,7 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
 }
 
 
-final class SelectManyIterator3<TSource, TCollection, TResult> extends Iterator<TResult> {
+final class SelectManyResultIterator<TSource, TCollection, TResult> extends Iterator<TResult> {
     private final IEnumerable<TSource> source;
     private final Func1<TSource, IEnumerable<TCollection>> collectionSelector;
     private final Func2<TSource, TCollection, TResult> resultSelector;
@@ -334,7 +334,7 @@ final class SelectManyIterator3<TSource, TCollection, TResult> extends Iterator<
     private IEnumerator<TCollection> subEnumerator;
     private TSource element;
 
-    SelectManyIterator3(IEnumerable<TSource> source, Func1<TSource, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
+    SelectManyResultIterator(IEnumerable<TSource> source, Func1<TSource, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
         assert source != null;
         assert collectionSelector != null;
         assert resultSelector != null;
@@ -346,7 +346,7 @@ final class SelectManyIterator3<TSource, TCollection, TResult> extends Iterator<
 
     @Override
     public AbstractIterator<TResult> clone() {
-        return new SelectManyIterator3<>(this.source, this.collectionSelector, this.resultSelector);
+        return new SelectManyResultIterator<>(this.source, this.collectionSelector, this.resultSelector);
     }
 
     @Override
@@ -396,7 +396,7 @@ final class SelectManyIterator3<TSource, TCollection, TResult> extends Iterator<
 }
 
 
-final class SelectManyIterator4<TSource, TCollection, TResult> extends Iterator<TResult> {
+final class SelectManyResultIterator2<TSource, TCollection, TResult> extends Iterator<TResult> {
     private final IEnumerable<TSource> source;
     private final Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector;
     private final Func2<TSource, TCollection, TResult> resultSelector;
@@ -406,7 +406,7 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends Iterator<
     private int index;
 
 
-    SelectManyIterator4(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
+    SelectManyResultIterator2(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
         assert source != null;
         assert collectionSelector != null;
         assert resultSelector != null;
@@ -418,7 +418,7 @@ final class SelectManyIterator4<TSource, TCollection, TResult> extends Iterator<
 
     @Override
     public AbstractIterator<TResult> clone() {
-        return new SelectManyIterator4<>(this.source, this.collectionSelector, this.resultSelector);
+        return new SelectManyResultIterator2<>(this.source, this.collectionSelector, this.resultSelector);
     }
 
     @Override
