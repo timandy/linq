@@ -13,12 +13,7 @@ public final class Intersect {
     }
 
     public static <TSource> IEnumerable<TSource> intersect(IEnumerable<TSource> first, IEnumerable<TSource> second) {
-        if (first == null)
-            throw Errors.argumentNull("first");
-        if (second == null)
-            throw Errors.argumentNull("second");
-
-        return new IntersectIterator<>(first, second, null);
+        return intersect(first, second, null);
     }
 
     public static <TSource> IEnumerable<TSource> intersect(IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
