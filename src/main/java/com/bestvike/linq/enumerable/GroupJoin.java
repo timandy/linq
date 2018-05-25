@@ -15,18 +15,7 @@ public final class GroupJoin {
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, IEnumerable<TInner>, TResult> resultSelector) {
-        if (outer == null)
-            throw Errors.argumentNull("outer");
-        if (inner == null)
-            throw Errors.argumentNull("inner");
-        if (outerKeySelector == null)
-            throw Errors.argumentNull("outerKeySelector");
-        if (innerKeySelector == null)
-            throw Errors.argumentNull("innerKeySelector");
-        if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
-
-        return new GroupJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, resultSelector, null);
+        return groupJoin(outer, inner, outerKeySelector, innerKeySelector, resultSelector, null);
     }
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, IEnumerable<TInner>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
