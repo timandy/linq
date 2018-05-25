@@ -134,8 +134,8 @@ final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator
     private final Func1<TInner, TKey> innerKeySelector;
     private final Func2<TOuter, TInner, TResult> resultSelector;
     private final IEqualityComparer<TKey> comparer;
-    private Lookup<TKey, TInner> lookup;
     private IEnumerator<TOuter> outerEnumerator;
+    private Lookup<TKey, TInner> lookup;
     private TOuter item;
     private Grouping<TKey, TInner> g;
     private int index;
@@ -203,13 +203,13 @@ final class JoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIterator
 
     @Override
     public void close() {
-        this.lookup = null;
         if (this.outerEnumerator != null) {
             this.outerEnumerator.close();
             this.outerEnumerator = null;
+            this.lookup = null;
+            this.item = null;
+            this.g = null;
         }
-        this.item = null;
-        this.g = null;
         super.close();
     }
 }
@@ -223,8 +223,8 @@ final class LeftJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
     private final TInner defaultInner;
     private final Func2<TOuter, TInner, TResult> resultSelector;
     private final IEqualityComparer<TKey> comparer;
-    private Lookup<TKey, TInner> lookup;
     private IEnumerator<TOuter> outerEnumerator;
+    private Lookup<TKey, TInner> lookup;
     private TOuter item;
     private Grouping<TKey, TInner> g;
     private int index;
@@ -290,13 +290,13 @@ final class LeftJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
 
     @Override
     public void close() {
-        this.lookup = null;
         if (this.outerEnumerator != null) {
             this.outerEnumerator.close();
             this.outerEnumerator = null;
+            this.lookup = null;
+            this.item = null;
+            this.g = null;
         }
-        this.item = null;
-        this.g = null;
         super.close();
     }
 }
@@ -310,8 +310,8 @@ final class RightJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
     private final TOuter defaultOuter;
     private final Func2<TOuter, TInner, TResult> resultSelector;
     private final IEqualityComparer<TKey> comparer;
-    private Lookup<TKey, TOuter> lookup;
     private IEnumerator<TInner> innerEnumerator;
+    private Lookup<TKey, TOuter> lookup;
     private TInner item;
     private Grouping<TKey, TOuter> g;
     private int index;
@@ -377,13 +377,13 @@ final class RightJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
 
     @Override
     public void close() {
-        this.lookup = null;
         if (this.innerEnumerator != null) {
             this.innerEnumerator.close();
             this.innerEnumerator = null;
+            this.lookup = null;
+            this.item = null;
+            this.g = null;
         }
-        this.item = null;
-        this.g = null;
         super.close();
     }
 }
@@ -398,9 +398,9 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
     private final TInner defaultInner;
     private final Func2<TOuter, TInner, TResult> resultSelector;
     private final IEqualityComparer<TKey> comparer;
-    private Lookup<TKey, TInner> lookup;
     private IEnumerator<TOuter> outerEnumerator;
     private IEnumerator<Grouping<TKey, TInner>> unfetchedGroupingEnumerator;
+    private Lookup<TKey, TInner> lookup;
     private TOuter item;
     private Grouping<TKey, TInner> g;
     private int index;
@@ -441,8 +441,6 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
                         this.state = 4;
                         break;
                     }
-                    this.outerEnumerator.close();
-                    this.outerEnumerator = null;
                     this.unfetchedGroupingEnumerator = this.lookup.unfetchedEnumerator();
                     this.state = 3;
                 case 3:
@@ -478,17 +476,17 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
 
     @Override
     public void close() {
-        this.lookup = null;
         if (this.outerEnumerator != null) {
             this.outerEnumerator.close();
             this.outerEnumerator = null;
+            this.lookup = null;
+            this.item = null;
+            this.g = null;
         }
         if (this.unfetchedGroupingEnumerator != null) {
             this.unfetchedGroupingEnumerator.close();
             this.unfetchedGroupingEnumerator = null;
         }
-        this.item = null;
-        this.g = null;
         super.close();
     }
 }
@@ -550,12 +548,12 @@ final class CrossJoinIterator<TOuter, TInner, TResult> extends AbstractIterator<
         if (this.outerEnumerator != null) {
             this.outerEnumerator.close();
             this.outerEnumerator = null;
+            this.item = null;
         }
         if (this.innerEnumerator != null) {
             this.innerEnumerator.close();
             this.innerEnumerator = null;
         }
-        this.item = null;
         super.close();
     }
 }
