@@ -6,7 +6,6 @@ import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.Errors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -55,15 +54,7 @@ public final class ToCollection {
             return listProvider._toList();
         }
 
-        if (source instanceof ICollection) {
-            ICollection<TSource> collection = (ICollection<TSource>) source;
-            return collection._toList();
-        }
-
-        List<TSource> list = new ArrayList<>();
-        for (TSource item : source)
-            list.add(item);
-        return list;
+        return EnumerableHelpers.toList(source);
     }
 
     public static <TSource, TKey> Map<TKey, TSource> toMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {

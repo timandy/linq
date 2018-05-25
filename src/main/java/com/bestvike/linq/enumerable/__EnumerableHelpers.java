@@ -4,7 +4,11 @@ import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
+import com.bestvike.linq.util.ListUtils;
 import com.bestvike.out;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 许崇雷 on 2018-05-07.
@@ -149,5 +153,23 @@ final class EnumerableHelpers {
 
         length.value = 0;
         return ArrayUtils.empty();
+    }
+
+    //Converts an enumerable to an list.
+    public static <T> List<T> toList(IEnumerable<T> source) {
+        assert source != null;
+
+        if (source instanceof ICollection) {
+            ICollection<T> collection = (ICollection<T>) source;
+            int count = collection._getCount();
+            return count == 0 ? ListUtils.empty() : collection._toList();
+        }
+
+        List<T> list = new ArrayList<>();
+        try (IEnumerator<T> e = source.enumerator()) {
+            while (e.moveNext())
+                list.add(e.current());
+        }
+        return list;
     }
 }
