@@ -88,7 +88,6 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
             found.value = true;
             return this.start + index;
         }
-
         found.value = false;
         return null;
     }
@@ -118,7 +117,6 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
             array[i] = cur;
             ++cur;
         }
-
         return array;
     }
 
@@ -130,7 +128,6 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
             array[i] = cur;
             ++cur;
         }
-
         return array;
     }
 
@@ -139,7 +136,6 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
         List<Integer> list = new ArrayList<>(this.end - this.start);
         for (int cur = this.start; cur != this.end; cur++)
             list.add(cur);
-
         return list;
     }
 }
