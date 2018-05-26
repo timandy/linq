@@ -77,7 +77,7 @@ public class AppendPrependTest extends EnumerableTest {
     public void ForcedToEnumeratorDoesntEnumeratePrepend() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).prepend(4);
         // Don't insist on this behaviour, but check it's correct if it happens
-        IEnumerator<Integer> en = as(iterator, IEnumerator.class);
+        IEnumerator en = as(iterator, IEnumerator.class);
         Assert.assertFalse(en != null && en.moveNext());
     }
 
@@ -85,7 +85,7 @@ public class AppendPrependTest extends EnumerableTest {
     public void ForcedToEnumeratorDoesntEnumerateAppend() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).append(4);
         // Don't insist on this behaviour, but check it's correct if it happens
-        IEnumerator<Integer> en = as(iterator, IEnumerator.class);
+        IEnumerator en = as(iterator, IEnumerator.class);
         Assert.assertFalse(en != null && en.moveNext());
     }
 
@@ -93,7 +93,7 @@ public class AppendPrependTest extends EnumerableTest {
     public void ForcedToEnumeratorDoesntEnumerateMultipleAppendsAndPrepends() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).append(4).append(5).prepend(-1).prepend(-2);
         // Don't insist on this behaviour, but check it's correct if it happens
-        IEnumerator<Integer> en = as(iterator, IEnumerator.class);
+        IEnumerator en = as(iterator, IEnumerator.class);
         Assert.assertFalse(en != null && en.moveNext());
     }
 
