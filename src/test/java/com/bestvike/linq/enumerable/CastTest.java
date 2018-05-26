@@ -98,7 +98,7 @@ public class CastTest extends EnumerableTest {
         IEnumerable<Object> source = Linq.asEnumerable(-4, 1, 2, 3, 9, "45");
         IEnumerable<Integer> expectedBeginning = Linq.asEnumerable(new int[]{-4, 1, 2, 3, 9});
 
-        IEnumerable<Integer> cast = source.cast(int.class);
+        IEnumerable<Integer> cast = source.cast(Integer.class);
         assertThrows(ClassCastException.class, cast::toList);
         assertEquals(expectedBeginning, cast.take(5));
         assertThrows(ClassCastException.class, () -> cast.elementAt(5));
