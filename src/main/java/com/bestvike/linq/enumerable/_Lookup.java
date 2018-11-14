@@ -195,13 +195,13 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
         return new ApplyResultSelector<>(resultSelector);
     }
 
-    private int hashCode(TKey key) {
+    private int internalGetHashCode(TKey key) {
         // Handle comparer implementations that throw when passed null
         return key == null ? 0 : this.comparer.hashCode(key) & 0x7FFFFFFF;
     }
 
     private Grouping<TKey, TElement> getGrouping(TKey key, boolean create) {
-        int hashCode = this.hashCode(key);
+        int hashCode = this.internalGetHashCode(key);
         for (Grouping<TKey, TElement> g = this.groupings[hashCode % this.groupings.length]; g != null; g = g.hashNext)
             if (g.hashCode == hashCode && this.comparer.equals(g.key, key) && g != this.nullKeyGrouping)
                 return g;
@@ -245,7 +245,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
 
     private Grouping<TKey, TElement> getNullKeyGrouping() {
         if (this.nullKeyGrouping == null)
-            this.nullKeyGrouping = this.createGrouping(null, this.hashCode(null));
+            this.nullKeyGrouping = this.createGrouping(null, this.internalGetHashCode(null));
         return this.nullKeyGrouping;
     }
 

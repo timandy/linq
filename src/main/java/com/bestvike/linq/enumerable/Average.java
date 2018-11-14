@@ -163,7 +163,6 @@ public final class Average {
                             count = Math.addExact(count, 1);
                         }
                     }
-
                     return sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL128);
                 }
             }
@@ -197,7 +196,6 @@ public final class Average {
                             count = Math.addExact(count, 1);
                         }
                     }
-
                     return (double) sum / count;
                 }
             }
@@ -231,7 +229,6 @@ public final class Average {
                             count = Math.addExact(count, 1);
                         }
                     }
-
                     return (double) sum / count;
                 }
             }
@@ -265,7 +262,6 @@ public final class Average {
                             count = Math.addExact(count, 1);
                         }
                     }
-
                     return (float) (sum / count);
                 }
             }
@@ -299,7 +295,6 @@ public final class Average {
                             count = Math.addExact(count, 1);
                         }
                     }
-
                     return sum / count;
                 }
             }
@@ -333,7 +328,6 @@ public final class Average {
                             count = Math.addExact(count, 1);
                         }
                     }
-
                     return sum.divide(BigDecimal.valueOf(count), MathContext.DECIMAL128);
                 }
             }

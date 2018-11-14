@@ -84,23 +84,6 @@ final class ReverseIterator<TSource> extends Iterator<TSource> implements IIList
     }
 
     @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap) {
-            if (this.source instanceof IIListProvider) {
-                IIListProvider<TSource> listProv = (IIListProvider<TSource>) this.source;
-                return listProv._getCount(true);
-            }
-            if (this.source instanceof ICollection) {
-                ICollection<TSource> col = (ICollection<TSource>) this.source;
-                return col._getCount();
-            }
-            return -1;
-        }
-
-        return this.source.count();
-    }
-
-    @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         TSource[] array = this.source.toArray(clazz);
         ArrayUtils.reverse(array);
@@ -119,5 +102,22 @@ final class ReverseIterator<TSource> extends Iterator<TSource> implements IIList
         List<TSource> list = this.source.toList();
         Collections.reverse(list);
         return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap) {
+            if (this.source instanceof IIListProvider) {
+                IIListProvider<TSource> listProv = (IIListProvider<TSource>) this.source;
+                return listProv._getCount(true);
+            }
+            if (this.source instanceof ICollection) {
+                ICollection<TSource> col = (ICollection<TSource>) this.source;
+                return col._getCount();
+            }
+            return -1;
+        }
+
+        return this.source.count();
     }
 }

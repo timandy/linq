@@ -57,6 +57,7 @@ public final class Where {
     }
 }
 
+
 final class WhereIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
     private final Func2<TSource, Integer, Boolean> predicate;
@@ -105,6 +106,112 @@ final class WhereIterator<TSource> extends AbstractIterator<TSource> {
             this.enumerator = null;
         }
         super.close();
+    }
+}
+
+
+final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
+    private final IEnumerable<TSource> source;
+    private final Func1<TSource, Boolean> predicate;
+    private IEnumerator<TSource> enumerator;
+
+    WhereEnumerableIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+        assert source != null;
+        assert predicate != null;
+        this.source = source;
+        this.predicate = predicate;
+    }
+
+    @Override
+    public AbstractIterator<TSource> clone() {
+        return new WhereEnumerableIterator<>(this.source, this.predicate);
+    }
+
+    @Override
+    public boolean moveNext() {
+        switch (this.state) {
+            case 1:
+                this.enumerator = this.source.enumerator();
+                this.state = 2;
+            case 2:
+                while (this.enumerator.moveNext()) {
+                    TSource item = this.enumerator.current();
+                    if (this.predicate.apply(item)) {
+                        this.current = item;
+                        return true;
+                    }
+                }
+                this.close();
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+        }
+        super.close();
+    }
+
+    @Override
+    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
+        return new WhereSelectEnumerableIterator<>(this.source, this.predicate, selector);
+    }
+
+    @Override
+    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+        return new WhereEnumerableIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
+    }
+
+    @Override
+    public TSource[] _toArray(Class<TSource> clazz) {
+        LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
+                builder.add(item);
+        }
+
+        return builder.toArray(clazz);
+    }
+
+    @Override
+    public Object[] _toArray() {
+        LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
+                builder.add(item);
+        }
+
+        return builder.toArray();
+    }
+
+    @Override
+    public List<TSource> _toList() {
+        List<TSource> list = new ArrayList<>();
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
+                list.add(item);
+        }
+
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap)
+            return -1;
+
+        int count = 0;
+        for (TSource item : this.source) {
+            if (this.predicate.apply(item))
+                count = Math.addExact(count, 1);
+        }
+
+        return count;
     }
 }
 
@@ -277,112 +384,6 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
-        }
-
-        return builder.toArray();
-    }
-
-    @Override
-    public List<TSource> _toList() {
-        List<TSource> list = new ArrayList<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                list.add(item);
-        }
-
-        return list;
-    }
-
-    @Override
-    public int _getCount(boolean onlyIfCheap) {
-        if (onlyIfCheap)
-            return -1;
-
-        int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                count = Math.addExact(count, 1);
-        }
-
-        return count;
-    }
-}
-
-
-final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
-    private final IEnumerable<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
-    private IEnumerator<TSource> enumerator;
-
-    WhereEnumerableIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
-        assert source != null;
-        assert predicate != null;
-        this.source = source;
-        this.predicate = predicate;
-    }
-
-    @Override
-    public AbstractIterator<TSource> clone() {
-        return new WhereEnumerableIterator<>(this.source, this.predicate);
-    }
-
-    @Override
-    public boolean moveNext() {
-        switch (this.state) {
-            case 1:
-                this.enumerator = this.source.enumerator();
-                this.state = 2;
-            case 2:
-                while (this.enumerator.moveNext()) {
-                    TSource item = this.enumerator.current();
-                    if (this.predicate.apply(item)) {
-                        this.current = item;
-                        return true;
-                    }
-                }
-                this.close();
-                return false;
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public void close() {
-        if (this.enumerator != null) {
-            this.enumerator.close();
-            this.enumerator = null;
-        }
-        super.close();
-    }
-
-    @Override
-    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
-        return new WhereSelectEnumerableIterator<>(this.source, this.predicate, selector);
-    }
-
-    @Override
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
-        return new WhereEnumerableIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
-    }
-
-    @Override
-    public TSource[] _toArray(Class<TSource> clazz) {
-        LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
-        }
-
-        return builder.toArray(clazz);
-    }
-
-    @Override
-    public Object[] _toArray() {
-        LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
         for (TSource item : this.source) {
             if (this.predicate.apply(item))
                 builder.add(item);

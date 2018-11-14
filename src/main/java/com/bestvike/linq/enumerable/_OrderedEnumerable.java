@@ -35,6 +35,75 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         return new OrderedEnumerableEnumerator();
     }
 
+    public IEnumerator<TElement> enumerator(int minIdx, int maxIdx) {
+        return new OrderedEnumerableRangeEnumerator(minIdx, maxIdx);
+    }
+
+    private AbstractEnumerableSorter<TElement> getEnumerableSorter() {
+        return this.getEnumerableSorter(null);
+    }
+
+    protected abstract AbstractEnumerableSorter<TElement> getEnumerableSorter(AbstractEnumerableSorter<TElement> next);
+
+    private AbstractCachingComparer<TElement> getComparer() {
+        return this.getComparer(null);
+    }
+
+    protected abstract AbstractCachingComparer<TElement> getComparer(AbstractCachingComparer<TElement> childComparer);
+
+    @Override
+    public <TKey> IOrderedEnumerable<TElement> createOrderedEnumerable(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending) {
+        return new OrderedEnumerable<>(this.source, keySelector, comparer, descending, this);
+    }
+
+    public TElement _tryGetFirst(Func1<TElement, Boolean> predicate, out<Boolean> found) {
+        AbstractCachingComparer<TElement> comparer = this.getComparer();
+        try (IEnumerator<TElement> e = this.source.enumerator()) {
+            TElement value;
+            do {
+                if (!e.moveNext()) {
+                    found.value = false;
+                    return null;
+                }
+                value = e.current();
+            } while (!predicate.apply(value));
+
+            comparer.setElement(value);
+            while (e.moveNext()) {
+                TElement x = e.current();
+                if (predicate.apply(x) && comparer.compare(x, true) < 0)
+                    value = x;
+            }
+
+            found.value = true;
+            return value;
+        }
+    }
+
+    public TElement _tryGetLast(Func1<TElement, Boolean> predicate, out<Boolean> found) {
+        AbstractCachingComparer<TElement> comparer = this.getComparer();
+        try (IEnumerator<TElement> e = this.source.enumerator()) {
+            TElement value;
+            do {
+                if (!e.moveNext()) {
+                    found.value = false;
+                    return null;
+                }
+                value = e.current();
+            } while (!predicate.apply(value));
+
+            comparer.setElement(value);
+            while (e.moveNext()) {
+                TElement x = e.current();
+                if (predicate.apply(x) && comparer.compare(x, false) >= 0)
+                    value = x;
+            }
+
+            found.value = true;
+            return value;
+        }
+    }
+
     @Override
     public TElement[] _toArray(Class<TElement> clazz) {
         Buffer<TElement> buffer = new Buffer<>(this.source);
@@ -85,10 +154,6 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             return listProv._getCount(onlyIfCheap);
         }
         return !onlyIfCheap || this.source instanceof ICollection ? this.source.count() : -1;
-    }
-
-    public IEnumerator<TElement> enumerator(int minIdx, int maxIdx) {
-        return new OrderedEnumerableRangeEnumerator(minIdx, maxIdx);
     }
 
     public TElement[] _toArray(Class<TElement> clazz, int minIdx, int maxIdx) {
@@ -174,23 +239,6 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         return (count <= maxIdx ? count : maxIdx + 1) - minIdx;
     }
 
-    private AbstractEnumerableSorter<TElement> getEnumerableSorter() {
-        return this.getEnumerableSorter(null);
-    }
-
-    protected abstract AbstractEnumerableSorter<TElement> getEnumerableSorter(AbstractEnumerableSorter<TElement> next);
-
-    private AbstractCachingComparer<TElement> getComparer() {
-        return this.getComparer(null);
-    }
-
-    protected abstract AbstractCachingComparer<TElement> getComparer(AbstractCachingComparer<TElement> childComparer);
-
-    @Override
-    public <TKey> IOrderedEnumerable<TElement> createOrderedEnumerable(Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending) {
-        return new OrderedEnumerable<>(this.source, keySelector, comparer, descending, this);
-    }
-
     @Override
     public IPartition<TElement> _skip(int count) {
         return new OrderedPartition<>(this, count, Integer.MAX_VALUE);
@@ -233,30 +281,6 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             while (e.moveNext()) {
                 TElement x = e.current();
                 if (comparer.compare(x, true) < 0)
-                    value = x;
-            }
-
-            found.value = true;
-            return value;
-        }
-    }
-
-    public TElement _tryGetFirst(Func1<TElement, Boolean> predicate, out<Boolean> found) {
-        AbstractCachingComparer<TElement> comparer = this.getComparer();
-        try (IEnumerator<TElement> e = this.source.enumerator()) {
-            TElement value;
-            do {
-                if (!e.moveNext()) {
-                    found.value = false;
-                    return null;
-                }
-                value = e.current();
-            } while (!predicate.apply(value));
-
-            comparer.setElement(value);
-            while (e.moveNext()) {
-                TElement x = e.current();
-                if (predicate.apply(x) && comparer.compare(x, true) < 0)
                     value = x;
             }
 
@@ -314,30 +338,6 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         }
 
         return value;
-    }
-
-    public TElement _tryGetLast(Func1<TElement, Boolean> predicate, out<Boolean> found) {
-        AbstractCachingComparer<TElement> comparer = this.getComparer();
-        try (IEnumerator<TElement> e = this.source.enumerator()) {
-            TElement value;
-            do {
-                if (!e.moveNext()) {
-                    found.value = false;
-                    return null;
-                }
-                value = e.current();
-            } while (!predicate.apply(value));
-
-            comparer.setElement(value);
-            while (e.moveNext()) {
-                TElement x = e.current();
-                if (predicate.apply(x) && comparer.compare(x, false) >= 0)
-                    value = x;
-            }
-
-            found.value = true;
-            return value;
-        }
     }
 
 

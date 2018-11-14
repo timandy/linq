@@ -174,9 +174,10 @@ final class LargeArrayBuilder<T> {//struct
         int column = position.getColumn();
         ref<Integer> arrayIndexRef = ref.init(arrayIndex);
         ref<Integer> countRef = ref.init(count);
-        Object[] buffer = this.getBuffer(row);
 
+        Object[] buffer = this.getBuffer(row);
         int copied = this.copyToCore(buffer, column, array, arrayIndexRef, countRef);
+
         if (countRef.value == 0)
             return new CopyPosition(row, column + copied).normalize(buffer.length);
 

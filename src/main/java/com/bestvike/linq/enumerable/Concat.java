@@ -131,6 +131,20 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
     }
 
     @Override
+    public IEnumerable<TSource> getEnumerable(int index) {
+        assert index >= 0 && index <= 2;
+
+        switch (index) {
+            case 0:
+                return this.first;
+            case 1:
+                return this.second;
+            default:
+                return null;
+        }
+    }
+
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         out<Integer> firstCountRef = out.init();
         out<Integer> secondCountRef = out.init();
@@ -147,20 +161,6 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
         }
 
         return Math.addExact(firstCountRef.value, secondCountRef.value);
-    }
-
-    @Override
-    public IEnumerable<TSource> getEnumerable(int index) {
-        assert index >= 0 && index <= 2;
-
-        switch (index) {
-            case 0:
-                return this.first;
-            case 1:
-                return this.second;
-            default:
-                return null;
-        }
     }
 
     @Override
@@ -248,6 +248,25 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
     }
 
     @Override
+    public IEnumerable<TSource> getEnumerable(int index) {
+        assert index >= 0;
+
+        if (index > this.headIndex)
+            return null;
+
+        ConcatNIterator<TSource> node, previousN = this;
+        do {
+            node = previousN;
+            if (index == node.headIndex)
+                return node.head;
+        } while ((previousN = node.getPreviousN()) != null);
+
+        assert index == 0 || index == 1;
+        assert node.tail instanceof Concat2Iterator;
+        return node.tail.getEnumerable(index);
+    }
+
+    @Override
     public int _getCount(boolean onlyIfCheap) {
         if (onlyIfCheap && !this.hasOnlyCollections)
             return -1;
@@ -270,25 +289,6 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
 
         assert node.tail instanceof Concat2Iterator;
         return Math.addExact(count, node.tail._getCount(onlyIfCheap));
-    }
-
-    @Override
-    public IEnumerable<TSource> getEnumerable(int index) {
-        assert index >= 0;
-
-        if (index > this.headIndex)
-            return null;
-
-        ConcatNIterator<TSource> node, previousN = this;
-        do {
-            node = previousN;
-            if (index == node.headIndex)
-                return node.head;
-        } while ((previousN = node.getPreviousN()) != null);
-
-        assert index == 0 || index == 1;
-        assert node.tail instanceof Concat2Iterator;
-        return node.tail.getEnumerable(index);
     }
 
     @Override
