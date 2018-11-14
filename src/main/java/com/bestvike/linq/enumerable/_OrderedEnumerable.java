@@ -567,8 +567,9 @@ abstract class AbstractEnumerableSorter<TElement> {
     }
 
     protected TElement elementAt(Object[] elements, int count, int idx) {
+        Integer[] map = this.computeMap(elements, count);
         //noinspection unchecked
-        return (TElement) elements[this.quickSelect(this.computeMap(elements, count), count - 1, idx)];
+        return (TElement) (idx == 0 ? elements[this.min(map, count)] : elements[this.quickSelect(map, count - 1, idx)]);
     }
 
     protected abstract void quickSort(Integer[] map, int left, int right);
@@ -580,6 +581,8 @@ abstract class AbstractEnumerableSorter<TElement> {
     // Finds the element that would be at idx if the collection was sorted.
     // Time complexity: O(n) best and average case. O(n^2) worse case.
     protected abstract int quickSelect(Integer[] map, int right, int idx);
+
+    protected abstract int min(Integer[] map, int count);
 }
 
 
@@ -728,5 +731,15 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
         } while (left < right);
 
         return map[idx];
+    }
+
+    @Override
+    protected int min(Integer[] map, int count) {
+        int index = 0;
+        for (int i = 1; i < count; i++) {
+            if (this.compareKeys(map[i], map[index]) < 0)
+                index = i;
+        }
+        return map[index];
     }
 }
