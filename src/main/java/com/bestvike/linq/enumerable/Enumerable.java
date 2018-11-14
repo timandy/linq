@@ -20,7 +20,7 @@ public final class Enumerable {
     }
 
     public static <TResult> IEnumerable<TResult> empty() {
-        return Array.empty();
+        return EmptyPartition.instance();
     }
 
     public static <TSource> IEnumerable<TSource> singleton(TSource item) {

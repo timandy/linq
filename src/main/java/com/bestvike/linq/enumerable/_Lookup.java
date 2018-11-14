@@ -81,7 +81,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
     @Override
     public IEnumerable<TElement> get(TKey key) {
         Grouping<TKey, TElement> grouping = this.getGrouping(key, false);
-        return grouping == null ? Array.empty() : grouping;
+        return grouping == null ? EmptyPartition.instance() : grouping;
     }
 
     @Override
@@ -260,7 +260,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
 
     public IEnumerable<TElement> fetch(TKey key) {
         Grouping<TKey, TElement> grouping = this.fetchGrouping(key);
-        return grouping == null ? Array.empty() : grouping;
+        return grouping == null ? EmptyPartition.instance() : grouping;
     }
 
     public IEnumerator<Grouping<TKey, TElement>> unfetchedEnumerator() {

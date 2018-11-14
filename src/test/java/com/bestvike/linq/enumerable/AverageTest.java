@@ -98,7 +98,7 @@ public class AverageTest extends EnumerableTest {
     @Test
     public void Int_NullSelector_ThrowsArgumentNullException() {
         Func1<Integer, Integer> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Enumerable.<Integer>empty().averageInt(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().averageInt(selector));
     }
 
     @Test
@@ -316,7 +316,7 @@ public class AverageTest extends EnumerableTest {
     @Test
     public void NullableDouble_NullSelector_ThrowsArgumentNullException() {
         Func1<Double, Double> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Enumerable.<Double>empty().averageDoubleNull(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().averageDoubleNull(selector));
     }
 
     @Test
@@ -344,7 +344,7 @@ public class AverageTest extends EnumerableTest {
     @Test
     public void Decimal_NullSelector_ThrowsArgumentNullException() {
         Func1<BigDecimal, BigDecimal> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Enumerable.<BigDecimal>empty().averageDecimal(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().averageDecimal(selector));
     }
 
     @Test
@@ -391,7 +391,7 @@ public class AverageTest extends EnumerableTest {
     @Test
     public void NullableDecimal_NullSelector_ThrowsArgumentNullException() {
         Func1<BigDecimal, BigDecimal> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Enumerable.<BigDecimal>empty().averageDecimalNull(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().averageDecimalNull(selector));
     }
 
     @Test
@@ -426,7 +426,7 @@ public class AverageTest extends EnumerableTest {
     @Test
     public void Float_NullSelector_ThrowsArgumentNullException() {
         Func1<Float, Float> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Enumerable.<Float>empty().averageFloat(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().averageFloat(selector));
     }
 
     @Test
