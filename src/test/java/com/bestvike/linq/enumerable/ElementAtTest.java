@@ -50,7 +50,7 @@ public class ElementAtTest extends EnumerableTest {
         try {
             Integer num = empty.elementAt(0);
             Assert.fail("expect error,but got " + num);
-        } catch (IndexOutOfBoundsException ignored) {
+        } catch (ArgumentOutOfRangeException ignored) {
         }
     }
 

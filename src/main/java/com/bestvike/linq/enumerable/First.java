@@ -46,8 +46,7 @@ public final class First {
 
         if (source instanceof IPartition) {
             IPartition<TSource> partition = (IPartition<TSource>) source;
-            out<Boolean> foundRef = out.init();
-            return partition._tryGetFirst(foundRef);
+            return partition._tryGetFirst(found);
         }
 
         if (source instanceof IList) {
@@ -77,8 +76,7 @@ public final class First {
 
         if (source instanceof AbstractOrderedEnumerable) {
             AbstractOrderedEnumerable<TSource> ordered = (AbstractOrderedEnumerable<TSource>) source;
-            out<Boolean> foundRef = out.init();
-            return ordered._tryGetFirst(predicate, foundRef);
+            return ordered._tryGetFirst(predicate, found);
         }
 
         for (TSource element : source) {
