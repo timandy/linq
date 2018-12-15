@@ -11,7 +11,6 @@ import java.math.BigDecimal;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class MinTest extends EnumerableTest {
-
     @Test
     public void testMinInt() {
         final Integer[] numbers = {null, 0, 2, 3};
@@ -278,5 +277,4 @@ public class MinTest extends EnumerableTest {
         Float f2 = Linq.asEnumerable(numbers2).minNull(n -> n);
         Assert.assertEquals(null, f2);
     }
-
 }

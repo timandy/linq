@@ -12,7 +12,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class UnionTest extends EnumerableTest {
-
     @Test
     public void testUnion() {
         Assert.assertEquals(6, Linq.asEnumerable(emps)
@@ -40,5 +39,4 @@ public class UnionTest extends EnumerableTest {
                 .union(Linq.asEnumerable(emps), comparer)
                 .count());
     }
-
 }

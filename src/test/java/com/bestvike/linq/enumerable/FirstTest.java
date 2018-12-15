@@ -12,7 +12,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class FirstTest extends EnumerableTest {
-
     @Test
     public void testFirst() {
         Employee e = emps[0];
@@ -79,5 +78,4 @@ public class FirstTest extends EnumerableTest {
         Assert.assertEquals(numbers[3], Linq.asEnumerable(numbers).firstOrDefault(i -> i > 15));
         Assert.assertNull(Linq.asEnumerable(peopleWithoutCharS).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
     }
-
 }

@@ -11,7 +11,6 @@ import java.math.BigDecimal;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class MaxTest extends EnumerableTest {
-
     @Test
     public void testMaxInt() {
         final Integer[] numbers = {null, 0, 2, 3};
@@ -278,5 +277,4 @@ public class MaxTest extends EnumerableTest {
         Float f2 = Linq.asEnumerable(numbers2).maxNull(n -> n);
         Assert.assertEquals(null, f2);
     }
-
 }

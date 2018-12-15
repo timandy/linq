@@ -13,7 +13,6 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class DefaultIfEmptyTest extends EnumerableTest {
-
     @Test
     public void testDefaultIfEmpty() {
         final List<String> experience = Arrays.asList("jimi", "mitch", "noel");
@@ -51,5 +50,4 @@ public class DefaultIfEmptyTest extends EnumerableTest {
         Assert.assertEquals("N/A", emptyEnumerator.current());
         Assert.assertFalse(emptyEnumerator.moveNext());
     }
-
 }

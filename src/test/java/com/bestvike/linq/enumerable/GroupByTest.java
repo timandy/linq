@@ -9,8 +9,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class GroupByTest extends EnumerableTest {
-
-
     @Test
     public void testGroupByWithKeySelector() {
         String s = Linq.asEnumerable(emps)
@@ -137,5 +135,4 @@ public class GroupByTest extends EnumerableTest {
                 .toString();
         Assert.assertEquals("[10: Fred+Bill+Eric+Janet]", s);
     }
-
 }

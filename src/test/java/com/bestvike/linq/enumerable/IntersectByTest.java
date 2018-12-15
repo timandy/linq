@@ -10,7 +10,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class IntersectByTest extends EnumerableTest {
-
     @Test
     public void testIntersectBy() {
         final Employee[] emps2 = {
@@ -43,5 +42,4 @@ public class IntersectByTest extends EnumerableTest {
                 .intersectBy(Linq.asEnumerable(emps2), emp -> emp.deptno, comparer)
                 .count());
     }
-
 }

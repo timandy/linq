@@ -14,7 +14,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ToLookupTest extends EnumerableTest {
-
     @Test
     public void testToLookup() {
         final ILookup<Integer, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno);
@@ -194,5 +193,4 @@ public class ToLookupTest extends EnumerableTest {
         }
         Assert.assertEquals(1, n2);
     }
-
 }

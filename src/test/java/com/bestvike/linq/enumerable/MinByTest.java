@@ -13,7 +13,6 @@ import java.math.BigDecimal;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class MinByTest extends EnumerableTest {
-
     @Test
     public void testMinByInt() {
         final Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
@@ -145,5 +144,4 @@ public class MinByTest extends EnumerableTest {
         final Tuple1[] tuple1s2 = {Tuple.create(null)};
         Assert.assertEquals(null, Linq.asEnumerable(tuple1s2).minByNull(tuple -> (Float) tuple.getItem1()));
     }
-
 }

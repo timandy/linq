@@ -9,8 +9,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class SingleTest extends EnumerableTest {
-
-
     @Test
     public void testSingle() {
         String[] person = {"Smith"};
@@ -115,5 +113,4 @@ public class SingleTest extends EnumerableTest {
         Assert.assertNull(Linq.asEnumerable(peopleWithoutCharS).singleOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
         Assert.assertNull(Linq.asEnumerable(numbersWithoutGT15).singleOrDefault(n -> n > 15));
     }
-
 }

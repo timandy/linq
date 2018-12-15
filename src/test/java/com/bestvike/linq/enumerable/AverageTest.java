@@ -301,7 +301,6 @@ public class AverageTest extends EnumerableTest {
         this.NullableDoubleCore(Linq.asEnumerable(null, null, null, null, null), null);
     }
 
-
     private void NullableDoubleCore(IEnumerable<Double> source, Double expected) {
         Assert.assertEquals(expected, source.averageDoubleNull());
         Assert.assertEquals(expected, source.averageDoubleNull(x -> x));

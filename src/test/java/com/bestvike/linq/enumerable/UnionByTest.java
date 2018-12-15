@@ -9,7 +9,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class UnionByTest extends EnumerableTest {
-
     @Test
     public void testUnionBy() {
         Assert.assertEquals(4, Linq.asEnumerable(emps)
@@ -37,5 +36,4 @@ public class UnionByTest extends EnumerableTest {
                 .unionBy(Linq.asEnumerable(emps), emp -> emp.deptno, comparer)
                 .count());
     }
-
 }

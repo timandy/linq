@@ -13,7 +13,6 @@ import java.util.Arrays;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ElementAtTest extends EnumerableTest {
-
     @Test
     public void testElementAt() {
         final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
@@ -66,5 +65,4 @@ public class ElementAtTest extends EnumerableTest {
         Assert.assertNull(enumerable2.elementAtOrDefault(2));
         Assert.assertNull(enumerable2.elementAtOrDefault(-1));
     }
-
 }

@@ -14,7 +14,6 @@ import java.util.Set;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class OrderByTest extends EnumerableTest {
-
     @Test
     public void testOrderBy() {
         //null 在前,值相等的按原始顺序

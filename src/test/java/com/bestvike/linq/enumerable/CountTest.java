@@ -9,7 +9,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class CountTest extends EnumerableTest {
-
     @Test
     public void testCount() {
         final int count = Linq.asEnumerable(depts).count();
@@ -39,5 +38,4 @@ public class CountTest extends EnumerableTest {
         final long count2 = Linq.asEnumerable(new IterableDemo(10L)).longCount(s -> s > 9);
         Assert.assertEquals(1, count2);
     }
-
 }

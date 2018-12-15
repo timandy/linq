@@ -10,7 +10,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class DistinctByTest extends EnumerableTest {
-
     @Test
     public void testDistinctBy() {
         final Employee[] emps2 = {
@@ -44,5 +43,4 @@ public class DistinctByTest extends EnumerableTest {
         };
         Assert.assertEquals(1, Linq.asEnumerable(emps2).distinctBy(emp -> emp.empno, comparer).count());
     }
-
 }

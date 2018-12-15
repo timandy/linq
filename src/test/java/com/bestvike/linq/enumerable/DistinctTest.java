@@ -12,7 +12,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class DistinctTest extends EnumerableTest {
-
     @Test
     public void testDistinct() {
         final Employee[] emps2 = {
@@ -46,5 +45,4 @@ public class DistinctTest extends EnumerableTest {
         };
         Assert.assertEquals(2, Linq.asEnumerable(emps2).distinct(comparer).count());
     }
-
 }

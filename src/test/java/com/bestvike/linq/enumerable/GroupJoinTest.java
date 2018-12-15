@@ -10,8 +10,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class GroupJoinTest extends EnumerableTest {
-
-
     @Test
     public void testGroupJoin() {
         //左连接,empty dept 保留,bad Emp 被滤掉
@@ -68,5 +66,4 @@ public class GroupJoinTest extends EnumerableTest {
                 .toString();
         Assert.assertEquals("[[Fred, Bill, Eric, Janet, Cedric] work(s) in Sales, [Fred, Bill, Eric, Janet, Cedric] work(s) in HR, [Fred, Bill, Eric, Janet, Cedric] work(s) in Marketing, [] work(s) in Manager]", s);
     }
-
 }

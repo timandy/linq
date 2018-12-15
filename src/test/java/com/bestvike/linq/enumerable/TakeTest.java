@@ -11,8 +11,6 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class TakeTest extends EnumerableTest {
-
-
     @Test
     public void testTake() {
         final List<Department> enumerableDeptsResult = Linq.asEnumerable(depts).take(2).toList();
@@ -42,5 +40,4 @@ public class TakeTest extends EnumerableTest {
         Assert.assertEquals(depts[0], deptList.get(0));
         Assert.assertEquals(depts[1], deptList.get(1));
     }
-
 }

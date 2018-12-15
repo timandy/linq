@@ -8,7 +8,6 @@ import org.junit.Test;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class SkipTest extends EnumerableTest {
-
     @Test
     public void testSkip() {
         Assert.assertEquals(2, Linq.asEnumerable(depts).skip(1).count());
@@ -28,5 +27,4 @@ public class SkipTest extends EnumerableTest {
                 .count();
         Assert.assertEquals(1, count);
     }
-
 }

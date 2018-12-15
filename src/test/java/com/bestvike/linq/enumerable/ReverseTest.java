@@ -10,7 +10,6 @@ import java.util.Arrays;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ReverseTest extends EnumerableTest {
-
     @Test
     public void testReverse() {
         //null 在前,值相等的按原始顺序
@@ -50,5 +49,4 @@ public class ReverseTest extends EnumerableTest {
         Character[] empty = Linq.<Character>empty().reverse().toArray(Character.class);
         Assert.assertEquals(0, empty.length);
     }
-
 }

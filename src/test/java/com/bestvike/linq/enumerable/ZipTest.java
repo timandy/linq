@@ -11,7 +11,6 @@ import java.util.Arrays;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ZipTest extends EnumerableTest {
-
     @Test
     public void testZip() {
         final IEnumerable<String> e1 = Linq.asEnumerable(Arrays.asList("a", "b", "c"));
@@ -28,7 +27,6 @@ public class ZipTest extends EnumerableTest {
         final IEnumerable<String> e1 = Linq.asEnumerable(Arrays.asList("a", "b"));
         final IEnumerable<String> e2 = Linq.asEnumerable(Arrays.asList("1", "2", "3"));
 
-
         final IEnumerable<String> zipped1 = e1.zip(e2, (v0, v1) -> v0 + v1);
         Assert.assertEquals(2, zipped1.count());
         for (int i = 0; i < 2; i++)
@@ -39,5 +37,4 @@ public class ZipTest extends EnumerableTest {
         for (int i = 0; i < 2; i++)
             Assert.assertEquals("" + (char) ('1' + i) + (char) ('a' + i), zipped2.elementAt(i));
     }
-
 }

@@ -12,7 +12,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class IntersectTest extends EnumerableTest {
-
     @Test
     public void testIntersect() {
         final Employee[] emps2 = {
@@ -45,5 +44,4 @@ public class IntersectTest extends EnumerableTest {
                 .intersect(Linq.asEnumerable(emps2), comparer)
                 .count());
     }
-
 }

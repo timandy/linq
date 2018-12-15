@@ -10,7 +10,6 @@ import java.math.BigDecimal;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class SumTest extends EnumerableTest {
-
     @Test
     public void testSumLong() {
         final Long[] numbers = {null, 0L, 2L, 3L};
@@ -112,5 +111,4 @@ public class SumTest extends EnumerableTest {
         final BigDecimal[] numbers2 = {null, BigDecimal.ZERO, new BigDecimal("2"), new BigDecimal("3")};
         Assert.assertEquals(new BigDecimal("5"), Linq.asEnumerable(numbers2).sumDecimal(n -> n));
     }
-
 }

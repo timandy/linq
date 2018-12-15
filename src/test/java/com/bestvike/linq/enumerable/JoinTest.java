@@ -13,7 +13,6 @@ import java.util.Collections;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class JoinTest extends EnumerableTest {
-
     @Test
     public void testJoin() {
         //null key 被排除
@@ -71,7 +70,6 @@ public class JoinTest extends EnumerableTest {
                 .toString();
         Assert.assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing]", ss);
     }
-
 
     @Test
     public void testLeftJoin() {
@@ -466,5 +464,4 @@ public class JoinTest extends EnumerableTest {
                 .toString();
         Assert.assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Gates works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Gates works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing, Gates works in Marketing, Fred works in Manager, Bill works in Manager, Eric works in Manager, Janet works in Manager, Cedric works in Manager, Gates works in Manager]", ss);
     }
-
 }

@@ -13,7 +13,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ExceptTest extends EnumerableTest {
-
     @Test
     public void testExcept() {
         final Employee[] emps2 = {
@@ -51,5 +50,4 @@ public class ExceptTest extends EnumerableTest {
                 .except(Linq.asEnumerable(emps2), comparer)
                 .count());
     }
-
 }

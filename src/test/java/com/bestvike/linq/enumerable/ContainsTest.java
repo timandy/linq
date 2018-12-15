@@ -12,7 +12,6 @@ import java.util.Arrays;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ContainsTest extends EnumerableTest {
-
     @Test
     public void testContains() {
         Employee e = emps[1];
@@ -77,5 +76,4 @@ public class ContainsTest extends EnumerableTest {
         } catch (ArithmeticException ignored) {
         }
     }
-
 }

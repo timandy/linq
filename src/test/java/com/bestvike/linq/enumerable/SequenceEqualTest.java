@@ -12,7 +12,6 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class SequenceEqualTest extends EnumerableTest {
-
     @Test
     public void testSequenceEqual() {
         final List<Employee> list = Linq.asEnumerable(emps).toList();
@@ -39,5 +38,4 @@ public class SequenceEqualTest extends EnumerableTest {
 
         Assert.assertTrue(Linq.asEnumerable(array1).sequenceEqual(Linq.asEnumerable(array2), comparer));
     }
-
 }
