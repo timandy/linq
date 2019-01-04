@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Created by 许崇雷 on 2017/7/25.
+ * Created by 许崇雷 on 2017-07-25.
  */
 public final class CharSequenceEnumerable implements IList<Character> {
     private final CharSequence source;

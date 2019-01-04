@@ -5,7 +5,7 @@ import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func1;
 
 /**
- * Created by 许崇雷 on 2017/7/16.
+ * Created by 许崇雷 on 2017-07-16.
  */
 public final class Utilities {
     private Utilities() {

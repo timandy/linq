@@ -3,7 +3,7 @@ package com.bestvike.linq.exception;
 import com.bestvike.linq.resources.SR;
 
 /**
- * Created by 许崇雷 on 2017/7/11.
+ * Created by 许崇雷 on 2017-07-11.
  */
 public final class NotSupportedException extends RuntimeException {
     public NotSupportedException() {

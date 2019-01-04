@@ -3,7 +3,7 @@ package com.bestvike.linq.bridge.enumerator;
 import com.bestvike.linq.enumerable.AbstractEnumerator;
 
 /**
- * Created by 许崇雷 on 2017/7/25.
+ * Created by 许崇雷 on 2017-07-25.
  */
 public final class CharSequenceEnumerator extends AbstractEnumerator<Character> {
     private final CharSequence source;

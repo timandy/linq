@@ -3,7 +3,7 @@ package com.bestvike.collections.generic;
 import java.util.Objects;
 
 /**
- * Created by 许崇雷 on 2017/7/18.
+ * Created by 许崇雷 on 2017-07-18.
  */
 public final class EqualityComparer<T> implements IEqualityComparer<T> {
     private static final EqualityComparer DEFAULT = new EqualityComparer();

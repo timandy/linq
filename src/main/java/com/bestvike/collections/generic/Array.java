@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by 许崇雷 on 2017/7/19.
+ * Created by 许崇雷 on 2017-07-19.
  */
 @SuppressWarnings("Duplicates")
 public final class Array<T> implements IList<T>, Cloneable {

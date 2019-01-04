@@ -54,7 +54,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by 许崇雷 on 2017/7/10.
+ * Created by 许崇雷 on 2017-07-10.
  */
 @SuppressWarnings("unchecked")
 public interface IEnumerable<TSource> extends Iterable<TSource> {

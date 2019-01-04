@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by 许崇雷 on 2017/7/17.
+ * Created by 许崇雷 on 2017-07-17.
  */
 public final class CollectionEnumerable<TElement> implements ICollection<TElement> {
     private final Collection<TElement> source;

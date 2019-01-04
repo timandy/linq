@@ -4,7 +4,7 @@ import com.bestvike.linq.resources.SR;
 import com.bestvike.linq.util.Environment;
 
 /**
- * Created by 许崇雷 on 2017/7/11.
+ * Created by 许崇雷 on 2017-07-11.
  */
 public class ArgumentException extends RuntimeException {
     private String paramName;

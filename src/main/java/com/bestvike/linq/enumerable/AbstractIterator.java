@@ -6,7 +6,7 @@ import com.bestvike.linq.IEnumerator;
 /**
  * 迭代对象,初始 state 为 1
  * <p>
- * Created by 许崇雷 on 2017/7/13.
+ * Created by 许崇雷 on 2017-07-13.
  */
 public abstract class AbstractIterator<TSource> extends AbstractEnumerator<TSource> implements IEnumerable<TSource> {
     private final long threadId;

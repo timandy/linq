@@ -10,7 +10,7 @@ import com.bestvike.linq.exception.Errors;
 import java.util.Comparator;
 
 /**
- * Created by 许崇雷 on 2017/7/23.
+ * Created by 许崇雷 on 2017-07-23.
  */
 @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
 public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {

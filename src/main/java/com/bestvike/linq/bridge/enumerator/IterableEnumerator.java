@@ -5,7 +5,7 @@ import com.bestvike.linq.enumerable.AbstractEnumerator;
 import java.util.Iterator;
 
 /**
- * Created by 许崇雷 on 2017/7/17.
+ * Created by 许崇雷 on 2017-07-17.
  */
 public final class IterableEnumerator<TSource> extends AbstractEnumerator<TSource> {
     private final Iterable<TSource> source;

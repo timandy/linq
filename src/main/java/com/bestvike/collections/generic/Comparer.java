@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.Locale;
 
 /**
- * Created by 许崇雷 on 2017/7/18.
+ * Created by 许崇雷 on 2017-07-18.
  */
 public final class Comparer<T> implements Comparator<T> {
     private static final Comparer DEFAULT = new Comparer(null);
