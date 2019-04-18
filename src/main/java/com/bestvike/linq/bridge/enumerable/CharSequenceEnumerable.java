@@ -41,10 +41,10 @@ public final class CharSequenceEnumerable implements IList<Character> {
     }
 
     @Override
-    public boolean _contains(Character value) {
+    public boolean _contains(Character item) {
         int length = this.source.length();
         for (int i = 0; i < length; i++) {
-            if (Objects.equals(this.source.charAt(i), value))
+            if (Objects.equals(this.source.charAt(i), item))
                 return true;
         }
         return false;
