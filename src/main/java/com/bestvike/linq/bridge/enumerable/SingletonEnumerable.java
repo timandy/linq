@@ -14,27 +14,27 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-10.
  */
-public final class SingletonEnumerable<TElement> implements IList<TElement> {
-    private final TElement element;
+public final class SingletonEnumerable<TSource> implements IList<TSource> {
+    private final TSource element;
 
-    public SingletonEnumerable(TElement element) {
+    public SingletonEnumerable(TSource element) {
         this.element = element;
     }
 
     @Override
-    public IEnumerator<TElement> enumerator() {
+    public IEnumerator<TSource> enumerator() {
         return new SingletonEnumerator<>(this.element);
     }
 
     @Override
-    public TElement get(int index) {
+    public TSource get(int index) {
         if (index == 0)
             return this.element;
         throw Errors.argumentOutOfRange("index");
     }
 
     @Override
-    public Collection<TElement> getCollection() {
+    public Collection<TSource> getCollection() {
         return ArrayUtils.toCollection(new Object[]{this.element});
     }
 
@@ -44,7 +44,7 @@ public final class SingletonEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public boolean _contains(TElement item) {
+    public boolean _contains(TSource item) {
         return Objects.equals(item, this.element);
     }
 
@@ -54,7 +54,7 @@ public final class SingletonEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public TElement[] _toArray(Class<TElement> clazz) {
+    public TSource[] _toArray(Class<TSource> clazz) {
         return ArrayUtils.singleton(clazz, this.element);
     }
 
@@ -64,7 +64,7 @@ public final class SingletonEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public List<TElement> _toList() {
+    public List<TSource> _toList() {
         return ListUtils.singleton(this.element);
     }
 }

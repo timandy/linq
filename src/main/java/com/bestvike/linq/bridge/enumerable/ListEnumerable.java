@@ -12,25 +12,25 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2017-07-19.
  */
-public final class ListEnumerable<TElement> implements IList<TElement> {
-    private final List<TElement> source;
+public final class ListEnumerable<TSource> implements IList<TSource> {
+    private final List<TSource> source;
 
-    public ListEnumerable(List<TElement> source) {
+    public ListEnumerable(List<TSource> source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<TElement> enumerator() {
+    public IEnumerator<TSource> enumerator() {
         return new IterableEnumerator<>(this.source);
     }
 
     @Override
-    public TElement get(int index) {
+    public TSource get(int index) {
         return this.source.get(index);
     }
 
     @Override
-    public Collection<TElement> getCollection() {
+    public Collection<TSource> getCollection() {
         return this.source;
     }
 
@@ -40,7 +40,7 @@ public final class ListEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public boolean _contains(TElement item) {
+    public boolean _contains(TSource item) {
         return this.source.contains(item);
     }
 
@@ -51,9 +51,9 @@ public final class ListEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public TElement[] _toArray(Class<TElement> clazz) {
+    public TSource[] _toArray(Class<TSource> clazz) {
         int length = this.source.size();
-        TElement[] array = ArrayUtils.newInstance(clazz, length);
+        TSource[] array = ArrayUtils.newInstance(clazz, length);
         return this.source.toArray(array);
     }
 
@@ -63,7 +63,7 @@ public final class ListEnumerable<TElement> implements IList<TElement> {
     }
 
     @Override
-    public List<TElement> _toList() {
+    public List<TSource> _toList() {
         return new ArrayList<>(this.source);
     }
 }

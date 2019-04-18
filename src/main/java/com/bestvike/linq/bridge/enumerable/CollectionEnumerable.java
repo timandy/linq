@@ -12,20 +12,20 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2017-07-17.
  */
-public final class CollectionEnumerable<TElement> implements ICollection<TElement> {
-    private final Collection<TElement> source;
+public final class CollectionEnumerable<TSource> implements ICollection<TSource> {
+    private final Collection<TSource> source;
 
-    public CollectionEnumerable(Collection<TElement> source) {
+    public CollectionEnumerable(Collection<TSource> source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<TElement> enumerator() {
+    public IEnumerator<TSource> enumerator() {
         return new IterableEnumerator<>(this.source);
     }
 
     @Override
-    public Collection<TElement> getCollection() {
+    public Collection<TSource> getCollection() {
         return this.source;
     }
 
@@ -35,7 +35,7 @@ public final class CollectionEnumerable<TElement> implements ICollection<TElemen
     }
 
     @Override
-    public boolean _contains(TElement item) {
+    public boolean _contains(TSource item) {
         return this.source.contains(item);
     }
 
@@ -46,9 +46,9 @@ public final class CollectionEnumerable<TElement> implements ICollection<TElemen
     }
 
     @Override
-    public TElement[] _toArray(Class<TElement> clazz) {
+    public TSource[] _toArray(Class<TSource> clazz) {
         int length = this.source.size();
-        TElement[] array = ArrayUtils.newInstance(clazz, length);
+        TSource[] array = ArrayUtils.newInstance(clazz, length);
         return this.source.toArray(array);
     }
 
@@ -58,7 +58,7 @@ public final class CollectionEnumerable<TElement> implements ICollection<TElemen
     }
 
     @Override
-    public List<TElement> _toList() {
+    public List<TSource> _toList() {
         return new ArrayList<>(this.source);
     }
 }

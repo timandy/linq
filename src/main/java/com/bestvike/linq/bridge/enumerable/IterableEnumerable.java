@@ -7,15 +7,15 @@ import com.bestvike.linq.bridge.enumerator.IterableEnumerator;
 /**
  * Created by 许崇雷 on 2017-07-17.
  */
-public final class IterableEnumerable<TElement> implements IEnumerable<TElement> {
-    private final Iterable<TElement> source;
+public final class IterableEnumerable<TSource> implements IEnumerable<TSource> {
+    private final Iterable<TSource> source;
 
-    public IterableEnumerable(Iterable<TElement> source) {
+    public IterableEnumerable(Iterable<TSource> source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<TElement> enumerator() {
+    public IEnumerator<TSource> enumerator() {
         return new IterableEnumerator<>(this.source);
     }
 }
