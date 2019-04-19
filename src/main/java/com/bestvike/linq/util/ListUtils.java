@@ -15,11 +15,11 @@ public final class ListUtils {
     }
 
     public static <T> List<T> empty() {
-        return new ArrayList<>();
+        return new ArrayList<>(0);
     }
 
     public static <T> List<T> singleton(T element) {
-        List<T> list = new ArrayList<>();
+        List<T> list = new ArrayList<>(1);
         list.add(element);
         return list;
     }
