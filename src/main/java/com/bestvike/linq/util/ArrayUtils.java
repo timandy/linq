@@ -70,10 +70,7 @@ public final class ArrayUtils {
         if (array == null)
             throw Errors.argumentNull("array");
 
-        int length = array.length;
-        Object[] newArray = new Object[length];
-        System.arraycopy(array, 0, newArray, 0, length);
-        return newArray;
+        return array.clone();
     }
 
     public static Object[] resize(Object[] array, int newSize) {
