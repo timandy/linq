@@ -1,0 +1,84 @@
+package com.bestvike.linq.bridge.enumerable;
+
+import com.bestvike.collections.generic.IList;
+import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.bridge.enumerator.CharacterArrayEnumerator;
+import com.bestvike.linq.util.ArrayUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Created by 许崇雷 on 2019-04-16.
+ */
+public final class CharacterArrayEnumerable implements IList<Character> {
+    private final char[] source;
+
+    public CharacterArrayEnumerable(char[] source) {
+        this.source = source;
+    }
+
+    @Override
+    public IEnumerator<Character> enumerator() {
+        return new CharacterArrayEnumerator(this.source);
+    }
+
+    @Override
+    public Character get(int index) {
+        return this.source[index];
+    }
+
+    @Override
+    public Collection<Character> getCollection() {
+        return ArrayUtils.toCollection(this._toArray());
+    }
+
+    @Override
+    public int _getCount() {
+        return this.source.length;
+    }
+
+    @Override
+    public boolean _contains(Character item) {
+        for (char value : this.source) {
+            if (Objects.equals(value, item))
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void _copyTo(Object[] array, int arrayIndex) {
+        for (char item : this.source)
+            array[arrayIndex++] = item;
+    }
+
+    @Override
+    public Character[] _toArray(Class<Character> clazz) {
+        int length = this.source.length;
+        Character[] array = ArrayUtils.newInstance(clazz, length);
+        for (int i = 0; i < length; i++)
+            array[i] = this.source[i];
+        return array;
+    }
+
+    @Override
+    public Object[] _toArray() {
+        int length = this.source.length;
+        Object[] array = new Object[length];
+        for (int i = 0; i < length; i++)
+            array[i] = this.source[i];
+        return array;
+    }
+
+    @Override
+    public List<Character> _toList() {
+        int length = this.source.length;
+        List<Character> list = new ArrayList<>(length);
+        for (char item : this.source)
+            list.add(item);
+        return list;
+    }
+}
