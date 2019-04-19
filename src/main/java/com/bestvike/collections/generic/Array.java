@@ -13,7 +13,6 @@ import java.util.List;
  */
 @SuppressWarnings("Duplicates")
 public final class Array<T> implements IList<T>, Cloneable {
-    private static final Array EMPTY = new Array(ArrayUtils.empty());
     private final Object[] elements;
 
     private Array(Object[] elements) {
@@ -21,104 +20,6 @@ public final class Array<T> implements IList<T>, Cloneable {
     }
 
     //region static
-
-    public static <T> Array<T> empty() {
-        //noinspection unchecked
-        return EMPTY;
-    }
-
-    public static <T> Array<T> singleton(T element) {
-        Object[] objects = new Object[]{element};
-        return new Array<>(objects);
-    }
-
-    public static Array<Boolean> create(boolean[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
-
-    public static Array<Byte> create(byte[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
-
-    public static Array<Short> create(short[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
-
-    public static Array<Integer> create(int[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
-
-    public static Array<Long> create(long[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
-
-    public static Array<Float> create(float[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
-
-    public static Array<Double> create(double[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
-
-    public static Array<Character> create(char[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        int length = array.length;
-        Object[] objects = new Object[length];
-        for (int i = 0; i < length; i++)
-            objects[i] = array[i];
-        return new Array<>(objects);
-    }
 
     public static <T> Array<T> create(Object[] array) {
         if (array == null)
