@@ -118,7 +118,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
             do {
                 g = g.next;
                 g.trim();
-                array[index] = resultSelector.apply(g.key, Array.create(g.elements));
+                array[index] = resultSelector.apply(g.key, new Array<>(g.elements));
                 ++index;
             } while (g != this.lastGrouping);
         }
@@ -150,7 +150,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
             do {
                 g = g.next;
                 g.trim();
-                array[index] = resultSelector.apply(g.key, Array.create(g.elements));
+                array[index] = resultSelector.apply(g.key, new Array<>(g.elements));
                 ++index;
             } while (g != this.lastGrouping);
         }
@@ -179,7 +179,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
             do {
                 g = g.next;
                 g.trim();
-                list.add(resultSelector.apply(g.key, Array.create(g.elements)));
+                list.add(resultSelector.apply(g.key, new Array<>(g.elements)));
             } while (g != this.lastGrouping);
         }
 
@@ -340,7 +340,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
                     case 2:
                         this.g = this.g.next;
                         this.g.trim();
-                        this.current = this.resultSelector.apply(this.g.key, Array.create(this.g.elements));
+                        this.current = this.resultSelector.apply(this.g.key, new Array<>(this.g.elements));
                         this.state = 1;
                         return true;
                     default:

@@ -865,7 +865,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
     }
 
     default Array<TSource> toArray() {
-        return Array.create(ToCollection.toArray(this));
+        return new Array<>(ToCollection.toArray(this));
     }
 
     default List<TSource> toList() {

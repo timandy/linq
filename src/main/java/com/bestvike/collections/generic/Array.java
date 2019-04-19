@@ -11,24 +11,14 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2017-07-19.
  */
-@SuppressWarnings("Duplicates")
 public final class Array<T> implements IList<T>, Cloneable {
     private final Object[] elements;
 
-    private Array(Object[] elements) {
+    public Array(Object[] elements) {
+        if (elements == null)
+            throw Errors.argumentNull("elements");
         this.elements = elements;
     }
-
-    //region static
-
-    public static <T> Array<T> create(Object[] array) {
-        if (array == null)
-            throw Errors.argumentNull("array");
-
-        return new Array<>(ArrayUtils.clone(array));
-    }
-
-    //endregion
 
     @Override
     public IEnumerator<T> enumerator() {
@@ -72,7 +62,7 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     @Override
     public Object[] _toArray() {
-        return this.elements;
+        return ArrayUtils.toArray(this.elements, Object.class);
     }
 
     @Override
