@@ -5,7 +5,8 @@ import com.bestvike.collections.IStructuralEquatable;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.Comparator;
 
@@ -67,7 +68,8 @@ public final class Tuple5<T1, T2, T3, T4, T5> implements IStructuralEquatable, I
             case 4:
                 return this.item5;
             default:
-                throw Errors.indexOutOfRange();
+                ThrowHelper.throwIndexOutOfRangeException();
+                return null;
         }
     }
 
@@ -78,14 +80,14 @@ public final class Tuple5<T1, T2, T3, T4, T5> implements IStructuralEquatable, I
 
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
-        Tuple5 that;
+        Tuple5 objTuple;
         //noinspection unchecked
         return other instanceof Tuple5
-                && comparer.equals(this.item1, (that = (Tuple5) other).item1)
-                && comparer.equals(this.item2, that.item2)
-                && comparer.equals(this.item3, that.item3)
-                && comparer.equals(this.item4, that.item4)
-                && comparer.equals(this.item5, that.item5);
+                && comparer.equals(this.item1, (objTuple = (Tuple5) other).item1)
+                && comparer.equals(this.item2, objTuple.item2)
+                && comparer.equals(this.item3, objTuple.item3)
+                && comparer.equals(this.item4, objTuple.item4)
+                && comparer.equals(this.item5, objTuple.item5);
     }
 
     @Override
@@ -98,26 +100,26 @@ public final class Tuple5<T1, T2, T3, T4, T5> implements IStructuralEquatable, I
         if (other == null)
             return 1;
         if (!(other instanceof Tuple5))
-            throw Errors.tupleIncorrectType(this.getClass(), "other");
-        Tuple5 that = (Tuple5) other;
+            ThrowHelper.throwTupleIncorrectTypeException(this.getClass(), ExceptionArgument.other);
+        Tuple5 objTuple = (Tuple5) other;
         //noinspection unchecked
-        int num = comparer.compare(this.item1, that.item1);
-        if (num != 0)
-            return num;
+        int c = comparer.compare(this.item1, objTuple.item1);
+        if (c != 0)
+            return c;
         //noinspection unchecked
-        num = comparer.compare(this.item2, that.item2);
-        if (num != 0)
-            return num;
+        c = comparer.compare(this.item2, objTuple.item2);
+        if (c != 0)
+            return c;
         //noinspection unchecked
-        num = comparer.compare(this.item3, that.item3);
-        if (num != 0)
-            return num;
+        c = comparer.compare(this.item3, objTuple.item3);
+        if (c != 0)
+            return c;
         //noinspection unchecked
-        num = comparer.compare(this.item4, that.item4);
-        if (num != 0)
-            return num;
+        c = comparer.compare(this.item4, objTuple.item4);
+        if (c != 0)
+            return c;
         //noinspection unchecked
-        return comparer.compare(this.item5, that.item5);
+        return comparer.compare(this.item5, objTuple.item5);
     }
 
     @Override
@@ -137,23 +139,23 @@ public final class Tuple5<T1, T2, T3, T4, T5> implements IStructuralEquatable, I
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("(");
-        return this.toString(builder);
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        return this.toString(sb);
     }
 
     @Override
-    public String toString(StringBuilder builder) {
-        builder.append(this.item1);
-        builder.append(", ");
-        builder.append(this.item2);
-        builder.append(", ");
-        builder.append(this.item3);
-        builder.append(", ");
-        builder.append(this.item4);
-        builder.append(", ");
-        builder.append(this.item5);
-        builder.append(")");
-        return builder.toString();
+    public String toString(StringBuilder sb) {
+        sb.append(this.item1);
+        sb.append(", ");
+        sb.append(this.item2);
+        sb.append(", ");
+        sb.append(this.item3);
+        sb.append(", ");
+        sb.append(this.item4);
+        sb.append(", ");
+        sb.append(this.item5);
+        sb.append(")");
+        return sb.toString();
     }
 }

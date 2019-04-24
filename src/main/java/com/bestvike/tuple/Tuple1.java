@@ -5,7 +5,8 @@ import com.bestvike.collections.IStructuralEquatable;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.Comparator;
 
@@ -35,7 +36,8 @@ public final class Tuple1<T1> implements IStructuralEquatable, IStructuralCompar
             case 0:
                 return this.item1;
             default:
-                throw Errors.indexOutOfRange();
+                ThrowHelper.throwIndexOutOfRangeException();
+                return null;
         }
     }
 
@@ -61,7 +63,7 @@ public final class Tuple1<T1> implements IStructuralEquatable, IStructuralCompar
         if (other == null)
             return 1;
         if (!(other instanceof Tuple1))
-            throw Errors.tupleIncorrectType(this.getClass(), "other");
+            ThrowHelper.throwTupleIncorrectTypeException(this.getClass(), ExceptionArgument.other);
         //noinspection unchecked
         return comparer.compare(this.item1, ((Tuple1) other).item1);
     }
@@ -79,15 +81,15 @@ public final class Tuple1<T1> implements IStructuralEquatable, IStructuralCompar
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("(");
-        return this.toString(builder);
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        return this.toString(sb);
     }
 
     @Override
-    public String toString(StringBuilder builder) {
-        builder.append(this.item1);
-        builder.append(")");
-        return builder.toString();
+    public String toString(StringBuilder sb) {
+        sb.append(this.item1);
+        sb.append(")");
+        return sb.toString();
     }
 }
