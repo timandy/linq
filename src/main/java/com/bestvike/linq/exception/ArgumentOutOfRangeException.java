@@ -38,7 +38,7 @@ public final class ArgumentOutOfRangeException extends ArgumentException {
     public String getMessage() {
         String s = super.getMessage();
         if (this.actualValue != null) {
-            String valueMessage = String.format(SR.ArgumentOutOfRange_ActualValue, this.actualValue.toString());
+            String valueMessage = String.format(SR.ArgumentOutOfRange_ActualValue, this.actualValue);
             if (s == null)
                 return valueMessage;
             return s + Environment.NewLine + valueMessage;
