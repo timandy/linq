@@ -2,7 +2,8 @@ package com.bestvike.collections.generic;
 
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.bridge.enumerator.ArrayEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.Collection;
@@ -16,7 +17,7 @@ public final class Array<T> implements IList<T>, Cloneable {
 
     public Array(Object[] elements) {
         if (elements == null)
-            throw Errors.argumentNull("elements");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.elements);
         this.elements = elements;
     }
 

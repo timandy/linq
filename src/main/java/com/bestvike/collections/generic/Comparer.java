@@ -1,7 +1,8 @@
 package com.bestvike.collections.generic;
 
 import com.bestvike.IComparison;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.text.Collator;
 import java.util.Comparator;
@@ -11,9 +12,8 @@ import java.util.Locale;
  * Created by 许崇雷 on 2017-07-18.
  */
 public final class Comparer<T> implements Comparator<T> {
-    private static final Comparer DEFAULT = new Comparer(null);
+    private static final Comparer DEFAULT = new Comparer(Collator.getInstance());
     private static final Comparer DEFAULT_INVARIANT = new Comparer(Collator.getInstance(Locale.ROOT));
-    private static final Comparer DEFAULT_CURRENT = new Comparer(Collator.getInstance(Locale.CHINA));
 
     private final Collator collator;
 
@@ -31,20 +31,15 @@ public final class Comparer<T> implements Comparator<T> {
         return DEFAULT_INVARIANT;
     }
 
-    public static <T> Comparator<T> DefaultCurrent() {
-        //noinspection unchecked
-        return DEFAULT_CURRENT;
-    }
-
     public static <T> Comparator<T> create(Collator collator) {
         if (collator == null)
-            throw Errors.argumentNull("collator");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.collator);
         return new Comparer<>(collator);
     }
 
     public static <T> Comparator<T> create(IComparison<T> comparison) {
         if (comparison == null)
-            throw Errors.argumentNull("comparison");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.comparison);
         return new ComparisonComparer<>(comparison);
     }
 
@@ -56,7 +51,7 @@ public final class Comparer<T> implements Comparator<T> {
             return -1;
         if (y == null)
             return 1;
-        if (this.collator != null && x instanceof String && y instanceof String)
+        if (x instanceof String && y instanceof String)
             return this.collator.compare((String) x, (String) y);
         if (x instanceof Comparable)
             //noinspection unchecked
@@ -64,6 +59,7 @@ public final class Comparer<T> implements Comparator<T> {
         if (y instanceof Comparable)
             //noinspection unchecked
             return -((Comparable) y).compareTo(x);
-        throw Errors.implementComparable();
+        ThrowHelper.throwImplementComparableException();
+        return 0;
     }
 }

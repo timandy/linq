@@ -27,19 +27,19 @@ public final class EqualityComparer<T> implements IEqualityComparer<T> {
     }
 
     public int indexOf(Object[] array, Object value, int startIndex, int count) {
-        int num = startIndex + count;
-        for (int index = startIndex; index < num; ++index) {
-            if (this.equals(array[index], value))
-                return index;
+        int endIndex = startIndex + count;
+        for (int i = startIndex; i < endIndex; i++) {
+            if (this.equals(array[i], value))
+                return i;
         }
         return -1;
     }
 
     public int lastIndexOf(T[] array, T value, int startIndex, int count) {
-        int num = startIndex - count + 1;
-        for (int index = startIndex; index >= num; --index) {
-            if (this.equals(array[index], value))
-                return index;
+        int endIndex = startIndex - count + 1;
+        for (int i = startIndex; i >= endIndex; i--) {
+            if (this.equals(array[i], value))
+                return i;
         }
         return -1;
     }
