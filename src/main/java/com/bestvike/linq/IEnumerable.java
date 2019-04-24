@@ -45,6 +45,7 @@ import com.bestvike.linq.enumerable.Union;
 import com.bestvike.linq.enumerable.UnionBy;
 import com.bestvike.linq.enumerable.Where;
 import com.bestvike.linq.enumerable.Zip;
+import com.bestvike.tuple.Tuple2;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -906,6 +907,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default IEnumerable<TSource> where(Func2<TSource, Integer, Boolean> predicate) {
         return Where.where(this, predicate);
+    }
+
+    default <TSecond> IEnumerable<Tuple2<TSource, TSecond>> zip(IEnumerable<TSecond> second) {
+        return Zip.zip(this, second);
     }
 
     default <TSecond, TResult> IEnumerable<TResult> zip(IEnumerable<TSecond> second, Func2<TSource, TSecond, TResult> resultSelector) {
