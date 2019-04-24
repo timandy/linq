@@ -2,7 +2,8 @@ package com.bestvike.linq.util;
 
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +27,9 @@ public final class ListUtils {
 
     public static <T> void addRange(List<T> list, IEnumerable<T> enumerable) {
         if (list == null)
-            throw Errors.argumentNull("list");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.list);
         if (enumerable == null)
-            throw Errors.argumentNull("enumerable");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.enumerable);
 
         if (enumerable instanceof ICollection) {
             ICollection<T> collection = (ICollection<T>) enumerable;

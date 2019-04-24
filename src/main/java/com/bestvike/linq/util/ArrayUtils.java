@@ -1,7 +1,8 @@
 package com.bestvike.linq.util;
 
 import com.bestvike.collections.generic.EqualityComparer;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -57,27 +58,27 @@ public final class ArrayUtils {
 
     public static <T> int indexOf(T[] array, T item, int startIndex, int count) {
         if (array == null)
-            throw Errors.argumentNull("array");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
         if (startIndex > array.length)
-            throw Errors.argumentOutOfRange("startIndex");
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
         if (count < 0 || startIndex > array.length - count)
-            throw Errors.argumentOutOfRange("count");
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
 
         return EqualityComparer.Default().indexOf(array, item, startIndex, count);
     }
 
     public static Object[] clone(Object[] array) {
         if (array == null)
-            throw Errors.argumentNull("array");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
 
         return array.clone();
     }
 
     public static Object[] resize(Object[] array, int newSize) {
         if (array == null)
-            throw Errors.argumentNull("array");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
         if (newSize < 0)
-            throw Errors.argumentOutOfRange("newSize");
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.newSize);
 
         int oldSize = array.length;
         if (oldSize == newSize)
@@ -89,7 +90,7 @@ public final class ArrayUtils {
 
     public static <T> void fill(T[] array, T value) {
         if (array == null)
-            throw Errors.argumentNull("array");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
 
         for (int i = 0, length = array.length; i < length; i++)
             array[i] = value;
@@ -97,7 +98,7 @@ public final class ArrayUtils {
 
     public static <T> void reverse(T[] array) {
         if (array == null)
-            throw Errors.argumentNull("array");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
 
         int length = array.length;
         for (int i = 0, mid = length >> 1, j = length - 1; i < mid; i++, j--) {
@@ -127,48 +128,14 @@ public final class ArrayUtils {
     }
 
     public static <T> Collection<T> toCollection(Object[] source) {
-        return new AnonymousCollection<T>() {
-            @Override
-            public int size() {
-                return source.length;
-            }
-
-            @Override
-            public Object[] toArray() {
-                return source;
-            }
-
-            @Override
-            public Iterator<T> iterator() {
-                return new ArrayIterator<>(source);
-            }
-        };
+        return new ArrayCollection<>(source);
     }
 
     public static <T> Collection<T> toCollection(Object[] source, int startIndex, int count) {
-        return new AnonymousCollection<T>() {
-            @Override
-            public int size() {
-                return count;
-            }
-
-            @Override
-            public Object[] toArray() {
-                if (startIndex == 0 && count == source.length)
-                    return source;
-                Object[] array = new Object[count];
-                System.arraycopy(source, startIndex, array, 0, count);
-                return array;
-            }
-
-            @Override
-            public Iterator<T> iterator() {
-                return new ArrayIterator<>(source, startIndex, count);
-            }
-        };
+        return new ArrayRangeCollection<>(source, startIndex, count);
     }
 
-    private static abstract class AnonymousCollection<T> implements Collection<T> {
+    private static abstract class AbstractCollection<T> implements Collection<T> {
         @Override
         public boolean isEmpty() {
             return this.size() == 0;
@@ -176,63 +143,147 @@ public final class ArrayUtils {
 
         @Override
         public boolean contains(Object o) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return false;
         }
 
         @Override
         public <E> E[] toArray(E[] a) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return null;
         }
 
         @Override
         public boolean add(T t) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return false;
         }
 
         @Override
         public boolean remove(Object o) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return false;
         }
 
         @Override
         public boolean containsAll(Collection<?> c) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return false;
         }
 
         @Override
         public boolean addAll(Collection<? extends T> c) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return false;
         }
 
         @Override
         public boolean removeAll(Collection<?> c) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return false;
         }
 
         @Override
         public boolean retainAll(Collection<?> c) {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+            return false;
         }
 
         @Override
         public void clear() {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
+        }
+    }
+
+    private static final class ArrayCollection<T> extends AbstractCollection<T> {
+        private final Object[] source;
+
+        ArrayCollection(Object[] source) {
+            this.source = source;
+        }
+
+        @Override
+        public int size() {
+            return this.source.length;
+        }
+
+        @Override
+        public Object[] toArray() {
+            return this.source;
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            return new ArrayIterator<>(this.source);
+        }
+    }
+
+    private static final class ArrayRangeCollection<T> extends AbstractCollection<T> {
+        private final Object[] source;
+        private final int startIndex;
+        private final int count;
+
+        ArrayRangeCollection(Object[] source, int startIndex, int count) {
+            this.source = source;
+            this.startIndex = startIndex;
+            this.count = count;
+        }
+
+        @Override
+        public int size() {
+            return this.count;
+        }
+
+        @Override
+        public Object[] toArray() {
+            if (this.startIndex == 0 && this.count == this.source.length)
+                return this.source;
+            Object[] array = new Object[this.count];
+            System.arraycopy(this.source, this.startIndex, array, 0, this.count);
+            return array;
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            return new ArrayRangeIterator<>(this.source, this.startIndex, this.count);
         }
     }
 
     private static final class ArrayIterator<E> implements Iterator<E> {
         private final Object[] source;
-        private final int endIndex;
         private int index;
 
         ArrayIterator(final Object[] source) {
-            this(source, 0, source.length);
+            this.source = source;
+            this.index = 0;
         }
 
-        ArrayIterator(final Object[] source, final int index, final int count) {
+        @Override
+        public boolean hasNext() {
+            return this.index < this.source.length;
+        }
+
+        @Override
+        public E next() {
+            //noinspection unchecked
+            return (E) this.source[this.index++];
+        }
+
+        @Override
+        public void remove() {
+            ThrowHelper.throwNotSupportedException();
+        }
+    }
+
+    private static final class ArrayRangeIterator<E> implements Iterator<E> {
+        private final Object[] source;
+        private final int endIndex;
+        private int index;
+
+        ArrayRangeIterator(final Object[] source, final int startIndex, final int count) {
             this.source = source;
-            this.index = index;
-            this.endIndex = Math.addExact(index, count);
+            this.index = startIndex;
+            this.endIndex = Math.addExact(startIndex, count);
         }
 
         @Override
@@ -248,7 +299,7 @@ public final class ArrayUtils {
 
         @Override
         public void remove() {
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
         }
     }
 }
