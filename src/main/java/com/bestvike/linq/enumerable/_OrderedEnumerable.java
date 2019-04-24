@@ -386,7 +386,6 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         private int maxIdx;
         private Buffer<TElement> buffer;
         private Integer[] map;
-        private int count;
 
         private OrderedEnumerableRangeEnumerator(int minIdx, int maxIdx) {
             this.minIdx = minIdx;
@@ -398,15 +397,15 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
             switch (this.state) {
                 case 0:
                     this.buffer = new Buffer<>(AbstractOrderedEnumerable.this.source);
-                    this.count = this.buffer.count;
-                    if (this.count < this.minIdx) {
+                    int count = this.buffer.count;
+                    if (count < this.minIdx) {
                         this.close();
                         return false;
                     }
-                    if (this.count <= this.maxIdx)
-                        this.maxIdx = this.count - 1;
+                    if (count <= this.maxIdx)
+                        this.maxIdx = count - 1;
                     if (this.minIdx == this.maxIdx) {
-                        this.current = AbstractOrderedEnumerable.this.getEnumerableSorter().elementAt(this.buffer.items, this.count, this.minIdx);
+                        this.current = AbstractOrderedEnumerable.this.getEnumerableSorter().elementAt(this.buffer.items, count, this.minIdx);
                         this.state = 2;
                         return true;
                     }
