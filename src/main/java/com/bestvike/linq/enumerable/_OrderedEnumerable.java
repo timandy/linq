@@ -6,7 +6,8 @@ import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IOrderedEnumerable;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 import com.bestvike.out;
@@ -447,9 +448,9 @@ final class OrderedEnumerable<TElement, TKey> extends AbstractOrderedEnumerable<
 
     OrderedEnumerable(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, Comparator<TKey> comparer, boolean descending, AbstractOrderedEnumerable<TElement> parent) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         this.source = source;
         this.parent = parent;

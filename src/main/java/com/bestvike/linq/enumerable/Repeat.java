@@ -2,7 +2,8 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 
@@ -18,7 +19,7 @@ public final class Repeat {
 
     public static <TResult> IEnumerable<TResult> repeat(TResult element, int count) {
         if (count < 0)
-            throw Errors.argumentOutOfRange("count");
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
 
         if (count == 0)
             return EmptyPartition.instance();

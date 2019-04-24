@@ -5,7 +5,8 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -19,7 +20,7 @@ public final class Take {
 
     public static <TSource> IEnumerable<TSource> take(IEnumerable<TSource> source, int count) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (count <= 0)
             return EmptyPartition.instance();
@@ -39,25 +40,25 @@ public final class Take {
 
     public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         return new TakeWhileIterator<>(source, predicate);
     }
 
     public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         return new TakeWhileIterator2<>(source, predicate);
     }
 
     public static <TSource> IEnumerable<TSource> takeLast(IEnumerable<TSource> source, int count) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (count <= 0)
             return EmptyPartition.instance();

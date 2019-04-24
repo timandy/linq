@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.out;
 
 /**
@@ -15,7 +16,7 @@ public final class ElementAt {
 
     public static <TSource> TSource elementAt(IEnumerable<TSource> source, int index) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof IPartition) {
             IPartition<TSource> partition = (IPartition<TSource>) source;
@@ -39,12 +40,13 @@ public final class ElementAt {
                 }
             }
         }
-        throw Errors.argumentOutOfRange("index");
+        ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.index);
+        return null;
     }
 
     public static <TSource> TSource elementAtOrDefault(IEnumerable<TSource> source, int index) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof IPartition) {
             IPartition<TSource> partition = (IPartition<TSource>) source;

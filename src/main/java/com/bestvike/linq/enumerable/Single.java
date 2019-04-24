@@ -4,7 +4,8 @@ import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-05-04.
@@ -15,34 +16,36 @@ public final class Single {
 
     public static <TSource> TSource single(IEnumerable<TSource> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof IList) {
             IList<TSource> list = (IList<TSource>) source;
             switch (list._getCount()) {
                 case 0:
-                    throw Errors.noElements();
+                    ThrowHelper.throwNoElementsException();
+                    return null;
                 case 1:
                     return list.get(0);
             }
         } else {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 if (!e.moveNext())
-                    throw Errors.noElements();
+                    ThrowHelper.throwNoElementsException();
                 TSource result = e.current();
                 if (!e.moveNext())
                     return result;
             }
         }
 
-        throw Errors.moreThanOneElement();
+        ThrowHelper.throwMoreThanOneElementException();
+        return null;
     }
 
     public static <TSource> TSource single(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -50,19 +53,20 @@ public final class Single {
                 if (predicate.apply(result)) {
                     while (e.moveNext()) {
                         if (predicate.apply(e.current()))
-                            throw Errors.moreThanOneMatch();
+                            ThrowHelper.throwMoreThanOneMatchException();
                     }
                     return result;
                 }
             }
         }
 
-        throw Errors.noMatch();
+        ThrowHelper.throwNoMatchException();
+        return null;
     }
 
     public static <TSource> TSource singleOrDefault(IEnumerable<TSource> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof IList) {
             IList<TSource> list = (IList<TSource>) source;
@@ -82,14 +86,15 @@ public final class Single {
             }
         }
 
-        throw Errors.moreThanOneElement();
+        ThrowHelper.throwMoreThanOneElementException();
+        return null;
     }
 
     public static <TSource> TSource singleOrDefault(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -97,7 +102,7 @@ public final class Single {
                 if (predicate.apply(result)) {
                     while (e.moveNext()) {
                         if (predicate.apply(e.current()))
-                            throw Errors.moreThanOneMatch();
+                            ThrowHelper.throwMoreThanOneMatchException();
                     }
                     return result;
                 }

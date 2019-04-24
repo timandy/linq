@@ -4,7 +4,8 @@ import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-05-09.
@@ -19,11 +20,11 @@ public final class UnionBy {
 
     public static <TSource, TKey> IEnumerable<TSource> unionBy(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         if (first == null)
-            throw Errors.argumentNull("first");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.first);
         if (second == null)
-            throw Errors.argumentNull("second");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.second);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         return new UnionByIterator<>(first, second, keySelector, comparer);
     }

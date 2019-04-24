@@ -4,7 +4,8 @@ import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.out;
 
 /**
@@ -18,7 +19,7 @@ public final class First {
         out<Boolean> foundRef = out.init();
         TSource first = tryGetFirst(source, foundRef);
         if (!foundRef.value)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return first;
     }
 
@@ -26,7 +27,7 @@ public final class First {
         out<Boolean> foundRef = out.init();
         TSource first = tryGetFirst(source, predicate, foundRef);
         if (!foundRef.value)
-            throw Errors.noMatch();
+            ThrowHelper.throwNoMatchException();
         return first;
     }
 
@@ -42,7 +43,7 @@ public final class First {
 
     private static <TSource> TSource tryGetFirst(IEnumerable<TSource> source, out<Boolean> found) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof IPartition) {
             IPartition<TSource> partition = (IPartition<TSource>) source;
@@ -70,9 +71,9 @@ public final class First {
 
     private static <TSource> TSource tryGetFirst(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate, out<Boolean> found) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         if (source instanceof AbstractOrderedEnumerable) {
             AbstractOrderedEnumerable<TSource> ordered = (AbstractOrderedEnumerable<TSource>) source;

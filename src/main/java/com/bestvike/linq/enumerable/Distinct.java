@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public final class Distinct {
 
     public static <TSource> IEnumerable<TSource> distinct(IEnumerable<TSource> source, IEqualityComparer<TSource> comparer) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new DistinctIterator<>(source, comparer);
     }

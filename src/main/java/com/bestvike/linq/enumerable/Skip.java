@@ -5,7 +5,8 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -19,7 +20,7 @@ public final class Skip {
 
     public static <TSource> IEnumerable<TSource> skip(IEnumerable<TSource> source, int count) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (count <= 0) {
             if (source instanceof Iterator || source instanceof IPartition)
@@ -40,25 +41,25 @@ public final class Skip {
 
     public static <TSource> IEnumerable<TSource> skipWhile(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         return new SkipWhileIterator<>(source, predicate);
     }
 
     public static <TSource> IEnumerable<TSource> skipWhile(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         return new SkipWhileIterator2<>(source, predicate);
     }
 
     public static <TSource> IEnumerable<TSource> skipLast(IEnumerable<TSource> source, int count) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (count <= 0)
             return source.skip(0);

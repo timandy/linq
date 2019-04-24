@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-05-09.
@@ -14,11 +15,11 @@ public final class Zip {
 
     public static <TFirst, TSecond, TResult> IEnumerable<TResult> zip(IEnumerable<TFirst> first, IEnumerable<TSecond> second, Func2<TFirst, TSecond, TResult> resultSelector) {
         if (first == null)
-            throw Errors.argumentNull("first");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.first);
         if (second == null)
-            throw Errors.argumentNull("second");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.second);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         return new ZipIterator<>(first, second, resultSelector);
     }

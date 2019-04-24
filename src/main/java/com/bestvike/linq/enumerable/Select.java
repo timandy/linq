@@ -6,7 +6,8 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 import com.bestvike.linq.util.Utilities;
@@ -24,9 +25,9 @@ public final class Select {
 
     public static <TSource, TResult> IEnumerable<TResult> select(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         if (source instanceof Iterator) {
             Iterator<TSource> iterator = (Iterator<TSource>) source;
@@ -56,10 +57,10 @@ public final class Select {
 
     public static <TSource, TResult> IEnumerable<TResult> select(IEnumerable<TSource> source, Func2<TSource, Integer, TResult> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         return new SelectIterator<>(source, selector);
     }

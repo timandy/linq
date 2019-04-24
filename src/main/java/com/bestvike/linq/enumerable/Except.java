@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-04-28.
@@ -18,9 +19,9 @@ public final class Except {
 
     public static <TSource> IEnumerable<TSource> except(IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
         if (first == null)
-            throw Errors.argumentNull("first");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.first);
         if (second == null)
-            throw Errors.argumentNull("second");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.second);
 
         return new ExceptIterator<>(first, second, comparer);
     }

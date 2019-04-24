@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * 迭代器,初始 state 为 0
@@ -37,12 +37,13 @@ public abstract class AbstractEnumerator<TSource> implements IEnumerator<TSource
             this.checkedNext = false;
             return this.current();
         }
-        throw Errors.noSuchElement();
+        ThrowHelper.throwNoSuchElementException();
+        return null;
     }
 
     @Override
     public void reset() {
-        throw Errors.notSupported();
+        ThrowHelper.throwNotSupportedException();
     }
 
     @Override

@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2017-09-11.
@@ -14,7 +15,7 @@ public final class AnyAll {
 
     public static <TSource> boolean any(IEnumerable<TSource> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             return e.moveNext();
@@ -23,9 +24,9 @@ public final class AnyAll {
 
     public static <TSource> boolean any(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -38,9 +39,9 @@ public final class AnyAll {
 
     public static <TSource> boolean all(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {

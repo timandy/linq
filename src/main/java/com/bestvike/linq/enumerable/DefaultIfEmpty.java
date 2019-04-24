@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public final class DefaultIfEmpty {
 
     public static <TSource> IEnumerable<TSource> defaultIfEmpty(IEnumerable<TSource> source, TSource defaultValue) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new DefaultIfEmptyIterator<>(source, defaultValue);
     }

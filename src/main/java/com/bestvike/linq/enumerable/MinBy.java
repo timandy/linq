@@ -4,7 +4,8 @@ import com.bestvike.collections.generic.Comparer;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -18,9 +19,9 @@ public final class MinBy {
 
     public static <TSource> TSource minByInt(IEnumerable<TSource> source, Func1<TSource, Integer> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Integer key;
@@ -41,14 +42,15 @@ public final class MinBy {
                 return value;
             }
         }
-        throw Errors.noElements();
+        ThrowHelper.throwNoElementsException();
+        return null;
     }
 
     public static <TSource> TSource minByIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Integer key;
@@ -74,9 +76,9 @@ public final class MinBy {
 
     public static <TSource> TSource minByLong(IEnumerable<TSource> source, Func1<TSource, Long> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Long key;
@@ -97,14 +99,15 @@ public final class MinBy {
                 return value;
             }
         }
-        throw Errors.noElements();
+        ThrowHelper.throwNoElementsException();
+        return null;
     }
 
     public static <TSource> TSource minByLongNull(IEnumerable<TSource> source, Func1<TSource, Long> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Long key;
@@ -130,9 +133,9 @@ public final class MinBy {
 
     public static <TSource> TSource minByFloat(IEnumerable<TSource> source, Func1<TSource, Float> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Float key;
@@ -153,14 +156,15 @@ public final class MinBy {
                 return value;
             }
         }
-        throw Errors.noElements();
+        ThrowHelper.throwNoElementsException();
+        return null;
     }
 
     public static <TSource> TSource minByFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Float key;
@@ -186,9 +190,9 @@ public final class MinBy {
 
     public static <TSource> TSource minByDouble(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Double key;
@@ -209,14 +213,15 @@ public final class MinBy {
                 return value;
             }
         }
-        throw Errors.noElements();
+        ThrowHelper.throwNoElementsException();
+        return null;
     }
 
     public static <TSource> TSource minByDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         Double key;
@@ -242,9 +247,9 @@ public final class MinBy {
 
     public static <TSource> TSource minByDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         BigDecimal key;
@@ -265,14 +270,15 @@ public final class MinBy {
                 return value;
             }
         }
-        throw Errors.noElements();
+        ThrowHelper.throwNoElementsException();
+        return null;
     }
 
     public static <TSource> TSource minByDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         TSource value;
         BigDecimal key;
@@ -298,9 +304,9 @@ public final class MinBy {
 
     public static <TSource, TKey> TSource minBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         Comparator<TKey> comparer = Comparer.Default();
         TSource value;
@@ -322,14 +328,15 @@ public final class MinBy {
                 return value;
             }
         }
-        throw Errors.noElements();
+        ThrowHelper.throwNoElementsException();
+        return null;
     }
 
     public static <TSource, TKey> TSource minByNull(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         Comparator<TKey> comparer = Comparer.Default();
         TSource value;

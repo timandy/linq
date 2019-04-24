@@ -6,7 +6,8 @@ import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.List;
 
@@ -58,9 +59,9 @@ final class GroupedEnumerable<TSource, TKey> implements IIListProvider<IGrouping
 
     GroupedEnumerable(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         this.source = source;
         this.keySelector = keySelector;
@@ -105,11 +106,11 @@ final class GroupedEnumerable2<TSource, TKey, TElement> implements IIListProvide
 
     GroupedEnumerable2(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
         if (elementSelector == null)
-            throw Errors.argumentNull("elementSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.elementSelector);
 
         this.source = source;
         this.keySelector = keySelector;
@@ -155,11 +156,11 @@ final class GroupedResultEnumerable<TSource, TKey, TResult> implements IIListPro
 
     GroupedResultEnumerable(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         this.source = source;
         this.keySelector = keySelector;
@@ -204,13 +205,13 @@ final class GroupedResultEnumerable2<TSource, TKey, TElement, TResult> implement
 
     GroupedResultEnumerable2(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
         if (elementSelector == null)
-            throw Errors.argumentNull("elementSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.elementSelector);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         this.source = source;
         this.keySelector = keySelector;

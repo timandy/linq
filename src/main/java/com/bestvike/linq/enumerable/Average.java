@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -18,13 +19,13 @@ public final class Average {
     public static double averageInt(IEnumerable<Integer> source) {
         Double value = averageIntNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Double averageIntNull(IEnumerable<Integer> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         try (IEnumerator<Integer> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -49,13 +50,13 @@ public final class Average {
     public static double averageLong(IEnumerable<Long> source) {
         Double value = averageLongNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Double averageLongNull(IEnumerable<Long> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         try (IEnumerator<Long> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -80,13 +81,13 @@ public final class Average {
     public static float averageFloat(IEnumerable<Float> source) {
         Float value = averageFloatNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Float averageFloatNull(IEnumerable<Float> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         try (IEnumerator<Float> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -111,13 +112,13 @@ public final class Average {
     public static double averageDouble(IEnumerable<Double> source) {
         Double value = averageDoubleNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Double averageDoubleNull(IEnumerable<Double> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         try (IEnumerator<Double> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -142,13 +143,13 @@ public final class Average {
     public static BigDecimal averageDecimal(IEnumerable<BigDecimal> source) {
         BigDecimal value = averageDecimalNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static BigDecimal averageDecimalNull(IEnumerable<BigDecimal> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         try (IEnumerator<BigDecimal> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -173,15 +174,15 @@ public final class Average {
     public static <TSource> double averageInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
         Double value = averageIntNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Double averageIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -206,15 +207,15 @@ public final class Average {
     public static <TSource> double averageLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
         Double value = averageLongNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Double averageLongNull(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -239,15 +240,15 @@ public final class Average {
     public static <TSource> float averageFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
         Float value = averageFloatNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Float averageFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -272,15 +273,15 @@ public final class Average {
     public static <TSource> double averageDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
         Double value = averageDoubleNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Double averageDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -305,15 +306,15 @@ public final class Average {
     public static <TSource> BigDecimal averageDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         BigDecimal value = averageDecimalNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> BigDecimal averageDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {

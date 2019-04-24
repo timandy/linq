@@ -6,7 +6,8 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.Utilities;
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public final class Where {
 
     public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         if (source instanceof Iterator) {
             Iterator<TSource> iterator = (Iterator<TSource>) source;
@@ -49,9 +50,9 @@ public final class Where {
 
     public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
-            throw Errors.argumentNull("predicate");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         return new WhereIterator<>(source, predicate);
     }

@@ -4,7 +4,8 @@ import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
 import com.bestvike.linq.bridge.enumerator.ArrayEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.Collection;
@@ -50,7 +51,7 @@ final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IList
     @Override
     public TElement get(int index) {
         if (index < 0 || index >= this.count)
-            throw Errors.argumentOutOfRange("index");
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.index);
         //noinspection unchecked
         return (TElement) this.elements[index];
     }

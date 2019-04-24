@@ -4,7 +4,8 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -21,9 +22,9 @@ public final class ToCollection {
 
     public static <TSource> TSource[] toArray(IEnumerable<TSource> source, Class<TSource> clazz) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (clazz == null)
-            throw Errors.argumentNull("clazz");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
 
         if (source instanceof IIListProvider) {
             IIListProvider<TSource> listProvider = (IIListProvider<TSource>) source;
@@ -35,7 +36,7 @@ public final class ToCollection {
 
     public static <TSource> Object[] toArray(IEnumerable<TSource> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof IIListProvider) {
             IIListProvider<TSource> listProvider = (IIListProvider<TSource>) source;
@@ -47,7 +48,7 @@ public final class ToCollection {
 
     public static <TSource> List<TSource> toList(IEnumerable<TSource> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof IIListProvider) {
             IIListProvider<TSource> listProvider = (IIListProvider<TSource>) source;
@@ -59,9 +60,9 @@ public final class ToCollection {
 
     public static <TSource, TKey> Map<TKey, TSource> toMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
         int capacity = 0;
         if (source instanceof ICollection) {
@@ -89,11 +90,11 @@ public final class ToCollection {
 
     public static <TSource, TKey, TElement> Map<TKey, TElement> toMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
-            throw Errors.argumentNull("keySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
         if (elementSelector == null)
-            throw Errors.argumentNull("elementSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.elementSelector);
 
         int capacity = 0;
         if (source instanceof ICollection) {
@@ -121,7 +122,7 @@ public final class ToCollection {
 
     public static <TSource> Set<TSource> toSet(IEnumerable<TSource> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         // Don't pre-allocate based on knowledge of size, as potentially many elements will be dropped.
         int capacity = 0;

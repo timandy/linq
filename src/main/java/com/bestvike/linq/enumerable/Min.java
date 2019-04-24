@@ -4,7 +4,8 @@ import com.bestvike.collections.generic.Comparer;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -19,13 +20,13 @@ public final class Min {
     public static int minInt(IEnumerable<Integer> source) {
         Integer value = minIntNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Integer minIntNull(IEnumerable<Integer> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         Integer value;
         try (IEnumerator<Integer> e = source.enumerator()) {
@@ -47,13 +48,13 @@ public final class Min {
     public static long minLong(IEnumerable<Long> source) {
         Long value = minLongNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Long minLongNull(IEnumerable<Long> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         Long value;
         try (IEnumerator<Long> e = source.enumerator()) {
@@ -75,13 +76,13 @@ public final class Min {
     public static float minFloat(IEnumerable<Float> source) {
         Float value = minFloatNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Float minFloatNull(IEnumerable<Float> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         Float value;
         try (IEnumerator<Float> e = source.enumerator()) {
@@ -103,13 +104,13 @@ public final class Min {
     public static double minDouble(IEnumerable<Double> source) {
         Double value = minDoubleNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static Double minDoubleNull(IEnumerable<Double> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         Double value;
         try (IEnumerator<Double> e = source.enumerator()) {
@@ -131,13 +132,13 @@ public final class Min {
     public static BigDecimal minDecimal(IEnumerable<BigDecimal> source) {
         BigDecimal value = minDecimalNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static BigDecimal minDecimalNull(IEnumerable<BigDecimal> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         BigDecimal value;
         try (IEnumerator<BigDecimal> e = source.enumerator()) {
@@ -159,13 +160,13 @@ public final class Min {
     public static <TSource> TSource min(IEnumerable<TSource> source) {
         TSource value = minNull(source);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> TSource minNull(IEnumerable<TSource> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         Comparator<TSource> comparer = Comparer.Default();
         TSource value;
@@ -188,15 +189,15 @@ public final class Min {
     public static <TSource> int minInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
         Integer value = minIntNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Integer minIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         Integer value;
         try (IEnumerator<TSource> e = source.enumerator()) {
@@ -218,15 +219,15 @@ public final class Min {
     public static <TSource> long minLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
         Long value = minLongNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Long minLongNull(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         Long value;
         try (IEnumerator<TSource> e = source.enumerator()) {
@@ -248,15 +249,15 @@ public final class Min {
     public static <TSource> float minFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
         Float value = minFloatNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Float minFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         Float value;
         try (IEnumerator<TSource> e = source.enumerator()) {
@@ -278,15 +279,15 @@ public final class Min {
     public static <TSource> double minDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
         Double value = minDoubleNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> Double minDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         Double value;
         try (IEnumerator<TSource> e = source.enumerator()) {
@@ -308,15 +309,15 @@ public final class Min {
     public static <TSource> BigDecimal minDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         BigDecimal value = minDecimalNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource> BigDecimal minDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         BigDecimal value;
         try (IEnumerator<TSource> e = source.enumerator()) {
@@ -338,15 +339,15 @@ public final class Min {
     public static <TSource, TResult> TResult min(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
         TResult value = minNull(source, selector);
         if (value == null)
-            throw Errors.noElements();
+            ThrowHelper.throwNoElementsException();
         return value;
     }
 
     public static <TSource, TResult> TResult minNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
-            throw Errors.argumentNull("selector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         Comparator<TResult> comparer = Comparer.Default();
         TResult value;

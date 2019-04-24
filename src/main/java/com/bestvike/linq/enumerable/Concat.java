@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 import com.bestvike.out;
@@ -20,9 +21,9 @@ public final class Concat {
 
     public static <TSource> IEnumerable<TSource> concat(IEnumerable<TSource> first, IEnumerable<TSource> second) {
         if (first == null)
-            throw Errors.argumentNull("first");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.first);
         if (second == null)
-            throw Errors.argumentNull("second");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.second);
 
         if (first instanceof ConcatIterator) {
             ConcatIterator<TSource> firstConcat = (ConcatIterator<TSource>) first;

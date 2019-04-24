@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 
@@ -20,7 +21,7 @@ public final class AppendPrepend {
 
     public static <TSource> IEnumerable<TSource> append(IEnumerable<TSource> source, TSource element) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof AppendPrependIterator) {
             AppendPrependIterator<TSource> appendable = (AppendPrependIterator<TSource>) source;
@@ -31,7 +32,7 @@ public final class AppendPrepend {
 
     public static <TSource> IEnumerable<TSource> prepend(IEnumerable<TSource> source, TSource element) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof AppendPrependIterator) {
             AppendPrependIterator<TSource> appendable = (AppendPrependIterator<TSource>) source;

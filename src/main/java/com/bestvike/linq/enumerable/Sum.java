@@ -2,7 +2,8 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 import java.math.BigDecimal;
 
@@ -15,7 +16,7 @@ public final class Sum {
 
     public static int sumInt(IEnumerable<Integer> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         int sum = 0;
         for (Integer v : source)
@@ -26,7 +27,7 @@ public final class Sum {
 
     public static long sumLong(IEnumerable<Long> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         long sum = 0;
         for (Long v : source)
@@ -37,7 +38,7 @@ public final class Sum {
 
     public static float sumFloat(IEnumerable<Float> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
         for (Float v : source)
@@ -48,7 +49,7 @@ public final class Sum {
 
     public static double sumDouble(IEnumerable<Double> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
         for (Double v : source)
@@ -59,7 +60,7 @@ public final class Sum {
 
     public static BigDecimal sumDecimal(IEnumerable<BigDecimal> source) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         BigDecimal sum = BigDecimal.ZERO;
         for (BigDecimal v : source)
@@ -70,7 +71,7 @@ public final class Sum {
 
     public static <TSource> int sumInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         int sum = 0;
         for (TSource item : source) {
@@ -83,7 +84,7 @@ public final class Sum {
 
     public static <TSource> long sumLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         long sum = 0;
         for (TSource item : source) {
@@ -96,7 +97,7 @@ public final class Sum {
 
     public static <TSource> float sumFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
         for (TSource item : source) {
@@ -109,7 +110,7 @@ public final class Sum {
 
     public static <TSource> double sumDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
         for (TSource item : source) {
@@ -122,7 +123,7 @@ public final class Sum {
 
     public static <TSource> BigDecimal sumDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         BigDecimal sum = BigDecimal.ZERO;
         for (TSource item : source) {

@@ -5,7 +5,8 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-05-02.
@@ -20,15 +21,15 @@ public final class Join {
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (outer == null)
-            throw Errors.argumentNull("outer");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outer);
         if (inner == null)
-            throw Errors.argumentNull("inner");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.inner);
         if (outerKeySelector == null)
-            throw Errors.argumentNull("outerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outerKeySelector);
         if (innerKeySelector == null)
-            throw Errors.argumentNull("innerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.innerKeySelector);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         return new JoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
     }
@@ -47,15 +48,15 @@ public final class Join {
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (outer == null)
-            throw Errors.argumentNull("outer");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outer);
         if (inner == null)
-            throw Errors.argumentNull("inner");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.inner);
         if (outerKeySelector == null)
-            throw Errors.argumentNull("outerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outerKeySelector);
         if (innerKeySelector == null)
-            throw Errors.argumentNull("innerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.innerKeySelector);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         return new LeftJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector, comparer);
     }
@@ -74,15 +75,15 @@ public final class Join {
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TOuter defaultOuter, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (outer == null)
-            throw Errors.argumentNull("outer");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outer);
         if (inner == null)
-            throw Errors.argumentNull("inner");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.inner);
         if (outerKeySelector == null)
-            throw Errors.argumentNull("outerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outerKeySelector);
         if (innerKeySelector == null)
-            throw Errors.argumentNull("innerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.innerKeySelector);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         return new RightJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector, comparer);
     }
@@ -101,26 +102,26 @@ public final class Join {
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TOuter defaultOuter, TInner defaultInner, Func2<TOuter, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (outer == null)
-            throw Errors.argumentNull("outer");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outer);
         if (inner == null)
-            throw Errors.argumentNull("inner");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.inner);
         if (outerKeySelector == null)
-            throw Errors.argumentNull("outerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outerKeySelector);
         if (innerKeySelector == null)
-            throw Errors.argumentNull("innerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.innerKeySelector);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         return new FullJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, comparer);
     }
 
     public static <TOuter, TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func2<TOuter, TInner, TResult> resultSelector) {
         if (outer == null)
-            throw Errors.argumentNull("outer");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outer);
         if (inner == null)
-            throw Errors.argumentNull("inner");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.inner);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         return new CrossJoinIterator<>(outer, inner, resultSelector);
     }

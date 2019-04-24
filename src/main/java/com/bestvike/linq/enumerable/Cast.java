@@ -2,7 +2,8 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-04-23.
@@ -13,18 +14,18 @@ public final class Cast {
 
     public static <TResult> IEnumerable<TResult> ofType(IEnumerable source, Class<TResult> clazz) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (clazz == null)
-            throw Errors.argumentNull("clazz");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
 
         return new OfTypeIterator<>(source, clazz);
     }
 
     public static <TResult> IEnumerable<TResult> cast(IEnumerable source, Class<TResult> clazz) {
         if (source == null)
-            throw Errors.argumentNull("source");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (clazz == null)
-            throw Errors.argumentNull("clazz");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
 
         return new CastIterator<>(source, clazz);
     }

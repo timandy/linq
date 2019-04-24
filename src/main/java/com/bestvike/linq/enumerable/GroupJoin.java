@@ -5,7 +5,8 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-05-02.
@@ -20,15 +21,15 @@ public final class GroupJoin {
 
     public static <TOuter, TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<TOuter> outer, IEnumerable<TInner> inner, Func1<TOuter, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TOuter, IEnumerable<TInner>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
         if (outer == null)
-            throw Errors.argumentNull("outer");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outer);
         if (inner == null)
-            throw Errors.argumentNull("inner");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.inner);
         if (outerKeySelector == null)
-            throw Errors.argumentNull("outerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.outerKeySelector);
         if (innerKeySelector == null)
-            throw Errors.argumentNull("innerKeySelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.innerKeySelector);
         if (resultSelector == null)
-            throw Errors.argumentNull("resultSelector");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
 
         return new GroupJoinIterator<>(outer, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
     }
