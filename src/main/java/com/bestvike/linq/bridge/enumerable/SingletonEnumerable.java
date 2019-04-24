@@ -3,7 +3,8 @@ package com.bestvike.linq.bridge.enumerable;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.bridge.enumerator.SingletonEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 
@@ -30,7 +31,8 @@ public final class SingletonEnumerable<TSource> implements IList<TSource> {
     public TSource get(int index) {
         if (index == 0)
             return this.element;
-        throw Errors.argumentOutOfRange("index");
+        ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.index);
+        return null;
     }
 
     @Override

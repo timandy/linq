@@ -2,7 +2,7 @@ package com.bestvike.linq.bridge.enumerable;
 
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ThrowHelper;
 
 /**
  * Created by 许崇雷 on 2018-05-11.
@@ -18,7 +18,7 @@ public final class RunOnceEnumerable<TSource> implements IEnumerable<TSource> {
     @Override
     public IEnumerator<TSource> enumerator() {
         if (this.called)
-            throw Errors.notSupported();
+            ThrowHelper.throwNotSupportedException();
         this.called = true;
         return this.source.enumerator();
     }
