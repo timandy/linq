@@ -5,7 +5,8 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
-import com.bestvike.linq.exception.Errors;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import org.junit.Assert;
 
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public class EnumerableTest {
 
     static <T> T as(Object value, Class<T> clazz) {
         if (clazz == null)
-            throw Errors.argumentNull("clazz");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         return clazz.isInstance(value) ? (T) value : null;
     }
 
@@ -68,9 +69,9 @@ public class EnumerableTest {
 
     static void assertThrows(Class<?> clazz, Action0 action) {
         if (clazz == null)
-            throw Errors.argumentNull("clazz");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (action == null)
-            throw Errors.argumentNull("action");
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
 
         try {
             action.apply();
