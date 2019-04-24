@@ -63,6 +63,19 @@ public final class Take {
         if (count <= 0)
             return EmptyPartition.instance();
 
+        if (source instanceof IPartition) {
+            IPartition<TSource> partition = (IPartition<TSource>) source;
+            int length = partition._getCount(true);
+            if (length >= 0)
+                return length - count > 0 ? partition.skip(length - count) : partition;
+        } else if (source instanceof IList) {
+            IList<TSource> sourceList = (IList<TSource>) source;
+            int sourceCount = sourceList._getCount();
+            return sourceCount > count
+                    ? new ListPartition<>(sourceList, sourceCount - count, sourceCount)
+                    : new ListPartition<>(sourceList, 0, sourceCount);
+        }
+
         return new TakeLastIterator<>(source, count);
     }
 }
