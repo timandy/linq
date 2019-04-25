@@ -37,6 +37,7 @@ import com.bestvike.linq.enumerable.SelectMany;
 import com.bestvike.linq.enumerable.SequenceEqual;
 import com.bestvike.linq.enumerable.Single;
 import com.bestvike.linq.enumerable.Skip;
+import com.bestvike.linq.enumerable.Split;
 import com.bestvike.linq.enumerable.Sum;
 import com.bestvike.linq.enumerable.Take;
 import com.bestvike.linq.enumerable.ToCollection;
@@ -45,6 +46,8 @@ import com.bestvike.linq.enumerable.Union;
 import com.bestvike.linq.enumerable.UnionBy;
 import com.bestvike.linq.enumerable.Where;
 import com.bestvike.linq.enumerable.Zip;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.tuple.Tuple2;
 
 import java.math.BigDecimal;
@@ -53,6 +56,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Spliterator;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by 许崇雷 on 2017-07-10.
@@ -63,6 +70,31 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default Iterator<TSource> iterator() {
         return this.enumerator();
+    }
+
+    default void forEach(Consumer<? super TSource> action) {
+        if (action == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+        try (IEnumerator<TSource> enumerator = this.enumerator()) {
+            while (enumerator.moveNext())
+                action.accept(enumerator.current());
+        }
+    }
+
+    default Spliterator<TSource> spliterator() {
+        return Split.spliterator(this);
+    }
+
+    default Stream<TSource> stream() {
+        return StreamSupport.stream(this.spliterator(), false);
+    }
+
+    default Stream<TSource> stream(boolean parallel) {
+        return StreamSupport.stream(this.spliterator(), parallel);
+    }
+
+    default Stream<TSource> parallelStream() {
+        return StreamSupport.stream(this.spliterator(), true);
     }
 
     default TSource aggregate(Func2<TSource, TSource, TSource> func) {

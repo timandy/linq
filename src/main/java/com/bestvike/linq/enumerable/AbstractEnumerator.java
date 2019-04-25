@@ -1,7 +1,10 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+
+import java.util.function.Consumer;
 
 /**
  * 迭代器,初始 state 为 0
@@ -39,6 +42,19 @@ public abstract class AbstractEnumerator<TSource> implements IEnumerator<TSource
         }
         ThrowHelper.throwNoSuchElementException();
         return null;
+    }
+
+    @Override
+    public void forEachRemaining(Consumer<? super TSource> action) {
+        if (action == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+        while (this.moveNext())
+            action.accept(this.current());
+    }
+
+    @Override
+    public void remove() {
+        ThrowHelper.throwNotSupportedException();
     }
 
     @Override
