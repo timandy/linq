@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
 import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-04-28.
  */
-final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IList<TElement> {
+final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IArray<TElement> {
     TKey key;
     int hashCode;
     Object[] elements;
@@ -46,6 +46,11 @@ final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IList
     @Override
     public TKey getKey() {
         return this.key;
+    }
+
+    @Override
+    public Object getArray() {
+        return this.elements;
     }
 
     @Override

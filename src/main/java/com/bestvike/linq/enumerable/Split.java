@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -20,13 +21,33 @@ public final class Split {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof ICollection) {
+            if (source instanceof IArray) {
+                IArray<TSource> array = (IArray<TSource>) source;
+                Object arr = array.getArray();
+                Class<?> componentType = arr.getClass().getComponentType();
+                if (componentType.isPrimitive()) {
+                    if (componentType == int.class) {
+                        //noinspection unchecked
+                        return (Spliterator<TSource>) Spliterators.spliterator((int[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
+                    } else if (componentType == long.class) {
+                        //noinspection unchecked
+                        return (Spliterator<TSource>) Spliterators.spliterator((long[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
+                    } else if (componentType == double.class) {
+                        //noinspection unchecked
+                        return (Spliterator<TSource>) Spliterators.spliterator((double[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
+                    }
+                } else {
+                    return Spliterators.spliterator((Object[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
+                }
+            }
+
             ICollection<TSource> collection = (ICollection<TSource>) source;
             return Spliterators.spliterator(collection.getCollection(), Spliterator.IMMUTABLE);
         }
 
         if (source instanceof IIListProvider) {
             IIListProvider<TSource> listProv = (IIListProvider<TSource>) source;
-            final int count = listProv._getCount(true);
+            int count = listProv._getCount(true);
             if (count != -1)
                 return Spliterators.spliterator(source.enumerator(), count, Spliterator.IMMUTABLE);
         }

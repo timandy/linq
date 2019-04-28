@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.ShortArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class ShortArrayEnumerable implements IList<Short> {
+public final class ShortArrayEnumerable implements IArray<Short> {
     private final short[] source;
 
     public ShortArrayEnumerable(short[] source) {
@@ -23,6 +23,11 @@ public final class ShortArrayEnumerable implements IList<Short> {
     @Override
     public IEnumerator<Short> enumerator() {
         return new ShortArrayEnumerator(this.source);
+    }
+
+    @Override
+    public Object getArray() {
+        return this.source;
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2017-07-19.
  */
-public final class Array<T> implements IList<T>, Cloneable {
+public final class Array<T> implements IArray<T>, Cloneable {
     private final Object[] elements;
 
     public Array(Object[] elements) {
@@ -24,6 +24,11 @@ public final class Array<T> implements IList<T>, Cloneable {
     @Override
     public IEnumerator<T> enumerator() {
         return new ArrayEnumerator<>(this.elements);
+    }
+
+    @Override
+    public Object getArray() {
+        return this.elements;
     }
 
     @Override

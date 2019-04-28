@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.GenericArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-04-12.
  */
-public final class GenericArrayEnumerable<TElement> implements IList<TElement> {
+public final class GenericArrayEnumerable<TElement> implements IArray<TElement> {
     private final TElement[] source;
 
     public GenericArrayEnumerable(TElement[] source) {
@@ -21,6 +21,11 @@ public final class GenericArrayEnumerable<TElement> implements IList<TElement> {
     @Override
     public IEnumerator<TElement> enumerator() {
         return new GenericArrayEnumerator<>(this.source);
+    }
+
+    @Override
+    public Object getArray() {
+        return this.source;
     }
 
     @Override

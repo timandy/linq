@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.FloatArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class FloatArrayEnumerable implements IList<Float> {
+public final class FloatArrayEnumerable implements IArray<Float> {
     private final float[] source;
 
     public FloatArrayEnumerable(float[] source) {
@@ -23,6 +23,11 @@ public final class FloatArrayEnumerable implements IList<Float> {
     @Override
     public IEnumerator<Float> enumerator() {
         return new FloatArrayEnumerator(this.source);
+    }
+
+    @Override
+    public Object getArray() {
+        return this.source;
     }
 
     @Override

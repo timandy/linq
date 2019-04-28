@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.IntegerArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -13,7 +13,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class IntegerArrayEnumerable implements IList<Integer> {
+public final class IntegerArrayEnumerable implements IArray<Integer> {
     private final int[] source;
 
     public IntegerArrayEnumerable(int[] source) {
@@ -23,6 +23,11 @@ public final class IntegerArrayEnumerable implements IList<Integer> {
     @Override
     public IEnumerator<Integer> enumerator() {
         return new IntegerArrayEnumerator(this.source);
+    }
+
+    @Override
+    public Object getArray() {
+        return this.source;
     }
 
     @Override
