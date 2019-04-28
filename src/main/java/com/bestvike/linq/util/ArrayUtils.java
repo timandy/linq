@@ -253,7 +253,7 @@ public final class ArrayUtils {
         private final Object[] source;
         private int index;
 
-        ArrayIterator(final Object[] source) {
+        ArrayIterator(Object[] source) {
             this.source = source;
             this.index = 0;
         }
@@ -280,7 +280,7 @@ public final class ArrayUtils {
         private final int endIndex;
         private int index;
 
-        ArrayRangeIterator(final Object[] source, final int startIndex, final int count) {
+        ArrayRangeIterator(Object[] source, int startIndex, int count) {
             this.source = source;
             this.index = startIndex;
             this.endIndex = Math.addExact(startIndex, count);
