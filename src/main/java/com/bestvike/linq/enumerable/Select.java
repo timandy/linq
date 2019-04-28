@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
@@ -35,8 +35,8 @@ public final class Select {
         }
 
         if (source instanceof IList) {
-            if (source instanceof Array) {
-                Array<TSource> array = (Array<TSource>) source;
+            if (source instanceof IArray) {
+                IArray<TSource> array = (IArray<TSource>) source;
                 return array._getCount() == 0
                         ? EmptyPartition.instance()
                         : new SelectArrayIterator<>(array, selector);
@@ -210,10 +210,10 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
 
 
 final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
-    private final Array<TSource> source;
+    private final IArray<TSource> source;
     private final Func1<TSource, TResult> selector;
 
-    SelectArrayIterator(Array<TSource> source, Func1<TSource, TResult> selector) {
+    SelectArrayIterator(IArray<TSource> source, Func1<TSource, TResult> selector) {
         assert source != null;
         assert selector != null;
         assert source._getCount() > 0; // Caller should check this beforehand and return a cached result
@@ -270,7 +270,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public List<TResult> _toList() {
-        Array<TSource> source = this.source;
+        IArray<TSource> source = this.source;
         List<TResult> results = new ArrayList<>(source._getCount());
         for (int i = 0; i < source._getCount(); i++)
             results.add(this.selector.apply(source.get(i)));

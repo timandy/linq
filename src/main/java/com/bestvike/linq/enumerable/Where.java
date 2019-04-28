@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
@@ -31,8 +31,8 @@ public final class Where {
             return iterator._where(predicate);
         }
 
-        if (source instanceof Array) {
-            Array<TSource> array = (Array<TSource>) source;
+        if (source instanceof IArray) {
+            IArray<TSource> array = (IArray<TSource>) source;
             return array._getCount() == 0
                     ? EmptyPartition.instance()
                     : new WhereArrayIterator<>(array, predicate);
@@ -218,11 +218,11 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
 
 
 final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
-    private final Array<TSource> source;
+    private final IArray<TSource> source;
     private final Func1<TSource, Boolean> predicate;
     private int index;
 
-    WhereArrayIterator(Array<TSource> source, Func1<TSource, Boolean> predicate) {
+    WhereArrayIterator(IArray<TSource> source, Func1<TSource, Boolean> predicate) {
         assert source != null && source._getCount() > 0;
         assert predicate != null;
         this.source = source;
@@ -421,12 +421,12 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
 
 
 final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult> implements IIListProvider<TResult> {
-    private final Array<TSource> source;
+    private final IArray<TSource> source;
     private final Func1<TSource, Boolean> predicate;
     private final Func1<TSource, TResult> selector;
     private int index;
 
-    WhereSelectArrayIterator(Array<TSource> source, Func1<TSource, Boolean> predicate, Func1<TSource, TResult> selector) {
+    WhereSelectArrayIterator(IArray<TSource> source, Func1<TSource, Boolean> predicate, Func1<TSource, TResult> selector) {
         assert source != null && source._getCount() > 0;
         assert predicate != null;
         assert selector != null;
