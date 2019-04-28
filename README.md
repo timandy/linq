@@ -1,5 +1,5 @@
 <!--自述文件-->
-# Linq
+# LINQ to Objects (Java)
 
 [![Build Status](https://travis-ci.org/timandy/linq.svg?branch=master)](https://travis-ci.org/timandy/linq)
 [![Codecov](https://codecov.io/gh/timandy/linq/branch/master/graph/badge.svg)](https://codecov.io/gh/timandy/linq)
@@ -7,12 +7,32 @@
 [![GitHub release](https://img.shields.io/github/release/timandy/linq.svg)](https://github.com/timandy/linq/releases)
 [![License](https://img.shields.io/badge/license-Apache%202.0-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-Linq to Objects for Java.
+The term "LINQ to Objects" refers to the use of LINQ queries with any `IEnumerable<T>`.
+You can use LINQ to query any enumerable collections such as `Primitive Array`, `Object Array`, `List`, `Collection` or `Iterable` and so on.
+The collection may be user-defined or may be returned by a JDK API.
+
+In a basic sense, LINQ to Objects represents a new approach to collections.
+In the old way, you had to write complex `foreach` loops that specified how to retrieve data from a collection.
+In the LINQ approach, you write declarative code that describes what you want to retrieve.
+
+In addition, LINQ queries offer three main advantages over traditional `foreach` loops:
+1. They are more concise and readable, especially when filtering multiple conditions.
+2. They provide powerful filtering, ordering, and grouping capabilities with a minimum of application code.
+3. They can be ported to other data sources with little or no modification.
+
+LINQ queries also have some advantages over stream API:
+1. Support `foreach` loops therefore you can break loop at any time.
+2. IEnumerable can be traversed repeatedly.
+3. LINQ is very easy to use, like `ToCollection`, `LeftJoin` and so on.
+4. LINQ is faster than stream API in most cases.
+
+In general, the more complex the operation you want to perform on the data, the more benefit you will realize by using LINQ instead of traditional iteration techniques.
 
 ## Features
 - Implemented all API of Linq to Objects.
 - More API supported.
 - Tuple supported.
+- Cast IEnumerable to stream or parallel stream supported.
 
 ![bestvike](logo.jpg "济南百思为科信息工程有限公司")
 
@@ -24,6 +44,9 @@ Linq to Objects for Java.
 - repeat
 
 ## API of IEnumerable
+- forEach
+- stream
+- parallelStream
 - aggregate
 - any
 - all
