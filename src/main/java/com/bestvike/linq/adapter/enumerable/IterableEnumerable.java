@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.IterableEnumerator;
+import com.bestvike.linq.adapter.enumerator.IterableEnumerator;
 
 /**
  * Created by 许崇雷 on 2017-07-17.

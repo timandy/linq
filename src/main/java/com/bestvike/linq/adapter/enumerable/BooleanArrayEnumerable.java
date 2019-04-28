@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.LongArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.BooleanArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -13,25 +13,25 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class LongArrayEnumerable implements IList<Long> {
-    private final long[] source;
+public final class BooleanArrayEnumerable implements IList<Boolean> {
+    private final boolean[] source;
 
-    public LongArrayEnumerable(long[] source) {
+    public BooleanArrayEnumerable(boolean[] source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<Long> enumerator() {
-        return new LongArrayEnumerator(this.source);
+    public IEnumerator<Boolean> enumerator() {
+        return new BooleanArrayEnumerator(this.source);
     }
 
     @Override
-    public Long get(int index) {
+    public Boolean get(int index) {
         return this.source[index];
     }
 
     @Override
-    public Collection<Long> getCollection() {
+    public Collection<Boolean> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }
 
@@ -41,8 +41,8 @@ public final class LongArrayEnumerable implements IList<Long> {
     }
 
     @Override
-    public boolean _contains(Long item) {
-        for (long value : this.source) {
+    public boolean _contains(Boolean item) {
+        for (boolean value : this.source) {
             if (Objects.equals(value, item))
                 return true;
         }
@@ -51,14 +51,14 @@ public final class LongArrayEnumerable implements IList<Long> {
 
     @Override
     public void _copyTo(Object[] array, int arrayIndex) {
-        for (long item : this.source)
+        for (boolean item : this.source)
             array[arrayIndex++] = item;
     }
 
     @Override
-    public Long[] _toArray(Class<Long> clazz) {
+    public Boolean[] _toArray(Class<Boolean> clazz) {
         int length = this.source.length;
-        Long[] array = ArrayUtils.newInstance(clazz, length);
+        Boolean[] array = ArrayUtils.newInstance(clazz, length);
         for (int i = 0; i < length; i++)
             array[i] = this.source[i];
         return array;
@@ -74,10 +74,10 @@ public final class LongArrayEnumerable implements IList<Long> {
     }
 
     @Override
-    public List<Long> _toList() {
+    public List<Boolean> _toList() {
         int length = this.source.length;
-        List<Long> list = new ArrayList<>(length);
-        for (long item : this.source)
+        List<Boolean> list = new ArrayList<>(length);
+        for (boolean item : this.source)
             list.add(item);
         return list;
     }

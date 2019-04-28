@@ -1,4 +1,4 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;

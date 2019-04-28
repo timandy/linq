@@ -1,7 +1,7 @@
 package com.bestvike.collections.generic;
 
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.ArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;

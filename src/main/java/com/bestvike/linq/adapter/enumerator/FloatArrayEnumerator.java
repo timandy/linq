@@ -1,14 +1,14 @@
-package com.bestvike.linq.bridge.enumerator;
+package com.bestvike.linq.adapter.enumerator;
 
 import com.bestvike.linq.enumerable.AbstractEnumerator;
 
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class LongArrayEnumerator extends AbstractEnumerator<Long> {
-    private final long[] source;
+public final class FloatArrayEnumerator extends AbstractEnumerator<Float> {
+    private final float[] source;
 
-    public LongArrayEnumerator(long[] source) {
+    public FloatArrayEnumerator(float[] source) {
         this.source = source;
     }
 

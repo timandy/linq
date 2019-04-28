@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.DoubleArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.IntegerArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -13,25 +13,25 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class DoubleArrayEnumerable implements IList<Double> {
-    private final double[] source;
+public final class IntegerArrayEnumerable implements IList<Integer> {
+    private final int[] source;
 
-    public DoubleArrayEnumerable(double[] source) {
+    public IntegerArrayEnumerable(int[] source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<Double> enumerator() {
-        return new DoubleArrayEnumerator(this.source);
+    public IEnumerator<Integer> enumerator() {
+        return new IntegerArrayEnumerator(this.source);
     }
 
     @Override
-    public Double get(int index) {
+    public Integer get(int index) {
         return this.source[index];
     }
 
     @Override
-    public Collection<Double> getCollection() {
+    public Collection<Integer> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }
 
@@ -41,8 +41,8 @@ public final class DoubleArrayEnumerable implements IList<Double> {
     }
 
     @Override
-    public boolean _contains(Double item) {
-        for (double value : this.source) {
+    public boolean _contains(Integer item) {
+        for (int value : this.source) {
             if (Objects.equals(value, item))
                 return true;
         }
@@ -51,14 +51,14 @@ public final class DoubleArrayEnumerable implements IList<Double> {
 
     @Override
     public void _copyTo(Object[] array, int arrayIndex) {
-        for (double item : this.source)
+        for (int item : this.source)
             array[arrayIndex++] = item;
     }
 
     @Override
-    public Double[] _toArray(Class<Double> clazz) {
+    public Integer[] _toArray(Class<Integer> clazz) {
         int length = this.source.length;
-        Double[] array = ArrayUtils.newInstance(clazz, length);
+        Integer[] array = ArrayUtils.newInstance(clazz, length);
         for (int i = 0; i < length; i++)
             array[i] = this.source[i];
         return array;
@@ -74,10 +74,10 @@ public final class DoubleArrayEnumerable implements IList<Double> {
     }
 
     @Override
-    public List<Double> _toList() {
+    public List<Integer> _toList() {
         int length = this.source.length;
-        List<Double> list = new ArrayList<>(length);
-        for (double item : this.source)
+        List<Integer> list = new ArrayList<>(length);
+        for (int item : this.source)
             list.add(item);
         return list;
     }

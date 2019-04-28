@@ -3,7 +3,7 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
-import com.bestvike.linq.bridge.enumerator.ArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;

@@ -1,14 +1,14 @@
-package com.bestvike.linq.bridge.enumerator;
+package com.bestvike.linq.adapter.enumerator;
 
 import com.bestvike.linq.enumerable.AbstractEnumerator;
 
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class BooleanArrayEnumerator extends AbstractEnumerator<Boolean> {
-    private final boolean[] source;
+public final class ShortArrayEnumerator extends AbstractEnumerator<Short> {
+    private final short[] source;
 
-    public BooleanArrayEnumerator(boolean[] source) {
+    public ShortArrayEnumerator(short[] source) {
         this.source = source;
     }
 

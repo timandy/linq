@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.SingletonEnumerator;
+import com.bestvike.linq.adapter.enumerator.SingletonEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;

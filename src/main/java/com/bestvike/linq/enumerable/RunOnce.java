@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.bridge.enumerable.RunOnceEnumerable;
+import com.bestvike.linq.adapter.enumerable.RunOnceEnumerable;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 

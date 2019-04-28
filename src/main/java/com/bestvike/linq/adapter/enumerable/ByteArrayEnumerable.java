@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.FloatArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.ByteArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -13,25 +13,25 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class FloatArrayEnumerable implements IList<Float> {
-    private final float[] source;
+public final class ByteArrayEnumerable implements IList<Byte> {
+    private final byte[] source;
 
-    public FloatArrayEnumerable(float[] source) {
+    public ByteArrayEnumerable(byte[] source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<Float> enumerator() {
-        return new FloatArrayEnumerator(this.source);
+    public IEnumerator<Byte> enumerator() {
+        return new ByteArrayEnumerator(this.source);
     }
 
     @Override
-    public Float get(int index) {
+    public Byte get(int index) {
         return this.source[index];
     }
 
     @Override
-    public Collection<Float> getCollection() {
+    public Collection<Byte> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }
 
@@ -41,8 +41,8 @@ public final class FloatArrayEnumerable implements IList<Float> {
     }
 
     @Override
-    public boolean _contains(Float item) {
-        for (float value : this.source) {
+    public boolean _contains(Byte item) {
+        for (byte value : this.source) {
             if (Objects.equals(value, item))
                 return true;
         }
@@ -51,14 +51,14 @@ public final class FloatArrayEnumerable implements IList<Float> {
 
     @Override
     public void _copyTo(Object[] array, int arrayIndex) {
-        for (float item : this.source)
+        for (byte item : this.source)
             array[arrayIndex++] = item;
     }
 
     @Override
-    public Float[] _toArray(Class<Float> clazz) {
+    public Byte[] _toArray(Class<Byte> clazz) {
         int length = this.source.length;
-        Float[] array = ArrayUtils.newInstance(clazz, length);
+        Byte[] array = ArrayUtils.newInstance(clazz, length);
         for (int i = 0; i < length; i++)
             array[i] = this.source[i];
         return array;
@@ -74,10 +74,10 @@ public final class FloatArrayEnumerable implements IList<Float> {
     }
 
     @Override
-    public List<Float> _toList() {
+    public List<Byte> _toList() {
         int length = this.source.length;
-        List<Float> list = new ArrayList<>(length);
-        for (float item : this.source)
+        List<Byte> list = new ArrayList<>(length);
+        for (byte item : this.source)
             list.add(item);
         return list;
     }

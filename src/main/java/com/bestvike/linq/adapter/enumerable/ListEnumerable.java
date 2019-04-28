@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.ICollection;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.IterableEnumerator;
+import com.bestvike.linq.adapter.enumerator.IterableEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -10,18 +10,23 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by 许崇雷 on 2017-07-17.
+ * Created by 许崇雷 on 2017-07-19.
  */
-public final class CollectionEnumerable<TSource> implements ICollection<TSource> {
-    private final Collection<TSource> source;
+public final class ListEnumerable<TSource> implements IList<TSource> {
+    private final List<TSource> source;
 
-    public CollectionEnumerable(Collection<TSource> source) {
+    public ListEnumerable(List<TSource> source) {
         this.source = source;
     }
 
     @Override
     public IEnumerator<TSource> enumerator() {
         return new IterableEnumerator<>(this.source);
+    }
+
+    @Override
+    public TSource get(int index) {
+        return this.source.get(index);
     }
 
     @Override

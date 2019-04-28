@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.ByteArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.CharacterArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -13,25 +13,25 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class ByteArrayEnumerable implements IList<Byte> {
-    private final byte[] source;
+public final class CharacterArrayEnumerable implements IList<Character> {
+    private final char[] source;
 
-    public ByteArrayEnumerable(byte[] source) {
+    public CharacterArrayEnumerable(char[] source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<Byte> enumerator() {
-        return new ByteArrayEnumerator(this.source);
+    public IEnumerator<Character> enumerator() {
+        return new CharacterArrayEnumerator(this.source);
     }
 
     @Override
-    public Byte get(int index) {
+    public Character get(int index) {
         return this.source[index];
     }
 
     @Override
-    public Collection<Byte> getCollection() {
+    public Collection<Character> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }
 
@@ -41,8 +41,8 @@ public final class ByteArrayEnumerable implements IList<Byte> {
     }
 
     @Override
-    public boolean _contains(Byte item) {
-        for (byte value : this.source) {
+    public boolean _contains(Character item) {
+        for (char value : this.source) {
             if (Objects.equals(value, item))
                 return true;
         }
@@ -51,14 +51,14 @@ public final class ByteArrayEnumerable implements IList<Byte> {
 
     @Override
     public void _copyTo(Object[] array, int arrayIndex) {
-        for (byte item : this.source)
+        for (char item : this.source)
             array[arrayIndex++] = item;
     }
 
     @Override
-    public Byte[] _toArray(Class<Byte> clazz) {
+    public Character[] _toArray(Class<Character> clazz) {
         int length = this.source.length;
-        Byte[] array = ArrayUtils.newInstance(clazz, length);
+        Character[] array = ArrayUtils.newInstance(clazz, length);
         for (int i = 0; i < length; i++)
             array[i] = this.source[i];
         return array;
@@ -74,10 +74,10 @@ public final class ByteArrayEnumerable implements IList<Byte> {
     }
 
     @Override
-    public List<Byte> _toList() {
+    public List<Character> _toList() {
         int length = this.source.length;
-        List<Byte> list = new ArrayList<>(length);
-        for (byte item : this.source)
+        List<Character> list = new ArrayList<>(length);
+        for (char item : this.source)
             list.add(item);
         return list;
     }

@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.ArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
 
 /**
  * Created by 许崇雷 on 2018-05-09.

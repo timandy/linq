@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.IntegerArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.ShortArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -13,25 +13,25 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class IntegerArrayEnumerable implements IList<Integer> {
-    private final int[] source;
+public final class ShortArrayEnumerable implements IList<Short> {
+    private final short[] source;
 
-    public IntegerArrayEnumerable(int[] source) {
+    public ShortArrayEnumerable(short[] source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<Integer> enumerator() {
-        return new IntegerArrayEnumerator(this.source);
+    public IEnumerator<Short> enumerator() {
+        return new ShortArrayEnumerator(this.source);
     }
 
     @Override
-    public Integer get(int index) {
+    public Short get(int index) {
         return this.source[index];
     }
 
     @Override
-    public Collection<Integer> getCollection() {
+    public Collection<Short> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }
 
@@ -41,8 +41,8 @@ public final class IntegerArrayEnumerable implements IList<Integer> {
     }
 
     @Override
-    public boolean _contains(Integer item) {
-        for (int value : this.source) {
+    public boolean _contains(Short item) {
+        for (short value : this.source) {
             if (Objects.equals(value, item))
                 return true;
         }
@@ -51,14 +51,14 @@ public final class IntegerArrayEnumerable implements IList<Integer> {
 
     @Override
     public void _copyTo(Object[] array, int arrayIndex) {
-        for (int item : this.source)
+        for (short item : this.source)
             array[arrayIndex++] = item;
     }
 
     @Override
-    public Integer[] _toArray(Class<Integer> clazz) {
+    public Short[] _toArray(Class<Short> clazz) {
         int length = this.source.length;
-        Integer[] array = ArrayUtils.newInstance(clazz, length);
+        Short[] array = ArrayUtils.newInstance(clazz, length);
         for (int i = 0; i < length; i++)
             array[i] = this.source[i];
         return array;
@@ -74,10 +74,10 @@ public final class IntegerArrayEnumerable implements IList<Integer> {
     }
 
     @Override
-    public List<Integer> _toList() {
+    public List<Short> _toList() {
         int length = this.source.length;
-        List<Integer> list = new ArrayList<>(length);
-        for (int item : this.source)
+        List<Short> list = new ArrayList<>(length);
+        for (short item : this.source)
             list.add(item);
         return list;
     }

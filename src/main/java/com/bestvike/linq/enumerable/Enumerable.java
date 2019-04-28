@@ -1,20 +1,20 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.bridge.enumerable.BooleanArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.ByteArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.CharSequenceEnumerable;
-import com.bestvike.linq.bridge.enumerable.CharacterArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.CollectionEnumerable;
-import com.bestvike.linq.bridge.enumerable.DoubleArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.FloatArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.GenericArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.IntegerArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.IterableEnumerable;
-import com.bestvike.linq.bridge.enumerable.ListEnumerable;
-import com.bestvike.linq.bridge.enumerable.LongArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.ShortArrayEnumerable;
-import com.bestvike.linq.bridge.enumerable.SingletonEnumerable;
+import com.bestvike.linq.adapter.enumerable.BooleanArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.ByteArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.CharSequenceEnumerable;
+import com.bestvike.linq.adapter.enumerable.CharacterArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.CollectionEnumerable;
+import com.bestvike.linq.adapter.enumerable.DoubleArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.FloatArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.GenericArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.IntegerArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.IterableEnumerable;
+import com.bestvike.linq.adapter.enumerable.ListEnumerable;
+import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 

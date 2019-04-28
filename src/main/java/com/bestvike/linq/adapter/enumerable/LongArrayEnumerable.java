@@ -1,8 +1,8 @@
-package com.bestvike.linq.bridge.enumerable;
+package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.bridge.enumerator.CharacterArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.LongArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -13,25 +13,25 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class CharacterArrayEnumerable implements IList<Character> {
-    private final char[] source;
+public final class LongArrayEnumerable implements IList<Long> {
+    private final long[] source;
 
-    public CharacterArrayEnumerable(char[] source) {
+    public LongArrayEnumerable(long[] source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<Character> enumerator() {
-        return new CharacterArrayEnumerator(this.source);
+    public IEnumerator<Long> enumerator() {
+        return new LongArrayEnumerator(this.source);
     }
 
     @Override
-    public Character get(int index) {
+    public Long get(int index) {
         return this.source[index];
     }
 
     @Override
-    public Collection<Character> getCollection() {
+    public Collection<Long> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }
 
@@ -41,8 +41,8 @@ public final class CharacterArrayEnumerable implements IList<Character> {
     }
 
     @Override
-    public boolean _contains(Character item) {
-        for (char value : this.source) {
+    public boolean _contains(Long item) {
+        for (long value : this.source) {
             if (Objects.equals(value, item))
                 return true;
         }
@@ -51,14 +51,14 @@ public final class CharacterArrayEnumerable implements IList<Character> {
 
     @Override
     public void _copyTo(Object[] array, int arrayIndex) {
-        for (char item : this.source)
+        for (long item : this.source)
             array[arrayIndex++] = item;
     }
 
     @Override
-    public Character[] _toArray(Class<Character> clazz) {
+    public Long[] _toArray(Class<Long> clazz) {
         int length = this.source.length;
-        Character[] array = ArrayUtils.newInstance(clazz, length);
+        Long[] array = ArrayUtils.newInstance(clazz, length);
         for (int i = 0; i < length; i++)
             array[i] = this.source[i];
         return array;
@@ -74,10 +74,10 @@ public final class CharacterArrayEnumerable implements IList<Character> {
     }
 
     @Override
-    public List<Character> _toList() {
+    public List<Long> _toList() {
         int length = this.source.length;
-        List<Character> list = new ArrayList<>(length);
-        for (char item : this.source)
+        List<Long> list = new ArrayList<>(length);
+        for (long item : this.source)
             list.add(item);
         return list;
     }
