@@ -12,8 +12,8 @@ import java.util.Locale;
  * Created by 许崇雷 on 2017-07-18.
  */
 public final class Comparer<T> implements Comparator<T> {
-    private static final Comparer DEFAULT = new Comparer(Collator.getInstance());
-    private static final Comparer DEFAULT_INVARIANT = new Comparer(Collator.getInstance(Locale.ROOT));
+    private static volatile Comparer DEFAULT = new Comparer(Collator.getInstance());
+    private static volatile Comparer DEFAULT_INVARIANT = new Comparer(Collator.getInstance(Locale.ROOT));
 
     private final Collator collator;
 
@@ -41,6 +41,12 @@ public final class Comparer<T> implements Comparator<T> {
         if (comparison == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.comparison);
         return new ComparisonComparer<>(comparison);
+    }
+
+    public static void setDefault(Collator collator) {
+        if (collator == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.collator);
+        DEFAULT = new Comparer(collator);
     }
 
     @Override
