@@ -1,7 +1,13 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action0;
+import com.bestvike.function.Action1;
+import com.bestvike.function.Action2;
+import com.bestvike.function.Func0;
+import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
@@ -9,9 +15,12 @@ import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import org.junit.Assert;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -87,6 +96,24 @@ public class EnumerableTest {
         return Linq.range(num, count);
     }
 
+    static <T> List<Func1<IEnumerable<T>, IEnumerable<T>>> IdentityTransforms() {
+        final List<Func1<IEnumerable<T>, IEnumerable<T>>> list = new ArrayList<>();
+        list.add(e -> e);
+        list.add(e -> e.toArray());
+        list.add(e -> Linq.asEnumerable(e.toList()));
+        list.add(e -> e.select(i -> i));
+        list.add(e -> e.concat(Linq.empty()));
+        list.add(e -> ForceNotCollection(e));
+        list.add(e -> e.concat(ForceNotCollection(Linq.empty())));
+        list.add(e -> e.where(i -> true));
+        list.add(e -> ForceNotCollection(e).skip(0));
+        return list;
+    }
+
+    static <T> IEnumerable<T> ForceNotCollection(IEnumerable<T> source) {
+        return source.select(a -> a);
+    }
+
     private static void fail(String message) {
         if (message == null)
             throw new AssertionError();
@@ -108,5 +135,75 @@ public class EnumerableTest {
     private static String formatClassAndValue(Object value, String valueString) {
         String className = value == null ? "null" : value.getClass().getName();
         return className + "<" + valueString + ">";
+    }
+
+
+    protected static class DelegateBasedCollection<T> implements ICollection<T> {
+        Func0<Integer> CountWorker;
+        Func0<Boolean> IsReadOnlyWorker;
+        Action1<T> AddWorker;
+        Action0 ClearWorker;
+        Func1<T, Boolean> ContainsWorker;
+        Func1<T, Boolean> RemoveWorker;
+        Action2<Object[], Integer> CopyToWorker;
+        Func0<IEnumerator<T>> GetEnumeratorWorker;
+
+        DelegateBasedCollection() {
+            this.CountWorker = () -> 0;
+            this.IsReadOnlyWorker = () -> false;
+            this.AddWorker = item -> {
+            };
+            this.ClearWorker = () -> {
+            };
+            this.ContainsWorker = item -> false;
+            this.RemoveWorker = item -> false;
+            this.CopyToWorker = (array, arrayIndex) -> {
+            };
+            this.GetEnumeratorWorker = () -> Linq.<T>empty().enumerator();
+        }
+
+        @Override
+        public Collection<T> getCollection() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public int _getCount() {
+            return this.CountWorker.apply();
+        }
+
+        @Override
+        public boolean _contains(T item) {
+            return this.ContainsWorker.apply(item);
+        }
+
+        @Override
+        public void _copyTo(Object[] array, int arrayIndex) {
+            this.CopyToWorker.apply(array, arrayIndex);
+        }
+
+        @Override
+        public T[] _toArray(Class<T> clazz) {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public Object[] _toArray() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public List<T> _toList() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public IEnumerator<T> enumerator() {
+            return this.GetEnumeratorWorker.apply();
+        }
     }
 }
