@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 /**
  * Created by 许崇雷 on 2019-04-25.
  */
-public class StreamTest extends EnumerableTest {
+public class ToSpliteratorTest extends EnumerableTest {
     @Test
     public void testReset() {
         final IEnumerator<Employee> enumerator = Linq.asEnumerable(emps).enumerator();
