@@ -37,11 +37,11 @@ import com.bestvike.linq.enumerable.SelectMany;
 import com.bestvike.linq.enumerable.SequenceEqual;
 import com.bestvike.linq.enumerable.Single;
 import com.bestvike.linq.enumerable.Skip;
-import com.bestvike.linq.enumerable.Split;
 import com.bestvike.linq.enumerable.Sum;
 import com.bestvike.linq.enumerable.Take;
 import com.bestvike.linq.enumerable.ToCollection;
 import com.bestvike.linq.enumerable.ToLookup;
+import com.bestvike.linq.enumerable.ToSpliterator;
 import com.bestvike.linq.enumerable.Union;
 import com.bestvike.linq.enumerable.UnionBy;
 import com.bestvike.linq.enumerable.Where;
@@ -82,7 +82,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
     }
 
     default Spliterator<TSource> spliterator() {
-        return Split.spliterator(this);
+        return ToSpliterator.spliterator(this);
     }
 
     default Stream<TSource> stream() {

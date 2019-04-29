@@ -12,8 +12,8 @@ import java.util.Spliterators;
 /**
  * Created by 许崇雷 on 2019-04-25.
  */
-public final class Split {
-    private Split() {
+public final class ToSpliterator {
+    private ToSpliterator() {
     }
 
     public static <TSource> Spliterator<TSource> spliterator(IEnumerable<TSource> source) {
@@ -26,19 +26,18 @@ public final class Split {
                 Object arr = array.getArray();
                 Class<?> componentType = arr.getClass().getComponentType();
                 if (componentType.isPrimitive()) {
-                    if (componentType == int.class) {
+                    if (componentType == int.class)
                         //noinspection unchecked
                         return (Spliterator<TSource>) Spliterators.spliterator((int[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
-                    } else if (componentType == long.class) {
+                    if (componentType == long.class)
                         //noinspection unchecked
                         return (Spliterator<TSource>) Spliterators.spliterator((long[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
-                    } else if (componentType == double.class) {
+                    if (componentType == double.class)
                         //noinspection unchecked
                         return (Spliterator<TSource>) Spliterators.spliterator((double[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
-                    }
-                } else {
-                    return Spliterators.spliterator((Object[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
+                    return Spliterators.spliterator(array._toArray(), array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
                 }
+                return Spliterators.spliterator((Object[]) arr, array._getStartIndex(), array._getEndIndex(), Spliterator.IMMUTABLE);
             }
 
             ICollection<TSource> collection = (ICollection<TSource>) source;
