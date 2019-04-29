@@ -29,7 +29,7 @@ LINQ queries also have some advantages over stream API:
 In general, the more complex the operation you want to perform on the data, the more benefit you will realize by using LINQ instead of traditional iteration techniques.
 
 ## Features
-- Implemented all API of Linq to Objects.
+- Implemented all API of LINQ to Objects.
 - More API supported.
 - Tuple supported.
 - Cast IEnumerable to stream or parallel stream supported.
