@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.ICollection;
+import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Action0;
 import com.bestvike.function.Action1;
 import com.bestvike.function.Action2;
@@ -92,8 +93,20 @@ public class EnumerableTest {
         }
     }
 
+    static IEnumerable<Integer> RepeatedNumberGuaranteedNotCollectionType(int num, int count) {
+        return Linq.repeat(num, count);
+    }
+
     static IEnumerable<Integer> NumberRangeGuaranteedNotCollectionType(int num, int count) {
         return Linq.range(num, count);
+    }
+
+    static IEnumerable<Integer> NullableNumberRangeGuaranteedNotCollectionType(int num, int count) {
+        return Linq.range(num, count);
+    }
+
+    static IEnumerable<Integer> RepeatedNullableNumberGuaranteedNotCollectionType(Integer num, int count) {
+        return Linq.repeat(num, count);
     }
 
     static <T> List<Func1<IEnumerable<T>, IEnumerable<T>>> IdentityTransforms() {
@@ -204,6 +217,39 @@ public class EnumerableTest {
         @Override
         public IEnumerator<T> enumerator() {
             return this.GetEnumeratorWorker.apply();
+        }
+    }
+
+
+    protected static class AnagramEqualityComparer implements IEqualityComparer<String> {
+        @Override
+        public boolean equals(String x, String y) {
+            //noinspection StringEquality
+            if (x == y)
+                return true;
+            if (x == null | y == null)
+                return false;
+            int length = x.length();
+            if (length != y.length())
+                return false;
+            try (IEnumerator<Character> en = Linq.asEnumerable(x).orderBy(i -> i).enumerator()) {
+                for (char c : Linq.asEnumerable(y).orderBy(i -> i)) {
+                    en.moveNext();
+                    if (c != en.current())
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode(String obj) {
+            if (obj == null)
+                return 0;
+            int hash = obj.length();
+            for (char c : Linq.asEnumerable(obj))
+                hash ^= c;
+            return hash;
         }
     }
 }
