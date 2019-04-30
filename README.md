@@ -44,9 +44,9 @@ In general, the more complex the operation you want to perform on the data, the 
 - repeat
 
 ## API of IEnumerable
-- forEach
-- stream
-- parallelStream
+- `forEach`
+- `stream`
+- `parallelStream`
 - aggregate
 - any
 - all
