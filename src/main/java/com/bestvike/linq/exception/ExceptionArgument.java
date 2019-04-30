@@ -29,6 +29,7 @@ public enum ExceptionArgument {
     comparison,
     elements,
     list,
+    locale,
     newSize,
     other,
     startIndex,
