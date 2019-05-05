@@ -13,8 +13,8 @@
 - Update plugin version to latest.
 - Rename package `bridge` to `adapter`.
 - Add `IArray` interface to determine `IList` contains an array or not.
-- Add method to change default Comparer.
-- Add change log file.
+- Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
+- Add `StringComparer` for string equals, hashCode and compare actions.
 
 ## v2.0.1
 - Add test cases.
