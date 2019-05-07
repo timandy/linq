@@ -77,6 +77,36 @@ public class EnumerableTest {
         fail(format(null, expected, actual));
     }
 
+    static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
+        if (expected == actual)
+            return;
+        if (expected != null && expected.sequenceEqual(actual, comparer))
+            return;
+        fail(format(null, expected, actual));
+    }
+
+    static <T> void assertEmpty(IEnumerable<T> enumerable) {
+        if (enumerable == null)
+            fail("enumerable is null");
+        if (enumerable.count() == 0)
+            return;
+        fail("enumerable is not empty");
+    }
+
+    public static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
+        Assert.assertNotNull("expectedSuperset ", expectedSuperset);
+
+        if (actual == null || !expectedSuperset.containsAll(actual))
+            fail("expectedSuperset not containsAll actual");
+    }
+
+    public static <T> void assertSuperset(java.util.Set<T> expectedSubset, java.util.Set<T> actual) {
+        Assert.assertNotNull("expectedSubset ", expectedSubset);
+
+        if (actual == null || !actual.containsAll(expectedSubset))
+            fail("actual not containsAll expectedSubset");
+    }
+
     static void assertThrows(Class<?> clazz, Action0 action) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
