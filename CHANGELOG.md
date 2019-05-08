@@ -15,6 +15,7 @@
 - Add `IArray` interface to determine `IList` contains an array or not.
 - Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
 - Add `StringComparer` for string equals, hashCode and compare actions.
+- Fix unsigned compare bugs.
 
 ## v2.0.1
 - Add test cases.
