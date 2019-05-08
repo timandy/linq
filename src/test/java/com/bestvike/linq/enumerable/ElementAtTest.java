@@ -7,12 +7,88 @@ import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ElementAtTest extends EnumerableTest {
+    private static IEnumerable<Object[]> TestData() {
+        List<Object[]> lst = new ArrayList<>();
+
+        lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(9, 1), 0, 9});
+        lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(9, 10), 9, 18});
+        lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(-4, 10), 3, -1});
+
+        lst.add(new Object[]{Linq.asEnumerable(new int[]{-4}), 0, -4});
+        lst.add(new Object[]{Linq.asEnumerable(new int[]{9, 8, 0, -5, 10}), 4, 10});
+        return Linq.asEnumerable(lst);
+    }
+
+    @Test
+    public void SameResultsRepeatCallsIntQuery() {
+        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
+                .where(x -> x > Integer.MIN_VALUE);
+
+        Assert.assertEquals(q.elementAt(3), q.elementAt(3));
+    }
+
+    @Test
+    public void SameResultsRepeatCallsStringQuery() {
+        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
+                .where(x -> !IsNullOrEmpty(x));
+
+        Assert.assertEquals(q.elementAt(4), q.elementAt(4));
+    }
+
+    @Test
+    public void ElementAt() {
+        for (Object[] objects : TestData()) {
+            this.ElementAt((IEnumerable<Integer>) objects[0], (int) objects[1], (Integer) objects[2]);
+        }
+    }
+
+    private void ElementAt(IEnumerable<Integer> source, int index, Integer expected) {
+        Assert.assertEquals(expected, source.elementAt(index));
+    }
+
+    @Test
+    public void ElementAtRunOnce() {
+        for (Object[] objects : TestData()) {
+            this.ElementAtRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer) objects[2]);
+        }
+    }
+
+    private void ElementAtRunOnce(IEnumerable<Integer> source, int index, Integer expected) {
+        Assert.assertEquals(expected, source.runOnce().elementAt(index));
+    }
+
+    @Test
+    public void InvalidIndex_ThrowsArgumentOutOfRangeException() {
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.asEnumerable(new Integer[]{9, 8}).elementAt(-1));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.asEnumerable(new int[]{1, 2, 3, 4}).elementAt(4));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.asEnumerable(new int[0]).elementAt(0));
+
+        assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(-4, 5).elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(5, 5).elementAt(5));
+        assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(0, 0).elementAt(0));
+    }
+
+    @Test
+    public void NullableArray_ValidIndex_ReturnsCorrectObject() {
+        Integer[] source = {9, 8, null, -5, 10};
+
+        Assert.assertNull(Linq.asEnumerable(source).elementAt(2));
+        Assert.assertEquals(-5, (int) Linq.asEnumerable(source).elementAt(3));
+    }
+
+    @Test
+    public void NullSource_ThrowsArgumentNullException() {
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).elementAt(2));
+    }
+
     @Test
     public void testElementAt() {
         final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
@@ -51,18 +127,5 @@ public class ElementAtTest extends EnumerableTest {
             Assert.fail("expect error,but got " + num);
         } catch (ArgumentOutOfRangeException ignored) {
         }
-    }
-
-    @Test
-    public void testElementAtOrDefault() {
-        final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
-        Assert.assertEquals("jimi", enumerable.elementAtOrDefault(0));
-        Assert.assertNull(enumerable.elementAtOrDefault(2));
-        Assert.assertNull(enumerable.elementAtOrDefault(-1));
-
-        final IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
-        Assert.assertEquals((Long) 1L, enumerable2.elementAtOrDefault(0));
-        Assert.assertNull(enumerable2.elementAtOrDefault(2));
-        Assert.assertNull(enumerable2.elementAtOrDefault(-1));
     }
 }
