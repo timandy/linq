@@ -306,7 +306,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
-        if (index < this.source._getCount()) {
+        if (Integer.compareUnsigned(index, this.source._getCount()) < 0) {
             found.value = true;
             return this.selector.apply(this.source.get(index));
         }
@@ -445,7 +445,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
-        if (index < this.source._getCount()) {
+        if (Integer.compareUnsigned(index, this.source._getCount()) < 0) {
             found.value = true;
             return this.selector.apply(this.source.get(index));
         }
@@ -694,7 +694,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
         // Having a separate field for the index would be more readable. However, we save it
         // into this.state with a bias to minimize field size of the iterator.
         int index = this.state - 1;
-        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
+        if (Integer.compareUnsigned(index, this.maxIndexInclusive - this.minIndexInclusive) <= 0 && index < this.source._getCount() - this.minIndexInclusive) {
             this.current = this.selector.apply(this.source.get(this.minIndexInclusive + index));
             ++this.state;
             return true;
@@ -713,7 +713,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
     public IPartition<TResult> _skip(int count) {
         assert count > 0;
         int minIndex = this.minIndexInclusive + count;
-        return minIndex > this.maxIndexInclusive
+        return Integer.compareUnsigned(minIndex, this.maxIndexInclusive) > 0
                 ? EmptyPartition.instance()
                 : new SelectListPartitionIterator<>(this.source, this.selector, minIndex, this.maxIndexInclusive);
     }
@@ -721,14 +721,14 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
     @Override
     public IPartition<TResult> _take(int count) {
         int maxIndex = this.minIndexInclusive + count - 1;
-        return maxIndex >= this.maxIndexInclusive
+        return Integer.compareUnsigned(maxIndex, this.maxIndexInclusive) >= 0
                 ? this
                 : new SelectListPartitionIterator<>(this.source, this.selector, this.minIndexInclusive, maxIndex);
     }
 
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
+        if (Integer.compareUnsigned(index, this.maxIndexInclusive - this.minIndexInclusive) <= 0 && index < this.source._getCount() - this.minIndexInclusive) {
             found.value = true;
             return this.selector.apply(this.source.get(this.minIndexInclusive + index));
         }

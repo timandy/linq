@@ -120,7 +120,7 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
 
     @Override
     public Integer _tryGetElementAt(int index, out<Boolean> found) {
-        if (index < this.end - this.start) {
+        if (Integer.compareUnsigned(index, this.end - this.start) < 0) {
             found.value = true;
             return this.start + index;
         }

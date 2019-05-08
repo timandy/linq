@@ -139,7 +139,7 @@ final class EnumerableHelpers {
                             // the desired capacity.  This does mean that in the very rare case where we've grown to such a
                             // large size, each new element added after MaxArrayLength will end up doing a resize.
                             int newLength = count << 1;
-                            if (newLength > MaxArrayLength)
+                            if (Integer.compareUnsigned(newLength, MaxArrayLength) > 0)
                                 newLength = MaxArrayLength <= count ? count + 1 : MaxArrayLength;
                             arr = ArrayUtils.resize(arr, newLength);
                         }

@@ -220,7 +220,6 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
 final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
     private final IArray<TSource> source;
     private final Func1<TSource, Boolean> predicate;
-    private int index;
 
     WhereArrayIterator(IArray<TSource> source, Func1<TSource, Boolean> predicate) {
         assert source != null && source._getCount() > 0;
@@ -236,23 +235,20 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
 
     @Override
     public boolean moveNext() {
-        switch (this.state) {
-            case 1:
-                this.index = -1;
-                this.state = 2;
-            case 2:
-                while ((this.index = Math.addExact(this.index, 1)) < this.source._getCount()) {
-                    TSource item = this.source.get(this.index);
-                    if (this.predicate.apply(item)) {
-                        this.current = item;
-                        return true;
-                    }
-                }
-                this.close();
-                return false;
-            default:
-                return false;
+        if (this.state == -1)
+            return false;
+
+        int index = this.state - 1;
+        while (Integer.compareUnsigned(index, this.source._getCount()) < 0) {
+            TSource item = this.source.get(index);
+            index = this.state++;
+            if (this.predicate.apply(item)) {
+                this.current = item;
+                return true;
+            }
         }
+        this.close();
+        return false;
     }
 
     @Override
@@ -424,7 +420,6 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
     private final IArray<TSource> source;
     private final Func1<TSource, Boolean> predicate;
     private final Func1<TSource, TResult> selector;
-    private int index;
 
     WhereSelectArrayIterator(IArray<TSource> source, Func1<TSource, Boolean> predicate, Func1<TSource, TResult> selector) {
         assert source != null && source._getCount() > 0;
@@ -442,29 +437,25 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
 
     @Override
     public boolean moveNext() {
-        switch (this.state) {
-            case 1:
-                this.index = -1;
-                this.state = 2;
-            case 2:
-                while ((this.index = Math.addExact(this.index, 1)) < this.source._getCount()) {
-                    TSource item = this.source.get(this.index);
-                    if (this.predicate.apply(item)) {
-                        this.current = this.selector.apply(item);
-                        return true;
-                    }
-                }
-                this.close();
-                return false;
-            default:
-                return false;
+        if (this.state == -1)
+            return false;
+
+        int index = this.state - 1;
+        while (Integer.compareUnsigned(index, this.source._getCount()) < 0) {
+            TSource item = this.source.get(index);
+            index = this.state++;
+            if (this.predicate.apply(item)) {
+                this.current = this.selector.apply(item);
+                return true;
+            }
         }
+        this.close();
+        return false;
     }
 
     @Override
     public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
-        return
-                new WhereSelectArrayIterator<>(this.source, this.predicate, Utilities.combineSelectors(this.selector, selector));
+        return new WhereSelectArrayIterator<>(this.source, this.predicate, Utilities.combineSelectors(this.selector, selector));
     }
 
     @Override

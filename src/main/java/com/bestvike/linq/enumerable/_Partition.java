@@ -139,20 +139,20 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
     @Override
     public IPartition<TElement> _skip(int count) {
         int minIndex = this.minIndexInclusive + count;
-        return minIndex > this.maxIndexInclusive ? EmptyPartition.instance() : new OrderedPartition<>(this.source, minIndex, this.maxIndexInclusive);
+        return Integer.compareUnsigned(minIndex, this.maxIndexInclusive) > 0 ? EmptyPartition.instance() : new OrderedPartition<>(this.source, minIndex, this.maxIndexInclusive);
     }
 
     @Override
     public IPartition<TElement> _take(int count) {
         int maxIndex = this.minIndexInclusive + count - 1;
-        if (maxIndex >= this.maxIndexInclusive)
+        if (Integer.compareUnsigned(maxIndex, this.maxIndexInclusive) >= 0)
             return this;
         return new OrderedPartition<>(this.source, this.minIndexInclusive, maxIndex);
     }
 
     @Override
     public TElement _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= this.maxIndexInclusive - this.minIndexInclusive)
+        if (Integer.compareUnsigned(index, this.maxIndexInclusive - this.minIndexInclusive) <= 0)
             return this.source._tryGetElementAt(index + this.minIndexInclusive, found);
 
         found.value = false;
@@ -219,7 +219,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         if (this.state == -1)
             return false;
         int index = this.state - 1;
-        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
+        if (Integer.compareUnsigned(index, this.maxIndexInclusive - this.minIndexInclusive) <= 0 && index < this.source._getCount() - this.minIndexInclusive) {
             this.current = this.source.get(this.minIndexInclusive + index);
             ++this.state;
             return true;
@@ -237,18 +237,18 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
     @Override
     public IPartition<TSource> _skip(int count) {
         int minIndex = this.minIndexInclusive + count;
-        return minIndex > this.maxIndexInclusive ? EmptyPartition.instance() : new ListPartition<>(this.source, minIndex, this.maxIndexInclusive);
+        return Integer.compareUnsigned(minIndex, this.maxIndexInclusive) > 0 ? EmptyPartition.instance() : new ListPartition<>(this.source, minIndex, this.maxIndexInclusive);
     }
 
     @Override
     public IPartition<TSource> _take(int count) {
         int maxIndex = this.minIndexInclusive + count - 1;
-        return maxIndex >= this.maxIndexInclusive ? this : new ListPartition<>(this.source, this.minIndexInclusive, maxIndex);
+        return Integer.compareUnsigned(maxIndex, this.maxIndexInclusive) >= 0 ? this : new ListPartition<>(this.source, this.minIndexInclusive, maxIndex);
     }
 
     @Override
     public TSource _tryGetElementAt(int index, out<Boolean> found) {
-        if (index <= this.maxIndexInclusive - this.minIndexInclusive && index < this.source._getCount() - this.minIndexInclusive) {
+        if (Integer.compareUnsigned(index, this.maxIndexInclusive - this.minIndexInclusive) <= 0 && index < this.source._getCount() - this.minIndexInclusive) {
             found.value = true;
             return this.source.get(this.minIndexInclusive + index);
         }
@@ -359,9 +359,14 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
     }
 
     private static <TSource> int skipAndCount(int index, IEnumerator<TSource> en) {
+        assert index >= 0;
+        return (int) skipAndCount((long) index, en);
+    }
+
+    private static <TSource> long skipAndCount(long index, IEnumerator<TSource> en) {
         assert en != null;
 
-        for (int i = 0; i < index; i++) {
+        for (long i = 0; i < index; i++) {
             if (!en.moveNext())
                 return i;
         }
@@ -412,9 +417,9 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             // so + 1 may result in signed integer overflow. We need to handle this.
             // At the same time, however, we are guaranteed that our max count can fit
             // in an int because if that is true, then _minIndexInclusive must > 0.
-            int count = skipAndCount(this.maxIndexInclusive + 1, en);
-            assert (long) count != (long) Integer.MAX_VALUE + 1 || this.minIndexInclusive > 0;// "Our return value will be incorrect.");
-            return Math.max(count - this.minIndexInclusive, 0);
+            long count = skipAndCount(this.maxIndexInclusive + 1L, en);
+            assert count != Integer.MAX_VALUE + 1L || this.minIndexInclusive > 0;// "Our return value will be incorrect.");
+            return Math.max((int) count - this.minIndexInclusive, 0);
         }
     }
 
@@ -472,7 +477,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
                 // This can happen, for example, during e.Skip(int.MaxValue).Skip(int.MaxValue).
                 return new EnumerablePartition<>(this, count, -1);
             }
-        } else if (minIndex > this.maxIndexInclusive) {
+        } else if (Integer.compareUnsigned(minIndex, this.maxIndexInclusive) > 0) {
             // If minIndex overflows and we have an upper bound, we will go down this branch.
             // We know our upper bound must be smaller than minIndex, since our upper bound fits in an int.
             // This branch should not be taken if we don't have a bound.
@@ -496,7 +501,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
 
                 return new EnumerablePartition<>(this, 0, count - 1);
             }
-        } else if (maxIndex >= this.maxIndexInclusive) {
+        } else if (Integer.compareUnsigned(maxIndex, this.maxIndexInclusive) >= 0) {
             // If we don't know our max count, we can't go down this branch.
             // It's always possible for us to contain more than count items, as the rest
             // of the enumerable past _minIndexInclusive can be arbitrarily long.

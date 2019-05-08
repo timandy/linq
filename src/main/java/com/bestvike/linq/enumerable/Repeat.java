@@ -117,7 +117,7 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
 
     @Override
     public TResult _tryGetElementAt(int index, out<Boolean> found) {
-        if (index < this.count) {
+        if (Integer.compareUnsigned(index, this.count) < 0) {
             found.value = true;
             return this.current;
         }

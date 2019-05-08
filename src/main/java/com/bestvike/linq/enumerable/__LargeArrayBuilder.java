@@ -91,7 +91,7 @@ final class LargeArrayBuilder<T> {//struct
 
     public void add(T item) {
         assert this.maxCapacity > this.count;
-        if (this.index >= this.current.length)
+        if (Integer.compareUnsigned(this.index, this.current.length) >= 0)
             this.addWithBufferAllocation(item);
         else
             this.current[this.index++] = item;
@@ -113,7 +113,7 @@ final class LargeArrayBuilder<T> {//struct
             // and index when we run out of space.
             while (enumerator.moveNext()) {
                 T item = enumerator.current();
-                if (indexRef.value >= destinationRef.value.length)
+                if (Integer.compareUnsigned(indexRef.value, destinationRef.value.length) >= 0)
                     this.addWithBufferAllocation(item, destinationRef, indexRef);
                 else
                     destinationRef.value[indexRef.value] = item;
@@ -243,10 +243,10 @@ final class LargeArrayBuilder<T> {//struct
         // - When current runs out of space, add it to buffers and repeat the
         //   above step, except with current.Length * 2.
         // - Make sure we never pass maxCapacity in all of the above steps.
-        assert this.maxCapacity > this.count;
+        assert Integer.compareUnsigned(this.maxCapacity, this.count) > 0;
         assert this.index == this.current.length; //$"{nameof(AllocateBuffer)} was called, but there's more space."
         // If count is int.MinValue, we want to go down the other path which will raise an exception.
-        if (this.count < ResizeLimit) {
+        if (Integer.compareUnsigned(this.count, ResizeLimit) < 0) {
             // We haven't passed ResizeLimit. Resize first, copying over the previous items.
             assert this.current == this.first && this.count == this.first.length;
             int nextCapacity = Math.min(this.count == 0 ? StartingCapacity : this.count * 2, this.maxCapacity);

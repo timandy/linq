@@ -81,7 +81,7 @@ final class ArrayBuilder<T> {//struct
         assert minimum > this.getCapacity();
         int capacity = this.getCapacity();
         int nextCapacity = capacity == 0 ? DefaultCapacity : 2 * capacity;
-        if (nextCapacity > MaxCoreClrArrayLength)
+        if (Integer.compareUnsigned(nextCapacity, MaxCoreClrArrayLength) > 0)
             nextCapacity = Math.max(capacity + 1, MaxCoreClrArrayLength);
         nextCapacity = Math.max(nextCapacity, minimum);
         Object[] next = new Object[nextCapacity];
