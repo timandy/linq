@@ -254,7 +254,6 @@ final class LargeArrayBuilder<T> {//struct
             System.arraycopy(this.first, 0, this.current, 0, this.count);
             this.first = this.current;
         } else {
-            //noinspection ConstantConditions
             assert this.maxCapacity > ResizeLimit;
             assert this.count == ResizeLimit ^ this.current != this.first;
             int nextCapacity;
