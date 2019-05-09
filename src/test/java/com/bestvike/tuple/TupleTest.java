@@ -12,7 +12,7 @@ public class TupleTest {
         Tuple1<String> source = Tuple.create("1");
         Tuple1<String> target = Tuple.create("1");
         Assert.assertEquals(1, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals("1".hashCode(), source.hashCode());
@@ -31,7 +31,7 @@ public class TupleTest {
         Tuple2<String, String> source = Tuple.create("1", "2");
         Tuple2<String, String> target = Tuple.create("1", "2");
         Assert.assertEquals(2, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("1".hashCode(), "2".hashCode()), source.hashCode());
@@ -52,7 +52,7 @@ public class TupleTest {
         Tuple3<String, String, String> source = Tuple.create("1", "2", "3");
         Tuple3<String, String, String> target = Tuple.create("1", "2", "3");
         Assert.assertEquals(3, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("1".hashCode(), "2".hashCode(), "3".hashCode()), source.hashCode());
@@ -75,7 +75,7 @@ public class TupleTest {
         Tuple4<String, String, String, String> source = Tuple.create("1", "2", "3", "4");
         Tuple4<String, String, String, String> target = Tuple.create("1", "2", "3", "4");
         Assert.assertEquals(4, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("1".hashCode(), "2".hashCode(), "3".hashCode(), "4".hashCode()), source.hashCode());
@@ -100,7 +100,7 @@ public class TupleTest {
         Tuple5<String, String, String, String, String> source = Tuple.create("1", "2", "3", "4", "5");
         Tuple5<String, String, String, String, String> target = Tuple.create("1", "2", "3", "4", "5");
         Assert.assertEquals(5, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("1".hashCode(), "2".hashCode(), "3".hashCode(), "4".hashCode(), "5".hashCode()), source.hashCode());
@@ -127,7 +127,7 @@ public class TupleTest {
         Tuple6<String, String, String, String, String, String> source = Tuple.create("1", "2", "3", "4", "5", "6");
         Tuple6<String, String, String, String, String, String> target = Tuple.create("1", "2", "3", "4", "5", "6");
         Assert.assertEquals(6, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("1".hashCode(), "2".hashCode(), "3".hashCode(), "4".hashCode(), "5".hashCode(), "6".hashCode()), source.hashCode());
@@ -156,7 +156,7 @@ public class TupleTest {
         Tuple7<String, String, String, String, String, String, String> source = Tuple.create("1", "2", "3", "4", "5", "6", "7");
         Tuple7<String, String, String, String, String, String, String> target = Tuple.create("1", "2", "3", "4", "5", "6", "7");
         Assert.assertEquals(7, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("1".hashCode(), "2".hashCode(), "3".hashCode(), "4".hashCode(), "5".hashCode(), "6".hashCode(), "7".hashCode()), source.hashCode());
@@ -187,7 +187,7 @@ public class TupleTest {
         TupleMore<String, String, String, String, String, String, String, Tuple1<String>> source = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
         TupleMore<String, String, String, String, String, String, String, Tuple1<String>> target = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
         Assert.assertEquals(8, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("1".hashCode(), "2".hashCode(), "3".hashCode(), "4".hashCode(), "5".hashCode(), "6".hashCode(), "7".hashCode(), "8".hashCode()), source.hashCode());
@@ -224,7 +224,7 @@ public class TupleTest {
                 new TupleMore<>("1", "2", "3", "4", "5", "6", "7",
                         new TupleMore<>("8", "9", "10", "11", "12", "13", "14", new Tuple2<>("15", "16")));
         Assert.assertEquals(16, source.size());
-        Assert.assertFalse(source == target);
+        Assert.assertNotSame(source, target);
         Assert.assertEquals(source, target);
         Assert.assertEquals(source.compareTo(target), 0);
         Assert.assertEquals(Tuple.combineHashCodes("9".hashCode(), "10".hashCode(), "11".hashCode(), "12".hashCode(), "13".hashCode(), "14".hashCode(), "15".hashCode(), "16".hashCode()), source.hashCode());
