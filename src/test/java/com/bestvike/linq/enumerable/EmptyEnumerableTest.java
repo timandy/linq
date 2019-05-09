@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2019-05-08.
  */
-public class EmptyTest extends EnumerableTest {
+public class EmptyEnumerableTest extends EnumerableTest {
     private <T> void TestEmptyCached() {
         IEnumerable<T> enumerable1 = Linq.empty();
         IEnumerable<T> enumerable2 = Linq.empty();
@@ -21,7 +21,7 @@ public class EmptyTest extends EnumerableTest {
         this.<Integer>TestEmptyCached();
         this.<String>TestEmptyCached();
         this.TestEmptyCached();
-        this.<EmptyTest>TestEmptyCached();
+        this.<EmptyEnumerableTest>TestEmptyCached();
     }
 
     private <T> void TestEmptyEmpty() {
@@ -35,6 +35,6 @@ public class EmptyTest extends EnumerableTest {
         this.<Integer>TestEmptyEmpty();
         this.<String>TestEmptyEmpty();
         this.TestEmptyEmpty();
-        this.<EmptyTest>TestEmptyEmpty();
+        this.<EmptyEnumerableTest>TestEmptyEmpty();
     }
 }
