@@ -180,4 +180,27 @@ public class FirstOrDefaultTest extends EnumerableTest {
         Func1<Integer, Boolean> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).firstOrDefault(predicate));
     }
+
+    @Test
+    public void testFirstOrDefault() {
+        String[] people = {"Brill", "Smith", "Simpsom"};
+        String[] empty = {};
+        Integer[] numbers = {5, 10, 15, 20, 25};
+
+        Assert.assertEquals(people[0], Linq.asEnumerable(people).firstOrDefault());
+        Assert.assertEquals(numbers[0], Linq.asEnumerable(numbers).firstOrDefault());
+
+        Assert.assertNull(Linq.asEnumerable(empty).firstOrDefault());
+    }
+
+    @Test
+    public void testFirstOrDefaultPredicate() {
+        String[] people = {"Brill", "Smith", "Simpsom"};
+        String[] peopleWithoutCharS = {"Brill", "Andrew", "Alice"};
+        Integer[] numbers = {5, 10, 15, 20, 25};
+
+        Assert.assertEquals(people[1], Linq.asEnumerable(people).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        Assert.assertEquals(numbers[3], Linq.asEnumerable(numbers).firstOrDefault(i -> i > 15));
+        Assert.assertNull(Linq.asEnumerable(peopleWithoutCharS).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+    }
 }
