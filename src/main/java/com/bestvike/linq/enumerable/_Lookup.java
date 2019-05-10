@@ -323,25 +323,25 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
         public boolean moveNext() {
             do {
                 switch (this.state) {
-                    case 0:
+                    case 1:
                         this.g = Lookup.this.lastGrouping;
                         if (this.g == null) {
                             this.close();
                             return false;
                         }
-                        this.state = 2;
+                        this.state = 3;
                         break;
-                    case 1:
+                    case 2:
                         if (this.g == Lookup.this.lastGrouping) {
                             this.close();
                             return false;
                         }
-                        this.state = 2;
-                    case 2:
+                        this.state = 3;
+                    case 3:
                         this.g = this.g.next;
                         this.g.trim();
                         this.current = this.resultSelector.apply(this.g.key, new Array<>(this.g.elements));
-                        this.state = 1;
+                        this.state = 2;
                         return true;
                     default:
                         return false;
