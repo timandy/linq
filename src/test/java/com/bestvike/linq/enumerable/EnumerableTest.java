@@ -14,6 +14,7 @@ import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+import com.bestvike.linq.util.AssertEqualityComparer;
 import org.junit.Assert;
 
 import java.util.ArrayList;
@@ -70,16 +71,14 @@ public class EnumerableTest {
     }
 
     static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual) {
-        if (expected == actual)
-            return;
-        if (expected != null && expected.sequenceEqual(actual))
-            return;
-        fail(format(null, expected, actual));
+        assertEquals(expected, actual, null);
     }
 
     static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
         if (expected == actual)
             return;
+        if (comparer == null)
+            comparer = new AssertEqualityComparer<>();
         if (expected != null && expected.sequenceEqual(actual, comparer))
             return;
         fail(format(null, expected, actual));
@@ -91,6 +90,14 @@ public class EnumerableTest {
         if (enumerable.count() == 0)
             return;
         fail("enumerable is not empty");
+    }
+
+    static <T> void assertNotEmpty(IEnumerable<T> enumerable) {
+        if (enumerable == null)
+            fail("enumerable is null");
+        if (enumerable.count() != 0)
+            return;
+        fail("enumerable is empty");
     }
 
     public static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {

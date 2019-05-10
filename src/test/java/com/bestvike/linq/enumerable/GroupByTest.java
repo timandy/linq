@@ -1,14 +1,746 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.EqualityComparer;
+import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.collections.generic.IList;
+import com.bestvike.function.Func1;
+import com.bestvike.function.Func2;
+import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.IGrouping;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.exception.ArgumentOutOfRangeException;
+import com.bestvike.linq.util.Dictionary;
+import com.bestvike.out;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
 public class GroupByTest extends EnumerableTest {
+    private static <TKey, TElement> void AssertGroupingCorrect(IEnumerable<TKey> keys, IEnumerable<TElement> elements, IEnumerable<IGrouping<TKey, TElement>> grouping) {
+        AssertGroupingCorrect(keys, elements, grouping, EqualityComparer.Default());
+    }
+
+    private static <TKey, TElement> void AssertGroupingCorrect(IEnumerable<TKey> keys, IEnumerable<TElement> elements, IEnumerable<IGrouping<TKey, TElement>> grouping, IEqualityComparer<TKey> keyComparer) {
+        if (grouping == null) {
+            Assert.assertNull(elements);
+            Assert.assertNull(keys);
+            return;
+        }
+
+        Assert.assertNotNull(elements);
+        Assert.assertNotNull(keys);
+
+        Dictionary<TKey, List<TElement>> dict = new Dictionary<>(keyComparer);
+        List<TElement> groupingForNullKeys = new ArrayList<>();
+        try (IEnumerator<TElement> elEn = elements.enumerator();
+             IEnumerator<TKey> keyEn = keys.enumerator()) {
+            while (keyEn.moveNext()) {
+                Assert.assertTrue(elEn.moveNext());
+
+                TKey key = keyEn.current();
+
+                if (key == null) {
+                    groupingForNullKeys.add(elEn.current());
+                } else {
+                    out<List<TElement>> list = out.init();
+                    if (!dict.tryGetValue(key, list))
+                        dict.put(key, list.value = new ArrayList<>());
+                    list.value.add(elEn.current());
+                }
+            }
+            Assert.assertFalse(elEn.moveNext());
+        }
+        for (IGrouping<TKey, TElement> group : grouping) {
+            assertNotEmpty(group);
+            TKey key = group.getKey();
+            out<List<TElement>> list = out.init();
+
+            if (key == null) {
+                assertEquals(Linq.asEnumerable(groupingForNullKeys), group);
+                groupingForNullKeys.clear();
+            } else {
+                Assert.assertTrue(dict.tryGetValue(key, list));
+                assertEquals(Linq.asEnumerable(list.value), group);
+                dict.remove(key);
+            }
+        }
+        assertEmpty(Linq.asEnumerable(dict));
+        assertEmpty(Linq.asEnumerable(groupingForNullKeys));
+    }
+
+    @Test
+    public void SameResultsRepeatCallsStringQuery() {
+        IEnumerable<String> q1 = Linq.asEnumerable("Alen", "Felix", null, null, "X", "Have Space", "Clinton", "");
+        IEnumerable<Integer> q2 = Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25, -1, 0});
+
+
+        final IEnumerable<Tuple2<String, Integer>> q = q1.zip(q2);
+
+        Assert.assertNotNull(q.groupBy(Tuple2::getItem1, Tuple2::getItem2));
+        assertEquals(q.groupBy(Tuple2::getItem1, Tuple2::getItem2), q.groupBy(Tuple2::getItem1, Tuple2::getItem2));
+    }
+
+    @Test
+    public void Grouping_IList_IsReadOnly() {
+        IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
+        for (IGrouping grouping : oddsEvens) {
+            Assert.assertTrue(grouping instanceof IList);
+        }
+    }
+
+    @Test
+    public void Grouping_IList_NotSupported() {
+        IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
+        for (IGrouping grouping : oddsEvens) {
+            Assert.assertTrue(grouping instanceof IList);
+        }
+    }
+
+    @Test
+    public void Grouping_IList_IndexerGetter() {
+        IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
+        IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
+
+        Assert.assertTrue(e.moveNext());
+        IList<Integer> odds = (IList<Integer>) e.current();
+        Assert.assertEquals(1, (int) odds.get(0));
+        Assert.assertEquals(3, (int) odds.get(1));
+
+        Assert.assertTrue(e.moveNext());
+        IList<Integer> evens = (IList<Integer>) e.current();
+        Assert.assertEquals(2, (int) evens.get(0));
+        Assert.assertEquals(4, (int) evens.get(1));
+    }
+
+    @Test
+    public void Grouping_IList_IndexGetterOutOfRange() {
+        IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
+        IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
+
+        Assert.assertTrue(e.moveNext());
+        IList<Integer> odds = (IList<Integer>) e.current();
+        assertThrows(ArgumentOutOfRangeException.class, () -> odds.get(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> odds.get(23));
+    }
+
+    @Test
+    public void Grouping_ICollection_Contains() {
+        IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
+        IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
+
+        Assert.assertTrue(e.moveNext());
+        ICollection<Integer> odds = (IList<Integer>) e.current();
+        Assert.assertTrue(odds.contains(1));
+        Assert.assertTrue(odds.contains(3));
+        Assert.assertFalse(odds.contains(2));
+        Assert.assertFalse(odds.contains(4));
+
+        Assert.assertTrue(e.moveNext());
+        ICollection<Integer> evens = (IList<Integer>) e.current();
+        Assert.assertTrue(evens.contains(2));
+        Assert.assertTrue(evens.contains(4));
+        Assert.assertFalse(evens.contains(1));
+        Assert.assertFalse(evens.contains(3));
+    }
+
+    @Test
+    public void Grouping_IList_IndexOf() {
+        IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
+        IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
+
+        Assert.assertTrue(e.moveNext());
+        IList<Integer> odds = (IList<Integer>) e.current();
+        Assert.assertEquals(0, odds.toList().indexOf(1));
+        Assert.assertEquals(1, odds.toList().indexOf(3));
+        Assert.assertEquals(-1, odds.toList().indexOf(2));
+        Assert.assertEquals(-1, odds.toList().indexOf(4));
+
+        Assert.assertTrue(e.moveNext());
+        IList<Integer> evens = (IList<Integer>) e.current();
+        Assert.assertEquals(0, evens.toList().indexOf(2));
+        Assert.assertEquals(1, evens.toList().indexOf(4));
+        Assert.assertEquals(-1, evens.toList().indexOf(1));
+        Assert.assertEquals(-1, evens.toList().indexOf(3));
+    }
+
+    @Test
+    public void SingleNullKeySingleNullElement() {
+        String[] key = {null};
+        String[] element = {null};
+
+        AssertGroupingCorrect(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(new String[]{null}).groupBy(e -> e, e -> e, EqualityComparer.Default()), EqualityComparer.Default());
+    }
+
+    @Test
+    public void EmptySource() {
+        assertEmpty(Linq.<Record>asEnumerable().groupBy(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void EmptySourceRunOnce() {
+        assertEmpty(Linq.<Record>asEnumerable().runOnce().groupBy(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void SourceIsNull() {
+        IEnumerable<Record> source = null;
+        assertThrows(NullPointerException.class, () -> source.groupBy(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
+        assertThrows(NullPointerException.class, () -> source.groupBy(e -> e.Name, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void SourceIsNullResultSelectorUsed() {
+        IEnumerable<Record> source = null;
+        assertThrows(NullPointerException.class, () -> source.groupBy(e -> e.Name, e -> e.Score, (k, es) -> es.sumInt(), new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void SourceIsNullResultSelectorUsedNoComparer() {
+        IEnumerable<Record> source = null;
+        assertThrows(NullPointerException.class, () -> source.groupBy(e -> e.Name, e -> e.Score, (k, es) -> es.sumInt()));
+    }
+
+    @Test
+    public void SourceIsNullResultSelectorUsedNoComparerOrElementSelector() {
+        IEnumerable<Record> source = null;
+        assertThrows(NullPointerException.class, () -> source.groupBy(e -> e.Name, (k, es) -> es.sumInt(e -> e.Score)));
+    }
+
+    @Test
+    public void KeySelectorNull() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(null, e -> e.Score, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(null, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void KeySelectorNullResultSelectorUsed() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(null, e -> e.Score, (k, es) -> es.sumInt(), new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void KeySelectorNullResultSelectorUsedNoComparer() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Func1<Record, String> keySelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(keySelector, e -> e.Score, (k, es) -> es.sumInt()));
+    }
+
+    @Test
+    public void KeySelectorNullResultSelectorUsedNoElementSelector() {
+        String[] key = {"Tim", "Tim", "Tim", "Tim"};
+        int[] element = {60, -10, 40, 100};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), Record::new);
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(null, (k, es) -> es.sumInt(e -> e.Score), new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void ElementSelectorNull() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Func1<Record, Integer> elementSelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(e -> e.Name, elementSelector, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void ElementSelectorNullResultSelectorUsedNoComparer() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Func1<Record, Integer> elementSelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(e -> e.Name, elementSelector, (k, es) -> es.sumInt()));
+    }
+
+    @Test
+    public void ResultSelectorNull() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Func2<String, IEnumerable<Integer>, Long> resultSelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score, resultSelector, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void ResultSelectorNullNoComparer() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Func2<String, IEnumerable<Integer>, Long> resultSelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score, resultSelector));
+    }
+
+    @Test
+    public void ResultSelectorNullNoElementSelector() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Func2<String, IEnumerable<Record>, Long> resultSelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(e -> e.Name, resultSelector));
+    }
+
+    @Test
+    public void ResultSelectorNullNoElementSelectorCustomComparer() {
+        String[] key = {"Tim", "Tim", "Tim", "Tim"};
+        int[] element = {60, -10, 40, 100};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), Record::new);
+
+        Func2<String, IEnumerable<Record>, Long> resultSelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).groupBy(e -> e.Name, resultSelector, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void EmptySourceWithResultSelector() {
+        assertEmpty(Linq.<Record>asEnumerable().groupBy(e -> e.Name, e -> e.Score, (k, es) -> (long) (k == null ? " " : k).length() * es.sumInt(), new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void DuplicateKeysCustomComparer() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("miT", 25)};
+
+        long[] expected = {240, 365, -600, 63};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score, (k, es) -> (long) (k == null ? " " : k).length() * es.sumInt(), new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void DuplicateKeysCustomComparerRunOnce() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("miT", 25)};
+        long[] expected = {240, 365, -600, 63};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().groupBy(e -> e.Name, e -> e.Score, (k, es) -> (long) (k == null ? " " : k).length() * es.sumInt(), new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void NullComparer() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record(null, 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record(null, 9),
+                new Record("miT", 25)};
+        long[] expected = {165, 58, -600, 120, 75};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score, (k, es) -> (long) (k == null ? " " : k).length() * es.sumInt(), null));
+    }
+
+    @Test
+    public void NullComparerRunOnce() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record(null, 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record(null, 9),
+                new Record("miT", 25)};
+        long[] expected = {165, 58, -600, 120, 75};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().groupBy(e -> e.Name, e -> e.Score, (k, es) -> (long) (k == null ? " " : k).length() * es.sumInt(), null));
+    }
+
+    @Test
+    public void SingleNonNullElement() {
+        String[] key = {"Tim"};
+        Record[] source = {new Record(key[0], 60)};
+
+        AssertGroupingCorrect(Linq.asEnumerable(key), Linq.asEnumerable(source), Linq.asEnumerable(source).groupBy(e -> e.Name));
+    }
+
+    @Test
+    public void AllElementsSameKey() {
+        String[] key = {"Tim", "Tim", "Tim", "Tim"};
+        int[] scores = {60, -10, 40, 100};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(scores), Record::new);
+
+        AssertGroupingCorrect(Linq.asEnumerable(key), Linq.asEnumerable(source), Linq.asEnumerable(source).groupBy(e -> e.Name, new AnagramEqualityComparer()), new AnagramEqualityComparer());
+    }
+
+    @Test
+    public void AllElementsDifferentKeyElementSelectorUsed() {
+        String[] key = {"Tim", "Chris", "Robert", "Prakash"};
+        int[] element = {60, -10, 40, 100};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), Record::new);
+
+        AssertGroupingCorrect(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score));
+    }
+
+    @Test
+    public void SomeDuplicateKeys() {
+        String[] key = {"Tim", "Tim", "Chris", "Chris", "Robert", "Prakash"};
+        int[] element = {55, 25, 49, 24, -100, 9};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), Record::new);
+
+        AssertGroupingCorrect(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score));
+    }
+
+    @Test
+    public void SomeDuplicateKeysIncludingNulls() {
+        String[] key = {null, null, "Chris", "Chris", "Prakash", "Prakash"};
+        int[] element = {55, 25, 49, 24, 9, 9};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), Record::new);
+
+        AssertGroupingCorrect(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score));
+    }
+
+    @Test
+    public void SingleElementResultSelectorUsed() {
+        String[] key = {"Tim"};
+        int[] element = {60};
+        long[] expected = {180};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), Record::new);
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).groupBy(e -> e.Name, (k, es) -> (long) (k == null ? " " : k).length() * es.sumInt(e -> e.Score)));
+    }
+
+    @Test
+    public void GroupedResultCorrectSize() {
+        IEnumerable<Character> elements = Linq.repeat('q', 5);
+
+        final IEnumerable<Tuple2<Character, IEnumerable<Character>>> result = elements.groupBy(e -> e, (Func2<Character, IEnumerable<Character>, Tuple2<Character, IEnumerable<Character>>>) Tuple::create);
+
+        Assert.assertEquals(1, result.count());
+
+        Tuple2<Character, IEnumerable<Character>> grouping = result.first();
+
+        Assert.assertEquals(5, grouping.getItem2().count());
+        Assert.assertEquals((Character) 'q', grouping.getItem1());
+        Assert.assertTrue(grouping.getItem2().all(e -> e == 'q'));
+    }
+
+    @Test
+    public void AllElementsDifferentKeyElementSelectorUsedResultSelector() {
+        String[] key = {"Tim", "Chris", "Robert", "Prakash"};
+        int[] element = {60, -10, 40, 100};
+        IEnumerable<Record> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), Record::new);
+        long[] expected = {180, -50, 240, 700};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).groupBy(e -> e.Name, e -> e.Score, (k, es) -> (long) (k == null ? " " : k).length() * es.sumInt()));
+    }
+
+    @Test
+    public void AllElementsSameKeyResultSelectorUsed() {
+        int[] element = {60, -10, 40, 100};
+        long[] expected = {570};
+        Record[] source = new Record[]{
+                new Record("Tim", element[0]),
+                new Record("Tim", element[1]),
+                new Record("miT", element[2]),
+                new Record("miT", element[3])
+        };
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).groupBy(e -> e.Name, (k, es) -> k.length() * es.sumLong(e -> (long) e.Score), new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void NullComparerResultSelectorUsed() {
+        int[] element = {60, -10, 40, 100};
+        Record[] source = {
+                new Record("Tim", element[0]),
+                new Record("Tim", element[1]),
+                new Record("miT", element[2]),
+                new Record("miT", element[3]),
+        };
+
+        long[] expected = {150, 420};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).groupBy(e -> e.Name, (k, es) -> k.length() * es.sumLong(e -> (long) e.Score), null));
+    }
+
+    @Test
+    public void GroupingToArray() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Array<IGrouping<String, Record>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name).toArray();
+        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name), groupedArray);
+    }
+
+    @Test
+    public void GroupingWithElementSelectorToArray() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Array<IGrouping<String, Integer>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score).toArray();
+        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score), groupedArray);
+    }
+
+    @Test
+    public void GroupingWithResultsToArray() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Array<IEnumerable<Record>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e).toArray();
+        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e), groupedArray);
+    }
+
+    @Test
+    public void GroupingWithElementSelectorAndResultsToArray() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Array<IEnumerable<Record>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).toArray();
+        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e), groupedArray);
+    }
+
+    @Test
+    public void GroupingToList() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        List<IGrouping<String, Record>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name).toList();
+        Assert.assertEquals(4, groupedList.size());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name), Linq.asEnumerable(groupedList));
+    }
+
+    @Test
+    public void GroupingWithElementSelectorToList() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        List<IGrouping<String, Integer>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score).toList();
+        Assert.assertEquals(4, groupedList.size());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score), Linq.asEnumerable(groupedList));
+    }
+
+    @Test
+    public void GroupingWithResultsToList() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        List<IEnumerable<Record>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e).toList();
+        Assert.assertEquals(4, groupedList.size());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e), Linq.asEnumerable(groupedList));
+    }
+
+    @Test
+    public void GroupingWithElementSelectorAndResultsToList() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        List<IEnumerable<Record>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).toList();
+        Assert.assertEquals(4, groupedList.size());
+        assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e), Linq.asEnumerable(groupedList));
+    }
+
+    @Test
+    public void GroupingCount() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name).count());
+    }
+
+    @Test
+    public void GroupingWithElementSelectorCount() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score).count());
+    }
+
+    @Test
+    public void GroupingWithResultsCount() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e).count());
+    }
+
+    @Test
+    public void GroupingWithElementSelectorAndResultsCount() {
+        Record[] source = new Record[]{
+                new Record("Tim", 55),
+                new Record("Chris", 49),
+                new Record("Robert", -100),
+                new Record("Chris", 24),
+                new Record("Prakash", 9),
+                new Record("Tim", 25)};
+
+        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).count());
+    }
+
+    @Test
+    public void EmptyGroupingToArray() {
+        assertEmpty(Linq.<Integer>empty().groupBy(i -> i).toArray());
+    }
+
+    @Test
+    public void EmptyGroupingToList() {
+        assertEmpty(Linq.asEnumerable(Linq.<Integer>empty().groupBy(i -> i).toList()));
+    }
+
+    @Test
+    public void EmptyGroupingCount() {
+        Assert.assertEquals(0, Linq.<Integer>empty().groupBy(i -> i).count());
+    }
+
+    @Test
+    public void EmptyGroupingWithResultToArray() {
+        assertEmpty(Linq.<Integer>empty().groupBy(i -> i, (x, y) -> x + y.count()).toArray());
+    }
+
+    @Test
+    public void EmptyGroupingWithResultToList() {
+        assertEmpty(Linq.asEnumerable(Linq.<Integer>empty().groupBy(i -> i, (x, y) -> x + y.count()).toList()));
+    }
+
+    @Test
+    public void EmptyGroupingWithResultCount() {
+        Assert.assertEquals(0, Linq.<Integer>empty().groupBy(i -> i, (x, y) -> x + y.count()).count());
+    }
+
+    @Test
+    public void GroupingKeyIsPublic() throws NoSuchMethodException {
+        // Grouping.Key needs to be public (not explicitly implemented) for the sake of WPF.
+
+        Object[] objs = {"Foo", BigDecimal.valueOf(1), "Bar", new ObjX("X"), BigDecimal.valueOf(2)};
+        Object group = Linq.asEnumerable(objs).groupBy(Object::getClass).first();
+
+        Class<?> grouptype = group.getClass();
+        Method key = grouptype.getMethod("getKey");
+        Assert.assertNotNull(key);
+    }
+
     @Test
     public void testGroupByWithKeySelector() {
         String s = Linq.asEnumerable(emps)
@@ -134,5 +866,54 @@ public class GroupByTest extends EnumerableTest {
                 .toList()
                 .toString();
         Assert.assertEquals("[10: Fred+Bill+Eric+Janet]", s);
+    }
+
+    //struct
+    public static final class Record {
+        String Name;
+        int Score;
+
+        Record(String name, int score) {
+            this.Name = name;
+            this.Score = score;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || this.getClass() != obj.getClass())
+                return false;
+            Record record = (Record) obj;
+            return this.Score == record.Score && Objects.equals(this.Name, record.Name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.Name, this.Score);
+        }
+    }
+
+    //struct
+    private static final class ObjX {
+        final String X;
+
+        private ObjX(String x) {
+            this.X = x;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null || this.getClass() != obj.getClass())
+                return false;
+            ObjX objX = (ObjX) obj;
+            return Objects.equals(this.X, objX.X);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.X);
+        }
     }
 }
