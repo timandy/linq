@@ -92,7 +92,7 @@ public final class ArrayUtils {
         if (array == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
 
-        for (int i = 0, length = array.length; i < length; i++)
+        for (int i = 0; i < array.length; i++)
             array[i] = value;
     }
 
