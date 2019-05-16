@@ -483,7 +483,7 @@ final class SelectRepeatIterator<TSource, TResult> extends Iterator<TResult> imp
     }
 
     @Override
-    public <TResult1> IEnumerable<TResult1> _select(Func1<TResult, TResult1> selector) {
+    public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
         return new SelectRepeatIterator<>(this.element, this.count, Utilities.combineSelectors(this.selector, selector));
     }
 
