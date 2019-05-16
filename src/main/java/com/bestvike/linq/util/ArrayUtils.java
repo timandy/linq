@@ -100,11 +100,15 @@ public final class ArrayUtils {
         if (array == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
 
-        int length = array.length;
-        for (int i = 0, mid = length >> 1, j = length - 1; i < mid; i++, j--) {
-            T tmp = array[i];
+        int i = 0;
+        int j = array.length - 1;
+        T temp;
+        while (i < j) {
+            temp = array[i];
             array[i] = array[j];
-            array[j] = tmp;
+            array[j] = temp;
+            i++;
+            j--;
         }
     }
 
