@@ -266,8 +266,7 @@ public class EnumerableTest {
                 return true;
             if (x == null | y == null)
                 return false;
-            int length = x.length();
-            if (length != y.length())
+            if (x.length() != y.length())
                 return false;
             try (IEnumerator<Character> en = Linq.asEnumerable(x).orderBy(i -> i).enumerator()) {
                 for (char c : Linq.asEnumerable(y).orderBy(i -> i)) {
