@@ -401,8 +401,8 @@ public class GroupJoinTest extends EnumerableTest {
 
     //struct
     public static final class CustomerRec {
-        String name;
-        Integer custID;
+        final String name;
+        final Integer custID;
 
         CustomerRec(String name, Integer custID) {
             this.name = name;
@@ -428,9 +428,9 @@ public class GroupJoinTest extends EnumerableTest {
 
     //struct
     public static final class OrderRec {
-        Integer orderID;
-        Integer custID;
-        Integer total;
+        final Integer orderID;
+        final Integer custID;
+        final Integer total;
 
         OrderRec(Integer orderID, Integer custID, Integer total) {
             this.orderID = orderID;
@@ -458,9 +458,9 @@ public class GroupJoinTest extends EnumerableTest {
 
     //struct
     public static final class AnagramRec {
-        String name;
-        Integer orderID;
-        Integer total;
+        final String name;
+        final Integer orderID;
+        final Integer total;
 
         AnagramRec(String name, Integer orderID, Integer total) {
             this.name = name;
@@ -488,9 +488,9 @@ public class GroupJoinTest extends EnumerableTest {
 
     //struct
     public static final class JoinRec {
-        String name;
-        Integer[] orderID;
-        Integer[] total;
+        final String name;
+        final Integer[] orderID;
+        final Integer[] total;
 
         JoinRec(String name, Integer[] orderID, Integer[] total) {
             this.name = name;

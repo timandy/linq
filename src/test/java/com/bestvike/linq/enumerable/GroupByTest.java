@@ -870,8 +870,8 @@ public class GroupByTest extends EnumerableTest {
 
     //struct
     public static final class Record {
-        String Name;
-        int Score;
+        final String Name;
+        final int Score;
 
         Record(String name, int score) {
             this.Name = name;
