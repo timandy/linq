@@ -341,7 +341,7 @@ final class SelectRangeIterator<TResult> extends Iterator<TResult> implements IP
 
     SelectRangeIterator(int start, int end, Func1<Integer, TResult> selector) {
         assert start < end;
-        assert end - start <= Integer.MAX_VALUE;
+        assert Integer.compareUnsigned(end - start, Integer.MAX_VALUE) <= 0;
         assert selector != null;
 
         this.start = start;
