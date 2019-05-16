@@ -106,6 +106,7 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
 
     @Override
     public IPartition<Integer> _skip(int count) {
+        assert count > 0;
         return count >= this.end - this.start
                 ? EmptyPartition.instance()
                 : new RangeIterator(this.start + count, this.end - this.start - count);
@@ -113,6 +114,7 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
 
     @Override
     public IPartition<Integer> _take(int count) {
+        assert count > 0;
         return count >= this.end - this.start
                 ? this
                 : new RangeIterator(this.start, count);
