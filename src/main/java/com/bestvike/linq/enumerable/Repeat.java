@@ -103,6 +103,7 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
 
     @Override
     public IPartition<TResult> _skip(int count) {
+        assert count > 0;
         return count >= this.count
                 ? EmptyPartition.instance()
                 : new RepeatIterator<>(this.current, this.count - count);
@@ -110,6 +111,7 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
 
     @Override
     public IPartition<TResult> _take(int count) {
+        assert count > 0;
         return count >= this.count
                 ? this
                 : new RepeatIterator<>(this.current, count);

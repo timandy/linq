@@ -299,6 +299,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public IPartition<TResult> _take(int count) {
+        assert count > 0;
         return count >= this.source._getCount()
                 ? this
                 : new SelectListPartitionIterator<>(this.source, this.selector, 0, count - 1);
@@ -440,6 +441,7 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public IPartition<TResult> _take(int count) {
+        assert count > 0;
         return new SelectListPartitionIterator<>(this.source, this.selector, 0, count - 1);
     }
 
@@ -536,6 +538,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
 
     @Override
     public IPartition<TResult> _take(int count) {
+        assert count > 0;
         return new SelectIPartitionIterator<>(this.source._take(count), this.selector);
     }
 
@@ -720,6 +723,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
 
     @Override
     public IPartition<TResult> _take(int count) {
+        assert count > 0;
         int maxIndex = this.minIndexInclusive + count - 1;
         return Integer.compareUnsigned(maxIndex, this.maxIndexInclusive) >= 0
                 ? this
