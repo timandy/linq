@@ -871,7 +871,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         List<TResult> list;
         switch (count) {
             case -1:
-                list = ListUtils.empty();
+                list = new ArrayList<>();
                 break;
             case 0:
                 return ListUtils.empty();
