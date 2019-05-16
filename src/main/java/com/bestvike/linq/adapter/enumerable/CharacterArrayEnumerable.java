@@ -62,26 +62,23 @@ public final class CharacterArrayEnumerable implements IArray<Character> {
 
     @Override
     public Character[] _toArray(Class<Character> clazz) {
-        int length = this.source.length;
-        Character[] array = ArrayUtils.newInstance(clazz, length);
-        for (int i = 0; i < length; i++)
+        Character[] array = ArrayUtils.newInstance(clazz, this.source.length);
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public Object[] _toArray() {
-        int length = this.source.length;
-        Object[] array = new Object[length];
-        for (int i = 0; i < length; i++)
+        Object[] array = new Object[this.source.length];
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public List<Character> _toList() {
-        int length = this.source.length;
-        List<Character> list = new ArrayList<>(length);
+        List<Character> list = new ArrayList<>(this.source.length);
         for (char item : this.source)
             list.add(item);
         return list;

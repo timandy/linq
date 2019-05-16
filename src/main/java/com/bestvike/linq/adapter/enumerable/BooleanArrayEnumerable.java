@@ -62,26 +62,23 @@ public final class BooleanArrayEnumerable implements IArray<Boolean> {
 
     @Override
     public Boolean[] _toArray(Class<Boolean> clazz) {
-        int length = this.source.length;
-        Boolean[] array = ArrayUtils.newInstance(clazz, length);
-        for (int i = 0; i < length; i++)
+        Boolean[] array = ArrayUtils.newInstance(clazz, this.source.length);
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public Object[] _toArray() {
-        int length = this.source.length;
-        Object[] array = new Object[length];
-        for (int i = 0; i < length; i++)
+        Object[] array = new Object[this.source.length];
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public List<Boolean> _toList() {
-        int length = this.source.length;
-        List<Boolean> list = new ArrayList<>(length);
+        List<Boolean> list = new ArrayList<>(this.source.length);
         for (boolean item : this.source)
             list.add(item);
         return list;

@@ -62,26 +62,23 @@ public final class ByteArrayEnumerable implements IArray<Byte> {
 
     @Override
     public Byte[] _toArray(Class<Byte> clazz) {
-        int length = this.source.length;
-        Byte[] array = ArrayUtils.newInstance(clazz, length);
-        for (int i = 0; i < length; i++)
+        Byte[] array = ArrayUtils.newInstance(clazz, this.source.length);
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public Object[] _toArray() {
-        int length = this.source.length;
-        Object[] array = new Object[length];
-        for (int i = 0; i < length; i++)
+        Object[] array = new Object[this.source.length];
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public List<Byte> _toList() {
-        int length = this.source.length;
-        List<Byte> list = new ArrayList<>(length);
+        List<Byte> list = new ArrayList<>(this.source.length);
         for (byte item : this.source)
             list.add(item);
         return list;

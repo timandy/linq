@@ -62,26 +62,23 @@ public final class DoubleArrayEnumerable implements IArray<Double> {
 
     @Override
     public Double[] _toArray(Class<Double> clazz) {
-        int length = this.source.length;
-        Double[] array = ArrayUtils.newInstance(clazz, length);
-        for (int i = 0; i < length; i++)
+        Double[] array = ArrayUtils.newInstance(clazz, this.source.length);
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public Object[] _toArray() {
-        int length = this.source.length;
-        Object[] array = new Object[length];
-        for (int i = 0; i < length; i++)
+        Object[] array = new Object[this.source.length];
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public List<Double> _toList() {
-        int length = this.source.length;
-        List<Double> list = new ArrayList<>(length);
+        List<Double> list = new ArrayList<>(this.source.length);
         for (double item : this.source)
             list.add(item);
         return list;

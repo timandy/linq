@@ -62,26 +62,23 @@ public final class FloatArrayEnumerable implements IArray<Float> {
 
     @Override
     public Float[] _toArray(Class<Float> clazz) {
-        int length = this.source.length;
-        Float[] array = ArrayUtils.newInstance(clazz, length);
-        for (int i = 0; i < length; i++)
+        Float[] array = ArrayUtils.newInstance(clazz, this.source.length);
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public Object[] _toArray() {
-        int length = this.source.length;
-        Object[] array = new Object[length];
-        for (int i = 0; i < length; i++)
+        Object[] array = new Object[this.source.length];
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public List<Float> _toList() {
-        int length = this.source.length;
-        List<Float> list = new ArrayList<>(length);
+        List<Float> list = new ArrayList<>(this.source.length);
         for (float item : this.source)
             list.add(item);
         return list;

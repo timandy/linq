@@ -62,26 +62,23 @@ public final class LongArrayEnumerable implements IArray<Long> {
 
     @Override
     public Long[] _toArray(Class<Long> clazz) {
-        int length = this.source.length;
-        Long[] array = ArrayUtils.newInstance(clazz, length);
-        for (int i = 0; i < length; i++)
+        Long[] array = ArrayUtils.newInstance(clazz, this.source.length);
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public Object[] _toArray() {
-        int length = this.source.length;
-        Object[] array = new Object[length];
-        for (int i = 0; i < length; i++)
+        Object[] array = new Object[this.source.length];
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source[i];
         return array;
     }
 
     @Override
     public List<Long> _toList() {
-        int length = this.source.length;
-        List<Long> list = new ArrayList<>(length);
+        List<Long> list = new ArrayList<>(this.source.length);
         for (long item : this.source)
             list.add(item);
         return list;
