@@ -116,9 +116,9 @@ public class DefaultIfEmptyTest extends EnumerableTest {
 
     @Test
     public void testDefaultIfEmpty() {
-        final List<String> experience = Arrays.asList("jimi", "mitch", "noel");
-        final IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty();
-        final IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
+        List<String> experience = Arrays.asList("jimi", "mitch", "noel");
+        IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty();
+        IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
         notEmptyEnumerator.moveNext();
         Assert.assertEquals("jimi", notEmptyEnumerator.current());
         notEmptyEnumerator.moveNext();
@@ -126,8 +126,8 @@ public class DefaultIfEmptyTest extends EnumerableTest {
         notEmptyEnumerator.moveNext();
         Assert.assertEquals("noel", notEmptyEnumerator.current());
 
-        final IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty();
-        final IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
+        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty();
+        IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
         Assert.assertTrue(emptyEnumerator.moveNext());
         Assert.assertNull(emptyEnumerator.current());
         Assert.assertFalse(emptyEnumerator.moveNext());
@@ -135,9 +135,9 @@ public class DefaultIfEmptyTest extends EnumerableTest {
 
     @Test
     public void testDefaultIfEmptyWithDefaultValue() {
-        final List<String> experience = Arrays.asList("jimi", "mitch", "noel");
-        final IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty("dummy");
-        final IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
+        List<String> experience = Arrays.asList("jimi", "mitch", "noel");
+        IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty("dummy");
+        IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
         notEmptyEnumerator.moveNext();
         Assert.assertEquals("jimi", notEmptyEnumerator.current());
         notEmptyEnumerator.moveNext();
@@ -145,8 +145,8 @@ public class DefaultIfEmptyTest extends EnumerableTest {
         notEmptyEnumerator.moveNext();
         Assert.assertEquals("noel", notEmptyEnumerator.current());
 
-        final IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty("N/A");
-        final IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
+        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty("N/A");
+        IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
         Assert.assertTrue(emptyEnumerator.moveNext());
         Assert.assertEquals("N/A", emptyEnumerator.current());
         Assert.assertFalse(emptyEnumerator.moveNext());

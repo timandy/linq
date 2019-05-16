@@ -44,7 +44,7 @@ public class AllTest extends EnumerableTest {
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.AllCore(range, i -> i > 0, true);
         for (int j = 1; j <= 10; j++) {
-            final int k = j;
+            int k = j;
             this.AllCore(range, i -> i > k, false);
         }
     }
@@ -68,7 +68,7 @@ public class AllTest extends EnumerableTest {
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.AllRunOnceCore(range.runOnce(), i -> i > 0, true);
         for (int j = 1; j <= 10; j++) {
-            final int k = j;
+            int k = j;
             this.AllRunOnceCore(range, i -> i > k, false);
         }
     }

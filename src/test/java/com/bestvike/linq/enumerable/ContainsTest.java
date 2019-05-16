@@ -149,7 +149,7 @@ public class ContainsTest extends EnumerableTest {
     public void ExplicitNullComparerDoesNotDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        final IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.asEnumerable(set);
         Assert.assertFalse(source.contains("BAC", null));
     }
 
@@ -157,7 +157,7 @@ public class ContainsTest extends EnumerableTest {
     public void ExplicitComparerDoesNotDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        final IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.asEnumerable(set);
         Assert.assertTrue(source.contains("abc", StringComparer.OrdinalIgnoreCase));
     }
 
@@ -165,7 +165,7 @@ public class ContainsTest extends EnumerableTest {
     public void ExplicitComparerDoestNotDeferToCollectionWithComparer() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        final IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.asEnumerable(set);
         Assert.assertTrue(source.contains("BAC", new AnagramEqualityComparer()));
     }
 
@@ -173,7 +173,7 @@ public class ContainsTest extends EnumerableTest {
     public void NoComparerDoesDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        final IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.asEnumerable(set);
         Assert.assertTrue(source.contains("ABC"));
     }
 
@@ -228,13 +228,13 @@ public class ContainsTest extends EnumerableTest {
 
     @Test
     public void testSumInt() {
-        final Integer[] numbers = {null, 0, 2, 3};
+        Integer[] numbers = {null, 0, 2, 3};
         Assert.assertEquals(5, Linq.asEnumerable(numbers).sumInt());
 
-        final Integer[] numbers2 = {null, Integer.MAX_VALUE - 1, 1};
+        Integer[] numbers2 = {null, Integer.MAX_VALUE - 1, 1};
         Assert.assertEquals(Integer.MAX_VALUE, Linq.asEnumerable(numbers2).sumInt());
 
-        final Integer[] numbers3 = {null, Integer.MAX_VALUE, 1};
+        Integer[] numbers3 = {null, Integer.MAX_VALUE, 1};
         try {
             int num = Linq.asEnumerable(numbers3).sumInt();
             Assert.fail("expect error,but got " + num);

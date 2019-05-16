@@ -91,12 +91,12 @@ public class ElementAtOrDefaultTest extends EnumerableTest {
 
     @Test
     public void testElementAtOrDefault() {
-        final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
+        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
         Assert.assertEquals("jimi", enumerable.elementAtOrDefault(0));
         Assert.assertNull(enumerable.elementAtOrDefault(2));
         Assert.assertNull(enumerable.elementAtOrDefault(-1));
 
-        final IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
+        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
         Assert.assertEquals((Long) 1L, enumerable2.elementAtOrDefault(0));
         Assert.assertNull(enumerable2.elementAtOrDefault(2));
         Assert.assertNull(enumerable2.elementAtOrDefault(-1));

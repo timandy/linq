@@ -143,7 +143,7 @@ public class IntersectTest extends EnumerableTest {
 
     @Test
     public void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
-        final HashSet<String> set = new HashSet<>(StringComparer.OrdinalIgnoreCase);
+        HashSet<String> set = new HashSet<>(StringComparer.OrdinalIgnoreCase);
         set.add("a");
 
         IEnumerable<String> input1 = Linq.asEnumerable(set);
@@ -162,7 +162,7 @@ public class IntersectTest extends EnumerableTest {
 
     @Test
     public void testIntersect() {
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
@@ -185,7 +185,7 @@ public class IntersectTest extends EnumerableTest {
             }
         };
 
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10)
         };
         Assert.assertEquals(1, Linq.asEnumerable(emps)

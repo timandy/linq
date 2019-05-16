@@ -13,7 +13,7 @@ import java.util.List;
 public class SelectManyTest extends EnumerableTest {
     @Test
     public void testSelectMany() {
-        final List<String> nameSeqs = Linq.asEnumerable(depts)
+        List<String> nameSeqs = Linq.asEnumerable(depts)
                 .selectMany(dept -> Linq.asEnumerable(dept.employees))
                 .select((emp, index) -> String.format("#%d: %s", index, emp.name))
                 .toList();
@@ -22,7 +22,7 @@ public class SelectManyTest extends EnumerableTest {
 
     @Test
     public void testSelectManyIndexed() {
-        final List<String> nameSeqs = Linq.asEnumerable(depts)
+        List<String> nameSeqs = Linq.asEnumerable(depts)
                 .selectMany((dept, index) -> Linq.asEnumerable(dept.employees).select(emp -> String.format("#%d: %s", index, emp.name)))
                 .toList();
         Assert.assertEquals("[#0: Fred, #0: Eric, #0: Janet, #2: Bill]", nameSeqs.toString());
@@ -30,7 +30,7 @@ public class SelectManyTest extends EnumerableTest {
 
     @Test
     public void testSelectManySelect() {
-        final List<String> nameSeqs = Linq.asEnumerable(depts)
+        List<String> nameSeqs = Linq.asEnumerable(depts)
                 .selectMany(dept -> Linq.asEnumerable(dept.employees), (dept, emp) -> String.format("#%s: %s", dept.name, emp.name))
                 .toList();
         Assert.assertEquals("[#Sales: Fred, #Sales: Eric, #Sales: Janet, #Marketing: Bill]", nameSeqs.toString());
@@ -38,7 +38,7 @@ public class SelectManyTest extends EnumerableTest {
 
     @Test
     public void testSelectManyIndexedSelect() {
-        final List<String> nameSeqs = Linq.asEnumerable(depts)
+        List<String> nameSeqs = Linq.asEnumerable(depts)
                 .selectMany((dept, index) -> Linq.asEnumerable(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
                 .toList();
         Assert.assertEquals("[#0: Sales: Fred, #0: Sales: Eric, #0: Sales: Janet, #2: Marketing: Bill]", nameSeqs.toString());

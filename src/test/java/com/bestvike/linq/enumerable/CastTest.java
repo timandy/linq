@@ -218,8 +218,8 @@ public class CastTest extends EnumerableTest {
 
     @Test
     public void testCast() {
-        final List<Number> numbers = Arrays.asList(2, null, 3.14, 5);
-        final IEnumerator<Integer> enumerator = Linq.asEnumerable(numbers)
+        List<Number> numbers = Arrays.asList(2, null, 3.14, 5);
+        IEnumerator<Integer> enumerator = Linq.asEnumerable(numbers)
                 .cast(Integer.class)
                 .enumerator();
 

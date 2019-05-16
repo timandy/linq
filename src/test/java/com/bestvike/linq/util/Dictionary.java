@@ -41,7 +41,7 @@ public final class Dictionary<K, V> extends AbstractMap<K, V> {
 
     @Override
     public V get(Object key) {
-        final Map.Entry<K, V> entry = this.findEntry(key);
+        Map.Entry<K, V> entry = this.findEntry(key);
         return entry == null ? null : entry.getValue();
     }
 
@@ -53,14 +53,14 @@ public final class Dictionary<K, V> extends AbstractMap<K, V> {
             this.entrySet.add(entry);
             return null;
         }
-        final V oldValue = entry.getValue();
+        V oldValue = entry.getValue();
         entry.setValue(value);
         return oldValue;
     }
 
     @Override
     public V remove(Object key) {
-        final Map.Entry<K, V> entry = this.findEntry(key);
+        Map.Entry<K, V> entry = this.findEntry(key);
         if (entry == null)
             return null;
         this.entrySet.remove(entry);
@@ -68,7 +68,7 @@ public final class Dictionary<K, V> extends AbstractMap<K, V> {
     }
 
     public boolean tryGetValue(Object key, out<V> value) {
-        final Map.Entry<K, V> entry = this.findEntry(key);
+        Map.Entry<K, V> entry = this.findEntry(key);
         if (entry == null) {
             value.value = null;
             return false;
@@ -84,7 +84,7 @@ public final class Dictionary<K, V> extends AbstractMap<K, V> {
 
     @Override
     public V getOrDefault(Object key, V defaultValue) {
-        final Map.Entry<K, V> entry = this.findEntry(key);
+        Map.Entry<K, V> entry = this.findEntry(key);
         return entry == null ? defaultValue : entry.getValue();
     }
 

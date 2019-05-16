@@ -122,8 +122,8 @@ public class OfTypeTest extends EnumerableTest {
 
     @Test
     public void testOfType() {
-        final List<Number> numbers = Arrays.asList(2, null, 3.14, 5);
-        final IEnumerator<Integer> enumerator = Linq.asEnumerable(numbers)
+        List<Number> numbers = Arrays.asList(2, null, 3.14, 5);
+        IEnumerator<Integer> enumerator = Linq.asEnumerable(numbers)
                 .ofType(Integer.class)
                 .enumerator();
         Assert.assertTrue(enumerator.moveNext());

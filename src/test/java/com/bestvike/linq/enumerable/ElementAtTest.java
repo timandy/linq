@@ -91,7 +91,7 @@ public class ElementAtTest extends EnumerableTest {
 
     @Test
     public void testElementAt() {
-        final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
+        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
         Assert.assertEquals("jimi", enumerable.elementAt(0));
         try {
             enumerable.elementAt(2);
@@ -105,7 +105,7 @@ public class ElementAtTest extends EnumerableTest {
         } catch (IndexOutOfBoundsException ignored) {
         }
 
-        final IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
+        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
         Assert.assertEquals((Long) 1L, enumerable2.elementAt(0));
         try {
             enumerable2.elementAt(2);

@@ -15,23 +15,23 @@ import java.util.Collections;
 public class LastTest extends EnumerableTest {
     @Test
     public void testLast() {
-        final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
+        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
         Assert.assertEquals("mitch", enumerable.last());
 
-        final IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
+        IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
         try {
             emptyEnumerable.last();
             Assert.fail("should not run at here");
         } catch (InvalidOperationException ignored) {
         }
 
-        final IEnumerable<String> enumerable2 = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList("jimi", "noel", "mitch")));
+        IEnumerable<String> enumerable2 = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList("jimi", "noel", "mitch")));
         Assert.assertEquals("mitch", enumerable2.last());
     }
 
     @Test
     public void testLastWithPredicate() {
-        final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
+        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
         Assert.assertEquals("mitch", enumerable.last(x -> x.startsWith("mit")));
         try {
             enumerable.last(x -> false);
@@ -39,7 +39,7 @@ public class LastTest extends EnumerableTest {
         } catch (InvalidOperationException ignored) {
         }
 
-        final IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
+        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
         try {
             emptyEnumerable.last(x -> {
                 Assert.fail("should not run at here");
@@ -52,19 +52,19 @@ public class LastTest extends EnumerableTest {
 
     @Test
     public void testLastOrDefault() {
-        final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
+        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
         Assert.assertEquals("mitch", enumerable.lastOrDefault());
 
-        final IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
+        IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
         Assert.assertNull(emptyEnumerable.lastOrDefault());
     }
 
     @Test
     public void testLastOrDefaultWithPredicate() {
-        final IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
+        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
         Assert.assertEquals("mitch", enumerable.lastOrDefault(x -> x.startsWith("mit")));
         Assert.assertNull(enumerable.lastOrDefault(x -> false));
-        final IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
+        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
         Assert.assertNull(emptyEnumerable.lastOrDefault(x -> {
             Assert.fail("should not run at here");
             return false;

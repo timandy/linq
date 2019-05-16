@@ -14,15 +14,15 @@ import java.util.List;
 public class SequenceEqualTest extends EnumerableTest {
     @Test
     public void testSequenceEqual() {
-        final List<Employee> list = Linq.asEnumerable(emps).toList();
+        List<Employee> list = Linq.asEnumerable(emps).toList();
 
         Assert.assertTrue(Linq.asEnumerable(list).sequenceEqual(Linq.asEnumerable(emps)));
     }
 
     @Test
     public void testSequenceEqualWithComparer() {
-        final int[] array1 = {1, 2, 3};
-        final int[] array2 = {11, 12, 13};
+        int[] array1 = {1, 2, 3};
+        int[] array2 = {11, 12, 13};
 
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override

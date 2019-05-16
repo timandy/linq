@@ -88,7 +88,7 @@ public class GroupByTest extends EnumerableTest {
         IEnumerable<Integer> q2 = Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25, -1, 0});
 
 
-        final IEnumerable<Tuple2<String, Integer>> q = q1.zip(q2);
+        IEnumerable<Tuple2<String, Integer>> q = q1.zip(q2);
 
         Assert.assertNotNull(q.groupBy(Tuple2::getItem1, Tuple2::getItem2));
         assertEquals(q.groupBy(Tuple2::getItem1, Tuple2::getItem2), q.groupBy(Tuple2::getItem1, Tuple2::getItem2));
@@ -477,7 +477,7 @@ public class GroupByTest extends EnumerableTest {
     public void GroupedResultCorrectSize() {
         IEnumerable<Character> elements = Linq.repeat('q', 5);
 
-        final IEnumerable<Tuple2<Character, IEnumerable<Character>>> result = elements.groupBy(e -> e, (Func2<Character, IEnumerable<Character>, Tuple2<Character, IEnumerable<Character>>>) Tuple::create);
+        IEnumerable<Tuple2<Character, IEnumerable<Character>>> result = elements.groupBy(e -> e, (Func2<Character, IEnumerable<Character>, Tuple2<Character, IEnumerable<Character>>>) Tuple::create);
 
         Assert.assertEquals(1, result.count());
 

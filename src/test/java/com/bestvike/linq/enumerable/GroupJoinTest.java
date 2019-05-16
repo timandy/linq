@@ -349,7 +349,7 @@ public class GroupJoinTest extends EnumerableTest {
                 dept -> dept.deptno,
                 emp -> emp.deptno,
                 (dept, emps) -> {
-                    final StringBuilder buf = new StringBuilder("[");
+                    StringBuilder buf = new StringBuilder("[");
                     int n = 0;
                     for (Employee employee : emps) {
                         if (n++ > 0)
@@ -383,7 +383,7 @@ public class GroupJoinTest extends EnumerableTest {
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emps) -> {
-                            final StringBuilder buf = new StringBuilder("[");
+                            StringBuilder buf = new StringBuilder("[");
                             int n = 0;
                             for (Employee employee : emps) {
                                 if (n++ > 0)

@@ -16,7 +16,7 @@ import java.util.Objects;
 public class ToLookupTest extends EnumerableTest {
     @Test
     public void testToLookup() {
-        final ILookup<Integer, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno);
+        ILookup<Integer, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno);
         Assert.assertTrue(lookup.containsKey(10));
         Assert.assertEquals(3, lookup.get(10).count());
         int n = 0;
@@ -49,7 +49,7 @@ public class ToLookupTest extends EnumerableTest {
                 return obj == null ? 0 : obj.length();
             }
         };
-        final ILookup<String, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.name, comparer);
+        ILookup<String, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.name, comparer);
         Assert.assertTrue(lookup.containsKey("Fred"));
         Assert.assertEquals(3, lookup.get("Fred").count());
         int n = 0;
@@ -79,8 +79,8 @@ public class ToLookupTest extends EnumerableTest {
                 return 0;
             }
         };
-        final Employee badEmp = new Employee(160, "Tim", null);
-        final ILookup<Integer, Employee> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, comparer2);
+        Employee badEmp = new Employee(160, "Tim", null);
+        ILookup<Integer, Employee> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, comparer2);
         Assert.assertTrue(lookup2.containsKey(null));
         Assert.assertEquals(5, lookup2.get(null).count());
         int n2 = 0;
@@ -97,7 +97,7 @@ public class ToLookupTest extends EnumerableTest {
 
     @Test
     public void testToLookupSelector() {
-        final ILookup<Integer, String> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno, emp -> emp.name);
+        ILookup<Integer, String> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno, emp -> emp.name);
         Assert.assertTrue(lookup.containsKey(10));
         Assert.assertEquals(3, lookup.get(10).count());
         int n = 0;
@@ -137,7 +137,7 @@ public class ToLookupTest extends EnumerableTest {
             }
         };
 
-        final ILookup<String, Integer> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.name, emp -> emp.empno, comparer);
+        ILookup<String, Integer> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.name, emp -> emp.empno, comparer);
         int n = 0;
         for (IGrouping<String, Integer> grouping : lookup) {
             ++n;
@@ -172,8 +172,8 @@ public class ToLookupTest extends EnumerableTest {
                 return 0;
             }
         };
-        final Employee badEmp = new Employee(160, "Tim", null);
-        final ILookup<Integer, String> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, emp -> emp.name, comparer2);
+        Employee badEmp = new Employee(160, "Tim", null);
+        ILookup<Integer, String> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, emp -> emp.name, comparer2);
         Assert.assertTrue(lookup2.containsKey(null));
         Assert.assertEquals(5, lookup2.get(null).count());
         int n2 = 0;

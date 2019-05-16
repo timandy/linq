@@ -60,8 +60,8 @@ public class EnumerableTest {
     }
 
     static String stringJoin(Iterable<String> group) {
-        final StringBuilder builder = new StringBuilder();
-        final Iterator<String> iterator = group.iterator();
+        StringBuilder builder = new StringBuilder();
+        Iterator<String> iterator = group.iterator();
         if (iterator.hasNext()) {
             builder.append(iterator.next());
             while (iterator.hasNext())
@@ -147,7 +147,7 @@ public class EnumerableTest {
     }
 
     static <T> List<Func1<IEnumerable<T>, IEnumerable<T>>> IdentityTransforms() {
-        final List<Func1<IEnumerable<T>, IEnumerable<T>>> list = new ArrayList<>();
+        List<Func1<IEnumerable<T>, IEnumerable<T>>> list = new ArrayList<>();
         list.add(e -> e);
         list.add(e -> e.toArray());
         list.add(e -> Linq.asEnumerable(e.toList()));

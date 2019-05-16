@@ -206,7 +206,7 @@ public class FirstTest extends EnumerableTest {
         }
 
         // close occurs if first does not throw
-        final Long num = Linq.asEnumerable(new IterableDemo(1)).first();
+        Long num = Linq.asEnumerable(new IterableDemo(1)).first();
         Assert.assertEquals((Long) 1L, num);
     }
 

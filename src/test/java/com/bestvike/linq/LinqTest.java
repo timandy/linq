@@ -18,8 +18,8 @@ import java.util.Set;
 public class LinqTest {
     @Test
     public void testBoolean() {
-        final boolean[] array = {true, false, true};
-        final List<Boolean> list = new ArrayList<>();
+        boolean[] array = {true, false, true};
+        List<Boolean> list = new ArrayList<>();
         list.add(true);
         list.add(false);
         list.add(true);
@@ -30,8 +30,8 @@ public class LinqTest {
 
     @Test
     public void testByte() {
-        final byte[] array = {0x01, 0x02, 0x03};
-        final List<Byte> list = new ArrayList<>();
+        byte[] array = {0x01, 0x02, 0x03};
+        List<Byte> list = new ArrayList<>();
         list.add(Byte.valueOf("01"));
         list.add(Byte.valueOf("02"));
         list.add(Byte.valueOf("03"));
@@ -42,8 +42,8 @@ public class LinqTest {
 
     @Test
     public void testShort() {
-        final short[] array = {0x01, 0x02, 0x03};
-        final List<Short> list = new ArrayList<>();
+        short[] array = {0x01, 0x02, 0x03};
+        List<Short> list = new ArrayList<>();
         list.add(Short.valueOf("01"));
         list.add(Short.valueOf("02"));
         list.add(Short.valueOf("03"));
@@ -54,8 +54,8 @@ public class LinqTest {
 
     @Test
     public void testInt() {
-        final int[] array = {0x01, 0x02, 0x03};
-        final List<Integer> list = new ArrayList<>();
+        int[] array = {0x01, 0x02, 0x03};
+        List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
         list.add(3);
@@ -66,8 +66,8 @@ public class LinqTest {
 
     @Test
     public void testLong() {
-        final long[] array = {0x01, 0x02, 0x03};
-        final List<Long> list = new ArrayList<>();
+        long[] array = {0x01, 0x02, 0x03};
+        List<Long> list = new ArrayList<>();
         list.add(1L);
         list.add(2L);
         list.add(3L);
@@ -78,8 +78,8 @@ public class LinqTest {
 
     @Test
     public void testFloat() {
-        final float[] array = {1f, 2f, Float.NaN};
-        final List<Float> list = new ArrayList<>();
+        float[] array = {1f, 2f, Float.NaN};
+        List<Float> list = new ArrayList<>();
         list.add(1f);
         list.add(2f);
         list.add(Float.NaN);
@@ -91,8 +91,8 @@ public class LinqTest {
 
     @Test
     public void testDouble() {
-        final double[] array = {1d, 2d, Double.NaN};
-        final List<Double> list = new ArrayList<>();
+        double[] array = {1d, 2d, Double.NaN};
+        List<Double> list = new ArrayList<>();
         list.add(1d);
         list.add(2d);
         list.add(Double.NaN);
@@ -104,8 +104,8 @@ public class LinqTest {
 
     @Test
     public void testChar() {
-        final char[] array = {'a', 'b', 'c'};
-        final List<Character> list = new ArrayList<>();
+        char[] array = {'a', 'b', 'c'};
+        List<Character> list = new ArrayList<>();
         list.add('a');
         list.add('b');
         list.add('c');
@@ -116,8 +116,8 @@ public class LinqTest {
 
     @Test
     public void testArrayAndList() {
-        final String[] array = {"1", "2", "3"};
-        final List<String> list = new ArrayList<>();
+        String[] array = {"1", "2", "3"};
+        List<String> list = new ArrayList<>();
         list.add("1");
         list.add("2");
         list.add("3");
@@ -128,11 +128,11 @@ public class LinqTest {
 
     @Test
     public void testCollectionAndIterable() {
-        final Set<Long> set = new HashSet<>();
+        Set<Long> set = new HashSet<>();
         set.add(1L);
         set.add(2L);
         set.add(3L);
-        final Iterable<Long> iterableDemo = new IterableDemo(3);
+        Iterable<Long> iterableDemo = new IterableDemo(3);
         Assert.assertEquals(3, Linq.asEnumerable(set).count());
         Assert.assertEquals(3, Linq.asEnumerable(iterableDemo).count());
         Assert.assertTrue(Linq.asEnumerable(set).sequenceEqual(Linq.asEnumerable(iterableDemo)));
@@ -140,8 +140,8 @@ public class LinqTest {
 
     @Test
     public void testCharSequence() {
-        final String str = "123";
-        final char[] chars = {'1', '2', '3'};
+        String str = "123";
+        char[] chars = {'1', '2', '3'};
         char c = Linq.asEnumerable(str).elementAt(1);
         Assert.assertEquals('2', c);
         Assert.assertEquals(3, Linq.asEnumerable(str).count());
@@ -151,13 +151,13 @@ public class LinqTest {
 
     @Test
     public void testMap() {
-        final Map<Integer, String> map = new HashMap<>();
+        Map<Integer, String> map = new HashMap<>();
         map.put(1, "1");
         map.put(2, "2");
         map.put(3, "3");
         IEnumerable<Map.Entry<Integer, String>> enu1 = Linq.asEnumerable(map);
 
-        final Map<Integer, String> map2 = new HashMap<>();
+        Map<Integer, String> map2 = new HashMap<>();
         map2.put(1, "1");
         map2.put(2, "2");
         map2.put(3, "3");
@@ -171,7 +171,7 @@ public class LinqTest {
 
     @Test
     public void testSingleton() {
-        final String[] array = {"1"};
+        String[] array = {"1"};
         Assert.assertEquals(1, Linq.asEnumerable(array).count());
         Assert.assertEquals(1, Linq.singleton("1").count());
         Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.singleton("1")));
@@ -179,24 +179,24 @@ public class LinqTest {
 
     @Test
     public void testRange() {
-        final Integer[] array = {1, 2, 3, 4, 5};
-        final IEnumerable<Integer> integers = Linq.range(1, 5);
+        Integer[] array = {1, 2, 3, 4, 5};
+        IEnumerable<Integer> integers = Linq.range(1, 5);
         Assert.assertEquals(5, integers.count());
         Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
     }
 
     @Test
     public void testRepeat() {
-        final Integer[] array = {1, 1, 1, 1, 1};
-        final IEnumerable<Integer> integers = Linq.repeat(1, 5);
+        Integer[] array = {1, 1, 1, 1, 1};
+        IEnumerable<Integer> integers = Linq.repeat(1, 5);
         Assert.assertEquals(5, integers.count());
         Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
     }
 
     @Test
     public void testEmpty() {
-        final Integer[] array = {};
-        final IEnumerable<Integer> integers = Linq.empty();
+        Integer[] array = {};
+        IEnumerable<Integer> integers = Linq.empty();
         Assert.assertEquals(0, integers.count());
         Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
     }

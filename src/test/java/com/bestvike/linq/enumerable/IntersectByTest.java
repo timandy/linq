@@ -12,7 +12,7 @@ import org.junit.Test;
 public class IntersectByTest extends EnumerableTest {
     @Test
     public void testIntersectBy() {
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 30),
                 emps[3],
         };
@@ -35,7 +35,7 @@ public class IntersectByTest extends EnumerableTest {
             }
         };
 
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10)
         };
         Assert.assertEquals(1, Linq.asEnumerable(emps)

@@ -50,7 +50,7 @@ public class DistinctTest extends EnumerableTest {
 
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        final IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
+        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.distinct(), q.distinct());
@@ -58,7 +58,7 @@ public class DistinctTest extends EnumerableTest {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        final IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "Calling Twice", "SoS"})
+        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "Calling Twice", "SoS"})
                 .where(x -> IsNullOrEmpty(x));
 
         assertEquals(q.distinct(), q.distinct());
@@ -257,7 +257,7 @@ public class DistinctTest extends EnumerableTest {
 
     @Test
     public void testDistinct() {
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
                 emps[0],
@@ -280,7 +280,7 @@ public class DistinctTest extends EnumerableTest {
             }
         };
 
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
                 emps[1],

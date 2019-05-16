@@ -123,8 +123,8 @@ public class ConcatTest extends EnumerableTest {
     }
 
     private static IEnumerable<Object[]> GenerateSourcesData(Func1<IEnumerable<Integer>, IEnumerable<Integer>> outerTransform, Func1<IEnumerable<Integer>, IEnumerable<Integer>> innerTransform) {
-        final Func1<IEnumerable<Integer>, IEnumerable<Integer>> outer = outerTransform == null ? e -> e : outerTransform;
-        final Func1<IEnumerable<Integer>, IEnumerable<Integer>> inner = innerTransform == null ? e -> e : innerTransform;
+        Func1<IEnumerable<Integer>, IEnumerable<Integer>> outer = outerTransform == null ? e -> e : outerTransform;
+        Func1<IEnumerable<Integer>, IEnumerable<Integer>> inner = innerTransform == null ? e -> e : innerTransform;
 
         return Linq.range(0, 7).select(i -> {
 
@@ -147,7 +147,7 @@ public class ConcatTest extends EnumerableTest {
     }
 
     private static IEnumerable<Object[]> GetToArrayDataSources() {
-        final ArrayList<Object[]> result = new ArrayList<>();
+        ArrayList<Object[]> result = new ArrayList<>();
 
         // Marker at the end
         result.add(new Object[]{
@@ -331,7 +331,7 @@ public class ConcatTest extends EnumerableTest {
     }
 
     private void ManyConcats(IEnumerable<IEnumerable<Integer>> sources, IEnumerable<Integer> expected) {
-        final List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> identityTransforms = IdentityTransforms();
+        List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> identityTransforms = IdentityTransforms();
         for (Func1<IEnumerable<Integer>, IEnumerable<Integer>> transform : identityTransforms) {
             IEnumerable<Integer> concatee = Linq.empty();
             for (IEnumerable<Integer> source : sources) {
@@ -351,7 +351,7 @@ public class ConcatTest extends EnumerableTest {
     }
 
     private void ManyConcatsRunOnce(IEnumerable<IEnumerable<Integer>> sources, IEnumerable<Integer> expected) {
-        final List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> identityTransforms = IdentityTransforms();
+        List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> identityTransforms = IdentityTransforms();
         for (Func1<IEnumerable<Integer>, IEnumerable<Integer>> transform : identityTransforms) {
             IEnumerable<Integer> concatee = Linq.empty();
             for (IEnumerable<Integer> source : sources) {
@@ -373,7 +373,7 @@ public class ConcatTest extends EnumerableTest {
             this.CountWorker = () -> 1;
         }};
 
-        final Action1<Action0> assertThrow = (testCode) -> assertThrows(ArithmeticException.class, testCode);
+        Action1<Action0> assertThrow = (testCode) -> assertThrows(ArithmeticException.class, testCode);
 
         // We need to use checked arithmetic summing up the collections' counts.
         assertThrow.apply(() -> supposedlyLargeCollection.concat(tinyCollection).count());

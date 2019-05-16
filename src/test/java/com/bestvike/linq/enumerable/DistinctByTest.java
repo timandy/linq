@@ -12,7 +12,7 @@ import org.junit.Test;
 public class DistinctByTest extends EnumerableTest {
     @Test
     public void testDistinctBy() {
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
                 emps[0],
@@ -35,7 +35,7 @@ public class DistinctByTest extends EnumerableTest {
             }
         };
 
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
                 emps[1],

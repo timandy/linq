@@ -15,7 +15,7 @@ import java.util.List;
 public class AppendPrependTest extends EnumerableTest {
     @Test
     public void SameResultsRepeatCallsIntQueryAppend() {
-        final IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
 
         assertEquals(q1.append(42), q1.append(42));
         assertEquals(q1.append(42), q1.concat(Linq.singleton(42)));
@@ -23,7 +23,7 @@ public class AppendPrependTest extends EnumerableTest {
 
     @Test
     public void SameResultsRepeatCallsIntQueryPrepend() {
-        final IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
 
         assertEquals(q1.prepend(42), q1.prepend(42));
         assertEquals(q1.prepend(42), Linq.singleton(42).concat(q1));
@@ -31,7 +31,7 @@ public class AppendPrependTest extends EnumerableTest {
 
     @Test
     public void SameResultsRepeatCallsStringQueryAppend() {
-        final IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
 
         assertEquals(q1.append("hi"), q1.append("hi"));
         assertEquals(q1.append("hi"), q1.concat(Linq.singleton("hi")));
@@ -39,7 +39,7 @@ public class AppendPrependTest extends EnumerableTest {
 
     @Test
     public void SameResultsRepeatCallsStringQueryPrepend() {
-        final IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
 
         assertEquals(q1.prepend("hi"), q1.prepend("hi"));
         assertEquals(q1.prepend("hi"), Linq.singleton("hi").concat(q1));
@@ -55,13 +55,13 @@ public class AppendPrependTest extends EnumerableTest {
 
     @Test
     public void EmptyAppend() {
-        final IEnumerable<Integer> first = Linq.empty();
+        IEnumerable<Integer> first = Linq.empty();
         assertEquals(first.append(42), Linq.singleton(42));
     }
 
     @Test
     public void EmptyPrepend() {
-        final IEnumerable<String> first = Linq.empty();
+        IEnumerable<String> first = Linq.empty();
         assertEquals(first.prepend("aa"), Linq.singleton("aa"));
     }
 
@@ -243,7 +243,7 @@ public class AppendPrependTest extends EnumerableTest {
 
     @Test
     public void testAppend() {
-        final String s = Linq.asEnumerable(emps).append(badEmps[0])
+        String s = Linq.asEnumerable(emps).append(badEmps[0])
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
@@ -252,7 +252,7 @@ public class AppendPrependTest extends EnumerableTest {
 
     @Test
     public void testPrepend() {
-        final String s = Linq.asEnumerable(emps).prepend(badEmps[0])
+        String s = Linq.asEnumerable(emps).prepend(badEmps[0])
                 .select(emp -> emp.name)
                 .toList()
                 .toString();

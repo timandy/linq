@@ -160,7 +160,7 @@ public class ExceptTest extends EnumerableTest {
 
     @Test
     public void testExcept() {
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
@@ -168,9 +168,9 @@ public class ExceptTest extends EnumerableTest {
                 .except(Linq.asEnumerable(emps2))
                 .count());
 
-        final IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
-        final IEnumerable<Integer> oneToFifty = Linq.range(1, 50);
-        final IEnumerable<Integer> fiftyOneToHundred = Linq.range(51, 50);
+        IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
+        IEnumerable<Integer> oneToFifty = Linq.range(1, 50);
+        IEnumerable<Integer> fiftyOneToHundred = Linq.range(51, 50);
         Assert.assertTrue(oneToHundred.except(oneToFifty).sequenceEqual(fiftyOneToHundred));
     }
 
@@ -188,7 +188,7 @@ public class ExceptTest extends EnumerableTest {
             }
         };
 
-        final Employee[] emps2 = {
+        Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
         };
         Assert.assertEquals(1, Linq.asEnumerable(emps)
