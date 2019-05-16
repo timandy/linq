@@ -80,11 +80,10 @@ public final class ArrayUtils {
         if (newSize < 0)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.newSize);
 
-        int oldSize = array.length;
-        if (oldSize == newSize)
+        if (array.length == newSize)
             return array;
         Object[] newArray = new Object[newSize];
-        System.arraycopy(array, 0, newArray, 0, oldSize > newSize ? newSize : oldSize);
+        System.arraycopy(array, 0, newArray, 0, array.length > newSize ? newSize : array.length);
         return newArray;
     }
 

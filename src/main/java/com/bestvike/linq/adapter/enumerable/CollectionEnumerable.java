@@ -47,8 +47,7 @@ public final class CollectionEnumerable<TSource> implements ICollection<TSource>
 
     @Override
     public TSource[] _toArray(Class<TSource> clazz) {
-        int length = this.source.size();
-        TSource[] array = ArrayUtils.newInstance(clazz, length);
+        TSource[] array = ArrayUtils.newInstance(clazz, this.source.size());
         return this.source.toArray(array);
     }
 

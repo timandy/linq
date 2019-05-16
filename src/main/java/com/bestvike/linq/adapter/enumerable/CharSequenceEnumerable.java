@@ -42,8 +42,7 @@ public final class CharSequenceEnumerable implements IList<Character> {
 
     @Override
     public boolean _contains(Character item) {
-        int length = this.source.length();
-        for (int i = 0; i < length; i++) {
+        for (int i = 0, length = this.source.length(); i < length; i++) {
             if (Objects.equals(this.source.charAt(i), item))
                 return true;
         }
@@ -52,25 +51,22 @@ public final class CharSequenceEnumerable implements IList<Character> {
 
     @Override
     public void _copyTo(Object[] array, int arrayIndex) {
-        int length = this.source.length();
-        for (int i = 0; i < length; i++)
+        for (int i = 0, length = this.source.length(); i < length; i++)
             array[arrayIndex++] = this.source.charAt(i);
     }
 
     @Override
     public Character[] _toArray(Class<Character> clazz) {
-        int length = this.source.length();
-        Character[] array = ArrayUtils.newInstance(clazz, length);
-        for (int i = 0; i < length; i++)
+        Character[] array = ArrayUtils.newInstance(clazz, this.source.length());
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source.charAt(i);
         return array;
     }
 
     @Override
     public Object[] _toArray() {
-        int length = this.source.length();
-        Object[] array = new Object[length];
-        for (int i = 0; i < length; i++)
+        Object[] array = new Object[this.source.length()];
+        for (int i = 0; i < array.length; i++)
             array[i] = this.source.charAt(i);
         return array;
     }
