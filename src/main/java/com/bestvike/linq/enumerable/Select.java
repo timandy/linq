@@ -334,6 +334,237 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 }
 
 
+final class SelectRangeIterator<TResult> extends Iterator<TResult> implements IPartition<TResult> {
+    private final int start;
+    private final int end;
+    private final Func1<Integer, TResult> selector;
+
+    SelectRangeIterator(int start, int end, Func1<Integer, TResult> selector) {
+        assert start < end;
+        assert end - start <= Integer.MAX_VALUE;
+        assert selector != null;
+
+        this.start = start;
+        this.end = end;
+        this.selector = selector;
+    }
+
+
+    @Override
+    public AbstractIterator<TResult> clone() {
+        return new SelectRangeIterator<>(this.start, this.end, this.selector);
+    }
+
+    @Override
+    public boolean moveNext() {
+        if (this.state < 1 || this.state == this.end - this.start + 1) {
+            this.close();
+            return false;
+        }
+
+        int index = this.state++ - 1;
+        assert this.start < this.end - index;
+        this.current = this.selector.apply(this.start + index);
+        return true;
+    }
+
+    @Override
+    public <TResult2> IEnumerable<TResult2> _select(Func1<TResult, TResult2> selector) {
+        return new SelectRangeIterator<>(this.start, this.end, Utilities.combineSelectors(this.selector, selector));
+    }
+
+    @Override
+    public TResult[] _toArray(Class<TResult> clazz) {
+        TResult[] results = ArrayUtils.newInstance(clazz, this.end - this.start);
+        int srcIndex = this.start;
+        for (int i = 0; i < results.length; i++)
+            results[i] = this.selector.apply(srcIndex++);
+        return results;
+    }
+
+    @Override
+    public Object[] _toArray() {
+        Object[] results = new Object[this.end - this.start];
+        int srcIndex = this.start;
+        for (int i = 0; i < results.length; i++)
+            results[i] = this.selector.apply(srcIndex++);
+        return results;
+    }
+
+    @Override
+    public List<TResult> _toList() {
+        List<TResult> list = new ArrayList<>(this.end - this.start);
+        for (int i = this.start; i != this.end; i++)
+            list.add(this.selector.apply(i));
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        // In case someone uses Count() to force evaluation of the selector,
+        // run it provided `onlyIfCheap` is false.
+        if (!onlyIfCheap) {
+            for (int i = this.start; i != this.end; i++)
+                this.selector.apply(i);
+        }
+        return this.end - this.start;
+    }
+
+    @Override
+    public IPartition<TResult> _skip(int count) {
+        assert count > 0;
+        return count >= this.end - this.start
+                ? EmptyPartition.instance()
+                : new SelectRangeIterator<>(this.start + count, this.end, this.selector);
+    }
+
+    @Override
+    public IPartition<TResult> _take(int count) {
+        assert count > 0;
+        return count >= this.end - this.start
+                ? this
+                : new SelectRangeIterator<>(this.start, this.start + count, this.selector);
+    }
+
+    @Override
+    public TResult _tryGetElementAt(int index, out<Boolean> found) {
+        if (Integer.compareUnsigned(index, this.end - this.start) < 0) {
+            found.value = true;
+            return this.selector.apply(this.start + index);
+        }
+        found.value = false;
+        return null;
+    }
+
+    @Override
+    public TResult _tryGetFirst(out<Boolean> found) {
+        assert this.end > this.start;
+        found.value = true;
+        return this.selector.apply(this.start);
+    }
+
+    @Override
+    public TResult _tryGetLast(out<Boolean> found) {
+        assert this.end > this.start;
+        found.value = true;
+        return this.selector.apply(this.end - 1);
+    }
+}
+
+
+final class SelectRepeatIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
+    private final TSource element;
+    private final int count;
+    private final Func1<TSource, TResult> selector;
+
+    SelectRepeatIterator(TSource element, int count, Func1<TSource, TResult> selector) {
+        assert count > 0;
+        assert selector != null;
+
+        this.element = element;
+        this.count = count;
+        this.selector = selector;
+    }
+
+    @Override
+    public AbstractIterator<TResult> clone() {
+        return new SelectRepeatIterator<>(this.element, this.count, this.selector);
+    }
+
+    @Override
+    public boolean moveNext() {
+        if (this.state < 1 || this.state == this.count + 1) {
+            this.close();
+            return false;
+        }
+        this.state++;
+        this.current = this.selector.apply(this.element);
+        return true;
+    }
+
+    @Override
+    public <TResult1> IEnumerable<TResult1> _select(Func1<TResult, TResult1> selector) {
+        return new SelectRepeatIterator<>(this.element, this.count, Utilities.combineSelectors(this.selector, selector));
+    }
+
+    @Override
+    public TResult[] _toArray(Class<TResult> clazz) {
+        TResult[] results = ArrayUtils.newInstance(clazz, this.count);
+        for (int i = 0; i < results.length; i++)
+            results[i] = this.selector.apply(this.element);
+        return results;
+    }
+
+    @Override
+    public Object[] _toArray() {
+        Object[] results = new Object[this.count];
+        for (int i = 0; i < results.length; i++)
+            results[i] = this.selector.apply(this.element);
+        return results;
+    }
+
+    @Override
+    public List<TResult> _toList() {
+        List<TResult> list = new ArrayList<>(this.count);
+        for (int i = 0; i < this.count; i++)
+            list.add(this.selector.apply(this.element));
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        // In case someone uses Count() to force evaluation of the selector,
+        // run it provided `onlyIfCheap` is false.
+        if (!onlyIfCheap) {
+            for (int i = 0; i < this.count; i++)
+                this.selector.apply(this.element);
+        }
+        return this.count;
+    }
+
+    @Override
+    public IPartition<TResult> _skip(int count) {
+        assert count > 0;
+        return count >= this.count
+                ? EmptyPartition.instance()
+                : new SelectRepeatIterator<>(this.element, this.count - count, this.selector);
+
+    }
+
+    @Override
+    public IPartition<TResult> _take(int count) {
+        assert count > 0;
+        return count >= this.count
+                ? this
+                : new SelectRepeatIterator<>(this.element, count, this.selector);
+    }
+
+    @Override
+    public TResult _tryGetElementAt(int index, out<Boolean> found) {
+        if (Integer.compareUnsigned(index, this.count) < 0) {
+            found.value = true;
+            return this.selector.apply(this.element);
+        }
+        found.value = false;
+        return null;
+    }
+
+    @Override
+    public TResult _tryGetFirst(out<Boolean> found) {
+        assert this.count > 0;
+        found.value = true;
+        return this.selector.apply(this.element);
+    }
+
+    @Override
+    public TResult _tryGetLast(out<Boolean> found) {
+        assert this.count > 0;
+        found.value = true;
+        return this.selector.apply(this.element);
+    }
+}
+
+
 final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final IList<TSource> source;
     private final Func1<TSource, TResult> selector;
