@@ -400,7 +400,7 @@ public class GroupJoinTest extends EnumerableTest {
     }
 
     //struct
-    public static final class CustomerRec {
+    static final class CustomerRec {
         final String name;
         final Integer custID;
 
@@ -427,7 +427,7 @@ public class GroupJoinTest extends EnumerableTest {
     }
 
     //struct
-    public static final class OrderRec {
+    static final class OrderRec {
         final Integer orderID;
         final Integer custID;
         final Integer total;
@@ -457,7 +457,7 @@ public class GroupJoinTest extends EnumerableTest {
     }
 
     //struct
-    public static final class AnagramRec {
+    static final class AnagramRec {
         final String name;
         final Integer orderID;
         final Integer total;
@@ -487,7 +487,7 @@ public class GroupJoinTest extends EnumerableTest {
     }
 
     //struct
-    public static final class JoinRec {
+    static final class JoinRec {
         final String name;
         final Integer[] orderID;
         final Integer[] total;
