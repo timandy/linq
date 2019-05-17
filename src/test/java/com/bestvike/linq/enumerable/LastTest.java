@@ -49,25 +49,4 @@ public class LastTest extends EnumerableTest {
         } catch (InvalidOperationException ignored) {
         }
     }
-
-    @Test
-    public void testLastOrDefault() {
-        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
-        Assert.assertEquals("mitch", enumerable.lastOrDefault());
-
-        IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
-        Assert.assertNull(emptyEnumerable.lastOrDefault());
-    }
-
-    @Test
-    public void testLastOrDefaultWithPredicate() {
-        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
-        Assert.assertEquals("mitch", enumerable.lastOrDefault(x -> x.startsWith("mit")));
-        Assert.assertNull(enumerable.lastOrDefault(x -> false));
-        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
-        Assert.assertNull(emptyEnumerable.lastOrDefault(x -> {
-            Assert.fail("should not run at here");
-            return false;
-        }));
-    }
 }

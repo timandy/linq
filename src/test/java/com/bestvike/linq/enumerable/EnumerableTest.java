@@ -100,6 +100,14 @@ public class EnumerableTest {
         fail("enumerable is empty");
     }
 
+    static void assertIsAssignableFrom(Class<?> expectedType, Object object) {
+        if (expectedType == null)
+            fail("expectedType is null");
+        if (object != null && expectedType.isAssignableFrom(object.getClass()))
+            return;
+        fail("expectedType " + expectedType.getName() + ", but got " + (object == null ? "null" : object.getClass().getName()));
+    }
+
     public static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
         Assert.assertNotNull("expectedSuperset ", expectedSuperset);
 
