@@ -1,18 +1,314 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.function.Func2;
+import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
+import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
 public class JoinTest extends EnumerableTest {
+    private static JoinRec createJoinRec(CustomerRec cr, OrderRec or) {
+        return new JoinRec(cr.name, or.orderID, or.total);
+    }
+
+    private static JoinRec createJoinRec(CustomerRec cr, AnagramRec or) {
+        return new JoinRec(cr.name, or.orderID, or.total);
+    }
+
+    @Test
+    public void OuterEmptyInnerNonEmpty() {
+        CustomerRec[] outer = {};
+        OrderRec[] inner = {
+                new OrderRec(45321, 98022, 50),
+                new OrderRec(97865, 32103, 25)};
+
+        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void FirstOuterMatchesLastInnerLastOuterMatchesFirstInnerSameNumberElements() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        OrderRec[] inner = {
+                new OrderRec(45321, 99022, 50),
+                new OrderRec(43421, 29022, 20),
+                new OrderRec(95421, 98022, 9)};
+        JoinRec[] expected = {
+                new JoinRec("Prakash", 95421, 9),
+                new JoinRec("Robert", 45321, 50)};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void NullComparer() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+        JoinRec[] expected = {new JoinRec("Prakash", 323232, 9)};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, null));
+    }
+
+    @Test
+    public void CustomComparer() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+        JoinRec[] expected = {
+                new JoinRec("Prakash", 323232, 9),
+                new JoinRec("Tim", 43455, 10)};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void OuterNull() {
+        IEnumerable<CustomerRec> outer = null;
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(NullPointerException.class, () -> outer.join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void InnerNull() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        IEnumerable<AnagramRec> inner = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(inner, e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void OuterKeySelectorNull() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), null, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void InnerKeySelectorNull() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, null, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void ResultSelectorNull() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, AnagramRec, JoinRec>) null, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void OuterNullNoComparer() {
+        IEnumerable<CustomerRec> outer = null;
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(NullPointerException.class, () -> outer.join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void InnerNullNoComparer() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        IEnumerable<AnagramRec> inner = null;
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void OuterKeySelectorNullNoComparer() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), null, e -> e.name, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void InnerKeySelectorNullNoComparer() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, null, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void ResultSelectorNullNoComparer() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        AnagramRec[] inner = {
+                new AnagramRec("miT", 43455, 10),
+                new AnagramRec("Prakash", 323232, 9)};
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, AnagramRec, JoinRec>) null));
+    }
+
+    @Test
+    public void SkipsNullElements() {
+        String[] outer = {null, Empty};
+        String[] inner = {null, Empty};
+        String[] expected = {Empty};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e, e -> e, (x, y) -> y, EqualityComparer.Default()));
+    }
+
+    @Test
+    public void OuterNonEmptyInnerEmpty() {
+        CustomerRec[] outer = {
+                new CustomerRec("Tim", 43434),
+                new CustomerRec("Bob", 34093)};
+        OrderRec[] inner = {};
+        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void SingleElementEachAndMatches() {
+        CustomerRec[] outer = {new CustomerRec("Prakash", 98022)};
+        OrderRec[] inner = {new OrderRec(45321, 98022, 50)};
+        JoinRec[] expected = {new JoinRec("Prakash", 45321, 50)};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void SingleElementEachAndDoesntMatch() {
+        CustomerRec[] outer = {new CustomerRec("Prakash", 98922)};
+        OrderRec[] inner = {new OrderRec(45321, 98022, 50)};
+        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void SelectorsReturnNull() {
+        Integer[] inner = {null, null, null};
+        Integer[] outer = {null, null};
+        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e, e -> e, (x, y) -> x));
+    }
+
+    @Test
+    public void InnerSameKeyMoreThanOneElementAndMatches() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        OrderRec[] inner = {
+                new OrderRec(45321, 98022, 50),
+                new OrderRec(45421, 98022, 10),
+                new OrderRec(43421, 99022, 20),
+                new OrderRec(85421, 98022, 18),
+                new OrderRec(95421, 99021, 9)};
+        JoinRec[] expected = {
+                new JoinRec("Prakash", 45321, 50),
+                new JoinRec("Prakash", 45421, 10),
+                new JoinRec("Prakash", 85421, 18),
+                new JoinRec("Tim", 95421, 9),
+                new JoinRec("Robert", 43421, 20)};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void OuterSameKeyMoreThanOneElementAndMatches() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Bob", 99022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        OrderRec[] inner = {
+                new OrderRec(45321, 98022, 50),
+                new OrderRec(43421, 99022, 20),
+                new OrderRec(95421, 99021, 9)};
+        JoinRec[] expected = {
+                new JoinRec("Prakash", 45321, 50),
+                new JoinRec("Bob", 43421, 20),
+                new JoinRec("Tim", 95421, 9),
+                new JoinRec("Robert", 43421, 20)};
+
+        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void NoMatches() {
+        CustomerRec[] outer = {
+                new CustomerRec("Prakash", 98022),
+                new CustomerRec("Bob", 99022),
+                new CustomerRec("Tim", 99021),
+                new CustomerRec("Robert", 99022)};
+        OrderRec[] inner = {
+                new OrderRec(45321, 18022, 50),
+                new OrderRec(43421, 29022, 20),
+                new OrderRec(95421, 39021, 9)};
+        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+    }
+
+    @Test
+    public void ForcedToEnumeratorDoesntEnumerate() {
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).join(Linq.<Integer>empty(), i -> i, i -> i, (o, i) -> i);
+        // Don't insist on this behaviour, but check it's correct if it happens
+        IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
+        Assert.assertFalse(en != null && en.moveNext());
+    }
+
     @Test
     public void testJoin() {
         //null key 被排除
@@ -463,5 +759,122 @@ public class JoinTest extends EnumerableTest {
                 .toList()
                 .toString();
         Assert.assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Gates works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Gates works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing, Gates works in Marketing, Fred works in Manager, Bill works in Manager, Eric works in Manager, Janet works in Manager, Cedric works in Manager, Gates works in Manager]", ss);
+    }
+
+    //struct
+    static final class CustomerRec {
+        final String name;
+        final int custID;
+
+        CustomerRec(String name, int custID) {
+            this.name = name;
+            this.custID = custID;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null || this.getClass() != obj.getClass())
+                return false;
+            CustomerRec that = (CustomerRec) obj;
+            return this.custID == that.custID &&
+                    Objects.equals(this.name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.name, this.custID);
+        }
+    }
+
+    //struct
+    static final class OrderRec {
+        final int orderID;
+        final int custID;
+        final int total;
+
+        OrderRec(int orderID, int custID, int total) {
+            this.orderID = orderID;
+            this.custID = custID;
+            this.total = total;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null || this.getClass() != obj.getClass())
+                return false;
+            OrderRec orderRec = (OrderRec) obj;
+            return this.orderID == orderRec.orderID &&
+                    this.custID == orderRec.custID &&
+                    this.total == orderRec.total;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.orderID, this.custID, this.total);
+        }
+    }
+
+    //struct
+    static final class AnagramRec {
+        final String name;
+        final int orderID;
+        final int total;
+
+        AnagramRec(String name, int orderID, int total) {
+            this.name = name;
+            this.orderID = orderID;
+            this.total = total;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null || this.getClass() != obj.getClass())
+                return false;
+            AnagramRec that = (AnagramRec) obj;
+            return this.orderID == that.orderID &&
+                    this.total == that.total &&
+                    Objects.equals(this.name, that.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.name, this.orderID, this.total);
+        }
+    }
+
+    //struct
+    static final class JoinRec {
+        final String name;
+        final int orderID;
+        final int total;
+
+        JoinRec(String name, int orderID, int total) {
+            this.name = name;
+            this.orderID = orderID;
+            this.total = total;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null || this.getClass() != obj.getClass())
+                return false;
+            JoinRec joinRec = (JoinRec) obj;
+            return this.orderID == joinRec.orderID &&
+                    this.total == joinRec.total &&
+                    Objects.equals(this.name, joinRec.name);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.name, this.orderID, this.total);
+        }
     }
 }
