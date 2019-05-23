@@ -100,12 +100,12 @@ public class EnumerableTest {
         fail("enumerable is empty");
     }
 
-    static void assertIsAssignableFrom(Class<?> expectedType, Object object) {
+    static void assertIsAssignableFrom(Class<?> expectedType, Object obj) {
         if (expectedType == null)
             fail("expectedType is null");
-        if (object != null && expectedType.isAssignableFrom(object.getClass()))
+        if (obj != null && expectedType.isAssignableFrom(obj.getClass()))
             return;
-        fail("expectedType " + expectedType.getName() + ", but got " + (object == null ? "null" : object.getClass().getName()));
+        fail("expectedType " + expectedType.getName() + ", but got " + (obj == null ? "null" : obj.getClass().getName()));
     }
 
     public static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
@@ -130,6 +130,22 @@ public class EnumerableTest {
 
         try {
             action.apply();
+            Assert.fail("should throw " + clazz.toString());
+        } catch (Exception e) {
+            if (clazz.isInstance(e))
+                return;
+            Assert.fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
+        }
+    }
+
+    static void assertThrows(Class<?> clazz, Func0<Object> func) {
+        if (clazz == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
+        if (func == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+
+        try {
+            func.apply();
             Assert.fail("should throw " + clazz.toString());
         } catch (Exception e) {
             if (clazz.isInstance(e))
