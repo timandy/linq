@@ -34,6 +34,7 @@ public class EnumerableTest {
     static final BigDecimal MAX_DECIMAL = new BigDecimal("999999999999999999999999999999");
     static final BigDecimal MIN_DECIMAL = new BigDecimal("-999999999999999999999999999999");
     static final Date MAX_DATE = newDate(9999, 12, 31);
+    static final Date MIN_DATE = newDate(1, 1, 1);
     static final double DELTA = 0d;
     static final String Empty = "";
     static final Employee[] badEmps = {
