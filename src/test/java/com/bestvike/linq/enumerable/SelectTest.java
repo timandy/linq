@@ -2,7 +2,6 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,11 +15,11 @@ public class SelectTest extends TestCase {
         List<String> names = Linq.asEnumerable(emps)
                 .select((emp, index) -> emp.name)
                 .toList();
-        Assert.assertEquals("[Fred, Bill, Eric, Janet]", names.toString());
+        assertEquals("[Fred, Bill, Eric, Janet]", names.toString());
 
         List<String> indexes = Linq.asEnumerable(emps)
                 .select((emp, index) -> String.format("#%d: %s", index, emp.name))
                 .toList();
-        Assert.assertEquals("[#0: Fred, #1: Bill, #2: Eric, #3: Janet]", indexes.toString());
+        assertEquals("[#0: Fred, #1: Bill, #2: Eric, #3: Janet]", indexes.toString());
     }
 }

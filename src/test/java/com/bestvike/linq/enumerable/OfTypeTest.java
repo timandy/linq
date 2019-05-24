@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -33,19 +32,19 @@ public class OfTypeTest extends TestCase {
     @Test
     public void EmptySource() {
         IEnumerable<Object> source = Linq.empty();
-        Assert.assertEquals(0, source.ofType(Integer.class).count());
+        assertEquals(0, source.ofType(Integer.class).count());
     }
 
     @Test
     public void LongSequenceFromIntSource() {
         IEnumerable<Integer> source = Linq.asEnumerable(new int[]{99, 45, 81});
-        Assert.assertEquals(0, source.ofType(Long.class).count());
+        assertEquals(0, source.ofType(Long.class).count());
     }
 
     @Test
     public void HeterogenousSourceNoAppropriateElements() {
         IEnumerable<Object> source = Linq.asEnumerable("Hello", 3.5, "Test");
-        Assert.assertEquals(0, source.ofType(Integer.class).count());
+        assertEquals(0, source.ofType(Integer.class).count());
     }
 
     @Test
@@ -99,13 +98,13 @@ public class OfTypeTest extends TestCase {
     @Test
     public void NullableDecimalFromString() {
         IEnumerable<String> source = Linq.asEnumerable("Test1", "Test2", "Test9");
-        Assert.assertEquals(0, source.ofType(BigDecimal.class).count());
+        assertEquals(0, source.ofType(BigDecimal.class).count());
     }
 
     @Test
     public void LongFromDouble() {
         IEnumerable<Long> source = Linq.asEnumerable(new long[]{99L, 45L, 81L});
-        Assert.assertEquals(0, source.ofType(Double.class).count());
+        assertEquals(0, source.ofType(Double.class).count());
     }
 
     @Test
@@ -118,7 +117,7 @@ public class OfTypeTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).ofType(Integer.class);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -127,10 +126,10 @@ public class OfTypeTest extends TestCase {
         IEnumerator<Integer> enumerator = Linq.asEnumerable(numbers)
                 .ofType(Integer.class)
                 .enumerator();
-        Assert.assertTrue(enumerator.moveNext());
-        Assert.assertEquals(Integer.valueOf(2), enumerator.current());
-        Assert.assertTrue(enumerator.moveNext());
-        Assert.assertEquals(Integer.valueOf(5), enumerator.current());
-        Assert.assertFalse(enumerator.moveNext());
+        assertTrue(enumerator.moveNext());
+        assertEquals(Integer.valueOf(2), enumerator.current());
+        assertTrue(enumerator.moveNext());
+        assertEquals(Integer.valueOf(5), enumerator.current());
+        assertFalse(enumerator.moveNext());
     }
 }

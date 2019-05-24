@@ -7,7 +7,6 @@ import com.bestvike.collections.generic.StringComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class ContainsTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.contains(-1), q.contains(-1));
+        assertEquals(q.contains(-1), q.contains(-1));
     }
 
     @Test
@@ -32,7 +31,7 @@ public class ContainsTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
-        Assert.assertEquals(q.contains("X"), q.contains("X"));
+        assertEquals(q.contains("X"), q.contains("X"));
     }
 
     private IEnumerable<Object[]> Int_TestData() {
@@ -61,8 +60,8 @@ public class ContainsTest extends TestCase {
     }
 
     private void Int(IEnumerable<Integer> source, int value, boolean expected) {
-        Assert.assertEquals(expected, source.contains(value));
-        Assert.assertEquals(expected, source.contains(value, null));
+        assertEquals(expected, source.contains(value));
+        assertEquals(expected, source.contains(value, null));
     }
 
     @Test
@@ -73,8 +72,8 @@ public class ContainsTest extends TestCase {
     }
 
     private void IntRunOnce(IEnumerable<Integer> source, int value, boolean expected) {
-        Assert.assertEquals(expected, source.runOnce().contains(value));
-        Assert.assertEquals(expected, source.runOnce().contains(value, null));
+        assertEquals(expected, source.runOnce().contains(value));
+        assertEquals(expected, source.runOnce().contains(value, null));
     }
 
     private IEnumerable<Object[]> String_TestData() {
@@ -96,9 +95,9 @@ public class ContainsTest extends TestCase {
 
     public void String(IEnumerable<String> source, IEqualityComparer<String> comparer, String value, boolean expected) {
         if (comparer == null) {
-            Assert.assertEquals(expected, source.contains(value));
+            assertEquals(expected, source.contains(value));
         }
-        Assert.assertEquals(expected, source.contains(value, comparer));
+        assertEquals(expected, source.contains(value, comparer));
     }
 
     @Test
@@ -110,9 +109,9 @@ public class ContainsTest extends TestCase {
 
     private void StringRunOnce(IEnumerable<String> source, IEqualityComparer<String> comparer, String value, boolean expected) {
         if (comparer == null) {
-            Assert.assertEquals(expected, source.runOnce().contains(value));
+            assertEquals(expected, source.runOnce().contains(value));
         }
-        Assert.assertEquals(expected, source.runOnce().contains(value, comparer));
+        assertEquals(expected, source.runOnce().contains(value, comparer));
     }
 
     private IEnumerable<Object[]> NullableInt_TestData() {
@@ -133,8 +132,8 @@ public class ContainsTest extends TestCase {
     }
 
     private void NullableInt(IEnumerable<Integer> source, Integer value, boolean expected) {
-        Assert.assertEquals(expected, source.contains(value));
-        Assert.assertEquals(expected, source.contains(value, null));
+        assertEquals(expected, source.contains(value));
+        assertEquals(expected, source.contains(value, null));
     }
 
     @Test
@@ -151,7 +150,7 @@ public class ContainsTest extends TestCase {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.asEnumerable(set);
-        Assert.assertFalse(source.contains("BAC", null));
+        assertFalse(source.contains("BAC", null));
     }
 
     @Test
@@ -159,7 +158,7 @@ public class ContainsTest extends TestCase {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.asEnumerable(set);
-        Assert.assertTrue(source.contains("abc", StringComparer.OrdinalIgnoreCase));
+        assertTrue(source.contains("abc", StringComparer.OrdinalIgnoreCase));
     }
 
     @Test
@@ -167,7 +166,7 @@ public class ContainsTest extends TestCase {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.asEnumerable(set);
-        Assert.assertTrue(source.contains("BAC", new AnagramEqualityComparer()));
+        assertTrue(source.contains("BAC", new AnagramEqualityComparer()));
     }
 
     @Test
@@ -175,7 +174,7 @@ public class ContainsTest extends TestCase {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.asEnumerable(set);
-        Assert.assertTrue(source.contains("ABC"));
+        assertTrue(source.contains("ABC"));
     }
 
     @Test
@@ -184,22 +183,22 @@ public class ContainsTest extends TestCase {
         Employee employeeClone = new Employee(e.empno, e.name, e.deptno);
         Employee employeeOther = badEmps[0];
 
-        Assert.assertEquals(e, employeeClone);
-        Assert.assertTrue(Linq.asEnumerable(emps).contains(e));
-        Assert.assertTrue(Linq.asEnumerable(emps).contains(employeeClone));
-        Assert.assertFalse(Linq.asEnumerable(emps).contains(employeeOther));
+        assertEquals(e, employeeClone);
+        assertTrue(Linq.asEnumerable(emps).contains(e));
+        assertTrue(Linq.asEnumerable(emps).contains(employeeClone));
+        assertFalse(Linq.asEnumerable(emps).contains(employeeOther));
 
-        Assert.assertTrue(Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).contains('h'));
+        assertTrue(Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).contains('h'));
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
-        Assert.assertTrue(Linq.asEnumerable(arrChar).contains('h'));
+        assertTrue(Linq.asEnumerable(arrChar).contains('h'));
 
-        Assert.assertTrue(Linq.asEnumerable("hello").contains('h'));
+        assertTrue(Linq.asEnumerable("hello").contains('h'));
 
-        Assert.assertTrue(Linq.singleton('h').contains('h'));
-        Assert.assertFalse(Linq.singleton('h').contains('o'));
+        assertTrue(Linq.singleton('h').contains('h'));
+        assertFalse(Linq.singleton('h').contains('o'));
 
-        Assert.assertFalse(Linq.empty().contains(1));
+        assertFalse(Linq.empty().contains(1));
     }
 
     @Test
@@ -221,24 +220,24 @@ public class ContainsTest extends TestCase {
         Employee employeeClone = new Employee(e.empno, e.name, e.deptno);
         Employee employeeOther = badEmps[0];
 
-        Assert.assertEquals(e, employeeClone);
-        Assert.assertTrue(Linq.asEnumerable(emps).contains(e, comparer));
-        Assert.assertTrue(Linq.asEnumerable(emps).contains(employeeClone, comparer));
-        Assert.assertFalse(Linq.asEnumerable(emps).contains(employeeOther, comparer));
+        assertEquals(e, employeeClone);
+        assertTrue(Linq.asEnumerable(emps).contains(e, comparer));
+        assertTrue(Linq.asEnumerable(emps).contains(employeeClone, comparer));
+        assertFalse(Linq.asEnumerable(emps).contains(employeeOther, comparer));
     }
 
     @Test
     public void testSumInt() {
         Integer[] numbers = {null, 0, 2, 3};
-        Assert.assertEquals(5, Linq.asEnumerable(numbers).sumInt());
+        assertEquals(5, Linq.asEnumerable(numbers).sumInt());
 
         Integer[] numbers2 = {null, Integer.MAX_VALUE - 1, 1};
-        Assert.assertEquals(Integer.MAX_VALUE, Linq.asEnumerable(numbers2).sumInt());
+        assertEquals(Integer.MAX_VALUE, Linq.asEnumerable(numbers2).sumInt());
 
         Integer[] numbers3 = {null, Integer.MAX_VALUE, 1};
         try {
             int num = Linq.asEnumerable(numbers3).sumInt();
-            Assert.fail("expect error,but got " + num);
+            fail("expect error,but got " + num);
         } catch (ArithmeticException ignored) {
         }
     }

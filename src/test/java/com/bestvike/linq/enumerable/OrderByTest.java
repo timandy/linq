@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Comparator;
@@ -23,7 +22,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Gates, Fred, Eric, Janet, Bill, Cedric]", s);
+        assertEquals("[Gates, Fred, Eric, Janet, Bill, Cedric]", s);
 
         String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderBy(emp -> emp.deptno)
@@ -31,7 +30,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Gates, Eric, Fred, Janet, Bill, Cedric]", ss);
+        assertEquals("[Gates, Eric, Fred, Janet, Bill, Cedric]", ss);
 
         String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderBy(emp -> emp.deptno)
@@ -39,7 +38,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Gates, Janet, Fred, Eric, Bill, Cedric]", sss);
+        assertEquals("[Gates, Janet, Fred, Eric, Bill, Cedric]", sss);
 
         Set<Integer> set = new HashSet<>();
         set.add(3);
@@ -47,7 +46,7 @@ public class OrderByTest extends TestCase {
         set.add(2);
         IEnumerable<Integer> ordered = Linq.asEnumerable(set).orderBy(a -> a);
         Integer[] orderedArr = {1, 2, 3};
-        Assert.assertTrue(ordered.sequenceEqual(Linq.asEnumerable(orderedArr)));
+        assertTrue(ordered.sequenceEqual(Linq.asEnumerable(orderedArr)));
     }
 
     @Test
@@ -60,7 +59,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Cedric, Bill, Fred, Eric, Janet, Gates]", s);
+        assertEquals("[Cedric, Bill, Fred, Eric, Janet, Gates]", s);
 
         String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderBy(emp -> emp.deptno, reverse)
@@ -68,7 +67,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Cedric, Bill, Janet, Fred, Eric, Gates]", ss);
+        assertEquals("[Cedric, Bill, Janet, Fred, Eric, Gates]", ss);
 
         String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderBy(emp -> emp.deptno, reverse)
@@ -76,7 +75,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Cedric, Bill, Eric, Fred, Janet, Gates]", sss);
+        assertEquals("[Cedric, Bill, Eric, Fred, Janet, Gates]", sss);
     }
 
     @Test
@@ -87,7 +86,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Cedric, Bill, Fred, Eric, Janet, Gates]", s);
+        assertEquals("[Cedric, Bill, Fred, Eric, Janet, Gates]", s);
 
         String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderByDescending(emp -> emp.deptno)
@@ -95,7 +94,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Cedric, Bill, Eric, Fred, Janet, Gates]", ss);
+        assertEquals("[Cedric, Bill, Eric, Fred, Janet, Gates]", ss);
 
         String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderByDescending(emp -> emp.deptno)
@@ -103,7 +102,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Cedric, Bill, Janet, Fred, Eric, Gates]", sss);
+        assertEquals("[Cedric, Bill, Janet, Fred, Eric, Gates]", sss);
     }
 
     @Test
@@ -116,7 +115,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Gates, Fred, Eric, Janet, Bill, Cedric]", s);
+        assertEquals("[Gates, Fred, Eric, Janet, Bill, Cedric]", s);
 
         String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderByDescending(emp -> emp.deptno, reverse)
@@ -124,7 +123,7 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Gates, Janet, Fred, Eric, Bill, Cedric]", ss);
+        assertEquals("[Gates, Janet, Fred, Eric, Bill, Cedric]", ss);
 
         String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .orderByDescending(emp -> emp.deptno, reverse)
@@ -132,6 +131,6 @@ public class OrderByTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Gates, Eric, Fred, Janet, Bill, Cedric]", sss);
+        assertEquals("[Gates, Eric, Fred, Janet, Bill, Cedric]", sss);
     }
 }

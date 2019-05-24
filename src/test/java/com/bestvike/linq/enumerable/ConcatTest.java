@@ -8,7 +8,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -63,7 +62,7 @@ public class ConcatTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).concat(Linq.range(0, 3));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = (IEnumerator) iterator;
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -257,7 +256,7 @@ public class ConcatTest extends TestCase {
                 concatee = concatee.concat(transform.apply(source));
             }
 
-            Assert.assertEquals(sources.sumInt(s -> s.count()), concatee.count());
+            assertEquals(sources.sumInt(s -> s.count()), concatee.count());
             this.VerifyEqualsWorker(sources.selectMany(s -> s), concatee);
         }
     }
@@ -277,7 +276,7 @@ public class ConcatTest extends TestCase {
                 concatee = concatee.runOnce().concat(transform.apply(source));
             }
 
-            Assert.assertEquals(sources.sumInt(s -> s.count()), concatee.count());
+            assertEquals(sources.sumInt(s -> s.count()), concatee.count());
         }
     }
 
@@ -334,7 +333,7 @@ public class ConcatTest extends TestCase {
             concatChain = concatChain.concat(Linq.empty());
         }
 
-        Assert.assertEquals(0, concatChain.count()); // should not throw a StackOverflowException
+        assertEquals(0, concatChain.count()); // should not throw a StackOverflowException
         // ToArray needs the count as well, and the process of copying all of the collections
         // to the array should also not be recursive.
         assertEquals(Linq.empty(), concatChain.toArray());
@@ -364,7 +363,7 @@ public class ConcatTest extends TestCase {
             concatChain = concatChain.concat(Linq.empty());
         }
 
-        Assert.assertEquals(0, concatChain.count());
+        assertEquals(0, concatChain.count());
         // ToArray/ToList do not attempt to preallocate a result of the correct
         // size- if there's just 1 lazy enumerable in the chain, it's impossible
         // to get the count to preallocate without iterating through that, and then
@@ -392,8 +391,8 @@ public class ConcatTest extends TestCase {
         }
 
         try (IEnumerator<Integer> en = concatChain.enumerator()) {
-            Assert.assertTrue(en.moveNext()); // should not SO
-            Assert.assertEquals(0xf00, (long) en.current());
+            assertTrue(en.moveNext()); // should not SO
+            assertEquals(0xf00, (long) en.current());
         }
     }
 
@@ -427,8 +426,8 @@ public class ConcatTest extends TestCase {
         concatChain = concatChain.concat(ForceNotCollection(Linq.empty()));
 
         try (IEnumerator<Integer> en = concatChain.enumerator()) {
-            Assert.assertTrue(en.moveNext());
-            Assert.assertEquals(0xf00, (long) en.current());
+            assertTrue(en.moveNext());
+            assertEquals(0xf00, (long) en.current());
         }
     }
 
@@ -533,12 +532,12 @@ public class ConcatTest extends TestCase {
         Integer[] results = concats.toArray(Integer.class);
 
         for (int i = 0; i < results.length; i++) {
-            Assert.assertEquals((long) i, (long) results[i]);
+            assertEquals((long) i, (long) results[i]);
         }
     }
 
     @Test
     public void testConcat() {
-        Assert.assertEquals(6, Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)).count());
+        assertEquals(6, Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)).count());
     }
 }

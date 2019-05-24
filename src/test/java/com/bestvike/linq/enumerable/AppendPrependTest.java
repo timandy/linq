@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class AppendPrependTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).prepend(4);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -87,7 +86,7 @@ public class AppendPrependTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).append(4);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -95,7 +94,7 @@ public class AppendPrependTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).append(4).append(5).prepend(-1).prepend(-2);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -248,7 +247,7 @@ public class AppendPrependTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Fred, Bill, Eric, Janet, Cedric]", s);
+        assertEquals("[Fred, Bill, Eric, Janet, Cedric]", s);
     }
 
     @Test
@@ -257,6 +256,6 @@ public class AppendPrependTest extends TestCase {
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
-        Assert.assertEquals("[Cedric, Fred, Bill, Eric, Janet]", s);
+        assertEquals("[Cedric, Fred, Bill, Eric, Janet]", s);
     }
 }

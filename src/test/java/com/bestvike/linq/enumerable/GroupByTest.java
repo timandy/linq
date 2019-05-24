@@ -18,7 +18,6 @@ import com.bestvike.linq.util.Dictionary;
 import com.bestvike.out;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -37,20 +36,20 @@ public class GroupByTest extends TestCase {
 
     private static <TKey, TElement> void AssertGroupingCorrect(IEnumerable<TKey> keys, IEnumerable<TElement> elements, IEnumerable<IGrouping<TKey, TElement>> grouping, IEqualityComparer<TKey> keyComparer) {
         if (grouping == null) {
-            Assert.assertNull(elements);
-            Assert.assertNull(keys);
+            assertNull(elements);
+            assertNull(keys);
             return;
         }
 
-        Assert.assertNotNull(elements);
-        Assert.assertNotNull(keys);
+        assertNotNull(elements);
+        assertNotNull(keys);
 
         Dictionary<TKey, List<TElement>> dict = new Dictionary<>(keyComparer);
         List<TElement> groupingForNullKeys = new ArrayList<>();
         try (IEnumerator<TElement> elEn = elements.enumerator();
              IEnumerator<TKey> keyEn = keys.enumerator()) {
             while (keyEn.moveNext()) {
-                Assert.assertTrue(elEn.moveNext());
+                assertTrue(elEn.moveNext());
 
                 TKey key = keyEn.current();
 
@@ -63,7 +62,7 @@ public class GroupByTest extends TestCase {
                     list.value.add(elEn.current());
                 }
             }
-            Assert.assertFalse(elEn.moveNext());
+            assertFalse(elEn.moveNext());
         }
         for (IGrouping<TKey, TElement> group : grouping) {
             assertNotEmpty(group);
@@ -74,7 +73,7 @@ public class GroupByTest extends TestCase {
                 assertEquals(Linq.asEnumerable(groupingForNullKeys), group);
                 groupingForNullKeys.clear();
             } else {
-                Assert.assertTrue(dict.tryGetValue(key, list));
+                assertTrue(dict.tryGetValue(key, list));
                 assertEquals(Linq.asEnumerable(list.value), group);
                 dict.remove(key);
             }
@@ -91,7 +90,7 @@ public class GroupByTest extends TestCase {
 
         IEnumerable<Tuple2<String, Integer>> q = q1.zip(q2);
 
-        Assert.assertNotNull(q.groupBy(Tuple2::getItem1, Tuple2::getItem2));
+        assertNotNull(q.groupBy(Tuple2::getItem1, Tuple2::getItem2));
         assertEquals(q.groupBy(Tuple2::getItem1, Tuple2::getItem2), q.groupBy(Tuple2::getItem1, Tuple2::getItem2));
     }
 
@@ -99,7 +98,7 @@ public class GroupByTest extends TestCase {
     public void Grouping_IList_IsReadOnly() {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         for (IGrouping grouping : oddsEvens) {
-            Assert.assertTrue(grouping instanceof IList);
+            assertTrue(grouping instanceof IList);
         }
     }
 
@@ -107,7 +106,7 @@ public class GroupByTest extends TestCase {
     public void Grouping_IList_NotSupported() {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         for (IGrouping grouping : oddsEvens) {
-            Assert.assertTrue(grouping instanceof IList);
+            assertTrue(grouping instanceof IList);
         }
     }
 
@@ -116,15 +115,15 @@ public class GroupByTest extends TestCase {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
-        Assert.assertTrue(e.moveNext());
+        assertTrue(e.moveNext());
         IList<Integer> odds = (IList<Integer>) e.current();
-        Assert.assertEquals(1, (int) odds.get(0));
-        Assert.assertEquals(3, (int) odds.get(1));
+        assertEquals(1, odds.get(0));
+        assertEquals(3, odds.get(1));
 
-        Assert.assertTrue(e.moveNext());
+        assertTrue(e.moveNext());
         IList<Integer> evens = (IList<Integer>) e.current();
-        Assert.assertEquals(2, (int) evens.get(0));
-        Assert.assertEquals(4, (int) evens.get(1));
+        assertEquals(2, evens.get(0));
+        assertEquals(4, evens.get(1));
     }
 
     @Test
@@ -132,7 +131,7 @@ public class GroupByTest extends TestCase {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
-        Assert.assertTrue(e.moveNext());
+        assertTrue(e.moveNext());
         IList<Integer> odds = (IList<Integer>) e.current();
         assertThrows(ArgumentOutOfRangeException.class, () -> odds.get(-1));
         assertThrows(ArgumentOutOfRangeException.class, () -> odds.get(23));
@@ -143,19 +142,19 @@ public class GroupByTest extends TestCase {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
-        Assert.assertTrue(e.moveNext());
+        assertTrue(e.moveNext());
         ICollection<Integer> odds = (IList<Integer>) e.current();
-        Assert.assertTrue(odds.contains(1));
-        Assert.assertTrue(odds.contains(3));
-        Assert.assertFalse(odds.contains(2));
-        Assert.assertFalse(odds.contains(4));
+        assertTrue(odds.contains(1));
+        assertTrue(odds.contains(3));
+        assertFalse(odds.contains(2));
+        assertFalse(odds.contains(4));
 
-        Assert.assertTrue(e.moveNext());
+        assertTrue(e.moveNext());
         ICollection<Integer> evens = (IList<Integer>) e.current();
-        Assert.assertTrue(evens.contains(2));
-        Assert.assertTrue(evens.contains(4));
-        Assert.assertFalse(evens.contains(1));
-        Assert.assertFalse(evens.contains(3));
+        assertTrue(evens.contains(2));
+        assertTrue(evens.contains(4));
+        assertFalse(evens.contains(1));
+        assertFalse(evens.contains(3));
     }
 
     @Test
@@ -163,19 +162,19 @@ public class GroupByTest extends TestCase {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.asEnumerable(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
-        Assert.assertTrue(e.moveNext());
+        assertTrue(e.moveNext());
         IList<Integer> odds = (IList<Integer>) e.current();
-        Assert.assertEquals(0, odds.toList().indexOf(1));
-        Assert.assertEquals(1, odds.toList().indexOf(3));
-        Assert.assertEquals(-1, odds.toList().indexOf(2));
-        Assert.assertEquals(-1, odds.toList().indexOf(4));
+        assertEquals(0, odds.toList().indexOf(1));
+        assertEquals(1, odds.toList().indexOf(3));
+        assertEquals(-1, odds.toList().indexOf(2));
+        assertEquals(-1, odds.toList().indexOf(4));
 
-        Assert.assertTrue(e.moveNext());
+        assertTrue(e.moveNext());
         IList<Integer> evens = (IList<Integer>) e.current();
-        Assert.assertEquals(0, evens.toList().indexOf(2));
-        Assert.assertEquals(1, evens.toList().indexOf(4));
-        Assert.assertEquals(-1, evens.toList().indexOf(1));
-        Assert.assertEquals(-1, evens.toList().indexOf(3));
+        assertEquals(0, evens.toList().indexOf(2));
+        assertEquals(1, evens.toList().indexOf(4));
+        assertEquals(-1, evens.toList().indexOf(1));
+        assertEquals(-1, evens.toList().indexOf(3));
     }
 
     @Test
@@ -480,13 +479,13 @@ public class GroupByTest extends TestCase {
 
         IEnumerable<Tuple2<Character, IEnumerable<Character>>> result = elements.groupBy(e -> e, (Func2<Character, IEnumerable<Character>, Tuple2<Character, IEnumerable<Character>>>) Tuple::create);
 
-        Assert.assertEquals(1, result.count());
+        assertEquals(1, result.count());
 
         Tuple2<Character, IEnumerable<Character>> grouping = result.first();
 
-        Assert.assertEquals(5, grouping.getItem2().count());
-        Assert.assertEquals((Character) 'q', grouping.getItem1());
-        Assert.assertTrue(grouping.getItem2().all(e -> e == 'q'));
+        assertEquals(5, grouping.getItem2().count());
+        assertEquals('q', grouping.getItem1());
+        assertTrue(grouping.getItem2().all(e -> e == 'q'));
     }
 
     @Test
@@ -539,7 +538,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         Array<IGrouping<String, Record>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name).toArray();
-        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name), groupedArray);
     }
 
@@ -554,7 +553,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         Array<IGrouping<String, Integer>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score).toArray();
-        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score), groupedArray);
     }
 
@@ -569,7 +568,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         Array<IEnumerable<Record>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e).toArray();
-        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e), groupedArray);
     }
 
@@ -584,7 +583,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         Array<IEnumerable<Record>> groupedArray = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).toArray();
-        Assert.assertEquals(4, groupedArray._getCount());
+        assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e), groupedArray);
     }
 
@@ -599,7 +598,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         List<IGrouping<String, Record>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name).toList();
-        Assert.assertEquals(4, groupedList.size());
+        assertEquals(4, groupedList.size());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name), Linq.asEnumerable(groupedList));
     }
 
@@ -614,7 +613,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         List<IGrouping<String, Integer>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score).toList();
-        Assert.assertEquals(4, groupedList.size());
+        assertEquals(4, groupedList.size());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score), Linq.asEnumerable(groupedList));
     }
 
@@ -629,7 +628,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         List<IEnumerable<Record>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e).toList();
-        Assert.assertEquals(4, groupedList.size());
+        assertEquals(4, groupedList.size());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e), Linq.asEnumerable(groupedList));
     }
 
@@ -644,7 +643,7 @@ public class GroupByTest extends TestCase {
                 new Record("Tim", 25)};
 
         List<IEnumerable<Record>> groupedList = Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).toList();
-        Assert.assertEquals(4, groupedList.size());
+        assertEquals(4, groupedList.size());
         assertEquals(Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e), Linq.asEnumerable(groupedList));
     }
 
@@ -658,7 +657,7 @@ public class GroupByTest extends TestCase {
                 new Record("Prakash", 9),
                 new Record("Tim", 25)};
 
-        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name).count());
+        assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name).count());
     }
 
     @Test
@@ -671,7 +670,7 @@ public class GroupByTest extends TestCase {
                 new Record("Prakash", 9),
                 new Record("Tim", 25)};
 
-        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score).count());
+        assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e.Score).count());
     }
 
     @Test
@@ -684,7 +683,7 @@ public class GroupByTest extends TestCase {
                 new Record("Prakash", 9),
                 new Record("Tim", 25)};
 
-        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e).count());
+        assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, (r, e) -> e).count());
     }
 
     @Test
@@ -697,7 +696,7 @@ public class GroupByTest extends TestCase {
                 new Record("Prakash", 9),
                 new Record("Tim", 25)};
 
-        Assert.assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).count());
+        assertEquals(4, Linq.asEnumerable(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).count());
     }
 
     @Test
@@ -712,7 +711,7 @@ public class GroupByTest extends TestCase {
 
     @Test
     public void EmptyGroupingCount() {
-        Assert.assertEquals(0, Linq.<Integer>empty().groupBy(i -> i).count());
+        assertEquals(0, Linq.<Integer>empty().groupBy(i -> i).count());
     }
 
     @Test
@@ -727,7 +726,7 @@ public class GroupByTest extends TestCase {
 
     @Test
     public void EmptyGroupingWithResultCount() {
-        Assert.assertEquals(0, Linq.<Integer>empty().groupBy(i -> i, (x, y) -> x + y.count()).count());
+        assertEquals(0, Linq.<Integer>empty().groupBy(i -> i, (x, y) -> x + y.count()).count());
     }
 
     @Test
@@ -739,7 +738,7 @@ public class GroupByTest extends TestCase {
 
         Class<?> grouptype = group.getClass();
         Method key = grouptype.getMethod("getKey");
-        Assert.assertNotNull(key);
+        assertNotNull(key);
     }
 
     @Test
@@ -749,7 +748,7 @@ public class GroupByTest extends TestCase {
                 .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group.select(element -> element.name))))
                 .toList()
                 .toString();
-        Assert.assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
+        assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
     }
 
     @Test
@@ -771,7 +770,7 @@ public class GroupByTest extends TestCase {
                 .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group.select(element -> element.name))))
                 .toList()
                 .toString();
-        Assert.assertEquals("[10: Fred+Bill+Eric+Janet]", s);
+        assertEquals("[10: Fred+Bill+Eric+Janet]", s);
     }
 
     @Test
@@ -781,7 +780,7 @@ public class GroupByTest extends TestCase {
                 .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group)))
                 .toList()
                 .toString();
-        Assert.assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
+        assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
     }
 
     @Test
@@ -802,7 +801,7 @@ public class GroupByTest extends TestCase {
                 .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group)))
                 .toList()
                 .toString();
-        Assert.assertEquals("[10: Fred+Bill+Eric+Janet]", s);
+        assertEquals("[10: Fred+Bill+Eric+Janet]", s);
     }
 
     @Test
@@ -811,7 +810,7 @@ public class GroupByTest extends TestCase {
                 .groupBy(emp -> emp.deptno, (key, group) -> String.format("%s: %s", key, stringJoin(group.select(element -> element.name))))
                 .toList()
                 .toString();
-        Assert.assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
+        assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
     }
 
     @Test
@@ -833,7 +832,7 @@ public class GroupByTest extends TestCase {
                         comparer)
                 .toList()
                 .toString();
-        Assert.assertEquals("[10: Fred+Bill+Eric+Janet]", s);
+        assertEquals("[10: Fred+Bill+Eric+Janet]", s);
     }
 
     @Test
@@ -843,7 +842,7 @@ public class GroupByTest extends TestCase {
                         .groupBy(emp -> emp.deptno, emp -> emp.name, (key, group) -> String.format("%s: %s", key, stringJoin(group)))
                         .toList()
                         .toString();
-        Assert.assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
+        assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
     }
 
     @Test
@@ -866,7 +865,7 @@ public class GroupByTest extends TestCase {
                         comparer)
                 .toList()
                 .toString();
-        Assert.assertEquals("[10: Fred+Bill+Eric+Janet]", s);
+        assertEquals("[10: Fred+Bill+Eric+Janet]", s);
     }
 
     //struct

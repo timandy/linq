@@ -2,7 +2,6 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -11,14 +10,14 @@ import org.junit.Test;
 public class SkipTest extends TestCase {
     @Test
     public void testSkip() {
-        Assert.assertEquals(2, Linq.asEnumerable(depts).skip(1).count());
-        Assert.assertEquals(0, Linq.asEnumerable(depts).skip(5).count());
+        assertEquals(2, Linq.asEnumerable(depts).skip(1).count());
+        assertEquals(0, Linq.asEnumerable(depts).skip(5).count());
     }
 
     @Test
     public void testSkipWhile() {
-        Assert.assertEquals(2, Linq.asEnumerable(depts).skipWhile(dept -> dept.name.equals("Sales")).count());
-        Assert.assertEquals(3, Linq.asEnumerable(depts).skipWhile(dept -> !dept.name.equals("Sales")).count());
+        assertEquals(2, Linq.asEnumerable(depts).skipWhile(dept -> dept.name.equals("Sales")).count());
+        assertEquals(3, Linq.asEnumerable(depts).skipWhile(dept -> !dept.name.equals("Sales")).count());
     }
 
     @Test
@@ -26,6 +25,6 @@ public class SkipTest extends TestCase {
         int count = Linq.asEnumerable(depts)
                 .skipWhile((dept, index) -> dept.name.equals("Sales") || index == 1)
                 .count();
-        Assert.assertEquals(1, count);
+        assertEquals(1, count);
     }
 }

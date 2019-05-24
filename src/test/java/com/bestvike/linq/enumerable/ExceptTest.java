@@ -9,7 +9,6 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -140,7 +139,7 @@ public class ExceptTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).except(Linq.range(0, 3));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -165,14 +164,14 @@ public class ExceptTest extends TestCase {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
-        Assert.assertEquals(3, Linq.asEnumerable(emps)
+        assertEquals(3, Linq.asEnumerable(emps)
                 .except(Linq.asEnumerable(emps2))
                 .count());
 
         IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
         IEnumerable<Integer> oneToFifty = Linq.range(1, 50);
         IEnumerable<Integer> fiftyOneToHundred = Linq.range(51, 50);
-        Assert.assertTrue(oneToHundred.except(oneToFifty).sequenceEqual(fiftyOneToHundred));
+        assertTrue(oneToHundred.except(oneToFifty).sequenceEqual(fiftyOneToHundred));
     }
 
     @Test
@@ -192,7 +191,7 @@ public class ExceptTest extends TestCase {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
         };
-        Assert.assertEquals(1, Linq.asEnumerable(emps)
+        assertEquals(1, Linq.asEnumerable(emps)
                 .except(Linq.asEnumerable(emps2), comparer)
                 .count());
     }

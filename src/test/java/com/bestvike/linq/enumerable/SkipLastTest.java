@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -13,8 +12,8 @@ import org.junit.Test;
 public class SkipLastTest extends TestCase {
     @Test
     public void testSkipLast() {
-        Assert.assertEquals(2, Linq.asEnumerable(depts).skipLast(1).count());
-        Assert.assertEquals(0, Linq.asEnumerable(depts).skipLast(5).count());
+        assertEquals(2, Linq.asEnumerable(depts).skipLast(1).count());
+        assertEquals(0, Linq.asEnumerable(depts).skipLast(5).count());
     }
 
     @Test

@@ -3,7 +3,6 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -12,7 +11,7 @@ import org.junit.Test;
 public class UnionByTest extends TestCase {
     @Test
     public void testUnionBy() {
-        Assert.assertEquals(4, Linq.asEnumerable(emps)
+        assertEquals(4, Linq.asEnumerable(emps)
                 .unionBy(Linq.asEnumerable(badEmps), emp -> emp.deptno)
                 .unionBy(Linq.asEnumerable(emps), emp -> emp.deptno)
                 .count());
@@ -32,7 +31,7 @@ public class UnionByTest extends TestCase {
             }
         };
 
-        Assert.assertEquals(1, Linq.asEnumerable(emps)
+        assertEquals(1, Linq.asEnumerable(emps)
                 .unionBy(Linq.asEnumerable(badEmps), emp -> emp.deptno, comparer)
                 .unionBy(Linq.asEnumerable(emps), emp -> emp.deptno, comparer)
                 .count());

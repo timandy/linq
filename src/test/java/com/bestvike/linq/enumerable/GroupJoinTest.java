@@ -9,7 +9,6 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -340,7 +339,7 @@ public class GroupJoinTest extends TestCase {
 
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<IEnumerable<Integer>> en = (IEnumerator<IEnumerable<Integer>>) iterator;
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -361,7 +360,7 @@ public class GroupJoinTest extends TestCase {
                 })
                 .toList()
                 .toString();
-        Assert.assertEquals("[[Fred, Eric, Janet] work(s) in Sales, [] work(s) in HR, [Bill] work(s) in Marketing, [] work(s) in Manager]", s);
+        assertEquals("[[Fred, Eric, Janet] work(s) in Sales, [] work(s) in HR, [Bill] work(s) in Marketing, [] work(s) in Manager]", s);
     }
 
     @Test
@@ -397,7 +396,7 @@ public class GroupJoinTest extends TestCase {
                         comparer)
                 .toList()
                 .toString();
-        Assert.assertEquals("[[Fred, Bill, Eric, Janet, Cedric] work(s) in Sales, [Fred, Bill, Eric, Janet, Cedric] work(s) in HR, [Fred, Bill, Eric, Janet, Cedric] work(s) in Marketing, [] work(s) in Manager]", s);
+        assertEquals("[[Fred, Bill, Eric, Janet, Cedric] work(s) in Sales, [Fred, Bill, Eric, Janet, Cedric] work(s) in HR, [Fred, Bill, Eric, Janet, Cedric] work(s) in Marketing, [] work(s) in Manager]", s);
     }
 
     //struct

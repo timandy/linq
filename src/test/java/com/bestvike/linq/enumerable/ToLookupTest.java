@@ -6,7 +6,6 @@ import com.bestvike.linq.IGrouping;
 import com.bestvike.linq.ILookup;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Objects;
@@ -18,23 +17,23 @@ public class ToLookupTest extends TestCase {
     @Test
     public void testToLookup() {
         ILookup<Integer, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno);
-        Assert.assertTrue(lookup.containsKey(10));
-        Assert.assertEquals(3, lookup.get(10).count());
+        assertTrue(lookup.containsKey(10));
+        assertEquals(3, lookup.get(10).count());
         int n = 0;
         for (IGrouping<Integer, Employee> grouping : lookup) {
             ++n;
             switch (grouping.getKey()) {
                 case 10:
-                    Assert.assertEquals(3, grouping.count());
+                    assertEquals(3, grouping.count());
                     break;
                 case 30:
-                    Assert.assertEquals(1, grouping.count());
+                    assertEquals(1, grouping.count());
                     break;
                 default:
-                    Assert.fail("toLookup() fail " + grouping);
+                    fail("toLookup() fail " + grouping);
             }
         }
-        Assert.assertEquals(2, n);
+        assertEquals(2, n);
     }
 
     @Test
@@ -51,23 +50,23 @@ public class ToLookupTest extends TestCase {
             }
         };
         ILookup<String, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.name, comparer);
-        Assert.assertTrue(lookup.containsKey("Fred"));
-        Assert.assertEquals(3, lookup.get("Fred").count());
+        assertTrue(lookup.containsKey("Fred"));
+        assertEquals(3, lookup.get("Fred").count());
         int n = 0;
         for (IGrouping<String, Employee> grouping : lookup) {
             ++n;
             switch (grouping.getKey()) {
                 case "Fred":
-                    Assert.assertEquals(3, grouping.count());
+                    assertEquals(3, grouping.count());
                     break;
                 case "Janet":
-                    Assert.assertEquals(1, grouping.count());
+                    assertEquals(1, grouping.count());
                     break;
                 default:
-                    Assert.fail("toLookup() with comparer fail " + grouping);
+                    fail("toLookup() with comparer fail " + grouping);
             }
         }
-        Assert.assertEquals(2, n);
+        assertEquals(2, n);
 
         IEqualityComparer<Integer> comparer2 = new IEqualityComparer<Integer>() {
             @Override
@@ -82,46 +81,46 @@ public class ToLookupTest extends TestCase {
         };
         Employee badEmp = new Employee(160, "Tim", null);
         ILookup<Integer, Employee> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, comparer2);
-        Assert.assertTrue(lookup2.containsKey(null));
-        Assert.assertEquals(5, lookup2.get(null).count());
+        assertTrue(lookup2.containsKey(null));
+        assertEquals(5, lookup2.get(null).count());
         int n2 = 0;
         for (IGrouping<Integer, Employee> grouping : lookup2) {
             ++n2;
             if (grouping.getKey() == null)
-                Assert.assertEquals(5, grouping.count());
+                assertEquals(5, grouping.count());
             else
-                Assert.fail("toLookup() with comparer fail " + grouping);
+                fail("toLookup() with comparer fail " + grouping);
 
         }
-        Assert.assertEquals(1, n2);
+        assertEquals(1, n2);
     }
 
     @Test
     public void testToLookupSelector() {
         ILookup<Integer, String> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno, emp -> emp.name);
-        Assert.assertTrue(lookup.containsKey(10));
-        Assert.assertEquals(3, lookup.get(10).count());
+        assertTrue(lookup.containsKey(10));
+        assertEquals(3, lookup.get(10).count());
         int n = 0;
         for (IGrouping<Integer, String> grouping : lookup) {
             ++n;
             switch (grouping.getKey()) {
                 case 10:
-                    Assert.assertEquals(3, grouping.count());
-                    Assert.assertTrue(grouping.contains("Fred"));
-                    Assert.assertTrue(grouping.contains("Eric"));
-                    Assert.assertTrue(grouping.contains("Janet"));
-                    Assert.assertFalse(grouping.contains("Bill"));
+                    assertEquals(3, grouping.count());
+                    assertTrue(grouping.contains("Fred"));
+                    assertTrue(grouping.contains("Eric"));
+                    assertTrue(grouping.contains("Janet"));
+                    assertFalse(grouping.contains("Bill"));
                     break;
                 case 30:
-                    Assert.assertEquals(1, grouping.count());
-                    Assert.assertTrue(grouping.contains("Bill"));
-                    Assert.assertFalse(grouping.contains("Fred"));
+                    assertEquals(1, grouping.count());
+                    assertTrue(grouping.contains("Bill"));
+                    assertFalse(grouping.contains("Fred"));
                     break;
                 default:
-                    Assert.fail("toLookup() with elementSelector error " + grouping);
+                    fail("toLookup() with elementSelector error " + grouping);
             }
         }
-        Assert.assertEquals(2, n);
+        assertEquals(2, n);
     }
 
     @Test
@@ -144,22 +143,22 @@ public class ToLookupTest extends TestCase {
             ++n;
             switch (grouping.getKey()) {
                 case "Fred":
-                    Assert.assertEquals(3, grouping.count());
-                    Assert.assertTrue(grouping.contains(100));
-                    Assert.assertTrue(grouping.contains(110));
-                    Assert.assertTrue(grouping.contains(120));
-                    Assert.assertFalse(grouping.contains(130));
+                    assertEquals(3, grouping.count());
+                    assertTrue(grouping.contains(100));
+                    assertTrue(grouping.contains(110));
+                    assertTrue(grouping.contains(120));
+                    assertFalse(grouping.contains(130));
                     break;
                 case "Janet":
-                    Assert.assertEquals(1, grouping.count());
-                    Assert.assertTrue(grouping.contains(130));
-                    Assert.assertFalse(grouping.contains(110));
+                    assertEquals(1, grouping.count());
+                    assertTrue(grouping.contains(130));
+                    assertFalse(grouping.contains(110));
                     break;
                 default:
-                    Assert.fail("toLookup() with elementSelector and comparer error " + grouping);
+                    fail("toLookup() with elementSelector and comparer error " + grouping);
             }
         }
-        Assert.assertEquals(2, n);
+        assertEquals(2, n);
 
 
         IEqualityComparer<Integer> comparer2 = new IEqualityComparer<Integer>() {
@@ -175,23 +174,23 @@ public class ToLookupTest extends TestCase {
         };
         Employee badEmp = new Employee(160, "Tim", null);
         ILookup<Integer, String> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, emp -> emp.name, comparer2);
-        Assert.assertTrue(lookup2.containsKey(null));
-        Assert.assertEquals(5, lookup2.get(null).count());
+        assertTrue(lookup2.containsKey(null));
+        assertEquals(5, lookup2.get(null).count());
         int n2 = 0;
         for (IGrouping<Integer, String> grouping : lookup2) {
             ++n2;
             if (grouping.getKey() == null) {
-                Assert.assertEquals(5, grouping.count());
-                Assert.assertTrue(grouping.contains("Tim"));
-                Assert.assertTrue(grouping.contains("Fred"));
-                Assert.assertTrue(grouping.contains("Bill"));
-                Assert.assertTrue(grouping.contains("Eric"));
-                Assert.assertTrue(grouping.contains("Janet"));
-                Assert.assertFalse(grouping.contains("Cedric"));
+                assertEquals(5, grouping.count());
+                assertTrue(grouping.contains("Tim"));
+                assertTrue(grouping.contains("Fred"));
+                assertTrue(grouping.contains("Bill"));
+                assertTrue(grouping.contains("Eric"));
+                assertTrue(grouping.contains("Janet"));
+                assertFalse(grouping.contains("Cedric"));
             } else {
-                Assert.fail("toLookup() with comparer fail " + grouping);
+                fail("toLookup() with comparer fail " + grouping);
             }
         }
-        Assert.assertEquals(1, n2);
+        assertEquals(1, n2);
     }
 }

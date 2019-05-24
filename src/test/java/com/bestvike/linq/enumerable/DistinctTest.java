@@ -8,7 +8,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -210,7 +209,7 @@ public class DistinctTest extends TestCase {
         // Ensure the result doesn't contain duplicates.
         HashSet<T> hashSet = new HashSet<>();
         for (T i : distinctList)
-            Assert.assertTrue(hashSet.add(i));
+            assertTrue(hashSet.add(i));
 
         HashSet<T> originalSet = new HashSet<>(originalList);
         assertSuperset(originalSet, hashSet);
@@ -222,7 +221,7 @@ public class DistinctTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).distinct();
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -238,13 +237,13 @@ public class DistinctTest extends TestCase {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
-        Assert.assertArrayEquals(Linq.asEnumerable(expected).toList().toArray(), Linq.asEnumerable(source).distinct().toList().toArray());
+        assertEquals(Linq.asEnumerable(Linq.asEnumerable(expected).toList()), Linq.asEnumerable(Linq.asEnumerable(source).distinct().toList()));
     }
 
     @Test
     public void Count() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
-        Assert.assertEquals(3, Linq.asEnumerable(source).distinct().count());
+        assertEquals(3, Linq.asEnumerable(source).distinct().count());
     }
 
     @Test
@@ -264,7 +263,7 @@ public class DistinctTest extends TestCase {
                 emps[0],
                 emps[3],
         };
-        Assert.assertEquals(3, Linq.asEnumerable(emps2).distinct().count());
+        assertEquals(3, Linq.asEnumerable(emps2).distinct().count());
     }
 
     @Test
@@ -287,6 +286,6 @@ public class DistinctTest extends TestCase {
                 emps[1],
                 emps[3]
         };
-        Assert.assertEquals(2, Linq.asEnumerable(emps2).distinct(comparer).count());
+        assertEquals(2, Linq.asEnumerable(emps2).distinct(comparer).count());
     }
 }

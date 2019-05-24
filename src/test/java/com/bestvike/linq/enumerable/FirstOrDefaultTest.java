@@ -7,7 +7,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.ArrayUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
@@ -21,7 +20,7 @@ public class FirstOrDefaultTest extends TestCase {
         IEnumerable<Integer> ieInt = Linq.range(0, 0);
         IEnumerable<Integer> q = ieInt.select(x -> x);
 
-        Assert.assertEquals(q.firstOrDefault(), q.firstOrDefault());
+        assertEquals(q.firstOrDefault(), q.firstOrDefault());
     }
 
     @Test
@@ -29,15 +28,15 @@ public class FirstOrDefaultTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
-        Assert.assertEquals(q.firstOrDefault(), q.firstOrDefault());
+        assertEquals(q.firstOrDefault(), q.firstOrDefault());
     }
 
     private <T> void TestEmptyIList(Class<T> clazz) {
         T[] source = ArrayUtils.empty(clazz);
         T expected = null;
 
-        Assert.assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        Assert.assertEquals(expected, Linq.asEnumerable(source).runOnce().firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
+        assertEquals(expected, Linq.asEnumerable(source).runOnce().firstOrDefault());
     }
 
     @Test
@@ -53,8 +52,8 @@ public class FirstOrDefaultTest extends TestCase {
         int[] source = new int[]{5};
         int expected = 5;
 
-        Assert.assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        Assert.assertEquals(expected, (int) Linq.asEnumerable(source).firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
+        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
     }
 
     @Test
@@ -62,8 +61,8 @@ public class FirstOrDefaultTest extends TestCase {
         Integer[] source = {null, -10, 2, 4, 3, 0, 2};
         Integer expected = null;
 
-        Assert.assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        Assert.assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
+        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
     }
 
     @Test
@@ -71,8 +70,8 @@ public class FirstOrDefaultTest extends TestCase {
         Integer[] source = {19, null, -10, 2, 4, 3, 0, 2};
         Integer expected = 19;
 
-        Assert.assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        Assert.assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
+        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
     }
 
     private <T> IEnumerable<T> EmptySourceGeneric() {
@@ -83,8 +82,8 @@ public class FirstOrDefaultTest extends TestCase {
         IEnumerable<T> source = this.EmptySourceGeneric();
         T expected = null;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, source.runOnce().firstOrDefault());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.runOnce().firstOrDefault());
     }
 
     @Test
@@ -100,8 +99,8 @@ public class FirstOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, (int) source.firstOrDefault());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.firstOrDefault());
     }
 
     @Test
@@ -109,16 +108,16 @@ public class FirstOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(3, 10);
         int expected = 3;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, (int) source.firstOrDefault());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.firstOrDefault());
     }
 
     @Test
     public void EmptySource() {
         Integer[] source = {};
 
-        Assert.assertNull(Linq.asEnumerable(source).firstOrDefault(x -> true));
-        Assert.assertNull(Linq.asEnumerable(source).firstOrDefault(x -> false));
+        assertNull(Linq.asEnumerable(source).firstOrDefault(x -> true));
+        assertNull(Linq.asEnumerable(source).firstOrDefault(x -> false));
     }
 
     @Test
@@ -127,7 +126,7 @@ public class FirstOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 4;
 
-        Assert.assertEquals(expected, (int) Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -136,7 +135,7 @@ public class FirstOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         Integer expected = null;
 
-        Assert.assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -145,7 +144,7 @@ public class FirstOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 50;
 
-        Assert.assertEquals(expected, (int) Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -154,7 +153,7 @@ public class FirstOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 10;
 
-        Assert.assertEquals(expected, (int) Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -163,7 +162,7 @@ public class FirstOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 10;
 
-        Assert.assertEquals(expected, (int) Linq.asEnumerable(source).runOnce().firstOrDefault(predicate));
+        assertEquals(expected, Linq.asEnumerable(source).runOnce().firstOrDefault(predicate));
     }
 
     @Test
@@ -188,10 +187,10 @@ public class FirstOrDefaultTest extends TestCase {
         String[] empty = {};
         Integer[] numbers = {5, 10, 15, 20, 25};
 
-        Assert.assertEquals(people[0], Linq.asEnumerable(people).firstOrDefault());
-        Assert.assertEquals(numbers[0], Linq.asEnumerable(numbers).firstOrDefault());
+        assertEquals(people[0], Linq.asEnumerable(people).firstOrDefault());
+        assertEquals(numbers[0], Linq.asEnumerable(numbers).firstOrDefault());
 
-        Assert.assertNull(Linq.asEnumerable(empty).firstOrDefault());
+        assertNull(Linq.asEnumerable(empty).firstOrDefault());
     }
 
     @Test
@@ -200,8 +199,8 @@ public class FirstOrDefaultTest extends TestCase {
         String[] peopleWithoutCharS = {"Brill", "Andrew", "Alice"};
         Integer[] numbers = {5, 10, 15, 20, 25};
 
-        Assert.assertEquals(people[1], Linq.asEnumerable(people).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
-        Assert.assertEquals(numbers[3], Linq.asEnumerable(numbers).firstOrDefault(i -> i > 15));
-        Assert.assertNull(Linq.asEnumerable(peopleWithoutCharS).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertEquals(people[1], Linq.asEnumerable(people).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertEquals(numbers[3], Linq.asEnumerable(numbers).firstOrDefault(i -> i > 15));
+        assertNull(Linq.asEnumerable(peopleWithoutCharS).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
     }
 }

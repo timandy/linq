@@ -10,7 +10,6 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.HashSet;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -139,7 +138,7 @@ public class IntersectTest extends TestCase {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).intersect(Linq.range(0, 3));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -167,7 +166,7 @@ public class IntersectTest extends TestCase {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
-        Assert.assertEquals(1, Linq.asEnumerable(emps)
+        assertEquals(1, Linq.asEnumerable(emps)
                 .intersect(Linq.asEnumerable(emps2))
                 .count());
     }
@@ -189,7 +188,7 @@ public class IntersectTest extends TestCase {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10)
         };
-        Assert.assertEquals(1, Linq.asEnumerable(emps)
+        assertEquals(1, Linq.asEnumerable(emps)
                 .intersect(Linq.asEnumerable(emps2), comparer)
                 .count());
     }

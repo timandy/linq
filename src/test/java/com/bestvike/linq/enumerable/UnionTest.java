@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Objects;
@@ -15,7 +14,7 @@ import java.util.Objects;
 public class UnionTest extends TestCase {
     @Test
     public void testUnion() {
-        Assert.assertEquals(6, Linq.asEnumerable(emps)
+        assertEquals(6, Linq.asEnumerable(emps)
                 .union(Linq.asEnumerable(badEmps))
                 .union(Linq.asEnumerable(emps))
                 .count());
@@ -35,7 +34,7 @@ public class UnionTest extends TestCase {
             }
         };
 
-        Assert.assertEquals(4, Linq.asEnumerable(emps)
+        assertEquals(4, Linq.asEnumerable(emps)
                 .union(Linq.asEnumerable(badEmps), comparer)
                 .union(Linq.asEnumerable(emps), comparer)
                 .count());

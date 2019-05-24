@@ -6,7 +6,6 @@ import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -19,7 +18,7 @@ public class AllTest extends TestCase {
                 .where(x -> x > Integer.MIN_VALUE);
 
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
-        Assert.assertEquals(q.all(predicate), q.all(predicate));
+        assertEquals(q.all(predicate), q.all(predicate));
     }
 
     @Test
@@ -27,7 +26,7 @@ public class AllTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Func1<String, Boolean> predicate = TestCase::IsNullOrEmpty;
-        Assert.assertEquals(q.all(predicate), q.all(predicate));
+        assertEquals(q.all(predicate), q.all(predicate));
     }
 
     @Test
@@ -51,7 +50,7 @@ public class AllTest extends TestCase {
     }
 
     private void All(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
-        Assert.assertEquals(expected, source.all(predicate));
+        assertEquals(expected, source.all(predicate));
     }
 
     @Test
@@ -75,7 +74,7 @@ public class AllTest extends TestCase {
     }
 
     private void AllRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
-        Assert.assertEquals(expected, source.runOnce().all(predicate));
+        assertEquals(expected, source.runOnce().all(predicate));
     }
 
     @Test

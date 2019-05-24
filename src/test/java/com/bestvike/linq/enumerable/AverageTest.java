@@ -8,7 +8,6 @@ import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -22,14 +21,14 @@ public class AverageTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.averageInt(), q.averageInt(), DELTA);
+        assertEquals(q.averageInt(), q.averageInt());
     }
 
     @Test
     public void SameResultsRepeatCallsNullableLongQuery() {
         IEnumerable<Long> q = Linq.asEnumerable((long) Integer.MAX_VALUE, (long) 0, (long) 255, (long) 127, (long) 128, (long) 1, (long) 33, (long) 99, null, (long) Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.averageLongNull(), q.averageLongNull(), DELTA);
+        assertEquals(q.averageLongNull(), q.averageLongNull());
     }
 
     @Test
@@ -43,8 +42,8 @@ public class AverageTest extends TestCase {
     }
 
     private void NullableFoat(IEnumerable<Float> source, Float expected) {
-        Assert.assertEquals(expected, source.averageFloatNull());
-        Assert.assertEquals(expected, source.averageFloatNull(x -> x));
+        assertEquals(expected, source.averageFloatNull());
+        assertEquals(expected, source.averageFloatNull(x -> x));
     }
 
     @Test
@@ -58,8 +57,8 @@ public class AverageTest extends TestCase {
     }
 
     private void NullableFoatRunOnce(IEnumerable<Float> source, Float expected) {
-        Assert.assertEquals(expected, source.runOnce().averageFloatNull());
-        Assert.assertEquals(expected, source.runOnce().averageFloatNull(x -> x));
+        assertEquals(expected, source.runOnce().averageFloatNull());
+        assertEquals(expected, source.runOnce().averageFloatNull(x -> x));
     }
 
     @Test
@@ -79,7 +78,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Float>> source = Linq.asEnumerable(Tuple.create("Tim", 5.5f), Tuple.create("John", 15.5f), Tuple.create("Bob", null));
         Float expected = 10.5f;
 
-        Assert.assertEquals(expected, source.averageFloatNull(e -> e.getItem2()));
+        assertEquals(expected, source.averageFloatNull(e -> e.getItem2()));
     }
 
     @Test
@@ -110,8 +109,8 @@ public class AverageTest extends TestCase {
     }
 
     private void Int(IEnumerable<Integer> source, double expected) {
-        Assert.assertEquals(expected, source.averageInt(), DELTA);
-        Assert.assertEquals(expected, source.averageInt(x -> x), DELTA);
+        assertEquals(expected, source.averageInt());
+        assertEquals(expected, source.averageInt(x -> x));
     }
 
     @Test
@@ -122,8 +121,8 @@ public class AverageTest extends TestCase {
     }
 
     private void IntRunOnce(IEnumerable<Integer> source, double expected) {
-        Assert.assertEquals(expected, source.runOnce().averageInt(), DELTA);
-        Assert.assertEquals(expected, source.runOnce().averageInt(x -> x), DELTA);
+        assertEquals(expected, source.runOnce().averageInt());
+        assertEquals(expected, source.runOnce().averageInt(x -> x));
     }
 
     @Test
@@ -131,7 +130,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Integer>> source = Linq.asEnumerable(Tuple.create("Tim", 10), Tuple.create("John", -10), Tuple.create("Bob", 15));
         double expected = 5;
 
-        Assert.assertEquals(expected, source.averageInt(e -> e.getItem2()), DELTA);
+        assertEquals(expected, source.averageInt(e -> e.getItem2()));
     }
 
     @Test
@@ -145,8 +144,8 @@ public class AverageTest extends TestCase {
     }
 
     private void NullableInt(IEnumerable<Integer> source, Double expected) {
-        Assert.assertEquals(expected, source.averageIntNull());
-        Assert.assertEquals(expected, source.averageIntNull(x -> x));
+        assertEquals(expected, source.averageIntNull());
+        assertEquals(expected, source.averageIntNull(x -> x));
     }
 
     @Test
@@ -166,7 +165,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Integer>> source = Linq.asEnumerable(Tuple.create("Tim", 10), Tuple.create("John", null), Tuple.create("Bob", 10));
         Double expected = 10d;
 
-        Assert.assertEquals(expected, source.averageIntNull(e -> e.getItem2()));
+        assertEquals(expected, source.averageIntNull(e -> e.getItem2()));
     }
 
     @Test
@@ -197,8 +196,8 @@ public class AverageTest extends TestCase {
     }
 
     private void Long(IEnumerable<Long> source, double expected) {
-        Assert.assertEquals(expected, source.averageLong(), DELTA);
-        Assert.assertEquals(expected, source.averageLong(x -> x), DELTA);
+        assertEquals(expected, source.averageLong());
+        assertEquals(expected, source.averageLong(x -> x));
     }
 
     @Test
@@ -206,7 +205,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Long>> source = Linq.asEnumerable(Tuple.create("Tim", 40L), Tuple.create("John", 50L), Tuple.create("Bob", 60L));
         double expected = 50;
 
-        Assert.assertEquals(expected, source.averageLong(e -> e.getItem2()), DELTA);
+        assertEquals(expected, source.averageLong(e -> e.getItem2()));
     }
 
     @Test
@@ -226,8 +225,8 @@ public class AverageTest extends TestCase {
     }
 
     private void NullableLong(IEnumerable<Long> source, Double expected) {
-        Assert.assertEquals(expected, source.averageLongNull());
-        Assert.assertEquals(expected, source.averageLongNull(x -> x));
+        assertEquals(expected, source.averageLongNull());
+        assertEquals(expected, source.averageLongNull(x -> x));
     }
 
     @Test
@@ -247,7 +246,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Long>> source = Linq.asEnumerable(Tuple.create("Tim", 40L), Tuple.create("John", null), Tuple.create("Bob", 30L));
         Double expected = 35d;
 
-        Assert.assertEquals(expected, source.averageLongNull(e -> e.getItem2()), DELTA);
+        assertEquals(expected, source.averageLongNull(e -> e.getItem2()));
     }
 
     @Test
@@ -279,8 +278,8 @@ public class AverageTest extends TestCase {
     }
 
     private void Average_Double(IEnumerable<Double> source, double expected) {
-        Assert.assertEquals(expected, source.averageDouble(), DELTA);
-        Assert.assertEquals(expected, source.averageDouble(x -> x), DELTA);
+        assertEquals(expected, source.averageDouble());
+        assertEquals(expected, source.averageDouble(x -> x));
     }
 
     @Test
@@ -288,7 +287,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Double>> source = Linq.asEnumerable(Tuple.create("Tim", 5.5), Tuple.create("John", 15.5), Tuple.create("Bob", 3.0));
         double expected = 8.0;
 
-        Assert.assertEquals(expected, source.averageDouble(e -> e.getItem2()), DELTA);
+        assertEquals(expected, source.averageDouble(e -> e.getItem2()));
     }
 
     @Test
@@ -303,8 +302,8 @@ public class AverageTest extends TestCase {
     }
 
     private void NullableDouble(IEnumerable<Double> source, Double expected) {
-        Assert.assertEquals(expected, source.averageDoubleNull());
-        Assert.assertEquals(expected, source.averageDoubleNull(x -> x));
+        assertEquals(expected, source.averageDoubleNull());
+        assertEquals(expected, source.averageDoubleNull(x -> x));
     }
 
     @Test
@@ -324,7 +323,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Double>> source = Linq.asEnumerable(Tuple.create("Tim", 5.5), Tuple.create("John", 15.5), Tuple.create("Bob", null));
         Double expected = 10.5;
 
-        Assert.assertEquals(expected, source.averageDoubleNull(e -> e.getItem2()));
+        assertEquals(expected, source.averageDoubleNull(e -> e.getItem2()));
     }
 
     @Test
@@ -355,8 +354,8 @@ public class AverageTest extends TestCase {
     }
 
     private void Decimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
-        Assert.assertEquals(expected, source.averageDecimal());
-        Assert.assertEquals(expected, source.averageDecimal(x -> x));
+        assertEquals(expected, source.averageDecimal());
+        assertEquals(expected, source.averageDecimal(x -> x));
     }
 
     @Test
@@ -364,7 +363,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, BigDecimal>> source = Linq.asEnumerable(Tuple.create("Tim", new BigDecimal("5.5")), Tuple.create("John", new BigDecimal("15.5")), Tuple.create("Bob", new BigDecimal("3.0")));
         BigDecimal expected = new BigDecimal("8.0");
 
-        Assert.assertEquals(expected, source.averageDecimal(e -> e.getItem2()));
+        assertEquals(expected, source.averageDecimal(e -> e.getItem2()));
     }
 
     @Test
@@ -378,8 +377,8 @@ public class AverageTest extends TestCase {
     }
 
     private void NullableDecimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
-        Assert.assertEquals(expected, source.averageDecimalNull());
-        Assert.assertEquals(expected, source.averageDecimalNull(x -> x));
+        assertEquals(expected, source.averageDecimalNull());
+        assertEquals(expected, source.averageDecimalNull(x -> x));
     }
 
     @Test
@@ -399,7 +398,7 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, BigDecimal>> source = Linq.asEnumerable(Tuple.create("Tim", new BigDecimal("5.5")), Tuple.create("John", new BigDecimal("15.5")), Tuple.create("Bob", null));
         BigDecimal expected = new BigDecimal("10.5");
 
-        Assert.assertEquals(expected, source.averageDecimalNull(e -> e.getItem2()));
+        assertEquals(expected, source.averageDecimalNull(e -> e.getItem2()));
     }
 
     @Test
@@ -437,8 +436,8 @@ public class AverageTest extends TestCase {
     }
 
     private void Float(IEnumerable<Float> source, float expected) {
-        Assert.assertEquals(expected, source.averageFloat(), DELTA);
-        Assert.assertEquals(expected, source.averageFloat(x -> x), DELTA);
+        assertEquals(expected, source.averageFloat());
+        assertEquals(expected, source.averageFloat(x -> x));
     }
 
     @Test
@@ -446,18 +445,18 @@ public class AverageTest extends TestCase {
         IEnumerable<Tuple2<String, Float>> source = Linq.asEnumerable(Tuple.create("Tim", 5.5f), Tuple.create("John", 15.5f), Tuple.create("Bob", 3.0f));
         float expected = 8.0f;
 
-        Assert.assertEquals(expected, source.averageFloat(e -> e.getItem2()), DELTA);
+        assertEquals(expected, source.averageFloat(e -> e.getItem2()));
     }
 
     @Test
     public void testAverageInt() {
         Integer[] numbers = {null, 0, 3, 3};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageInt(), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageInt());
 
         Integer[] numbers2 = {null};
         try {
             double average = Linq.asEnumerable(numbers2).averageInt();
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -465,21 +464,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageIntNull() {
         Integer[] numbers = {null, 0, 3, 3};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageIntNull(), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageIntNull());
 
         Integer[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageIntNull());
+        assertEquals(null, Linq.asEnumerable(numbers2).averageIntNull());
     }
 
     @Test
     public void testAverageLong() {
         Long[] numbers = {null, 0L, 3L, 3L};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageLong(), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageLong());
 
         Long[] numbers2 = {null};
         try {
             double average = Linq.asEnumerable(numbers2).averageLong();
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -487,21 +486,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageLongNull() {
         Long[] numbers = {null, 0L, 3L, 3L};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageLongNull(), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageLongNull());
 
         Long[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageLongNull());
+        assertEquals(null, Linq.asEnumerable(numbers2).averageLongNull());
     }
 
     @Test
     public void testAverageFloat() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        Assert.assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloat(), 0d);
+        assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloat());
 
         Float[] numbers2 = {null};
         try {
             float average = Linq.asEnumerable(numbers2).averageFloat();
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -509,21 +508,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageFloatNull() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        Assert.assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloatNull(), 0d);
+        assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloatNull());
 
         Float[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageFloatNull());
+        assertEquals(null, Linq.asEnumerable(numbers2).averageFloatNull());
     }
 
     @Test
     public void testAverageDouble() {
         Double[] numbers = {null, 0d, 2d, Double.NaN};
-        Assert.assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDouble(), 0d);
+        assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDouble());
 
         Double[] numbers2 = {null};
         try {
             double average = Linq.asEnumerable(numbers2).averageDouble();
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -531,21 +530,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageDoubleNull() {
         Double[] numbers = {null, 0d, 2d, Double.NaN};
-        Assert.assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDoubleNull(), 0d);
+        assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDoubleNull());
 
         Double[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageDoubleNull());
+        assertEquals(null, Linq.asEnumerable(numbers2).averageDoubleNull());
     }
 
     @Test
     public void testAverageDecimal() {
         BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("3"), new BigDecimal("3")};
-        Assert.assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimal());
+        assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimal());
 
         Integer[] numbers2 = {null};
         try {
             BigDecimal average = Linq.asEnumerable(numbers2).averageDecimal();
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -553,21 +552,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageDecimalNull() {
         BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("3"), new BigDecimal("3")};
-        Assert.assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimalNull());
+        assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimalNull());
 
         Integer[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageDecimalNull());
+        assertEquals(null, Linq.asEnumerable(numbers2).averageDecimalNull());
     }
 
     @Test
     public void testAverageIntWithSelector() {
         Integer[] numbers = {null, 0, 3, 3};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageInt(n -> n), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageInt(n -> n));
 
         Integer[] numbers2 = {null};
         try {
             double average = Linq.asEnumerable(numbers2).averageInt(n -> n);
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -575,21 +574,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageIntNullWithSelector() {
         Integer[] numbers = {null, 0, 3, 3};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageIntNull(n -> n), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageIntNull(n -> n));
 
         Integer[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageIntNull(n -> n));
+        assertEquals(null, Linq.asEnumerable(numbers2).averageIntNull(n -> n));
     }
 
     @Test
     public void testAverageLongWithSelector() {
         Long[] numbers = {null, 0L, 3L, 3L};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageLong(n -> n), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageLong(n -> n));
 
         Long[] numbers2 = {null};
         try {
             double average = Linq.asEnumerable(numbers2).averageLong(n -> n);
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -597,21 +596,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageLongNullWithSelector() {
         Long[] numbers = {null, 0L, 3L, 3L};
-        Assert.assertEquals(2d, Linq.asEnumerable(numbers).averageLongNull(n -> n), 0d);
+        assertEquals(2d, Linq.asEnumerable(numbers).averageLongNull(n -> n));
 
         Long[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageLongNull(n -> n));
+        assertEquals(null, Linq.asEnumerable(numbers2).averageLongNull(n -> n));
     }
 
     @Test
     public void testAverageFloatWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        Assert.assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloat(n -> n), 0d);
+        assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloat(n -> n));
 
         Float[] numbers2 = {null};
         try {
             float average = Linq.asEnumerable(numbers2).averageFloat(n -> n);
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -619,21 +618,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageFloatNullWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        Assert.assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloatNull(n -> n), 0d);
+        assertEquals(Float.NaN, Linq.asEnumerable(numbers).averageFloatNull(n -> n));
 
         Float[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageFloatNull(n -> n));
+        assertEquals(null, Linq.asEnumerable(numbers2).averageFloatNull(n -> n));
     }
 
     @Test
     public void testAverageDoubleWithSelector() {
         Double[] numbers = {null, 0d, 2d, Double.NaN};
-        Assert.assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDouble(n -> n), 0d);
+        assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDouble(n -> n));
 
         Double[] numbers2 = {null};
         try {
             double average = Linq.asEnumerable(numbers2).averageDouble(n -> n);
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -641,21 +640,21 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageDoubleNullWithSelector() {
         Double[] numbers = {null, 0d, 2d, Double.NaN};
-        Assert.assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDoubleNull(n -> n), 0d);
+        assertEquals(Double.NaN, Linq.asEnumerable(numbers).averageDoubleNull(n -> n));
 
         Double[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageDoubleNull(n -> n));
+        assertEquals(null, Linq.asEnumerable(numbers2).averageDoubleNull(n -> n));
     }
 
     @Test
     public void testAverageDecimalWithSelector() {
         BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("3"), new BigDecimal("3")};
-        Assert.assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimal(n -> n));
+        assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimal(n -> n));
 
         BigDecimal[] numbers2 = {null};
         try {
             BigDecimal average = Linq.asEnumerable(numbers2).averageDecimal(n -> n);
-            Assert.fail("expect error,but got " + average);
+            fail("expect error,but got " + average);
         } catch (InvalidOperationException ignored) {
         }
     }
@@ -663,9 +662,9 @@ public class AverageTest extends TestCase {
     @Test
     public void testAverageDecimalNullWithSelector() {
         BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("3"), new BigDecimal("3")};
-        Assert.assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimalNull(n -> n));
+        assertEquals(new BigDecimal("2"), Linq.asEnumerable(numbers).averageDecimalNull(n -> n));
 
         BigDecimal[] numbers2 = {null};
-        Assert.assertEquals(null, Linq.asEnumerable(numbers2).averageDecimalNull(n -> n));
+        assertEquals(null, Linq.asEnumerable(numbers2).averageDecimalNull(n -> n));
     }
 }

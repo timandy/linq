@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -19,7 +18,7 @@ public class DistinctByTest extends TestCase {
                 emps[0],
                 emps[3],
         };
-        Assert.assertEquals(1, Linq.asEnumerable(emps2).distinctBy(emp -> emp.deptno).count());
+        assertEquals(1, Linq.asEnumerable(emps2).distinctBy(emp -> emp.deptno).count());
     }
 
     @Test
@@ -42,6 +41,6 @@ public class DistinctByTest extends TestCase {
                 emps[1],
                 emps[3]
         };
-        Assert.assertEquals(1, Linq.asEnumerable(emps2).distinctBy(emp -> emp.empno, comparer).count());
+        assertEquals(1, Linq.asEnumerable(emps2).distinctBy(emp -> emp.empno, comparer).count());
     }
 }

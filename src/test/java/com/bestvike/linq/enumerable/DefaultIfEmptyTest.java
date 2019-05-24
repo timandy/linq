@@ -5,7 +5,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -55,16 +54,16 @@ public class DefaultIfEmptyTest extends TestCase {
         IEnumerable<Integer> result;
         if (defaultValue == null) {
             result = source.defaultIfEmpty();
-            Assert.assertEquals(result, result);
+            assertEquals(result, result);
             assertEquals(Linq.asEnumerable(expected), result);
-            Assert.assertEquals(expected.length, result.count());
+            assertEquals(expected.length, result.count());
             assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(result.toList()));
             assertEquals(Linq.asEnumerable(expected), result.toArray());
         }
         result = source.defaultIfEmpty(defaultValue);
-        Assert.assertEquals(result, result);
+        assertEquals(result, result);
         assertEquals(Linq.asEnumerable(expected), result);
-        Assert.assertEquals(expected.length, result.count());
+        assertEquals(expected.length, result.count());
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(result.toList()));
         assertEquals(Linq.asEnumerable(expected), result.toArray());
     }
@@ -112,7 +111,7 @@ public class DefaultIfEmptyTest extends TestCase {
         // Don't insist on this behaviour, but check it's correct if it happens
         //noinspection unchecked
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -121,17 +120,17 @@ public class DefaultIfEmptyTest extends TestCase {
         IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty();
         IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
         notEmptyEnumerator.moveNext();
-        Assert.assertEquals("jimi", notEmptyEnumerator.current());
+        assertEquals("jimi", notEmptyEnumerator.current());
         notEmptyEnumerator.moveNext();
-        Assert.assertEquals("mitch", notEmptyEnumerator.current());
+        assertEquals("mitch", notEmptyEnumerator.current());
         notEmptyEnumerator.moveNext();
-        Assert.assertEquals("noel", notEmptyEnumerator.current());
+        assertEquals("noel", notEmptyEnumerator.current());
 
         IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty();
         IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
-        Assert.assertTrue(emptyEnumerator.moveNext());
-        Assert.assertNull(emptyEnumerator.current());
-        Assert.assertFalse(emptyEnumerator.moveNext());
+        assertTrue(emptyEnumerator.moveNext());
+        assertNull(emptyEnumerator.current());
+        assertFalse(emptyEnumerator.moveNext());
     }
 
     @Test
@@ -140,16 +139,16 @@ public class DefaultIfEmptyTest extends TestCase {
         IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty("dummy");
         IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
         notEmptyEnumerator.moveNext();
-        Assert.assertEquals("jimi", notEmptyEnumerator.current());
+        assertEquals("jimi", notEmptyEnumerator.current());
         notEmptyEnumerator.moveNext();
-        Assert.assertEquals("mitch", notEmptyEnumerator.current());
+        assertEquals("mitch", notEmptyEnumerator.current());
         notEmptyEnumerator.moveNext();
-        Assert.assertEquals("noel", notEmptyEnumerator.current());
+        assertEquals("noel", notEmptyEnumerator.current());
 
         IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty("N/A");
         IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
-        Assert.assertTrue(emptyEnumerator.moveNext());
-        Assert.assertEquals("N/A", emptyEnumerator.current());
-        Assert.assertFalse(emptyEnumerator.moveNext());
+        assertTrue(emptyEnumerator.moveNext());
+        assertEquals("N/A", emptyEnumerator.current());
+        assertFalse(emptyEnumerator.moveNext());
     }
 }

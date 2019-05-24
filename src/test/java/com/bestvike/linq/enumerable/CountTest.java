@@ -6,7 +6,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.IterableDemo;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -23,7 +22,7 @@ public class CountTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(a -> a > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.count(), q.count());
+        assertEquals(q.count(), q.count());
     }
 
     @Test
@@ -31,7 +30,7 @@ public class CountTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(a -> !IsNullOrEmpty(a));
 
-        Assert.assertEquals(q.count(), q.count());
+        assertEquals(q.count(), q.count());
     }
 
     private IEnumerable<Object[]> Int_TestData() {
@@ -61,9 +60,9 @@ public class CountTest extends TestCase {
 
     private void Int(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
         if (predicate == null) {
-            Assert.assertEquals(expected, source.count());
+            assertEquals(expected, source.count());
         } else {
-            Assert.assertEquals(expected, source.count(predicate));
+            assertEquals(expected, source.count(predicate));
         }
     }
 
@@ -76,16 +75,16 @@ public class CountTest extends TestCase {
 
     private void IntRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
         if (predicate == null) {
-            Assert.assertEquals(expected, source.runOnce().count());
+            assertEquals(expected, source.runOnce().count());
         } else {
-            Assert.assertEquals(expected, source.runOnce().count(predicate));
+            assertEquals(expected, source.runOnce().count(predicate));
         }
     }
 
     @Test
     public void NullableIntArray_IncludesNullObjects() {
         Integer[] data = {-10, 4, 9, null, 11};
-        Assert.assertEquals(5, Linq.asEnumerable(data).count());
+        assertEquals(5, Linq.asEnumerable(data).count());
     }
 
     private <T> IEnumerable<Object[]> EnumerateCollectionTypesAndCounts(int count, IEnumerable<T> enumerable) {
@@ -124,7 +123,7 @@ public class CountTest extends TestCase {
     }
 
     private <T> void CountMatchesTally(int count, IEnumerable<T> enumerable) {
-        Assert.assertEquals(count, enumerable.count());
+        assertEquals(count, enumerable.count());
     }
 
     @Test
@@ -135,7 +134,7 @@ public class CountTest extends TestCase {
     }
 
     private <T> void RunOnce(int count, IEnumerable<T> enumerable) {
-        Assert.assertEquals(count, enumerable.runOnce().count());
+        assertEquals(count, enumerable.runOnce().count());
     }
 
     @Test
@@ -155,30 +154,30 @@ public class CountTest extends TestCase {
     @Test
     public void testCount() {
         int count = Linq.asEnumerable(depts).count();
-        Assert.assertEquals(3, count);
+        assertEquals(3, count);
     }
 
     @Test
     public void testCountPredicate() {
         int count = Linq.asEnumerable(depts).count(dept -> dept.employees.size() > 0);
-        Assert.assertEquals(2, count);
+        assertEquals(2, count);
     }
 
     @Test
     public void testLongCount() {
         long count = Linq.asEnumerable(depts).longCount();
-        Assert.assertEquals(3, count);
+        assertEquals(3, count);
 
         long count2 = Linq.asEnumerable(new IterableDemo(10)).longCount();
-        Assert.assertEquals(10, count2);
+        assertEquals(10, count2);
     }
 
     @Test
     public void testLongCountPredicate() {
         long count = Linq.asEnumerable(depts).longCount(dept -> dept.employees.size() > 0);
-        Assert.assertEquals(2, count);
+        assertEquals(2, count);
 
         long count2 = Linq.asEnumerable(new IterableDemo(10L)).longCount(s -> s > 9);
-        Assert.assertEquals(1, count2);
+        assertEquals(1, count2);
     }
 }

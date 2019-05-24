@@ -3,7 +3,6 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -14,7 +13,7 @@ public class EmptyEnumerableTest extends TestCase {
         IEnumerable<T> enumerable1 = Linq.empty();
         IEnumerable<T> enumerable2 = Linq.empty();
 
-        Assert.assertSame(enumerable1, enumerable2); // Enumerable.empty is not cached if not the same.
+        assertSame(enumerable1, enumerable2); // Enumerable.empty is not cached if not the same.
     }
 
     @Test
@@ -27,8 +26,8 @@ public class EmptyEnumerableTest extends TestCase {
 
     private <T> void TestEmptyEmpty() {
         assertEquals(Linq.asEnumerable(), Linq.empty());
-        Assert.assertEquals(0, Linq.<T>empty().count());
-        Assert.assertSame(Linq.<T>empty().enumerator(), Linq.<T>empty().enumerator());
+        assertEquals(0, Linq.<T>empty().count());
+        assertSame(Linq.<T>empty().enumerator(), Linq.<T>empty().enumerator());
     }
 
     @Test

@@ -7,7 +7,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -23,7 +22,7 @@ public class LastTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.last(), q.last());
+        assertEquals(q.last(), q.last());
     }
 
     @Test
@@ -31,13 +30,13 @@ public class LastTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
-        Assert.assertEquals(q.last(), q.last());
+        assertEquals(q.last(), q.last());
     }
 
     private <T> void TestEmptyIList() {
         IEnumerable<T> source = Linq.asEnumerable(Collections.EMPTY_LIST);
 
-        Assert.assertNotNull(as(source, IList.class));
+        assertNotNull(as(source, IList.class));
         assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
     }
 
@@ -54,8 +53,8 @@ public class LastTest extends TestCase {
         IEnumerable<Integer> source = Linq.asEnumerable(new int[]{5});
         int expected = 5;
 
-        Assert.assertNotNull(as(source, IList.class));
-        Assert.assertEquals(expected, (int) source.last());
+        assertNotNull(as(source, IList.class));
+        assertEquals(expected, source.last());
     }
 
     @Test
@@ -64,7 +63,7 @@ public class LastTest extends TestCase {
         Integer expected = null;
 
         assertIsAssignableFrom(IList.class, source);
-        Assert.assertEquals(expected, source.last());
+        assertEquals(expected, source.last());
     }
 
     @Test
@@ -73,7 +72,7 @@ public class LastTest extends TestCase {
         Integer expected = 19;
 
         assertIsAssignableFrom(IList.class, source);
-        Assert.assertEquals(expected, source.last());
+        assertEquals(expected, source.last());
     }
 
     private <T> IEnumerable<T> EmptySource() {
@@ -83,7 +82,7 @@ public class LastTest extends TestCase {
     private <T> void TestEmptyNotIList() {
         IEnumerable<T> source = this.EmptySource();
 
-        Assert.assertNull(as(source, IList.class));
+        assertNull(as(source, IList.class));
         assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
     }
 
@@ -100,8 +99,8 @@ public class LastTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, (int) source.last());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.last());
     }
 
     @Test
@@ -109,8 +108,8 @@ public class LastTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(3, 10);
         int expected = 12;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, (int) source.last());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.last());
     }
 
     @Test
@@ -127,7 +126,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 4;
 
-        Assert.assertEquals(expected, (int) source.last(predicate));
+        assertEquals(expected, source.last(predicate));
     }
 
     @Test
@@ -144,7 +143,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 50;
 
-        Assert.assertEquals(expected, (int) source.last(predicate));
+        assertEquals(expected, source.last(predicate));
     }
 
     @Test
@@ -153,7 +152,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.last(predicate));
+        assertEquals(expected, source.last(predicate));
     }
 
     @Test
@@ -162,7 +161,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.runOnce().last(predicate));
+        assertEquals(expected, source.runOnce().last(predicate));
     }
 
     @Test
@@ -179,7 +178,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 4;
 
-        Assert.assertEquals(expected, (int) source.last(predicate));
+        assertEquals(expected, source.last(predicate));
     }
 
     @Test
@@ -196,7 +195,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 50;
 
-        Assert.assertEquals(expected, (int) source.last(predicate));
+        assertEquals(expected, source.last(predicate));
     }
 
     @Test
@@ -205,7 +204,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.last(predicate));
+        assertEquals(expected, source.last(predicate));
     }
 
     @Test
@@ -214,7 +213,7 @@ public class LastTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.runOnce().last(predicate));
+        assertEquals(expected, source.runOnce().last(predicate));
     }
 
     @Test
@@ -236,36 +235,36 @@ public class LastTest extends TestCase {
     @Test
     public void testLast() {
         IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
-        Assert.assertEquals("mitch", enumerable.last());
+        assertEquals("mitch", enumerable.last());
 
         IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
         try {
             emptyEnumerable.last();
-            Assert.fail("should not run at here");
+            fail("should not run at here");
         } catch (InvalidOperationException ignored) {
         }
 
         IEnumerable<String> enumerable2 = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList("jimi", "noel", "mitch")));
-        Assert.assertEquals("mitch", enumerable2.last());
+        assertEquals("mitch", enumerable2.last());
     }
 
     @Test
     public void testLastWithPredicate() {
         IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
-        Assert.assertEquals("mitch", enumerable.last(x -> x.startsWith("mit")));
+        assertEquals("mitch", enumerable.last(x -> x.startsWith("mit")));
         try {
             enumerable.last(x -> false);
-            Assert.fail();
+            fail("should not be here");
         } catch (InvalidOperationException ignored) {
         }
 
         IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
         try {
             emptyEnumerable.last(x -> {
-                Assert.fail("should not run at here");
+                fail("should not run at here");
                 return false;
             });
-            Assert.fail();
+            fail("should not be here");
         } catch (InvalidOperationException ignored) {
         }
     }

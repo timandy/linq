@@ -7,7 +7,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -19,7 +18,7 @@ public class AggregateTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.aggregate((x, y) -> x + y), q.aggregate((x, y) -> x + y));
+        assertEquals(q.aggregate((x, y) -> x + y), q.aggregate((x, y) -> x + y));
     }
 
     @Test
@@ -27,7 +26,7 @@ public class AggregateTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
-        Assert.assertEquals(q.aggregate((x, y) -> x + y), q.aggregate((x, y) -> x + y));
+        assertEquals(q.aggregate((x, y) -> x + y), q.aggregate((x, y) -> x + y));
     }
 
     @Test
@@ -42,7 +41,7 @@ public class AggregateTest extends TestCase {
         IEnumerable<Integer> source = Linq.singleton(5);
         Integer expected = 5;
 
-        Assert.assertEquals(expected, source.aggregate((x, y) -> x + y));
+        assertEquals(expected, source.aggregate((x, y) -> x + y));
     }
 
     @Test
@@ -50,7 +49,7 @@ public class AggregateTest extends TestCase {
         IEnumerable<Integer> source = Linq.singleton(5);
         Integer expected = 5;
 
-        Assert.assertEquals(expected, source.runOnce().aggregate((x, y) -> x + y));
+        assertEquals(expected, source.runOnce().aggregate((x, y) -> x + y));
     }
 
     @Test
@@ -58,7 +57,7 @@ public class AggregateTest extends TestCase {
         IEnumerable<Integer> source = Linq.asEnumerable(5, 6);
         Integer expected = 11;
 
-        Assert.assertEquals(expected, source.aggregate((x, y) -> x + y));
+        assertEquals(expected, source.aggregate((x, y) -> x + y));
     }
 
     @Test
@@ -66,7 +65,7 @@ public class AggregateTest extends TestCase {
         IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 0, -4);
         Integer expected = 7;
 
-        Assert.assertEquals(expected, source.aggregate((x, y) -> x + y));
+        assertEquals(expected, source.aggregate((x, y) -> x + y));
     }
 
     @Test
@@ -74,7 +73,7 @@ public class AggregateTest extends TestCase {
         IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 0, -4);
         Integer expected = 7;
 
-        Assert.assertEquals(expected, source.runOnce().aggregate((x, y) -> x + y));
+        assertEquals(expected, source.runOnce().aggregate((x, y) -> x + y));
     }
 
     @Test
@@ -83,7 +82,7 @@ public class AggregateTest extends TestCase {
         Integer seed = 2;
         Integer expected = 2;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
     }
 
     @Test
@@ -92,7 +91,7 @@ public class AggregateTest extends TestCase {
         Integer seed = 2;
         Integer expected = 10;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
     }
 
     @Test
@@ -101,7 +100,7 @@ public class AggregateTest extends TestCase {
         Integer seed = 2;
         Integer expected = 60;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
     }
 
     @Test
@@ -110,7 +109,7 @@ public class AggregateTest extends TestCase {
         Integer seed = 2;
         Integer expected = -480;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y));
     }
 
     @Test
@@ -119,7 +118,7 @@ public class AggregateTest extends TestCase {
         Integer seed = 2;
         Integer expected = -480;
 
-        Assert.assertEquals(expected, source.runOnce().aggregate(seed, (x, y) -> x * y));
+        assertEquals(expected, source.runOnce().aggregate(seed, (x, y) -> x * y));
     }
 
     @Test
@@ -128,7 +127,7 @@ public class AggregateTest extends TestCase {
         Double seed = 2d;
         Double expected = 7d;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
     }
 
     @Test
@@ -137,7 +136,7 @@ public class AggregateTest extends TestCase {
         Double seed = 2d;
         Double expected = 15d;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
     }
 
     @Test
@@ -146,7 +145,7 @@ public class AggregateTest extends TestCase {
         Double seed = 2d;
         Double expected = 65d;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
     }
 
     @Test
@@ -155,7 +154,7 @@ public class AggregateTest extends TestCase {
         Double seed = 2d;
         Double expected = -475d;
 
-        Assert.assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
+        assertEquals(expected, source.aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
     }
 
     @Test
@@ -164,7 +163,7 @@ public class AggregateTest extends TestCase {
         Double seed = 2d;
         Double expected = -475d;
 
-        Assert.assertEquals(expected, source.runOnce().aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
+        assertEquals(expected, source.runOnce().aggregate(seed, (x, y) -> x * y, x -> x + 5.0));
     }
 
     @Test
@@ -190,14 +189,14 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void testAggregate() {
-        Assert.assertEquals("Sales,HR,Marketing", Linq.asEnumerable(depts)
+        assertEquals("Sales,HR,Marketing", Linq.asEnumerable(depts)
                 .select(dept -> dept.name)
                 .aggregate((res, name) -> res == null ? name : res + "," + name));
     }
 
     @Test
     public void testAggregateWithSeed() {
-        Assert.assertEquals("A,Sales,HR,Marketing",
+        assertEquals("A,Sales,HR,Marketing",
                 Linq.asEnumerable(depts)
                         .select(dept -> dept.name)
                         .aggregate("A", (res, name) -> res == null ? name : res + "," + name));
@@ -210,6 +209,6 @@ public class AggregateTest extends TestCase {
                 .aggregate(null,
                         (res, name) -> res == null ? name : res + "+" + name,
                         res -> "<no key>: " + res);
-        Assert.assertEquals("<no key>: Fred+Bill+Eric+Janet", s);
+        assertEquals("<no key>: Fred+Bill+Eric+Janet", s);
     }
 }

@@ -6,7 +6,6 @@ import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,7 +21,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.lastOrDefault(), q.lastOrDefault());
+        assertEquals(q.lastOrDefault(), q.lastOrDefault());
     }
 
     @Test
@@ -30,7 +29,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
-        Assert.assertEquals(q.lastOrDefault(), q.lastOrDefault());
+        assertEquals(q.lastOrDefault(), q.lastOrDefault());
     }
 
     private <T> void TestEmptyIList() {
@@ -38,7 +37,7 @@ public class LastOrDefaultTest extends TestCase {
         T expected = null;
 
         assertIsAssignableFrom(IList.class, source);
-        Assert.assertEquals(expected, source.runOnce().lastOrDefault());
+        assertEquals(expected, source.runOnce().lastOrDefault());
     }
 
     @Test
@@ -55,7 +54,7 @@ public class LastOrDefaultTest extends TestCase {
         int expected = 5;
 
         assertIsAssignableFrom(IList.class, source);
-        Assert.assertEquals(expected, (int) source.lastOrDefault());
+        assertEquals(expected, source.lastOrDefault());
     }
 
     @Test
@@ -64,7 +63,7 @@ public class LastOrDefaultTest extends TestCase {
         Integer expected = null;
 
         assertIsAssignableFrom(IList.class, source);
-        Assert.assertEquals(expected, source.lastOrDefault());
+        assertEquals(expected, source.lastOrDefault());
     }
 
     @Test
@@ -73,7 +72,7 @@ public class LastOrDefaultTest extends TestCase {
         Integer expected = 19;
 
         assertIsAssignableFrom(IList.class, source);
-        Assert.assertEquals(expected, source.lastOrDefault());
+        assertEquals(expected, source.lastOrDefault());
     }
 
     private <T> IEnumerable<T> EmptySource() {
@@ -84,8 +83,8 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<T> source = this.EmptySource();
         T expected = null;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, source.runOnce().lastOrDefault());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.runOnce().lastOrDefault());
     }
 
     @Test
@@ -101,8 +100,8 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, (int) source.lastOrDefault());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.lastOrDefault());
     }
 
     @Test
@@ -110,16 +109,16 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(3, 10);
         int expected = 12;
 
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, (int) source.lastOrDefault());
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.lastOrDefault());
     }
 
     @Test
     public void EmptyIListSource() {
         IEnumerable<Integer> source = Linq.empty();
 
-        Assert.assertNull(source.lastOrDefault(x -> true));
-        Assert.assertNull(source.lastOrDefault(x -> false));
+        assertNull(source.lastOrDefault(x -> true));
+        assertNull(source.lastOrDefault(x -> false));
     }
 
     @Test
@@ -128,7 +127,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 4;
 
-        Assert.assertEquals(expected, (int) source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -137,7 +136,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         Integer expected = null;
 
-        Assert.assertEquals(expected, source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -146,7 +145,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 50;
 
-        Assert.assertEquals(expected, (int) source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -155,7 +154,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -164,15 +163,15 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.runOnce().lastOrDefault(predicate));
+        assertEquals(expected, source.runOnce().lastOrDefault(predicate));
     }
 
     @Test
     public void EmptyNotIListSource() {
         IEnumerable<Integer> source = Linq.repeat(4, 0);
 
-        Assert.assertNull(source.lastOrDefault(x -> true));
-        Assert.assertNull(source.lastOrDefault(x -> false));
+        assertNull(source.lastOrDefault(x -> true));
+        assertNull(source.lastOrDefault(x -> false));
     }
 
     @Test
@@ -181,7 +180,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 4;
 
-        Assert.assertEquals(expected, (int) source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -190,7 +189,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         Integer expected = null;
 
-        Assert.assertEquals(expected, source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -199,7 +198,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 50;
 
-        Assert.assertEquals(expected, (int) source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -208,7 +207,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.lastOrDefault(predicate));
+        assertEquals(expected, source.lastOrDefault(predicate));
     }
 
     @Test
@@ -217,7 +216,7 @@ public class LastOrDefaultTest extends TestCase {
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 18;
 
-        Assert.assertEquals(expected, (int) source.runOnce().lastOrDefault(predicate));
+        assertEquals(expected, source.runOnce().lastOrDefault(predicate));
     }
 
     @Test
@@ -239,20 +238,20 @@ public class LastOrDefaultTest extends TestCase {
     @Test
     public void testLastOrDefault() {
         IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
-        Assert.assertEquals("mitch", enumerable.lastOrDefault());
+        assertEquals("mitch", enumerable.lastOrDefault());
 
         IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
-        Assert.assertNull(emptyEnumerable.lastOrDefault());
+        assertNull(emptyEnumerable.lastOrDefault());
     }
 
     @Test
     public void testLastOrDefaultWithPredicate() {
         IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
-        Assert.assertEquals("mitch", enumerable.lastOrDefault(x -> x.startsWith("mit")));
-        Assert.assertNull(enumerable.lastOrDefault(x -> false));
+        assertEquals("mitch", enumerable.lastOrDefault(x -> x.startsWith("mit")));
+        assertNull(enumerable.lastOrDefault(x -> false));
         IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
-        Assert.assertNull(emptyEnumerable.lastOrDefault(x -> {
-            Assert.fail("should not run at here");
+        assertNull(emptyEnumerable.lastOrDefault(x -> {
+            fail("should not run at here");
             return false;
         }));
     }

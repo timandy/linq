@@ -6,7 +6,6 @@ import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -21,7 +20,7 @@ public class AnyTest extends TestCase {
                 .where(x -> x > Integer.MIN_VALUE);
 
         Func1<Integer, Boolean> predicate = TestCase::IsEven;
-        Assert.assertEquals(q.any(predicate), q.any(predicate));
+        assertEquals(q.any(predicate), q.any(predicate));
     }
 
     @Test
@@ -29,7 +28,7 @@ public class AnyTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Func1<String, Boolean> predicate = TestCase::IsNullOrEmpty;
-        Assert.assertEquals(q.any(predicate), q.any(predicate));
+        assertEquals(q.any(predicate), q.any(predicate));
     }
 
     @Test
@@ -54,9 +53,9 @@ public class AnyTest extends TestCase {
 
     private void Any(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
         if (predicate == null)
-            Assert.assertEquals(expected, source.any());
+            assertEquals(expected, source.any());
         else
-            Assert.assertEquals(expected, source.any(predicate));
+            assertEquals(expected, source.any(predicate));
     }
 
     @Test
@@ -81,15 +80,15 @@ public class AnyTest extends TestCase {
 
     private void AnyRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
         if (predicate == null)
-            Assert.assertEquals(expected, source.runOnce().any());
+            assertEquals(expected, source.runOnce().any());
         else
-            Assert.assertEquals(expected, source.runOnce().any(predicate));
+            assertEquals(expected, source.runOnce().any(predicate));
     }
 
     @Test
     public void NullObjectsInArray_Included() {
         IEnumerable<Integer> source = Linq.asEnumerable(null, null, null, null);
-        Assert.assertTrue(source.any());
+        assertTrue(source.any());
     }
 
     @Test
@@ -106,19 +105,19 @@ public class AnyTest extends TestCase {
 
     @Test
     public void testAny() {
-        Assert.assertFalse(Linq.asEnumerable(Collections.emptyList()).any());
-        Assert.assertTrue(Linq.asEnumerable(emps).any());
+        assertFalse(Linq.asEnumerable(Collections.emptyList()).any());
+        assertTrue(Linq.asEnumerable(emps).any());
     }
 
     @Test
     public void testAnyPredicate() {
-        Assert.assertFalse(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("IT")));
-        Assert.assertTrue(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("Sales")));
+        assertFalse(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("IT")));
+        assertTrue(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("Sales")));
     }
 
     @Test
     public void testAllPredicate() {
-        Assert.assertTrue(Linq.asEnumerable(emps).all(emp -> emp.empno >= 100));
-        Assert.assertFalse(Linq.asEnumerable(emps).all(emp -> emp.empno > 100));
+        assertTrue(Linq.asEnumerable(emps).all(emp -> emp.empno >= 100));
+        assertFalse(Linq.asEnumerable(emps).all(emp -> emp.empno > 100));
     }
 }

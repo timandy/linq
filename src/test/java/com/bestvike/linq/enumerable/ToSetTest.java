@@ -3,7 +3,6 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -16,9 +15,9 @@ public class ToSetTest extends TestCase {
     @Test
     public void NoExplicitComparer() {
         Set<Integer> hs = Linq.range(0, 50).toSet();
-        Assert.assertNotNull(as(hs, HashSet.class));
+        assertNotNull(as(hs, HashSet.class));
 
-        Assert.assertEquals(50, hs.size());
+        assertEquals(50, hs.size());
     }
 
     @Test
@@ -29,9 +28,9 @@ public class ToSetTest extends TestCase {
     @Test
     public void TolerateNullElements() {
         // Unlike the keys of a dictionary, HashSet tolerates null items.
-        Assert.assertFalse(Linq.asEnumerable(new HashSet<String>()).contains(null));
+        assertFalse(Linq.asEnumerable(new HashSet<String>()).contains(null));
         Set<String> hs = Linq.asEnumerable(new String[]{"abc", null, "def"}).toSet();
-        Assert.assertTrue(hs.contains(null));
+        assertTrue(hs.contains(null));
     }
 
     @Test

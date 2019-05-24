@@ -5,7 +5,6 @@ import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -18,14 +17,14 @@ public class ExceptByTest extends TestCase {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
-        Assert.assertEquals(1, Linq.asEnumerable(emps)
+        assertEquals(1, Linq.asEnumerable(emps)
                 .exceptBy(Linq.asEnumerable(emps2), emp -> emp.deptno)
                 .count());
 
         IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
         IEnumerable<Integer> oneToFifty = Linq.range(1, 50);
         IEnumerable<Integer> fiftyOneToHundred = Linq.range(51, 50);
-        Assert.assertTrue(oneToHundred.exceptBy(oneToFifty, a -> a).sequenceEqual(fiftyOneToHundred));
+        assertTrue(oneToHundred.exceptBy(oneToFifty, a -> a).sequenceEqual(fiftyOneToHundred));
     }
 
     @Test
@@ -45,7 +44,7 @@ public class ExceptByTest extends TestCase {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
         };
-        Assert.assertEquals(0, Linq.asEnumerable(emps)
+        assertEquals(0, Linq.asEnumerable(emps)
                 .exceptBy(Linq.asEnumerable(emps2), emp -> emp.deptno, comparer)
                 .count());
     }

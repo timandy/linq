@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.IterableDemo;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class ElementAtOrDefaultTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.elementAtOrDefault(3), q.elementAtOrDefault(3));
+        assertEquals(q.elementAtOrDefault(3), q.elementAtOrDefault(3));
     }
 
     @Test
@@ -28,7 +27,7 @@ public class ElementAtOrDefaultTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
-        Assert.assertEquals(q.elementAtOrDefault(4), q.elementAtOrDefault(4));
+        assertEquals(q.elementAtOrDefault(4), q.elementAtOrDefault(4));
     }
 
     private IEnumerable<Object[]> TestData() {
@@ -57,7 +56,7 @@ public class ElementAtOrDefaultTest extends TestCase {
     }
 
     private void ElementAtOrDefault(IEnumerable<Integer> source, int index, Integer expected) {
-        Assert.assertEquals(expected, source.elementAtOrDefault(index));
+        assertEquals(expected, source.elementAtOrDefault(index));
     }
 
     @Test
@@ -68,21 +67,21 @@ public class ElementAtOrDefaultTest extends TestCase {
     }
 
     private void ElementAtOrDefaultRunOnce(IEnumerable<Integer> source, int index, Integer expected) {
-        Assert.assertEquals(expected, source.runOnce().elementAtOrDefault(index));
+        assertEquals(expected, source.runOnce().elementAtOrDefault(index));
     }
 
     @Test
     public void NullableArray_NegativeIndex_ReturnsNull() {
         Integer[] source = {9, 8};
-        Assert.assertNull(Linq.asEnumerable(source).elementAtOrDefault(-1));
+        assertNull(Linq.asEnumerable(source).elementAtOrDefault(-1));
     }
 
     @Test
     public void NullableArray_ValidIndex_ReturnsCorrectObject() {
         Integer[] source = {9, 8, null, -5, 10};
 
-        Assert.assertNull(Linq.asEnumerable(source).elementAtOrDefault(2));
-        Assert.assertEquals(-5, (int) Linq.asEnumerable(source).elementAtOrDefault(3));
+        assertNull(Linq.asEnumerable(source).elementAtOrDefault(2));
+        assertEquals(-5, Linq.asEnumerable(source).elementAtOrDefault(3));
     }
 
     @Test
@@ -93,13 +92,13 @@ public class ElementAtOrDefaultTest extends TestCase {
     @Test
     public void testElementAtOrDefault() {
         IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
-        Assert.assertEquals("jimi", enumerable.elementAtOrDefault(0));
-        Assert.assertNull(enumerable.elementAtOrDefault(2));
-        Assert.assertNull(enumerable.elementAtOrDefault(-1));
+        assertEquals("jimi", enumerable.elementAtOrDefault(0));
+        assertNull(enumerable.elementAtOrDefault(2));
+        assertNull(enumerable.elementAtOrDefault(-1));
 
         IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
-        Assert.assertEquals((Long) 1L, enumerable2.elementAtOrDefault(0));
-        Assert.assertNull(enumerable2.elementAtOrDefault(2));
-        Assert.assertNull(enumerable2.elementAtOrDefault(-1));
+        assertEquals(1L, enumerable2.elementAtOrDefault(0));
+        assertNull(enumerable2.elementAtOrDefault(2));
+        assertNull(enumerable2.elementAtOrDefault(-1));
     }
 }

@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -13,8 +12,8 @@ import org.junit.Test;
 public class TakeLastTest extends TestCase {
     @Test
     public void testTakeLast() {
-        Assert.assertEquals(1, Linq.asEnumerable(depts).takeLast(1).count());
-        Assert.assertEquals(3, Linq.asEnumerable(depts).takeLast(5).count());
+        assertEquals(1, Linq.asEnumerable(depts).takeLast(1).count());
+        assertEquals(3, Linq.asEnumerable(depts).takeLast(5).count());
     }
 
     @Test

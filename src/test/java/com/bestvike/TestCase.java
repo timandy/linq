@@ -15,7 +15,6 @@ import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.AssertEqualityComparer;
-import org.junit.Assert;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -96,12 +95,20 @@ public class TestCase {
         return builder.toString();
     }
 
+    protected static void assertSame(Object expected, Object actual) {
+        if (actual == expected)
+            return;
+        fail("expected same");
+    }
+
+    protected static void assertNotSame(Object expected, Object actual) {
+        if (actual != expected)
+            return;
+        fail("expected not same");
+    }
+
     protected static void assertEquals(Object expected, Object actual) {
-        if (expected == actual)
-            return;
-        if (expected != null && expected.equals(actual))
-            return;
-        if (expected instanceof Comparable && ((Comparable) expected).compareTo(actual) == 0)
+        if (equals(expected, actual))
             return;
         fail(String.format("should be %s, but %s", expected, actual));
     }
@@ -118,6 +125,11 @@ public class TestCase {
         if (expected != null && expected.sequenceEqual(actual, comparer))
             return;
         fail(format(null, expected, actual));
+    }
+
+    protected static void assertNotEquals(Object expected, Object actual) {
+        if (equals(expected, actual))
+            fail("should not be equals");
     }
 
     protected static <T> void assertEmpty(IEnumerable<T> enumerable) {
@@ -145,14 +157,14 @@ public class TestCase {
     }
 
     protected static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
-        Assert.assertNotNull("expectedSuperset ", expectedSuperset);
+        assertNotNull(expectedSuperset);
 
         if (actual == null || !expectedSuperset.containsAll(actual))
             fail("expectedSuperset not containsAll actual");
     }
 
     protected static <T> void assertSuperset(java.util.Set<T> expectedSubset, java.util.Set<T> actual) {
-        Assert.assertNotNull("expectedSubset ", expectedSubset);
+        assertNotNull(expectedSubset);
 
         if (actual == null || !actual.containsAll(expectedSubset))
             fail("actual not containsAll expectedSubset");
@@ -166,11 +178,11 @@ public class TestCase {
 
         try {
             action.apply();
-            Assert.fail("should throw " + clazz.toString());
+            fail("should throw " + clazz.toString());
         } catch (Exception e) {
             if (clazz.isInstance(e))
                 return;
-            Assert.fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
+            fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
         }
     }
 
@@ -182,11 +194,11 @@ public class TestCase {
 
         try {
             func.apply();
-            Assert.fail("should throw " + clazz.toString());
+            fail("should throw " + clazz.toString());
         } catch (Exception e) {
             if (clazz.isInstance(e))
                 return;
-            Assert.fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
+            fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
         }
     }
 
@@ -254,6 +266,25 @@ public class TestCase {
 
     protected static <T> IEnumerable<T> ForceNotCollection(IEnumerable<T> source) {
         return source.select(a -> a);
+    }
+
+    private static boolean equals(Object expected, Object actual) {
+        if (expected == actual)
+            return true;
+        if (expected == null || actual == null)
+            return false;
+        if (expected.equals(actual))
+            return true;
+        if (expected instanceof Number && actual instanceof Number) {
+            if (expected instanceof Byte || expected instanceof Short || expected instanceof Integer || expected instanceof Long
+                    || actual instanceof Byte || actual instanceof Short || actual instanceof Integer || actual instanceof Long)
+                return ((Number) expected).longValue() == ((Number) actual).longValue();
+            else if (expected instanceof Float || expected instanceof Double
+                    || actual instanceof Float || actual instanceof Double)
+                return ((Number) expected).doubleValue() == ((Number) actual).doubleValue();
+        }
+        return (expected instanceof Comparable && ((Comparable) expected).compareTo(actual) == 0)
+                || (actual instanceof Comparable && ((Comparable) actual).compareTo(expected) == 0);
     }
 
     private static <T> String format(String message, IEnumerable<T> expected, IEnumerable<T> actual) {

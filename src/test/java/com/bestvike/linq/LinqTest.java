@@ -1,7 +1,7 @@
 package com.bestvike.linq;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.entity.IterableDemo;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2017-07-24.
  */
-public class LinqTest {
+public class LinqTest extends TestCase {
     @Test
     public void testBoolean() {
         boolean[] array = {true, false, true};
@@ -23,9 +23,9 @@ public class LinqTest {
         list.add(true);
         list.add(false);
         list.add(true);
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -35,9 +35,9 @@ public class LinqTest {
         list.add(Byte.valueOf("01"));
         list.add(Byte.valueOf("02"));
         list.add(Byte.valueOf("03"));
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -47,9 +47,9 @@ public class LinqTest {
         list.add(Short.valueOf("01"));
         list.add(Short.valueOf("02"));
         list.add(Short.valueOf("03"));
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -59,9 +59,9 @@ public class LinqTest {
         list.add(1);
         list.add(2);
         list.add(3);
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -71,9 +71,9 @@ public class LinqTest {
         list.add(1L);
         list.add(2L);
         list.add(3L);
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -83,10 +83,10 @@ public class LinqTest {
         list.add(1f);
         list.add(2f);
         list.add(Float.NaN);
-        Assert.assertEquals(true, Objects.equals(Float.NaN, Float.NaN));
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(true, Objects.equals(Float.NaN, Float.NaN));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -96,10 +96,10 @@ public class LinqTest {
         list.add(1d);
         list.add(2d);
         list.add(Double.NaN);
-        Assert.assertEquals(true, Objects.equals(Double.NaN, Double.NaN));
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(true, Objects.equals(Double.NaN, Double.NaN));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -109,9 +109,9 @@ public class LinqTest {
         list.add('a');
         list.add('b');
         list.add('c');
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -121,9 +121,9 @@ public class LinqTest {
         list.add("1");
         list.add("2");
         list.add("3");
-        Assert.assertEquals(3, Linq.asEnumerable(array).count());
-        Assert.assertEquals(3, Linq.asEnumerable(list).count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
+        assertEquals(3, Linq.asEnumerable(array).count());
+        assertEquals(3, Linq.asEnumerable(list).count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.asEnumerable(list)));
     }
 
     @Test
@@ -133,9 +133,9 @@ public class LinqTest {
         set.add(2L);
         set.add(3L);
         Iterable<Long> iterableDemo = new IterableDemo(3);
-        Assert.assertEquals(3, Linq.asEnumerable(set).count());
-        Assert.assertEquals(3, Linq.asEnumerable(iterableDemo).count());
-        Assert.assertTrue(Linq.asEnumerable(set).sequenceEqual(Linq.asEnumerable(iterableDemo)));
+        assertEquals(3, Linq.asEnumerable(set).count());
+        assertEquals(3, Linq.asEnumerable(iterableDemo).count());
+        assertTrue(Linq.asEnumerable(set).sequenceEqual(Linq.asEnumerable(iterableDemo)));
     }
 
     @Test
@@ -143,10 +143,10 @@ public class LinqTest {
         String str = "123";
         char[] chars = {'1', '2', '3'};
         char c = Linq.asEnumerable(str).elementAt(1);
-        Assert.assertEquals('2', c);
-        Assert.assertEquals(3, Linq.asEnumerable(str).count());
-        Assert.assertEquals(3, Linq.asEnumerable(chars).count());
-        Assert.assertTrue(Linq.asEnumerable(str).sequenceEqual(Linq.asEnumerable(str)));
+        assertEquals('2', c);
+        assertEquals(3, Linq.asEnumerable(str).count());
+        assertEquals(3, Linq.asEnumerable(chars).count());
+        assertTrue(Linq.asEnumerable(str).sequenceEqual(Linq.asEnumerable(str)));
     }
 
     @Test
@@ -165,39 +165,39 @@ public class LinqTest {
         map2.put(4, "4");
         map2.remove(4);
 
-        Assert.assertEquals(3, Linq.asEnumerable(enu1).count());
-        Assert.assertEquals(3, Linq.asEnumerable(enu2).count());
+        assertEquals(3, Linq.asEnumerable(enu1).count());
+        assertEquals(3, Linq.asEnumerable(enu2).count());
     }
 
     @Test
     public void testSingleton() {
         String[] array = {"1"};
-        Assert.assertEquals(1, Linq.asEnumerable(array).count());
-        Assert.assertEquals(1, Linq.singleton("1").count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.singleton("1")));
+        assertEquals(1, Linq.asEnumerable(array).count());
+        assertEquals(1, Linq.singleton("1").count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(Linq.singleton("1")));
     }
 
     @Test
     public void testRange() {
         Integer[] array = {1, 2, 3, 4, 5};
         IEnumerable<Integer> integers = Linq.range(1, 5);
-        Assert.assertEquals(5, integers.count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
+        assertEquals(5, integers.count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
     }
 
     @Test
     public void testRepeat() {
         Integer[] array = {1, 1, 1, 1, 1};
         IEnumerable<Integer> integers = Linq.repeat(1, 5);
-        Assert.assertEquals(5, integers.count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
+        assertEquals(5, integers.count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
     }
 
     @Test
     public void testEmpty() {
         Integer[] array = {};
         IEnumerable<Integer> integers = Linq.empty();
-        Assert.assertEquals(0, integers.count());
-        Assert.assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
+        assertEquals(0, integers.count());
+        assertTrue(Linq.asEnumerable(array).sequenceEqual(integers));
     }
 }

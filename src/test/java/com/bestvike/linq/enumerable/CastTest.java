@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -38,7 +37,7 @@ public class CastTest extends TestCase {
     @Test
     public void EmptySource() {
         IEnumerable<Object> source = Linq.empty();
-        Assert.assertEquals(0, source.cast(int.class).count());
+        assertEquals(0, source.cast(int.class).count());
     }
 
     @Test
@@ -214,7 +213,7 @@ public class CastTest extends TestCase {
         IEnumerable<String> iterator = Linq.empty().where(Objects::nonNull).cast(String.class);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
-        Assert.assertFalse(en != null && en.moveNext());
+        assertFalse(en != null && en.moveNext());
     }
 
     @Test
@@ -224,13 +223,13 @@ public class CastTest extends TestCase {
                 .cast(Integer.class)
                 .enumerator();
 
-        Assert.assertTrue(enumerator.moveNext());
-        Assert.assertEquals((Integer) 2, enumerator.current());
-        Assert.assertTrue(enumerator.moveNext());
-        Assert.assertEquals(null, enumerator.current());
+        assertTrue(enumerator.moveNext());
+        assertEquals(2, enumerator.current());
+        assertTrue(enumerator.moveNext());
+        assertEquals(null, enumerator.current());
         try {
             enumerator.moveNext();
-            Assert.fail("cast() fail");
+            fail("cast() fail");
         } catch (ClassCastException ignored) {
         }
     }

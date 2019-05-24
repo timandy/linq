@@ -5,7 +5,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.IterableDemo;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class ElementAtTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Assert.assertEquals(q.elementAt(3), q.elementAt(3));
+        assertEquals(q.elementAt(3), q.elementAt(3));
     }
 
     @Test
@@ -29,7 +28,7 @@ public class ElementAtTest extends TestCase {
         IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
-        Assert.assertEquals(q.elementAt(4), q.elementAt(4));
+        assertEquals(q.elementAt(4), q.elementAt(4));
     }
 
     private IEnumerable<Object[]> TestData() {
@@ -52,7 +51,7 @@ public class ElementAtTest extends TestCase {
     }
 
     private void ElementAt(IEnumerable<Integer> source, int index, Integer expected) {
-        Assert.assertEquals(expected, source.elementAt(index));
+        assertEquals(expected, source.elementAt(index));
     }
 
     @Test
@@ -63,7 +62,7 @@ public class ElementAtTest extends TestCase {
     }
 
     private void ElementAtRunOnce(IEnumerable<Integer> source, int index, Integer expected) {
-        Assert.assertEquals(expected, source.runOnce().elementAt(index));
+        assertEquals(expected, source.runOnce().elementAt(index));
     }
 
     @Test
@@ -81,8 +80,8 @@ public class ElementAtTest extends TestCase {
     public void NullableArray_ValidIndex_ReturnsCorrectObject() {
         Integer[] source = {9, 8, null, -5, 10};
 
-        Assert.assertNull(Linq.asEnumerable(source).elementAt(2));
-        Assert.assertEquals(-5, (int) Linq.asEnumerable(source).elementAt(3));
+        assertNull(Linq.asEnumerable(source).elementAt(2));
+        assertEquals(-5, Linq.asEnumerable(source).elementAt(3));
     }
 
     @Test
@@ -93,39 +92,39 @@ public class ElementAtTest extends TestCase {
     @Test
     public void testElementAt() {
         IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
-        Assert.assertEquals("jimi", enumerable.elementAt(0));
+        assertEquals("jimi", enumerable.elementAt(0));
         try {
             enumerable.elementAt(2);
-            Assert.fail();
+            fail("should not be here");
         } catch (IndexOutOfBoundsException ignored) {
             // ok
         }
         try {
             enumerable.elementAt(-1);
-            Assert.fail();
+            fail("should not be here");
         } catch (IndexOutOfBoundsException ignored) {
         }
 
         IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
-        Assert.assertEquals((Long) 1L, enumerable2.elementAt(0));
+        assertEquals(1L, enumerable2.elementAt(0));
         try {
             enumerable2.elementAt(2);
-            Assert.fail();
+            fail("should not be here");
         } catch (ArgumentOutOfRangeException ignored) {
         }
         try {
             enumerable2.elementAt(-1);
-            Assert.fail();
+            fail("should not be here");
         } catch (ArgumentOutOfRangeException ignored) {
         }
 
         IEnumerable<Integer> one = Linq.singleton(1);
-        Assert.assertEquals((Integer) 1, one.elementAt(0));
+        assertEquals(1, one.elementAt(0));
 
         IEnumerable<Integer> empty = Linq.empty();
         try {
             Integer num = empty.elementAt(0);
-            Assert.fail("expect error,but got " + num);
+            fail("expect error,but got " + num);
         } catch (ArgumentOutOfRangeException ignored) {
         }
     }

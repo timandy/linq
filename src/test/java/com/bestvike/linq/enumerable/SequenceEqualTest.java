@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public class SequenceEqualTest extends TestCase {
     public void testSequenceEqual() {
         List<Employee> list = Linq.asEnumerable(emps).toList();
 
-        Assert.assertTrue(Linq.asEnumerable(list).sequenceEqual(Linq.asEnumerable(emps)));
+        assertTrue(Linq.asEnumerable(list).sequenceEqual(Linq.asEnumerable(emps)));
     }
 
     @Test
@@ -37,6 +36,6 @@ public class SequenceEqualTest extends TestCase {
             }
         };
 
-        Assert.assertTrue(Linq.asEnumerable(array1).sequenceEqual(Linq.asEnumerable(array2), comparer));
+        assertTrue(Linq.asEnumerable(array1).sequenceEqual(Linq.asEnumerable(array2), comparer));
     }
 }
