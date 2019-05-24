@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import org.junit.Assert;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2018-05-17.
  */
-public class ToSetTest extends EnumerableTest {
+public class ToSetTest extends TestCase {
     @Test
     public void NoExplicitComparer() {
         Set<Integer> hs = Linq.range(0, 50).toSet();

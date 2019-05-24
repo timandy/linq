@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.Linq;
 import org.junit.Assert;
@@ -8,7 +9,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class UnionByTest extends EnumerableTest {
+public class UnionByTest extends TestCase {
     @Test
     public void testUnionBy() {
         Assert.assertEquals(4, Linq.asEnumerable(emps)

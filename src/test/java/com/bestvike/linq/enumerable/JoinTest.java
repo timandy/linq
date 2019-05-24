@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func2;
@@ -18,7 +19,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class JoinTest extends EnumerableTest {
+public class JoinTest extends TestCase {
     private static JoinRec createJoinRec(CustomerRec cr, OrderRec or) {
         return new JoinRec(cr.name, or.orderID, or.total);
     }

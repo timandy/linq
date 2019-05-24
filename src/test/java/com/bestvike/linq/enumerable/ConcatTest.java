@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.function.Action0;
 import com.bestvike.function.Action1;
 import com.bestvike.function.Func1;
@@ -16,7 +17,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ConcatTest extends EnumerableTest {
+public class ConcatTest extends TestCase {
     @Test
     public void SameResultsWithQueryAndRepeatCallsInt() {
         this.SameResultsWithQueryAndRepeatCallsInt(Linq.asEnumerable(2, 3, 2, 4, 5), Linq.asEnumerable(1, 9, 4));

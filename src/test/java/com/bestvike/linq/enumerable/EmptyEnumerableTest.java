@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import org.junit.Assert;
@@ -8,7 +9,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2019-05-08.
  */
-public class EmptyEnumerableTest extends EnumerableTest {
+public class EmptyEnumerableTest extends TestCase {
     private <T> void TestEmptyCached() {
         IEnumerable<T> enumerable1 = Linq.empty();
         IEnumerable<T> enumerable2 = Linq.empty();

@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import org.junit.Assert;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class TakeTest extends EnumerableTest {
+public class TakeTest extends TestCase {
     @Test
     public void testTake() {
         List<Department> enumerableDeptsResult = Linq.asEnumerable(depts).take(2).toList();

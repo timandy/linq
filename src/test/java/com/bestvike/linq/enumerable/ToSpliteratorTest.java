@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -15,7 +16,7 @@ import java.util.stream.Stream;
 /**
  * Created by 许崇雷 on 2019-04-25.
  */
-public class ToSpliteratorTest extends EnumerableTest {
+public class ToSpliteratorTest extends TestCase {
     @Test
     public void testReset() {
         IEnumerator<Employee> enumerator = Linq.asEnumerable(emps).enumerator();

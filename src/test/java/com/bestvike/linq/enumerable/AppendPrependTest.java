@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class AppendPrependTest extends EnumerableTest {
+public class AppendPrependTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQueryAppend() {
         IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);

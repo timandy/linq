@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ReverseTest extends EnumerableTest {
+public class ReverseTest extends TestCase {
     @Test
     public void testReverse() {
         //null 在前,值相等的按原始顺序

@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
@@ -10,7 +11,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ExceptByTest extends EnumerableTest {
+public class ExceptByTest extends TestCase {
     @Test
     public void testExceptBy() {
         Employee[] emps2 = {

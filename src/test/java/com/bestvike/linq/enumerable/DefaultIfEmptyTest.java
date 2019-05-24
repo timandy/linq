@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class DefaultIfEmptyTest extends EnumerableTest {
+public class DefaultIfEmptyTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsNonEmptyQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)

@@ -1,4 +1,4 @@
-package com.bestvike.linq.enumerable;
+package com.bestvike;
 
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
@@ -30,29 +30,29 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class EnumerableTest {
-    static final BigDecimal MAX_DECIMAL = new BigDecimal("999999999999999999999999999999");
-    static final BigDecimal MIN_DECIMAL = new BigDecimal("-999999999999999999999999999999");
-    static final Date MAX_DATE = newDate(9999, 12, 31);
-    static final Date MIN_DATE = newDate(1, 1, 1);
-    static final double DELTA = 0d;
-    static final String Empty = "";
-    static final Employee[] badEmps = {
+public class TestCase {
+    protected static final BigDecimal MAX_DECIMAL = new BigDecimal("999999999999999999999999999999");
+    protected static final BigDecimal MIN_DECIMAL = new BigDecimal("-999999999999999999999999999999");
+    protected static final Date MAX_DATE = newDate(9999, 12, 31);
+    protected static final Date MIN_DATE = newDate(1, 1, 1);
+    protected static final double DELTA = 0d;
+    protected static final String Empty = "";
+    protected static final Employee[] badEmps = {
             new Employee(140, "Cedric", 40),
             new Employee(150, "Gates", null)};
-    static final Department[] badDepts = {
+    protected static final Department[] badDepts = {
             new Department("Manager", null, Collections.emptyList())};
-    static final Employee[] emps = {
+    protected static final Employee[] emps = {
             new Employee(100, "Fred", 10),
             new Employee(110, "Bill", 30),
             new Employee(120, "Eric", 10),
             new Employee(130, "Janet", 10)};
-    static final Department[] depts = {
+    protected static final Department[] depts = {
             new Department("Sales", 10, Arrays.asList(emps[0], emps[2], emps[3])),
             new Department("HR", 20, Collections.emptyList()),
             new Department("Marketing", 30, Collections.singletonList(emps[1]))};
 
-    static Date newDate(int year, int month, int day) {
+    protected static Date newDate(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.setLenient(false);
         calendar.set(year, month - 1, day);
@@ -63,29 +63,29 @@ public class EnumerableTest {
         return calendar.getTime();
     }
 
-    static BigDecimal m(long value) {
+    protected static BigDecimal m(long value) {
         return new BigDecimal(value);
     }
 
-    static BigDecimal m(String value) {
+    protected static BigDecimal m(String value) {
         return new BigDecimal(value);
     }
 
-    static <T> T as(Object value, Class<T> clazz) {
+    protected static <T> T as(Object value, Class<T> clazz) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         return clazz.isInstance(value) ? (T) value : null;
     }
 
-    static Boolean IsEven(int num) {
+    protected static Boolean IsEven(int num) {
         return num % 2 == 0;
     }
 
-    static Boolean IsNullOrEmpty(String value) {
+    protected static Boolean IsNullOrEmpty(String value) {
         return value == null || value.length() == 0;
     }
 
-    static String stringJoin(Iterable<String> group) {
+    protected static String stringJoin(Iterable<String> group) {
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = group.iterator();
         if (iterator.hasNext()) {
@@ -96,7 +96,7 @@ public class EnumerableTest {
         return builder.toString();
     }
 
-    public static void assertEquals(Object expected, Object actual) {
+    protected static void assertEquals(Object expected, Object actual) {
         if (expected == actual)
             return;
         if (expected != null && expected.equals(actual))
@@ -106,11 +106,11 @@ public class EnumerableTest {
         fail(String.format("should be %s, but %s", expected, actual));
     }
 
-    static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual) {
+    protected static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual) {
         assertEquals(expected, actual, null);
     }
 
-    static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
+    protected static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
         if (expected == actual)
             return;
         if (comparer == null)
@@ -120,7 +120,7 @@ public class EnumerableTest {
         fail(format(null, expected, actual));
     }
 
-    static <T> void assertEmpty(IEnumerable<T> enumerable) {
+    protected static <T> void assertEmpty(IEnumerable<T> enumerable) {
         if (enumerable == null)
             fail("enumerable is null");
         if (enumerable.count() == 0)
@@ -128,7 +128,7 @@ public class EnumerableTest {
         fail("enumerable is not empty");
     }
 
-    static <T> void assertNotEmpty(IEnumerable<T> enumerable) {
+    protected static <T> void assertNotEmpty(IEnumerable<T> enumerable) {
         if (enumerable == null)
             fail("enumerable is null");
         if (enumerable.count() != 0)
@@ -136,7 +136,7 @@ public class EnumerableTest {
         fail("enumerable is empty");
     }
 
-    static void assertIsAssignableFrom(Class<?> expectedType, Object obj) {
+    protected static void assertIsAssignableFrom(Class<?> expectedType, Object obj) {
         if (expectedType == null)
             fail("expectedType is null");
         if (obj != null && expectedType.isAssignableFrom(obj.getClass()))
@@ -144,21 +144,21 @@ public class EnumerableTest {
         fail("expectedType " + expectedType.getName() + ", but got " + (obj == null ? "null" : obj.getClass().getName()));
     }
 
-    static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
+    protected static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
         Assert.assertNotNull("expectedSuperset ", expectedSuperset);
 
         if (actual == null || !expectedSuperset.containsAll(actual))
             fail("expectedSuperset not containsAll actual");
     }
 
-    static <T> void assertSuperset(java.util.Set<T> expectedSubset, java.util.Set<T> actual) {
+    protected static <T> void assertSuperset(java.util.Set<T> expectedSubset, java.util.Set<T> actual) {
         Assert.assertNotNull("expectedSubset ", expectedSubset);
 
         if (actual == null || !actual.containsAll(expectedSubset))
             fail("actual not containsAll expectedSubset");
     }
 
-    static void assertThrows(Class<?> clazz, Action0 action) {
+    protected static void assertThrows(Class<?> clazz, Action0 action) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (action == null)
@@ -174,7 +174,7 @@ public class EnumerableTest {
         }
     }
 
-    static void assertThrows(Class<?> clazz, Func0<Object> func) {
+    protected static void assertThrows(Class<?> clazz, Func0<Object> func) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (func == null)
@@ -190,55 +190,55 @@ public class EnumerableTest {
         }
     }
 
-    static void assertNull(Object obj) {
+    protected static void assertNull(Object obj) {
         if (obj == null)
             return;
         fail(String.format("expect null, but was: <%s>", obj));
     }
 
-    static void assertNotNull(Object obj) {
+    protected static void assertNotNull(Object obj) {
         if (obj != null)
             return;
         fail("expect not null, but was: <null>");
     }
 
-    static void assertTrue(boolean obj) {
+    protected static void assertTrue(boolean obj) {
         if (obj)
             return;
 
         fail("expect true, but was: false");
     }
 
-    static void assertFalse(boolean obj) {
+    protected static void assertFalse(boolean obj) {
         if (!obj)
             return;
 
         fail("expect false, but was: true");
     }
 
-    static void fail(String message) {
+    protected static void fail(String message) {
         if (message == null)
             throw new AssertionError();
         throw new AssertionError(message);
     }
 
-    static IEnumerable<Integer> RepeatedNumberGuaranteedNotCollectionType(int num, int count) {
+    protected static IEnumerable<Integer> RepeatedNumberGuaranteedNotCollectionType(int num, int count) {
         return Linq.repeat(num, count);
     }
 
-    static IEnumerable<Integer> NumberRangeGuaranteedNotCollectionType(int num, int count) {
+    protected static IEnumerable<Integer> NumberRangeGuaranteedNotCollectionType(int num, int count) {
         return Linq.range(num, count);
     }
 
-    static IEnumerable<Integer> NullableNumberRangeGuaranteedNotCollectionType(int num, int count) {
+    protected static IEnumerable<Integer> NullableNumberRangeGuaranteedNotCollectionType(int num, int count) {
         return Linq.range(num, count);
     }
 
-    static IEnumerable<Integer> RepeatedNullableNumberGuaranteedNotCollectionType(Integer num, int count) {
+    protected static IEnumerable<Integer> RepeatedNullableNumberGuaranteedNotCollectionType(Integer num, int count) {
         return Linq.repeat(num, count);
     }
 
-    static <T> List<Func1<IEnumerable<T>, IEnumerable<T>>> IdentityTransforms() {
+    protected static <T> List<Func1<IEnumerable<T>, IEnumerable<T>>> IdentityTransforms() {
         List<Func1<IEnumerable<T>, IEnumerable<T>>> list = new ArrayList<>();
         list.add(e -> e);
         list.add(e -> e.toArray());
@@ -252,7 +252,7 @@ public class EnumerableTest {
         return list;
     }
 
-    static <T> IEnumerable<T> ForceNotCollection(IEnumerable<T> source) {
+    protected static <T> IEnumerable<T> ForceNotCollection(IEnumerable<T> source) {
         return source.select(a -> a);
     }
 
@@ -274,17 +274,17 @@ public class EnumerableTest {
     }
 
 
-    protected static class DelegateBasedCollection<T> implements ICollection<T> {
-        Func0<Integer> CountWorker;
-        Func0<Boolean> IsReadOnlyWorker;
-        Action1<T> AddWorker;
-        Action0 ClearWorker;
-        Func1<T, Boolean> ContainsWorker;
-        Func1<T, Boolean> RemoveWorker;
-        Action2<Object[], Integer> CopyToWorker;
-        Func0<IEnumerator<T>> GetEnumeratorWorker;
+    public static class DelegateBasedCollection<T> implements ICollection<T> {
+        protected Func0<Integer> CountWorker;
+        protected Func0<Boolean> IsReadOnlyWorker;
+        protected Action1<T> AddWorker;
+        protected Action0 ClearWorker;
+        protected Func1<T, Boolean> ContainsWorker;
+        protected Func1<T, Boolean> RemoveWorker;
+        protected Action2<Object[], Integer> CopyToWorker;
+        protected Func0<IEnumerator<T>> GetEnumeratorWorker;
 
-        DelegateBasedCollection() {
+        protected DelegateBasedCollection() {
             this.CountWorker = () -> 0;
             this.IsReadOnlyWorker = () -> false;
             this.AddWorker = item -> {
@@ -344,7 +344,7 @@ public class EnumerableTest {
     }
 
 
-    protected static class AnagramEqualityComparer implements IEqualityComparer<String> {
+    public static class AnagramEqualityComparer implements IEqualityComparer<String> {
         @Override
         public boolean equals(String x, String y) {
             //noinspection StringEquality

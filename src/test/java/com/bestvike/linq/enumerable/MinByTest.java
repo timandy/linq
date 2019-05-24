@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.tuple.Tuple;
@@ -12,7 +13,7 @@ import java.math.BigDecimal;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class MinByTest extends EnumerableTest {
+public class MinByTest extends TestCase {
     @Test
     public void testMinByInt() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};

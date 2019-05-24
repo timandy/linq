@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
@@ -14,7 +15,7 @@ import java.util.Date;
 /**
  * Created by 许崇雷 on 2019-05-09.
  */
-public class FirstOrDefaultTest extends EnumerableTest {
+public class FirstOrDefaultTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> ieInt = Linq.range(0, 0);
@@ -123,7 +124,7 @@ public class FirstOrDefaultTest extends EnumerableTest {
     @Test
     public void OneElementTruePredicate() {
         int[] source = {4};
-        Func1<Integer, Boolean> predicate = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 4;
 
         Assert.assertEquals(expected, (int) Linq.asEnumerable(source).firstOrDefault(predicate));
@@ -132,7 +133,7 @@ public class FirstOrDefaultTest extends EnumerableTest {
     @Test
     public void ManyElementsPredicateFalseForAll() {
         int[] source = {9, 5, 1, 3, 17, 21};
-        Func1<Integer, Boolean> predicate = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> predicate = TestCase::IsEven;
         Integer expected = null;
 
         Assert.assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
@@ -141,7 +142,7 @@ public class FirstOrDefaultTest extends EnumerableTest {
     @Test
     public void PredicateTrueOnlyForLast() {
         int[] source = {9, 5, 1, 3, 17, 21, 50};
-        Func1<Integer, Boolean> predicate = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 50;
 
         Assert.assertEquals(expected, (int) Linq.asEnumerable(source).firstOrDefault(predicate));
@@ -150,7 +151,7 @@ public class FirstOrDefaultTest extends EnumerableTest {
     @Test
     public void PredicateTrueForSome() {
         int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
-        Func1<Integer, Boolean> predicate = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 10;
 
         Assert.assertEquals(expected, (int) Linq.asEnumerable(source).firstOrDefault(predicate));
@@ -159,7 +160,7 @@ public class FirstOrDefaultTest extends EnumerableTest {
     @Test
     public void PredicateTrueForSomeRunOnce() {
         int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
-        Func1<Integer, Boolean> predicate = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> predicate = TestCase::IsEven;
         int expected = 10;
 
         Assert.assertEquals(expected, (int) Linq.asEnumerable(source).runOnce().firstOrDefault(predicate));

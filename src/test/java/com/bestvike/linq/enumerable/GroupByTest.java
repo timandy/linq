@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.ICollection;
@@ -29,7 +30,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class GroupByTest extends EnumerableTest {
+public class GroupByTest extends TestCase {
     private static <TKey, TElement> void AssertGroupingCorrect(IEnumerable<TKey> keys, IEnumerable<TElement> elements, IEnumerable<IGrouping<TKey, TElement>> grouping) {
         AssertGroupingCorrect(keys, elements, grouping, EqualityComparer.Default());
     }

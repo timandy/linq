@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.IterableDemo;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-05-07.
  */
-public class ElementAtOrDefaultTest extends EnumerableTest {
+public class ElementAtOrDefaultTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})

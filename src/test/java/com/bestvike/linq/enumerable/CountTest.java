@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
@@ -16,7 +17,7 @@ import java.util.Stack;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class CountTest extends EnumerableTest {
+public class CountTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -34,7 +35,7 @@ public class CountTest extends EnumerableTest {
     }
 
     private IEnumerable<Object[]> Int_TestData() {
-        Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
 
         return Linq.asEnumerable(
                 new Object[]{Linq.asEnumerable(new int[0]), null, 0},

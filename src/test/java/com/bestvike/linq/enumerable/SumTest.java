@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SumTest extends EnumerableTest {
+public class SumTest extends TestCase {
     @Test
     public void testSumLong() {
         Long[] numbers = {null, 0L, 2L, 3L};

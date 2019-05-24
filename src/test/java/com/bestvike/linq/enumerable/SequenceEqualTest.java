@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SequenceEqualTest extends EnumerableTest {
+public class SequenceEqualTest extends TestCase {
     @Test
     public void testSequenceEqual() {
         List<Employee> list = Linq.asEnumerable(emps).toList();

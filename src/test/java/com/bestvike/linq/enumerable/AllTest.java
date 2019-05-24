@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
@@ -11,13 +12,13 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-11.
  */
-public class AllTest extends EnumerableTest {
+public class AllTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Func1<Integer, Boolean> predicate = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> predicate = TestCase::IsEven;
         Assert.assertEquals(q.all(predicate), q.all(predicate));
     }
 
@@ -25,13 +26,13 @@ public class AllTest extends EnumerableTest {
     public void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
-        Func1<String, Boolean> predicate = EnumerableTest::IsNullOrEmpty;
+        Func1<String, Boolean> predicate = TestCase::IsNullOrEmpty;
         Assert.assertEquals(q.all(predicate), q.all(predicate));
     }
 
     @Test
     public void All() {
-        Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
         this.All(Linq.singleton(0), isEvenFunc, true);
         this.All(Linq.singleton(3), isEvenFunc, false);
         this.All(Linq.singleton(4), isEvenFunc, true);
@@ -55,7 +56,7 @@ public class AllTest extends EnumerableTest {
 
     @Test
     public void AllRunOnce() {
-        Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
         this.AllRunOnce(Linq.singleton(0), isEvenFunc, true);
         this.AllRunOnce(Linq.singleton(3), isEvenFunc, false);
         this.AllRunOnce(Linq.singleton(4), isEvenFunc, true);

@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.tuple.Tuple2;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ZipTest extends EnumerableTest {
+public class ZipTest extends TestCase {
     @Test
     public void testZip() {
         IEnumerable<String> e1 = Linq.asEnumerable(Arrays.asList("a", "b", "c"));

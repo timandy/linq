@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import org.junit.Assert;
 import org.junit.Test;
@@ -7,7 +8,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SkipTest extends EnumerableTest {
+public class SkipTest extends TestCase {
     @Test
     public void testSkip() {
         Assert.assertEquals(2, Linq.asEnumerable(depts).skip(1).count());

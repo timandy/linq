@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import com.bestvike.tuple.Tuple;
 import org.junit.Assert;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SelectManyTest extends EnumerableTest {
+public class SelectManyTest extends TestCase {
     @Test
     public void testSelectMany() {
         List<String> nameSeqs = Linq.asEnumerable(depts)

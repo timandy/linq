@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
@@ -13,13 +14,13 @@ import java.util.Collections;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class AnyTest extends EnumerableTest {
+public class AnyTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Func1<Integer, Boolean> predicate = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> predicate = TestCase::IsEven;
         Assert.assertEquals(q.any(predicate), q.any(predicate));
     }
 
@@ -27,7 +28,7 @@ public class AnyTest extends EnumerableTest {
     public void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
-        Func1<String, Boolean> predicate = EnumerableTest::IsNullOrEmpty;
+        Func1<String, Boolean> predicate = TestCase::IsNullOrEmpty;
         Assert.assertEquals(q.any(predicate), q.any(predicate));
     }
 
@@ -36,7 +37,7 @@ public class AnyTest extends EnumerableTest {
         this.Any(Linq.empty(), null, false);
         this.Any(Linq.singleton(3), null, true);
 
-        Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
         this.Any(Linq.empty(), isEvenFunc, false);
         this.Any(Linq.singleton(4), isEvenFunc, true);
         this.Any(Linq.singleton(5), isEvenFunc, false);
@@ -63,7 +64,7 @@ public class AnyTest extends EnumerableTest {
         this.AnyRunOnce(Linq.empty(), null, false);
         this.AnyRunOnce(Linq.singleton(3), null, true);
 
-        Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
         this.AnyRunOnce(Linq.empty(), isEvenFunc, false);
         this.AnyRunOnce(Linq.singleton(4), isEvenFunc, true);
         this.AnyRunOnce(Linq.singleton(5), isEvenFunc, false);

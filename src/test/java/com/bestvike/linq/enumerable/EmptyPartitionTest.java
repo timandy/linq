@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -12,7 +13,7 @@ import org.junit.Test;
 /**
  * Created by 许崇雷 on 2019-05-09.
  */
-public class EmptyPartitionTest extends EnumerableTest {
+public class EmptyPartitionTest extends TestCase {
     private static <T> IEnumerable<T> GetEmptyPartition() {
         return Linq.<T>empty().take(0);
     }

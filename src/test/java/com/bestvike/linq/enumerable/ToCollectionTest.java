@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
@@ -15,7 +16,7 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ToCollectionTest extends EnumerableTest {
+public class ToCollectionTest extends TestCase {
     @Test
     public void testToArray() {
         Object[] source = {1, 2, 3};

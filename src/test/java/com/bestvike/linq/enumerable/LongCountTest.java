@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-05-20.
  */
-public class LongCountTest extends EnumerableTest {
+public class LongCountTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
@@ -34,7 +35,7 @@ public class LongCountTest extends EnumerableTest {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.asEnumerable(new int[0]), null, 0L});
         lst.add(new Object[]{Linq.asEnumerable(new int[]{3}), null, 1L});
-        Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
+        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
         lst.add(new Object[]{Linq.asEnumerable(new int[0]), isEvenFunc, 0L});
         lst.add(new Object[]{Linq.asEnumerable(new int[]{4}), isEvenFunc, 1L});
         lst.add(new Object[]{Linq.asEnumerable(new int[]{5}), isEvenFunc, 0L});

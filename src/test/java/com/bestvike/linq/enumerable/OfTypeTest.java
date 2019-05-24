@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-26.
  */
-public class OfTypeTest extends EnumerableTest {
+public class OfTypeTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
@@ -24,7 +25,7 @@ public class OfTypeTest extends EnumerableTest {
     @Test
     public void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
-                .where(EnumerableTest::IsNullOrEmpty);
+                .where(TestCase::IsNullOrEmpty);
 
         assertEquals(q.ofType(Integer.class), q.ofType(Integer.class));
     }
