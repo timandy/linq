@@ -175,7 +175,7 @@ public class MaxTest extends EnumerableTest {
     @Test
     public void Max_NullableFloat_SeveralNaNOrNullWithSelector() {
         Float[] source = new Float[]{Float.NaN, null, Float.NaN, null};
-        assertTrue(Float.isNaN(Linq.asEnumerable(source).maxFloat(i -> i)));
+        assertTrue(Float.isNaN(Linq.asEnumerable(source).maxFloatNull(i -> i)));
     }
 
     @Test
