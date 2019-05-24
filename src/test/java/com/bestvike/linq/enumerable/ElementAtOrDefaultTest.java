@@ -14,7 +14,23 @@ import java.util.List;
  * Created by 许崇雷 on 2019-05-07.
  */
 public class ElementAtOrDefaultTest extends EnumerableTest {
-    private static IEnumerable<Object[]> TestData() {
+    @Test
+    public void SameResultsRepeatCallsIntQuery() {
+        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
+                .where(x -> x > Integer.MIN_VALUE);
+
+        Assert.assertEquals(q.elementAtOrDefault(3), q.elementAtOrDefault(3));
+    }
+
+    @Test
+    public void SameResultsRepeatCallsStringQuery() {
+        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
+                .where(x -> !IsNullOrEmpty(x));
+
+        Assert.assertEquals(q.elementAtOrDefault(4), q.elementAtOrDefault(4));
+    }
+
+    private IEnumerable<Object[]> TestData() {
         List<Object[]> lst = new ArrayList<>();
 
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(9, 1), 0, 9});
@@ -33,24 +49,8 @@ public class ElementAtOrDefaultTest extends EnumerableTest {
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
-                .where(x -> x > Integer.MIN_VALUE);
-
-        Assert.assertEquals(q.elementAtOrDefault(3), q.elementAtOrDefault(3));
-    }
-
-    @Test
-    public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
-                .where(x -> !IsNullOrEmpty(x));
-
-        Assert.assertEquals(q.elementAtOrDefault(4), q.elementAtOrDefault(4));
-    }
-
-    @Test
     public void ElementAtOrDefault() {
-        for (Object[] objects : TestData()) {
+        for (Object[] objects : this.TestData()) {
             this.ElementAtOrDefault((IEnumerable<Integer>) objects[0], (int) objects[1], (Integer) objects[2]);
         }
     }
@@ -61,7 +61,7 @@ public class ElementAtOrDefaultTest extends EnumerableTest {
 
     @Test
     public void ElementAtOrDefaultRunOnce() {
-        for (Object[] objects : TestData()) {
+        for (Object[] objects : this.TestData()) {
             this.ElementAtOrDefaultRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer) objects[2]);
         }
     }

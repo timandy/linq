@@ -17,15 +17,110 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ConcatTest extends EnumerableTest {
-    private static <T> void SameResultsWithQueryAndRepeatCallsWorker(IEnumerable<T> first, IEnumerable<T> second) {
+    @Test
+    public void SameResultsWithQueryAndRepeatCallsInt() {
+        this.SameResultsWithQueryAndRepeatCallsInt(Linq.asEnumerable(2, 3, 2, 4, 5), Linq.asEnumerable(1, 9, 4));
+    }
+
+    private void SameResultsWithQueryAndRepeatCallsInt(IEnumerable<Integer> first, IEnumerable<Integer> second) {
+        // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
+        this.SameResultsWithQueryAndRepeatCallsWorker(first, second);
+    }
+
+    @Test
+    public void SameResultsWithQueryAndRepeatCallsString() {
+        this.SameResultsWithQueryAndRepeatCallsString(Linq.asEnumerable("AAA", "", "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice"), Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS"));
+    }
+
+    private void SameResultsWithQueryAndRepeatCallsString(IEnumerable<String> first, IEnumerable<String> second) {
+        // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
+        this.SameResultsWithQueryAndRepeatCallsWorker(first, second);
+    }
+
+    private <T> void SameResultsWithQueryAndRepeatCallsWorker(IEnumerable<T> first, IEnumerable<T> second) {
         first = first.select(a -> a);
         second = second.select(a -> a);
 
-        VerifyEqualsWorker(first.concat(second), first.concat(second));
-        VerifyEqualsWorker(second.concat(first), second.concat(first));
+        this.VerifyEqualsWorker(first.concat(second), first.concat(second));
+        this.VerifyEqualsWorker(second.concat(first), second.concat(first));
     }
 
-    private static <T> void VerifyEqualsWorker(IEnumerable<T> expected, IEnumerable<T> actual) {
+    @Test
+    public void PossiblyEmptyInputs() {
+        this.PossiblyEmptyInputs(Linq.empty(), Linq.empty(), Linq.empty());
+        this.PossiblyEmptyInputs(Linq.empty(), Linq.asEnumerable(2, 6, 4, 6, 2), Linq.asEnumerable(2, 6, 4, 6, 2));
+        this.PossiblyEmptyInputs(Linq.asEnumerable(2, 3, 5, 9), Linq.asEnumerable(8, 10), Linq.asEnumerable(2, 3, 5, 9, 8, 10));
+    }
+
+    private void PossiblyEmptyInputs(IEnumerable<Integer> first, IEnumerable<Integer> second, IEnumerable<Integer> expected) {
+        this.VerifyEqualsWorker(expected, first.concat(second));
+        this.VerifyEqualsWorker(expected.skip(first.count()).concat(expected.take(first.count())), second.concat(first)); // Swap the inputs around
+    }
+
+    @Test
+    public void ForcedToEnumeratorDoesntEnumerate() {
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).concat(Linq.range(0, 3));
+        // Don't insist on this behaviour, but check it's correct if it happens
+        IEnumerator en = (IEnumerator) iterator;
+        Assert.assertFalse(en != null && en.moveNext());
+    }
+
+    @Test
+    public void FirstNull() {
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((int[]) null).concat(Linq.range(0, 0)));
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((int[]) null).concat(null)); // If both inputs are null, throw for "first" first
+    }
+
+    @Test
+    public void SecondNull() {
+        assertThrows(ArgumentNullException.class, () -> Linq.range(0, 0).concat(null));
+    }
+
+    @Test
+    public void VerifyEquals() {
+        for (Object[] objects : this.ArraySourcesData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.SelectArraySourcesData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.EnumerableSourcesData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.NonCollectionSourcesData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.ListSourcesData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.ConcatOfConcatsData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.ConcatWithSelfData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.ChainedCollectionConcatData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+
+        for (Object[] objects : this.AppendedPrependedConcatAlternationsData())
+            //noinspection unchecked
+            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
+    }
+
+    private void VerifyEquals(IEnumerable<Integer> expected, IEnumerable<Integer> actual) {
+        // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
+        this.VerifyEqualsWorker(expected, actual);
+    }
+
+    private <T> void VerifyEqualsWorker(IEnumerable<T> expected, IEnumerable<T> actual) {
         // Returns a list of functions that, when applied to enumerable, should return
         // another one that has equivalent contents.
         List<Func1<IEnumerable<T>, IEnumerable<T>>> identityTransforms = IdentityTransforms();
@@ -39,27 +134,27 @@ public class ConcatTest extends EnumerableTest {
         }
     }
 
-    private static IEnumerable<Object[]> ArraySourcesData() {
-        return GenerateSourcesData(e -> e.toArray(), null);
+    private IEnumerable<Object[]> ArraySourcesData() {
+        return this.GenerateSourcesData(e -> e.toArray(), null);
     }
 
-    private static IEnumerable<Object[]> SelectArraySourcesData() {
-        return GenerateSourcesData(e -> e.select(i -> i).toArray(), null);
+    private IEnumerable<Object[]> SelectArraySourcesData() {
+        return this.GenerateSourcesData(e -> e.select(i -> i).toArray(), null);
     }
 
-    private static IEnumerable<Object[]> EnumerableSourcesData() {
-        return GenerateSourcesData(null, null);
+    private IEnumerable<Object[]> EnumerableSourcesData() {
+        return this.GenerateSourcesData(null, null);
     }
 
-    private static IEnumerable<Object[]> NonCollectionSourcesData() {
-        return GenerateSourcesData(e -> ForceNotCollection(e), null);
+    private IEnumerable<Object[]> NonCollectionSourcesData() {
+        return this.GenerateSourcesData(e -> ForceNotCollection(e), null);
     }
 
-    private static IEnumerable<Object[]> ListSourcesData() {
-        return GenerateSourcesData(e -> Linq.asEnumerable(e.toList()), null);
+    private IEnumerable<Object[]> ListSourcesData() {
+        return this.GenerateSourcesData(e -> Linq.asEnumerable(e.toList()), null);
     }
 
-    private static IEnumerable<Object[]> ConcatOfConcatsData() {
+    private IEnumerable<Object[]> ConcatOfConcatsData() {
         return Linq.singleton(new Object[]
                 {
                         Linq.range(0, 20),
@@ -67,18 +162,18 @@ public class ConcatTest extends EnumerableTest {
                 });
     }
 
-    private static IEnumerable<Object[]> ConcatWithSelfData() {
+    private IEnumerable<Object[]> ConcatWithSelfData() {
         IEnumerable<Integer> source = Linq.repeat(1, 4).concat(Linq.repeat(1, 5));
         source = source.concat(source);
 
         return Linq.singleton(new Object[]{Linq.repeat(1, 18), source});
     }
 
-    private static IEnumerable<Object[]> ChainedCollectionConcatData() {
-        return GenerateSourcesData(null, e -> Linq.asEnumerable(e.toList()));
+    private IEnumerable<Object[]> ChainedCollectionConcatData() {
+        return this.GenerateSourcesData(null, e -> Linq.asEnumerable(e.toList()));
     }
 
-    private static IEnumerable<Object[]> AppendedPrependedConcatAlternationsData() {
+    private IEnumerable<Object[]> AppendedPrependedConcatAlternationsData() {
         final int EnumerableCount = 4; // How many enumerables to concat together per test case.
 
         IEnumerable<Integer> foundation = Linq.empty();
@@ -122,7 +217,7 @@ public class ConcatTest extends EnumerableTest {
         return Linq.asEnumerable(result);
     }
 
-    private static IEnumerable<Object[]> GenerateSourcesData(Func1<IEnumerable<Integer>, IEnumerable<Integer>> outerTransform, Func1<IEnumerable<Integer>, IEnumerable<Integer>> innerTransform) {
+    private IEnumerable<Object[]> GenerateSourcesData(Func1<IEnumerable<Integer>, IEnumerable<Integer>> outerTransform, Func1<IEnumerable<Integer>, IEnumerable<Integer>> innerTransform) {
         Func1<IEnumerable<Integer>, IEnumerable<Integer>> outer = outerTransform == null ? e -> e : outerTransform;
         Func1<IEnumerable<Integer>, IEnumerable<Integer>> inner = innerTransform == null ? e -> e : innerTransform;
 
@@ -138,7 +233,7 @@ public class ConcatTest extends EnumerableTest {
         });
     }
 
-    private static IEnumerable<Object[]> ManyConcatsData() {
+    private IEnumerable<Object[]> ManyConcatsData() {
         List<Object[]> result = new ArrayList<>();
         result.add(new Object[]{Linq.repeat(Linq.empty(), 256), Linq.empty()});
         result.add(new Object[]{Linq.repeat(Linq.repeat(6, 1), 256), Linq.repeat(6, 256)});
@@ -146,186 +241,9 @@ public class ConcatTest extends EnumerableTest {
         return Linq.asEnumerable(result);
     }
 
-    private static IEnumerable<Object[]> GetToArrayDataSources() {
-        ArrayList<Object[]> result = new ArrayList<>();
-
-        // Marker at the end
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
-                        Linq.asEnumerable(new int[]{1}),
-                        Linq.asEnumerable(new int[]{2}),
-                        Linq.singleton(3)
-                }
-        });
-
-        // Marker at beginning
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.singleton(0),
-                        Linq.asEnumerable(new int[]{1}),
-                        Linq.asEnumerable(new int[]{2}),
-                        Linq.asEnumerable(new int[]{3})
-                }
-        });
-
-        // Marker in middle
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
-                        Linq.singleton(1),
-                        Linq.asEnumerable(new int[]{2})
-                }});
-
-        // Non-marker in middle
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.singleton(0),
-                        Linq.asEnumerable(new int[]{1}),
-                        Linq.singleton(2)
-                }
-        });
-
-        // Big arrays (marker in middle)
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.asEnumerable(Linq.range(0, 100).toArray()),
-                        Linq.range(100, 100).toArray(),
-                        Linq.asEnumerable(Linq.range(200, 100).toArray())
-                }
-        });
-
-        // Big arrays (non-marker in middle)
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.range(0, 100).toArray(),
-                        Linq.asEnumerable(Linq.range(100, 100).toArray()),
-                        Linq.range(200, 100).toArray()
-                }
-        });
-
-        // Interleaved (first marker)
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.singleton(0),
-                        Linq.asEnumerable(new int[]{1}),
-                        Linq.singleton(2),
-                        Linq.asEnumerable(new int[]{3}),
-                        Linq.singleton(4)
-                }
-        });
-
-        // Interleaved (first non-marker)
-        result.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
-                        Linq.singleton(1),
-                        Linq.asEnumerable(new int[]{2}),
-                        Linq.singleton(3),
-                        Linq.asEnumerable(new int[]{4})
-                }
-        });
-        return Linq.asEnumerable(result);
-    }
-
-    @Test
-    public void SameResultsWithQueryAndRepeatCallsInt() {
-        this.SameResultsWithQueryAndRepeatCallsInt(Linq.asEnumerable(2, 3, 2, 4, 5), Linq.asEnumerable(1, 9, 4));
-    }
-
-    private void SameResultsWithQueryAndRepeatCallsInt(IEnumerable<Integer> first, IEnumerable<Integer> second) {
-        // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
-        SameResultsWithQueryAndRepeatCallsWorker(first, second);
-    }
-
-    @Test
-    public void SameResultsWithQueryAndRepeatCallsString() {
-        this.SameResultsWithQueryAndRepeatCallsString(Linq.asEnumerable("AAA", "", "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice"), Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS"));
-    }
-
-    private void SameResultsWithQueryAndRepeatCallsString(IEnumerable<String> first, IEnumerable<String> second) {
-        // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
-        SameResultsWithQueryAndRepeatCallsWorker(first, second);
-    }
-
-    @Test
-    public void PossiblyEmptyInputs() {
-        this.PossiblyEmptyInputs(Linq.empty(), Linq.empty(), Linq.empty());
-        this.PossiblyEmptyInputs(Linq.empty(), Linq.asEnumerable(2, 6, 4, 6, 2), Linq.asEnumerable(2, 6, 4, 6, 2));
-        this.PossiblyEmptyInputs(Linq.asEnumerable(2, 3, 5, 9), Linq.asEnumerable(8, 10), Linq.asEnumerable(2, 3, 5, 9, 8, 10));
-    }
-
-    private void PossiblyEmptyInputs(IEnumerable<Integer> first, IEnumerable<Integer> second, IEnumerable<Integer> expected) {
-        VerifyEqualsWorker(expected, first.concat(second));
-        VerifyEqualsWorker(expected.skip(first.count()).concat(expected.take(first.count())), second.concat(first)); // Swap the inputs around
-    }
-
-    @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
-        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).concat(Linq.range(0, 3));
-        // Don't insist on this behaviour, but check it's correct if it happens
-        IEnumerator en = (IEnumerator) iterator;
-        Assert.assertFalse(en != null && en.moveNext());
-    }
-
-    @Test
-    public void FirstNull() {
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((int[]) null).concat(Linq.range(0, 0)));
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((int[]) null).concat(null)); // If both inputs are null, throw for "first" first
-    }
-
-    @Test
-    public void SecondNull() {
-        assertThrows(ArgumentNullException.class, () -> Linq.range(0, 0).concat(null));
-    }
-
-    @Test
-    public void VerifyEquals() {
-        for (Object[] objects : ArraySourcesData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : SelectArraySourcesData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : EnumerableSourcesData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : NonCollectionSourcesData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : ListSourcesData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : ConcatOfConcatsData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : ConcatWithSelfData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : ChainedCollectionConcatData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-
-        for (Object[] objects : AppendedPrependedConcatAlternationsData())
-            //noinspection unchecked
-            this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
-    }
-
-    private void VerifyEquals(IEnumerable<Integer> expected, IEnumerable<Integer> actual) {
-        // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
-        VerifyEqualsWorker(expected, actual);
-    }
-
     @Test
     public void ManyConcats() {
-        for (Object[] objects : ManyConcatsData())
+        for (Object[] objects : this.ManyConcatsData())
             //noinspection unchecked
             this.ManyConcats((IEnumerable<IEnumerable<Integer>>) objects[0], (IEnumerable<Integer>) objects[1]);
     }
@@ -339,13 +257,13 @@ public class ConcatTest extends EnumerableTest {
             }
 
             Assert.assertEquals(sources.sumInt(s -> s.count()), concatee.count());
-            VerifyEqualsWorker(sources.selectMany(s -> s), concatee);
+            this.VerifyEqualsWorker(sources.selectMany(s -> s), concatee);
         }
     }
 
     @Test
     public void ManyConcatsRunOnce() {
-        for (Object[] objects : ManyConcatsData())
+        for (Object[] objects : this.ManyConcatsData())
             //noinspection unchecked
             this.ManyConcatsRunOnce((IEnumerable<IEnumerable<Integer>>) objects[0], (IEnumerable<Integer>) objects[1]);
     }
@@ -513,9 +431,91 @@ public class ConcatTest extends EnumerableTest {
         }
     }
 
+    private IEnumerable<Object[]> GetToArrayDataSources() {
+        ArrayList<Object[]> result = new ArrayList<>();
+
+        // Marker at the end
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.asEnumerable(new int[]{0}),
+                        Linq.asEnumerable(new int[]{1}),
+                        Linq.asEnumerable(new int[]{2}),
+                        Linq.singleton(3)
+                }
+        });
+
+        // Marker at beginning
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.singleton(0),
+                        Linq.asEnumerable(new int[]{1}),
+                        Linq.asEnumerable(new int[]{2}),
+                        Linq.asEnumerable(new int[]{3})
+                }
+        });
+
+        // Marker in middle
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.asEnumerable(new int[]{0}),
+                        Linq.singleton(1),
+                        Linq.asEnumerable(new int[]{2})
+                }});
+
+        // Non-marker in middle
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.singleton(0),
+                        Linq.asEnumerable(new int[]{1}),
+                        Linq.singleton(2)
+                }
+        });
+
+        // Big arrays (marker in middle)
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.asEnumerable(Linq.range(0, 100).toArray()),
+                        Linq.range(100, 100).toArray(),
+                        Linq.asEnumerable(Linq.range(200, 100).toArray())
+                }
+        });
+
+        // Big arrays (non-marker in middle)
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.range(0, 100).toArray(),
+                        Linq.asEnumerable(Linq.range(100, 100).toArray()),
+                        Linq.range(200, 100).toArray()
+                }
+        });
+
+        // Interleaved (first marker)
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.singleton(0),
+                        Linq.asEnumerable(new int[]{1}),
+                        Linq.singleton(2),
+                        Linq.asEnumerable(new int[]{3}),
+                        Linq.singleton(4)
+                }
+        });
+
+        // Interleaved (first non-marker)
+        result.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.asEnumerable(new int[]{0}),
+                        Linq.singleton(1),
+                        Linq.asEnumerable(new int[]{2}),
+                        Linq.singleton(3),
+                        Linq.asEnumerable(new int[]{4})
+                }
+        });
+        return Linq.asEnumerable(result);
+    }
+
     @Test
     public void CollectionInterleavedWithLazyEnumerables_ToArray() {
-        for (Object[] objects : GetToArrayDataSources())
+        for (Object[] objects : this.GetToArrayDataSources())
             //noinspection unchecked
             this.CollectionInterleavedWithLazyEnumerables_ToArray((IEnumerable<Integer>[]) objects[0]);
     }

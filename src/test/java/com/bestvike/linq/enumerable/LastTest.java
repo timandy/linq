@@ -17,17 +17,6 @@ import java.util.Date;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class LastTest extends EnumerableTest {
-    private static <T> IEnumerable<T> EmptySource() {
-        return Linq.empty();
-    }
-
-    private static <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = EmptySource();
-
-        Assert.assertNull(as(source, IList.class));
-        assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
-    }
-
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
@@ -86,12 +75,23 @@ public class LastTest extends EnumerableTest {
         Assert.assertEquals(expected, source.last());
     }
 
+    private <T> IEnumerable<T> EmptySource() {
+        return Linq.empty();
+    }
+
+    private <T> void TestEmptyNotIList() {
+        IEnumerable<T> source = this.EmptySource();
+
+        Assert.assertNull(as(source, IList.class));
+        assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
+    }
+
     @Test
     public void EmptyNotIListT() {
-        LastTest.<Integer>TestEmptyNotIList();
-        LastTest.<String>TestEmptyNotIList();
-        LastTest.<Date>TestEmptyNotIList();
-        LastTest.<LastTest>TestEmptyNotIList();
+        this.<Integer>TestEmptyNotIList();
+        this.<String>TestEmptyNotIList();
+        this.<Date>TestEmptyNotIList();
+        this.<LastTest>TestEmptyNotIList();
     }
 
     @Test

@@ -19,17 +19,6 @@ import java.util.Date;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class FirstTest extends EnumerableTest {
-    private static <T> IEnumerable<T> EmptySourceGeneric() {
-        return Linq.empty();
-    }
-
-    private static <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = EmptySourceGeneric();
-
-        Assert.assertNull(as(source, IList.class));
-        assertThrows(InvalidOperationException.class, () -> source.runOnce().first());
-    }
-
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
@@ -88,12 +77,23 @@ public class FirstTest extends EnumerableTest {
         Assert.assertEquals(expected, Linq.asEnumerable(source).first());
     }
 
+    private <T> IEnumerable<T> EmptySourceGeneric() {
+        return Linq.empty();
+    }
+
+    private <T> void TestEmptyNotIList() {
+        IEnumerable<T> source = this.EmptySourceGeneric();
+
+        Assert.assertNull(as(source, IList.class));
+        assertThrows(InvalidOperationException.class, () -> source.runOnce().first());
+    }
+
     @Test
     public void EmptyNotIListT() {
-        FirstTest.<Integer>TestEmptyNotIList();
-        FirstTest.<String>TestEmptyNotIList();
-        FirstTest.<Date>TestEmptyNotIList();
-        FirstTest.<FirstTest>TestEmptyNotIList();
+        this.<Integer>TestEmptyNotIList();
+        this.<String>TestEmptyNotIList();
+        this.<Date>TestEmptyNotIList();
+        this.<FirstTest>TestEmptyNotIList();
     }
 
     @Test

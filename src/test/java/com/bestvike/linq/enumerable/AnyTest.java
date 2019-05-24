@@ -33,25 +33,25 @@ public class AnyTest extends EnumerableTest {
 
     @Test
     public void Any() {
-        this.AnyCore(Linq.empty(), null, false);
-        this.AnyCore(Linq.singleton(3), null, true);
+        this.Any(Linq.empty(), null, false);
+        this.Any(Linq.singleton(3), null, true);
 
         Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
-        this.AnyCore(Linq.empty(), isEvenFunc, false);
-        this.AnyCore(Linq.singleton(4), isEvenFunc, true);
-        this.AnyCore(Linq.singleton(5), isEvenFunc, false);
-        this.AnyCore(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, true);
-        this.AnyCore(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, true);
+        this.Any(Linq.empty(), isEvenFunc, false);
+        this.Any(Linq.singleton(4), isEvenFunc, true);
+        this.Any(Linq.singleton(5), isEvenFunc, false);
+        this.Any(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, true);
+        this.Any(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
-        this.AnyCore(range, i -> i > 10, false);
+        this.Any(range, i -> i > 10, false);
         for (int j = 0; j <= 9; j++) {
             int k = j; // Local copy for iterator
-            this.AnyCore(range, i -> i > k, true);
+            this.Any(range, i -> i > k, true);
         }
     }
 
-    private void AnyCore(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
+    private void Any(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
         if (predicate == null)
             Assert.assertEquals(expected, source.any());
         else
@@ -60,25 +60,25 @@ public class AnyTest extends EnumerableTest {
 
     @Test
     public void AnyRunOnce() {
-        this.AnyRunOnceCore(Linq.empty(), null, false);
-        this.AnyRunOnceCore(Linq.singleton(3), null, true);
+        this.AnyRunOnce(Linq.empty(), null, false);
+        this.AnyRunOnce(Linq.singleton(3), null, true);
 
         Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
-        this.AnyRunOnceCore(Linq.empty(), isEvenFunc, false);
-        this.AnyRunOnceCore(Linq.singleton(4), isEvenFunc, true);
-        this.AnyRunOnceCore(Linq.singleton(5), isEvenFunc, false);
-        this.AnyRunOnceCore(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, true);
-        this.AnyRunOnceCore(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, true);
+        this.AnyRunOnce(Linq.empty(), isEvenFunc, false);
+        this.AnyRunOnce(Linq.singleton(4), isEvenFunc, true);
+        this.AnyRunOnce(Linq.singleton(5), isEvenFunc, false);
+        this.AnyRunOnce(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, true);
+        this.AnyRunOnce(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
-        this.AnyRunOnceCore(range, i -> i > 10, false);
+        this.AnyRunOnce(range, i -> i > 10, false);
         for (int j = 0; j <= 9; j++) {
             int k = j; // Local copy for iterator
-            this.AnyRunOnceCore(range, i -> i > k, true);
+            this.AnyRunOnce(range, i -> i > k, true);
         }
     }
 
-    private void AnyRunOnceCore(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
+    private void AnyRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
         if (predicate == null)
             Assert.assertEquals(expected, source.runOnce().any());
         else

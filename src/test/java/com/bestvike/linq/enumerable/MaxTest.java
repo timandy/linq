@@ -692,7 +692,7 @@ public class MaxTest extends EnumerableTest {
                 new Obj<>("Bob", null)
         };
 
-        assertEquals(10, (int) Linq.asEnumerable(source).maxIntNull(e -> e.num));
+        assertEquals(10, Linq.asEnumerable(source).maxIntNull(e -> e.num));
     }
 
     @Test
@@ -709,7 +709,7 @@ public class MaxTest extends EnumerableTest {
                         new Obj<>("John", -105L),
                         new Obj<>("Bob", Long.MAX_VALUE)
                 };
-        assertEquals(Long.MAX_VALUE, (long) Linq.asEnumerable(source).maxLongNull(e -> e.num));
+        assertEquals(Long.MAX_VALUE, Linq.asEnumerable(source).maxLongNull(e -> e.num));
     }
 
     @Test
@@ -812,7 +812,7 @@ public class MaxTest extends EnumerableTest {
     @Test
     public void testMaxIntNull() {
         Integer[] numbers = {null, 0, 2, 3};
-        assertEquals((Integer) 3, Linq.asEnumerable(numbers).maxIntNull());
+        assertEquals(3, Linq.asEnumerable(numbers).maxIntNull());
 
         Integer[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).maxIntNull());
@@ -834,7 +834,7 @@ public class MaxTest extends EnumerableTest {
     @Test
     public void testMaxLongNull() {
         Long[] numbers = {null, 0L, 2L, 3L};
-        assertEquals((Long) 3L, Linq.asEnumerable(numbers).maxLongNull());
+        assertEquals(3L, Linq.asEnumerable(numbers).maxLongNull());
 
         Long[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).maxLongNull());
@@ -944,7 +944,7 @@ public class MaxTest extends EnumerableTest {
     @Test
     public void testMaxIntNullWithSelector() {
         Integer[] numbers = {null, 0, 2, 3};
-        assertEquals((Integer) 3, Linq.asEnumerable(numbers).maxIntNull(n -> n));
+        assertEquals(3, Linq.asEnumerable(numbers).maxIntNull(n -> n));
 
         Integer[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).maxIntNull(n -> n));
@@ -966,7 +966,7 @@ public class MaxTest extends EnumerableTest {
     @Test
     public void testMaxLongNullWithSelector() {
         Long[] numbers = {null, 0L, 2L, 3L};
-        assertEquals((Long) 3L, Linq.asEnumerable(numbers).maxLongNull(n -> n));
+        assertEquals(3L, Linq.asEnumerable(numbers).maxLongNull(n -> n));
 
         Long[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).maxLongNull(n -> n));

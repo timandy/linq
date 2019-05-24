@@ -14,14 +14,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class CastTest extends EnumerableTest {
-    private static <T> void TestCastThrow(Object o, Class<T> clazz) {
-        Byte i = 10;
-        IEnumerable<Object> source = Linq.asEnumerable(-1, 0, o, i);
-
-        IEnumerable<T> cast = source.cast(clazz);
-        assertThrows(ClassCastException.class, cast::toList);
-    }
-
     @Test
     public void CastIntToLongThrows() {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
@@ -112,10 +104,18 @@ public class CastTest extends EnumerableTest {
         assertThrows(ClassCastException.class, cast::toList);
     }
 
+    private <T> void TestCastThrow(Object o, Class<T> clazz) {
+        Byte i = 10;
+        IEnumerable<Object> source = Linq.asEnumerable(-1, 0, o, i);
+
+        IEnumerable<T> cast = source.cast(clazz);
+        assertThrows(ClassCastException.class, cast::toList);
+    }
+
     @Test
     public void ThrowOnHeterogenousSource() {
-        TestCastThrow(null, Long.class);
-        TestCastThrow(9L, Long.class);
+        this.TestCastThrow(null, Long.class);
+        this.TestCastThrow(9L, Long.class);
     }
 
     @Test

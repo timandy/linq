@@ -18,7 +18,23 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ContainsTest extends EnumerableTest {
-    private static IEnumerable<Object[]> Int_TestData() {
+    @Test
+    public void SameResultsRepeatCallsIntQuery() {
+        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+                .where(x -> x > Integer.MIN_VALUE);
+
+        Assert.assertEquals(q.contains(-1), q.contains(-1));
+    }
+
+    @Test
+    public void SameResultsRepeatCallsStringQuery() {
+        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+                .where(x -> !IsNullOrEmpty(x));
+
+        Assert.assertEquals(q.contains("X"), q.contains("X"));
+    }
+
+    private IEnumerable<Object[]> Int_TestData() {
         List<Object[]> results = new ArrayList<>();
 
         results.add(new Object[]{Linq.asEnumerable(new int[0]), 6, false});
@@ -36,45 +52,9 @@ public class ContainsTest extends EnumerableTest {
         return Linq.asEnumerable(results);
     }
 
-    private static IEnumerable<Object[]> String_TestData() {
-        return Linq.asEnumerable(
-                new Object[]{Linq.asEnumerable(new String[]{null}), StringComparer.Ordinal, null, true},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), null, "trboeR", false},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), null, "Tim", true},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "trboeR", true},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "nevar", false}
-        );
-    }
-
-    private static IEnumerable<Object[]> NullableInt_TestData() {
-        return Linq.asEnumerable(
-
-                new Object[]{Linq.asEnumerable(8, 0, 10, 3, 0, -8, 0), null, false},
-                new Object[]{Linq.asEnumerable(8, 0, 10, null, 3, 0, -8, 0), null, true},
-
-                new Object[]{NullableNumberRangeGuaranteedNotCollectionType(3, 4), null, false},
-                new Object[]{RepeatedNullableNumberGuaranteedNotCollectionType(null, 5), null, true});
-    }
-
-    @Test
-    public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
-                .where(x -> x > Integer.MIN_VALUE);
-
-        Assert.assertEquals(q.contains(-1), q.contains(-1));
-    }
-
-    @Test
-    public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
-                .where(x -> !IsNullOrEmpty(x));
-
-        Assert.assertEquals(q.contains("X"), q.contains("X"));
-    }
-
     @Test
     public void Int() {
-        for (Object[] objects : Int_TestData())
+        for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.Int((IEnumerable<Integer>) objects[0], (int) objects[1], (boolean) objects[2]);
     }
@@ -86,7 +66,7 @@ public class ContainsTest extends EnumerableTest {
 
     @Test
     public void IntRunOnce() {
-        for (Object[] objects : Int_TestData())
+        for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.IntRunOnce((IEnumerable<Integer>) objects[0], (int) objects[1], (boolean) objects[2]);
     }
@@ -96,9 +76,19 @@ public class ContainsTest extends EnumerableTest {
         Assert.assertEquals(expected, source.runOnce().contains(value, null));
     }
 
+    private IEnumerable<Object[]> String_TestData() {
+        return Linq.asEnumerable(
+                new Object[]{Linq.asEnumerable(new String[]{null}), StringComparer.Ordinal, null, true},
+                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), null, "trboeR", false},
+                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), null, "Tim", true},
+                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "trboeR", true},
+                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "nevar", false}
+        );
+    }
+
     @Test
     public void String() {
-        for (Object[] objects : String_TestData())
+        for (Object[] objects : this.String_TestData())
             //noinspection unchecked
             this.String((IEnumerable<String>) objects[0], (IEqualityComparer<String>) objects[1], (String) objects[2], (boolean) objects[3]);
     }
@@ -112,7 +102,7 @@ public class ContainsTest extends EnumerableTest {
 
     @Test
     public void StringRunOnce() {
-        for (Object[] objects : String_TestData())
+        for (Object[] objects : this.String_TestData())
             //noinspection unchecked
             this.StringRunOnce((IEnumerable<String>) objects[0], (IEqualityComparer<String>) objects[1], (String) objects[2], (boolean) objects[3]);
     }
@@ -124,9 +114,19 @@ public class ContainsTest extends EnumerableTest {
         Assert.assertEquals(expected, source.runOnce().contains(value, comparer));
     }
 
+    private IEnumerable<Object[]> NullableInt_TestData() {
+        return Linq.asEnumerable(
+
+                new Object[]{Linq.asEnumerable(8, 0, 10, 3, 0, -8, 0), null, false},
+                new Object[]{Linq.asEnumerable(8, 0, 10, null, 3, 0, -8, 0), null, true},
+
+                new Object[]{NullableNumberRangeGuaranteedNotCollectionType(3, 4), null, false},
+                new Object[]{RepeatedNullableNumberGuaranteedNotCollectionType(null, 5), null, true});
+    }
+
     @Test
     public void NullableInt() {
-        for (Object[] objects : NullableInt_TestData())
+        for (Object[] objects : this.NullableInt_TestData())
             //noinspection unchecked
             this.NullableInt((IEnumerable<Integer>) objects[0], (Integer) objects[1], (boolean) objects[2]);
     }

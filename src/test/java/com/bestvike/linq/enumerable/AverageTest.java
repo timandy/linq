@@ -33,30 +33,30 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void NullableFoat() {
-        this.NullableFoatCore(Linq.empty(), null);
-        this.NullableFoatCore(Linq.singleton(Float.MIN_VALUE), Float.MIN_VALUE);
-        this.NullableFoatCore(Linq.asEnumerable(0f, 0f, 0f, 0f, 0f), 0f);
-        this.NullableFoatCore(Linq.asEnumerable(5.5f, 0f, null, null, null, 15.5f, 40.5f, null, null, -23.5f), 7.6f);
-        this.NullableFoatCore(Linq.asEnumerable(null, null, null, null, 45f), 45f);
-        this.NullableFoatCore(Linq.asEnumerable(null, null, null, null, null), null);
+        this.NullableFoat(Linq.empty(), null);
+        this.NullableFoat(Linq.singleton(Float.MIN_VALUE), Float.MIN_VALUE);
+        this.NullableFoat(Linq.asEnumerable(0f, 0f, 0f, 0f, 0f), 0f);
+        this.NullableFoat(Linq.asEnumerable(5.5f, 0f, null, null, null, 15.5f, 40.5f, null, null, -23.5f), 7.6f);
+        this.NullableFoat(Linq.asEnumerable(null, null, null, null, 45f), 45f);
+        this.NullableFoat(Linq.asEnumerable(null, null, null, null, null), null);
     }
 
-    private void NullableFoatCore(IEnumerable<Float> source, Float expected) {
+    private void NullableFoat(IEnumerable<Float> source, Float expected) {
         Assert.assertEquals(expected, source.averageFloatNull());
         Assert.assertEquals(expected, source.averageFloatNull(x -> x));
     }
 
     @Test
     public void NullableFoatRunOnce() {
-        this.NullableFoatRunOnceCore(Linq.empty(), null);
-        this.NullableFoatRunOnceCore(Linq.singleton(Float.MIN_VALUE), Float.MIN_VALUE);
-        this.NullableFoatRunOnceCore(Linq.asEnumerable(0f, 0f, 0f, 0f, 0f), 0f);
-        this.NullableFoatRunOnceCore(Linq.asEnumerable(5.5f, 0f, null, null, null, 15.5f, 40.5f, null, null, -23.5f), 7.6f);
-        this.NullableFoatRunOnceCore(Linq.asEnumerable(null, null, null, null, 45f), 45f);
-        this.NullableFoatRunOnceCore(Linq.asEnumerable(null, null, null, null, null), null);
+        this.NullableFoatRunOnce(Linq.empty(), null);
+        this.NullableFoatRunOnce(Linq.singleton(Float.MIN_VALUE), Float.MIN_VALUE);
+        this.NullableFoatRunOnce(Linq.asEnumerable(0f, 0f, 0f, 0f, 0f), 0f);
+        this.NullableFoatRunOnce(Linq.asEnumerable(5.5f, 0f, null, null, null, 15.5f, 40.5f, null, null, -23.5f), 7.6f);
+        this.NullableFoatRunOnce(Linq.asEnumerable(null, null, null, null, 45f), 45f);
+        this.NullableFoatRunOnce(Linq.asEnumerable(null, null, null, null, null), null);
     }
 
-    private void NullableFoatRunOnceCore(IEnumerable<Float> source, Float expected) {
+    private void NullableFoatRunOnce(IEnumerable<Float> source, Float expected) {
         Assert.assertEquals(expected, source.runOnce().averageFloatNull());
         Assert.assertEquals(expected, source.runOnce().averageFloatNull(x -> x));
     }
@@ -103,24 +103,24 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void Int() {
-        this.IntCore(Linq.singleton(5), 5);
-        this.IntCore(Linq.asEnumerable(0, 0, 0, 0, 0), 0);
-        this.IntCore(Linq.asEnumerable(5, -10, 15, 40, 28), 15.6);
+        this.Int(Linq.singleton(5), 5);
+        this.Int(Linq.asEnumerable(0, 0, 0, 0, 0), 0);
+        this.Int(Linq.asEnumerable(5, -10, 15, 40, 28), 15.6);
     }
 
-    private void IntCore(IEnumerable<Integer> source, double expected) {
+    private void Int(IEnumerable<Integer> source, double expected) {
         Assert.assertEquals(expected, source.averageInt(), DELTA);
         Assert.assertEquals(expected, source.averageInt(x -> x), DELTA);
     }
 
     @Test
     public void IntRunOnce() {
-        this.IntRunOnceCore(Linq.singleton(5), 5);
-        this.IntRunOnceCore(Linq.asEnumerable(0, 0, 0, 0, 0), 0);
-        this.IntRunOnceCore(Linq.asEnumerable(5, -10, 15, 40, 28), 15.6);
+        this.IntRunOnce(Linq.singleton(5), 5);
+        this.IntRunOnce(Linq.asEnumerable(0, 0, 0, 0, 0), 0);
+        this.IntRunOnce(Linq.asEnumerable(5, -10, 15, 40, 28), 15.6);
     }
 
-    private void IntRunOnceCore(IEnumerable<Integer> source, double expected) {
+    private void IntRunOnce(IEnumerable<Integer> source, double expected) {
         Assert.assertEquals(expected, source.runOnce().averageInt(), DELTA);
         Assert.assertEquals(expected, source.runOnce().averageInt(x -> x), DELTA);
     }
@@ -135,15 +135,15 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void NullableInt() {
-        this.NullableIntCore(Linq.empty(), null);
-        this.NullableIntCore(Linq.singleton(-5), -5.0);
-        this.NullableIntCore(Linq.asEnumerable(0, 0, 0, 0, 0), 0.0);
-        this.NullableIntCore(Linq.asEnumerable(5, -10, null, null, null, 15, 40, 28, null, null), 15.6);
-        this.NullableIntCore(Linq.asEnumerable(null, null, null, null, 50), 50.0);
-        this.NullableIntCore(Linq.asEnumerable(null, null, null, null, null), null);
+        this.NullableInt(Linq.empty(), null);
+        this.NullableInt(Linq.singleton(-5), -5.0);
+        this.NullableInt(Linq.asEnumerable(0, 0, 0, 0, 0), 0.0);
+        this.NullableInt(Linq.asEnumerable(5, -10, null, null, null, 15, 40, 28, null, null), 15.6);
+        this.NullableInt(Linq.asEnumerable(null, null, null, null, 50), 50.0);
+        this.NullableInt(Linq.asEnumerable(null, null, null, null, null), null);
     }
 
-    private void NullableIntCore(IEnumerable<Integer> source, Double expected) {
+    private void NullableInt(IEnumerable<Integer> source, Double expected) {
         Assert.assertEquals(expected, source.averageIntNull());
         Assert.assertEquals(expected, source.averageIntNull(x -> x));
     }
@@ -190,12 +190,12 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void Long() {
-        this.LongCore(Linq.singleton(Long.MAX_VALUE), Long.MAX_VALUE);
-        this.LongCore(Linq.asEnumerable(0L, 0L, 0L, 0L, 0L), 0);
-        this.LongCore(Linq.asEnumerable(5L, -10L, 15L, 40L, 28L), 15.6);
+        this.Long(Linq.singleton(Long.MAX_VALUE), Long.MAX_VALUE);
+        this.Long(Linq.asEnumerable(0L, 0L, 0L, 0L, 0L), 0);
+        this.Long(Linq.asEnumerable(5L, -10L, 15L, 40L, 28L), 15.6);
     }
 
-    private void LongCore(IEnumerable<Long> source, double expected) {
+    private void Long(IEnumerable<Long> source, double expected) {
         Assert.assertEquals(expected, source.averageLong(), DELTA);
         Assert.assertEquals(expected, source.averageLong(x -> x), DELTA);
     }
@@ -216,15 +216,15 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void NullableLong() {
-        this.NullableLongCore(Linq.empty(), null);
-        this.NullableLongCore(Linq.singleton(Long.MAX_VALUE), (double) Long.MAX_VALUE);
-        this.NullableLongCore(Linq.asEnumerable(0L, 0L, 0L, 0L, 0L), 0.0);
-        this.NullableLongCore(Linq.asEnumerable(5L, -10L, null, null, null, 15L, 40L, 28L, null, null), 15.6);
-        this.NullableLongCore(Linq.asEnumerable(null, null, null, null, 50L), 50.0);
-        this.NullableLongCore(Linq.asEnumerable(null, null, null, null, null), null);
+        this.NullableLong(Linq.empty(), null);
+        this.NullableLong(Linq.singleton(Long.MAX_VALUE), (double) Long.MAX_VALUE);
+        this.NullableLong(Linq.asEnumerable(0L, 0L, 0L, 0L, 0L), 0.0);
+        this.NullableLong(Linq.asEnumerable(5L, -10L, null, null, null, 15L, 40L, 28L, null, null), 15.6);
+        this.NullableLong(Linq.asEnumerable(null, null, null, null, 50L), 50.0);
+        this.NullableLong(Linq.asEnumerable(null, null, null, null, null), null);
     }
 
-    private void NullableLongCore(IEnumerable<Long> source, Double expected) {
+    private void NullableLong(IEnumerable<Long> source, Double expected) {
         Assert.assertEquals(expected, source.averageLongNull());
         Assert.assertEquals(expected, source.averageLongNull(x -> x));
     }
@@ -271,13 +271,13 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void Average_Double() {
-        this.Average_DoubleCore(Linq.singleton(Double.MAX_VALUE), Double.MAX_VALUE);
-        this.Average_DoubleCore(Linq.asEnumerable(0.0, 0.0, 0.0, 0.0, 0.0), 0);
-        this.Average_DoubleCore(Linq.asEnumerable(5.5, -10d, 15.5, 40.5, 28.5), 16);
-        this.Average_DoubleCore(Linq.asEnumerable(5.58, Double.NaN, 30d, 4.55, 19.38), Double.NaN);
+        this.Average_Double(Linq.singleton(Double.MAX_VALUE), Double.MAX_VALUE);
+        this.Average_Double(Linq.asEnumerable(0.0, 0.0, 0.0, 0.0, 0.0), 0);
+        this.Average_Double(Linq.asEnumerable(5.5, -10d, 15.5, 40.5, 28.5), 16);
+        this.Average_Double(Linq.asEnumerable(5.58, Double.NaN, 30d, 4.55, 19.38), Double.NaN);
     }
 
-    private void Average_DoubleCore(IEnumerable<Double> source, double expected) {
+    private void Average_Double(IEnumerable<Double> source, double expected) {
         Assert.assertEquals(expected, source.averageDouble(), DELTA);
         Assert.assertEquals(expected, source.averageDouble(x -> x), DELTA);
     }
@@ -292,16 +292,16 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void NullableDouble() {
-        this.NullableDoubleCore(Linq.empty(), null);
-        this.NullableDoubleCore(Linq.singleton(Double.MIN_VALUE), Double.MIN_VALUE);
-        this.NullableDoubleCore(Linq.asEnumerable(0d, 0d, 0d, 0d, 0d), 0.0);
-        this.NullableDoubleCore(Linq.asEnumerable(5.5d, 0d, null, null, null, 15.5d, 40.5d, null, null, -23.5d), 7.6d);
-        this.NullableDoubleCore(Linq.asEnumerable(null, null, null, null, 45d), 45.0);
-        this.NullableDoubleCore(Linq.asEnumerable(-23.5, 0d, Double.NaN, 54.3, 0.56), Double.NaN);
-        this.NullableDoubleCore(Linq.asEnumerable(null, null, null, null, null), null);
+        this.NullableDouble(Linq.empty(), null);
+        this.NullableDouble(Linq.singleton(Double.MIN_VALUE), Double.MIN_VALUE);
+        this.NullableDouble(Linq.asEnumerable(0d, 0d, 0d, 0d, 0d), 0.0);
+        this.NullableDouble(Linq.asEnumerable(5.5d, 0d, null, null, null, 15.5d, 40.5d, null, null, -23.5d), 7.6d);
+        this.NullableDouble(Linq.asEnumerable(null, null, null, null, 45d), 45.0);
+        this.NullableDouble(Linq.asEnumerable(-23.5, 0d, Double.NaN, 54.3, 0.56), Double.NaN);
+        this.NullableDouble(Linq.asEnumerable(null, null, null, null, null), null);
     }
 
-    private void NullableDoubleCore(IEnumerable<Double> source, Double expected) {
+    private void NullableDouble(IEnumerable<Double> source, Double expected) {
         Assert.assertEquals(expected, source.averageDoubleNull());
         Assert.assertEquals(expected, source.averageDoubleNull(x -> x));
     }
@@ -348,12 +348,12 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void Decimal() {
-        this.DecimalCore(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
-        this.DecimalCore(Linq.asEnumerable(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
-        this.DecimalCore(Linq.asEnumerable(new BigDecimal("5.5"), new BigDecimal("-10"), new BigDecimal("15.5"), new BigDecimal("40.5"), new BigDecimal("28.5")), new BigDecimal("16.0"));
+        this.Decimal(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
+        this.Decimal(Linq.asEnumerable(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
+        this.Decimal(Linq.asEnumerable(new BigDecimal("5.5"), new BigDecimal("-10"), new BigDecimal("15.5"), new BigDecimal("40.5"), new BigDecimal("28.5")), new BigDecimal("16.0"));
     }
 
-    private void DecimalCore(IEnumerable<BigDecimal> source, BigDecimal expected) {
+    private void Decimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
         Assert.assertEquals(expected, source.averageDecimal());
         Assert.assertEquals(expected, source.averageDecimal(x -> x));
     }
@@ -368,15 +368,15 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void NullableDecimal() {
-        this.NullableDecimalCore(Linq.empty(), null);
-        this.NullableDecimalCore(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
-        this.NullableDecimalCore(Linq.asEnumerable(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
-        this.NullableDecimalCore(Linq.asEnumerable(new BigDecimal("5.5"), BigDecimal.ZERO, null, null, null, new BigDecimal("15.5"), new BigDecimal("40.5"), null, null, new BigDecimal("-23.5")), new BigDecimal("7.6"));
-        this.NullableDecimalCore(Linq.asEnumerable(null, null, null, null, new BigDecimal("45")), new BigDecimal("45"));
-        this.NullableDecimalCore(Linq.asEnumerable(null, null, null, null, null), null);
+        this.NullableDecimal(Linq.empty(), null);
+        this.NullableDecimal(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
+        this.NullableDecimal(Linq.asEnumerable(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
+        this.NullableDecimal(Linq.asEnumerable(new BigDecimal("5.5"), BigDecimal.ZERO, null, null, null, new BigDecimal("15.5"), new BigDecimal("40.5"), null, null, new BigDecimal("-23.5")), new BigDecimal("7.6"));
+        this.NullableDecimal(Linq.asEnumerable(null, null, null, null, new BigDecimal("45")), new BigDecimal("45"));
+        this.NullableDecimal(Linq.asEnumerable(null, null, null, null, null), null);
     }
 
-    private void NullableDecimalCore(IEnumerable<BigDecimal> source, BigDecimal expected) {
+    private void NullableDecimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
         Assert.assertEquals(expected, source.averageDecimalNull());
         Assert.assertEquals(expected, source.averageDecimalNull(x -> x));
     }
@@ -430,12 +430,12 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void Float_TestData() {
-        this.FloatCore(Linq.singleton(Float.MAX_VALUE), Float.MAX_VALUE);
-        this.FloatCore(Linq.asEnumerable(0.0f, 0.0f, 0.0f, 0.0f, 0.0f), 0f);
-        this.FloatCore(Linq.asEnumerable(5.5f, -10f, 15.5f, 40.5f, 28.5f), 16f);
+        this.Float(Linq.singleton(Float.MAX_VALUE), Float.MAX_VALUE);
+        this.Float(Linq.asEnumerable(0.0f, 0.0f, 0.0f, 0.0f, 0.0f), 0f);
+        this.Float(Linq.asEnumerable(5.5f, -10f, 15.5f, 40.5f, 28.5f), 16f);
     }
 
-    private void FloatCore(IEnumerable<Float> source, float expected) {
+    private void Float(IEnumerable<Float> source, float expected) {
         Assert.assertEquals(expected, source.averageFloat(), DELTA);
         Assert.assertEquals(expected, source.averageFloat(x -> x), DELTA);
     }

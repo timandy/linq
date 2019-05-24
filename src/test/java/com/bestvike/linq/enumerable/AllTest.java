@@ -32,48 +32,48 @@ public class AllTest extends EnumerableTest {
     @Test
     public void All() {
         Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
-        this.AllCore(Linq.singleton(0), isEvenFunc, true);
-        this.AllCore(Linq.singleton(3), isEvenFunc, false);
-        this.AllCore(Linq.singleton(4), isEvenFunc, true);
-        this.AllCore(Linq.singleton(3), isEvenFunc, false);
+        this.All(Linq.singleton(0), isEvenFunc, true);
+        this.All(Linq.singleton(3), isEvenFunc, false);
+        this.All(Linq.singleton(4), isEvenFunc, true);
+        this.All(Linq.singleton(3), isEvenFunc, false);
 
-        this.AllCore(Linq.asEnumerable(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
-        this.AllCore(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
-        this.AllCore(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
+        this.All(Linq.asEnumerable(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
+        this.All(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
+        this.All(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
-        this.AllCore(range, i -> i > 0, true);
+        this.All(range, i -> i > 0, true);
         for (int j = 1; j <= 10; j++) {
             int k = j;
-            this.AllCore(range, i -> i > k, false);
+            this.All(range, i -> i > k, false);
         }
     }
 
-    private void AllCore(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
+    private void All(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
         Assert.assertEquals(expected, source.all(predicate));
     }
 
     @Test
     public void AllRunOnce() {
         Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
-        this.AllRunOnceCore(Linq.singleton(0), isEvenFunc, true);
-        this.AllRunOnceCore(Linq.singleton(3), isEvenFunc, false);
-        this.AllRunOnceCore(Linq.singleton(4), isEvenFunc, true);
-        this.AllRunOnceCore(Linq.singleton(3), isEvenFunc, false);
+        this.AllRunOnce(Linq.singleton(0), isEvenFunc, true);
+        this.AllRunOnce(Linq.singleton(3), isEvenFunc, false);
+        this.AllRunOnce(Linq.singleton(4), isEvenFunc, true);
+        this.AllRunOnce(Linq.singleton(3), isEvenFunc, false);
 
-        this.AllRunOnceCore(Linq.asEnumerable(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
-        this.AllRunOnceCore(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
-        this.AllRunOnceCore(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
+        this.AllRunOnce(Linq.asEnumerable(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
+        this.AllRunOnce(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
+        this.AllRunOnce(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
-        this.AllRunOnceCore(range.runOnce(), i -> i > 0, true);
+        this.AllRunOnce(range.runOnce(), i -> i > 0, true);
         for (int j = 1; j <= 10; j++) {
             int k = j;
-            this.AllRunOnceCore(range, i -> i > k, false);
+            this.AllRunOnce(range, i -> i > k, false);
         }
     }
 
-    private void AllRunOnceCore(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
+    private void AllRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
         Assert.assertEquals(expected, source.runOnce().all(predicate));
     }
 

@@ -17,7 +17,23 @@ import java.util.Stack;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class CountTest extends EnumerableTest {
-    private static IEnumerable<Object[]> Int_TestData() {
+    @Test
+    public void SameResultsRepeatCallsIntQuery() {
+        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+                .where(a -> a > Integer.MIN_VALUE);
+
+        Assert.assertEquals(q.count(), q.count());
+    }
+
+    @Test
+    public void SameResultsRepeatCallsStringQuery() {
+        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+                .where(a -> !IsNullOrEmpty(a));
+
+        Assert.assertEquals(q.count(), q.count());
+    }
+
+    private IEnumerable<Object[]> Int_TestData() {
         Func1<Integer, Boolean> isEvenFunc = EnumerableTest::IsEven;
 
         return Linq.asEnumerable(
@@ -35,53 +51,9 @@ public class CountTest extends EnumerableTest {
         );
     }
 
-    private static <T> IEnumerable<Object[]> EnumerateCollectionTypesAndCounts(int count, IEnumerable<T> enumerable) {
-        Stack<T> stack = new Stack<>();
-        enumerable.forEach(stack::push);
-
-        return Linq.asEnumerable(
-                new Object[]{count, enumerable},
-                new Object[]{count, enumerable.toArray()},
-                new Object[]{count, Linq.asEnumerable(enumerable.toList())},
-                new Object[]{count, Linq.asEnumerable(stack)}
-        );
-    }
-
-    private static IEnumerable<Object[]> CountsAndTallies() {
-        int count = 5;
-        IEnumerable<Integer> range = Linq.range(1, count);
-
-        List<Object[]> list = new ArrayList<>();
-        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range))
-            list.add(variant);
-        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range.select(i -> (float) i)))
-            list.add(variant);
-        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range.select(i -> (double) i)))
-            list.add(variant);
-        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range.select(i -> new BigDecimal(i))))
-            list.add(variant);
-        return Linq.asEnumerable(list);
-    }
-
-    @Test
-    public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
-                .where(a -> a > Integer.MIN_VALUE);
-
-        Assert.assertEquals(q.count(), q.count());
-    }
-
-    @Test
-    public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
-                .where(a -> !IsNullOrEmpty(a));
-
-        Assert.assertEquals(q.count(), q.count());
-    }
-
     @Test
     public void Int() {
-        for (Object[] objects : Int_TestData())
+        for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.Int((IEnumerable<Integer>) objects[0], (Func1<Integer, Boolean>) objects[1], (int) objects[2]);
     }
@@ -96,7 +68,7 @@ public class CountTest extends EnumerableTest {
 
     @Test
     public void IntRunOnce() {
-        for (Object[] objects : Int_TestData())
+        for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.IntRunOnce((IEnumerable<Integer>) objects[0], (Func1<Integer, Boolean>) objects[1], (int) objects[2]);
     }
@@ -115,9 +87,37 @@ public class CountTest extends EnumerableTest {
         Assert.assertEquals(5, Linq.asEnumerable(data).count());
     }
 
+    private <T> IEnumerable<Object[]> EnumerateCollectionTypesAndCounts(int count, IEnumerable<T> enumerable) {
+        Stack<T> stack = new Stack<>();
+        enumerable.forEach(stack::push);
+
+        return Linq.asEnumerable(
+                new Object[]{count, enumerable},
+                new Object[]{count, enumerable.toArray()},
+                new Object[]{count, Linq.asEnumerable(enumerable.toList())},
+                new Object[]{count, Linq.asEnumerable(stack)}
+        );
+    }
+
+    private IEnumerable<Object[]> CountsAndTallies() {
+        int count = 5;
+        IEnumerable<Integer> range = Linq.range(1, count);
+
+        List<Object[]> list = new ArrayList<>();
+        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range))
+            list.add(variant);
+        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> (float) i)))
+            list.add(variant);
+        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> (double) i)))
+            list.add(variant);
+        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> new BigDecimal(i))))
+            list.add(variant);
+        return Linq.asEnumerable(list);
+    }
+
     @Test
     public void CountMatchesTally() {
-        for (Object[] objects : CountsAndTallies())
+        for (Object[] objects : this.CountsAndTallies())
             //noinspection unchecked
             this.CountMatchesTally((int) objects[0], (IEnumerable) objects[1]);
     }
@@ -128,7 +128,7 @@ public class CountTest extends EnumerableTest {
 
     @Test
     public void RunOnce() {
-        for (Object[] objects : CountsAndTallies())
+        for (Object[] objects : this.CountsAndTallies())
             //noinspection unchecked
             this.RunOnce((int) objects[0], (IEnumerable) objects[1]);
     }

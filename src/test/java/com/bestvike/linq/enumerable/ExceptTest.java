@@ -19,34 +19,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class ExceptTest extends EnumerableTest {
-    private static IEnumerable<Object[]> Int_TestData() {
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), Linq.asEnumerable(new int[0]), null, Linq.asEnumerable(new int[0])});
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), Linq.asEnumerable(new int[]{-6, -8, -6, 2, 0, 0, 5, 6}), null, Linq.asEnumerable(new int[0])});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 1, 1, 1, 1}), Linq.asEnumerable(new int[]{2, 3, 4}), null, Linq.asEnumerable(new int[]{1})});
-        return Linq.asEnumerable(lst);
-    }
-
-    private static IEnumerable<Object[]> String_TestData() {
-        IEqualityComparer<String> defaultComparer = EqualityComparer.Default();
-
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(new String[1]), Linq.asEnumerable(), defaultComparer, Linq.asEnumerable(new String[1])});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, Empty), Linq.asEnumerable(new String[1]), defaultComparer, Linq.asEnumerable(new String[]{Empty})});
-        lst.add(new Object[]{Linq.asEnumerable(new String[2]), Linq.asEnumerable(), defaultComparer, Linq.asEnumerable(new String[1])});
-        lst.add(new Object[]{Linq.asEnumerable("Bob", "Tim", "Robert", "Chris"), Linq.asEnumerable("bBo", "shriC"), null, Linq.asEnumerable("Bob", "Tim", "Robert", "Chris")});
-        lst.add(new Object[]{Linq.asEnumerable("Bob", "Tim", "Robert", "Chris"), Linq.asEnumerable("bBo", "shriC"), new AnagramEqualityComparer(), Linq.asEnumerable("Tim", "Robert")});
-        return Linq.asEnumerable(lst);
-    }
-
-    private static IEnumerable<Object[]> NullableInt_TestData() {
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(-6, -8, -6, 2, 0, 0, 5, 6, null, null), Linq.asEnumerable(), Linq.asEnumerable(-6, -8, 2, 0, 5, 6, null)});
-        lst.add(new Object[]{Linq.asEnumerable(1, 2, 2, 3, 4, 5), Linq.asEnumerable(5, 3, 2, 6, 6, 3, 1, null, null), Linq.asEnumerable(4)});
-        lst.add(new Object[]{Linq.asEnumerable(2, 3, null, 2, null, 4, 5), Linq.asEnumerable(1, 9, null, 4), Linq.asEnumerable(2, 3, 5)});
-        return Linq.asEnumerable(lst);
-    }
-
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
@@ -66,9 +38,17 @@ public class ExceptTest extends EnumerableTest {
         assertEquals(q1.except(q2), q1.except(q2));
     }
 
+    private IEnumerable<Object[]> Int_TestData() {
+        List<Object[]> lst = new ArrayList<>();
+        lst.add(new Object[]{Linq.asEnumerable(new int[0]), Linq.asEnumerable(new int[0]), null, Linq.asEnumerable(new int[0])});
+        lst.add(new Object[]{Linq.asEnumerable(new int[0]), Linq.asEnumerable(new int[]{-6, -8, -6, 2, 0, 0, 5, 6}), null, Linq.asEnumerable(new int[0])});
+        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 1, 1, 1, 1}), Linq.asEnumerable(new int[]{2, 3, 4}), null, Linq.asEnumerable(new int[]{1})});
+        return Linq.asEnumerable(lst);
+    }
+
     @Test
     public void Init() {
-        for (Object[] objects : Int_TestData()) {
+        for (Object[] objects : this.Int_TestData()) {
             this.Int((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEqualityComparer<Integer>) objects[2], (IEnumerable<Integer>) objects[3]);
         }
     }
@@ -80,9 +60,21 @@ public class ExceptTest extends EnumerableTest {
         assertEquals(expected, first.except(second, comparer));
     }
 
+    private IEnumerable<Object[]> String_TestData() {
+        IEqualityComparer<String> defaultComparer = EqualityComparer.Default();
+
+        List<Object[]> lst = new ArrayList<>();
+        lst.add(new Object[]{Linq.asEnumerable(new String[1]), Linq.asEnumerable(), defaultComparer, Linq.asEnumerable(new String[1])});
+        lst.add(new Object[]{Linq.asEnumerable(null, null, Empty), Linq.asEnumerable(new String[1]), defaultComparer, Linq.asEnumerable(new String[]{Empty})});
+        lst.add(new Object[]{Linq.asEnumerable(new String[2]), Linq.asEnumerable(), defaultComparer, Linq.asEnumerable(new String[1])});
+        lst.add(new Object[]{Linq.asEnumerable("Bob", "Tim", "Robert", "Chris"), Linq.asEnumerable("bBo", "shriC"), null, Linq.asEnumerable("Bob", "Tim", "Robert", "Chris")});
+        lst.add(new Object[]{Linq.asEnumerable("Bob", "Tim", "Robert", "Chris"), Linq.asEnumerable("bBo", "shriC"), new AnagramEqualityComparer(), Linq.asEnumerable("Tim", "Robert")});
+        return Linq.asEnumerable(lst);
+    }
+
     @Test
     public void String() {
-        for (Object[] objects : String_TestData()) {
+        for (Object[] objects : this.String_TestData()) {
             this.String((IEnumerable<String>) objects[0], (IEnumerable<String>) objects[1], (IEqualityComparer<String>) objects[2], (IEnumerable<String>) objects[3]);
         }
     }
@@ -94,9 +86,17 @@ public class ExceptTest extends EnumerableTest {
         assertEquals(expected, first.except(second, comparer));
     }
 
+    private IEnumerable<Object[]> NullableInt_TestData() {
+        List<Object[]> lst = new ArrayList<>();
+        lst.add(new Object[]{Linq.asEnumerable(-6, -8, -6, 2, 0, 0, 5, 6, null, null), Linq.asEnumerable(), Linq.asEnumerable(-6, -8, 2, 0, 5, 6, null)});
+        lst.add(new Object[]{Linq.asEnumerable(1, 2, 2, 3, 4, 5), Linq.asEnumerable(5, 3, 2, 6, 6, 3, 1, null, null), Linq.asEnumerable(4)});
+        lst.add(new Object[]{Linq.asEnumerable(2, 3, null, 2, null, 4, 5), Linq.asEnumerable(1, 9, null, 4), Linq.asEnumerable(2, 3, 5)});
+        return Linq.asEnumerable(lst);
+    }
+
     @Test
     public void NullableInt() {
-        for (Object[] objects : NullableInt_TestData()) {
+        for (Object[] objects : this.NullableInt_TestData()) {
             this.NullableInt((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEnumerable<Integer>) objects[2]);
         }
     }
@@ -107,7 +107,7 @@ public class ExceptTest extends EnumerableTest {
 
     @Test
     public void NullableIntRunOnce() {
-        for (Object[] objects : NullableInt_TestData()) {
+        for (Object[] objects : this.NullableInt_TestData()) {
             this.NullableIntRunOnce((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEnumerable<Integer>) objects[2]);
         }
     }

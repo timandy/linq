@@ -20,34 +20,6 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class DistinctTest extends EnumerableTest {
-    private static IEnumerable<Object[]> SequencesWithDuplicates() {
-        List<Object[]> lst = new ArrayList<>();
-        // Validate an array of different numeric data types.
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new BigDecimal(1), new BigDecimal(1), new BigDecimal(1), new BigDecimal(2), new BigDecimal(3), new BigDecimal(5), new BigDecimal(5), new BigDecimal(6), new BigDecimal(6), new BigDecimal(10))});
-        // Try strings
-        lst.add(new Object[]{Linq.asEnumerable("add",
-                "add",
-                "subtract",
-                "multiply",
-                "divide",
-                "divide2",
-                "subtract",
-                "add",
-                "power",
-                "exponent",
-                "hello",
-                "class",
-                "namespace",
-                "namespace",
-                "namespace")
-        });
-        return Linq.asEnumerable(lst);
-    }
-
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
@@ -194,9 +166,37 @@ public class DistinctTest extends EnumerableTest {
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().distinct(new AnagramEqualityComparer()), new AnagramEqualityComparer());
     }
 
+    private IEnumerable<Object[]> SequencesWithDuplicates() {
+        List<Object[]> lst = new ArrayList<>();
+        // Validate an array of different numeric data types.
+        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.asEnumerable(new long[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.asEnumerable(new float[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.asEnumerable(new double[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.asEnumerable(new BigDecimal(1), new BigDecimal(1), new BigDecimal(1), new BigDecimal(2), new BigDecimal(3), new BigDecimal(5), new BigDecimal(5), new BigDecimal(6), new BigDecimal(6), new BigDecimal(10))});
+        // Try strings
+        lst.add(new Object[]{Linq.asEnumerable("add",
+                "add",
+                "subtract",
+                "multiply",
+                "divide",
+                "divide2",
+                "subtract",
+                "add",
+                "power",
+                "exponent",
+                "hello",
+                "class",
+                "namespace",
+                "namespace",
+                "namespace")
+        });
+        return Linq.asEnumerable(lst);
+    }
+
     @Test
     public void FindDistinctAndValidate() {
-        for (Object[] objects : SequencesWithDuplicates()) {
+        for (Object[] objects : this.SequencesWithDuplicates()) {
             this.FindDistinctAndValidate((IEnumerable<?>) objects[0]);
         }
     }

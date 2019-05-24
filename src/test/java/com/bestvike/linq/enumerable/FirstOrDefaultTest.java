@@ -15,26 +15,6 @@ import java.util.Date;
  * Created by 许崇雷 on 2019-05-09.
  */
 public class FirstOrDefaultTest extends EnumerableTest {
-    private static <T> void TestEmptyIList(Class<T> clazz) {
-        T[] source = ArrayUtils.empty(clazz);
-        T expected = null;
-
-        Assert.assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        Assert.assertEquals(expected, Linq.asEnumerable(source).runOnce().firstOrDefault());
-    }
-
-    private static <T> IEnumerable<T> EmptySourceGeneric() {
-        return Linq.empty();
-    }
-
-    private static <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = FirstOrDefaultTest.EmptySourceGeneric();
-        T expected = null;
-
-        Assert.assertNull(as(source, IList.class));
-        Assert.assertEquals(expected, source.runOnce().firstOrDefault());
-    }
-
     @Test
     public void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> ieInt = Linq.range(0, 0);
@@ -51,12 +31,20 @@ public class FirstOrDefaultTest extends EnumerableTest {
         Assert.assertEquals(q.firstOrDefault(), q.firstOrDefault());
     }
 
+    private <T> void TestEmptyIList(Class<T> clazz) {
+        T[] source = ArrayUtils.empty(clazz);
+        T expected = null;
+
+        Assert.assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
+        Assert.assertEquals(expected, Linq.asEnumerable(source).runOnce().firstOrDefault());
+    }
+
     @Test
     public void EmptyIListT() {
-        FirstOrDefaultTest.TestEmptyIList(Integer.class);
-        FirstOrDefaultTest.TestEmptyIList(String.class);
-        FirstOrDefaultTest.TestEmptyIList(Date.class);
-        FirstOrDefaultTest.TestEmptyIList(FirstOrDefaultTest.class);
+        this.TestEmptyIList(Integer.class);
+        this.TestEmptyIList(String.class);
+        this.TestEmptyIList(Date.class);
+        this.TestEmptyIList(FirstOrDefaultTest.class);
     }
 
     @Test
@@ -86,12 +74,24 @@ public class FirstOrDefaultTest extends EnumerableTest {
         Assert.assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
     }
 
+    private <T> IEnumerable<T> EmptySourceGeneric() {
+        return Linq.empty();
+    }
+
+    private <T> void TestEmptyNotIList() {
+        IEnumerable<T> source = this.EmptySourceGeneric();
+        T expected = null;
+
+        Assert.assertNull(as(source, IList.class));
+        Assert.assertEquals(expected, source.runOnce().firstOrDefault());
+    }
+
     @Test
     public void EmptyNotIListT() {
-        FirstOrDefaultTest.<Integer>TestEmptyNotIList();
-        FirstOrDefaultTest.<String>TestEmptyNotIList();
-        FirstOrDefaultTest.<Date>TestEmptyNotIList();
-        FirstOrDefaultTest.<FirstOrDefaultTest>TestEmptyNotIList();
+        this.<Integer>TestEmptyNotIList();
+        this.<String>TestEmptyNotIList();
+        this.<Date>TestEmptyNotIList();
+        this.<FirstOrDefaultTest>TestEmptyNotIList();
     }
 
     @Test
