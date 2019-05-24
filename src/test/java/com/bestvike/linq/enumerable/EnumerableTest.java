@@ -17,10 +17,13 @@ import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.AssertEqualityComparer;
 import org.junit.Assert;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +31,9 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 public class EnumerableTest {
+    static final BigDecimal MAX_DECIMAL = new BigDecimal("999999999999999999999999999999");
+    static final BigDecimal MIN_DECIMAL = new BigDecimal("-999999999999999999999999999999");
+    static final Date MAX_DATE = newDate(9999, 12, 31);
     static final double DELTA = 0d;
     static final String Empty = "";
     static final Employee[] badEmps = {
@@ -44,6 +50,25 @@ public class EnumerableTest {
             new Department("Sales", 10, Arrays.asList(emps[0], emps[2], emps[3])),
             new Department("HR", 20, Collections.emptyList()),
             new Department("Marketing", 30, Collections.singletonList(emps[1]))};
+
+    static Date newDate(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setLenient(false);
+        calendar.set(year, month - 1, day);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
+    static BigDecimal m(long value) {
+        return new BigDecimal(value);
+    }
+
+    static BigDecimal m(String value) {
+        return new BigDecimal(value);
+    }
 
     static <T> T as(Object value, Class<T> clazz) {
         if (clazz == null)
@@ -68,6 +93,16 @@ public class EnumerableTest {
                 builder.append("+").append(iterator.next());
         }
         return builder.toString();
+    }
+
+    public static void assertEquals(Object expected, Object actual) {
+        if (expected == actual)
+            return;
+        if (expected != null && expected.equals(actual))
+            return;
+        if (expected instanceof Comparable && ((Comparable) expected).compareTo(actual) == 0)
+            return;
+        fail(String.format("should be %s, but %s", expected, actual));
     }
 
     static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual) {
@@ -108,14 +143,14 @@ public class EnumerableTest {
         fail("expectedType " + expectedType.getName() + ", but got " + (obj == null ? "null" : obj.getClass().getName()));
     }
 
-    public static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
+    static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
         Assert.assertNotNull("expectedSuperset ", expectedSuperset);
 
         if (actual == null || !expectedSuperset.containsAll(actual))
             fail("expectedSuperset not containsAll actual");
     }
 
-    public static <T> void assertSuperset(java.util.Set<T> expectedSubset, java.util.Set<T> actual) {
+    static <T> void assertSuperset(java.util.Set<T> expectedSubset, java.util.Set<T> actual) {
         Assert.assertNotNull("expectedSubset ", expectedSubset);
 
         if (actual == null || !actual.containsAll(expectedSubset))
@@ -154,6 +189,38 @@ public class EnumerableTest {
         }
     }
 
+    static void assertNull(Object obj) {
+        if (obj == null)
+            return;
+        fail(String.format("expect null, but was: <%s>", obj));
+    }
+
+    static void assertNotNull(Object obj) {
+        if (obj != null)
+            return;
+        fail("expect not null, but was: <null>");
+    }
+
+    static void assertTrue(boolean obj) {
+        if (obj)
+            return;
+
+        fail("expect true, but was: false");
+    }
+
+    static void assertFalse(boolean obj) {
+        if (!obj)
+            return;
+
+        fail("expect false, but was: true");
+    }
+
+    static void fail(String message) {
+        if (message == null)
+            throw new AssertionError();
+        throw new AssertionError(message);
+    }
+
     static IEnumerable<Integer> RepeatedNumberGuaranteedNotCollectionType(int num, int count) {
         return Linq.repeat(num, count);
     }
@@ -186,12 +253,6 @@ public class EnumerableTest {
 
     static <T> IEnumerable<T> ForceNotCollection(IEnumerable<T> source) {
         return source.select(a -> a);
-    }
-
-    private static void fail(String message) {
-        if (message == null)
-            throw new AssertionError();
-        throw new AssertionError(message);
     }
 
     private static <T> String format(String message, IEnumerable<T> expected, IEnumerable<T> actual) {
