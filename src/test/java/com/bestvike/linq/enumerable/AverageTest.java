@@ -403,9 +403,9 @@ public class AverageTest extends EnumerableTest {
 
     @Test
     public void NullableDecimal_SumTooLarge_ThrowsOverflowException() {
-//        IEnumerable<BigDecimal> source =Linq.asEnumerable(decimal.MaxValue, decimal.MaxValue);
-//
-//        Assert.Throws<OverflowException>(() -> source.Average());
+        IEnumerable<BigDecimal> source = Linq.asEnumerable(MAX_DECIMAL, MAX_DECIMAL);
+
+        assertEquals(MAX_DECIMAL, source.averageDecimal());
     }
 
     @Test
