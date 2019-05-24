@@ -34,7 +34,6 @@ public class TestCase {
     protected static final BigDecimal MIN_DECIMAL = new BigDecimal("-999999999999999999999999999999");
     protected static final Date MAX_DATE = newDate(9999, 12, 31);
     protected static final Date MIN_DATE = newDate(1, 1, 1);
-    protected static final double DELTA = 0d;
     protected static final String Empty = "";
     protected static final Employee[] badEmps = {
             new Employee(140, "Cedric", 40),
