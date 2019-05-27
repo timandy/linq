@@ -35,6 +35,7 @@ import com.bestvike.linq.enumerable.RunOnce;
 import com.bestvike.linq.enumerable.Select;
 import com.bestvike.linq.enumerable.SelectMany;
 import com.bestvike.linq.enumerable.SequenceEqual;
+import com.bestvike.linq.enumerable.Shuffle;
 import com.bestvike.linq.enumerable.Single;
 import com.bestvike.linq.enumerable.Skip;
 import com.bestvike.linq.enumerable.Sum;
@@ -803,6 +804,14 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default boolean sequenceEqual(IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
         return SequenceEqual.sequenceEqual(this, second, comparer);
+    }
+
+    default IEnumerable<TSource> shuffle() {
+        return Shuffle.shuffle(this);
+    }
+
+    default IEnumerable<TSource> shuffle(long seed) {
+        return Shuffle.shuffle(this, seed);
     }
 
     default TSource single() {
