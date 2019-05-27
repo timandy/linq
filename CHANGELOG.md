@@ -18,6 +18,7 @@
 - Fix unsigned compare bugs.
 - Fix `Lookup.ApplyResultSelector` bugs.
 - Optimize `range().select()` and `repeat().select()`.
+- Fix OrderedEnumerableRangeEnumerator not iterate maxIdx.
 
 ## v2.0.1
 - Add test cases.
