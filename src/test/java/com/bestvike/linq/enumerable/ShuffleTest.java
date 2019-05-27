@@ -16,5 +16,6 @@ public class ShuffleTest extends TestCase {
         Array<Integer> sourceArray = source.toArray();
         assertNotEquals(sourceArray, source.shuffle());
         assertNotEquals(sourceArray, source.shuffle(1));
+        assertEquals(100, source.shuffle(1).count());
     }
 }
