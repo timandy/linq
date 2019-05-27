@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.adapter.enumerable.RunOnceEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -17,5 +17,23 @@ public final class RunOnce {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new RunOnceEnumerable<>(source);
+    }
+}
+
+
+final class RunOnceEnumerable<TSource> implements IEnumerable<TSource> {
+    private final IEnumerable<TSource> source;
+    private boolean called;
+
+    RunOnceEnumerable(IEnumerable<TSource> source) {
+        this.source = source;
+    }
+
+    @Override
+    public IEnumerator<TSource> enumerator() {
+        if (this.called)
+            ThrowHelper.throwNotSupportedException();
+        this.called = true;
+        return this.source.enumerator();
     }
 }
