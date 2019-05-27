@@ -107,27 +107,19 @@ public class TestCase {
     }
 
     protected static void assertEquals(Object expected, Object actual) {
-        if (equals(expected, actual))
+        if (equal(expected, actual))
             return;
         fail(String.format("should be %s, but %s", expected, actual));
     }
 
-    protected static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual) {
-        assertEquals(expected, actual, null);
-    }
-
     protected static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
-        if (expected == actual)
-            return;
-        if (comparer == null)
-            comparer = new AssertEqualityComparer<>();
-        if (expected != null && expected.sequenceEqual(actual, comparer))
+        if (sequenceEqual(expected, actual, comparer))
             return;
         fail(format(null, expected, actual));
     }
 
     protected static void assertNotEquals(Object expected, Object actual) {
-        if (equals(expected, actual))
+        if (equal(expected, actual))
             fail("should not be equals");
     }
 
@@ -267,13 +259,15 @@ public class TestCase {
         return source.select(a -> a);
     }
 
-    private static boolean equals(Object expected, Object actual) {
+    private static boolean equal(Object expected, Object actual) {
         if (expected == actual)
             return true;
         if (expected == null || actual == null)
             return false;
         if (expected.equals(actual))
             return true;
+        if (expected instanceof IEnumerable && actual instanceof IEnumerable)
+            return sequenceEqual((IEnumerable) expected, (IEnumerable) actual, null);
         if (expected instanceof Number && actual instanceof Number) {
             if (expected instanceof Byte || expected instanceof Short || expected instanceof Integer || expected instanceof Long
                     || actual instanceof Byte || actual instanceof Short || actual instanceof Integer || actual instanceof Long)
@@ -284,6 +278,14 @@ public class TestCase {
         }
         return (expected instanceof Comparable && ((Comparable) expected).compareTo(actual) == 0)
                 || (actual instanceof Comparable && ((Comparable) actual).compareTo(expected) == 0);
+    }
+
+    private static <T> boolean sequenceEqual(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
+        if (expected == actual)
+            return true;
+        if (comparer == null)
+            comparer = new AssertEqualityComparer<>();
+        return expected != null && expected.sequenceEqual(actual, comparer);
     }
 
     private static <T> String format(String message, IEnumerable<T> expected, IEnumerable<T> actual) {
