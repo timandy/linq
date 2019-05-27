@@ -412,7 +412,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                     this.map = AbstractOrderedEnumerable.this.sortedMap(this.buffer, this.minIdx, this.maxIdx);
                     this.state = 1;
                 case 1:
-                    if (this.minIdx < this.maxIdx) {
+                    if (this.minIdx <= this.maxIdx) {
                         //noinspection unchecked
                         this.current = (TElement) this.buffer.items[this.map[this.minIdx]];
                         ++this.minIdx;
