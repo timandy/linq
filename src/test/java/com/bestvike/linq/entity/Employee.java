@@ -17,7 +17,7 @@ public final class Employee {
     }
 
     public String toString() {
-        return String.format("Employee(name: %s, deptno:%d)", this.name, this.deptno);
+        return String.format("Employee(name:%s, deptno:%d)", this.name, this.deptno);
     }
 
     @Override
