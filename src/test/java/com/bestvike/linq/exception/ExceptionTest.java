@@ -231,6 +231,23 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
+    public void testRuntimeException() {
+        try {
+            ThrowHelper.throwRuntimeException(null);
+            fail("should not be here");
+        } catch (RuntimeException e) {
+            assertNull(e.getCause());
+        }
+
+        try {
+            ThrowHelper.throwRuntimeException(new IllegalAccessException());
+            fail("should not be here");
+        } catch (RuntimeException e) {
+            assertIsAssignableFrom(IllegalAccessException.class, e.getCause());
+        }
+    }
+
+    @Test
     public void testOther() {
         try {
             ThrowHelper.throwNoSuchElementException();
