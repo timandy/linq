@@ -59,6 +59,10 @@ public final class ThrowHelper {
         throw new ArgumentException(SR.ArgumentException_TupleLastArgumentNotATuple);
     }
 
+    public static void throwRuntimeException(Throwable cause) {
+        throw new RuntimeException(cause);
+    }
+
     private static String getArgumentString(ExceptionArgument argument) {
         if (argument == null)
             throw new NullPointerException("The ExceptionArgument value is not defined.");
