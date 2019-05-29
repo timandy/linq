@@ -2,6 +2,8 @@ package com.bestvike.linq.util;
 
 import com.bestvike.TestCase;
 import com.bestvike.ValueType;
+import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.Linq;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -27,12 +29,11 @@ public class ReflectionUtilsTest extends TestCase {
 
         Field[] fields = ReflectionUtils.getFields(Bean.class);
         assertEquals(6, fields.length);
-        assertEquals("pri", fields[0].getName());
-        assertEquals("pro", fields[1].getName());
-        assertEquals("pub", fields[2].getName());
-        assertEquals("pri", fields[3].getName());
-        assertEquals("pro", fields[4].getName());
-        assertEquals("score", fields[5].getName());
+        IEnumerable<String> fieldEnumerable = Linq.asEnumerable(fields).select(Field::getName);
+        assertEquals(2, fieldEnumerable.count("pri"::equals));
+        assertEquals(2, fieldEnumerable.count("pro"::equals));
+        assertEquals(1, fieldEnumerable.count("pub"::equals));
+        assertEquals(1, fieldEnumerable.count("score"::equals));
     }
 
 
