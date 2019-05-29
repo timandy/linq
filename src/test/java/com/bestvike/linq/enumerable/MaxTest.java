@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.ValueType;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
@@ -1064,7 +1065,7 @@ public class MaxTest extends TestCase {
         assertEquals(null, f2);
     }
 
-    static class Obj<T> {
+    private static class Obj<T> extends ValueType {
         final String name;
         final T num;
 

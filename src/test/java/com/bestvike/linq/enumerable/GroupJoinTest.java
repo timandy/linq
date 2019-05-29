@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.ValueType;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func2;
@@ -10,9 +11,6 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -400,7 +398,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     //struct
-    static final class CustomerRec {
+    private static final class CustomerRec extends ValueType {
         final String name;
         final Integer custID;
 
@@ -408,26 +406,10 @@ public class GroupJoinTest extends TestCase {
             this.name = name;
             this.custID = custID;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            CustomerRec that = (CustomerRec) obj;
-            return Objects.equals(this.name, that.name) &&
-                    Objects.equals(this.custID, that.custID);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.name, this.custID);
-        }
     }
 
     //struct
-    static final class OrderRec {
+    private static final class OrderRec extends ValueType {
         final Integer orderID;
         final Integer custID;
         final Integer total;
@@ -437,27 +419,10 @@ public class GroupJoinTest extends TestCase {
             this.custID = custID;
             this.total = total;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            OrderRec orderRec = (OrderRec) obj;
-            return Objects.equals(this.orderID, orderRec.orderID) &&
-                    Objects.equals(this.custID, orderRec.custID) &&
-                    Objects.equals(this.total, orderRec.total);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.orderID, this.custID, this.total);
-        }
     }
 
     //struct
-    static final class AnagramRec {
+    private static final class AnagramRec extends ValueType {
         final String name;
         final Integer orderID;
         final Integer total;
@@ -467,27 +432,10 @@ public class GroupJoinTest extends TestCase {
             this.orderID = orderID;
             this.total = total;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            AnagramRec that = (AnagramRec) obj;
-            return Objects.equals(this.name, that.name) &&
-                    Objects.equals(this.orderID, that.orderID) &&
-                    Objects.equals(this.total, that.total);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.name, this.orderID, this.total);
-        }
     }
 
     //struct
-    static final class JoinRec {
+    private static final class JoinRec extends ValueType {
         final String name;
         final Integer[] orderID;
         final Integer[] total;
@@ -496,26 +444,6 @@ public class GroupJoinTest extends TestCase {
             this.name = name;
             this.orderID = orderID;
             this.total = total;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            JoinRec joinRec = (JoinRec) obj;
-            return Objects.equals(this.name, joinRec.name) &&
-                    Arrays.equals(this.orderID, joinRec.orderID) &&
-                    Arrays.equals(this.total, joinRec.total);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = Objects.hash(this.name);
-            result = 31 * result + Arrays.hashCode(this.orderID);
-            result = 31 * result + Arrays.hashCode(this.total);
-            return result;
         }
     }
 }

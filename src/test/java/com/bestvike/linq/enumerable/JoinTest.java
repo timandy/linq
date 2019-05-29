@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.ValueType;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func2;
@@ -13,7 +14,6 @@ import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -762,7 +762,7 @@ public class JoinTest extends TestCase {
     }
 
     //struct
-    static final class CustomerRec {
+    private static final class CustomerRec extends ValueType {
         final String name;
         final int custID;
 
@@ -770,26 +770,10 @@ public class JoinTest extends TestCase {
             this.name = name;
             this.custID = custID;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            CustomerRec that = (CustomerRec) obj;
-            return this.custID == that.custID &&
-                    Objects.equals(this.name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.name, this.custID);
-        }
     }
 
     //struct
-    static final class OrderRec {
+    private static final class OrderRec extends ValueType {
         final int orderID;
         final int custID;
         final int total;
@@ -799,27 +783,10 @@ public class JoinTest extends TestCase {
             this.custID = custID;
             this.total = total;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            OrderRec orderRec = (OrderRec) obj;
-            return this.orderID == orderRec.orderID &&
-                    this.custID == orderRec.custID &&
-                    this.total == orderRec.total;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.orderID, this.custID, this.total);
-        }
     }
 
     //struct
-    static final class AnagramRec {
+    private static final class AnagramRec extends ValueType {
         final String name;
         final int orderID;
         final int total;
@@ -829,27 +796,10 @@ public class JoinTest extends TestCase {
             this.orderID = orderID;
             this.total = total;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            AnagramRec that = (AnagramRec) obj;
-            return this.orderID == that.orderID &&
-                    this.total == that.total &&
-                    Objects.equals(this.name, that.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.name, this.orderID, this.total);
-        }
     }
 
     //struct
-    static final class JoinRec {
+    private static final class JoinRec extends ValueType {
         final String name;
         final int orderID;
         final int total;
@@ -858,23 +808,6 @@ public class JoinTest extends TestCase {
             this.name = name;
             this.orderID = orderID;
             this.total = total;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            JoinRec joinRec = (JoinRec) obj;
-            return this.orderID == joinRec.orderID &&
-                    this.total == joinRec.total &&
-                    Objects.equals(this.name, joinRec.name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.name, this.orderID, this.total);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.ValueType;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.ICollection;
@@ -24,7 +25,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -869,7 +869,7 @@ public class GroupByTest extends TestCase {
     }
 
     //struct
-    public static final class Record {
+    private static final class Record extends ValueType {
         final String Name;
         final int Score;
 
@@ -877,43 +877,14 @@ public class GroupByTest extends TestCase {
             this.Name = name;
             this.Score = score;
         }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            Record record = (Record) obj;
-            return this.Score == record.Score && Objects.equals(this.Name, record.Name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.Name, this.Score);
-        }
     }
 
     //struct
-    private static final class ObjX {
+    private static final class ObjX extends ValueType {
         final String X;
 
-        private ObjX(String x) {
+        ObjX(String x) {
             this.X = x;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            ObjX objX = (ObjX) obj;
-            return Objects.equals(this.X, objX.X);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.X);
         }
     }
 }

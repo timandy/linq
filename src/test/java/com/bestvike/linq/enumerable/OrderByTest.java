@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.ValueType;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.StringComparer;
@@ -19,7 +20,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -517,29 +517,13 @@ public class OrderByTest extends TestCase {
         assertEquals("[Gates, Eric, Fred, Janet, Bill, Cedric]", sss);
     }
 
-    private static class NameScore {
+    private static class NameScore extends ValueType {
         final String Name;
         final int Score;
 
         NameScore(String name, int score) {
             this.Name = name;
             this.Score = score;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null || this.getClass() != obj.getClass())
-                return false;
-            NameScore nameScore = (NameScore) obj;
-            return this.Score == nameScore.Score &&
-                    Objects.equals(this.Name, nameScore.Name);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(this.Name, this.Score);
         }
     }
 
