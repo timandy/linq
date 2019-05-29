@@ -19,6 +19,7 @@
 - Fix `Lookup.ApplyResultSelector` bugs.
 - Optimize `range().select()` and `repeat().select()`.
 - Fix OrderedEnumerableRangeEnumerator not iterate maxIdx.
+- Add `ValueType` as super class for value type.
 
 ## v2.0.1
 - Add test cases.
