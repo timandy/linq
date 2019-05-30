@@ -733,7 +733,7 @@ public class GroupByTest extends TestCase {
     public void GroupingKeyIsPublic() throws NoSuchMethodException {
         // Grouping.Key needs to be public (not explicitly implemented) for the sake of WPF.
 
-        Object[] objs = {"Foo", BigDecimal.valueOf(1), "Bar", new ObjX("X"), BigDecimal.valueOf(2)};
+        Object[] objs = {"Foo", BigDecimal.valueOf(1), "Bar", new Tmp("X"), BigDecimal.valueOf(2)};
         Object group = Linq.asEnumerable(objs).groupBy(Object::getClass).first();
 
         Class<?> grouptype = group.getClass();
@@ -880,10 +880,10 @@ public class GroupByTest extends TestCase {
     }
 
     //struct
-    private static final class ObjX extends ValueType {
+    private static final class Tmp extends ValueType {
         final String X;
 
-        ObjX(String x) {
+        Tmp(String x) {
             this.X = x;
         }
     }

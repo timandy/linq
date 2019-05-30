@@ -585,11 +585,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Int_WithSelectorAccessingProperty() {
-        Obj<Integer>[] source = new Obj[]
+        NameNum<Integer>[] source = new NameNum[]
                 {
-                        new Obj("Tim", 10),
-                        new Obj("John", -105),
-                        new Obj("Bob", -30)
+                        new NameNum("Tim", 10),
+                        new NameNum("John", -105),
+                        new NameNum("Bob", -30)
                 };
         assertEquals(-105, Linq.asEnumerable(source).minInt(e -> e.num));
     }
@@ -602,11 +602,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Long_WithSelectorAccessingProperty() {
-        Obj<Long>[] source = new Obj[]
+        NameNum<Long>[] source = new NameNum[]
                 {
-                        new Obj("Tim", 10L),
-                        new Obj("John", Long.MIN_VALUE),
-                        new Obj("Bob", -10L)
+                        new NameNum("Tim", 10L),
+                        new NameNum("John", Long.MIN_VALUE),
+                        new NameNum("Bob", -10L)
                 };
 
         assertEquals(Long.MIN_VALUE, Linq.asEnumerable(source).minLong(e -> e.num));
@@ -620,11 +620,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Float_WithSelectorAccessingProperty() {
-        Obj<Float>[] source = new Obj[]
+        NameNum<Float>[] source = new NameNum[]
                 {
-                        new Obj("Tim", -45.5f),
-                        new Obj("John", -132.5f),
-                        new Obj("Bob", 20.45f)
+                        new NameNum("Tim", -45.5f),
+                        new NameNum("John", -132.5f),
+                        new NameNum("Bob", 20.45f)
                 };
         assertEquals(-132.5f, Linq.asEnumerable(source).minFloat(e -> e.num));
     }
@@ -637,11 +637,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Double_WithSelectorAccessingProperty() {
-        Obj<Double>[] source = new Obj[]
+        NameNum<Double>[] source = new NameNum[]
                 {
-                        new Obj("Tim", -45.5),
-                        new Obj("John", -132.5),
-                        new Obj("Bob", 20.45)
+                        new NameNum("Tim", -45.5),
+                        new NameNum("John", -132.5),
+                        new NameNum("Bob", 20.45)
                 };
         assertEquals(-132.5, Linq.asEnumerable(source).minDouble(e -> e.num));
     }
@@ -654,11 +654,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Decimal_WithSelectorAccessingProperty() {
-        Obj<BigDecimal>[] source = new Obj[]
+        NameNum<BigDecimal>[] source = new NameNum[]
                 {
-                        new Obj("Tim", m("100.45")),
-                        new Obj("John", m("10.5")),
-                        new Obj("Bob", m("0.05"))
+                        new NameNum("Tim", m("100.45")),
+                        new NameNum("John", m("10.5")),
+                        new NameNum("Bob", m("0.05"))
                 };
         assertEquals(m("0.05"), Linq.asEnumerable(source).minDecimal(e -> e.num));
     }
@@ -671,11 +671,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableInt_WithSelectorAccessingProperty() {
-        Obj<Integer>[] source = new Obj[]
+        NameNum<Integer>[] source = new NameNum[]
                 {
-                        new Obj("Tim", 10),
-                        new Obj("John", null),
-                        new Obj("Bob", -30)
+                        new NameNum("Tim", 10),
+                        new NameNum("John", null),
+                        new NameNum("Bob", -30)
                 };
         assertEquals(-30, Linq.asEnumerable(source).minIntNull(e -> e.num));
     }
@@ -688,11 +688,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableLong_WithSelectorAccessingProperty() {
-        Obj<Long>[] source = new Obj[]
+        NameNum<Long>[] source = new NameNum[]
                 {
-                        new Obj("Tim", null),
-                        new Obj("John", Long.MIN_VALUE),
-                        new Obj("Bob", -10L)
+                        new NameNum("Tim", null),
+                        new NameNum("John", Long.MIN_VALUE),
+                        new NameNum("Bob", -10L)
                 };
         assertEquals(Long.MIN_VALUE, Linq.asEnumerable(source).minLongNull(e -> e.num));
     }
@@ -705,11 +705,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableFloat_WithSelectorAccessingProperty() {
-        Obj<Float>[] source = new Obj[]
+        NameNum<Float>[] source = new NameNum[]
                 {
-                        new Obj("Tim", -45.5f),
-                        new Obj("John", -132.5f),
-                        new Obj("Bob", null)
+                        new NameNum("Tim", -45.5f),
+                        new NameNum("John", -132.5f),
+                        new NameNum("Bob", null)
                 };
 
         assertEquals(-132.5f, Linq.asEnumerable(source).minFloatNull(e -> e.num));
@@ -723,11 +723,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableDouble_WithSelectorAccessingProperty() {
-        Obj<Double>[] source = new Obj[]
+        NameNum<Double>[] source = new NameNum[]
                 {
-                        new Obj("Tim", -45.5d),
-                        new Obj("John", -132.5d),
-                        new Obj("Bob", null)
+                        new NameNum("Tim", -45.5d),
+                        new NameNum("John", -132.5d),
+                        new NameNum("Bob", null)
                 };
         assertEquals(-132.5, Linq.asEnumerable(source).minDoubleNull(e -> e.num));
     }
@@ -740,11 +740,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableDecimal_WithSelectorAccessingProperty() {
-        Obj<BigDecimal>[] source = new Obj[]
+        NameNum<BigDecimal>[] source = new NameNum[]
                 {
-                        new Obj("Tim", m("100.45")),
-                        new Obj("John", m("10.5")),
-                        new Obj("Bob", null)
+                        new NameNum("Tim", m("100.45")),
+                        new NameNum("John", m("10.5")),
+                        new NameNum("Bob", null)
                 };
         assertEquals(m("10.5"), Linq.asEnumerable(source).minDecimalNull(e -> e.num));
     }
@@ -763,11 +763,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_String_WithSelectorAccessingProperty() {
-        Obj<String>[] source = new Obj[]
+        NameNum<String>[] source = new NameNum[]
                 {
-                        new Obj("Tim", m("100.45")),
-                        new Obj("John", m("10.5")),
-                        new Obj("Bob", m("0.05"))
+                        new NameNum("Tim", m("100.45")),
+                        new NameNum("John", m("10.5")),
+                        new NameNum("Bob", m("0.05"))
                 };
         assertEquals("Bob", Linq.asEnumerable(source).minNull(e -> e.name));
     }
@@ -1050,11 +1050,11 @@ public class MinTest extends TestCase {
         assertEquals(null, f2);
     }
 
-    private static class Obj<T> extends ValueType {
+    private static class NameNum<T> extends ValueType {
         final String name;
         final T num;
 
-        Obj(String name, T num) {
+        NameNum(String name, T num) {
             this.name = name;
             this.num = num;
         }
