@@ -18,8 +18,9 @@
 - Fix unsigned compare bugs.
 - Fix `Lookup.ApplyResultSelector` bugs.
 - Optimize `range().select()` and `repeat().select()`.
-- Fix OrderedEnumerableRangeEnumerator not iterate maxIdx.
+- Fix `OrderedEnumerableRangeEnumerator` not iterate maxIdx.
 - Add `ValueType` as super class for value type.
+- Fix `EnumerablePartition` error assert.
 
 ## v2.0.1
 - Add test cases.
