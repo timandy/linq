@@ -10,8 +10,10 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,6 +27,10 @@ public class ValueTest extends TestCase {
     private OneFieldBean oneFieldBeanExpected;
     private TwoFieldBean twoFieldBean;
     private TwoFieldBean twoFieldBeanExpected;
+    private MoreFieldBean nullMoreFieldBean;
+    private MoreFieldBean nullMoreFieldBeanExpected;
+    private MoreFieldBean emptyMoreFieldBean;
+    private MoreFieldBean emptyMoreFieldBeanExpected;
     private MoreFieldBean moreFieldBean;
     private MoreFieldBean moreFieldBeanExpected;
 
@@ -36,6 +42,48 @@ public class ValueTest extends TestCase {
         this.oneFieldBeanExpected = new OneFieldBean("Robert");
         this.twoFieldBean = new TwoFieldBean("Robert", 45);
         this.twoFieldBeanExpected = new TwoFieldBean("Robert", 45);
+        this.nullMoreFieldBean = new MoreFieldBean();
+        this.nullMoreFieldBeanExpected = new MoreFieldBean();
+        this.emptyMoreFieldBean = new MoreFieldBean();
+        this.emptyMoreFieldBean.nullField = null;
+        this.emptyMoreFieldBean.decimal = m("0");
+        this.emptyMoreFieldBean.boolArr = new boolean[]{};
+        this.emptyMoreFieldBean.byteArr = new byte[]{};
+        this.emptyMoreFieldBean.shortArr = new short[]{};
+        this.emptyMoreFieldBean.intArr = new int[]{};
+        this.emptyMoreFieldBean.longArr = new long[]{};
+        this.emptyMoreFieldBean.charArr = new char[]{};
+        this.emptyMoreFieldBean.floatArr = new float[]{};
+        this.emptyMoreFieldBean.doubleArr = new double[]{};
+        this.emptyMoreFieldBean.objArr = new Object[]{};
+        this.emptyMoreFieldBean.objArr2 = new BigDecimal[]{};
+        this.emptyMoreFieldBean.iCollection = (ICollection<?>) Linq.asEnumerable();
+        this.emptyMoreFieldBean.listProvider = Linq.asEnumerable().select(a -> a + "_suffix");
+        this.emptyMoreFieldBean.enumerable = Linq.asEnumerable().where(Objects::nonNull);
+        this.emptyMoreFieldBean.collection = Collections.emptyList();
+        this.emptyMoreFieldBean.iterable = new ArrayIterable<>();
+        this.emptyMoreFieldBean.map = new LinkedHashMap<>();
+        this.emptyMoreFieldBean.bean = new TwoFieldBean("Tim", 1239);
+        this.emptyMoreFieldBeanExpected = new MoreFieldBean();
+        this.emptyMoreFieldBeanExpected.nullField = null;
+        this.emptyMoreFieldBeanExpected.decimal = m("0.0000");
+        this.emptyMoreFieldBeanExpected.boolArr = new boolean[]{};
+        this.emptyMoreFieldBeanExpected.byteArr = new byte[]{};
+        this.emptyMoreFieldBeanExpected.shortArr = new short[]{};
+        this.emptyMoreFieldBeanExpected.intArr = new int[]{};
+        this.emptyMoreFieldBeanExpected.longArr = new long[]{};
+        this.emptyMoreFieldBeanExpected.charArr = new char[]{};
+        this.emptyMoreFieldBeanExpected.floatArr = new float[]{};
+        this.emptyMoreFieldBeanExpected.doubleArr = new double[]{};
+        this.emptyMoreFieldBeanExpected.objArr = new Object[]{};
+        this.emptyMoreFieldBeanExpected.objArr2 = new BigDecimal[]{};
+        this.emptyMoreFieldBeanExpected.iCollection = (ICollection<?>) Linq.asEnumerable();
+        this.emptyMoreFieldBeanExpected.listProvider = Linq.asEnumerable().select(a -> a + "_suffix");
+        this.emptyMoreFieldBeanExpected.enumerable = Linq.asEnumerable().where(Objects::nonNull);
+        this.emptyMoreFieldBeanExpected.collection = Collections.emptyList();
+        this.emptyMoreFieldBeanExpected.iterable = new ArrayIterable<>();
+        this.emptyMoreFieldBeanExpected.map = new LinkedHashMap<>();
+        this.emptyMoreFieldBeanExpected.bean = new TwoFieldBean("Tim", 1239);
         this.moreFieldBean = new MoreFieldBean();
         this.moreFieldBean.nullField = null;
         this.moreFieldBean.decimal = m("123.456");
@@ -103,6 +151,10 @@ public class ValueTest extends TestCase {
         assertNotSame(this.twoFieldBeanExpected, this.twoFieldBean);
         assertTrue(Value.equals(this.twoFieldBeanExpected, this.twoFieldBean));
 
+        assertNotSame(this.nullMoreFieldBeanExpected, this.nullMoreFieldBean);
+        assertTrue(Value.equals(this.nullMoreFieldBeanExpected, this.nullMoreFieldBean));
+        assertNotSame(this.emptyMoreFieldBeanExpected, this.emptyMoreFieldBean);
+        assertTrue(Value.equals(this.emptyMoreFieldBeanExpected, this.emptyMoreFieldBean));
         assertNotSame(this.moreFieldBeanExpected, this.moreFieldBean);
         assertTrue(Value.equals(this.moreFieldBeanExpected, this.moreFieldBean));
     }
@@ -115,6 +167,8 @@ public class ValueTest extends TestCase {
         assertEquals(Value.hashCode(this.noFieldBeanExpected), Value.hashCode(this.noFieldBean));
         assertEquals(Value.hashCode(this.oneFieldBeanExpected), Value.hashCode(this.oneFieldBean));
         assertEquals(Value.hashCode(this.twoFieldBeanExpected), Value.hashCode(this.twoFieldBean));
+        assertEquals(Value.hashCode(this.nullMoreFieldBeanExpected), Value.hashCode(this.nullMoreFieldBean));
+        assertEquals(Value.hashCode(this.emptyMoreFieldBeanExpected), Value.hashCode(this.emptyMoreFieldBean));
         assertEquals(Value.hashCode(this.moreFieldBeanExpected), Value.hashCode(this.moreFieldBean));
     }
 
@@ -129,6 +183,10 @@ public class ValueTest extends TestCase {
         assertEquals(Value.toString(this.twoFieldBeanExpected), Value.toString(this.twoFieldBean));
         assertEquals("TwoFieldBean{Name='Robert', Score=45}", Value.toString(this.twoFieldBean));
 
+        assertEquals(Value.toString(this.nullMoreFieldBeanExpected), Value.toString(this.nullMoreFieldBean));
+        assertEquals("MoreFieldBean{nullField=null, decimal=null, boolArr=null, byteArr=null, shortArr=null, intArr=null, longArr=null, charArr=null, floatArr=null, doubleArr=null, objArr=null, objArr2=null, iCollection=null, listProvider=null, enumerable=null, collection=null, iterable=null, map=null, bean=null}", Value.toString(this.nullMoreFieldBean));
+        assertEquals(Value.toString(this.emptyMoreFieldBeanExpected), Value.toString(this.emptyMoreFieldBean));
+        assertEquals("MoreFieldBean{nullField=null, decimal=0.000000, boolArr=[], byteArr=[], shortArr=[], intArr=[], longArr=[], charArr=[], floatArr=[], doubleArr=[], objArr=[], objArr2=[], iCollection=[], listProvider=[], enumerable=[], collection=[], iterable=[], map=LinkedHashMap{}, bean=TwoFieldBean{Name='Tim', Score=1239}}", Value.toString(this.emptyMoreFieldBean));
         assertEquals(Value.toString(this.moreFieldBeanExpected), Value.toString(this.moreFieldBean));
         assertEquals("MoreFieldBean{nullField=null, decimal=123.456000, boolArr=[true, false, true], byteArr=[-128, 2, 126, 127], shortArr=[-32768, 2, 3, 32767], intArr=[-2147483648, 2, 3, 2147483647], longArr=[-9223372036854775808, 2, 3, 9223372036854775807], charArr=[\u0000, #, !, $, a], floatArr=[-Infinity, Infinity, 1.4E-45, 3.4028235E38], doubleArr=[-Infinity, Infinity, 4.9E-324, 1.7976931348623157E308], objArr=[null, '!@#$%^&*()_+', 123.456000, 9999999.100000, NoFieldBean{}], objArr2=[null, 355.990000], iCollection=[null, '', '', '你好世界'], listProvider=['null_suffix', '_suffix', '_suffix', '你好世界_suffix'], enumerable=['', '', '你好世界'], collection=[null, '', '', '你好世界'], iterable=[null, '', '', '你好世界'], map=HashMap{null='hello', ''=OneFieldBean{Name='世界'}, 'a'=1, 'key'=123.000000}, bean=TwoFieldBean{Name='Tim', Score=1239}}", Value.toString(this.moreFieldBean));
     }
