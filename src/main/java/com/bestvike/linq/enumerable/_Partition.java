@@ -340,7 +340,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
 
     EnumerablePartition(IEnumerable<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
-        assert !(source instanceof IIListProvider);//, $"The caller needs to check for {nameof(IList<TSource>)}.");
+        assert !(source instanceof IList);//, $"The caller needs to check for {nameof(IList<TSource>)}.");
         assert minIndexInclusive >= 0;
         assert maxIndexInclusive >= -1;
         // Note that although maxIndexInclusive can't grow, it can still be int.MaxValue.
