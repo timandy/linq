@@ -18,7 +18,7 @@ import java.util.TreeMap;
  * Created by 许崇雷 on 2018-05-29.
  */
 @SuppressWarnings("Duplicates")
-public final class Value {
+public final class Values {
     private static final int DECIMAL_SCALE = 6;
     private static final int DECIMAL_ROUNDING = BigDecimal.ROUND_HALF_EVEN;
     private static final int HASH_PRIME = 31;
@@ -47,7 +47,7 @@ public final class Value {
     private static final String STRING_MAP_SEPARATOR = ", ";
     private static final String STRING_MAP_KEY_VALUE_SEPARATOR = "=";
 
-    private Value() {
+    private Values() {
     }
 
     public static boolean equals(Object x, Object y) {

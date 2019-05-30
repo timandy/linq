@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-05-29.
  */
-public class ValueTest extends TestCase {
+public class ValuesTest extends TestCase {
     private NoFieldBean noFieldBean;
     private NoFieldBean noFieldBeanExpected;
     private OneFieldBean oneFieldBean;
@@ -138,57 +138,57 @@ public class ValueTest extends TestCase {
 
     @Test
     public void testEquals() {
-        assertTrue(Value.equals(null, null));
-        assertFalse(Value.equals(null, this.noFieldBean));
-        assertFalse(Value.equals(this.noFieldBean, null));
+        assertTrue(Values.equals(null, null));
+        assertFalse(Values.equals(null, this.noFieldBean));
+        assertFalse(Values.equals(this.noFieldBean, null));
 
         assertNotSame(this.noFieldBeanExpected, this.noFieldBean);
-        assertTrue(Value.equals(this.noFieldBeanExpected, this.noFieldBean));
+        assertTrue(Values.equals(this.noFieldBeanExpected, this.noFieldBean));
 
         assertNotSame(this.oneFieldBeanExpected, this.oneFieldBean);
-        assertTrue(Value.equals(this.oneFieldBeanExpected, this.oneFieldBean));
+        assertTrue(Values.equals(this.oneFieldBeanExpected, this.oneFieldBean));
 
         assertNotSame(this.twoFieldBeanExpected, this.twoFieldBean);
-        assertTrue(Value.equals(this.twoFieldBeanExpected, this.twoFieldBean));
+        assertTrue(Values.equals(this.twoFieldBeanExpected, this.twoFieldBean));
 
         assertNotSame(this.nullMoreFieldBeanExpected, this.nullMoreFieldBean);
-        assertTrue(Value.equals(this.nullMoreFieldBeanExpected, this.nullMoreFieldBean));
+        assertTrue(Values.equals(this.nullMoreFieldBeanExpected, this.nullMoreFieldBean));
         assertNotSame(this.emptyMoreFieldBeanExpected, this.emptyMoreFieldBean);
-        assertTrue(Value.equals(this.emptyMoreFieldBeanExpected, this.emptyMoreFieldBean));
+        assertTrue(Values.equals(this.emptyMoreFieldBeanExpected, this.emptyMoreFieldBean));
         assertNotSame(this.moreFieldBeanExpected, this.moreFieldBean);
-        assertTrue(Value.equals(this.moreFieldBeanExpected, this.moreFieldBean));
+        assertTrue(Values.equals(this.moreFieldBeanExpected, this.moreFieldBean));
     }
 
     @Test
     public void testHashCode() {
-        assertEquals(0, Value.hashCode(null));
-        assertEquals(1, Value.hashCode(new int[0]));
+        assertEquals(0, Values.hashCode(null));
+        assertEquals(1, Values.hashCode(new int[0]));
 
-        assertEquals(Value.hashCode(this.noFieldBeanExpected), Value.hashCode(this.noFieldBean));
-        assertEquals(Value.hashCode(this.oneFieldBeanExpected), Value.hashCode(this.oneFieldBean));
-        assertEquals(Value.hashCode(this.twoFieldBeanExpected), Value.hashCode(this.twoFieldBean));
-        assertEquals(Value.hashCode(this.nullMoreFieldBeanExpected), Value.hashCode(this.nullMoreFieldBean));
-        assertEquals(Value.hashCode(this.emptyMoreFieldBeanExpected), Value.hashCode(this.emptyMoreFieldBean));
-        assertEquals(Value.hashCode(this.moreFieldBeanExpected), Value.hashCode(this.moreFieldBean));
+        assertEquals(Values.hashCode(this.noFieldBeanExpected), Values.hashCode(this.noFieldBean));
+        assertEquals(Values.hashCode(this.oneFieldBeanExpected), Values.hashCode(this.oneFieldBean));
+        assertEquals(Values.hashCode(this.twoFieldBeanExpected), Values.hashCode(this.twoFieldBean));
+        assertEquals(Values.hashCode(this.nullMoreFieldBeanExpected), Values.hashCode(this.nullMoreFieldBean));
+        assertEquals(Values.hashCode(this.emptyMoreFieldBeanExpected), Values.hashCode(this.emptyMoreFieldBean));
+        assertEquals(Values.hashCode(this.moreFieldBeanExpected), Values.hashCode(this.moreFieldBean));
     }
 
     @Test
     public void testToString() {
-        assertEquals(Value.toString(this.noFieldBeanExpected), Value.toString(this.noFieldBean));
-        assertEquals("NoFieldBean{}", Value.toString(this.noFieldBean));
+        assertEquals(Values.toString(this.noFieldBeanExpected), Values.toString(this.noFieldBean));
+        assertEquals("NoFieldBean{}", Values.toString(this.noFieldBean));
 
-        assertEquals(Value.toString(this.oneFieldBeanExpected), Value.toString(this.oneFieldBean));
-        assertEquals("OneFieldBean{Name='Robert'}", Value.toString(this.oneFieldBean));
+        assertEquals(Values.toString(this.oneFieldBeanExpected), Values.toString(this.oneFieldBean));
+        assertEquals("OneFieldBean{Name='Robert'}", Values.toString(this.oneFieldBean));
 
-        assertEquals(Value.toString(this.twoFieldBeanExpected), Value.toString(this.twoFieldBean));
-        assertEquals("TwoFieldBean{Name='Robert', Score=45}", Value.toString(this.twoFieldBean));
+        assertEquals(Values.toString(this.twoFieldBeanExpected), Values.toString(this.twoFieldBean));
+        assertEquals("TwoFieldBean{Name='Robert', Score=45}", Values.toString(this.twoFieldBean));
 
-        assertEquals(Value.toString(this.nullMoreFieldBeanExpected), Value.toString(this.nullMoreFieldBean));
-        assertEquals("MoreFieldBean{nullField=null, decimal=null, boolArr=null, byteArr=null, shortArr=null, intArr=null, longArr=null, charArr=null, floatArr=null, doubleArr=null, objArr=null, objArr2=null, iCollection=null, listProvider=null, enumerable=null, collection=null, iterable=null, map=null, bean=null}", Value.toString(this.nullMoreFieldBean));
-        assertEquals(Value.toString(this.emptyMoreFieldBeanExpected), Value.toString(this.emptyMoreFieldBean));
-        assertEquals("MoreFieldBean{nullField=null, decimal=0.000000, boolArr=[], byteArr=[], shortArr=[], intArr=[], longArr=[], charArr=[], floatArr=[], doubleArr=[], objArr=[], objArr2=[], iCollection=[], listProvider=[], enumerable=[], collection=[], iterable=[], map=LinkedHashMap{}, bean=TwoFieldBean{Name='Tim', Score=1239}}", Value.toString(this.emptyMoreFieldBean));
-        assertEquals(Value.toString(this.moreFieldBeanExpected), Value.toString(this.moreFieldBean));
-        assertEquals("MoreFieldBean{nullField=null, decimal=123.456000, boolArr=[true, false, true], byteArr=[-128, 2, 126, 127], shortArr=[-32768, 2, 3, 32767], intArr=[-2147483648, 2, 3, 2147483647], longArr=[-9223372036854775808, 2, 3, 9223372036854775807], charArr=[\u0000, #, !, $, a], floatArr=[-Infinity, Infinity, 1.4E-45, 3.4028235E38], doubleArr=[-Infinity, Infinity, 4.9E-324, 1.7976931348623157E308], objArr=[null, '!@#$%^&*()_+', 123.456000, 9999999.100000, NoFieldBean{}], objArr2=[null, 355.990000], iCollection=[null, '', '', '你好世界'], listProvider=['null_suffix', '_suffix', '_suffix', '你好世界_suffix'], enumerable=['', '', '你好世界'], collection=[null, '', '', '你好世界'], iterable=[null, '', '', '你好世界'], map=HashMap{null='hello', ''=OneFieldBean{Name='世界'}, 'a'=1, 'key'=123.000000}, bean=TwoFieldBean{Name='Tim', Score=1239}}", Value.toString(this.moreFieldBean));
+        assertEquals(Values.toString(this.nullMoreFieldBeanExpected), Values.toString(this.nullMoreFieldBean));
+        assertEquals("MoreFieldBean{nullField=null, decimal=null, boolArr=null, byteArr=null, shortArr=null, intArr=null, longArr=null, charArr=null, floatArr=null, doubleArr=null, objArr=null, objArr2=null, iCollection=null, listProvider=null, enumerable=null, collection=null, iterable=null, map=null, bean=null}", Values.toString(this.nullMoreFieldBean));
+        assertEquals(Values.toString(this.emptyMoreFieldBeanExpected), Values.toString(this.emptyMoreFieldBean));
+        assertEquals("MoreFieldBean{nullField=null, decimal=0.000000, boolArr=[], byteArr=[], shortArr=[], intArr=[], longArr=[], charArr=[], floatArr=[], doubleArr=[], objArr=[], objArr2=[], iCollection=[], listProvider=[], enumerable=[], collection=[], iterable=[], map=LinkedHashMap{}, bean=TwoFieldBean{Name='Tim', Score=1239}}", Values.toString(this.emptyMoreFieldBean));
+        assertEquals(Values.toString(this.moreFieldBeanExpected), Values.toString(this.moreFieldBean));
+        assertEquals("MoreFieldBean{nullField=null, decimal=123.456000, boolArr=[true, false, true], byteArr=[-128, 2, 126, 127], shortArr=[-32768, 2, 3, 32767], intArr=[-2147483648, 2, 3, 2147483647], longArr=[-9223372036854775808, 2, 3, 9223372036854775807], charArr=[\u0000, #, !, $, a], floatArr=[-Infinity, Infinity, 1.4E-45, 3.4028235E38], doubleArr=[-Infinity, Infinity, 4.9E-324, 1.7976931348623157E308], objArr=[null, '!@#$%^&*()_+', 123.456000, 9999999.100000, NoFieldBean{}], objArr2=[null, 355.990000], iCollection=[null, '', '', '你好世界'], listProvider=['null_suffix', '_suffix', '_suffix', '你好世界_suffix'], enumerable=['', '', '你好世界'], collection=[null, '', '', '你好世界'], iterable=[null, '', '', '你好世界'], map=HashMap{null='hello', ''=OneFieldBean{Name='世界'}, 'a'=1, 'key'=123.000000}, bean=TwoFieldBean{Name='Tim', Score=1239}}", Values.toString(this.moreFieldBean));
     }
 
 
