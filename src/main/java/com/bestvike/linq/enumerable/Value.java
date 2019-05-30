@@ -23,21 +23,29 @@ public final class Value {
     private static final int DECIMAL_ROUNDING = BigDecimal.ROUND_HALF_EVEN;
     private static final int HASH_PRIME = 31;
     private static final int HASH_NULL = 0;
-    private static final int HASH_DEFAULT = 1;
+    private static final int HASH_EMPTY = 1;
     private static final int HASH_TRUE = 1231;
     private static final int HASH_FALSE = 1237;
     private static final String JDK_PREFIX = "java";
     private static final String STRING_NULL = "null";
-    private static final String STRING_ARRAY_PREFIX = "[";
-    private static final String STRING_ARRAY_SEPARATOR = ", ";
-    private static final String STRING_ARRAY_SUFFIX = "]";
-    private static final String STRING_ARRAY_EMPTY = STRING_ARRAY_PREFIX + STRING_ARRAY_SUFFIX;
-    private static final String STRING_OBJECT_PREFIX = "{";
-    private static final String STRING_OBJECT_SEPARATOR = ", ";
-    private static final String STRING_OBJECT_SUFFIX = "}";
-    private static final String STRING_OBJECT_EMPTY = STRING_OBJECT_PREFIX + STRING_OBJECT_SUFFIX;
-    private static final String STRING_KEY_VALUE_SEPARATOR = "=";
     private static final String STRING_STRING_QUOT = "'";
+    private static final boolean STRING_OBJECT_TYPE = true;
+    private static final String STRING_OBJECT_PREFIX = "{";
+    private static final String STRING_OBJECT_SUFFIX = "}";
+    private static final String STRING_OBJECT_EMPTY = "{}";
+    private static final String STRING_OBJECT_SEPARATOR = ", ";
+    private static final String STRING_OBJECT_KEY_VALUE_SEPARATOR = "=";
+    private static final boolean STRING_ARRAY_TYPE = false;
+    private static final String STRING_ARRAY_PREFIX = "[";
+    private static final String STRING_ARRAY_SUFFIX = "]";
+    private static final String STRING_ARRAY_EMPTY = "[]";
+    private static final String STRING_ARRAY_SEPARATOR = ", ";
+    private static final boolean STRING_MAP_TYPE = true;
+    private static final String STRING_MAP_PREFIX = "{";
+    private static final String STRING_MAP_SUFFIX = "}";
+    private static final String STRING_MAP_EMPTY = "{}";
+    private static final String STRING_MAP_SEPARATOR = ", ";
+    private static final String STRING_MAP_KEY_VALUE_SEPARATOR = "=";
 
     private Value() {
     }
@@ -347,7 +355,7 @@ public final class Value {
         Class<?> clazz = obj.getClass();
         if (clazz.getName().startsWith(JDK_PREFIX))
             return obj.hashCode();
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         Field[] fields = ReflectionUtils.getFields(clazz);
         try {
             for (Field field : fields)
@@ -361,7 +369,7 @@ public final class Value {
     private static int hashCode(boolean[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (boolean element : obj)
             result = HASH_PRIME * result + (element ? HASH_TRUE : HASH_FALSE);
         return result;
@@ -370,7 +378,7 @@ public final class Value {
     private static int hashCode(byte[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (byte element : obj)
             result = HASH_PRIME * result + element;
         return result;
@@ -379,7 +387,7 @@ public final class Value {
     private static int hashCode(short[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (short element : obj)
             result = HASH_PRIME * result + element;
         return result;
@@ -388,7 +396,7 @@ public final class Value {
     private static int hashCode(int[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (int element : obj)
             result = HASH_PRIME * result + element;
         return result;
@@ -397,7 +405,7 @@ public final class Value {
     private static int hashCode(long[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (long element : obj)
             result = HASH_PRIME * result + (int) (element ^ (element >>> 32));
         return result;
@@ -406,7 +414,7 @@ public final class Value {
     private static int hashCode(char[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (char element : obj)
             result = HASH_PRIME * result + element;
         return result;
@@ -415,7 +423,7 @@ public final class Value {
     private static int hashCode(float[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (float element : obj)
             result = HASH_PRIME * result + Float.floatToIntBits(element);
         return result;
@@ -424,7 +432,7 @@ public final class Value {
     private static int hashCode(double[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (double element : obj) {
             long bits = Double.doubleToLongBits(element);
             result = HASH_PRIME * result + (int) (bits ^ (bits >>> 32));
@@ -435,7 +443,7 @@ public final class Value {
     private static <T> int hashCode(T[] obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (T element : obj)
             result = HASH_PRIME * result + hashCode(element);
         return result;
@@ -444,7 +452,7 @@ public final class Value {
     private static <T> int hashCode(Iterable<T> obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         for (T element : obj)
             result = HASH_PRIME * result + hashCode(element);
         return result;
@@ -453,7 +461,7 @@ public final class Value {
     private static <K, V> int hashCode(Map<K, V> obj) {
         if (obj == null)
             return HASH_NULL;
-        int result = HASH_DEFAULT;
+        int result = HASH_EMPTY;
         TreeMap<K, V> treeMap = new TreeMap<>(Comparer.Default());
         treeMap.putAll(obj);
         for (Map.Entry<K, V> entry : treeMap.entrySet()) {
@@ -531,7 +539,8 @@ public final class Value {
             sb.append(obj);
             return;
         }
-        sb.append(clazz.getSimpleName());
+        if (STRING_OBJECT_TYPE)
+            sb.append(clazz.getSimpleName());
         Field[] fields = ReflectionUtils.getFields(clazz);
         if (fields.length <= 0) {
             sb.append(STRING_OBJECT_EMPTY);
@@ -540,11 +549,11 @@ public final class Value {
         sb.append(STRING_OBJECT_PREFIX);
         try {
             Field field = fields[0];
-            sb.append(field.getName()).append(STRING_KEY_VALUE_SEPARATOR);
+            sb.append(field.getName()).append(STRING_OBJECT_KEY_VALUE_SEPARATOR);
             toString(field.get(obj), sb);
             for (int i = 1; i < fields.length; i++) {
                 field = fields[i];
-                sb.append(STRING_OBJECT_SEPARATOR).append(field.getName()).append(STRING_KEY_VALUE_SEPARATOR);
+                sb.append(STRING_OBJECT_SEPARATOR).append(field.getName()).append(STRING_OBJECT_KEY_VALUE_SEPARATOR);
                 toString(field.get(obj), sb);
             }
         } catch (IllegalAccessException e) {
@@ -558,6 +567,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -573,6 +584,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -588,6 +601,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -603,6 +618,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -618,6 +635,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -633,6 +652,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -648,6 +669,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -663,6 +686,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -678,6 +703,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
             sb.append(STRING_ARRAY_EMPTY);
             return;
@@ -696,6 +723,8 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
         Iterator<T> it = obj.iterator();
         if (!it.hasNext()) {
             sb.append(STRING_ARRAY_EMPTY);
@@ -715,26 +744,27 @@ public final class Value {
             sb.append(STRING_NULL);
             return;
         }
-        sb.append(obj.getClass().getSimpleName());
+        if (STRING_MAP_TYPE)
+            sb.append(obj.getClass().getSimpleName());
+        if (obj.isEmpty()) {
+            sb.append(STRING_MAP_EMPTY);
+            return;
+        }
         TreeMap<K, V> treeMap = new TreeMap<>(Comparer.Default());
         treeMap.putAll(obj);
         Iterator<Map.Entry<K, V>> it = treeMap.entrySet().iterator();
-        if (!it.hasNext()) {
-            sb.append(STRING_OBJECT_EMPTY);
-            return;
-        }
-        sb.append(STRING_OBJECT_PREFIX);
+        sb.append(STRING_MAP_PREFIX);
         Map.Entry<K, V> entry = it.next();
         toString(entry.getKey(), sb);
-        sb.append(STRING_KEY_VALUE_SEPARATOR);
+        sb.append(STRING_MAP_KEY_VALUE_SEPARATOR);
         toString(entry.getValue(), sb);
         while (it.hasNext()) {
-            sb.append(STRING_OBJECT_SEPARATOR);
+            sb.append(STRING_MAP_SEPARATOR);
             entry = it.next();
             toString(entry.getKey(), sb);
-            sb.append(STRING_KEY_VALUE_SEPARATOR);
+            sb.append(STRING_MAP_KEY_VALUE_SEPARATOR);
             toString(entry.getValue(), sb);
         }
-        sb.append(STRING_OBJECT_SUFFIX);
+        sb.append(STRING_MAP_SUFFIX);
     }
 }
