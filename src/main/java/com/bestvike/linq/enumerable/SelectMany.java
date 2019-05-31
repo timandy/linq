@@ -101,6 +101,7 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
                         return true;
                     }
                     this.subEnumerator.close();
+                    this.subEnumerator = null;
                     this.state = 2;
                     break;
                 default:
@@ -231,6 +232,7 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
                         return true;
                     }
                     this.subEnumerator.close();
+                    this.subEnumerator = null;
                     this.state = 2;
                     break;
                 default:
@@ -373,6 +375,7 @@ final class SelectManyResultIterator<TSource, TCollection, TResult> extends Iter
                         return true;
                     }
                     this.subEnumerator.close();
+                    this.subEnumerator = null;
                     this.state = 2;
                     break;
                 default:
@@ -447,6 +450,7 @@ final class SelectManyResultIterator2<TSource, TCollection, TResult> extends Ite
                         return true;
                     }
                     this.subEnumerator.close();
+                    this.subEnumerator = null;
                     this.state = 2;
                     break;
                 default:

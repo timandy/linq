@@ -534,6 +534,7 @@ final class CrossJoinIterator<TOuter, TInner, TResult> extends AbstractIterator<
                         return true;
                     }
                     this.innerEnumerator.close();
+                    this.innerEnumerator = null;
                     this.state = 2;
                     break;
                 default:
