@@ -240,7 +240,7 @@ public class TestCase {
         if (stack.size() <= 0) {
             return;
         }
-        throw new AssertionError(String.valueOf(array.size()) + "  " + Arrays.toString(stack.toArray()));
+        throw new AssertionError(array.size() + "  " + Arrays.toString(stack.toArray()));
     }
 
     protected static void fail(String message) {
@@ -442,7 +442,7 @@ public class TestCase {
 
         @Override
         public IEnumerator<Integer> enumerator() {
-            if (getEnumeratorCallCount++ == 0) {
+            if (this.getEnumeratorCallCount++ == 0) {
                 throw new InvalidOperationException();
             }
 
