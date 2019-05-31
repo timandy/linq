@@ -15,6 +15,9 @@ import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.AssertEqualityComparer;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple3;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,6 +28,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
+import java.util.function.Consumer;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -219,6 +224,24 @@ public class TestCase {
         fail("expect false, but was: true");
     }
 
+    protected static <T> void assertAll(IEnumerable<T> collection, Action1<T> action) {
+        assertNotNull(collection);
+        assertNotNull(action);
+        Stack<Tuple3<Integer, Object, Exception>> stack = new Stack<>();
+        List<T> array = collection.toList();
+        for (int i = 0, len = array.size(); i < len; i++) {
+            try {
+                action.apply(array.get(i));
+            } catch (Exception item) {
+                stack.push(Tuple.create(i, array.get(i), item));
+            }
+        }
+        if (stack.size() <= 0) {
+            return;
+        }
+        throw new AssertionError(String.valueOf(array.size()) + "  " + Arrays.toString(stack.toArray()));
+    }
+
     protected static void fail(String message) {
         if (message == null)
             throw new AssertionError();
@@ -305,6 +328,76 @@ public class TestCase {
         return className + "<" + valueString + ">";
     }
 
+    public static class TestEnumerable<T> implements IEnumerable<T> {
+        private final IEnumerable<T> items;
+
+        public TestEnumerable(IEnumerable<T> items) {
+            assertNotNull(items);
+            this.items = items;
+        }
+
+        @Override
+        public IEnumerator<T> enumerator() {
+            return this.items.enumerator();
+        }
+    }
+
+    public static class StringWithIntArray extends ValueType {
+        public final String name;
+        public final Integer[] total;
+
+
+        public StringWithIntArray(String name, Integer[] total) {
+            this.name = name;
+            this.total = total;
+        }
+    }
+
+    public static class FastInfiniteEnumerator<T> implements IEnumerable<T>, IEnumerator<T> {
+        public IEnumerator<T> enumerator() {
+            return this;
+        }
+
+        public boolean moveNext() {
+            return true;
+        }
+
+        public T current() {
+            return null;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public T next() {
+            return null;
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super T> action) {
+            if (action == null)
+                ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+            while (this.moveNext())
+                action.accept(this.current());
+        }
+
+        @Override
+        public void remove() {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public void reset() {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public void close() {
+        }
+    }
 
     public static class DelegateBasedCollection<T> implements ICollection<T> {
         protected Func0<Integer> CountWorker;
@@ -375,6 +468,92 @@ public class TestCase {
         }
     }
 
+    public static class DelegateIterator<TSource> implements IEnumerable<TSource>, IEnumerator<TSource> {
+        private final Func0<IEnumerator<TSource>> enumerator;
+        private final Func0<Boolean> moveNext;
+        private final Func0<TSource> current;
+        private final Action0 reset;
+        private final Action0 dispose;
+        private boolean checkedNext;
+        private boolean hasNext;
+
+        public DelegateIterator(Func0<Boolean> moveNext, Func0<TSource> current, Action0 dispose) {
+            this(null, moveNext, current, null, dispose);
+        }
+
+        public DelegateIterator(Func0<IEnumerator<TSource>> enumerator, Func0<Boolean> moveNext, Func0<TSource> current, Action0 reset, Action0 dispose) {
+            this.enumerator = enumerator == null ? () -> this : enumerator;
+            this.moveNext = moveNext == null ? () -> {
+                throw new NotImplementedException();
+            } : moveNext;
+            this.current = moveNext == null ? () -> {
+                throw new NotImplementedException();
+            } : current;
+            this.reset = moveNext == null ? () -> {
+                throw new NotImplementedException();
+            } : reset;
+            this.dispose = moveNext == null ? () -> {
+                throw new NotImplementedException();
+            } : dispose;
+        }
+
+        @Override
+        public com.bestvike.linq.IEnumerator<TSource> enumerator() {
+            return this.enumerator.apply();
+        }
+
+        @Override
+        public boolean moveNext() {
+            return this.moveNext.apply();
+        }
+
+        @Override
+        public TSource current() {
+            return this.current.apply();
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (!this.checkedNext) {
+                this.hasNext = this.moveNext();
+                this.checkedNext = true;
+            }
+            return this.hasNext;
+        }
+
+        @Override
+        public TSource next() {
+            if (this.hasNext()) {
+                this.checkedNext = false;
+                return this.current();
+            }
+            ThrowHelper.throwNoSuchElementException();
+            return null;
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super TSource> action) {
+            if (action == null)
+                ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+            while (this.moveNext())
+                action.accept(this.current());
+        }
+
+        @Override
+        public void remove() {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public void reset() {
+            this.reset.apply();
+        }
+
+        @Override
+        public void close() {
+            this.dispose.apply();
+        }
+    }
 
     public static class AnagramEqualityComparer implements IEqualityComparer<String> {
         @Override
