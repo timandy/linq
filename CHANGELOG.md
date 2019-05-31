@@ -21,6 +21,7 @@
 - Fix `OrderedEnumerableRangeEnumerator` not iterate maxIdx.
 - Add `ValueType` as super class for value type.
 - Fix `EnumerablePartition` error assert.
+- Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
 
 ## v2.0.1
 - Add test cases.
