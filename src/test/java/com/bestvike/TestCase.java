@@ -13,6 +13,7 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.AssertEqualityComparer;
 import com.bestvike.tuple.Tuple;
@@ -342,10 +343,116 @@ public class TestCase {
         }
     }
 
+    public static class TestEnumerator implements IEnumerable<Integer>, IEnumerator<Integer> {
+        private int current = 0;
+        private boolean checkedNext;
+        private boolean hasNext;
+
+        @Override
+        public IEnumerator<Integer> enumerator() {
+            return this;
+        }
+
+        @Override
+        public boolean moveNext() {
+            return this.current++ < 5;
+        }
+
+        @Override
+        public Integer current() {
+            return this.current;
+        }
+
+        @Override
+        public boolean hasNext() {
+            if (!this.checkedNext) {
+                this.hasNext = this.moveNext();
+                this.checkedNext = true;
+            }
+            return this.hasNext;
+        }
+
+        @Override
+        public Integer next() {
+            if (this.hasNext()) {
+                this.checkedNext = false;
+                return this.current();
+            }
+            ThrowHelper.throwNoSuchElementException();
+            return null;
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super Integer> action) {
+            if (action == null)
+                ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+            while (this.moveNext())
+                action.accept(this.current());
+        }
+
+        @Override
+        public void remove() {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public void reset() {
+            throw new NotImplementedException();
+        }
+
+        @Override
+        public void close() {
+        }
+    }
+
+    public static class ThrowsOnCurrentEnumerator extends TestEnumerator {
+        /// <summary>
+        /// A test enumerator that throws an InvalidOperationException when invoking Current after MoveNext has been called exactly once.
+        /// </summary>
+        @Override
+        public Integer current() {
+            Integer current = super.current();
+            if (current == 1) {
+                throw new InvalidOperationException();
+            }
+            return current;
+        }
+    }
+
+    public static class ThrowsOnMoveNext extends TestEnumerator {
+        /// <summary>
+        /// A test enumerator that throws an InvalidOperationException when invoking MoveNext after MoveNext has been called exactly once.
+        /// </summary>
+        @Override
+        public boolean moveNext() {
+            boolean baseReturn = super.moveNext();
+            if (super.current() == 1) {
+                throw new InvalidOperationException();
+            }
+
+            return baseReturn;
+        }
+    }
+
+    public static class ThrowsOnGetEnumerator extends TestEnumerator {
+        /// <summary>
+        /// A test enumerator that throws an InvalidOperationException when GetEnumerator is called for the first time.
+        /// </summary>
+        private int getEnumeratorCallCount;
+
+        @Override
+        public IEnumerator<Integer> enumerator() {
+            if (getEnumeratorCallCount++ == 0) {
+                throw new InvalidOperationException();
+            }
+
+            return super.enumerator();
+        }
+    }
+
     public static class StringWithIntArray extends ValueType {
         public final String name;
         public final Integer[] total;
-
 
         public StringWithIntArray(String name, Integer[] total) {
             this.name = name;
