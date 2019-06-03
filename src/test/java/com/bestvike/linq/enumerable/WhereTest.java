@@ -1043,8 +1043,8 @@ public class WhereTest extends TestCase {
     private IEnumerable<Integer> GenerateRandomSequnce(int seed, int count) {
         Random random = new Random(seed);
 
-        //warn: C# Random same seed generate same sequence. java does not. so call toArray().
-        return Linq.range(0, count).select(i -> random.nextInt(Integer.MAX_VALUE)).toArray();
+        //note: C# Random same seed generate same sequence, java does not. so call toArray().
+        return Linq.range(0, count).select(i -> random.nextInt()).toArray();
     }
 
     @Test
