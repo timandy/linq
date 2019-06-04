@@ -1179,6 +1179,10 @@ public final class Values {
             toString((Object[]) obj, sb);
             return;
         }
+        if (obj instanceof IEnumerable) {
+            toString((IEnumerable<?>) obj, sb);
+            return;
+        }
         if (obj instanceof Iterable) {
             toString((Iterable<?>) obj, sb);
             return;
@@ -1216,10 +1220,6 @@ public final class Values {
     }
 
     private static void toString(boolean[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1233,10 +1233,6 @@ public final class Values {
     }
 
     private static void toString(byte[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1250,10 +1246,6 @@ public final class Values {
     }
 
     private static void toString(short[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1267,10 +1259,6 @@ public final class Values {
     }
 
     private static void toString(int[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1284,10 +1272,6 @@ public final class Values {
     }
 
     private static void toString(long[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1301,10 +1285,6 @@ public final class Values {
     }
 
     private static void toString(char[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1318,10 +1298,6 @@ public final class Values {
     }
 
     private static void toString(float[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1335,10 +1311,6 @@ public final class Values {
     }
 
     private static void toString(double[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1352,10 +1324,6 @@ public final class Values {
     }
 
     private static <T> void toString(T[] obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.length <= 0) {
@@ -1371,11 +1339,25 @@ public final class Values {
         sb.append(STRING_ARRAY_SUFFIX);
     }
 
-    private static <T> void toString(Iterable<T> obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
+    private static <T> void toString(IEnumerable<T> obj, StringBuilder sb) {
+        if (STRING_ARRAY_TYPE)
+            sb.append(obj.getClass().getSimpleName());
+        try (IEnumerator<T> it = obj.enumerator()) {
+            if (!it.moveNext()) {
+                sb.append(STRING_ARRAY_EMPTY);
+                return;
+            }
+            sb.append(STRING_ARRAY_PREFIX);
+            toString(it.current(), sb);
+            while (it.moveNext()) {
+                sb.append(STRING_ARRAY_SEPARATOR);
+                toString(it.current(), sb);
+            }
+            sb.append(STRING_ARRAY_SUFFIX);
         }
+    }
+
+    private static <T> void toString(Iterable<T> obj, StringBuilder sb) {
         if (STRING_ARRAY_TYPE)
             sb.append(obj.getClass().getSimpleName());
         Iterator<T> it = obj.iterator();
@@ -1393,10 +1375,6 @@ public final class Values {
     }
 
     private static <K, V> void toString(Map<K, V> obj, StringBuilder sb) {
-        if (obj == null) {
-            sb.append(STRING_NULL);
-            return;
-        }
         if (STRING_MAP_TYPE)
             sb.append(obj.getClass().getSimpleName());
         if (obj.isEmpty()) {
