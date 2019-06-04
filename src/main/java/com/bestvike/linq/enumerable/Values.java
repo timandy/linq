@@ -1012,6 +1012,8 @@ public final class Values {
             return hashCode((double[]) obj);
         if (obj instanceof Object[])
             return hashCode((Object[]) obj);
+        if (obj instanceof IEnumerable)
+            return hashCode((IEnumerable<?>) obj);
         if (obj instanceof Iterable)
             return hashCode((Iterable<?>) obj);
         if (obj instanceof Map)
@@ -1031,8 +1033,6 @@ public final class Values {
     }
 
     private static int hashCode(boolean[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (boolean element : obj)
             result = HASH_PRIME * result + (element ? HASH_TRUE : HASH_FALSE);
@@ -1040,8 +1040,6 @@ public final class Values {
     }
 
     private static int hashCode(byte[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (byte element : obj)
             result = HASH_PRIME * result + element;
@@ -1049,8 +1047,6 @@ public final class Values {
     }
 
     private static int hashCode(short[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (short element : obj)
             result = HASH_PRIME * result + element;
@@ -1058,8 +1054,6 @@ public final class Values {
     }
 
     private static int hashCode(int[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (int element : obj)
             result = HASH_PRIME * result + element;
@@ -1067,8 +1061,6 @@ public final class Values {
     }
 
     private static int hashCode(long[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (long element : obj)
             result = HASH_PRIME * result + (int) (element ^ (element >>> 32));
@@ -1076,8 +1068,6 @@ public final class Values {
     }
 
     private static int hashCode(char[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (char element : obj)
             result = HASH_PRIME * result + element;
@@ -1085,8 +1075,6 @@ public final class Values {
     }
 
     private static int hashCode(float[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (float element : obj)
             result = HASH_PRIME * result + Float.floatToIntBits(element);
@@ -1094,8 +1082,6 @@ public final class Values {
     }
 
     private static int hashCode(double[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (double element : obj) {
             long bits = Double.doubleToLongBits(element);
@@ -1105,17 +1091,22 @@ public final class Values {
     }
 
     private static <T> int hashCode(T[] obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (T element : obj)
             result = HASH_PRIME * result + hashCode(element);
         return result;
     }
 
+    private static <T> int hashCode(IEnumerable<T> obj) {
+        int result = HASH_EMPTY;
+        try (IEnumerator<T> enumerator = obj.enumerator()) {
+            while (enumerator.moveNext())
+                result = HASH_PRIME * result + hashCode(enumerator.current());
+        }
+        return result;
+    }
+
     private static <T> int hashCode(Iterable<T> obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         for (T element : obj)
             result = HASH_PRIME * result + hashCode(element);
@@ -1123,8 +1114,6 @@ public final class Values {
     }
 
     private static <K, V> int hashCode(Map<K, V> obj) {
-        if (obj == null)
-            return HASH_NULL;
         int result = HASH_EMPTY;
         TreeMap<K, V> treeMap = new TreeMap<>(Comparer.Default());
         treeMap.putAll(obj);
