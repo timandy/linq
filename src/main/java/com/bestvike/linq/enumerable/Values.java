@@ -55,43 +55,50 @@ public final class Values {
             return true;
         if (x == null || y == null)
             return false;
-        Class<?> clazz = x.getClass();
-        if (clazz != y.getClass())
-            return false;
-        if (x instanceof BigDecimal)
+        if (x instanceof BigDecimal && y instanceof BigDecimal)
             return ((BigDecimal) x).compareTo((BigDecimal) y) == 0;
         if (x instanceof boolean[])
-            return equals((boolean[]) x, (boolean[]) y);
+            return equals((boolean[]) x, y);
         if (x instanceof byte[])
-            return equals((byte[]) x, (byte[]) y);
+            return equals((byte[]) x, y);
         if (x instanceof short[])
-            return equals((short[]) x, (short[]) y);
+            return equals((short[]) x, y);
         if (x instanceof int[])
-            return equals((int[]) x, (int[]) y);
+            return equals((int[]) x, y);
         if (x instanceof long[])
-            return equals((long[]) x, (long[]) y);
+            return equals((long[]) x, y);
         if (x instanceof char[])
-            return equals((char[]) x, (char[]) y);
+            return equals((char[]) x, y);
         if (x instanceof float[])
-            return equals((float[]) x, (float[]) y);
+            return equals((float[]) x, y);
         if (x instanceof double[])
-            return equals((double[]) x, (double[]) y);
+            return equals((double[]) x, y);
         if (x instanceof Object[])
-            return equals(((Object[]) x), ((Object[]) y));
-        if (x instanceof ICollection)
-            return equals((ICollection<?>) x, (ICollection<?>) y);
-        if (x instanceof IIListProvider)
-            return equals((IIListProvider<?>) x, (IIListProvider<?>) y);
-        if (x instanceof IEnumerable)
-            return equals((IEnumerable<?>) x, (IEnumerable<?>) y);
-        if (x instanceof Collection)
-            return equals((Collection<?>) x, (Collection<?>) y);
-        if (x instanceof Iterable)
-            return equals((Iterable<?>) x, (Iterable<?>) y);
+            return equals((Object[]) x, y);
+        if (x instanceof IEnumerable) {
+            if (x instanceof ICollection) {
+                ICollection<?> collection = (ICollection<?>) x;
+                return equals(collection, y, collection._getCount());
+            } else if (x instanceof IIListProvider) {
+                IIListProvider<?> listProvider = (IIListProvider<?>) x;
+                return equals(listProvider, y, listProvider._getCount(true));
+            }
+            return equals((IEnumerable<?>) x, y, -1);
+        }
+        if (x instanceof Iterable) {
+            if (x instanceof Collection) {
+                Collection<?> collection = (Collection<?>) x;
+                return equals(collection, y, collection.size());
+            }
+            return equals((Iterable<?>) x, y, -1);
+        }
         if (x instanceof Map)
-            return equals((Map<?, ?>) x, (Map<?, ?>) y);
+            return equals((Map<?, ?>) x, y);
+        Class<?> clazz = x.getClass();
         if (clazz.getName().startsWith(JDK_PREFIX))
             return x.equals(y);
+        if (clazz != y.getClass())
+            return false;
         Field[] fields = ReflectionUtils.getFields(clazz);
         try {
             for (Field field : fields) {
@@ -104,225 +111,882 @@ public final class Values {
         return true;
     }
 
-    private static boolean equals(boolean[] x, boolean[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(boolean[] x, Object y) {
+        if (y instanceof boolean[]) {
+            boolean[] arrY = (boolean[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Boolean) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Boolean curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Boolean curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static boolean equals(byte[] x, byte[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(byte[] x, Object y) {
+        if (y instanceof byte[]) {
+            byte[] arrY = (byte[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Byte) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Byte curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Byte curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static boolean equals(short[] x, short[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(short[] x, Object y) {
+        if (y instanceof short[]) {
+            short[] arrY = (short[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Short) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Short curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Short curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static boolean equals(int[] x, int[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(int[] x, Object y) {
+        if (y instanceof int[]) {
+            int[] arrY = (int[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Integer) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Integer curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Integer curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static boolean equals(long[] x, long[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(long[] x, Object y) {
+        if (y instanceof long[]) {
+            long[] arrY = (long[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Long) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Long curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Long curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static boolean equals(char[] x, char[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(char[] x, Object y) {
+        if (y instanceof char[]) {
+            char[] arrY = (char[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Character) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Character curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Character curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static boolean equals(float[] x, float[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(float[] x, Object y) {
+        if (y instanceof float[]) {
+            float[] arrY = (float[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Float) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Float curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Float curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static boolean equals(double[] x, double[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (x[i] != y[i])
+    private static boolean equals(double[] x, Object y) {
+        if (y instanceof double[]) {
+            double[] arrY = (double[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (x[i] != arrY[i])
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Double) x[i]).equals(arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (Double curX : x) {
+                    if (!(itY.moveNext() && curX.equals(itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (Double curX : x) {
+                if (!(itY.hasNext() && curX.equals(itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static <X, Y> boolean equals(X[] x, Y[] y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int length = x.length;
-        if (length != y.length)
-            return false;
-        for (int i = 0; i < length; i++) {
-            if (!equals(x[i], y[i]))
+    private static <T> boolean equals(T[] x, Object y) {
+        if (y instanceof boolean[]) {
+            boolean[] arrY = (boolean[]) y;
+            if (x.length != arrY.length)
                 return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Boolean) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
         }
-        return true;
+        if (y instanceof byte[]) {
+            byte[] arrY = (byte[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Byte) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof short[]) {
+            short[] arrY = (short[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Short) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof int[]) {
+            int[] arrY = (int[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Integer) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof long[]) {
+            long[] arrY = (long[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Long) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof char[]) {
+            char[] arrY = (char[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Character) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof float[]) {
+            float[] arrY = (float[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Float) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof double[]) {
+            double[] arrY = (double[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!((Double) arrY[i]).equals(x[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (x.length != arrY.length)
+                return false;
+            for (int i = 0; i < x.length; i++) {
+                if (!equals(x[i], arrY[i]))
+                    return false;
+            }
+            return true;
+        }
+        if (y instanceof IEnumerable) {
+            if (y instanceof ICollection) {
+                ICollection listY = (ICollection) y;
+                if (x.length != listY._getCount())
+                    return false;
+            } else if (y instanceof IIListProvider) {
+                IIListProvider listY = (IIListProvider) y;
+                int lenY = listY._getCount(true);
+                if (lenY != -1 && x.length != lenY)
+                    return false;
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (T curX : x) {
+                    if (!(itY.moveNext() && equals(curX, itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (y instanceof Collection) {
+                Collection listY = (Collection) y;
+                if (x.length != listY.size())
+                    return false;
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (T curX : x) {
+                if (!(itY.hasNext() && equals(curX, itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static <X, Y> boolean equals(ICollection<X> x, ICollection<Y> y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null || x._getCount() != y._getCount())
-            return false;
-        IEnumerator<X> itX = x.enumerator();
-        IEnumerator<Y> itY = y.enumerator();
-        while (itX.moveNext() && itY.moveNext()) {
-            if (!equals(itX.current(), itY.current()))
+    private static <T> boolean equals(IEnumerable<T> x, Object y, int lenX) {
+        if (y instanceof boolean[]) {
+            boolean[] arrY = (boolean[]) y;
+            if (lenX != -1 && lenX != arrY.length)
                 return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Boolean curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
         }
-        return !(itX.moveNext() || itY.moveNext());
+        if (y instanceof byte[]) {
+            byte[] arrY = (byte[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Byte curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof short[]) {
+            short[] arrY = (short[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Short curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof int[]) {
+            int[] arrY = (int[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Integer curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof long[]) {
+            long[] arrY = (long[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Long curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof char[]) {
+            char[] arrY = (char[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Character curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof float[]) {
+            float[] arrY = (float[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Float curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof double[]) {
+            double[] arrY = (double[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Double curY : arrY) {
+                    if (!(itX.moveNext() && curY.equals(itX.current())))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            try (IEnumerator<T> itX = x.enumerator()) {
+                for (Object curY : arrY) {
+                    if (!(itX.moveNext() && equals(itX.current(), curY)))
+                        return false;
+                }
+                return !itX.moveNext();
+            }
+        }
+        if (y instanceof IEnumerable) {
+            if (lenX != -1) {
+                if (y instanceof ICollection) {
+                    ICollection listY = (ICollection) y;
+                    if (lenX != listY._getCount())
+                        return false;
+                } else if (y instanceof IIListProvider) {
+                    IIListProvider listY = (IIListProvider) y;
+                    int lenY = listY._getCount(true);
+                    if (lenY != -1 && lenX != lenY)
+                        return false;
+                }
+            }
+            try (IEnumerator<T> itX = x.enumerator();
+                 IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                while (itX.moveNext()) {
+                    if (!(itY.moveNext() && equals(itX.current(), itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (lenX != -1) {
+                if (y instanceof Collection) {
+                    Collection listY = (Collection) y;
+                    if (lenX != listY.size())
+                        return false;
+                }
+            }
+            try (IEnumerator<T> itX = x.enumerator()) {
+                Iterator itY = ((Iterable) y).iterator();
+                while (itX.moveNext()) {
+                    if (!(itY.hasNext() && equals(itX.current(), itY.next())))
+                        return false;
+                }
+                return !itY.hasNext();
+            }
+        }
+        return false;
     }
 
-    private static <X, Y> boolean equals(IIListProvider<X> x, IIListProvider<Y> y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        int lenX = x._getCount(true);
-        int lenY = y._getCount(true);
-        if (lenX != -1 && lenY != -1 && lenX != lenY)
-            return false;
-        IEnumerator<X> itX = x.enumerator();
-        IEnumerator<Y> itY = y.enumerator();
-        while (itX.moveNext() && itY.moveNext()) {
-            if (!equals(itX.current(), itY.current()))
+    private static <T> boolean equals(Iterable<T> x, Object y, int lenX) {
+        if (y instanceof boolean[]) {
+            boolean[] arrY = (boolean[]) y;
+            if (lenX != -1 && lenX != arrY.length)
                 return false;
+            Iterator<T> itX = x.iterator();
+            for (Boolean curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
         }
-        return !(itX.moveNext() || itY.moveNext());
+        if (y instanceof byte[]) {
+            byte[] arrY = (byte[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Byte curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof short[]) {
+            short[] arrY = (short[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Short curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof int[]) {
+            int[] arrY = (int[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Integer curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof long[]) {
+            long[] arrY = (long[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Long curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof char[]) {
+            char[] arrY = (char[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Character curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof float[]) {
+            float[] arrY = (float[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Float curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof double[]) {
+            double[] arrY = (double[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Double curY : arrY) {
+                if (!(itX.hasNext() && curY.equals(itX.next())))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof Object[]) {
+            Object[] arrY = (Object[]) y;
+            if (lenX != -1 && lenX != arrY.length)
+                return false;
+            Iterator<T> itX = x.iterator();
+            for (Object curY : arrY) {
+                if (!(itX.hasNext() && equals(itX.next(), curY)))
+                    return false;
+            }
+            return !itX.hasNext();
+        }
+        if (y instanceof IEnumerable) {
+            if (lenX != -1) {
+                if (y instanceof ICollection) {
+                    ICollection listY = (ICollection) y;
+                    if (lenX != listY._getCount())
+                        return false;
+                } else if (y instanceof IIListProvider) {
+                    IIListProvider listY = (IIListProvider) y;
+                    int lenY = listY._getCount(true);
+                    if (lenY != -1 && lenX != lenY)
+                        return false;
+                }
+            }
+            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                for (T curX : x) {
+                    if (!(itY.moveNext() && equals(curX, itY.current())))
+                        return false;
+                }
+                return !itY.moveNext();
+            }
+        }
+        if (y instanceof Iterable) {
+            if (lenX != -1) {
+                if (y instanceof Collection) {
+                    Collection listY = (Collection) y;
+                    if (lenX != listY.size())
+                        return false;
+                }
+            }
+            Iterator itY = ((Iterable) y).iterator();
+            for (T curX : x) {
+                if (!(itY.hasNext() && equals(curX, itY.next())))
+                    return false;
+            }
+            return !itY.hasNext();
+        }
+        return false;
     }
 
-    private static <X, Y> boolean equals(IEnumerable<X> x, IEnumerable<Y> y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        IEnumerator<X> itX = x.enumerator();
-        IEnumerator<Y> itY = y.enumerator();
-        while (itX.moveNext() && itY.moveNext()) {
-            if (!equals(itX.current(), itY.current()))
+    private static <K, V> boolean equals(Map<K, V> x, Object y) {
+        if (y instanceof Map) {
+            Map mapY = (Map) y;
+            if (x.size() != mapY.size())
                 return false;
-        }
-        return !(itX.moveNext() || itY.moveNext());
-    }
-
-    private static <X, Y> boolean equals(Collection<X> x, Collection<Y> y) {
-        if (x == y)
+            for (Map.Entry<K, V> entry : x.entrySet()) {
+                if (!equals(entry.getValue(), mapY.get(entry.getKey())))
+                    return false;
+            }
             return true;
-        if (x == null || y == null || x.size() != y.size())
-            return false;
-        Iterator<X> itX = x.iterator();
-        Iterator<Y> itY = y.iterator();
-        while (itX.hasNext() && itY.hasNext()) {
-            if (!equals(itX.next(), itY.next()))
-                return false;
         }
-        return !(itX.hasNext() || itY.hasNext());
-    }
-
-    private static <X, Y> boolean equals(Iterable<X> x, Iterable<Y> y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null)
-            return false;
-        Iterator<X> itX = x.iterator();
-        Iterator<Y> itY = y.iterator();
-        while (itX.hasNext() && itY.hasNext()) {
-            if (!equals(itX.next(), itY.next()))
-                return false;
-        }
-        return !(itX.hasNext() || itY.hasNext());
-    }
-
-    private static <XK, XV, YK, YV> boolean equals(Map<XK, XV> x, Map<YK, YV> y) {
-        if (x == y)
-            return true;
-        if (x == null || y == null || x.size() != y.size())
-            return false;
-        for (Map.Entry<XK, XV> entry : x.entrySet()) {
-            if (!equals(entry.getValue(), y.get(entry.getKey())))
-                return false;
-        }
-        return true;
+        return false;
     }
 
     public static int hashCode(Object obj) {
