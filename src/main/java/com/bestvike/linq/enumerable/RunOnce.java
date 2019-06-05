@@ -26,13 +26,6 @@ public final class RunOnce {
                 ? new RunOnceList<>((IList<TSource>) source)
                 : new RunOnceEnumerable<>(source);
     }
-
-    public static <TSource> IEnumerable<TSource> runOnce(IList<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new RunOnceList<>(source);
-    }
 }
 
 
