@@ -2,7 +2,9 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -122,8 +124,21 @@ final class Set<TElement> {
     public void unionWith(IEnumerable<TElement> other) {
         assert other != null;
 
-        for (TElement item : other)
-            this.add(item);
+        try (IEnumerator<TElement> enumerator = other.enumerator()) {
+            while (enumerator.moveNext())
+                this.add(enumerator.current());
+        }
+    }
+
+    // Unions this set with an enumerable and selector.
+    public <TSource> void unionWith(IEnumerable<TSource> other, Func1<TSource, TElement> selector) {
+        assert other != null;
+        assert selector != null;
+
+        try (IEnumerator<TSource> enumerator = other.enumerator()) {
+            while (enumerator.moveNext())
+                this.add(selector.apply(enumerator.current()));
+        }
     }
 
     // Gets the hash code of the provided value with its sign bit zeroed out, so that modulo has a positive result.
