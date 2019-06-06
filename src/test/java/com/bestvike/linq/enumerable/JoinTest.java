@@ -746,18 +746,28 @@ public class JoinTest extends TestCase {
     @Test
     public void testCrossJoin() {
         //交叉关联,不理会 key 是否为 null
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        IEnumerable<String> enumerable = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
                 .crossJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
-                        (emp, dept) -> String.format("%s works in %s", emp.name, dept.name))
-                .toList()
-                .toString();
+                        (emp, dept) -> String.format("%s works in %s", emp.name, dept.name));
+        CrossJoinIterator<Employee, Department, String> crossJoinIterator = (CrossJoinIterator<Employee, Department, String>) enumerable;
+        assertEquals(24, crossJoinIterator._toArray(String.class).length);
+        assertEquals(24, crossJoinIterator._toArray().length);
+        assertEquals(24, crossJoinIterator._toList().size());
+        assertEquals(-1, crossJoinIterator._getCount(true));
+        assertEquals(24, crossJoinIterator._getCount(false));
+        String s = enumerable.toList().toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Fred works in Manager, Bill works in Sales, Bill works in HR, Bill works in Marketing, Bill works in Manager, Eric works in Sales, Eric works in HR, Eric works in Marketing, Eric works in Manager, Janet works in Sales, Janet works in HR, Janet works in Marketing, Janet works in Manager, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Cedric works in Manager, Gates works in Sales, Gates works in HR, Gates works in Marketing, Gates works in Manager]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
+        IEnumerable<String> enumerable2 = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
                 .crossJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
-                        (dept, emp) -> String.format("%s works in %s", emp.name, dept.name))
-                .toList()
-                .toString();
+                        (dept, emp) -> String.format("%s works in %s", emp.name, dept.name));
+        CrossJoinIterator<Department, Employee, String> crossJoinIterator2 = (CrossJoinIterator<Department, Employee, String>) enumerable2;
+        assertEquals(24, crossJoinIterator2._toArray(String.class).length);
+        assertEquals(24, crossJoinIterator2._toArray().length);
+        assertEquals(24, crossJoinIterator2._toList().size());
+        assertEquals(-1, crossJoinIterator2._getCount(true));
+        assertEquals(24, crossJoinIterator2._getCount(false));
+        String ss = enumerable2.toList().toString();
         assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Gates works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Gates works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing, Gates works in Marketing, Fred works in Manager, Bill works in Manager, Eric works in Manager, Janet works in Manager, Cedric works in Manager, Gates works in Manager]", ss);
     }
 

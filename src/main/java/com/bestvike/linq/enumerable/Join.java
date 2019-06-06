@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
@@ -7,6 +8,9 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 许崇雷 on 2018-05-02.
@@ -493,7 +497,7 @@ final class FullJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIter
 }
 
 
-final class CrossJoinIterator<TOuter, TInner, TResult> extends AbstractIterator<TResult> {
+final class CrossJoinIterator<TOuter, TInner, TResult> extends Iterator<TResult> implements IIListProvider<TResult> {
     private final IEnumerable<TOuter> outer;
     private final IEnumerable<TInner> inner;
     private final Func2<TOuter, TInner, TResult> resultSelector;
@@ -557,5 +561,81 @@ final class CrossJoinIterator<TOuter, TInner, TResult> extends AbstractIterator<
             this.innerEnumerator = null;
         }
         super.close();
+    }
+
+    @Override
+    public TResult[] _toArray(Class<TResult> clazz) {
+        int count = this._getCount(true);
+        LargeArrayBuilder<TResult> builder = count == -1 ? new LargeArrayBuilder<>() : new LargeArrayBuilder<>(count);
+        try (IEnumerator<TOuter> outerEnumerator = this.outer.enumerator()) {
+            while (outerEnumerator.moveNext()) {
+                TOuter item = outerEnumerator.current();
+                try (IEnumerator<TInner> innerEnumerator = this.inner.enumerator()) {
+                    while (innerEnumerator.moveNext())
+                        builder.add(this.resultSelector.apply(item, innerEnumerator.current()));
+                }
+            }
+        }
+
+        return builder.toArray(clazz);
+    }
+
+    @Override
+    public Object[] _toArray() {
+        int count = this._getCount(true);
+        LargeArrayBuilder<TResult> builder = count == -1 ? new LargeArrayBuilder<>() : new LargeArrayBuilder<>(count);
+        try (IEnumerator<TOuter> outerEnumerator = this.outer.enumerator()) {
+            while (outerEnumerator.moveNext()) {
+                TOuter item = outerEnumerator.current();
+                try (IEnumerator<TInner> innerEnumerator = this.inner.enumerator()) {
+                    while (innerEnumerator.moveNext())
+                        builder.add(this.resultSelector.apply(item, innerEnumerator.current()));
+                }
+            }
+        }
+
+        return builder.toArray();
+    }
+
+    @Override
+    public List<TResult> _toList() {
+        int count = this._getCount(true);
+        List<TResult> list = count == -1 ? new ArrayList<>() : new ArrayList<>(count);
+        try (IEnumerator<TOuter> outerEnumerator = this.outer.enumerator()) {
+            while (outerEnumerator.moveNext()) {
+                TOuter item = outerEnumerator.current();
+                try (IEnumerator<TInner> innerEnumerator = this.inner.enumerator()) {
+                    while (innerEnumerator.moveNext())
+                        list.add(this.resultSelector.apply(item, innerEnumerator.current()));
+                }
+            }
+        }
+
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        if (onlyIfCheap) {
+            return this.outer instanceof ICollection && this.inner instanceof ICollection
+                    ? ((ICollection<TOuter>) this.outer)._getCount() * ((ICollection<TInner>) this.inner)._getCount()
+                    : -1;
+        }
+
+        // In case someone uses Count() to force evaluation of the selector,
+        // run it provided `onlyIfCheap` is false.
+        int count = 0;
+        try (IEnumerator<TOuter> outerEnumerator = this.outer.enumerator()) {
+            while (outerEnumerator.moveNext()) {
+                TOuter item = outerEnumerator.current();
+                try (IEnumerator<TInner> innerEnumerator = this.inner.enumerator()) {
+                    while (innerEnumerator.moveNext()) {
+                        this.resultSelector.apply(item, innerEnumerator.current());
+                        count = Math.addExact(count, 1);
+                    }
+                }
+            }
+        }
+        return count;
     }
 }
