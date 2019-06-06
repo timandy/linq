@@ -7,6 +7,9 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
@@ -29,7 +32,7 @@ public final class DistinctBy {
 }
 
 
-final class DistinctByIterator<TSource, TKey> extends AbstractIterator<TSource> {
+final class DistinctByIterator<TSource, TKey> extends Iterator<TSource> implements IIListProvider<TSource> {
     private final IEnumerable<TSource> source;
     private final Func1<TSource, TKey> keySelector;
     private final IEqualityComparer<TKey> comparer;
@@ -85,5 +88,64 @@ final class DistinctByIterator<TSource, TKey> extends AbstractIterator<TSource> 
             this.set = null;
         }
         super.close();
+    }
+
+    @Override
+    public TSource[] _toArray(Class<TSource> clazz) {
+        LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
+        Set<TKey> set = new Set<>(this.comparer);
+        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
+            while (enumerator.moveNext()) {
+                TSource element = enumerator.current();
+                if (set.add(this.keySelector.apply(element)))
+                    builder.add(element);
+            }
+        }
+
+        return builder.toArray(clazz);
+    }
+
+    @Override
+    public Object[] _toArray() {
+        LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
+        Set<TKey> set = new Set<>(this.comparer);
+        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
+            while (enumerator.moveNext()) {
+                TSource element = enumerator.current();
+                if (set.add(this.keySelector.apply(element)))
+                    builder.add(element);
+            }
+        }
+
+        return builder.toArray();
+    }
+
+    @Override
+    public List<TSource> _toList() {
+        List<TSource> list = new ArrayList<>();
+        Set<TKey> set = new Set<>(this.comparer);
+        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
+            while (enumerator.moveNext()) {
+                TSource element = enumerator.current();
+                if (set.add(this.keySelector.apply(element)))
+                    list.add(element);
+            }
+        }
+
+        return list;
+    }
+
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        return onlyIfCheap ? -1 : this.fillSet().getCount();
+    }
+
+    private Set<TKey> fillSet() {
+        Set<TKey> set = new Set<>(this.comparer);
+        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
+            while (enumerator.moveNext())
+                set.add(this.keySelector.apply(enumerator.current()));
+        }
+        return set;
     }
 }
