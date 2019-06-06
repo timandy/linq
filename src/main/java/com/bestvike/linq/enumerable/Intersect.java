@@ -51,8 +51,7 @@ final class IntersectIterator<TSource> extends AbstractIterator<TSource> {
         switch (this.state) {
             case 1:
                 this.set = new Set<>(this.comparer);
-                for (TSource element : this.second)
-                    this.set.add(element);
+                this.set.unionWith(this.second);
                 this.enumerator = this.first.enumerator();
                 this.state = 2;
             case 2:

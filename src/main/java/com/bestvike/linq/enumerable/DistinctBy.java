@@ -142,10 +142,7 @@ final class DistinctByIterator<TSource, TKey> extends Iterator<TSource> implemen
 
     private Set<TKey> fillSet() {
         Set<TKey> set = new Set<>(this.comparer);
-        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
-            while (enumerator.moveNext())
-                set.add(this.keySelector.apply(enumerator.current()));
-        }
+        set.unionWith(this.source, this.keySelector);
         return set;
     }
 }

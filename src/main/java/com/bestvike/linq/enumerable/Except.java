@@ -51,8 +51,7 @@ final class ExceptIterator<TSource> extends AbstractIterator<TSource> {
         switch (this.state) {
             case 1:
                 this.set = new Set<>(this.comparer);
-                for (TSource item : this.second)
-                    this.set.add(item);
+                this.set.unionWith(this.second);
                 this.enumerator = this.first.enumerator();
                 this.state = 2;
             case 2:
