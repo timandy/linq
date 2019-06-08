@@ -10,8 +10,10 @@ import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
+import com.bestvike.linq.enumerable.AbstractEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.ThrowHelper;
@@ -100,6 +102,47 @@ public class TestCase {
         return builder.toString();
     }
 
+    public static String[] split(String value, char[] separator, boolean removeEmptyEntries) {
+        if (value == null)
+            throw new NullPointerException("value is null");
+        if (separator == null)
+            throw new NullPointerException("separator is null");
+
+        List<String> list = new ArrayList<>();
+        StringBuilder temp = new StringBuilder();
+        IEnumerable<Character> separators = Linq.asEnumerable(separator);
+        if (removeEmptyEntries) {
+            for (char c : Linq.asEnumerable(value)) {
+                if (separators.contains(c)) {
+                    if (temp.length() > 0) {
+                        list.add(temp.toString());
+                        temp.setLength(0);
+                    }
+                } else {
+                    temp.append(c);
+                }
+            }
+            //最后一个冲刷
+            if (temp.length() > 0) {
+                list.add(temp.toString());
+                temp.setLength(0);
+            }
+        } else {
+            for (char c : Linq.asEnumerable(value)) {
+                if (separators.contains(c)) {
+                    list.add(temp.toString());
+                    temp.setLength(0);
+                } else {
+                    temp.append(c);
+                }
+            }
+            //最后一个冲刷
+            list.add(temp.toString());
+            temp.setLength(0);
+        }
+        return list.toArray(new String[0]);
+    }
+
     protected static void assertSame(Object expected, Object actual) {
         if (actual == expected)
             return;
@@ -167,6 +210,23 @@ public class TestCase {
             fail("actual not containsAll expectedSubset");
     }
 
+    protected static <T> T assertThrowsAny(Class<T> clazz, Action0 action) {
+        if (clazz == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
+        if (action == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+
+        try {
+            action.apply();
+            fail("should throw " + clazz.toString());
+        } catch (Throwable e) {
+            if (clazz.isInstance(e))
+                return (T) e;
+            fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
+        }
+        return null;
+    }
+
     protected static void assertThrows(Class<?> clazz, Action0 action) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
@@ -176,7 +236,7 @@ public class TestCase {
         try {
             action.apply();
             fail("should throw " + clazz.toString());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             if (clazz.isInstance(e))
                 return;
             fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
@@ -283,6 +343,10 @@ public class TestCase {
         return source.select(a -> a);
     }
 
+    protected static <T> IEnumerable<T> FlipIsCollection(IEnumerable<T> source) {
+        return source instanceof ICollection ? ForceNotCollection(source) : source.toArray();
+    }
+
     private static boolean equal(Object expected, Object actual) {
         if (expected == actual)
             return true;
@@ -329,6 +393,7 @@ public class TestCase {
         return className + "<" + valueString + ">";
     }
 
+
     public static class TestEnumerable<T> implements IEnumerable<T> {
         private final IEnumerable<T> items;
 
@@ -340,6 +405,51 @@ public class TestCase {
         @Override
         public IEnumerator<T> enumerator() {
             return this.items.enumerator();
+        }
+    }
+
+    public static class ThrowsOnMatchEnumerable<T> implements IEnumerable<T> {
+        private final IEnumerable<T> data;
+        private final T thrownOn;
+
+        public ThrowsOnMatchEnumerable(IEnumerable<T> source, T thrownOn) {
+            this.data = source;
+            this.thrownOn = thrownOn;
+        }
+
+        public IEnumerator<T> enumerator() {
+            return new AbstractEnumerator<T>() {
+                private IEnumerator<T> enumerator;
+
+                @Override
+                public boolean moveNext() {
+                    switch (this.state) {
+                        case 0:
+                            this.enumerator = ThrowsOnMatchEnumerable.this.data.enumerator();
+                            this.state = 1;
+                        case 1:
+                            if (this.enumerator.moveNext()) {
+                                T item = this.enumerator.current();
+                                if (item.equals(ThrowsOnMatchEnumerable.this.thrownOn))
+                                    throw new RuntimeException();
+                                this.current = item;
+                                return true;
+                            }
+                            this.close();
+                            return false;
+                        default:
+                            return false;
+                    }
+                }
+
+                @Override
+                public void close() {
+                    if (this.enumerator != null) {
+                        this.enumerator.close();
+                        this.enumerator = null;
+                    }
+                }
+            };
         }
     }
 
@@ -575,6 +685,61 @@ public class TestCase {
         }
     }
 
+    protected static class TestReadOnlyCollection<T> implements ICollection<T> {
+        public Object[] Items;
+        public int CountTouched = 0;
+
+        public TestReadOnlyCollection(T[] items) {
+            this.Items = items;
+        }
+
+        @Override
+        public Collection<T> getCollection() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public int _getCount() {
+            this.CountTouched++;
+            return this.Items.length;
+        }
+
+        @Override
+        public boolean _contains(T item) {
+            ThrowHelper.throwNotSupportedException();
+            return false;
+        }
+
+        @Override
+        public void _copyTo(Object[] array, int arrayIndex) {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public T[] _toArray(Class<T> clazz) {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public Object[] _toArray() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public List<T> _toList() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public IEnumerator<T> enumerator() {
+            return new ArrayEnumerator<>(this.Items);
+        }
+    }
+
     public static class DelegateIterator<TSource> implements IEnumerable<TSource>, IEnumerator<TSource> {
         private final Func0<IEnumerator<TSource>> enumerator;
         private final Func0<Boolean> moveNext;
@@ -605,7 +770,7 @@ public class TestCase {
         }
 
         @Override
-        public com.bestvike.linq.IEnumerator<TSource> enumerator() {
+        public IEnumerator<TSource> enumerator() {
             return this.enumerator.apply();
         }
 
@@ -662,6 +827,22 @@ public class TestCase {
         }
     }
 
+    public static class SkipTakeData {
+        public static IEnumerable<Object[]> EnumerableData() {
+            IEnumerable<Integer> sourceCounts = Linq.asEnumerable(0, 1, 2, 3, 5, 8, 13, 55, 100, 250);
+
+            IEnumerable<Integer> counts = Linq.asEnumerable(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 100, 250, 500, Integer.MAX_VALUE);
+            final IEnumerable<Integer> countsF = counts.concat(counts.select(c -> -c)).append(0).append(Integer.MIN_VALUE);
+
+            return sourceCounts.select(sourceCount -> Tuple.create(sourceCount, Linq.range(0, sourceCount)))
+                    .selectMany(a -> countsF, (a, count) -> new Object[]{a.getItem2(), count});
+        }
+
+        public static IEnumerable<Object[]> EvaluationBehaviorData() {
+            return Linq.range(-1, 15).select(count -> new Object[]{count});
+        }
+    }
+
     public static class AnagramEqualityComparer implements IEqualityComparer<String> {
         @Override
         public boolean equals(String x, String y) {
@@ -690,6 +871,62 @@ public class TestCase {
             for (char c : Linq.asEnumerable(obj))
                 hash ^= c;
             return hash;
+        }
+    }
+
+    protected class TestCollection<T> implements ICollection<T> {
+        public Object[] Items;
+        public int CountTouched = 0;
+        public int CopyToTouched = 0;
+
+        public TestCollection(T[] items) {
+            this.Items = items;
+        }
+
+        @Override
+        public Collection<T> getCollection() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public int _getCount() {
+            this.CountTouched++;
+            return this.Items.length;
+        }
+
+        @Override
+        public boolean _contains(T item) {
+            return Arrays.asList(this.Items).contains(item);
+        }
+
+        @Override
+        public void _copyTo(Object[] array, int arrayIndex) {
+            this.CopyToTouched++;
+            System.arraycopy(this.Items, 0, array, arrayIndex, this.Items.length);
+        }
+
+        @Override
+        public T[] _toArray(Class<T> clazz) {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public Object[] _toArray() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public List<T> _toList() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public IEnumerator<T> enumerator() {
+            return new ArrayEnumerator<>(this.Items);
         }
     }
 }
