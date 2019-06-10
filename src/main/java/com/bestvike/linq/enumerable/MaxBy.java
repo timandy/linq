@@ -26,24 +26,25 @@ public final class MaxBy {
         TSource value;
         Integer key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Integer curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey > key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Integer curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> keySelector) {
@@ -55,23 +56,25 @@ public final class MaxBy {
         TSource value;
         Integer key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Integer curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey > key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Integer curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByLong(IEnumerable<TSource> source, Func1<TSource, Long> keySelector) {
@@ -83,24 +86,25 @@ public final class MaxBy {
         TSource value;
         Long key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Long curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey > key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Long curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByLongNull(IEnumerable<TSource> source, Func1<TSource, Long> keySelector) {
@@ -112,23 +116,25 @@ public final class MaxBy {
         TSource value;
         Long key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Long curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey > key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Long curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByFloat(IEnumerable<TSource> source, Func1<TSource, Float> keySelector) {
@@ -140,24 +146,36 @@ public final class MaxBy {
         TSource value;
         Float key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Float curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey > key || Float.isNaN(key))) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (Float.isNaN(key)) {
+                if (!e.moveNext())
+                    return value;
+                TSource curValue = e.current();
+                Float curKey = keySelector.apply(curValue);
+                if (curKey != null && !Float.isNaN(curKey)) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
+            }
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Float curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
+                }
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> keySelector) {
@@ -169,23 +187,36 @@ public final class MaxBy {
         TSource value;
         Float key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Float curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey > key || Float.isNaN(key))) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (Float.isNaN(key)) {
+                if (!e.moveNext())
+                    return value;
+                TSource curValue = e.current();
+                Float curKey = keySelector.apply(curValue);
+                if (curKey != null && !Float.isNaN(curKey)) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
+            }
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Float curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
+                }
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByDouble(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
@@ -197,24 +228,36 @@ public final class MaxBy {
         TSource value;
         Double key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Double curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey > key || Double.isNaN(key))) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (Double.isNaN(key)) {
+                if (!e.moveNext())
+                    return value;
+                TSource curValue = e.current();
+                Double curKey = keySelector.apply(curValue);
+                if (curKey != null && !Double.isNaN(curKey)) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
+            }
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Double curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
+                }
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
@@ -226,23 +269,36 @@ public final class MaxBy {
         TSource value;
         Double key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Double curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey > key || Double.isNaN(key))) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (Double.isNaN(key)) {
+                if (!e.moveNext())
+                    return value;
+                TSource curValue = e.current();
+                Double curKey = keySelector.apply(curValue);
+                if (curKey != null && !Double.isNaN(curKey)) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
+            }
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Double curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey > key) {
+                    value = curValue;
+                    key = curKey;
+                }
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> keySelector) {
@@ -254,24 +310,25 @@ public final class MaxBy {
         TSource value;
         BigDecimal key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    BigDecimal curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey.compareTo(key) > 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                BigDecimal curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey.compareTo(key) > 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource maxByDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> keySelector) {
@@ -283,23 +340,25 @@ public final class MaxBy {
         TSource value;
         BigDecimal key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    BigDecimal curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey.compareTo(key) > 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                BigDecimal curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey.compareTo(key) > 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource, TKey> TSource maxBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
@@ -312,24 +371,25 @@ public final class MaxBy {
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    TKey curKey = keySelector.apply(curValue);
-                    if (curKey != null && comparer.compare(curKey, key) > 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                TKey curKey = keySelector.apply(curValue);
+                if (curKey != null && comparer.compare(curKey, key) > 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource, TKey> TSource maxByNull(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
@@ -342,22 +402,24 @@ public final class MaxBy {
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    TKey curKey = keySelector.apply(curValue);
-                    if (curKey != null && comparer.compare(curKey, key) > 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                TKey curKey = keySelector.apply(curValue);
+                if (curKey != null && comparer.compare(curKey, key) > 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 }

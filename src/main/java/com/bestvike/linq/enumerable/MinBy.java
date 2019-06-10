@@ -26,24 +26,25 @@ public final class MinBy {
         TSource value;
         Integer key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Integer curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey < key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Integer curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey < key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> keySelector) {
@@ -55,23 +56,25 @@ public final class MinBy {
         TSource value;
         Integer key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Integer curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey < key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Integer curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey < key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByLong(IEnumerable<TSource> source, Func1<TSource, Long> keySelector) {
@@ -83,24 +86,25 @@ public final class MinBy {
         TSource value;
         Long key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Long curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey < key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Long curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey < key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByLongNull(IEnumerable<TSource> source, Func1<TSource, Long> keySelector) {
@@ -112,23 +116,25 @@ public final class MinBy {
         TSource value;
         Long key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Long curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey < key) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Long curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey < key) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByFloat(IEnumerable<TSource> source, Func1<TSource, Float> keySelector) {
@@ -140,24 +146,29 @@ public final class MinBy {
         TSource value;
         Float key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Float curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey < key || Float.isNaN(curKey))) {
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Float curKey = keySelector.apply(curValue);
+                if (curKey != null) {
+                    if (curKey < key) {
                         value = curValue;
                         key = curKey;
+                    } else if (Float.isNaN(curKey)) {
+                        return value;
                     }
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> keySelector) {
@@ -169,23 +180,29 @@ public final class MinBy {
         TSource value;
         Float key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Float curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey < key || Float.isNaN(curKey))) {
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Float curKey = keySelector.apply(curValue);
+                if (curKey != null) {
+                    if (curKey < key) {
                         value = curValue;
                         key = curKey;
+                    } else if (Float.isNaN(curKey)) {
+                        return value;
                     }
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByDouble(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
@@ -197,24 +214,29 @@ public final class MinBy {
         TSource value;
         Double key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Double curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey < key || Double.isNaN(curKey))) {
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Double curKey = keySelector.apply(curValue);
+                if (curKey != null) {
+                    if (curKey < key) {
                         value = curValue;
                         key = curKey;
+                    } else if (Double.isNaN(curKey)) {
+                        return value;
                     }
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> keySelector) {
@@ -226,23 +248,29 @@ public final class MinBy {
         TSource value;
         Double key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    Double curKey = keySelector.apply(curValue);
-                    if (curKey != null && (curKey < key || Double.isNaN(curKey))) {
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                Double curKey = keySelector.apply(curValue);
+                if (curKey != null) {
+                    if (curKey < key) {
                         value = curValue;
                         key = curKey;
+                    } else if (Double.isNaN(curKey)) {
+                        return value;
                     }
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> keySelector) {
@@ -254,24 +282,25 @@ public final class MinBy {
         TSource value;
         BigDecimal key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    BigDecimal curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey.compareTo(key) < 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                BigDecimal curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey.compareTo(key) < 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource> TSource minByDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> keySelector) {
@@ -283,23 +312,25 @@ public final class MinBy {
         TSource value;
         BigDecimal key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    BigDecimal curKey = keySelector.apply(curValue);
-                    if (curKey != null && curKey.compareTo(key) < 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                BigDecimal curKey = keySelector.apply(curValue);
+                if (curKey != null && curKey.compareTo(key) < 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 
     public static <TSource, TKey> TSource minBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
@@ -312,24 +343,25 @@ public final class MinBy {
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    ThrowHelper.throwNoElementsException();
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    TKey curKey = keySelector.apply(curValue);
-                    if (curKey != null && comparer.compare(curKey, key) < 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                TKey curKey = keySelector.apply(curValue);
+                if (curKey != null && comparer.compare(curKey, key) < 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        ThrowHelper.throwNoElementsException();
-        return null;
+
+        return value;
     }
 
     public static <TSource, TKey> TSource minByNull(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
@@ -342,22 +374,24 @@ public final class MinBy {
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
+            do {
+                if (!e.moveNext())
+                    return null;
                 value = e.current();
                 key = keySelector.apply(value);
-                if (key == null)
-                    continue;
-                while (e.moveNext()) {
-                    TSource curValue = e.current();
-                    TKey curKey = keySelector.apply(curValue);
-                    if (curKey != null && comparer.compare(curKey, key) < 0) {
-                        value = curValue;
-                        key = curKey;
-                    }
+            }
+            while (key == null);
+
+            while (e.moveNext()) {
+                TSource curValue = e.current();
+                TKey curKey = keySelector.apply(curValue);
+                if (curKey != null && comparer.compare(curKey, key) < 0) {
+                    value = curValue;
+                    key = curKey;
                 }
-                return value;
             }
         }
-        return null;
+
+        return value;
     }
 }
