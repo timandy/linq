@@ -68,6 +68,9 @@ public class MaxByTest extends TestCase {
             fail("expect error,but got " + max);
         } catch (InvalidOperationException ignored) {
         }
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Float.NaN), Tuple.create(Float.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).maxByFloat(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
@@ -77,6 +80,9 @@ public class MaxByTest extends TestCase {
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
         assertEquals(null, Linq.asEnumerable(tuple1s2).maxByFloatNull(tuple -> (Float) tuple.getItem1()));
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Float.NaN), Tuple.create(Float.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).maxByFloatNull(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
@@ -90,6 +96,9 @@ public class MaxByTest extends TestCase {
             fail("expect error,but got " + max);
         } catch (InvalidOperationException ignored) {
         }
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Double.NaN), Tuple.create(Double.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).maxByDouble(tuple -> (Double) tuple.getItem1()));
     }
 
     @Test
@@ -99,6 +108,9 @@ public class MaxByTest extends TestCase {
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
         assertEquals(null, Linq.asEnumerable(tuple1s2).maxByDoubleNull(tuple -> (Double) tuple.getItem1()));
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Double.NaN), Tuple.create(Double.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).maxByDoubleNull(tuple -> (Double) tuple.getItem1()));
     }
 
     @Test

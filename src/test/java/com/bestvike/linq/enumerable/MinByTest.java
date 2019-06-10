@@ -68,6 +68,9 @@ public class MinByTest extends TestCase {
             fail("expect error,but got " + min);
         } catch (InvalidOperationException ignored) {
         }
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Float.NaN), Tuple.create(Float.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).minByFloat(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
@@ -77,6 +80,9 @@ public class MinByTest extends TestCase {
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
         assertEquals(null, Linq.asEnumerable(tuple1s2).minByFloatNull(tuple -> (Float) tuple.getItem1()));
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Float.NaN), Tuple.create(Float.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).minByFloatNull(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
@@ -90,6 +96,9 @@ public class MinByTest extends TestCase {
             fail("expect error,but got " + min);
         } catch (InvalidOperationException ignored) {
         }
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Double.NaN), Tuple.create(Double.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).minByDouble(tuple -> (Double) tuple.getItem1()));
     }
 
     @Test
@@ -99,6 +108,9 @@ public class MinByTest extends TestCase {
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
         assertEquals(null, Linq.asEnumerable(tuple1s2).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
+
+        Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Double.NaN), Tuple.create(Double.NaN)};
+        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
     }
 
     @Test
