@@ -97,6 +97,9 @@ public final class Min {
             }
             while (value == null);
 
+            if (Float.isNaN(value))
+                return value;
+
             while (e.moveNext()) {
                 Float cur = e.current();
                 if (cur != null) {
@@ -130,6 +133,9 @@ public final class Min {
                 value = e.current();
             }
             while (value == null);
+
+            if (Double.isNaN(value))
+                return value;
 
             while (e.moveNext()) {
                 Double cur = e.current();
@@ -292,6 +298,9 @@ public final class Min {
             }
             while (value == null);
 
+            if (Float.isNaN(value))
+                return value;
+
             while (e.moveNext()) {
                 Float cur = selector.apply(e.current());
                 if (cur != null) {
@@ -327,6 +336,9 @@ public final class Min {
                 value = selector.apply(e.current());
             }
             while (value == null);
+
+            if (Double.isNaN(value))
+                return value;
 
             while (e.moveNext()) {
                 Double cur = selector.apply(e.current());
