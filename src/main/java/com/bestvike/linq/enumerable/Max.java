@@ -206,9 +206,9 @@ public final class Max {
             while (value == null);
 
             while (e.moveNext()) {
-                TSource x = e.current();
-                if (x != null && comparer.compare(x, value) > 0)
-                    value = x;
+                TSource cur = e.current();
+                if (cur != null && comparer.compare(cur, value) > 0)
+                    value = cur;
             }
         }
 
@@ -415,9 +415,9 @@ public final class Max {
             while (value == null);
 
             while (e.moveNext()) {
-                TResult x = selector.apply(e.current());
-                if (x != null && comparer.compare(x, value) > 0)
-                    value = x;
+                TResult cur = selector.apply(e.current());
+                if (cur != null && comparer.compare(cur, value) > 0)
+                    value = cur;
             }
         }
 
