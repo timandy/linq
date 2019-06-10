@@ -154,6 +154,9 @@ public final class MinBy {
             }
             while (key == null);
 
+            if (Float.isNaN(key))
+                return value;
+
             while (e.moveNext()) {
                 TSource curValue = e.current();
                 Float curKey = keySelector.apply(curValue);
@@ -162,7 +165,7 @@ public final class MinBy {
                         value = curValue;
                         key = curKey;
                     } else if (Float.isNaN(curKey)) {
-                        return value;
+                        return curValue;
                     }
                 }
             }
@@ -188,6 +191,9 @@ public final class MinBy {
             }
             while (key == null);
 
+            if (Float.isNaN(key))
+                return value;
+
             while (e.moveNext()) {
                 TSource curValue = e.current();
                 Float curKey = keySelector.apply(curValue);
@@ -196,7 +202,7 @@ public final class MinBy {
                         value = curValue;
                         key = curKey;
                     } else if (Float.isNaN(curKey)) {
-                        return value;
+                        return curValue;
                     }
                 }
             }
@@ -222,6 +228,9 @@ public final class MinBy {
             }
             while (key == null);
 
+            if (Double.isNaN(key))
+                return value;
+
             while (e.moveNext()) {
                 TSource curValue = e.current();
                 Double curKey = keySelector.apply(curValue);
@@ -230,7 +239,7 @@ public final class MinBy {
                         value = curValue;
                         key = curKey;
                     } else if (Double.isNaN(curKey)) {
-                        return value;
+                        return curValue;
                     }
                 }
             }
@@ -256,6 +265,9 @@ public final class MinBy {
             }
             while (key == null);
 
+            if (Double.isNaN(key))
+                return value;
+
             while (e.moveNext()) {
                 TSource curValue = e.current();
                 Double curKey = keySelector.apply(curValue);
@@ -264,7 +276,7 @@ public final class MinBy {
                         value = curValue;
                         key = curKey;
                     } else if (Double.isNaN(curKey)) {
-                        return value;
+                        return curValue;
                     }
                 }
             }
