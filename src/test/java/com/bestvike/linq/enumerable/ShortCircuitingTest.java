@@ -160,8 +160,7 @@ public class ShortCircuitingTest extends TestCase {
         }
 
         Func1<T, TResult> getFunc() {
-            return x ->
-            {
+            return x -> {
                 ++this.Calls;
                 return this.basefunc.apply(x);
             };
