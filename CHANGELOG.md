@@ -27,6 +27,7 @@
 - Improve `min`, `max`, `minBy`, `maxBy` performance.
 - Optimize `TakeLastIterator` dispose action.
 - Check selector param for `sum` with selector.
+- Optimize `toMap` and `toSet` methods.
 
 ## v2.0.1
 - Add test cases.
