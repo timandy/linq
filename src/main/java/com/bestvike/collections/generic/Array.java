@@ -13,12 +13,18 @@ import java.util.List;
  * Created by 许崇雷 on 2017-07-19.
  */
 public final class Array<T> implements IArray<T>, Cloneable {
+    private static final Array EMPTY = new Array(ArrayUtils.empty());
     private final Object[] elements;
 
     public Array(Object[] elements) {
         if (elements == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.elements);
         this.elements = elements;
+    }
+
+    public static <T> Array<T> empty() {
+        //noinspection unchecked
+        return EMPTY;
     }
 
     @Override
