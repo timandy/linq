@@ -2,32 +2,32 @@
 # Change Log
 
 ## v3.0.0
-- Translated all LINQ to Objects API of .net core 3.0.
-- Change the year of copyright.
-- Not copy data when cast primitive array to IEnumerable.
-- Not create array when cast singleton to IEnumerable.
-- use ThrowHelper to throw Exceptions.
-- Improve performance of `takeLast`.
+- Fix unsigned compare bugs.
+- Fix `Lookup.ApplyResultSelector` bugs.
+- Fix `OrderedEnumerableRangeEnumerator` not iterate maxIdx.
+- Fix `EnumerablePartition` error assert.
+- Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
+- Fix not check selector param for `sum` with selector.
 - Add zip Tuple API.
-- IEnumerable support port to stream.
-- Update plugin version to latest.
-- Rename package `bridge` to `adapter`.
+- Add support port to stream for `IEnumerable`.
 - Add `IArray` interface to determine `IList` contains an array or not.
 - Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
 - Add `StringComparer` for string equals, hashCode and compare actions.
-- Fix unsigned compare bugs.
-- Fix `Lookup.ApplyResultSelector` bugs.
-- Optimize `range().select()` and `repeat().select()`.
-- Fix `OrderedEnumerableRangeEnumerator` not iterate maxIdx.
 - Add `ValueType` as super class for value type.
-- Fix `EnumerablePartition` error assert.
-- Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
 - Remove override runOnce() for IList.
-- Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
-- Improve `min`, `max`, `minBy`, `maxBy` performance.
+- Not copy data when cast primitive array to IEnumerable.
+- Not create array when cast singleton to IEnumerable.
+- Optimize performance of `takeLast`.
+- Optimize `range().select()` and `repeat().select()`.
+- Optimize `min`, `max`, `minBy`, `maxBy` performance.
 - Optimize `TakeLastIterator` dispose action.
-- Check selector param for `sum` with selector.
 - Optimize `toMap` and `toSet` methods.
+- Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
+- Translated all LINQ to Objects API of .net core 3.0.
+- Use ThrowHelper to throw Exceptions.
+- Rename package `bridge` to `adapter`.
+- Update plugin version to latest.
+- Change the year of copyright.
 
 ## v2.0.1
 - Add test cases.
