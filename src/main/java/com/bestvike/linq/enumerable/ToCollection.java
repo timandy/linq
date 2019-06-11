@@ -4,6 +4,7 @@ import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -64,10 +65,9 @@ public final class ToCollection {
         if (keySelector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
 
-        int capacity = 0;
         if (source instanceof ICollection) {
             ICollection<TSource> collection = (ICollection<TSource>) source;
-            capacity = collection._getCount();
+            int capacity = collection._getCount();
             if (capacity == 0)
                 return new HashMap<>();
 
@@ -80,11 +80,24 @@ public final class ToCollection {
                 }
                 return map;
             }
+
+            Map<TKey, TSource> map = new HashMap<>(capacity);
+            try (IEnumerator<TSource> enumerator = source.enumerator()) {
+                while (enumerator.moveNext()) {
+                    TSource element = enumerator.current();
+                    map.put(keySelector.apply(element), element);
+                }
+            }
+            return map;
         }
 
-        Map<TKey, TSource> map = new HashMap<>(capacity);
-        for (TSource element : source)
-            map.put(keySelector.apply(element), element);
+        Map<TKey, TSource> map = new HashMap<>();
+        try (IEnumerator<TSource> enumerator = source.enumerator()) {
+            while (enumerator.moveNext()) {
+                TSource element = enumerator.current();
+                map.put(keySelector.apply(element), element);
+            }
+        }
         return map;
     }
 
@@ -96,10 +109,9 @@ public final class ToCollection {
         if (elementSelector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.elementSelector);
 
-        int capacity = 0;
         if (source instanceof ICollection) {
             ICollection<TSource> collection = (ICollection<TSource>) source;
-            capacity = collection._getCount();
+            int capacity = collection._getCount();
             if (capacity == 0)
                 return new HashMap<>();
 
@@ -112,11 +124,24 @@ public final class ToCollection {
                 }
                 return map;
             }
+
+            Map<TKey, TElement> map = new HashMap<>(capacity);
+            try (IEnumerator<TSource> enumerator = source.enumerator()) {
+                while (enumerator.moveNext()) {
+                    TSource element = enumerator.current();
+                    map.put(keySelector.apply(element), elementSelector.apply(element));
+                }
+            }
+            return map;
         }
 
-        Map<TKey, TElement> map = new HashMap<>(capacity);
-        for (TSource element : source)
-            map.put(keySelector.apply(element), elementSelector.apply(element));
+        Map<TKey, TElement> map = new HashMap<>();
+        try (IEnumerator<TSource> enumerator = source.enumerator()) {
+            while (enumerator.moveNext()) {
+                TSource element = enumerator.current();
+                map.put(keySelector.apply(element), elementSelector.apply(element));
+            }
+        }
         return map;
     }
 
@@ -125,10 +150,9 @@ public final class ToCollection {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         // Don't pre-allocate based on knowledge of size, as potentially many elements will be dropped.
-        int capacity = 0;
         if (source instanceof ICollection) {
             ICollection<TSource> collection = (ICollection<TSource>) source;
-            capacity = collection._getCount();
+            int capacity = collection._getCount();
             if (capacity == 0)
                 return new HashSet<>();
 
@@ -139,10 +163,20 @@ public final class ToCollection {
                     set.add(array.get(i));
                 return set;
             }
+
+            Set<TSource> set = new HashSet<>(capacity);
+            try (IEnumerator<TSource> enumerator = source.enumerator()) {
+                while (enumerator.moveNext())
+                    set.add(enumerator.current());
+            }
+            return set;
         }
-        Set<TSource> set = new HashSet<>(capacity);
-        for (TSource element : source)
-            set.add(element);
+
+        Set<TSource> set = new HashSet<>();
+        try (IEnumerator<TSource> enumerator = source.enumerator()) {
+            while (enumerator.moveNext())
+                set.add(enumerator.current());
+        }
         return set;
     }
 }
