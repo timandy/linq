@@ -17,6 +17,7 @@ import com.bestvike.linq.enumerable.AbstractEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.ThrowHelper;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.AssertEqualityComparer;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple3;
@@ -373,7 +374,16 @@ public class TestCase {
             return true;
         if (comparer == null)
             comparer = new AssertEqualityComparer<>();
-        return expected != null && expected.sequenceEqual(actual, comparer);
+        if (expected == null)
+            return false;
+        try (IEnumerator<T> e1 = expected.enumerator();
+             IEnumerator<T> e2 = actual.enumerator()) {
+            while (e1.moveNext()) {
+                if (!(e2.moveNext() && comparer.equals(e1.current(), e2.current())))
+                    return false;
+            }
+            return !e2.moveNext();
+        }
     }
 
     private static <T> String format(String message, IEnumerable<T> expected, IEnumerable<T> actual) {
@@ -724,14 +734,12 @@ public class TestCase {
 
         @Override
         public Object[] _toArray() {
-            ThrowHelper.throwNotSupportedException();
-            return null;
+            return ArrayUtils.toArray(this.Items, Object.class);
         }
 
         @Override
         public List<T> _toList() {
-            ThrowHelper.throwNotSupportedException();
-            return null;
+            return ArrayUtils.toList(this.Items);
         }
 
         @Override
@@ -878,6 +886,8 @@ public class TestCase {
         public Object[] Items;
         public int CountTouched = 0;
         public int CopyToTouched = 0;
+        public int ToArrayTouched = 0;
+        public int ToListTouched = 0;
 
         public TestCollection(T[] items) {
             this.Items = items;
@@ -914,14 +924,14 @@ public class TestCase {
 
         @Override
         public Object[] _toArray() {
-            ThrowHelper.throwNotSupportedException();
-            return null;
+            this.ToArrayTouched++;
+            return ArrayUtils.toArray(this.Items, Object.class);
         }
 
         @Override
         public List<T> _toList() {
-            ThrowHelper.throwNotSupportedException();
-            return null;
+            this.ToListTouched++;
+            return ArrayUtils.toList(this.Items);
         }
 
         @Override
