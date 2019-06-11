@@ -72,6 +72,8 @@ public final class Sum {
     public static <TSource> int sumInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         int sum = 0;
         for (TSource item : source) {
@@ -85,6 +87,8 @@ public final class Sum {
     public static <TSource> long sumLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         long sum = 0;
         for (TSource item : source) {
@@ -98,6 +102,8 @@ public final class Sum {
     public static <TSource> float sumFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         double sum = 0;
         for (TSource item : source) {
@@ -111,6 +117,8 @@ public final class Sum {
     public static <TSource> double sumDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         double sum = 0;
         for (TSource item : source) {
@@ -124,6 +132,8 @@ public final class Sum {
     public static <TSource> BigDecimal sumDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         BigDecimal sum = BigDecimal.ZERO;
         for (TSource item : source) {
