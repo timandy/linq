@@ -24,6 +24,9 @@
 - Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
 - Remove override runOnce() for IList.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
+- Improve `min`, `max`, `minBy`, `maxBy` performance.
+- Optimize `TakeLastIterator` dispose action.
+- Check selector param for `sum` with selector.
 
 ## v2.0.1
 - Add test cases.
