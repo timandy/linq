@@ -49,6 +49,7 @@ import com.bestvike.linq.enumerable.Where;
 import com.bestvike.linq.enumerable.Zip;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.tuple.Tuple2;
 
 import java.math.BigDecimal;
@@ -907,7 +908,8 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
     }
 
     default Array<TSource> toArray() {
-        return new Array<>(ToCollection.toArray(this));
+        Object[] elements = ToCollection.toArray(this);
+        return elements == ArrayUtils.empty() ? Array.empty() : new Array<>(elements);
     }
 
     default List<TSource> toList() {
