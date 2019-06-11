@@ -34,6 +34,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - Tuple supported.
 - Cast IEnumerable to stream or parallel stream supported.
 - Android supported.
+- More than 1800 testcase passed.
 
 ![bestvike](logo.jpg "济南百思为科信息工程有限公司")
 
