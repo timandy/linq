@@ -7,6 +7,7 @@ import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
@@ -482,9 +483,9 @@ public class SelectManyTest extends TestCase {
                 {
                         new IEnumerable[]
                                 {
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{0})),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{1})),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{2})),
+                                        new TestEnumerable<>(new Integer[]{0}),
+                                        new TestEnumerable<>(new Integer[]{1}),
+                                        new TestEnumerable<>(new Integer[]{2}),
                                         Linq.asEnumerable(new int[]{3}),
                                 }
                 });
@@ -495,9 +496,9 @@ public class SelectManyTest extends TestCase {
                         new IEnumerable[]
                                 {
                                         Linq.asEnumerable(new int[]{0}),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{1})),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{2})),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{3})),
+                                        new TestEnumerable<>(new Integer[]{1}),
+                                        new TestEnumerable<>(new Integer[]{2}),
+                                        new TestEnumerable<>(new Integer[]{3}),
                                 }
                 });
 
@@ -506,9 +507,9 @@ public class SelectManyTest extends TestCase {
                 {
                         new IEnumerable[]
                                 {
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{0})),
+                                        new TestEnumerable<>(new Integer[]{0}),
                                         Linq.asEnumerable(new int[]{1}),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{2})),
+                                        new TestEnumerable<>(new Integer[]{2}),
                                 }
                 });
 
@@ -518,7 +519,7 @@ public class SelectManyTest extends TestCase {
                         new IEnumerable[]
                                 {
                                         Linq.asEnumerable(new int[]{0}),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{1})),
+                                        new TestEnumerable<>(new Integer[]{1}),
                                         Linq.asEnumerable(new int[]{2})
                                 }
                 });
@@ -528,9 +529,9 @@ public class SelectManyTest extends TestCase {
                 {
                         new IEnumerable[]
                                 {
-                                        new TestEnumerable<>(Linq.range(0, 100).toArray()),
+                                        new TestEnumerable<>(Linq.range(0, 100).toArray(Integer.class)),
                                         Linq.range(100, 100).toArray(),
-                                        new TestEnumerable<>(Linq.range(200, 100).toArray()),
+                                        new TestEnumerable<>(Linq.range(200, 100).toArray(Integer.class)),
                                 }
                 });
 
@@ -540,7 +541,7 @@ public class SelectManyTest extends TestCase {
                         new IEnumerable[]
                                 {
                                         Linq.range(0, 100).toArray(),
-                                        new TestEnumerable<>(Linq.range(100, 100).toArray()),
+                                        new TestEnumerable<>(Linq.range(100, 100).toArray(Integer.class)),
                                         Linq.range(200, 100).toArray(),
                                 }
                 });
@@ -551,9 +552,9 @@ public class SelectManyTest extends TestCase {
                         new IEnumerable[]
                                 {
                                         Linq.asEnumerable(new int[]{0}),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{1})),
+                                        new TestEnumerable<>(new Integer[]{1}),
                                         Linq.asEnumerable(new int[]{2}),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{3})),
+                                        new TestEnumerable<>(new Integer[]{3}),
                                         Linq.asEnumerable(new int[]{4}),
                                 }
                 });
@@ -563,11 +564,11 @@ public class SelectManyTest extends TestCase {
                 {
                         new IEnumerable[]
                                 {
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{0})),
+                                        new TestEnumerable<>(new Integer[]{0}),
                                         Linq.asEnumerable(new int[]{1}),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{2})),
+                                        new TestEnumerable<>(new Integer[]{2}),
                                         Linq.asEnumerable(new int[]{3}),
-                                        new TestEnumerable<>(Linq.asEnumerable(new int[]{4})),
+                                        new TestEnumerable<>(new Integer[]{4}),
                                 }
                 });
         return Linq.asEnumerable(lst);
@@ -641,7 +642,7 @@ public class SelectManyTest extends TestCase {
     @Test
     public void testSelectManyIndexedSelect() {
         List<String> nameSeqs = Linq.asEnumerable(depts)
-                .selectMany((dept, index) -> Linq.asEnumerable(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
+                .selectMany((Department dept, Integer index) -> Linq.asEnumerable(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
                 .toList();
         assertEquals("[#0: Sales: Fred, #0: Sales: Eric, #0: Sales: Janet, #2: Marketing: Bill]", nameSeqs.toString());
     }

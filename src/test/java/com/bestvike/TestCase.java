@@ -12,6 +12,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
+import com.bestvike.linq.adapter.enumerator.GenericArrayEnumerator;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.enumerable.AbstractEnumerator;
@@ -487,16 +488,15 @@ public class TestCase {
 
 
     public static class TestEnumerable<T> implements IEnumerable<T> {
-        private final IEnumerable<T> items;
+        private final T[] Items;
 
-        public TestEnumerable(IEnumerable<T> items) {
-            assertNotNull(items);
-            this.items = items;
+        public TestEnumerable(T[] items) {
+            this.Items = items;
         }
 
         @Override
         public IEnumerator<T> enumerator() {
-            return this.items.enumerator();
+            return new GenericArrayEnumerator<>(this.Items);
         }
     }
 

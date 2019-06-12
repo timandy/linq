@@ -77,7 +77,7 @@ public class ToArrayTest extends TestCase {
     private <T> void RunToArrayOnAllCollectionTypes(T[] items, Action1<Array<T>> validation) {
         validation.apply(Linq.asEnumerable(items).toArray());
         validation.apply(Linq.asEnumerable(Arrays.asList(items)).toArray());
-        validation.apply(new TestEnumerable<>(Linq.asEnumerable(items)).toArray());
+        validation.apply(new TestEnumerable<>(items).toArray());
         validation.apply(new TestReadOnlyCollection<>(items).toArray());
         validation.apply(new TestCollection<>(items).toArray());
     }

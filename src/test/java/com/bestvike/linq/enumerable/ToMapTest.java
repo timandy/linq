@@ -54,8 +54,8 @@ public class ToMapTest extends TestCase {
         validation.apply(Linq.asEnumerable(items).toMap(key -> key, value -> value));
         validation.apply(Linq.asEnumerable(items).toArray().toMap(key -> key));
         validation.apply(Linq.asEnumerable(items).toArray().toMap(key -> key, value -> value));
-        validation.apply(new TestEnumerable<>(Linq.asEnumerable(items)).toMap(key -> key));
-        validation.apply(new TestEnumerable<>(Linq.asEnumerable(items)).toMap(key -> key, value -> value));
+        validation.apply(new TestEnumerable<>(items).toMap(key -> key));
+        validation.apply(new TestEnumerable<>(items).toMap(key -> key, value -> value));
         validation.apply(new TestReadOnlyCollection<>(items).toMap(key -> key));
         validation.apply(new TestReadOnlyCollection<>(items).toMap(key -> key, value -> value));
         validation.apply(new TestCollection<>(items).toMap(key -> key));

@@ -30,7 +30,7 @@ public class ToListTest extends TestCase {
     private <T> void RunToListOnAllCollectionTypes(T[] items, Action1<List<T>> validation) {
         validation.apply(Linq.asEnumerable(items).toList());
         validation.apply(Linq.asEnumerable(Arrays.asList(items)).toList());
-        validation.apply(new TestEnumerable<>(Linq.asEnumerable(items)).toList());
+        validation.apply(new TestEnumerable<>(items).toList());
         validation.apply(new TestReadOnlyCollection<>(items).toList());
         validation.apply(new TestCollection<>(items).toList());
     }
