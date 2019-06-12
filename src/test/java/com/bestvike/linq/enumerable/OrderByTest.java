@@ -83,18 +83,16 @@ public class OrderByTest extends TestCase {
 
     @Test
     public void KeySelectorCalled() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Tim", 90),
-                        new NameScore("Robert", 45),
-                        new NameScore("Prakash", 99)
-                };
-        NameScore[] expected = new NameScore[]
-                {
-                        new NameScore("Prakash", 99),
-                        new NameScore("Robert", 45),
-                        new NameScore("Tim", 90)
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Tim", 90),
+                new NameScore("Robert", 45),
+                new NameScore("Prakash", 99)
+        };
+        NameScore[] expected = new NameScore[]{
+                new NameScore("Prakash", 99),
+                new NameScore("Robert", 45),
+                new NameScore("Tim", 90)
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Name, null));
     }
@@ -133,48 +131,44 @@ public class OrderByTest extends TestCase {
 
     @Test
     public void SameKeysVerifySortStable() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Tim", 90),
-                        new NameScore("Robert", 90),
-                        new NameScore("Prakash", 90),
-                        new NameScore("Jim", 90),
-                        new NameScore("John", 90),
-                        new NameScore("Albert", 90),
-                };
-        NameScore[] expected = new NameScore[]
-                {
-                        new NameScore("Tim", 90),
-                        new NameScore("Robert", 90),
-                        new NameScore("Prakash", 90),
-                        new NameScore("Jim", 90),
-                        new NameScore("John", 90),
-                        new NameScore("Albert", 90),
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Tim", 90),
+                new NameScore("Robert", 90),
+                new NameScore("Prakash", 90),
+                new NameScore("Jim", 90),
+                new NameScore("John", 90),
+                new NameScore("Albert", 90),
+        };
+        NameScore[] expected = new NameScore[]{
+                new NameScore("Tim", 90),
+                new NameScore("Robert", 90),
+                new NameScore("Prakash", 90),
+                new NameScore("Jim", 90),
+                new NameScore("John", 90),
+                new NameScore("Albert", 90),
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Score));
     }
 
     @Test
     public void OrderedToArray() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Tim", 90),
-                        new NameScore("Robert", 90),
-                        new NameScore("Prakash", 90),
-                        new NameScore("Jim", 90),
-                        new NameScore("John", 90),
-                        new NameScore("Albert", 90),
-                };
-        NameScore[] expected = new NameScore[]
-                {
-                        new NameScore("Tim", 90),
-                        new NameScore("Robert", 90),
-                        new NameScore("Prakash", 90),
-                        new NameScore("Jim", 90),
-                        new NameScore("John", 90),
-                        new NameScore("Albert", 90),
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Tim", 90),
+                new NameScore("Robert", 90),
+                new NameScore("Prakash", 90),
+                new NameScore("Jim", 90),
+                new NameScore("John", 90),
+                new NameScore("Albert", 90),
+        };
+        NameScore[] expected = new NameScore[]{
+                new NameScore("Tim", 90),
+                new NameScore("Robert", 90),
+                new NameScore("Prakash", 90),
+                new NameScore("Jim", 90),
+                new NameScore("John", 90),
+                new NameScore("Albert", 90),
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Score).toArray());
     }
@@ -186,24 +180,22 @@ public class OrderByTest extends TestCase {
 
     @Test
     public void OrderedToList() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Tim", 90),
-                        new NameScore("Robert", 90),
-                        new NameScore("Prakash", 90),
-                        new NameScore("Jim", 90),
-                        new NameScore("John", 90),
-                        new NameScore("Albert", 90),
-                };
-        NameScore[] expected = new NameScore[]
-                {
-                        new NameScore("Tim", 90),
-                        new NameScore("Robert", 90),
-                        new NameScore("Prakash", 90),
-                        new NameScore("Jim", 90),
-                        new NameScore("John", 90),
-                        new NameScore("Albert", 90),
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Tim", 90),
+                new NameScore("Robert", 90),
+                new NameScore("Prakash", 90),
+                new NameScore("Jim", 90),
+                new NameScore("John", 90),
+                new NameScore("Albert", 90),
+        };
+        NameScore[] expected = new NameScore[]{
+                new NameScore("Tim", 90),
+                new NameScore("Robert", 90),
+                new NameScore("Prakash", 90),
+                new NameScore("Jim", 90),
+                new NameScore("John", 90),
+                new NameScore("Albert", 90),
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(Linq.asEnumerable(source).orderBy(e -> e.Score).toList()));
     }

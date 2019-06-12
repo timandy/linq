@@ -46,10 +46,9 @@ public class SelectTest extends TestCase {
 
     @Test
     public void SingleElement() {
-        CustInfo[] source = new CustInfo[]
-                {
-                        new CustInfo("Prakash", 98088)
-                };
+        CustInfo[] source = new CustInfo[]{
+                new CustInfo("Prakash", 98088)
+        };
         String[] expected = {"Prakash"};
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select(e -> e.name));
@@ -580,8 +579,7 @@ public class SelectTest extends TestCase {
     @Test
     public void Select_ExceptionThrownFromSelector_IteratorCanBeUsedAfterExceptionIsCaught() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Integer> selector = i ->
-        {
+        Func1<Integer, Integer> selector = i -> {
             if (i == 1)
                 throw new InvalidOperationException();
             return i + 1;

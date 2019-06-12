@@ -108,10 +108,9 @@ public class GroupJoinTest extends TestCase {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
                 new CustomerRec("Robert", 9895)};
-        AnagramRec[] inner = new AnagramRec[]
-                {
-                        new AnagramRec("Robert", 93483, 19),
-                        new AnagramRec("miT", 93489, 45)};
+        AnagramRec[] inner = new AnagramRec[]{
+                new AnagramRec("Robert", 93483, 19),
+                new AnagramRec("miT", 93489, 45)};
 
         assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, IEnumerable<AnagramRec>, JoinRec>) null, new AnagramEqualityComparer()));
     }

@@ -155,11 +155,10 @@ public class ConcatTest extends TestCase {
     }
 
     private IEnumerable<Object[]> ConcatOfConcatsData() {
-        return Linq.singleton(new Object[]
-                {
-                        Linq.range(0, 20),
-                        Linq.range(0, 4).concat(Linq.range(4, 6)).concat(Linq.range(10, 3).concat(Linq.range(13, 7)))
-                });
+        return Linq.singleton(new Object[]{
+                Linq.range(0, 20),
+                Linq.range(0, 4).concat(Linq.range(4, 6)).concat(Linq.range(10, 3).concat(Linq.range(13, 7)))
+        });
     }
 
     private IEnumerable<Object[]> ConcatWithSelfData() {
@@ -190,8 +189,7 @@ public class ConcatTest extends TestCase {
             // Note: It is important we run over the all-bits-set case, since currently
             // Concat is specialized for when all inputs are ICollection.
             for (int j = 0; j < (1 << EnumerableCount); j++) {
-                for (int k = 0; k < EnumerableCount; k++) // k is how much bits we shift by, and also the item that gets appended/prepended.
-                {
+                for (int k = 0; k < EnumerableCount; k++) {// k is how much bits we shift by, and also the item that gets appended/prepended.
                     IEnumerable<Integer> nextRange = Linq.range(k, 1);
                     boolean prepend = ((i >> k) & 1) != 0;
                     boolean forceCollection = ((j >> k) & 1) != 0;

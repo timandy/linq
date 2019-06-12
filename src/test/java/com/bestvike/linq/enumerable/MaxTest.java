@@ -512,13 +512,12 @@ public class MaxTest extends TestCase {
         lst.add(new Object[]{Linq.range(1, 10).select(i -> newDate(2000, 1, i)).toArray(), newDate(2000, 1, 10)});
         lst.add(new Object[]{Linq.asEnumerable(newDate(2000, 12, 1), newDate(2000, 12, 31), newDate(2000, 1, 12)), newDate(2000, 12, 31)});
 
-        Date[] threeThousand = new Date[]
-                {
-                        newDate(3000, 1, 1),
-                        newDate(100, 1, 1),
-                        newDate(200, 1, 1),
-                        newDate(1000, 1, 1)
-                };
+        Date[] threeThousand = new Date[]{
+                newDate(3000, 1, 1),
+                newDate(100, 1, 1),
+                newDate(200, 1, 1),
+                newDate(1000, 1, 1)
+        };
         lst.add(new Object[]{Linq.asEnumerable(threeThousand), newDate(3000, 1, 1)});
         lst.add(new Object[]{Linq.asEnumerable(threeThousand).concat(Linq.repeat(MAX_DATE, 1)), MAX_DATE});
         return Linq.asEnumerable(lst);
@@ -602,12 +601,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_Int_WithSelectorAccessingProperty() {
-        NameNum<Integer>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 10),
-                        new NameNum<>("John", -105),
-                        new NameNum<>("Bob", 30)
-                };
+        NameNum<Integer>[] source = new NameNum[]{
+                new NameNum<>("Tim", 10),
+                new NameNum<>("John", -105),
+                new NameNum<>("Bob", 30)
+        };
 
         assertEquals(30, Linq.asEnumerable(source).maxInt(e -> e.num));
     }
@@ -620,23 +618,21 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_Long_WithSelectorAccessingProperty() {
-        NameNum<Long>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 10L),
-                        new NameNum<>("John", -105L),
-                        new NameNum<>("Bob", Long.MAX_VALUE)
-                };
+        NameNum<Long>[] source = new NameNum[]{
+                new NameNum<>("Tim", 10L),
+                new NameNum<>("John", -105L),
+                new NameNum<>("Bob", Long.MAX_VALUE)
+        };
         assertEquals(Long.MAX_VALUE, Linq.asEnumerable(source).maxLong(e -> e.num));
     }
 
     @Test
     public void Max_Float_WithSelectorAccessingProperty() {
-        NameNum<Float>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 40.5f),
-                        new NameNum<>("John", -10.25f),
-                        new NameNum<>("Bob", 100.45f)
-                };
+        NameNum<Float>[] source = new NameNum[]{
+                new NameNum<>("Tim", 40.5f),
+                new NameNum<>("John", -10.25f),
+                new NameNum<>("Bob", 100.45f)
+        };
 
         assertEquals(100.45f, Linq.asEnumerable(source).select(e -> e.num).maxFloat());
     }
@@ -655,12 +651,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_Double_WithSelectorAccessingField() {
-        NameNum<Double>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 40.5d),
-                        new NameNum<>("John", -10.25d),
-                        new NameNum<>("Bob", 100.45d)
-                };
+        NameNum<Double>[] source = new NameNum[]{
+                new NameNum<>("Tim", 40.5d),
+                new NameNum<>("John", -10.25d),
+                new NameNum<>("Bob", 100.45d)
+        };
         assertEquals(100.45, Linq.asEnumerable(source).maxDouble(e -> e.num));
     }
 
@@ -705,12 +700,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableLong_WithSelectorAccessingField() {
-        NameNum<Long>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", null),
-                        new NameNum<>("John", -105L),
-                        new NameNum<>("Bob", Long.MAX_VALUE)
-                };
+        NameNum<Long>[] source = new NameNum[]{
+                new NameNum<>("Tim", null),
+                new NameNum<>("John", -105L),
+                new NameNum<>("Bob", Long.MAX_VALUE)
+        };
         assertEquals(Long.MAX_VALUE, Linq.asEnumerable(source).maxLongNull(e -> e.num));
     }
 
@@ -722,12 +716,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableFloat_WithSelectorAccessingProperty() {
-        NameNum<Float>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 40.5f),
-                        new NameNum<>("John", null),
-                        new NameNum<>("Bob", 100.45f)
-                };
+        NameNum<Float>[] source = new NameNum[]{
+                new NameNum<>("Tim", 40.5f),
+                new NameNum<>("John", null),
+                new NameNum<>("Bob", 100.45f)
+        };
         assertEquals(100.45f, Linq.asEnumerable(source).maxFloatNull(e -> e.num));
     }
 
@@ -739,12 +732,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableDouble_WithSelectorAccessingProperty() {
-        NameNum<Double>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 40.5),
-                        new NameNum<>("John", null),
-                        new NameNum<>("Bob", 100.45)
-                };
+        NameNum<Double>[] source = new NameNum[]{
+                new NameNum<>("Tim", 40.5),
+                new NameNum<>("John", null),
+                new NameNum<>("Bob", 100.45)
+        };
         assertEquals(100.45, Linq.asEnumerable(source).maxDoubleNull(e -> e.num));
     }
 
@@ -756,12 +748,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableDecimal_WithSelectorAccessingProperty() {
-        NameNum<BigDecimal>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", m("420.5")),
-                        new NameNum<>("John", null),
-                        new NameNum<>("Bob", m("10.45"))
-                };
+        NameNum<BigDecimal>[] source = new NameNum[]{
+                new NameNum<>("Tim", m("420.5")),
+                new NameNum<>("John", null),
+                new NameNum<>("Bob", m("10.45"))
+        };
         assertEquals(m("420.5"), Linq.asEnumerable(source).maxDecimalNull(e -> e.num));
     }
 
@@ -784,12 +775,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_String_WithSelectorAccessingProperty() {
-        NameNum<BigDecimal>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", m("420.5")),
-                        new NameNum<>("John", m("900.25")),
-                        new NameNum<>("Bob", m("10.45"))
-                };
+        NameNum<BigDecimal>[] source = new NameNum[]{
+                new NameNum<>("Tim", m("420.5")),
+                new NameNum<>("John", m("900.25")),
+                new NameNum<>("Bob", m("10.45"))
+        };
         assertEquals("Tim", Linq.asEnumerable(source).maxNull(e -> e.name));
     }
 

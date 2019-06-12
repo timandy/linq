@@ -198,54 +198,49 @@ public class ToMapTest extends TestCase {
 
     @Test
     public void ThrowsOnNullKey() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Chris", 50),
-                        new NameScore("Bob", 95),
-                        new NameScore("null", 55)
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Chris", 50),
+                new NameScore("Bob", 95),
+                new NameScore("null", 55)
+        };
 
         Linq.asEnumerable(source).toMap(e -> e.Name); // Doesn't throw;
 
-        NameScore[] sourceF = new NameScore[]
-                {
-                        new NameScore("Chris", 50),
-                        new NameScore("Bob", 95),
-                        new NameScore(null, 55)
-                };
+        NameScore[] sourceF = new NameScore[]{
+                new NameScore("Chris", 50),
+                new NameScore("Bob", 95),
+                new NameScore(null, 55)
+        };
 
         Linq.asEnumerable(sourceF).toMap(e -> e.Name);
     }
 
     @Test
     public void ThrowsOnNullKeyValueSelector() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Chris", 50),
-                        new NameScore("Bob", 95),
-                        new NameScore("null", 55)
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Chris", 50),
+                new NameScore("Bob", 95),
+                new NameScore("null", 55)
+        };
 
         Linq.asEnumerable(source).toMap(e -> e.Name, e -> e); // Doesn't throw;
 
-        NameScore[] sourceF = new NameScore[]
-                {
-                        new NameScore("Chris", 50),
-                        new NameScore("Bob", 95),
-                        new NameScore(null, 55)
-                };
+        NameScore[] sourceF = new NameScore[]{
+                new NameScore("Chris", 50),
+                new NameScore("Bob", 95),
+                new NameScore(null, 55)
+        };
 
         Linq.asEnumerable(sourceF).toMap(e -> e.Name, e -> e);
     }
 
     @Test
     public void ThrowsOnDuplicateKeys() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Chris", 50),
-                        new NameScore("Bob", 95),
-                        new NameScore("Bob", 55)
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Chris", 50),
+                new NameScore("Bob", 95),
+                new NameScore("Bob", 55)
+        };
 
         Map<String, NameScore> map = Linq.asEnumerable(source).toMap(e -> e.Name, e -> e);
         assertEquals(2, map.size());
@@ -272,14 +267,13 @@ public class ToMapTest extends TestCase {
     @Test
     public void SeveralElementsCustomComparerer() {
         String[] keys = new String[]{"Bob", "Zen", "Prakash", "Chris", "Sachin"};
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore(keys[0], 95),
-                        new NameScore(keys[1], 45),
-                        new NameScore(keys[2], 100),
-                        new NameScore(keys[3], 90),
-                        new NameScore(keys[4], 45)
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore(keys[0], 95),
+                new NameScore(keys[1], 45),
+                new NameScore(keys[2], 100),
+                new NameScore(keys[3], 90),
+                new NameScore(keys[4], 45)
+        };
 
         AssertMatches(Linq.asEnumerable(keys), Linq.asEnumerable(source), Linq.asEnumerable(source).toMap(e -> e.Name));
     }

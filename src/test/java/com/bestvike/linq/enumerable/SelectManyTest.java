@@ -44,93 +44,86 @@ public class SelectManyTest extends TestCase {
     @Test
     public void SingleElement() {
         Integer[] expected = {90, 55, null, 43, 89};
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", expected)
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", expected)
+        };
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total)));
     }
 
     @Test
     public void NonEmptySelectingEmpty() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[0]),
-                        new StringWithIntArray("Bob", new Integer[0]),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[0]),
-                        new StringWithIntArray("Prakash", new Integer[0])
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[0]),
+                new StringWithIntArray("Bob", new Integer[0]),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[0]),
+                new StringWithIntArray("Prakash", new Integer[0])
+        };
 
         assertEmpty(Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total)));
     }
 
     @Test
     public void NonEmptySelectingEmptyIndexedSelector() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[0]),
-                        new StringWithIntArray("Bob", new Integer[0]),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[0]),
-                        new StringWithIntArray("Prakash", new Integer[0])
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[0]),
+                new StringWithIntArray("Bob", new Integer[0]),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[0]),
+                new StringWithIntArray("Prakash", new Integer[0])
+        };
 
         assertEmpty(Linq.asEnumerable(source).selectMany((e, i) -> Linq.asEnumerable(e.total)));
     }
 
     @Test
     public void NonEmptySelectingEmptyWithResultSelector() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[0]),
-                        new StringWithIntArray("Bob", new Integer[0]),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[0]),
-                        new StringWithIntArray("Prakash", new Integer[0])
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[0]),
+                new StringWithIntArray("Bob", new Integer[0]),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[0]),
+                new StringWithIntArray("Prakash", new Integer[0])
+        };
 
         assertEmpty(Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
     }
 
     @Test
     public void NonEmptySelectingEmptyIndexedSelectorWithResultSelector() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[0]),
-                        new StringWithIntArray("Bob", new Integer[0]),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[0]),
-                        new StringWithIntArray("Prakash", new Integer[0])
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[0]),
+                new StringWithIntArray("Bob", new Integer[0]),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[0]),
+                new StringWithIntArray("Prakash", new Integer[0])
+        };
 
         assertEmpty(Linq.asEnumerable(source).selectMany((e, i) -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
     }
 
     @Test
     public void ResultsSelected() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Prakash", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Prakash", new Integer[]{-10, 100})
+        };
         Integer[] expected = {1, 2, 3, 4, 5, 6, 8, 9, -10, 100};
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total)));
     }
 
     @Test
     public void RunOnce() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Prakash", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Prakash", new Integer[]{-10, 100})
+        };
         Integer[] expected = {1, 2, 3, 4, 5, 6, 8, 9, -10, 100};
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().selectMany(e -> Linq.asEnumerable(e.total).runOnce()));
     }
@@ -143,64 +136,59 @@ public class SelectManyTest extends TestCase {
     @Test
     public void SingleElementIndexUsed() {
         Integer[] expected = {90, 55, null, 43, 89};
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", expected)
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", expected)
+        };
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, index) -> Linq.asEnumerable(e.total)));
     }
 
     @Test
     public void NonEmptySelectingEmptyIndexUsed() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[0]),
-                        new StringWithIntArray("Bob", new Integer[0]),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[0]),
-                        new StringWithIntArray("Prakash", new Integer[0])
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[0]),
+                new StringWithIntArray("Bob", new Integer[0]),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[0]),
+                new StringWithIntArray("Prakash", new Integer[0])
+        };
         assertEmpty(Linq.asEnumerable(source).selectMany((e, index) -> Linq.asEnumerable(e.total)));
     }
 
     @Test
     public void ResultsSelectedIndexUsed() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Prakash", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Prakash", new Integer[]{-10, 100})
+        };
         Integer[] expected = {1, 2, 3, 4, 5, 6, 8, 9, -10, 100};
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, index) -> Linq.asEnumerable(e.total)));
     }
 
     @Test
     public void IndexCausingFirstToBeSelected() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Prakash", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Prakash", new Integer[]{-10, 100})
+        };
 
         assertEquals(Linq.asEnumerable(Linq.asEnumerable(source).first().total), Linq.asEnumerable(source).selectMany((e, i) -> i == 0 ? Linq.asEnumerable(e.total) : Linq.empty()));
     }
 
     @Test
     public void IndexCausingLastToBeSelected() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Robert", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Robert", new Integer[]{-10, 100})
+        };
 
         assertEquals(Linq.asEnumerable(Linq.asEnumerable(source).last().total), Linq.asEnumerable(source).selectMany((e, i) -> i == 4 ? Linq.asEnumerable(e.total) : Linq.empty()));
     }
@@ -218,14 +206,13 @@ public class SelectManyTest extends TestCase {
 
     @Test
     public void ResultSelector() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Prakash", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Prakash", new Integer[]{-10, 100})
+        };
         String[] expected = {"1", "2", "3", "4", "5", "6", "8", "9", "-10", "100"};
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
@@ -293,28 +280,26 @@ public class SelectManyTest extends TestCase {
 
     @Test
     public void IndexCausingFirstToBeSelectedWithResultSelector() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Prakash", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Prakash", new Integer[]{-10, 100})
+        };
         String[] expected = {"1", "2", "3", "4"};
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, i) -> i == 0 ? Linq.asEnumerable(e.total) : Linq.empty(), (e, f) -> f.toString()));
     }
 
     @Test
     public void IndexCausingLastToBeSelectedWithResultSelector() {
-        StringWithIntArray[] source =
-                {
-                        new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
-                        new StringWithIntArray("Bob", new Integer[]{5, 6}),
-                        new StringWithIntArray("Chris", new Integer[0]),
-                        new StringWithIntArray(null, new Integer[]{8, 9}),
-                        new StringWithIntArray("Robert", new Integer[]{-10, 100})
-                };
+        StringWithIntArray[] source = {
+                new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
+                new StringWithIntArray("Bob", new Integer[]{5, 6}),
+                new StringWithIntArray("Chris", new Integer[0]),
+                new StringWithIntArray(null, new Integer[]{8, 9}),
+                new StringWithIntArray("Robert", new Integer[]{-10, 100})
+        };
 
         String[] expected = {"-10", "100"};
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, i) -> i == 4 ? Linq.asEnumerable(e.total) : Linq.empty(), (e, f) -> f.toString()));
@@ -479,98 +464,82 @@ public class SelectManyTest extends TestCase {
     private IEnumerable<Object[]> GetToArrayDataSources() {
         List<Object[]> lst = new ArrayList<>();
         // Marker at the end
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        new TestEnumerable<>(new Integer[]{0}),
-                                        new TestEnumerable<>(new Integer[]{1}),
-                                        new TestEnumerable<>(new Integer[]{2}),
-                                        Linq.asEnumerable(new int[]{3}),
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(new Integer[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                        Linq.asEnumerable(new int[]{3}),
+                }
+        });
 
         // Marker at beginning
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        Linq.asEnumerable(new int[]{0}),
-                                        new TestEnumerable<>(new Integer[]{1}),
-                                        new TestEnumerable<>(new Integer[]{2}),
-                                        new TestEnumerable<>(new Integer[]{3}),
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.asEnumerable(new int[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                        new TestEnumerable<>(new Integer[]{3}),
+                }
+        });
 
         // Marker in middle
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        new TestEnumerable<>(new Integer[]{0}),
-                                        Linq.asEnumerable(new int[]{1}),
-                                        new TestEnumerable<>(new Integer[]{2}),
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(new Integer[]{0}),
+                        Linq.asEnumerable(new int[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                }
+        });
 
         // Non-marker in middle
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        Linq.asEnumerable(new int[]{0}),
-                                        new TestEnumerable<>(new Integer[]{1}),
-                                        Linq.asEnumerable(new int[]{2})
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.asEnumerable(new int[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        Linq.asEnumerable(new int[]{2})
+                }
+        });
 
         // Big arrays (marker in middle)
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        new TestEnumerable<>(Linq.range(0, 100).toArray(Integer.class)),
-                                        Linq.range(100, 100).toArray(),
-                                        new TestEnumerable<>(Linq.range(200, 100).toArray(Integer.class)),
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(Linq.range(0, 100).toArray(Integer.class)),
+                        Linq.range(100, 100).toArray(),
+                        new TestEnumerable<>(Linq.range(200, 100).toArray(Integer.class)),
+                }
+        });
 
         // Big arrays (non-marker in middle)
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        Linq.range(0, 100).toArray(),
-                                        new TestEnumerable<>(Linq.range(100, 100).toArray(Integer.class)),
-                                        Linq.range(200, 100).toArray(),
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.range(0, 100).toArray(),
+                        new TestEnumerable<>(Linq.range(100, 100).toArray(Integer.class)),
+                        Linq.range(200, 100).toArray(),
+                }
+        });
 
         // Interleaved (first marker)
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        Linq.asEnumerable(new int[]{0}),
-                                        new TestEnumerable<>(new Integer[]{1}),
-                                        Linq.asEnumerable(new int[]{2}),
-                                        new TestEnumerable<>(new Integer[]{3}),
-                                        Linq.asEnumerable(new int[]{4}),
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.asEnumerable(new int[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        Linq.asEnumerable(new int[]{2}),
+                        new TestEnumerable<>(new Integer[]{3}),
+                        Linq.asEnumerable(new int[]{4}),
+                }
+        });
 
         // Interleaved (first non-marker)
-        lst.add(new Object[]
-                {
-                        new IEnumerable[]
-                                {
-                                        new TestEnumerable<>(new Integer[]{0}),
-                                        Linq.asEnumerable(new int[]{1}),
-                                        new TestEnumerable<>(new Integer[]{2}),
-                                        Linq.asEnumerable(new int[]{3}),
-                                        new TestEnumerable<>(new Integer[]{4}),
-                                }
-                });
+        lst.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(new Integer[]{0}),
+                        Linq.asEnumerable(new int[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                        Linq.asEnumerable(new int[]{3}),
+                        new TestEnumerable<>(new Integer[]{4}),
+                }
+        });
         return Linq.asEnumerable(lst);
     }
 
@@ -583,8 +552,7 @@ public class SelectManyTest extends TestCase {
         int[] timesCalledMap = new int[count];
 
         IEnumerable<Integer> source = Linq.range(0, 10);
-        IEnumerable<Integer> iterator = source.selectMany(index ->
-        {
+        IEnumerable<Integer> iterator = source.selectMany(index -> {
             timesCalledMap[index]++;
             return Linq.asEnumerable(index);
         });

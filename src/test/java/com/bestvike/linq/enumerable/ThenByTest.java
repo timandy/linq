@@ -47,62 +47,56 @@ public class ThenByTest extends TestCase {
 
     @Test
     public void SecondaryKeysAreUnique() {
-        UserAddress[] source = new UserAddress[]
-                {
-                        new UserAddress("Jim", "Minneapolis", "USA"),
-                        new UserAddress("Tim", "Seattle", "USA"),
-                        new UserAddress("Philip", "Orlando", "USA"),
-                        new UserAddress("Chris", "London", "UK"),
-                        new UserAddress("Rob", "Kent", "UK")
-                };
-        UserAddress[] expected = new UserAddress[]
-                {
-                        new UserAddress("Rob", "Kent", "UK"),
-                        new UserAddress("Chris", "London", "UK"),
-                        new UserAddress("Jim", "Minneapolis", "USA"),
-                        new UserAddress("Philip", "Orlando", "USA"),
-                        new UserAddress("Tim", "Seattle", "USA")
-                };
+        UserAddress[] source = new UserAddress[]{
+                new UserAddress("Jim", "Minneapolis", "USA"),
+                new UserAddress("Tim", "Seattle", "USA"),
+                new UserAddress("Philip", "Orlando", "USA"),
+                new UserAddress("Chris", "London", "UK"),
+                new UserAddress("Rob", "Kent", "UK")
+        };
+        UserAddress[] expected = new UserAddress[]{
+                new UserAddress("Rob", "Kent", "UK"),
+                new UserAddress("Chris", "London", "UK"),
+                new UserAddress("Jim", "Minneapolis", "USA"),
+                new UserAddress("Philip", "Orlando", "USA"),
+                new UserAddress("Tim", "Seattle", "USA")
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Country).thenBy(e -> e.City));
     }
 
     @Test
     public void OrderByAndThenByOnSameField() {
-        UserAddress[] source = new UserAddress[]
-                {
-                        new UserAddress("Jim", "Minneapolis", "USA"),
-                        new UserAddress("Prakash", "Chennai", "India"),
-                        new UserAddress("Rob", "Kent", "UK")
-                };
-        UserAddress[] expected = new UserAddress[]
-                {
-                        new UserAddress("Prakash", "Chennai", "India"),
-                        new UserAddress("Rob", "Kent", "UK"),
-                        new UserAddress("Jim", "Minneapolis", "USA")
-                };
+        UserAddress[] source = new UserAddress[]{
+                new UserAddress("Jim", "Minneapolis", "USA"),
+                new UserAddress("Prakash", "Chennai", "India"),
+                new UserAddress("Rob", "Kent", "UK")
+        };
+        UserAddress[] expected = new UserAddress[]{
+                new UserAddress("Prakash", "Chennai", "India"),
+                new UserAddress("Rob", "Kent", "UK"),
+                new UserAddress("Jim", "Minneapolis", "USA")
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Country).thenBy(e -> e.Country, null));
     }
 
     @Test
     public void SecondKeyRepeatAcrossDifferentPrimary() {
-        UserAddress[] source = new UserAddress[]
-                {
-                        new UserAddress("Jim", "Minneapolis", "USA"),
-                        new UserAddress("Tim", "Seattle", "USA"),
-                        new UserAddress("Philip", "Orlando", "USA"),
-                        new UserAddress("Chris", "Minneapolis", "USA"),
-                        new UserAddress("Rob", "Seattle", "USA")
-                };
-        UserAddress[] expected = new UserAddress[]
-                {
-                        new UserAddress("Chris", "Minneapolis", "USA"),
-                        new UserAddress("Jim", "Minneapolis", "USA"),
-                        new UserAddress("Philip", "Orlando", "USA"),
-                        new UserAddress("Rob", "Seattle", "USA"),
-                        new UserAddress("Tim", "Seattle", "USA")
-                };
+        UserAddress[] source = new UserAddress[]{
+                new UserAddress("Jim", "Minneapolis", "USA"),
+                new UserAddress("Tim", "Seattle", "USA"),
+                new UserAddress("Philip", "Orlando", "USA"),
+                new UserAddress("Chris", "Minneapolis", "USA"),
+                new UserAddress("Rob", "Seattle", "USA")
+        };
+        UserAddress[] expected = new UserAddress[]{
+                new UserAddress("Chris", "Minneapolis", "USA"),
+                new UserAddress("Jim", "Minneapolis", "USA"),
+                new UserAddress("Philip", "Orlando", "USA"),
+                new UserAddress("Rob", "Seattle", "USA"),
+                new UserAddress("Tim", "Seattle", "USA")
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Name).thenBy(e -> e.City, null));
     }
@@ -110,11 +104,10 @@ public class ThenByTest extends TestCase {
     @Test
     public void OrderIsStable() {
         String[] source = split("Because I could not stop for Death —\nHe kindly stopped for me —\nThe Carriage held but just Ourselves —\nAnd Immortality.", new char[]{' ', '\n', '\r', '—'}, true);
-        String[] expected = new String[]
-                {
-                        "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
-                        "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
-                };
+        String[] expected = new String[]{
+                "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
+                "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(word -> Character.isUpperCase(word.charAt(0))).thenBy(word -> word.length()));
     }
@@ -122,11 +115,10 @@ public class ThenByTest extends TestCase {
     @Test
     public void RunOnce() {
         String[] source = split("Because I could not stop for Death —\nHe kindly stopped for me —\nThe Carriage held but just Ourselves —\nAnd Immortality.", new char[]{' ', '\n', '\r', '—'}, true);
-        String[] expected = new String[]
-                {
-                        "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
-                        "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
-                };
+        String[] expected = new String[]{
+                "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
+                "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().orderBy(word -> Character.isUpperCase(word.charAt(0))).thenBy(word -> word.length()));
     }

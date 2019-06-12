@@ -78,14 +78,13 @@ public class ToLookupTest extends TestCase {
     public void UniqueElementsElementSelector() {
         String[] key = {"Chris", "Prakash", "Tim", "Robert", "Brian"};
         int[] element = {50, 100, 95, 60, 80};
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore(key[0], element[0]),
-                        new NameScore(key[1], element[1]),
-                        new NameScore(key[2], element[2]),
-                        new NameScore(key[3], element[3]),
-                        new NameScore(key[4], element[4])
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore(key[0], element[0]),
+                new NameScore(key[1], element[1]),
+                new NameScore(key[2], element[2]),
+                new NameScore(key[3], element[3]),
+                new NameScore(key[4], element[4])
+        };
 
         AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).toLookup(e -> e.Name, e -> e.Score));
     }
@@ -94,15 +93,14 @@ public class ToLookupTest extends TestCase {
     public void DuplicateKeys() {
         String[] key = {"Chris", "Prakash", "Robert"};
         int[] element = {50, 80, 100, 95, 99, 56};
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore(key[0], element[0]),
-                        new NameScore(key[1], element[2]),
-                        new NameScore(key[2], element[5]),
-                        new NameScore(key[1], element[3]),
-                        new NameScore(key[0], element[1]),
-                        new NameScore(key[1], element[4])
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore(key[0], element[0]),
+                new NameScore(key[1], element[2]),
+                new NameScore(key[2], element[5]),
+                new NameScore(key[1], element[3]),
+                new NameScore(key[0], element[1]),
+                new NameScore(key[1], element[4])
+        };
 
         AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
     }
@@ -111,15 +109,14 @@ public class ToLookupTest extends TestCase {
     public void RunOnce() {
         String[] key = {"Chris", "Prakash", "Robert"};
         int[] element = {50, 80, 100, 95, 99, 56};
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore(key[0], element[0]),
-                        new NameScore(key[1], element[2]),
-                        new NameScore(key[2], element[5]),
-                        new NameScore(key[1], element[3]),
-                        new NameScore(key[0], element[1]),
-                        new NameScore(key[1], element[4])
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore(key[0], element[0]),
+                new NameScore(key[1], element[2]),
+                new NameScore(key[2], element[5]),
+                new NameScore(key[1], element[3]),
+                new NameScore(key[0], element[1]),
+                new NameScore(key[1], element[4])
+        };
 
         AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).runOnce().toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
     }
@@ -128,15 +125,14 @@ public class ToLookupTest extends TestCase {
     public void Count() {
         String[] key = {"Chris", "Prakash", "Robert"};
         int[] element = {50, 80, 100, 95, 99, 56};
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore(key[0], element[0]),
-                        new NameScore(key[1], element[2]),
-                        new NameScore(key[2], element[5]),
-                        new NameScore(key[1], element[3]),
-                        new NameScore(key[0], element[1]),
-                        new NameScore(key[1], element[4])
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore(key[0], element[0]),
+                new NameScore(key[1], element[2]),
+                new NameScore(key[2], element[5]),
+                new NameScore(key[1], element[3]),
+                new NameScore(key[0], element[1]),
+                new NameScore(key[1], element[4])
+        };
 
         assertEquals(3, Linq.asEnumerable(source).toLookup(e -> e.Name, e -> e.Score).count());
     }
@@ -260,12 +256,11 @@ public class ToLookupTest extends TestCase {
                 break;
         }
 
-        RoleMetadata[] expected = new RoleMetadata[]
-                {
-                        new RoleMetadata(new Role(1), 17, 0),
-                        new RoleMetadata(new Role(2), 0, 17),
-                        new RoleMetadata(new Role(3), 0, 16)
-                };
+        RoleMetadata[] expected = new RoleMetadata[]{
+                new RoleMetadata(new Role(1), 17, 0),
+                new RoleMetadata(new Role(2), 0, 17),
+                new RoleMetadata(new Role(3), 0, 16)
+        };
 
         assertEquals(Linq.asEnumerable(expected), result);
     }

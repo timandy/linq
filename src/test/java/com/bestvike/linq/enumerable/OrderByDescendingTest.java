@@ -62,21 +62,18 @@ public class OrderByDescendingTest extends TestCase {
 
     @Test
     public void KeySelectorCalled() {
-        NameScore[] source = new NameScore[]
-                {
-
-                        new NameScore("Alpha", 90),
-                        new NameScore("Robert", 45),
-                        new NameScore("Prakash", 99),
-                        new NameScore("Bob", 0)
-                };
-        NameScore[] expected = new NameScore[]
-                {
-                        new NameScore("Robert", 45),
-                        new NameScore("Prakash", 99),
-                        new NameScore("Bob", 0),
-                        new NameScore("Alpha", 90)
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Alpha", 90),
+                new NameScore("Robert", 45),
+                new NameScore("Prakash", 99),
+                new NameScore("Bob", 0)
+        };
+        NameScore[] expected = new NameScore[]{
+                new NameScore("Robert", 45),
+                new NameScore("Prakash", 99),
+                new NameScore("Bob", 0),
+                new NameScore("Alpha", 90)
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderByDescending(e -> e.Name, null));
     }
@@ -115,26 +112,24 @@ public class OrderByDescendingTest extends TestCase {
 
     @Test
     public void SameKeysVerifySortStable() {
-        NameScore[] source = new NameScore[]
-                {
-                        new NameScore("Alpha", 90),
-                        new NameScore("Robert", 45),
-                        new NameScore("Prakash", 99),
-                        new NameScore("Bob", 90),
-                        new NameScore("Thomas", 45),
-                        new NameScore("Tim", 45),
-                        new NameScore("Mark", 45),
-                };
-        NameScore[] expected = new NameScore[]
-                {
-                        new NameScore("Prakash", 99),
-                        new NameScore("Alpha", 90),
-                        new NameScore("Bob", 90),
-                        new NameScore("Robert", 45),
-                        new NameScore("Thomas", 45),
-                        new NameScore("Tim", 45),
-                        new NameScore("Mark", 45),
-                };
+        NameScore[] source = new NameScore[]{
+                new NameScore("Alpha", 90),
+                new NameScore("Robert", 45),
+                new NameScore("Prakash", 99),
+                new NameScore("Bob", 90),
+                new NameScore("Thomas", 45),
+                new NameScore("Tim", 45),
+                new NameScore("Mark", 45),
+        };
+        NameScore[] expected = new NameScore[]{
+                new NameScore("Prakash", 99),
+                new NameScore("Alpha", 90),
+                new NameScore("Bob", 90),
+                new NameScore("Robert", 45),
+                new NameScore("Thomas", 45),
+                new NameScore("Tim", 45),
+                new NameScore("Mark", 45),
+        };
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderByDescending(e -> e.Score));
     }

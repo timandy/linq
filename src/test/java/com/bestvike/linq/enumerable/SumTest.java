@@ -398,12 +398,11 @@ public class SumTest extends TestCase {
 
     @Test
     public void NullableSingleFromSelector() {
-        NameNum<Float>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 9.5f),
-                        new NameNum<>("John", 0f),
-                        new NameNum<>("Bob", 8.5f)
-                };
+        NameNum<Float>[] source = new NameNum[]{
+                new NameNum<>("Tim", 9.5f),
+                new NameNum<>("John", 0f),
+                new NameNum<>("Bob", 8.5f)
+        };
         assertEquals(18.0f, Linq.asEnumerable(source).sumFloat(e -> e.num));
     }
 
@@ -421,12 +420,11 @@ public class SumTest extends TestCase {
 
     @Test
     public void Int32FromSelector() {
-        NameNum<Integer>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 10),
-                        new NameNum<>("John", 50),
-                        new NameNum<>("Bob", -30)
-                };
+        NameNum<Integer>[] source = new NameNum[]{
+                new NameNum<>("Tim", 10),
+                new NameNum<>("John", 50),
+                new NameNum<>("Bob", -30)
+        };
         assertEquals(30, Linq.asEnumerable(source).sumInt(e -> e.num));
     }
 
@@ -449,23 +447,21 @@ public class SumTest extends TestCase {
 
     @Test
     public void NullableInt32FromSelector() {
-        NameNum<Integer>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 10),
-                        new NameNum<>("John", 0),
-                        new NameNum<>("Bob", -30)
-                };
+        NameNum<Integer>[] source = new NameNum[]{
+                new NameNum<>("Tim", 10),
+                new NameNum<>("John", 0),
+                new NameNum<>("Bob", -30)
+        };
         assertEquals(-20, Linq.asEnumerable(source).sumInt(e -> e.num));
     }
 
     @Test
     public void RunOnce() {
-        NameNum<Integer>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 10),
-                        new NameNum<>("John", 0),
-                        new NameNum<>("Bob", -30)
-                };
+        NameNum<Integer>[] source = new NameNum[]{
+                new NameNum<>("Tim", 10),
+                new NameNum<>("John", 0),
+                new NameNum<>("Bob", -30)
+        };
         assertEquals(-20, Linq.asEnumerable(source).runOnce().sumInt(e -> e.num));
     }
 
@@ -540,12 +536,11 @@ public class SumTest extends TestCase {
 
     @Test
     public void DoubleFromSelector() {
-        NameNum<Double>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 9.5d),
-                        new NameNum<>("John", 10.5d),
-                        new NameNum<>("Bob", 3.5d)
-                };
+        NameNum<Double>[] source = new NameNum[]{
+                new NameNum<>("Tim", 9.5d),
+                new NameNum<>("John", 10.5d),
+                new NameNum<>("Bob", 3.5d)
+        };
 
         assertEquals(23.5, Linq.asEnumerable(source).sumDouble(e -> e.num));
     }
@@ -569,12 +564,11 @@ public class SumTest extends TestCase {
 
     @Test
     public void NullableDoubleFromSelector() {
-        NameNum<Double>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 9.5d),
-                        new NameNum<>("John", 0d),
-                        new NameNum<>("Bob", 8.5d)
-                };
+        NameNum<Double>[] source = new NameNum[]{
+                new NameNum<>("Tim", 9.5d),
+                new NameNum<>("John", 0d),
+                new NameNum<>("Bob", 8.5d)
+        };
         assertEquals(18.0, Linq.asEnumerable(source).sumDouble(e -> e.num));
     }
 
@@ -592,12 +586,11 @@ public class SumTest extends TestCase {
 
     @Test
     public void DecimalFromSelector() {
-        NameNum<BigDecimal>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", m("20.51")),
-                        new NameNum<>("John", m("10")),
-                        new NameNum<>("Bob", m("2.33"))
-                };
+        NameNum<BigDecimal>[] source = new NameNum[]{
+                new NameNum<>("Tim", m("20.51")),
+                new NameNum<>("John", m("10")),
+                new NameNum<>("Bob", m("2.33"))
+        };
         assertEquals(m("32.84"), Linq.asEnumerable(source).sumDecimal(e -> e.num));
     }
 
@@ -620,12 +613,11 @@ public class SumTest extends TestCase {
 
     @Test
     public void NullableDecimalFromSelector() {
-        NameNum<BigDecimal>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", m("20.51")),
-                        new NameNum<>("John", BigDecimal.ZERO),
-                        new NameNum<>("Bob", m("2.33"))
-                };
+        NameNum<BigDecimal>[] source = new NameNum[]{
+                new NameNum<>("Tim", m("20.51")),
+                new NameNum<>("John", BigDecimal.ZERO),
+                new NameNum<>("Bob", m("2.33"))
+        };
         assertEquals(m("22.84"), Linq.asEnumerable(source).sumDecimal(e -> e.num));
     }
 
@@ -643,12 +635,11 @@ public class SumTest extends TestCase {
 
     @Test
     public void SingleFromSelector() {
-        NameNum<Float>[] source = new NameNum[]
-                {
-                        new NameNum<>("Tim", 9.5f),
-                        new NameNum<>("John", 10.5f),
-                        new NameNum<>("Bob", 3.5f)
-                };
+        NameNum<Float>[] source = new NameNum[]{
+                new NameNum<>("Tim", 9.5f),
+                new NameNum<>("John", 10.5f),
+                new NameNum<>("Bob", 3.5f)
+        };
         assertEquals(23.5f, Linq.asEnumerable(source).sumFloat(e -> e.num));
     }
 

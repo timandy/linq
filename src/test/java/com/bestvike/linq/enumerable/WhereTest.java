@@ -708,8 +708,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_PredicateThrowsException() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> predicate = value ->
-        {
+        Func1<Integer, Boolean> predicate = value -> {
             if (value == 1) {
                 throw new InvalidOperationException();
             }
@@ -947,8 +946,7 @@ public class WhereTest extends TestCase {
     public void IndexOverflows() {
         IEnumerable<Integer> infiniteWhere = new FastInfiniteEnumerator<Integer>().where((e, i) -> true);
         try (IEnumerator<Integer> en = infiniteWhere.enumerator()) {
-            assertThrows(ArithmeticException.class, () ->
-            {
+            assertThrows(ArithmeticException.class, () -> {
                 while (en.moveNext()) {
                 }
             });
