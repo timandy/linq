@@ -745,7 +745,7 @@ public class GroupByTest extends TestCase {
     public void testGroupByWithKeySelector() {
         String s = Linq.asEnumerable(emps)
                 .groupBy(emp -> emp.deptno)
-                .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group.select(element -> element.name))))
+                .select(group -> String.format("%s: %s", group.getKey(), join(group.select(element -> element.name))))
                 .toList()
                 .toString();
         assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
@@ -767,7 +767,7 @@ public class GroupByTest extends TestCase {
 
         String s = Linq.asEnumerable(emps)
                 .groupBy(emp -> emp.deptno, comparer)
-                .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group.select(element -> element.name))))
+                .select(group -> String.format("%s: %s", group.getKey(), join(group.select(element -> element.name))))
                 .toList()
                 .toString();
         assertEquals("[10: Fred+Bill+Eric+Janet]", s);
@@ -777,7 +777,7 @@ public class GroupByTest extends TestCase {
     public void testGroupByWithKeySelectorAndElementSelector() {
         String s = Linq.asEnumerable(emps)
                 .groupBy(emp -> emp.deptno, emp -> emp.name)
-                .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group)))
+                .select(group -> String.format("%s: %s", group.getKey(), join(group)))
                 .toList()
                 .toString();
         assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
@@ -798,7 +798,7 @@ public class GroupByTest extends TestCase {
         };
         String s = Linq.asEnumerable(emps)
                 .groupBy(emp -> emp.deptno, emp -> emp.name, comparer)
-                .select(group -> String.format("%s: %s", group.getKey(), stringJoin(group)))
+                .select(group -> String.format("%s: %s", group.getKey(), join(group)))
                 .toList()
                 .toString();
         assertEquals("[10: Fred+Bill+Eric+Janet]", s);
@@ -807,7 +807,7 @@ public class GroupByTest extends TestCase {
     @Test
     public void testGroupByWithKeySelectorAndResultSelector() {
         String s = Linq.asEnumerable(emps)
-                .groupBy(emp -> emp.deptno, (key, group) -> String.format("%s: %s", key, stringJoin(group.select(element -> element.name))))
+                .groupBy(emp -> emp.deptno, (key, group) -> String.format("%s: %s", key, join(group.select(element -> element.name))))
                 .toList()
                 .toString();
         assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
@@ -828,7 +828,7 @@ public class GroupByTest extends TestCase {
         };
         String s = Linq.asEnumerable(emps)
                 .groupBy(emp -> emp.deptno,
-                        (key, group) -> String.format("%s: %s", key, stringJoin(group.select(element -> element.name))),
+                        (key, group) -> String.format("%s: %s", key, join(group.select(element -> element.name))),
                         comparer)
                 .toList()
                 .toString();
@@ -839,7 +839,7 @@ public class GroupByTest extends TestCase {
     public void testGroupByWithKeySelectorAndElementSelectorAndResultSelector() {
         String s =
                 Linq.asEnumerable(emps)
-                        .groupBy(emp -> emp.deptno, emp -> emp.name, (key, group) -> String.format("%s: %s", key, stringJoin(group)))
+                        .groupBy(emp -> emp.deptno, emp -> emp.name, (key, group) -> String.format("%s: %s", key, join(group)))
                         .toList()
                         .toString();
         assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
@@ -861,7 +861,7 @@ public class GroupByTest extends TestCase {
         String s = Linq.asEnumerable(emps)
                 .groupBy(emp -> emp.deptno,
                         emp -> emp.name,
-                        (key, group) -> String.format("%s: %s", key, stringJoin(group)),
+                        (key, group) -> String.format("%s: %s", key, join(group)),
                         comparer)
                 .toList()
                 .toString();

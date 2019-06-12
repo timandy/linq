@@ -85,7 +85,7 @@ public class TestCase {
         return clazz.isInstance(value) ? (T) value : null;
     }
 
-    protected static String stringJoin(Iterable<String> group) {
+    protected static String join(Iterable<String> group) {
         StringBuilder builder = new StringBuilder();
         Iterator<String> iterator = group.iterator();
         if (iterator.hasNext()) {
