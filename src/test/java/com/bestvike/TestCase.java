@@ -487,6 +487,64 @@ public class TestCase {
     }
 
 
+    public static class TestCollection<T> implements ICollection<T> {
+        public Object[] Items;
+        public int CountTouched = 0;
+        public int CopyToTouched = 0;
+        public int ToArrayTouched = 0;
+        public int ToListTouched = 0;
+
+        public TestCollection(T[] items) {
+            this.Items = items;
+        }
+
+        @Override
+        public Collection<T> getCollection() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public int _getCount() {
+            this.CountTouched++;
+            return this.Items.length;
+        }
+
+        @Override
+        public boolean _contains(T item) {
+            return Arrays.asList(this.Items).contains(item);
+        }
+
+        @Override
+        public void _copyTo(Object[] array, int arrayIndex) {
+            this.CopyToTouched++;
+            System.arraycopy(this.Items, 0, array, arrayIndex, this.Items.length);
+        }
+
+        @Override
+        public T[] _toArray(Class<T> clazz) {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public Object[] _toArray() {
+            this.ToArrayTouched++;
+            return ArrayUtils.toArray(this.Items, Object.class);
+        }
+
+        @Override
+        public List<T> _toList() {
+            this.ToListTouched++;
+            return ArrayUtils.toList(this.Items);
+        }
+
+        @Override
+        public IEnumerator<T> enumerator() {
+            return new ArrayEnumerator<>(this.Items);
+        }
+    }
+
     public static class TestEnumerable<T> implements IEnumerable<T> {
         private final T[] Items;
 
@@ -497,6 +555,136 @@ public class TestCase {
         @Override
         public IEnumerator<T> enumerator() {
             return new GenericArrayEnumerator<>(this.Items);
+        }
+    }
+
+    public static class TestReadOnlyCollection<T> implements ICollection<T> {
+        public Object[] Items;
+        public int CountTouched = 0;
+
+        public TestReadOnlyCollection(T[] items) {
+            this.Items = items;
+        }
+
+        @Override
+        public Collection<T> getCollection() {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public int _getCount() {
+            this.CountTouched++;
+            return this.Items.length;
+        }
+
+        @Override
+        public boolean _contains(T item) {
+            ThrowHelper.throwNotSupportedException();
+            return false;
+        }
+
+        @Override
+        public void _copyTo(Object[] array, int arrayIndex) {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public T[] _toArray(Class<T> clazz) {
+            ThrowHelper.throwNotSupportedException();
+            return null;
+        }
+
+        @Override
+        public Object[] _toArray() {
+            return ArrayUtils.toArray(this.Items, Object.class);
+        }
+
+        @Override
+        public List<T> _toList() {
+            return ArrayUtils.toList(this.Items);
+        }
+
+        @Override
+        public IEnumerator<T> enumerator() {
+            return new ArrayEnumerator<>(this.Items);
+        }
+    }
+
+    public static class FastInfiniteEnumerator<T> implements IEnumerable<T>, IEnumerator<T> {
+        public IEnumerator<T> enumerator() {
+            return this;
+        }
+
+        public boolean moveNext() {
+            return true;
+        }
+
+        public T current() {
+            return null;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return true;
+        }
+
+        @Override
+        public T next() {
+            return null;
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super T> action) {
+            if (action == null)
+                ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+            while (this.moveNext())
+                action.accept(this.current());
+        }
+
+        @Override
+        public void remove() {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public void reset() {
+            ThrowHelper.throwNotSupportedException();
+        }
+
+        @Override
+        public void close() {
+        }
+    }
+
+    public static class AnagramEqualityComparer implements IEqualityComparer<String> {
+        @Override
+        public boolean equals(String x, String y) {
+            //noinspection StringEquality
+            if (x == y)
+                return true;
+            if (x == null | y == null)
+                return false;
+            if (x.length() != y.length())
+                return false;
+            try (IEnumerator<Character> en = Linq.asEnumerable(x).orderBy(i -> i).enumerator()) {
+                for (char c : Linq.asEnumerable(y).orderBy(i -> i)) {
+                    en.moveNext();
+                    if (c != en.current())
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode(String obj) {
+            if (obj == null)
+                return 0;
+            int hash = obj.length();
+            for (char c : Linq.asEnumerable(obj))
+                hash ^= c;
+            return hash;
         }
     }
 
@@ -662,52 +850,6 @@ public class TestCase {
         }
     }
 
-    public static class FastInfiniteEnumerator<T> implements IEnumerable<T>, IEnumerator<T> {
-        public IEnumerator<T> enumerator() {
-            return this;
-        }
-
-        public boolean moveNext() {
-            return true;
-        }
-
-        public T current() {
-            return null;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return true;
-        }
-
-        @Override
-        public T next() {
-            return null;
-        }
-
-        @Override
-        public void forEachRemaining(Consumer<? super T> action) {
-            if (action == null)
-                ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
-            while (this.moveNext())
-                action.accept(this.current());
-        }
-
-        @Override
-        public void remove() {
-            ThrowHelper.throwNotSupportedException();
-        }
-
-        @Override
-        public void reset() {
-            ThrowHelper.throwNotSupportedException();
-        }
-
-        @Override
-        public void close() {
-        }
-    }
-
     public static class DelegateBasedCollection<T> implements ICollection<T> {
         protected Func0<Integer> CountWorker;
         protected Func0<Boolean> IsReadOnlyWorker;
@@ -774,59 +916,6 @@ public class TestCase {
         @Override
         public IEnumerator<T> enumerator() {
             return this.GetEnumeratorWorker.apply();
-        }
-    }
-
-    protected static class TestReadOnlyCollection<T> implements ICollection<T> {
-        public Object[] Items;
-        public int CountTouched = 0;
-
-        public TestReadOnlyCollection(T[] items) {
-            this.Items = items;
-        }
-
-        @Override
-        public Collection<T> getCollection() {
-            ThrowHelper.throwNotSupportedException();
-            return null;
-        }
-
-        @Override
-        public int _getCount() {
-            this.CountTouched++;
-            return this.Items.length;
-        }
-
-        @Override
-        public boolean _contains(T item) {
-            ThrowHelper.throwNotSupportedException();
-            return false;
-        }
-
-        @Override
-        public void _copyTo(Object[] array, int arrayIndex) {
-            ThrowHelper.throwNotSupportedException();
-        }
-
-        @Override
-        public T[] _toArray(Class<T> clazz) {
-            ThrowHelper.throwNotSupportedException();
-            return null;
-        }
-
-        @Override
-        public Object[] _toArray() {
-            return ArrayUtils.toArray(this.Items, Object.class);
-        }
-
-        @Override
-        public List<T> _toList() {
-            return ArrayUtils.toList(this.Items);
-        }
-
-        @Override
-        public IEnumerator<T> enumerator() {
-            return new ArrayEnumerator<>(this.Items);
         }
     }
 
@@ -930,95 +1019,6 @@ public class TestCase {
 
         public static IEnumerable<Object[]> EvaluationBehaviorData() {
             return Linq.range(-1, 15).select(count -> new Object[]{count});
-        }
-    }
-
-    public static class AnagramEqualityComparer implements IEqualityComparer<String> {
-        @Override
-        public boolean equals(String x, String y) {
-            //noinspection StringEquality
-            if (x == y)
-                return true;
-            if (x == null | y == null)
-                return false;
-            if (x.length() != y.length())
-                return false;
-            try (IEnumerator<Character> en = Linq.asEnumerable(x).orderBy(i -> i).enumerator()) {
-                for (char c : Linq.asEnumerable(y).orderBy(i -> i)) {
-                    en.moveNext();
-                    if (c != en.current())
-                        return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public int hashCode(String obj) {
-            if (obj == null)
-                return 0;
-            int hash = obj.length();
-            for (char c : Linq.asEnumerable(obj))
-                hash ^= c;
-            return hash;
-        }
-    }
-
-    protected class TestCollection<T> implements ICollection<T> {
-        public Object[] Items;
-        public int CountTouched = 0;
-        public int CopyToTouched = 0;
-        public int ToArrayTouched = 0;
-        public int ToListTouched = 0;
-
-        public TestCollection(T[] items) {
-            this.Items = items;
-        }
-
-        @Override
-        public Collection<T> getCollection() {
-            ThrowHelper.throwNotSupportedException();
-            return null;
-        }
-
-        @Override
-        public int _getCount() {
-            this.CountTouched++;
-            return this.Items.length;
-        }
-
-        @Override
-        public boolean _contains(T item) {
-            return Arrays.asList(this.Items).contains(item);
-        }
-
-        @Override
-        public void _copyTo(Object[] array, int arrayIndex) {
-            this.CopyToTouched++;
-            System.arraycopy(this.Items, 0, array, arrayIndex, this.Items.length);
-        }
-
-        @Override
-        public T[] _toArray(Class<T> clazz) {
-            ThrowHelper.throwNotSupportedException();
-            return null;
-        }
-
-        @Override
-        public Object[] _toArray() {
-            this.ToArrayTouched++;
-            return ArrayUtils.toArray(this.Items, Object.class);
-        }
-
-        @Override
-        public List<T> _toList() {
-            this.ToListTouched++;
-            return ArrayUtils.toList(this.Items);
-        }
-
-        @Override
-        public IEnumerator<T> enumerator() {
-            return new ArrayEnumerator<>(this.Items);
         }
     }
 }
