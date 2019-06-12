@@ -1,5 +1,6 @@
 package com.bestvike;
 
+import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Action0;
@@ -82,14 +83,6 @@ public class TestCase {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         return clazz.isInstance(value) ? (T) value : null;
-    }
-
-    protected static Boolean IsEven(int num) {
-        return num % 2 == 0;
-    }
-
-    protected static Boolean IsNullOrEmpty(String value) {
-        return value == null || value.length() == 0;
     }
 
     protected static String stringJoin(Iterable<String> group) {
@@ -310,20 +303,80 @@ public class TestCase {
         throw new AssertionError(message);
     }
 
+    protected static Boolean IsEven(int num) {
+        return num % 2 == 0;
+    }
+
+    protected static Boolean IsNullOrEmpty(String value) {
+        return value == null || value.length() == 0;
+    }
+
     protected static IEnumerable<Integer> RepeatedNumberGuaranteedNotCollectionType(int num, int count) {
-        return Linq.repeat(num, count);
-    }
-
-    protected static IEnumerable<Integer> NumberRangeGuaranteedNotCollectionType(int num, int count) {
-        return Linq.range(num, count);
-    }
-
-    protected static IEnumerable<Integer> NullableNumberRangeGuaranteedNotCollectionType(int num, int count) {
-        return Linq.range(num, count);
+        return () -> new AbstractEnumerator<Integer>() {
+            @Override
+            public boolean moveNext() {
+                if (this.state < 0)
+                    return false;
+                if (this.state < count) {
+                    this.current = num;
+                    this.state++;
+                    return true;
+                }
+                this.close();
+                return false;
+            }
+        };
     }
 
     protected static IEnumerable<Integer> RepeatedNullableNumberGuaranteedNotCollectionType(Integer num, int count) {
-        return Linq.repeat(num, count);
+        return () -> new AbstractEnumerator<Integer>() {
+            @Override
+            public boolean moveNext() {
+                if (this.state < 0)
+                    return false;
+                if (this.state < count) {
+                    this.current = num;
+                    this.state++;
+                    return true;
+                }
+                this.close();
+                return false;
+            }
+        };
+    }
+
+    protected static IEnumerable<Integer> NumberRangeGuaranteedNotCollectionType(int num, int count) {
+        return () -> new AbstractEnumerator<Integer>() {
+            @Override
+            public boolean moveNext() {
+                if (this.state < 0)
+                    return false;
+                if (this.state < count) {
+                    this.current = num + this.state;
+                    this.state++;
+                    return true;
+                }
+                this.close();
+                return false;
+            }
+        };
+    }
+
+    protected static IEnumerable<Integer> NullableNumberRangeGuaranteedNotCollectionType(Integer num, int count) {
+        return () -> new AbstractEnumerator<Integer>() {
+            @Override
+            public boolean moveNext() {
+                if (this.state < 0)
+                    return false;
+                if (this.state < count) {
+                    this.current = num == null ? null : num + this.state;
+                    this.state++;
+                    return true;
+                }
+                this.close();
+                return false;
+            }
+        };
     }
 
     protected static <T> List<Func1<IEnumerable<T>, IEnumerable<T>>> IdentityTransforms() {
@@ -332,20 +385,49 @@ public class TestCase {
         list.add(e -> e.toArray());
         list.add(e -> Linq.asEnumerable(e.toList()));
         list.add(e -> e.select(i -> i));
-        list.add(e -> e.concat(Linq.empty()));
+        list.add(e -> e.concat(Array.empty()));
         list.add(e -> ForceNotCollection(e));
-        list.add(e -> e.concat(ForceNotCollection(Linq.empty())));
+        list.add(e -> e.concat(ForceNotCollection(Array.empty())));
         list.add(e -> e.where(i -> true));
         list.add(e -> ForceNotCollection(e).skip(0));
         return list;
     }
 
     protected static <T> IEnumerable<T> ForceNotCollection(IEnumerable<T> source) {
-        return source.select(a -> a);
+        return () -> new AbstractEnumerator<T>() {
+            private IEnumerator<T> enumerator;
+
+            @Override
+            public boolean moveNext() {
+                switch (this.state) {
+                    case 0:
+                        this.enumerator = source.enumerator();
+                        this.state = 1;
+                    case 1:
+                        if (this.enumerator.moveNext()) {
+                            this.current = this.enumerator.current();
+                            return true;
+                        }
+                        this.close();
+                        return false;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void close() {
+                if (this.enumerator != null) {
+                    this.enumerator.close();
+                    this.enumerator = null;
+                }
+                super.close();
+            }
+        };
     }
 
     protected static <T> IEnumerable<T> FlipIsCollection(IEnumerable<T> source) {
-        return source instanceof ICollection ? ForceNotCollection(source) : source.toArray();
+        return source instanceof ICollection ? ForceNotCollection(source) : Linq.asEnumerable(source.toList());
     }
 
     private static boolean equal(Object expected, Object actual) {
