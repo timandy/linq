@@ -60,8 +60,7 @@ public class SkipWhileTest extends TestCase {
     public void SkipErrorWhenSourceErrors() {
         IEnumerable<BigDecimal> source = NumberRangeGuaranteedNotCollectionType(-2, 5).select(i -> m(i.toString())).select(m -> m("1").divide(m, MathContext.DECIMAL128)).skip(4);
         try (IEnumerator<BigDecimal> en = source.enumerator()) {
-            en.moveNext();
-            assertEquals(m("0.5"), en.current());
+            assertThrows(ArithmeticException.class, () -> en.moveNext());
         }
     }
 
