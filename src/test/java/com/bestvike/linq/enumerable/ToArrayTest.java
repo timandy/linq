@@ -205,11 +205,12 @@ public class ToArrayTest extends TestCase {
     @Test
     public void SameResultsButNotSameObject() {
         IEnumerable<Integer> qInt = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
-
         IEnumerable<String> qString = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertNotSame(qInt.toArray(), qInt.toArray());
         assertNotSame(qString.toArray(), qString.toArray());
+        assertNotSame(qInt.toArray().getArray(), qInt.toArray().getArray());
+        assertNotSame(qString.toArray().getArray(), qString.toArray().getArray());
     }
 
     @Test
