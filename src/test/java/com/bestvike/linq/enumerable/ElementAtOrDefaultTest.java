@@ -95,7 +95,7 @@ public class ElementAtOrDefaultTest extends TestCase {
         assertNull(enumerable.elementAtOrDefault(2));
         assertNull(enumerable.elementAtOrDefault(-1));
 
-        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
+        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new CountIterable(2));
         assertEquals(1L, enumerable2.elementAtOrDefault(0));
         assertNull(enumerable2.elementAtOrDefault(2));
         assertNull(enumerable2.elementAtOrDefault(-1));

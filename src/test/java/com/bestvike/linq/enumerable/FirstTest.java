@@ -199,13 +199,13 @@ public class FirstTest extends TestCase {
 
         // close occurs if first throws
         try {
-            Long num = Linq.asEnumerable(new IterableDemo(0)).first();
+            Long num = Linq.asEnumerable(new CountIterable(0)).first();
             fail("expected exception, got " + num);
         } catch (InvalidOperationException ignored) {
         }
 
         // close occurs if first does not throw
-        Long num = Linq.asEnumerable(new IterableDemo(1)).first();
+        Long num = Linq.asEnumerable(new CountIterable(1)).first();
         assertEquals(1L, num);
     }
 

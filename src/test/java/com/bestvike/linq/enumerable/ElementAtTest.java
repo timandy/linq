@@ -104,7 +104,7 @@ public class ElementAtTest extends TestCase {
         } catch (IndexOutOfBoundsException ignored) {
         }
 
-        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new IterableDemo(2));
+        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new CountIterable(2));
         assertEquals(1L, enumerable2.elementAt(0));
         try {
             enumerable2.elementAt(2);

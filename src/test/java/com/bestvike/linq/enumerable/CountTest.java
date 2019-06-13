@@ -167,7 +167,7 @@ public class CountTest extends TestCase {
         long count = Linq.asEnumerable(depts).longCount();
         assertEquals(3, count);
 
-        long count2 = Linq.asEnumerable(new IterableDemo(10)).longCount();
+        long count2 = Linq.asEnumerable(new CountIterable(10)).longCount();
         assertEquals(10, count2);
     }
 
@@ -176,7 +176,7 @@ public class CountTest extends TestCase {
         long count = Linq.asEnumerable(depts).longCount(dept -> dept.employees.size() > 0);
         assertEquals(2, count);
 
-        long count2 = Linq.asEnumerable(new IterableDemo(10L)).longCount(s -> s > 9);
+        long count2 = Linq.asEnumerable(new CountIterable(10L)).longCount(s -> s > 9);
         assertEquals(1, count2);
     }
 }

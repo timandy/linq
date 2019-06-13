@@ -1039,24 +1039,24 @@ public class TestCase {
         }
     }
 
-    public static class IterableDemo implements Iterable<Long> {
+    public static class CountIterable implements Iterable<Long> {
         private final long count;
 
-        public IterableDemo(long count) {
+        public CountIterable(long count) {
             this.count = count;
         }
 
         @Override
         public Iterator<Long> iterator() {
-            return new IteratorDemo(this.count);
+            return new CountIterator(this.count);
         }
     }
 
-    public static class IteratorDemo implements Iterator<Long> {
+    public static class CountIterator implements Iterator<Long> {
         private final long count;
         private long current = 0;
 
-        IteratorDemo(long count) {
+        CountIterator(long count) {
             this.count = count;
         }
 

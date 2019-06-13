@@ -131,7 +131,7 @@ public class LinqTest extends TestCase {
         set.add(1L);
         set.add(2L);
         set.add(3L);
-        Iterable<Long> iterableDemo = new IterableDemo(3);
+        Iterable<Long> iterableDemo = new CountIterable(3);
         assertEquals(3, Linq.asEnumerable(set).count());
         assertEquals(3, Linq.asEnumerable(iterableDemo).count());
         assertTrue(Linq.asEnumerable(set).sequenceEqual(Linq.asEnumerable(iterableDemo)));
