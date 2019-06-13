@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import com.bestvike.linq.entity.IterableDemo;
 import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Test;
 

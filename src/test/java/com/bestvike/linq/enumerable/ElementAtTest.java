@@ -3,7 +3,6 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import com.bestvike.linq.entity.IterableDemo;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import org.junit.Test;
 

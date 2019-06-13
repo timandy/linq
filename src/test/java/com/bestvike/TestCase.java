@@ -1006,6 +1006,72 @@ public class TestCase {
         }
     }
 
+    public static class ArrayIterable<T> implements Iterable<T> {
+        private final T[] array;
+
+        @SafeVarargs
+        public ArrayIterable(T... array) {
+            this.array = array;
+        }
+
+        @Override
+        public Iterator<T> iterator() {
+            return new ArrayIterator<>(this.array);
+        }
+    }
+
+    public static class ArrayIterator<T> implements Iterator<T> {
+        private final T[] array;
+        private int index = 0;
+
+        ArrayIterator(T[] array) {
+            this.array = array;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.index < this.array.length;
+        }
+
+        @Override
+        public T next() {
+            return this.array[this.index++];
+        }
+    }
+
+    public static class IterableDemo implements Iterable<Long> {
+        private final long count;
+
+        public IterableDemo(long count) {
+            this.count = count;
+        }
+
+        @Override
+        public Iterator<Long> iterator() {
+            return new IteratorDemo(this.count);
+        }
+    }
+
+    public static class IteratorDemo implements Iterator<Long> {
+        private final long count;
+        private long current = 0;
+
+        IteratorDemo(long count) {
+            this.count = count;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return this.current < this.count;
+        }
+
+        @Override
+        public Long next() {
+            this.current++;
+            return this.current;
+        }
+    }
+
     public static class SkipTakeData {
         public static IEnumerable<Object[]> EnumerableData() {
             IEnumerable<Integer> sourceCounts = Linq.asEnumerable(0, 1, 2, 3, 5, 8, 13, 55, 100, 250);

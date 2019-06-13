@@ -7,7 +7,6 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
-import com.bestvike.linq.entity.IterableDemo;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ArrayUtils;

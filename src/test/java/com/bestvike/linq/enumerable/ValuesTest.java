@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -1405,37 +1404,5 @@ public class ValuesTest extends TestCase {
         private Iterable<?> iterable;
         private Map<?, ?> map;
         private TwoFieldBean bean;
-    }
-
-    private static class ArrayIterable<T> implements Iterable<T> {
-        private final T[] array;
-
-        ArrayIterable(T... array) {
-            this.array = array;
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new ArrayIterator<>(this.array);
-        }
-    }
-
-    private static final class ArrayIterator<T> implements Iterator<T> {
-        private final T[] array;
-        private int index = 0;
-
-        ArrayIterator(T[] array) {
-            this.array = array;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return this.index < this.array.length;
-        }
-
-        @Override
-        public T next() {
-            return this.array[this.index++];
-        }
     }
 }

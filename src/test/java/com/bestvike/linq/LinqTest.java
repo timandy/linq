@@ -1,7 +1,6 @@
 package com.bestvike.linq;
 
 import com.bestvike.TestCase;
-import com.bestvike.linq.entity.IterableDemo;
 import org.junit.Test;
 
 import java.util.ArrayList;
