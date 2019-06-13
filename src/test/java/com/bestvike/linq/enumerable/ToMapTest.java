@@ -23,6 +23,7 @@ public class ToMapTest extends TestCase {
         assertNotNull(dict);
         assertNotNull(keys);
         assertNotNull(values);
+        assertSame(HashMap.class, dict.getClass());
         try (IEnumerator<K> ke = keys.enumerator()) {
             for (E value : values) {
                 assertTrue(ke.moveNext());

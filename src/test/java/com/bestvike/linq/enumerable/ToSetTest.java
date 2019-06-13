@@ -15,8 +15,8 @@ public class ToSetTest extends TestCase {
     @Test
     public void NoExplicitComparer() {
         Set<Integer> hs = Linq.range(0, 50).toSet();
-        assertNotNull(as(hs, HashSet.class));
 
+        assertSame(HashSet.class, hs.getClass());
         assertEquals(50, hs.size());
     }
 
