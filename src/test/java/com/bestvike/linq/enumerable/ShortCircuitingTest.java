@@ -73,9 +73,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinDoubleDoesntCheckAllStartLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
-        assertTrue(Double.isNaN(source.minDouble()));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Double.isNaN(source.minDouble()));
         assertEquals(1, tracker.Moves);
     }
 
@@ -83,9 +82,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinNullableDoubleDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
-        assertTrue(Double.isNaN(source.minDoubleNull()));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Double.isNaN(source.minDoubleNull()));
         assertEquals(1, tracker.Moves);
     }
 
@@ -93,9 +91,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinSingleDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
-        assertTrue(Float.isNaN(source.minFloat()));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Float.isNaN(source.minFloat()));
         assertEquals(1, tracker.Moves);
     }
 
@@ -103,9 +100,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinNullableSingleDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
-        assertTrue(Float.isNaN(source.minFloatNull()));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Float.isNaN(source.minFloatNull()));
         assertEquals(1, tracker.Moves);
     }
 
@@ -113,9 +109,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinDoubleSelectorDoesntCheckAllStartLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
-        assertTrue(Double.isNaN(source.minDouble(x -> x + 1d)));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Double.isNaN(source.minDouble(x -> x + 1d)));
         assertEquals(1, tracker.Moves);
     }
 
@@ -123,9 +118,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinNullableDoubleSelectorDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
-        assertTrue(Double.isNaN(source.minDoubleNull(x -> x + 1d)));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Double.isNaN(source.minDoubleNull(x -> x + 1d)));
         assertEquals(1, tracker.Moves);
     }
 
@@ -133,9 +127,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinSingleSelectorDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
-        assertTrue(Float.isNaN(source.minFloat(x -> x + 1f)));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Float.isNaN(source.minFloat(x -> x + 1f)));
         assertEquals(1, tracker.Moves);
     }
 
@@ -143,9 +136,8 @@ public class ShortCircuitingTest extends TestCase {
     public void MinNullableSingleSelectorDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
-        assertTrue(Float.isNaN(source.minFloatNull(x -> x + 1f)));
 
-        //see https://github.com/dotnet/corefx/issues/38392.
+        assertTrue(Float.isNaN(source.minFloatNull(x -> x + 1f)));
         assertEquals(1, tracker.Moves);
     }
 
