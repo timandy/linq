@@ -924,8 +924,20 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ToCollection.toMap(this, keySelector, elementSelector);
     }
 
+    default <TKey> Map<TKey, TSource> toLinkedMap(Func1<TSource, TKey> keySelector) {
+        return ToCollection.toLinkedMap(this, keySelector);
+    }
+
+    default <TKey, TElement> Map<TKey, TElement> toLinkedMap(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
+        return ToCollection.toLinkedMap(this, keySelector, elementSelector);
+    }
+
     default Set<TSource> toSet() {
         return ToCollection.toSet(this);
+    }
+
+    default Set<TSource> toLinkedSet() {
+        return ToCollection.toLinkedSet(this);
     }
 
     default IEnumerable<TSource> union(IEnumerable<TSource> second) {

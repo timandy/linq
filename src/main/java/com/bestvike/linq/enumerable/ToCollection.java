@@ -10,6 +10,8 @@ import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -145,6 +147,92 @@ public final class ToCollection {
         return map;
     }
 
+    public static <TSource, TKey> Map<TKey, TSource> toLinkedMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (keySelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            int capacity = collection._getCount();
+            if (capacity == 0)
+                return new LinkedHashMap<>();
+
+            if (collection instanceof IArray) {
+                IArray<TSource> array = (IArray<TSource>) collection;
+                Map<TKey, TSource> map = new LinkedHashMap<>(capacity);
+                for (int i = 0; i < capacity; i++) {
+                    TSource element = array.get(i);
+                    map.put(keySelector.apply(element), element);
+                }
+                return map;
+            }
+
+            Map<TKey, TSource> map = new LinkedHashMap<>(capacity);
+            try (IEnumerator<TSource> enumerator = source.enumerator()) {
+                while (enumerator.moveNext()) {
+                    TSource element = enumerator.current();
+                    map.put(keySelector.apply(element), element);
+                }
+            }
+            return map;
+        }
+
+        Map<TKey, TSource> map = new LinkedHashMap<>();
+        try (IEnumerator<TSource> enumerator = source.enumerator()) {
+            while (enumerator.moveNext()) {
+                TSource element = enumerator.current();
+                map.put(keySelector.apply(element), element);
+            }
+        }
+        return map;
+    }
+
+    public static <TSource, TKey, TElement> Map<TKey, TElement> toLinkedMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (keySelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+        if (elementSelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.elementSelector);
+
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            int capacity = collection._getCount();
+            if (capacity == 0)
+                return new LinkedHashMap<>();
+
+            if (collection instanceof IArray) {
+                IArray<TSource> array = (IArray<TSource>) collection;
+                Map<TKey, TElement> map = new LinkedHashMap<>(capacity);
+                for (int i = 0; i < capacity; i++) {
+                    TSource element = array.get(i);
+                    map.put(keySelector.apply(element), elementSelector.apply(element));
+                }
+                return map;
+            }
+
+            Map<TKey, TElement> map = new LinkedHashMap<>(capacity);
+            try (IEnumerator<TSource> enumerator = source.enumerator()) {
+                while (enumerator.moveNext()) {
+                    TSource element = enumerator.current();
+                    map.put(keySelector.apply(element), elementSelector.apply(element));
+                }
+            }
+            return map;
+        }
+
+        Map<TKey, TElement> map = new LinkedHashMap<>();
+        try (IEnumerator<TSource> enumerator = source.enumerator()) {
+            while (enumerator.moveNext()) {
+                TSource element = enumerator.current();
+                map.put(keySelector.apply(element), elementSelector.apply(element));
+            }
+        }
+        return map;
+    }
+
     public static <TSource> Set<TSource> toSet(IEnumerable<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -173,6 +261,41 @@ public final class ToCollection {
         }
 
         Set<TSource> set = new HashSet<>();
+        try (IEnumerator<TSource> enumerator = source.enumerator()) {
+            while (enumerator.moveNext())
+                set.add(enumerator.current());
+        }
+        return set;
+    }
+
+    public static <TSource> Set<TSource> toLinkedSet(IEnumerable<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        // Don't pre-allocate based on knowledge of size, as potentially many elements will be dropped.
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            int capacity = collection._getCount();
+            if (capacity == 0)
+                return new LinkedHashSet<>();
+
+            if (collection instanceof IArray) {
+                IArray<TSource> array = (IArray<TSource>) collection;
+                Set<TSource> set = new LinkedHashSet<>(capacity);
+                for (int i = 0; i < capacity; i++)
+                    set.add(array.get(i));
+                return set;
+            }
+
+            Set<TSource> set = new LinkedHashSet<>(capacity);
+            try (IEnumerator<TSource> enumerator = source.enumerator()) {
+                while (enumerator.moveNext())
+                    set.add(enumerator.current());
+            }
+            return set;
+        }
+
+        Set<TSource> set = new LinkedHashSet<>();
         try (IEnumerator<TSource> enumerator = source.enumerator()) {
             while (enumerator.moveNext())
                 set.add(enumerator.current());
