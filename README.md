@@ -105,7 +105,9 @@ In general, the more complex the operation you want to perform on the data, the 
 - toArray
 - toList
 - toMap
+- `toLinkedMap`
 - toSet
+- `toLinkedSet`
 - union
 - `unionBy`
 - where
