@@ -16,7 +16,7 @@
     <packaging>jar</packaging>
 
     <name>linq</name>
-    <description>Linq to Objects for Java.</description>
+    <description>LINQ to Objects for Java.</description>
     <url>https://github.com/timandy/linq</url>
 
     <licenses>
