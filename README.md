@@ -75,10 +75,12 @@ In general, the more complex the operation you want to perform on the data, the 
 - `fullJoin`
 - groupBy
 - groupJoin
+- `indexOf`
 - intersect
 - `intersectBy`
 - join
 - last
+- `lastIndexOf`
 - lastOrDefault
 - `leftJoin`
 - longCount
