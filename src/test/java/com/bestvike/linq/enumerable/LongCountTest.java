@@ -90,4 +90,22 @@ public class LongCountTest extends TestCase {
         Func1<Integer, Boolean> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).longCount(predicate));
     }
+
+    @Test
+    public void testLongCount() {
+        long count = Linq.asEnumerable(depts).longCount();
+        assertEquals(3, count);
+
+        long count2 = Linq.asEnumerable(new CountIterable(10)).longCount();
+        assertEquals(10, count2);
+    }
+
+    @Test
+    public void testLongCountPredicate() {
+        long count = Linq.asEnumerable(depts).longCount(dept -> dept.employees.size() > 0);
+        assertEquals(2, count);
+
+        long count2 = Linq.asEnumerable(new CountIterable(10L)).longCount(s -> s > 9);
+        assertEquals(1, count2);
+    }
 }

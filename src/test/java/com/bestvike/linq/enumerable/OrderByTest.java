@@ -453,61 +453,6 @@ public class OrderByTest extends TestCase {
         assertEquals("[Cedric, Bill, Eric, Fred, Janet, Gates]", sss);
     }
 
-    @Test
-    public void testOrderByDesc() {
-        //null 在后,值相等的按原始顺序,同 testOrderByWithComparer()
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .orderByDescending(emp -> emp.deptno)
-                .select(emp -> emp.name)
-                .toList()
-                .toString();
-        assertEquals("[Cedric, Bill, Fred, Eric, Janet, Gates]", s);
-
-        String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .orderByDescending(emp -> emp.deptno)
-                .thenBy(emp -> emp.name)
-                .select(emp -> emp.name)
-                .toList()
-                .toString();
-        assertEquals("[Cedric, Bill, Eric, Fred, Janet, Gates]", ss);
-
-        String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .orderByDescending(emp -> emp.deptno)
-                .thenByDescending(emp -> emp.name)
-                .select(emp -> emp.name)
-                .toList()
-                .toString();
-        assertEquals("[Cedric, Bill, Janet, Fred, Eric, Gates]", sss);
-    }
-
-    @Test
-    public void testOrderByDescWithComparer() {
-        //null 在后,值相等的按原始顺序
-        Comparator<Object> reverse = Comparer.Default().reversed();
-
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .orderByDescending(emp -> emp.deptno, reverse)
-                .select(emp -> emp.name)
-                .toList()
-                .toString();
-        assertEquals("[Gates, Fred, Eric, Janet, Bill, Cedric]", s);
-
-        String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .orderByDescending(emp -> emp.deptno, reverse)
-                .thenBy(emp -> emp.name, reverse)
-                .select(emp -> emp.name)
-                .toList()
-                .toString();
-        assertEquals("[Gates, Janet, Fred, Eric, Bill, Cedric]", ss);
-
-        String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .orderByDescending(emp -> emp.deptno, reverse)
-                .thenByDescending(emp -> emp.name, reverse)
-                .select(emp -> emp.name)
-                .toList()
-                .toString();
-        assertEquals("[Gates, Eric, Fred, Janet, Bill, Cedric]", sss);
-    }
 
     private static class NameScore extends ValueType {
         final String Name;

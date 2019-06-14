@@ -87,4 +87,10 @@ public class AllTest extends TestCase {
         Func1<Integer, Boolean> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).all(predicate));
     }
+
+    @Test
+    public void testAllPredicate() {
+        assertTrue(Linq.asEnumerable(emps).all(emp -> emp.empno >= 100));
+        assertFalse(Linq.asEnumerable(emps).all(emp -> emp.empno > 100));
+    }
 }

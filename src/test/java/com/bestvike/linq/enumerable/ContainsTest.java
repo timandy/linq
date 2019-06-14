@@ -225,20 +225,4 @@ public class ContainsTest extends TestCase {
         assertTrue(Linq.asEnumerable(emps).contains(employeeClone, comparer));
         assertFalse(Linq.asEnumerable(emps).contains(employeeOther, comparer));
     }
-
-    @Test
-    public void testSumInt() {
-        Integer[] numbers = {null, 0, 2, 3};
-        assertEquals(5, Linq.asEnumerable(numbers).sumInt());
-
-        Integer[] numbers2 = {null, Integer.MAX_VALUE - 1, 1};
-        assertEquals(Integer.MAX_VALUE, Linq.asEnumerable(numbers2).sumInt());
-
-        Integer[] numbers3 = {null, Integer.MAX_VALUE, 1};
-        try {
-            int num = Linq.asEnumerable(numbers3).sumInt();
-            fail("expect error,but got " + num);
-        } catch (ArithmeticException ignored) {
-        }
-    }
 }

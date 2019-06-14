@@ -114,10 +114,4 @@ public class AnyTest extends TestCase {
         assertFalse(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("IT")));
         assertTrue(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("Sales")));
     }
-
-    @Test
-    public void testAllPredicate() {
-        assertTrue(Linq.asEnumerable(emps).all(emp -> emp.empno >= 100));
-        assertFalse(Linq.asEnumerable(emps).all(emp -> emp.empno > 100));
-    }
 }
