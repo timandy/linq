@@ -4,6 +4,7 @@ import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -29,9 +30,11 @@ public final class Contains {
         if (comparer == null)
             comparer = EqualityComparer.Default();
 
-        for (TSource element : source) {
-            if (comparer.equals(element, value))
-                return true;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                if (comparer.equals(e.current(), value))
+                    return true;
+            }
         }
 
         return false;
