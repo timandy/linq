@@ -38,6 +38,9 @@ In general, the more complex the operation you want to perform on the data, the 
 
 ![bestvike](logo.jpg "济南百思为科信息工程有限公司")
 
+## Navigation
+![linq](linq.svg "LINQ to Objects")
+
 ## API of Linq
 - empty
 - singleton
@@ -183,7 +186,7 @@ Linq.asEnumerable(tuples)
 ```
 
 ## *License*
-Linq is released under the Apache License, Version 2.0.
+LINQ to Objects (Java) is released under the Apache License, Version 2.0.
 ```
 Copyright 2019 济南百思为科信息工程有限公司
 
