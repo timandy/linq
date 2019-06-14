@@ -11,6 +11,7 @@
 - Add zip Tuple API.
 - Add support port to stream for `IEnumerable`.
 - Add api `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
+- Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
 - Add `IArray` interface to determine `IList` contains an array or not.
 - Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
 - Add `StringComparer` for string equals, hashCode and compare actions.
@@ -23,6 +24,7 @@
 - Optimize `min`, `max`, `minBy`, `maxBy` performance.
 - Optimize `TakeLastIterator` dispose action.
 - Optimize `toMap` and `toSet` methods.
+- Optimize `indexOf` and `lastIndexOf` in EqualityComparer.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
 - Translated all LINQ to Objects API of .net core 3.0.
 - Use ThrowHelper to throw Exceptions.
