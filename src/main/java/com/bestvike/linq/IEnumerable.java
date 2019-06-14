@@ -111,6 +111,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Aggregate.aggregate(this, seed, func, resultSelector);
     }
 
+    default boolean all(Func1<TSource, Boolean> predicate) {
+        return AnyAll.all(this, predicate);
+    }
+
     default boolean any() {
         return AnyAll.any(this);
     }
@@ -119,16 +123,8 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return AnyAll.any(this, predicate);
     }
 
-    default boolean all(Func1<TSource, Boolean> predicate) {
-        return AnyAll.all(this, predicate);
-    }
-
     default IEnumerable<TSource> append(TSource element) {
         return AppendPrepend.append(this, element);
-    }
-
-    default IEnumerable<TSource> prepend(TSource element) {
-        return AppendPrepend.prepend(this, element);
     }
 
     default IEnumerable<TSource> asEnumerable() {
@@ -215,10 +211,6 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Average.averageDecimalNull(this, selector);
     }
 
-    default <TResult> IEnumerable<TResult> ofType(Class<TResult> clazz) {
-        return Cast.ofType(this, clazz);
-    }
-
     default <TResult> IEnumerable<TResult> cast(Class<TResult> clazz) {
         return Cast.cast(this, clazz);
     }
@@ -243,12 +235,8 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Count.count(this, predicate);
     }
 
-    default long longCount() {
-        return Count.longCount(this);
-    }
-
-    default long longCount(Func1<TSource, Boolean> predicate) {
-        return Count.longCount(this, predicate);
+    default <TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<TInner> inner, Func2<TSource, TInner, TResult> resultSelector) {
+        return Join.crossJoin(this, inner, resultSelector);
     }
 
     default IEnumerable<TSource> defaultIfEmpty() {
@@ -315,6 +303,22 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return First.firstOrDefault(this, predicate);
     }
 
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
+        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
+    }
+
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector) {
+        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector);
+    }
+
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+    }
+
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, comparer);
+    }
+
     default <TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(Func1<TSource, TKey> keySelector) {
         return GroupBy.groupBy(this, keySelector);
     }
@@ -379,58 +383,6 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Join.join(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector, comparer);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector, comparer);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
-    }
-
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, comparer);
-    }
-
-    default <TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<TInner> inner, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.crossJoin(this, inner, resultSelector);
-    }
-
     default TSource last() {
         return Last.last(this);
     }
@@ -447,20 +399,28 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Last.lastOrDefault(this, predicate);
     }
 
-    default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector) {
-        return ToLookup.toLookup(this, keySelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
+        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
     }
 
-    default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return ToLookup.toLookup(this, keySelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector) {
+        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector);
     }
 
-    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return ToLookup.toLookup(this, keySelector, elementSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
     }
 
-    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
-        return ToLookup.toLookup(this, keySelector, elementSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector, comparer);
+    }
+
+    default long longCount() {
+        return Count.longCount(this);
+    }
+
+    default long longCount(Func1<TSource, Boolean> predicate) {
+        return Count.longCount(this, predicate);
     }
 
     default int maxInt() {
@@ -751,6 +711,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return MinBy.minByNull(this, keySelector);
     }
 
+    default <TResult> IEnumerable<TResult> ofType(Class<TResult> clazz) {
+        return Cast.ofType(this, clazz);
+    }
+
     default <TKey> IOrderedEnumerable<TSource> orderBy(Func1<TSource, TKey> keySelector) {
         return OrderBy.orderBy(this, keySelector);
     }
@@ -767,8 +731,28 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return OrderBy.orderByDescending(this, keySelector, comparer);
     }
 
+    default IEnumerable<TSource> prepend(TSource element) {
+        return AppendPrepend.prepend(this, element);
+    }
+
     default IEnumerable<TSource> reverse() {
         return Reverse.reverse(this);
+    }
+
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
+        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
+    }
+
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, Func2<TSource, TInner, TResult> resultSelector) {
+        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector);
+    }
+
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+    }
+
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
+        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector, comparer);
     }
 
     default IEnumerable<TSource> runOnce() {
@@ -835,16 +819,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Skip.skip(this, count);
     }
 
+    default IEnumerable<TSource> skipLast(int count) {
+        return Skip.skipLast(this, count);
+    }
+
     default IEnumerable<TSource> skipWhile(Func1<TSource, Boolean> predicate) {
         return Skip.skipWhile(this, predicate);
     }
 
     default IEnumerable<TSource> skipWhile(Func2<TSource, Integer, Boolean> predicate) {
         return Skip.skipWhile(this, predicate);
-    }
-
-    default IEnumerable<TSource> skipLast(int count) {
-        return Skip.skipLast(this, count);
     }
 
     default int sumInt() {
@@ -891,6 +875,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Take.take(this, count);
     }
 
+    default IEnumerable<TSource> takeLast(int count) {
+        return Take.takeLast(this, count);
+    }
+
     default IEnumerable<TSource> takeWhile(Func1<TSource, Boolean> predicate) {
         return Take.takeWhile(this, predicate);
     }
@@ -899,29 +887,13 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Take.takeWhile(this, predicate);
     }
 
-    default IEnumerable<TSource> takeLast(int count) {
-        return Take.takeLast(this, count);
-    }
-
-    default TSource[] toArray(Class<TSource> clazz) {
-        return ToCollection.toArray(this, clazz);
-    }
-
     default Array<TSource> toArray() {
         Object[] elements = ToCollection.toArray(this);
         return elements == ArrayUtils.empty() ? Array.empty() : new Array<>(elements);
     }
 
-    default List<TSource> toList() {
-        return ToCollection.toList(this);
-    }
-
-    default <TKey> Map<TKey, TSource> toMap(Func1<TSource, TKey> keySelector) {
-        return ToCollection.toMap(this, keySelector);
-    }
-
-    default <TKey, TElement> Map<TKey, TElement> toMap(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return ToCollection.toMap(this, keySelector, elementSelector);
+    default TSource[] toArray(Class<TSource> clazz) {
+        return ToCollection.toArray(this, clazz);
     }
 
     default <TKey> Map<TKey, TSource> toLinkedMap(Func1<TSource, TKey> keySelector) {
@@ -932,12 +904,40 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ToCollection.toLinkedMap(this, keySelector, elementSelector);
     }
 
-    default Set<TSource> toSet() {
-        return ToCollection.toSet(this);
-    }
-
     default Set<TSource> toLinkedSet() {
         return ToCollection.toLinkedSet(this);
+    }
+
+    default List<TSource> toList() {
+        return ToCollection.toList(this);
+    }
+
+    default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector) {
+        return ToLookup.toLookup(this, keySelector);
+    }
+
+    default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+        return ToLookup.toLookup(this, keySelector, comparer);
+    }
+
+    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
+        return ToLookup.toLookup(this, keySelector, elementSelector);
+    }
+
+    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
+        return ToLookup.toLookup(this, keySelector, elementSelector, comparer);
+    }
+
+    default <TKey> Map<TKey, TSource> toMap(Func1<TSource, TKey> keySelector) {
+        return ToCollection.toMap(this, keySelector);
+    }
+
+    default <TKey, TElement> Map<TKey, TElement> toMap(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
+        return ToCollection.toMap(this, keySelector, elementSelector);
+    }
+
+    default Set<TSource> toSet() {
+        return ToCollection.toSet(this);
     }
 
     default IEnumerable<TSource> union(IEnumerable<TSource> second) {
