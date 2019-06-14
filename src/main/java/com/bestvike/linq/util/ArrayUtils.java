@@ -67,6 +67,21 @@ public final class ArrayUtils {
         return EqualityComparer.Default().indexOf(array, item, startIndex, count);
     }
 
+    public static <T> int lastIndexOf(T[] array, T item) {
+        return lastIndexOf(array, item, array.length - 1, array.length);
+    }
+
+    public static <T> int lastIndexOf(T[] array, T item, int startIndex, int count) {
+        if (array == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
+        if (startIndex > array.length)
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
+        if (count < 0 || startIndex > array.length - count)
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
+
+        return EqualityComparer.Default().lastIndexOf(array, item, startIndex, count);
+    }
+
     public static Object[] clone(Object[] array) {
         if (array == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
