@@ -36,6 +36,28 @@ public final class BooleanArrayEnumerable implements IArray<Boolean> {
     }
 
     @Override
+    public int _indexOf(Boolean item) {
+        if (item == null)
+            return -1;
+        for (int i = 0; i < this.source.length; i++) {
+            if (this.source[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public int _lastIndexOf(Boolean item) {
+        if (item == null)
+            return -1;
+        for (int i = this.source.length - 1; i >= 0; i--) {
+            if (this.source[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
     public Collection<Boolean> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }

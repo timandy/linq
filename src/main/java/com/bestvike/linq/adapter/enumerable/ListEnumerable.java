@@ -30,6 +30,16 @@ public final class ListEnumerable<TSource> implements IList<TSource> {
     }
 
     @Override
+    public int _indexOf(TSource item) {
+        return this.source.indexOf(item);
+    }
+
+    @Override
+    public int _lastIndexOf(TSource item) {
+        return this.source.lastIndexOf(item);
+    }
+
+    @Override
     public Collection<TSource> getCollection() {
         return this.source;
     }

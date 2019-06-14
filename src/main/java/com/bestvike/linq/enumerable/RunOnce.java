@@ -81,6 +81,18 @@ final class RunOnceList<TSource> implements IList<TSource> {
     }
 
     @Override
+    public int _indexOf(TSource item) {
+        this.assertAll();
+        return this.source._indexOf(item);
+    }
+
+    @Override
+    public int _lastIndexOf(TSource item) {
+        this.assertAll();
+        return this.source._lastIndexOf(item);
+    }
+
+    @Override
     public Collection<TSource> getCollection() {
         this.assertAll();
         return this.source.getCollection();

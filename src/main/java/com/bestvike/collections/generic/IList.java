@@ -5,4 +5,8 @@ package com.bestvike.collections.generic;
  */
 public interface IList<T> extends ICollection<T> {
     T get(int index);
+
+    int _indexOf(T item);
+
+    int _lastIndexOf(T item);
 }

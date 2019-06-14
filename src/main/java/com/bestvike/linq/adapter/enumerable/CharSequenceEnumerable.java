@@ -31,6 +31,28 @@ public final class CharSequenceEnumerable implements IList<Character> {
     }
 
     @Override
+    public int _indexOf(Character item) {
+        if (item == null)
+            return -1;
+        for (int i = 0, length = this.source.length(); i < length; i++) {
+            if (this.source.charAt(i) == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public int _lastIndexOf(Character item) {
+        if (item == null)
+            return -1;
+        for (int i = this.source.length() - 1; i >= 0; i--) {
+            if (this.source.charAt(i) == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
     public Collection<Character> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }

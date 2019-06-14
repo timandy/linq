@@ -62,6 +62,16 @@ final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IArra
     }
 
     @Override
+    public int _indexOf(TElement item) {
+        return ArrayUtils.indexOf(this.elements, item, 0, this.count);
+    }
+
+    @Override
+    public int _lastIndexOf(TElement item) {
+        return ArrayUtils.lastIndexOf(this.elements, item, this.count - 1, this.count);
+    }
+
+    @Override
     public Collection<TElement> getCollection() {
         return ArrayUtils.toCollection(this.elements, 0, this.count);
     }

@@ -36,6 +36,16 @@ public final class SingletonEnumerable<TSource> implements IList<TSource> {
     }
 
     @Override
+    public int _indexOf(TSource item) {
+        return Objects.equals(this.element, item) ? 0 : -1;
+    }
+
+    @Override
+    public int _lastIndexOf(TSource item) {
+        return Objects.equals(this.element, item) ? 0 : -1;
+    }
+
+    @Override
     public Collection<TSource> getCollection() {
         return ArrayUtils.toCollection(new Object[]{this.element});
     }

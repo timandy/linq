@@ -36,6 +36,28 @@ public final class CharacterArrayEnumerable implements IArray<Character> {
     }
 
     @Override
+    public int _indexOf(Character item) {
+        if (item == null)
+            return -1;
+        for (int i = 0; i < this.source.length; i++) {
+            if (this.source[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public int _lastIndexOf(Character item) {
+        if (item == null)
+            return -1;
+        for (int i = this.source.length - 1; i >= 0; i--) {
+            if (this.source[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
     public Collection<Character> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }

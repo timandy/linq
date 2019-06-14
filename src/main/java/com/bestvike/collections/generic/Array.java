@@ -43,6 +43,16 @@ public final class Array<T> implements IArray<T>, Cloneable {
         return (T) this.elements[index];
     }
 
+    @Override
+    public int _indexOf(T item) {
+        return ArrayUtils.indexOf(this.elements, item);
+    }
+
+    @Override
+    public int _lastIndexOf(T item) {
+        return ArrayUtils.lastIndexOf(this.elements, item);
+    }
+
     public void set(int index, T item) {
         this.elements[index] = item;
     }

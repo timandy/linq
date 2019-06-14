@@ -34,6 +34,16 @@ public final class GenericArrayEnumerable<TElement> implements IArray<TElement> 
     }
 
     @Override
+    public int _indexOf(TElement item) {
+        return ArrayUtils.indexOf(this.source, item);
+    }
+
+    @Override
+    public int _lastIndexOf(TElement item) {
+        return ArrayUtils.lastIndexOf(this.source, item);
+    }
+
+    @Override
     public Collection<TElement> getCollection() {
         return ArrayUtils.toCollection(this.source);
     }

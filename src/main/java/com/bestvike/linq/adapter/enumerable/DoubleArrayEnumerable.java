@@ -36,6 +36,28 @@ public final class DoubleArrayEnumerable implements IArray<Double> {
     }
 
     @Override
+    public int _indexOf(Double item) {
+        if (item == null)
+            return -1;
+        for (int i = 0; i < this.source.length; i++) {
+            if (this.source[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public int _lastIndexOf(Double item) {
+        if (item == null)
+            return -1;
+        for (int i = this.source.length - 1; i >= 0; i--) {
+            if (this.source[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
     public Collection<Double> getCollection() {
         return ArrayUtils.toCollection(this._toArray());
     }
