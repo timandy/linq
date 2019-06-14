@@ -52,7 +52,7 @@ public class SkipLastTest extends TestCase {
 
     private void EvaluationBehavior(int count) {
         // We want to make sure no more than `count` items are ever evaluated ahead of the current position.
-        // As an example, if Linq.range(1, 6).skipLast(2) is called, then we should read in the first 3 items,
+        // As an example, if Enumerable.Range(1, 6).SkipLast(2) is called, then we should read in the first 3 items,
         // yield 1, read in 4, yield 2, and so on.
         ref<Integer> index = ref.init(0);
         int limit = Math.max(0, count * 2);
