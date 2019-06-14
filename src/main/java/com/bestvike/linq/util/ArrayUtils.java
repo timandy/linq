@@ -59,9 +59,9 @@ public final class ArrayUtils {
     public static <T> int indexOf(T[] array, T item, int startIndex, int count) {
         if (array == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
-        if (startIndex > array.length)
+        if (startIndex < 0 || startIndex > array.length)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
-        if (count < 0 || startIndex > array.length - count)
+        if (count < 0 || count > array.length - startIndex)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
 
         return EqualityComparer.Default().indexOf(array, item, startIndex, count);
@@ -74,9 +74,21 @@ public final class ArrayUtils {
     public static <T> int lastIndexOf(T[] array, T item, int startIndex, int count) {
         if (array == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
-        if (startIndex > array.length)
+        if (array.length == 0) {
+            //
+            // Special case for 0 length List
+            // accept -1 and 0 as valid startIndex for compablility reason.
+            //
+            if (startIndex != -1 && startIndex != 0)
+                ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
+            // only 0 is a valid value for count if array is empty
+            if (count != 0)
+                ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
+            return -1;
+        }
+        if (startIndex < 0 || startIndex >= array.length)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
-        if (count < 0 || startIndex > array.length - count)
+        if (count < 0 || startIndex - count + 1 < 0)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
 
         return EqualityComparer.Default().lastIndexOf(array, item, startIndex, count);
