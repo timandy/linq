@@ -5,11 +5,9 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.collections.generic.StringComparer;
-import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.NotSupportedException;
 import org.junit.Test;
 
@@ -181,146 +179,76 @@ public class IndexOfTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQuery2() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
-                .where(x -> x > Integer.MIN_VALUE);
-
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
-        assertEquals(q.indexOf(predicate), q.indexOf(predicate));
-    }
-
-    @Test
-    public void SameResultsRepeatCallsStringQuery2() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
-
-        Func1<String, Boolean> predicate = TestCase::IsNullOrEmpty;
-        assertEquals(q.indexOf(predicate), q.indexOf(predicate));
-    }
-
-    @Test
-    public void IndexOf() {
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
-        this.IndexOf(Linq.empty(), isEvenFunc, -1);
-        this.IndexOf(Linq.singleton(4), isEvenFunc, 0);
-        this.IndexOf(Linq.singleton(5), isEvenFunc, -1);
-        this.IndexOf(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.IndexOf(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
-
-        Array<Integer> range = Linq.range(1, 10).toArray();
-        this.IndexOf(range, i -> i > 10, -1);
-        for (int j = 0; j <= 9; j++) {
-            int k = j; // Local copy for iterator
-            this.IndexOf(range, i -> i > k, j);
-        }
-    }
-
-    private void IndexOf(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
-        assertEquals(expected, source.indexOf(predicate));
-    }
-
-    @Test
-    public void IndexOfRunOnce() {
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
-        this.IndexOfRunOnce(Linq.empty(), isEvenFunc, -1);
-        this.IndexOfRunOnce(Linq.singleton(4), isEvenFunc, 0);
-        this.IndexOfRunOnce(Linq.singleton(5), isEvenFunc, -1);
-        this.IndexOfRunOnce(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.IndexOfRunOnce(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
-
-        Array<Integer> range = Linq.range(1, 10).toArray();
-        this.IndexOfRunOnce(range, i -> i > 10, -1);
-        for (int j = 0; j <= 9; j++) {
-            int k = j; // Local copy for iterator
-            this.IndexOfRunOnce(range, i -> i > k, j);
-        }
-    }
-
-    private void IndexOfRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
-        assertEquals(expected, source.runOnce().indexOf(predicate));
-    }
-
-    @Test
-    public void NullSource_ThrowsArgumentNullException2() {
-        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).indexOf(i -> i != 0));
-    }
-
-    @Test
-    public void NullPredicate_ThrowsArgumentNullException() {
-        Func1<Integer, Boolean> predicate = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).indexOf(predicate));
-    }
-
-    @Test
     public void testIList() {
         assertEquals(1, new Array<String>(new String[]{"a", "b", "c"}).indexOf("b"));
         assertEquals(-1, new Array<String>(new String[]{"a", "b", "c"}).indexOf("d"));
-        assertEquals(-1, new Array<String>(new String[]{"a", "b", "c"}).indexOf((String) null));
+        assertEquals(-1, new Array<String>(new String[]{"a", "b", "c"}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new boolean[]{true, false, true}).indexOf(false));
         assertEquals(-1, Linq.asEnumerable(new boolean[]{true, true, true}).indexOf(false));
-        assertEquals(-1, Linq.asEnumerable(new boolean[]{true, false, true}).indexOf((Boolean) null));
+        assertEquals(-1, Linq.asEnumerable(new boolean[]{true, false, true}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new byte[]{0, 1, 2}).indexOf((byte) 1));
         assertEquals(-1, Linq.asEnumerable(new byte[]{0, 1, 2}).indexOf((byte) 3));
-        assertEquals(-1, Linq.asEnumerable(new byte[]{0, 1, 2}).indexOf((Byte) null));
+        assertEquals(-1, Linq.asEnumerable(new byte[]{0, 1, 2}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new short[]{0, 1, 2}).indexOf((short) 1));
         assertEquals(-1, Linq.asEnumerable(new short[]{0, 1, 2}).indexOf((short) 3));
-        assertEquals(-1, Linq.asEnumerable(new short[]{0, 1, 2}).indexOf((Short) null));
+        assertEquals(-1, Linq.asEnumerable(new short[]{0, 1, 2}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new int[]{0, 1, 2}).indexOf(1));
         assertEquals(-1, Linq.asEnumerable(new int[]{0, 1, 2}).indexOf(3));
-        assertEquals(-1, Linq.asEnumerable(new int[]{0, 1, 2}).indexOf((Integer) null));
+        assertEquals(-1, Linq.asEnumerable(new int[]{0, 1, 2}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new long[]{0, 1, 2}).indexOf(1L));
         assertEquals(-1, Linq.asEnumerable(new long[]{0, 1, 2}).indexOf(3L));
-        assertEquals(-1, Linq.asEnumerable(new long[]{0, 1, 2}).indexOf((Long) null));
+        assertEquals(-1, Linq.asEnumerable(new long[]{0, 1, 2}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new char[]{'a', 'b', 'c'}).indexOf('b'));
         assertEquals(-1, Linq.asEnumerable(new char[]{'a', 'b', 'c'}).indexOf('d'));
-        assertEquals(-1, Linq.asEnumerable(new char[]{'a', 'b', 'c'}).indexOf((Character) null));
+        assertEquals(-1, Linq.asEnumerable(new char[]{'a', 'b', 'c'}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new float[]{0f, 1f, 2f}).indexOf(1f));
         assertEquals(-1, Linq.asEnumerable(new float[]{0f, 1f, 2f}).indexOf(3f));
-        assertEquals(-1, Linq.asEnumerable(new float[]{0f, 1f, 2f}).indexOf((Float) null));
+        assertEquals(-1, Linq.asEnumerable(new float[]{0f, 1f, 2f}).indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(new double[]{0d, 1d, 2d}).indexOf(1d));
         assertEquals(-1, Linq.asEnumerable(new double[]{0d, 1d, 2d}).indexOf(3d));
-        assertEquals(-1, Linq.asEnumerable(new double[]{0d, 1d, 2d}).indexOf((Double) null));
+        assertEquals(-1, Linq.asEnumerable(new double[]{0d, 1d, 2d}).indexOf(null));
         //
         assertEquals(2, Linq.asEnumerable("hello").indexOf('l'));
         assertEquals(-1, Linq.asEnumerable("hello").indexOf('z'));
-        assertEquals(-1, Linq.asEnumerable("hello").indexOf((Character) null));
+        assertEquals(-1, Linq.asEnumerable("hello").indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable("hello", "world", "bye").indexOf("world"));
         assertEquals(-1, Linq.asEnumerable("hello", "world", "bye").indexOf("thanks"));
-        assertEquals(-1, Linq.asEnumerable("hello", "world", "bye").indexOf((String) null));
+        assertEquals(-1, Linq.asEnumerable("hello", "world", "bye").indexOf(null));
         //
         assertEquals(1, Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).indexOf("world"));
         assertEquals(-1, Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).indexOf("thanks"));
-        assertEquals(-1, Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).indexOf((String) null));
+        assertEquals(-1, Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).indexOf(null));
         //
         assertEquals(0, Linq.singleton("Tim").indexOf("Tim"));
         assertEquals(-1, Linq.singleton("Tim").indexOf("Jim"));
-        assertEquals(-1, Linq.singleton("Tim").indexOf((String) null));
+        assertEquals(-1, Linq.singleton("Tim").indexOf(null));
         //
         assertEquals(0, Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)).toLookup(x -> x.deptno).get(10).indexOf(emps[0]));
         assertEquals(-1, Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)).toLookup(x -> x.deptno).get(10).indexOf(emps[1]));
-        assertEquals(-1, Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)).toLookup(x -> x.deptno).get(10).indexOf((Employee) null));
+        assertEquals(-1, Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)).toLookup(x -> x.deptno).get(10).indexOf(null));
         //
         IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).runOnce();
         assertEquals(1, enumerable.indexOf("world"));
         assertThrows(NotSupportedException.class, () -> enumerable.indexOf("world"));
         assertEquals(-1, Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).runOnce().indexOf("thanks"));
-        assertEquals(-1, Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).runOnce().indexOf((String) null));
+        assertEquals(-1, Linq.asEnumerable(Arrays.asList("hello", "world", "bye")).runOnce().indexOf(null));
         //
         assertEquals(0, Linq.range(0, 30).skip(10).take(5).indexOf(10));
         assertEquals(-1, Linq.range(0, 30).skip(10).take(5).indexOf(0));
-        assertEquals(-1, Linq.range(0, 30).skip(10).take(5).indexOf((Integer) null));
+        assertEquals(-1, Linq.range(0, 30).skip(10).take(5).indexOf(null));
         //
         assertEquals(0, Linq.repeat(0, 30).skip(10).take(5).indexOf(0));
         assertEquals(-1, Linq.repeat(0, 30).skip(10).take(5).indexOf(1));
-        assertEquals(-1, Linq.repeat(0, 30).skip(10).take(5).indexOf((Integer) null));
+        assertEquals(-1, Linq.repeat(0, 30).skip(10).take(5).indexOf(null));
     }
 
     @Test
@@ -370,11 +298,5 @@ public class IndexOfTest extends TestCase {
         assertEquals(1, Linq.asEnumerable(emps).indexOf(e, comparer));
         assertEquals(1, Linq.asEnumerable(emps).indexOf(employeeClone, comparer));
         assertEquals(-1, Linq.asEnumerable(emps).indexOf(employeeOther, comparer));
-    }
-
-    @Test
-    public void testIndexOfPredicate() {
-        assertEquals(-1, Linq.asEnumerable(depts).indexOf(dept -> dept.name != null && dept.name.equals("IT")));
-        assertEquals(0, Linq.asEnumerable(depts).indexOf(dept -> dept.name != null && dept.name.equals("Sales")));
     }
 }
