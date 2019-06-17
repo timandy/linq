@@ -18,6 +18,7 @@ import com.bestvike.linq.enumerable.DistinctBy;
 import com.bestvike.linq.enumerable.ElementAt;
 import com.bestvike.linq.enumerable.Except;
 import com.bestvike.linq.enumerable.ExceptBy;
+import com.bestvike.linq.enumerable.FindIndex;
 import com.bestvike.linq.enumerable.First;
 import com.bestvike.linq.enumerable.GroupBy;
 import com.bestvike.linq.enumerable.GroupJoin;
@@ -288,6 +289,14 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ExceptBy.exceptBy(this, second, keySelector, comparer);
     }
 
+    default int findIndex(Func1<TSource, Boolean> predicate) {
+        return FindIndex.findIndex(this, predicate);
+    }
+
+    default int findLastIndex(Func1<TSource, Boolean> predicate) {
+        return FindIndex.findLastIndex(this, predicate);
+    }
+
     default TSource first() {
         return First.first(this);
     }
@@ -368,10 +377,6 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return IndexOf.indexOf(this, value, comparer);
     }
 
-    default int indexOf(Func1<TSource, Boolean> predicate) {
-        return IndexOf.indexOf(this, predicate);
-    }
-
     default IEnumerable<TSource> intersect(IEnumerable<TSource> second) {
         return Intersect.intersect(this, second);
     }
@@ -410,10 +415,6 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default int lastIndexOf(TSource value, IEqualityComparer<TSource> comparer) {
         return IndexOf.lastIndexOf(this, value, comparer);
-    }
-
-    default int lastIndexOf(Func1<TSource, Boolean> predicate) {
-        return IndexOf.lastIndexOf(this, predicate);
     }
 
     default TSource lastOrDefault() {

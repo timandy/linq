@@ -3,7 +3,6 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -43,24 +42,6 @@ public final class IndexOf {
         return -1;
     }
 
-    public static <TSource> int indexOf(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-        if (predicate == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
-
-        int index = 0;
-        try (IEnumerator<TSource> e = source.enumerator()) {
-            while (e.moveNext()) {
-                if (predicate.apply(e.current()))
-                    return index;
-                index++;
-            }
-        }
-
-        return -1;
-    }
-
     public static <TSource> int lastIndexOf(IEnumerable<TSource> source, TSource value) {
         if (source instanceof IList) {
             IList<TSource> list = (IList<TSource>) source;
@@ -81,23 +62,6 @@ public final class IndexOf {
         TSource[] array = (TSource[]) buffer.items;
         for (int i = buffer.count - 1; i >= 0; i--) {
             if (comparer.equals(array[i], value))
-                return i;
-        }
-
-        return -1;
-    }
-
-    public static <TSource> int lastIndexOf(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-        if (predicate == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
-
-        // see ReverseIterator.moveNext()
-        Buffer<TSource> buffer = new Buffer<>(source);
-        TSource[] array = (TSource[]) buffer.items;
-        for (int i = buffer.count - 1; i >= 0; i--) {
-            if (predicate.apply(array[i]))
                 return i;
         }
 
