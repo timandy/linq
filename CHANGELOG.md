@@ -8,10 +8,11 @@
 - Fix `EnumerablePartition` error assert.
 - Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
 - Fix not check selector param for `sum` with selector.
-- Add zip Tuple API.
+- Add zip Tuple api.
 - Add support port to stream for `IEnumerable`.
 - Add api `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
 - Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
+- Add api `findIndex`, `findLastIndex` for `IEnumerable`.
 - Add `IArray` interface to determine `IList` contains an array or not.
 - Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
 - Add `StringComparer` for string equals, hashCode and compare actions.
