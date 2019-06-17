@@ -70,6 +70,8 @@ In general, the more complex the operation you want to perform on the data, the 
 - elementAtOrDefault
 - except
 - `exceptBy`
+- `findIndex`
+- `findLastIndex`
 - first
 - firstOrDefault
 - `fullJoin`
