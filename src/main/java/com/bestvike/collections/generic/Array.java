@@ -33,7 +33,7 @@ public final class Array<T> implements IArray<T>, Cloneable {
     }
 
     @Override
-    public Object getArray() {
+    public Object[] getArray() {
         return this.elements;
     }
 

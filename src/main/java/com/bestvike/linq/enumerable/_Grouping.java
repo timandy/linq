@@ -49,7 +49,7 @@ final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IArra
     }
 
     @Override
-    public Object getArray() {
+    public Object[] getArray() {
         return this.elements;
     }
 

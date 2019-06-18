@@ -24,7 +24,7 @@ public final class GenericArrayEnumerable<TElement> implements IArray<TElement> 
     }
 
     @Override
-    public Object getArray() {
+    public TElement[] getArray() {
         return this.source;
     }
 
