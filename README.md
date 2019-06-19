@@ -163,10 +163,12 @@ compile 'com.bestvike:linq:2.0.1'
 2. Click `Add` button.
 3. Input `Renderer name`, like `IterableView`.
 4. Input `java.lang.Iterable` for `Apply renderer to objects of type (fully-qualified name):`.
-5. Select `Use following expression:`, input `DebugView.getDebuggerDisplay(this)` for `When rendering a node`. If got error, press `Alt + Enter` to import class.
-6. Select `Use list of expression:`, input `**RESULT VIEW**` in `Name` column, input `DebugView.getDebuggerTypeProxy(this)` in `Expression` column.  If got error, press `Alt + Enter` to import class.
+5. Select `Use following expression:` and input `DebugView.getDebuggerDisplay(this)` for `When rendering a node`. If got error, press `Alt + Enter` to import class.
+6. Select `Use list of expression:`, input `**RESULT VIEW**` in `Name` column and input `DebugView.getDebuggerTypeProxy(this)` in `Expression` column. If got error, press `Alt + Enter` to import class. Suggest check `On-demand` to enumerate sequence when needed.
 7. Check `Append default children` if you want to watch default fields value of `Iterable` instance.
 8. Save settings, enjoy!
+
+`Result view should be used with caution because of possible side-effects.`
 
 ## Demos
 - average
