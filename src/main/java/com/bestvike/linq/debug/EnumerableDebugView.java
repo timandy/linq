@@ -1,6 +1,7 @@
 package com.bestvike.linq.debug;
 
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.resources.SR;
 
 /**
  * Created by 许崇雷 on 2019-06-18.
@@ -19,9 +20,11 @@ final class EnumerableDebugView<TElement> implements IDebugView {
     }
 
     @Override
-    public Object[] getDebuggerTypeProxy() {
-        return this.cachedValues == null ?
-                (this.cachedValues = this.enumerable.toArray().getArray())
+    public Object getDebuggerTypeProxy() {
+        if (this.cachedValues == null)
+            this.cachedValues = this.enumerable.toArray().getArray();
+        return this.cachedValues.length == 0
+                ? SR.EmptyEnumerable
                 : this.cachedValues;
     }
 }

@@ -1,5 +1,7 @@
 package com.bestvike.linq.debug;
 
+import com.bestvike.linq.resources.SR;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,13 +22,15 @@ final class IterableDebugView<TElement> implements IDebugView {
     }
 
     @Override
-    public Object[] getDebuggerTypeProxy() {
+    public Object getDebuggerTypeProxy() {
         if (this.cachedValues == null) {
             List<TElement> list = new ArrayList<>();
             for (TElement element : this.iterable)
                 list.add(element);
             this.cachedValues = list.toArray();
         }
-        return this.cachedValues;
+        return this.cachedValues.length == 0
+                ? SR.EmptyIterable
+                : this.cachedValues;
     }
 }

@@ -15,7 +15,7 @@ final class GroupingDebugView<TKey, TElement> implements IDebugView {
 
     @Override
     public String getDebuggerDisplay() {
-        return "key = " + this.grouping.getKey();
+        return "key = " + this.getDebuggerMemberString(this.grouping.getKey());
     }
 
     @Override

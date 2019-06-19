@@ -15,7 +15,7 @@ final class LookupDebugView<TKey, TElement> implements IDebugView {
 
     @Override
     public String getDebuggerDisplay() {
-        return "count = " + this.lookup.getCount();
+        return "count = " + this.getDebuggerMemberString(this.lookup.getCount());
     }
 
     @Override
