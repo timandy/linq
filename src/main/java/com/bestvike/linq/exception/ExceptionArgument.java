@@ -28,6 +28,7 @@ public enum ExceptionArgument {
     collator,
     comparison,
     elements,
+    iterable,
     list,
     locale,
     newSize,
