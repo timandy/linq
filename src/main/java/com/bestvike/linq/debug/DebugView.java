@@ -18,7 +18,7 @@ public final class DebugView {
     private DebugView() {
     }
 
-    private static <T> IDebugView getDebugView(Iterable<T> iterable) {
+    private static IDebugView getDebugView(Iterable<?> iterable) {
         if (iterable == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.iterable);
 
@@ -33,11 +33,11 @@ public final class DebugView {
         });
     }
 
-    public static <T> String getDebuggerDisplay(Iterable<T> iterable) {
+    public static String getDebuggerDisplay(Iterable<?> iterable) {
         return getDebugView(iterable).getDebuggerDisplay();
     }
 
-    public static <T> Object getDebuggerTypeProxy(Iterable<T> iterable) {
+    public static Object getDebuggerTypeProxy(Iterable<?> iterable) {
         return getDebugView(iterable).getDebuggerTypeProxy();
     }
 }
