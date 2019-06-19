@@ -46,6 +46,7 @@ public class ToMapTest extends TestCase {
         source.put(3, 3);
         Map<Integer, Integer> result = Linq.asEnumerable(source).toMap(key -> key.getKey(), val -> val.getValue());
 
+        assertIsType(HashMap.class, result);
         assertNotSame(source, result);
         assertEquals(source, result);
     }

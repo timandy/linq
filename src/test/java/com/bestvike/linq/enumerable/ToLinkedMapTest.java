@@ -46,6 +46,7 @@ public class ToLinkedMapTest extends TestCase {
         source.put(3, 3);
         Map<Integer, Integer> result = Linq.asEnumerable(source).toLinkedMap(key -> key.getKey(), val -> val.getValue());
 
+        assertIsType(LinkedHashMap.class, result);
         assertNotSame(source, result);
         assertEquals(source, result);
     }

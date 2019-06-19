@@ -346,7 +346,11 @@ public class ToArrayTest extends TestCase {
     public void ToArray_Cast() {
         Object[] source = {Enum0.First, Enum0.Second, Enum0.Third};
         IEnumerable<Enum0> cast = Linq.asEnumerable(source).cast(Enum0.class);
+        assertIsType(CastIterator.class, cast);
         Array<Enum0> castArray = cast.toArray();
+        assertIsType(Array.class, castArray);
+        Enum0[] castArray2 = cast.toArray(Enum0.class);
+        assertIsType(Enum0[].class, castArray2);
         assertEquals(Linq.asEnumerable(Enum0.First, Enum0.Second, Enum0.Third), castArray);
     }
 

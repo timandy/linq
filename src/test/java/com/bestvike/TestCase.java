@@ -191,6 +191,14 @@ public class TestCase {
         fail("expectedType " + expectedType.getName() + ", but got " + (obj == null ? "null" : obj.getClass().getName()));
     }
 
+    public static void assertIsType(Class<?> expectedType, Object obj) {
+        if (expectedType == null)
+            fail("expectedType is null");
+        if (obj != null && expectedType == obj.getClass())
+            return;
+        fail("expectedType " + expectedType.getName() + ", but got " + (obj == null ? "null" : obj.getClass().getName()));
+    }
+
     protected static <T> void assertSubset(java.util.Set<T> expectedSuperset, java.util.Set<T> actual) {
         assertNotNull(expectedSuperset);
 
@@ -205,7 +213,7 @@ public class TestCase {
             fail("actual not containsAll expectedSubset");
     }
 
-    protected static <T> T assertThrowsAny(Class<T> clazz, Action0 action) {
+    protected static <T extends Throwable> T assertThrowsAny(Class<T> clazz, Action0 action) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (action == null)
@@ -222,7 +230,7 @@ public class TestCase {
         return null;
     }
 
-    protected static void assertThrows(Class<?> clazz, Action0 action) {
+    protected static Throwable assertThrows(Class<?> clazz, Action0 action) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (action == null)
@@ -232,13 +240,14 @@ public class TestCase {
             action.apply();
             fail("should throw " + clazz.toString());
         } catch (Throwable e) {
-            if (clazz.isInstance(e))
-                return;
+            if (e.getClass() == clazz)
+                return e;
             fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
         }
+        return null;
     }
 
-    protected static void assertThrows(Class<?> clazz, Func0<Object> func) {
+    protected static Throwable assertThrows(Class<?> clazz, Func0<Object> func) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (func == null)
@@ -247,11 +256,12 @@ public class TestCase {
         try {
             func.apply();
             fail("should throw " + clazz.toString());
-        } catch (Exception e) {
-            if (clazz.isInstance(e))
-                return;
+        } catch (Throwable e) {
+            if (e.getClass() == clazz)
+                return e;
             fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
         }
+        return null;
     }
 
     protected static void assertNull(Object obj) {

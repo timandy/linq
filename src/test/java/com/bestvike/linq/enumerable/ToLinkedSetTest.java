@@ -15,8 +15,7 @@ public class ToLinkedSetTest extends TestCase {
     @Test
     public void NoExplicitComparer() {
         Set<Integer> hs = Linq.range(0, 50).toLinkedSet();
-        assertNotNull(as(hs, LinkedHashSet.class));
-
+        assertIsType(LinkedHashSet.class, hs);
         assertEquals(50, hs.size());
     }
 
