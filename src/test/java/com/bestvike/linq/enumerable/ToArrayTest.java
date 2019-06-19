@@ -142,8 +142,7 @@ public class ToArrayTest extends TestCase {
     @Test
     public void ToArray_FailOnExtremelyLargeCollection() {
         IEnumerable<Byte> largeSeq = new FastInfiniteEnumerator<>();
-        Error thrownException = assertThrowsAny(Error.class, () -> largeSeq.toArray());
-        assertTrue(thrownException instanceof OutOfMemoryError);
+        assertThrows(OutOfMemoryError.class, () -> largeSeq.toArray());
     }
 
     @Test

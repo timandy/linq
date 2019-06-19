@@ -72,7 +72,7 @@ public class ZipTest extends TestCase {
 
         IEnumerable<Integer> zip = first.zip(second, func);
 
-        assertThrows(Exception.class, () -> zip.toList());
+        assertThrows(RuntimeException.class, () -> zip.toList());
     }
 
     @Test
@@ -88,7 +88,7 @@ public class ZipTest extends TestCase {
 
         IEnumerable<Integer> zip = first.zip(second, func);
 
-        assertThrows(Exception.class, () -> zip.toList());
+        assertThrows(RuntimeException.class, () -> zip.toList());
     }
 
     @Test
@@ -403,7 +403,7 @@ public class ZipTest extends TestCase {
 
         IEnumerable<Tuple2<Integer, Integer>> zip = first.zip(second);
 
-        assertThrows(Exception.class, () -> zip.toList());
+        assertThrows(RuntimeException.class, () -> zip.toList());
     }
 
     @Test
@@ -418,7 +418,7 @@ public class ZipTest extends TestCase {
 
         IEnumerable<Tuple2<Integer, Integer>> zip = first.zip(second);
 
-        assertThrows(Exception.class, () -> zip.toList());
+        assertThrows(RuntimeException.class, () -> zip.toList());
     }
 
     @Test

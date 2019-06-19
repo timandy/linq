@@ -183,7 +183,7 @@ public class TestCase {
         fail("enumerable is empty");
     }
 
-    protected static void assertIsAssignableFrom(Class<?> expectedType, Object obj) {
+    protected static <T> void assertIsAssignableFrom(Class<T> expectedType, Object obj) {
         if (expectedType == null)
             fail("expectedType is null");
         if (obj != null && expectedType.isAssignableFrom(obj.getClass()))
@@ -191,7 +191,7 @@ public class TestCase {
         fail("expectedType " + expectedType.getName() + ", but got " + (obj == null ? "null" : obj.getClass().getName()));
     }
 
-    public static void assertIsType(Class<?> expectedType, Object obj) {
+    protected static <T> void assertIsType(Class<T> expectedType, Object obj) {
         if (expectedType == null)
             fail("expectedType is null");
         if (obj != null && expectedType == obj.getClass())
@@ -213,24 +213,7 @@ public class TestCase {
             fail("actual not containsAll expectedSubset");
     }
 
-    protected static <T extends Throwable> T assertThrowsAny(Class<T> clazz, Action0 action) {
-        if (clazz == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
-        if (action == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
-
-        try {
-            action.apply();
-            fail("should throw " + clazz.toString());
-        } catch (Throwable e) {
-            if (clazz.isInstance(e))
-                return (T) e;
-            fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
-        }
-        return null;
-    }
-
-    protected static Throwable assertThrows(Class<?> clazz, Action0 action) {
+    protected static void assertThrows(Class<?> clazz, Action0 action) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (action == null)
@@ -241,13 +224,12 @@ public class TestCase {
             fail("should throw " + clazz.toString());
         } catch (Throwable e) {
             if (e.getClass() == clazz)
-                return e;
+                return;
             fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
         }
-        return null;
     }
 
-    protected static Throwable assertThrows(Class<?> clazz, Func0<Object> func) {
+    protected static void assertThrows(Class<?> clazz, Func0<Object> func) {
         if (clazz == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.clazz);
         if (func == null)
@@ -258,10 +240,9 @@ public class TestCase {
             fail("should throw " + clazz.toString());
         } catch (Throwable e) {
             if (e.getClass() == clazz)
-                return e;
+                return;
             fail("should throw " + clazz.toString() + ", but throw " + e.getClass());
         }
-        return null;
     }
 
     protected static void assertNull(Object obj) {
