@@ -17,6 +17,7 @@
 - Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
 - Add `StringComparer` for string equals, hashCode and compare actions.
 - Add `ValueType` as super class for value type.
+- Add debug view support.
 - Remove override runOnce() for IList.
 - Not copy data when cast primitive array to IEnumerable.
 - Not create array when cast singleton to IEnumerable.
