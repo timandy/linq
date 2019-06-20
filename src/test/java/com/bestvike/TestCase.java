@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
+import java.util.TimeZone;
 import java.util.function.Consumer;
 
 /**
@@ -63,6 +64,7 @@ public class TestCase {
 
     protected static Date newDate(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         calendar.setLenient(false);
         calendar.set(year, month - 1, day);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
