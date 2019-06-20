@@ -172,35 +172,59 @@ compile 'com.bestvike:linq:2.0.1'
 ```
 
 ## Demos
-- average
+
+- Join not empty elements.
 ```
-double avg = Linq.range(0, 10).skip(2).take(4).averageInt();
-System.out.println(avg);
+String result = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+        .where(x -> x != null && x.length() > 0)
+        .aggregate((x, y) -> x + ", " + y);
+
+System.out.println(result);
 ----
-3.5
+!@#$%^, C, AAA, Calling Twice, SoS
 ```
-- crossJoin
+
+- Determine all positive numbers is even or not.
 ```
-String[] users = {"Fred", "Bill"};
-String[] subjects = {"English", "Information"};
-String cross = Linq.asEnumerable(users)
-        .crossJoin(Linq.asEnumerable(subjects), (user, subject) -> String.format("%s's %s score is 0", user, subject))
-        .toList()
-        .toString();
-System.out.println(cross);
+boolean result = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        .where(x -> x > 0)
+        .all(x -> x % 2 == 0);
+
+System.out.println(result);
 ----
-[Fred's English score is 0, Fred's Information score is 0, Bill's English score is 0, Bill's Information score is 0]
+false
 ```
-- distinctBy
+
+- Determine any positive numbers is even or not.
 ```
-Tuple2[] tuples = {Tuple.create("1", "Fred"), Tuple.create("1", "Bill"), Tuple.create("2", "Eric")};
-Linq.asEnumerable(tuples)
-        .distinctBy(Tuple2::getItem1)
-        .forEach(System.out::println);
+boolean result = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        .where(x -> x > 0)
+        .any(x -> x % 2 == 0);
+
+System.out.println(result);
 ----
-(1, Fred)
-(2, Eric)
+true
 ```
+
+- Append one element after tail and prepend two elements before head.
+```
+String result = Linq.range(3, 2).append(5).prepend(2).prepend(1).format();
+
+System.out.println(result);
+----
+[1, 2, 3, 4, 5]
+```
+
+- Compute average of double sequence.
+```
+double result = Linq.asEnumerable(5, -10, 15, 40, 28).averageInt();
+
+System.out.println(result);
+----
+15.6
+```
+
+`More demos to be added.`
 
 ## *License*
 LINQ to Objects (Java) is released under the Apache License, Version 2.0.
