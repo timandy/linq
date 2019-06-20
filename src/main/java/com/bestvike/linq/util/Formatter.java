@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Created by 许崇雷 on 2019-06-20.
  */
+@SuppressWarnings("Duplicates")
 public final class Formatter {
     public static final Formatter DEFAULT = new Formatter();
     private static final String JDK_PREFIX = "java";

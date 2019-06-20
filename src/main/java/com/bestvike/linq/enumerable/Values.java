@@ -18,7 +18,6 @@ import java.util.TreeMap;
 /**
  * Created by 许崇雷 on 2018-05-29.
  */
-@SuppressWarnings("Duplicates")
 public final class Values {
     private static final int DECIMAL_SCALE = 6;
     private static final int DECIMAL_ROUNDING = BigDecimal.ROUND_HALF_EVEN;
