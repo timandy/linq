@@ -2,9 +2,11 @@ package com.bestvike.collections.generic;
 
 import com.bestvike.CultureInfo;
 import com.bestvike.TestCase;
+import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.Collator;
 import java.util.Locale;
 
 /**
@@ -14,7 +16,64 @@ public class StringComparerTest extends TestCase {
     @Before
     public void before() {
         CultureInfo.setCurrent(Locale.CHINA);
+        assertSame(Locale.CHINA, CultureInfo.getCurrent());
         assertEquals(Locale.ROOT, CultureInfo.getInvariant());
+    }
+
+    @Test
+    public void testCreate() {
+        StringComparer caseSensitiveLocalComparer = StringComparer.create(Collator.getInstance(Locale.ROOT), false);
+        assertTrue(caseSensitiveLocalComparer.equals(null, null));
+        assertFalse(caseSensitiveLocalComparer.equals(null, "a"));
+        assertFalse(caseSensitiveLocalComparer.equals("a", null));
+        assertFalse(caseSensitiveLocalComparer.equals("a", "A"));
+        assertEquals(0, caseSensitiveLocalComparer.hashCode(null));
+        assertNotEquals(caseSensitiveLocalComparer.hashCode("a"), caseSensitiveLocalComparer.hashCode("A"));
+        assertTrue(caseSensitiveLocalComparer.compare(null, null) == 0);
+        assertTrue(caseSensitiveLocalComparer.compare(null, "a") < 0);
+        assertTrue(caseSensitiveLocalComparer.compare("a", null) > 0);
+        assertTrue(caseSensitiveLocalComparer.compare("编辑", "测试") > 0);
+
+        assertThrows(ArgumentNullException.class, () -> StringComparer.create(null, false));
+        StringComparer ignoreCaseLocalComparer = StringComparer.create(Collator.getInstance(Locale.CHINA), true);
+        assertTrue(ignoreCaseLocalComparer.equals(null, null));
+        assertFalse(ignoreCaseLocalComparer.equals(null, "a"));
+        assertFalse(ignoreCaseLocalComparer.equals("a", null));
+        assertTrue(ignoreCaseLocalComparer.equals("a", "A"));
+        assertEquals(0, ignoreCaseLocalComparer.hashCode(null));
+        assertEquals(ignoreCaseLocalComparer.hashCode("a"), ignoreCaseLocalComparer.hashCode("A"));
+        assertTrue(ignoreCaseLocalComparer.compare(null, null) == 0);
+        assertTrue(ignoreCaseLocalComparer.compare(null, "a") < 0);
+        assertTrue(ignoreCaseLocalComparer.compare("a", null) > 0);
+        assertTrue(ignoreCaseLocalComparer.compare("编辑", "测试") < 0);
+
+    }
+
+    @Test
+    public void testOrdinal() {
+        StringComparer caseSensitiveLocalComparer = StringComparer.Ordinal;
+        assertTrue(caseSensitiveLocalComparer.equals(null, null));
+        assertFalse(caseSensitiveLocalComparer.equals(null, "a"));
+        assertFalse(caseSensitiveLocalComparer.equals("a", null));
+        assertFalse(caseSensitiveLocalComparer.equals("a", "A"));
+        assertEquals(0, caseSensitiveLocalComparer.hashCode(null));
+        assertNotEquals(caseSensitiveLocalComparer.hashCode("a"), caseSensitiveLocalComparer.hashCode("A"));
+        assertTrue(caseSensitiveLocalComparer.compare(null, null) == 0);
+        assertTrue(caseSensitiveLocalComparer.compare(null, "a") < 0);
+        assertTrue(caseSensitiveLocalComparer.compare("a", null) > 0);
+        assertTrue(caseSensitiveLocalComparer.compare("编辑", "测试") > 0);
+
+        StringComparer ignoreCaseLocalComparer = StringComparer.OrdinalIgnoreCase;
+        assertTrue(ignoreCaseLocalComparer.equals(null, null));
+        assertFalse(ignoreCaseLocalComparer.equals(null, "a"));
+        assertFalse(ignoreCaseLocalComparer.equals("a", null));
+        assertTrue(ignoreCaseLocalComparer.equals("a", "A"));
+        assertEquals(0, ignoreCaseLocalComparer.hashCode(null));
+        assertEquals(ignoreCaseLocalComparer.hashCode("a"), ignoreCaseLocalComparer.hashCode("A"));
+        assertTrue(ignoreCaseLocalComparer.compare(null, null) == 0);
+        assertTrue(ignoreCaseLocalComparer.compare(null, "a") < 0);
+        assertTrue(ignoreCaseLocalComparer.compare("a", null) > 0);
+        assertTrue(ignoreCaseLocalComparer.compare("编辑", "测试") > 0);
     }
 
     @Test
