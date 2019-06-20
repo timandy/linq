@@ -185,9 +185,7 @@ public class IntersectTest extends TestCase {
             }
         };
 
-        Employee[] emps2 = {
-                new Employee(150, "Theodore", 10)
-        };
+        Employee[] emps2 = {new Employee(150, "Theodore", 10)};
         assertEquals(1, Linq.asEnumerable(emps)
                 .intersect(Linq.asEnumerable(emps2), comparer)
                 .count());

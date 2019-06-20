@@ -46,9 +46,7 @@ public class SelectTest extends TestCase {
 
     @Test
     public void SingleElement() {
-        CustInfo[] source = new CustInfo[]{
-                new CustInfo("Prakash", 98088)
-        };
+        CustInfo[] source = new CustInfo[]{new CustInfo("Prakash", 98088)};
         String[] expected = {"Prakash"};
 
         assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select(e -> e.name));

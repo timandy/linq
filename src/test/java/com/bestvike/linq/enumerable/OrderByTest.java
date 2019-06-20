@@ -316,11 +316,9 @@ public class OrderByTest extends TestCase {
         // that ThenBy() to be processed within Linq-to-objects, as otherwise there is no
         // equivalent ThenBy() overload to translate the call to.
 
-        IOrderedEnumerable<String> ordered =
-                Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length());
+        IOrderedEnumerable<String> ordered = Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length());
         ordered = ordered.thenBy(i -> i);
-        Array<String> expected =
-                Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length()).thenBy(i -> i).toArray();
+        Array<String> expected = Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length()).thenBy(i -> i).toArray();
         assertEquals(Linq.asEnumerable(expected), ordered);
     }
 

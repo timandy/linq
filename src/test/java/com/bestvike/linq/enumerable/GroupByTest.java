@@ -837,11 +837,10 @@ public class GroupByTest extends TestCase {
 
     @Test
     public void testGroupByWithKeySelectorAndElementSelectorAndResultSelector() {
-        String s =
-                Linq.asEnumerable(emps)
-                        .groupBy(emp -> emp.deptno, emp -> emp.name, (key, group) -> String.format("%s: %s", key, join(group)))
-                        .toList()
-                        .toString();
+        String s = Linq.asEnumerable(emps)
+                .groupBy(emp -> emp.deptno, emp -> emp.name, (key, group) -> String.format("%s: %s", key, join(group)))
+                .toList()
+                .toString();
         assertEquals("[10: Fred+Eric+Janet, 30: Bill]", s);
     }
 

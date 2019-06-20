@@ -188,9 +188,7 @@ public class ExceptTest extends TestCase {
             }
         };
 
-        Employee[] emps2 = {
-                new Employee(150, "Theodore", 10),
-        };
+        Employee[] emps2 = {new Employee(150, "Theodore", 10)};
         assertEquals(1, Linq.asEnumerable(emps)
                 .except(Linq.asEnumerable(emps2), comparer)
                 .count());

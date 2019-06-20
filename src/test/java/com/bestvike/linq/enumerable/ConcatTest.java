@@ -280,11 +280,9 @@ public class ConcatTest extends TestCase {
 
     @Test
     public void CountOfConcatIteratorShouldThrowExceptionOnIntegerOverflow() {
-        DelegateBasedCollection<Integer> supposedlyLargeCollection = new DelegateBasedCollection<Integer>() {
-            {
-                this.CountWorker = () -> Integer.MAX_VALUE;
-            }
-        };
+        DelegateBasedCollection<Integer> supposedlyLargeCollection = new DelegateBasedCollection<Integer>() {{
+            this.CountWorker = () -> Integer.MAX_VALUE;
+        }};
         DelegateBasedCollection<Integer> tinyCollection = new DelegateBasedCollection<Integer>() {{
             this.CountWorker = () -> 1;
         }};
