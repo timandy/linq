@@ -1,12 +1,15 @@
 package com.bestvike.linq.util;
 
+import com.bestvike.collections.generic.Comparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ThrowHelper;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by 许崇雷 on 2019-06-20.
@@ -17,6 +20,9 @@ public final class Formatter {
     private static final String JDK_PREFIX = "java";
     private String nullString = "null";
     private String stringQuotes = "'";
+    private boolean decimalWithScale = true;
+    private int decimalScale = 6;
+    private int decimalRounding = BigDecimal.ROUND_HALF_EVEN;
     private boolean objectWithType = true;
     private String objectPrefix = "{";
     private String objectSuffix = "}";
@@ -51,6 +57,30 @@ public final class Formatter {
 
     public void setStringQuotes(String stringQuotes) {
         this.stringQuotes = stringQuotes;
+    }
+
+    public boolean isDecimalWithScale() {
+        return this.decimalWithScale;
+    }
+
+    public void setDecimalWithScale(boolean decimalWithScale) {
+        this.decimalWithScale = decimalWithScale;
+    }
+
+    public int getDecimalScale() {
+        return this.decimalScale;
+    }
+
+    public void setDecimalScale(int decimalScale) {
+        this.decimalScale = decimalScale;
+    }
+
+    public int getDecimalRounding() {
+        return this.decimalRounding;
+    }
+
+    public void setDecimalRounding(int decimalRounding) {
+        this.decimalRounding = decimalRounding;
     }
 
     public boolean isObjectWithType() {
@@ -204,6 +234,10 @@ public final class Formatter {
         }
         if (obj instanceof String) {
             sb.append(this.stringQuotes).append(obj).append(this.stringQuotes);
+            return;
+        }
+        if (obj instanceof BigDecimal) {
+            sb.append(this.decimalWithScale ? ((BigDecimal) obj).setScale(this.decimalScale, this.decimalRounding) : (BigDecimal) obj);
             return;
         }
         if (obj instanceof boolean[]) {
@@ -444,7 +478,9 @@ public final class Formatter {
             sb.append(this.mapEmpty);
             return;
         }
-        Iterator<Map.Entry<K, V>> it = obj.entrySet().iterator();
+        TreeMap<K, V> treeMap = new TreeMap<>(Comparer.Default());
+        treeMap.putAll(obj);
+        Iterator<Map.Entry<K, V>> it = treeMap.entrySet().iterator();
         sb.append(this.mapPrefix);
         Map.Entry<K, V> entry = it.next();
         this.format(entry.getKey(), sb);
