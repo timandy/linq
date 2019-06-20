@@ -20,6 +20,7 @@ import com.bestvike.linq.enumerable.Except;
 import com.bestvike.linq.enumerable.ExceptBy;
 import com.bestvike.linq.enumerable.FindIndex;
 import com.bestvike.linq.enumerable.First;
+import com.bestvike.linq.enumerable.Format;
 import com.bestvike.linq.enumerable.GroupBy;
 import com.bestvike.linq.enumerable.GroupJoin;
 import com.bestvike.linq.enumerable.IndexOf;
@@ -52,6 +53,7 @@ import com.bestvike.linq.enumerable.Zip;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
+import com.bestvike.linq.util.Formatter;
 import com.bestvike.tuple.Tuple2;
 
 import java.math.BigDecimal;
@@ -311,6 +313,14 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default TSource firstOrDefault(Func1<TSource, Boolean> predicate) {
         return First.firstOrDefault(this, predicate);
+    }
+
+    default String format() {
+        return Format.format(this);
+    }
+
+    default String format(Formatter formatter) {
+        return Format.format(this, formatter);
     }
 
     default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
