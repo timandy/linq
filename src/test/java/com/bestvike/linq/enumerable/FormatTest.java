@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by 许崇雷 on 2019-06-20.
@@ -22,6 +23,7 @@ public class FormatTest extends TestCase {
 
     @Before
     public void init() {
+        TimeZone.setDefault(TIME_ZONE);
         this.formatter = new Formatter();
         this.formatter.setNullString("NULL");
         this.formatter.setStringQuotes("\"");

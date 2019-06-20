@@ -44,6 +44,7 @@ import java.util.function.Consumer;
 public class TestCase {
     protected static final BigDecimal MAX_DECIMAL = new BigDecimal("999999999999999999999999999999");
     protected static final BigDecimal MIN_DECIMAL = new BigDecimal("-999999999999999999999999999999");
+    protected static final TimeZone TIME_ZONE = TimeZone.getTimeZone("Asia/Shanghai");
     protected static final Date MAX_DATE = newDate(9999, 12, 31);
     protected static final Date MIN_DATE = newDate(1, 1, 1);
     protected static final String Empty = "";
@@ -64,8 +65,8 @@ public class TestCase {
 
     protected static Date newDate(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         calendar.setLenient(false);
+        calendar.setTimeZone(TIME_ZONE);
         calendar.set(year, month - 1, day);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
