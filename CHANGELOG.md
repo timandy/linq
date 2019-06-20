@@ -13,6 +13,7 @@
 - Add api `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
 - Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
 - Add api `findIndex`, `findLastIndex` for `IEnumerable`.
+- Add api `format` for `IEnumerable` to print values.
 - Add `IArray` interface to determine `IList` contains an array or not.
 - Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
 - Add `StringComparer` for string equals, hashCode and compare actions.
