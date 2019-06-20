@@ -74,6 +74,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - `findLastIndex`
 - first
 - firstOrDefault
+- `format`
 - `fullJoin`
 - groupBy
 - groupJoin
