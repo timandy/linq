@@ -9,7 +9,7 @@ import com.bestvike.linq.exception.ThrowHelper;
 /**
  * Created by 许崇雷 on 2019-06-17.
  */
-public class FindIndex {
+public final class FindIndex {
     private FindIndex() {
     }
 
