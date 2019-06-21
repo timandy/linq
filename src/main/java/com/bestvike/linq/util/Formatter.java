@@ -7,6 +7,7 @@ import com.bestvike.linq.exception.ThrowHelper;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -22,24 +23,24 @@ public final class Formatter {
     private String stringQuotes = "'";
     private boolean decimalWithScale = true;
     private int decimalScale = 6;
-    private int decimalRounding = BigDecimal.ROUND_HALF_EVEN;
-    private boolean objectWithType = true;
-    private String objectPrefix = "{";
-    private String objectSuffix = "}";
-    private String objectEmpty = "{}";
-    private String objectFieldSeparator = ", ";
-    private String objectFieldValueSeparator = "=";
-    private boolean arrayWithType = false;
+    private RoundingMode decimalRounding = RoundingMode.HALF_EVEN;
+    private FormatTypeStyle arrayTypeStyle = FormatTypeStyle.None;
     private String arrayPrefix = "[";
     private String arraySuffix = "]";
     private String arrayEmpty = "[]";
     private String arrayValueSeparator = ", ";
-    private boolean mapWithType = true;
+    private FormatTypeStyle mapTypeStyle = FormatTypeStyle.SimpleName;
     private String mapPrefix = "{";
     private String mapSuffix = "}";
     private String mapEmpty = "{}";
     private String mapEntrySeparator = ", ";
     private String mapKeyValueSeparator = "=";
+    private FormatTypeStyle objectTypeStyle = FormatTypeStyle.SimpleName;
+    private String objectPrefix = "{";
+    private String objectSuffix = "}";
+    private String objectEmpty = "{}";
+    private String objectFieldSeparator = ", ";
+    private String objectFieldValueSeparator = "=";
 
     //region properties
 
@@ -75,68 +76,20 @@ public final class Formatter {
         this.decimalScale = decimalScale;
     }
 
-    public int getDecimalRounding() {
+    public RoundingMode getDecimalRounding() {
         return this.decimalRounding;
     }
 
-    public void setDecimalRounding(int decimalRounding) {
+    public void setDecimalRounding(RoundingMode decimalRounding) {
         this.decimalRounding = decimalRounding;
     }
 
-    public boolean isObjectWithType() {
-        return this.objectWithType;
+    public FormatTypeStyle getArrayTypeStyle() {
+        return this.arrayTypeStyle;
     }
 
-    public void setObjectWithType(boolean objectWithType) {
-        this.objectWithType = objectWithType;
-    }
-
-    public String getObjectPrefix() {
-        return this.objectPrefix;
-    }
-
-    public void setObjectPrefix(String objectPrefix) {
-        this.objectPrefix = objectPrefix;
-    }
-
-    public String getObjectSuffix() {
-        return this.objectSuffix;
-    }
-
-    public void setObjectSuffix(String objectSuffix) {
-        this.objectSuffix = objectSuffix;
-    }
-
-    public String getObjectEmpty() {
-        return this.objectEmpty;
-    }
-
-    public void setObjectEmpty(String objectEmpty) {
-        this.objectEmpty = objectEmpty;
-    }
-
-    public String getObjectFieldSeparator() {
-        return this.objectFieldSeparator;
-    }
-
-    public void setObjectFieldSeparator(String objectFieldSeparator) {
-        this.objectFieldSeparator = objectFieldSeparator;
-    }
-
-    public String getObjectFieldValueSeparator() {
-        return this.objectFieldValueSeparator;
-    }
-
-    public void setObjectFieldValueSeparator(String objectFieldValueSeparator) {
-        this.objectFieldValueSeparator = objectFieldValueSeparator;
-    }
-
-    public boolean isArrayWithType() {
-        return this.arrayWithType;
-    }
-
-    public void setArrayWithType(boolean arrayWithType) {
-        this.arrayWithType = arrayWithType;
+    public void setArrayTypeStyle(FormatTypeStyle arrayTypeStyle) {
+        this.arrayTypeStyle = arrayTypeStyle;
     }
 
     public String getArrayPrefix() {
@@ -171,12 +124,12 @@ public final class Formatter {
         this.arrayValueSeparator = arrayValueSeparator;
     }
 
-    public boolean isMapWithType() {
-        return this.mapWithType;
+    public FormatTypeStyle getMapTypeStyle() {
+        return this.mapTypeStyle;
     }
 
-    public void setMapWithType(boolean mapWithType) {
-        this.mapWithType = mapWithType;
+    public void setMapTypeStyle(FormatTypeStyle mapTypeStyle) {
+        this.mapTypeStyle = mapTypeStyle;
     }
 
     public String getMapPrefix() {
@@ -217,6 +170,54 @@ public final class Formatter {
 
     public void setMapKeyValueSeparator(String mapKeyValueSeparator) {
         this.mapKeyValueSeparator = mapKeyValueSeparator;
+    }
+
+    public FormatTypeStyle getObjectTypeStyle() {
+        return this.objectTypeStyle;
+    }
+
+    public void setObjectTypeStyle(FormatTypeStyle objectTypeStyle) {
+        this.objectTypeStyle = objectTypeStyle;
+    }
+
+    public String getObjectPrefix() {
+        return this.objectPrefix;
+    }
+
+    public void setObjectPrefix(String objectPrefix) {
+        this.objectPrefix = objectPrefix;
+    }
+
+    public String getObjectSuffix() {
+        return this.objectSuffix;
+    }
+
+    public void setObjectSuffix(String objectSuffix) {
+        this.objectSuffix = objectSuffix;
+    }
+
+    public String getObjectEmpty() {
+        return this.objectEmpty;
+    }
+
+    public void setObjectEmpty(String objectEmpty) {
+        this.objectEmpty = objectEmpty;
+    }
+
+    public String getObjectFieldSeparator() {
+        return this.objectFieldSeparator;
+    }
+
+    public void setObjectFieldSeparator(String objectFieldSeparator) {
+        this.objectFieldSeparator = objectFieldSeparator;
+    }
+
+    public String getObjectFieldValueSeparator() {
+        return this.objectFieldValueSeparator;
+    }
+
+    public void setObjectFieldValueSeparator(String objectFieldValueSeparator) {
+        this.objectFieldValueSeparator = objectFieldValueSeparator;
     }
 
     //endregion
@@ -293,8 +294,8 @@ public final class Formatter {
             sb.append(obj);
             return;
         }
-        if (this.objectWithType)
-            sb.append(clazz.getSimpleName());
+        if (this.objectTypeStyle != null)
+            this.objectTypeStyle.appendType(clazz, sb);
         Field[] fields = ReflectionUtils.getFields(clazz);
         if (fields.length <= 0) {
             sb.append(this.objectEmpty);
@@ -317,8 +318,8 @@ public final class Formatter {
     }
 
     private void format(boolean[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -330,8 +331,8 @@ public final class Formatter {
     }
 
     private void format(byte[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -343,8 +344,8 @@ public final class Formatter {
     }
 
     private void format(short[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -356,8 +357,8 @@ public final class Formatter {
     }
 
     private void format(int[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -369,8 +370,8 @@ public final class Formatter {
     }
 
     private void format(long[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -382,8 +383,8 @@ public final class Formatter {
     }
 
     private void format(char[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -395,8 +396,8 @@ public final class Formatter {
     }
 
     private void format(float[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -408,8 +409,8 @@ public final class Formatter {
     }
 
     private void format(double[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -421,8 +422,8 @@ public final class Formatter {
     }
 
     private <T> void format(T[] obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         if (obj.length <= 0) {
             sb.append(this.arrayEmpty);
             return;
@@ -437,8 +438,8 @@ public final class Formatter {
     }
 
     private <T> void format(IEnumerable<T> obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         try (IEnumerator<T> it = obj.enumerator()) {
             if (!it.moveNext()) {
                 sb.append(this.arrayEmpty);
@@ -455,8 +456,8 @@ public final class Formatter {
     }
 
     private <T> void format(Iterable<T> obj, StringBuilder sb) {
-        if (this.arrayWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.arrayTypeStyle != null)
+            this.arrayTypeStyle.appendType(obj.getClass(), sb);
         Iterator<T> it = obj.iterator();
         if (!it.hasNext()) {
             sb.append(this.arrayEmpty);
@@ -472,8 +473,8 @@ public final class Formatter {
     }
 
     private <K, V> void format(Map<K, V> obj, StringBuilder sb) {
-        if (this.mapWithType)
-            sb.append(obj.getClass().getSimpleName());
+        if (this.mapTypeStyle != null)
+            this.mapTypeStyle.appendType(obj.getClass(), sb);
         if (obj.isEmpty()) {
             sb.append(this.mapEmpty);
             return;
