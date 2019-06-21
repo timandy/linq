@@ -18,12 +18,12 @@ import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.enumerable.AbstractEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.AssertEqualityComparer;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple3;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -781,7 +781,7 @@ public class TestCase {
 
         @Override
         public void reset() {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         @Override
@@ -929,16 +929,16 @@ public class TestCase {
         public DelegateIterator(Func0<IEnumerator<TSource>> enumerator, Func0<Boolean> moveNext, Func0<TSource> current, Action0 reset, Action0 dispose) {
             this.enumerator = enumerator == null ? () -> this : enumerator;
             this.moveNext = moveNext == null ? () -> {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             } : moveNext;
             this.current = moveNext == null ? () -> {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             } : current;
             this.reset = moveNext == null ? () -> {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             } : reset;
             this.dispose = moveNext == null ? () -> {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             } : dispose;
         }
 
