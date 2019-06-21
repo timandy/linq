@@ -10,6 +10,7 @@ import com.bestvike.linq.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.TreeMap;
  */
 public final class Values {
     private static final int DECIMAL_SCALE = 6;
-    private static final int DECIMAL_ROUNDING = BigDecimal.ROUND_HALF_EVEN;
+    private static final RoundingMode DECIMAL_ROUNDING = RoundingMode.HALF_EVEN;
     private static final int HASH_PRIME = 31;
     private static final int HASH_NULL = 0;
     private static final int HASH_EMPTY = 1;
