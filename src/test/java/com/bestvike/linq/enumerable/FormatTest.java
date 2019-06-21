@@ -5,11 +5,13 @@ import com.bestvike.ValueType;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.FormatTypeStyle;
 import com.bestvike.linq.util.Formatter;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,23 +30,25 @@ public class FormatTest extends TestCase {
         this.formatter.setNullString("NULL");
         this.formatter.setStringQuotes("\"");
         this.formatter.setDecimalWithScale(false);
-        this.formatter.setObjectWithType(false);
-        this.formatter.setObjectPrefix("( ");
-        this.formatter.setObjectSuffix(" )");
-        this.formatter.setObjectEmpty("( )");
-        this.formatter.setObjectFieldSeparator(",");
-        this.formatter.setObjectFieldValueSeparator(":");
-        this.formatter.setArrayWithType(true);
+        this.formatter.setDecimalScale(0);
+        this.formatter.setDecimalRounding(RoundingMode.CEILING);
+        this.formatter.setArrayTypeStyle(FormatTypeStyle.SimpleName);
         this.formatter.setArrayPrefix("[ ");
         this.formatter.setArraySuffix(" ]");
         this.formatter.setArrayEmpty("[ ]");
         this.formatter.setArrayValueSeparator(",");
-        this.formatter.setMapWithType(false);
+        this.formatter.setMapTypeStyle(null);
         this.formatter.setMapPrefix("( ");
         this.formatter.setMapSuffix(" )");
         this.formatter.setMapEmpty("( )");
         this.formatter.setMapEntrySeparator(",");
         this.formatter.setMapKeyValueSeparator(":");
+        this.formatter.setObjectTypeStyle(FormatTypeStyle.FullName);
+        this.formatter.setObjectPrefix("( ");
+        this.formatter.setObjectSuffix(" )");
+        this.formatter.setObjectEmpty("( )");
+        this.formatter.setObjectFieldSeparator(",");
+        this.formatter.setObjectFieldValueSeparator(":");
     }
 
     @Test
