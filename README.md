@@ -195,7 +195,7 @@ System.out.println(result);
 false
 ```
 
-- Determine any positive numbers is even or not.
+- Determine any positive number is even or not.
 ```
 boolean result = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
         .where(x -> x > 0)
