@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,23 +41,25 @@ public class FormatterTest extends TestCase {
         this.formatter.setNullString("NULL");
         this.formatter.setStringQuotes("\"");
         this.formatter.setDecimalWithScale(false);
-        this.formatter.setObjectWithType(false);
-        this.formatter.setObjectPrefix("( ");
-        this.formatter.setObjectSuffix(" )");
-        this.formatter.setObjectEmpty("( )");
-        this.formatter.setObjectFieldSeparator(",");
-        this.formatter.setObjectFieldValueSeparator(":");
-        this.formatter.setArrayWithType(true);
+        this.formatter.setDecimalScale(0);
+        this.formatter.setDecimalRounding(RoundingMode.CEILING);
+        this.formatter.setArrayTypeStyle(FormatTypeStyle.SimpleName);
         this.formatter.setArrayPrefix("[ ");
         this.formatter.setArraySuffix(" ]");
         this.formatter.setArrayEmpty("[ ]");
         this.formatter.setArrayValueSeparator(",");
-        this.formatter.setMapWithType(false);
+        this.formatter.setMapTypeStyle(null);
         this.formatter.setMapPrefix("( ");
         this.formatter.setMapSuffix(" )");
         this.formatter.setMapEmpty("( )");
         this.formatter.setMapEntrySeparator(",");
         this.formatter.setMapKeyValueSeparator(":");
+        this.formatter.setObjectTypeStyle(FormatTypeStyle.FullName);
+        this.formatter.setObjectPrefix("( ");
+        this.formatter.setObjectSuffix(" )");
+        this.formatter.setObjectEmpty("( )");
+        this.formatter.setObjectFieldSeparator(",");
+        this.formatter.setObjectFieldValueSeparator(":");
         //
         this.noFieldBean = new NoFieldBean();
         this.noFieldBeanExpected = new NoFieldBean();
@@ -159,6 +162,32 @@ public class FormatterTest extends TestCase {
     }
 
     @Test
+    public void AssertGetters() {
+        assertEquals("NULL", this.formatter.getNullString());
+        assertEquals("\"", this.formatter.getStringQuotes());
+        assertEquals(false, this.formatter.isDecimalWithScale());
+        assertEquals(0, this.formatter.getDecimalScale());
+        assertEquals(RoundingMode.CEILING, this.formatter.getDecimalRounding());
+        assertEquals(FormatTypeStyle.SimpleName, this.formatter.getArrayTypeStyle());
+        assertEquals("[ ", this.formatter.getArrayPrefix());
+        assertEquals(" ]", this.formatter.getArraySuffix());
+        assertEquals("[ ]", this.formatter.getArrayEmpty());
+        assertEquals(",", this.formatter.getArrayValueSeparator());
+        assertEquals(null, this.formatter.getMapTypeStyle());
+        assertEquals("( ", this.formatter.getMapPrefix());
+        assertEquals(" )", this.formatter.getMapSuffix());
+        assertEquals("( )", this.formatter.getMapEmpty());
+        assertEquals(",", this.formatter.getMapEntrySeparator());
+        assertEquals(":", this.formatter.getMapKeyValueSeparator());
+        assertEquals(FormatTypeStyle.FullName, this.formatter.getObjectTypeStyle());
+        assertEquals("( ", this.formatter.getObjectPrefix());
+        assertEquals(" )", this.formatter.getObjectSuffix());
+        assertEquals("( )", this.formatter.getObjectEmpty());
+        assertEquals(",", this.formatter.getObjectFieldSeparator());
+        assertEquals(":", this.formatter.getObjectFieldValueSeparator());
+    }
+
+    @Test
     public void DefaultToString() {
         assertEquals("null", Formatter.DEFAULT.format(null));
 
@@ -224,20 +253,20 @@ public class FormatterTest extends TestCase {
         assertEquals("NULL", this.formatter.format(null));
 
         assertEquals(this.formatter.format(this.noFieldBeanExpected), this.formatter.format(this.noFieldBean));
-        assertEquals("( )", this.formatter.format(this.noFieldBean));
+        assertEquals("com.bestvike.linq.util.FormatterTest$NoFieldBean( )", this.formatter.format(this.noFieldBean));
 
         assertEquals(this.formatter.format(this.oneFieldBeanExpected), this.formatter.format(this.oneFieldBean));
-        assertEquals("( Name:\"Robert\" )", this.formatter.format(this.oneFieldBean));
+        assertEquals("com.bestvike.linq.util.FormatterTest$OneFieldBean( Name:\"Robert\" )", this.formatter.format(this.oneFieldBean));
 
         assertEquals(this.formatter.format(this.twoFieldBeanExpected), this.formatter.format(this.twoFieldBean));
-        assertEquals("( Name:\"Robert\",Score:45 )", this.formatter.format(this.twoFieldBean));
+        assertEquals("com.bestvike.linq.util.FormatterTest$TwoFieldBean( Name:\"Robert\",Score:45 )", this.formatter.format(this.twoFieldBean));
 
         assertEquals(this.formatter.format(this.nullMoreFieldBeanExpected), this.formatter.format(this.nullMoreFieldBean));
-        assertEquals("( nullField:NULL,decimal:NULL,boolArr:NULL,byteArr:NULL,shortArr:NULL,intArr:NULL,longArr:NULL,charArr:NULL,floatArr:NULL,doubleArr:NULL,objArr:NULL,objArr2:NULL,iCollection:NULL,listProvider:NULL,enumerable:NULL,collection:NULL,iterable:NULL,map:NULL,bean:NULL )", this.formatter.format(this.nullMoreFieldBean));
+        assertEquals("com.bestvike.linq.util.FormatterTest$MoreFieldBean( nullField:NULL,decimal:NULL,boolArr:NULL,byteArr:NULL,shortArr:NULL,intArr:NULL,longArr:NULL,charArr:NULL,floatArr:NULL,doubleArr:NULL,objArr:NULL,objArr2:NULL,iCollection:NULL,listProvider:NULL,enumerable:NULL,collection:NULL,iterable:NULL,map:NULL,bean:NULL )", this.formatter.format(this.nullMoreFieldBean));
         assertNotEquals(this.formatter.format(this.emptyMoreFieldBeanExpected), this.formatter.format(this.emptyMoreFieldBean));
-        assertEquals("( nullField:NULL,decimal:0,boolArr:boolean[][ ],byteArr:byte[][ ],shortArr:short[][ ],intArr:int[][ ],longArr:long[][ ],charArr:char[][ ],floatArr:float[][ ],doubleArr:double[][ ],objArr:Object[][ ],objArr2:BigDecimal[][ ],iCollection:GenericArrayEnumerable[ ],listProvider:EmptyPartition[ ],enumerable:EmptyPartition[ ],collection:EmptyList[ ],iterable:ArrayIterable[ ],map:( ),bean:( Name:\"Tim\",Score:1239 ) )", this.formatter.format(this.emptyMoreFieldBean));
+        assertEquals("com.bestvike.linq.util.FormatterTest$MoreFieldBean( nullField:NULL,decimal:0,boolArr:boolean[][ ],byteArr:byte[][ ],shortArr:short[][ ],intArr:int[][ ],longArr:long[][ ],charArr:char[][ ],floatArr:float[][ ],doubleArr:double[][ ],objArr:Object[][ ],objArr2:BigDecimal[][ ],iCollection:GenericArrayEnumerable[ ],listProvider:EmptyPartition[ ],enumerable:EmptyPartition[ ],collection:EmptyList[ ],iterable:ArrayIterable[ ],map:( ),bean:com.bestvike.linq.util.FormatterTest$TwoFieldBean( Name:\"Tim\",Score:1239 ) )", this.formatter.format(this.emptyMoreFieldBean));
         assertNotEquals(this.formatter.format(this.moreFieldBeanExpected), this.formatter.format(this.moreFieldBean));
-        assertEquals("( nullField:NULL,decimal:123.456,boolArr:boolean[][ true,false,true ],byteArr:byte[][ -128,2,126,127 ],shortArr:short[][ -32768,2,3,32767 ],intArr:int[][ -2147483648,2,3,2147483647 ],longArr:long[][ -9223372036854775808,2,3,9223372036854775807 ],charArr:char[][ \u0000,#,!,$,a ],floatArr:float[][ -Infinity,Infinity,1.4E-45,3.4028235E38 ],doubleArr:double[][ -Infinity,Infinity,4.9E-324,1.7976931348623157E308 ],objArr:Object[][ NULL,\"!@#$%^&*()_+\",123.456,9999999.099999999,( ) ],objArr2:BigDecimal[][ NULL,355.99 ],iCollection:GenericArrayEnumerable[ NULL,\"\",\"\",\"你好世界\" ],listProvider:SelectArrayIterator[ \"null_suffix\",\"_suffix\",\"_suffix\",\"你好世界_suffix\" ],enumerable:WhereArrayIterator[ \"\",\"\",\"你好世界\" ],collection:ArrayList[ NULL,\"\",\"\",\"你好世界\" ],iterable:ArrayIterable[ NULL,\"\",\"\",\"你好世界\" ],map:( NULL:\"hello\",\"\":( Name:\"世界\" ),\"a\":1,\"key\":123.0 ),bean:( Name:\"Tim\",Score:1239 ) )", this.formatter.format(this.moreFieldBean));
+        assertEquals("com.bestvike.linq.util.FormatterTest$MoreFieldBean( nullField:NULL,decimal:123.456,boolArr:boolean[][ true,false,true ],byteArr:byte[][ -128,2,126,127 ],shortArr:short[][ -32768,2,3,32767 ],intArr:int[][ -2147483648,2,3,2147483647 ],longArr:long[][ -9223372036854775808,2,3,9223372036854775807 ],charArr:char[][ \u0000,#,!,$,a ],floatArr:float[][ -Infinity,Infinity,1.4E-45,3.4028235E38 ],doubleArr:double[][ -Infinity,Infinity,4.9E-324,1.7976931348623157E308 ],objArr:Object[][ NULL,\"!@#$%^&*()_+\",123.456,9999999.099999999,com.bestvike.linq.util.FormatterTest$NoFieldBean( ) ],objArr2:BigDecimal[][ NULL,355.99 ],iCollection:GenericArrayEnumerable[ NULL,\"\",\"\",\"你好世界\" ],listProvider:SelectArrayIterator[ \"null_suffix\",\"_suffix\",\"_suffix\",\"你好世界_suffix\" ],enumerable:WhereArrayIterator[ \"\",\"\",\"你好世界\" ],collection:ArrayList[ NULL,\"\",\"\",\"你好世界\" ],iterable:ArrayIterable[ NULL,\"\",\"\",\"你好世界\" ],map:( NULL:\"hello\",\"\":com.bestvike.linq.util.FormatterTest$OneFieldBean( Name:\"世界\" ),\"a\":1,\"key\":123.0 ),bean:com.bestvike.linq.util.FormatterTest$TwoFieldBean( Name:\"Tim\",Score:1239 ) )", this.formatter.format(this.moreFieldBean));
     }
 
     @Test
@@ -277,7 +306,7 @@ public class FormatterTest extends TestCase {
 
         assertEquals("\"abc\"", this.formatter.format("abc"));
 
-        assertEquals("( )", this.formatter.format(this.noFieldBean));
+        assertEquals("com.bestvike.linq.util.FormatterTest$NoFieldBean( )", this.formatter.format(this.noFieldBean));
     }
 
 
