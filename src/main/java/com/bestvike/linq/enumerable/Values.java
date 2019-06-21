@@ -20,13 +20,13 @@ import java.util.TreeMap;
  * Created by 许崇雷 on 2018-05-29.
  */
 public final class Values {
-    private static final int DECIMAL_SCALE = 6;
-    private static final RoundingMode DECIMAL_ROUNDING = RoundingMode.HALF_EVEN;
     private static final int HASH_PRIME = 31;
     private static final int HASH_NULL = 0;
     private static final int HASH_EMPTY = 1;
     private static final int HASH_TRUE = 1231;
     private static final int HASH_FALSE = 1237;
+    private static final int DECIMAL_SCALE = 6;
+    private static final RoundingMode DECIMAL_ROUNDING = RoundingMode.HALF_EVEN;
     private static final String JDK_PREFIX = "java";
 
     private Values() {
