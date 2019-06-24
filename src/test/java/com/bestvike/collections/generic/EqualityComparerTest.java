@@ -1,6 +1,7 @@
 package com.bestvike.collections.generic;
 
 import com.bestvike.TestCase;
+import com.bestvike.function.Predicate2;
 import org.junit.Test;
 
 /**
@@ -9,7 +10,10 @@ import org.junit.Test;
 public class EqualityComparerTest extends TestCase {
     @Test
     public void testDefault() {
-        assertEquals(EqualityComparer.Default(), EqualityComparer.Default());
+        assertSame(EqualityComparer.Default(), EqualityComparer.Default());
+        Predicate2<String, String> predicate = EqualityComparer.<String>Default()::equals;
+        assertTrue(predicate.apply("hello", "hello"));
+        assertFalse(predicate.apply("hello", "world"));
     }
 
     @Test
