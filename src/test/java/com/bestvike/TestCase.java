@@ -8,6 +8,8 @@ import com.bestvike.function.Action1;
 import com.bestvike.function.Action2;
 import com.bestvike.function.Func0;
 import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate0;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -846,11 +848,11 @@ public class TestCase {
 
     public static class DelegateBasedCollection<T> implements ICollection<T> {
         protected Func0<Integer> CountWorker;
-        protected Func0<Boolean> IsReadOnlyWorker;
+        protected Predicate0 IsReadOnlyWorker;
         protected Action1<T> AddWorker;
         protected Action0 ClearWorker;
-        protected Func1<T, Boolean> ContainsWorker;
-        protected Func1<T, Boolean> RemoveWorker;
+        protected Predicate1<T> ContainsWorker;
+        protected Predicate1<T> RemoveWorker;
         protected Action2<Object[], Integer> CopyToWorker;
         protected Func0<IEnumerator<T>> GetEnumeratorWorker;
 
@@ -915,18 +917,18 @@ public class TestCase {
 
     public static class DelegateIterator<TSource> implements IEnumerable<TSource>, IEnumerator<TSource> {
         private final Func0<IEnumerator<TSource>> enumerator;
-        private final Func0<Boolean> moveNext;
+        private final Predicate0 moveNext;
         private final Func0<TSource> current;
         private final Action0 reset;
         private final Action0 dispose;
         private boolean checkedNext;
         private boolean hasNext;
 
-        public DelegateIterator(Func0<Boolean> moveNext, Func0<TSource> current, Action0 dispose) {
+        public DelegateIterator(Predicate0 moveNext, Func0<TSource> current, Action0 dispose) {
             this(null, moveNext, current, null, dispose);
         }
 
-        public DelegateIterator(Func0<IEnumerator<TSource>> enumerator, Func0<Boolean> moveNext, Func0<TSource> current, Action0 reset, Action0 dispose) {
+        public DelegateIterator(Func0<IEnumerator<TSource>> enumerator, Predicate0 moveNext, Func0<TSource> current, Action0 reset, Action0 dispose) {
             this.enumerator = enumerator == null ? () -> this : enumerator;
             this.moveNext = moveNext == null ? () -> {
                 throw new NotSupportedException();

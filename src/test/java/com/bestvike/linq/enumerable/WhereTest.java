@@ -1,9 +1,10 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.Func0;
 import com.bestvike.function.Func1;
-import com.bestvike.function.Func2;
+import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.Predicate0;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -29,8 +30,8 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_SourceIsNull_ArgumentNullExceptionThrown() {
         IEnumerable<Integer> source = null;
-        Func1<Integer, Boolean> simplePredicate = (value) -> true;
-        Func2<Integer, Integer, Boolean> complexPredicate = (value, index) -> true;
+        Predicate1<Integer> simplePredicate = (value) -> true;
+        IntPredicate2<Integer> complexPredicate = (value, index) -> true;
 
         assertThrows(NullPointerException.class, () -> source.where(simplePredicate));
         assertThrows(NullPointerException.class, () -> source.where(complexPredicate));
@@ -39,8 +40,8 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_PredicateIsNull_ArgumentNullExceptionThrown() {
         IEnumerable<Integer> source = Linq.range(1, 10);
-        Func1<Integer, Boolean> simplePredicate = null;
-        Func2<Integer, Integer, Boolean> complexPredicate = null;
+        Predicate1<Integer> simplePredicate = null;
+        IntPredicate2<Integer> complexPredicate = null;
 
         assertThrows(ArgumentNullException.class, () -> source.where(simplePredicate));
         assertThrows(ArgumentNullException.class, () -> source.where(complexPredicate));
@@ -49,12 +50,12 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_Array_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        Func0<Boolean>[] source = new Func0[]{() -> {
+        Predicate0[] source = new Predicate0[]{() -> {
             funcCalled.value = true;
             return true;
         }};
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -64,12 +65,12 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_List_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        List<Func0<Boolean>> source = Collections.singletonList(() -> {
+        List<Predicate0> source = Collections.singletonList(() -> {
             funcCalled.value = true;
             return true;
         });
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -79,12 +80,12 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IReadOnlyCollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        Collection<Func0<Boolean>> source = Collections.unmodifiableCollection(Collections.singletonList(() -> {
+        Collection<Predicate0> source = Collections.unmodifiableCollection(Collections.singletonList(() -> {
             funcCalled.value = true;
             return true;
         }));
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -94,12 +95,12 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_ICollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        Collection<Func0<Boolean>> source = new LinkedList<>(Collections.singletonList(() -> {
+        Collection<Predicate0> source = new LinkedList<>(Collections.singletonList(() -> {
             funcCalled.value = true;
             return true;
         }));
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -109,12 +110,12 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IEnumerable_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        IEnumerable<Func0<Boolean>> source = Linq.repeat(() -> {
+        IEnumerable<Predicate0> source = Linq.repeat(() -> {
             funcCalled.value = true;
             return true;
         }, 1);
 
-        IEnumerable<Func0<Boolean>> query = source.where(value -> value.apply());
+        IEnumerable<Predicate0> query = source.where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = source.where((value, index) -> value.apply());
@@ -124,12 +125,12 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_Array_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        Func0<Boolean>[] source = new Func0[]{() -> {
+        Predicate0[] source = new Predicate0[]{() -> {
             funcCalled.value = true;
             return true;
         }};
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -139,12 +140,12 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_List_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        List<Func0<Boolean>> source = Collections.singletonList(() -> {
+        List<Predicate0> source = Collections.singletonList(() -> {
             funcCalled.value = true;
             return true;
         });
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -154,12 +155,12 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_IReadOnlyCollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        Collection<Func0<Boolean>> source = Collections.unmodifiableCollection(Collections.singletonList(() -> {
+        Collection<Predicate0> source = Collections.unmodifiableCollection(Collections.singletonList(() -> {
             funcCalled.value = true;
             return true;
         }));
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -169,12 +170,12 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_ICollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        Collection<Func0<Boolean>> source = new LinkedList<>(Collections.singletonList(() -> {
+        Collection<Predicate0> source = new LinkedList<>(Collections.singletonList(() -> {
             funcCalled.value = true;
             return true;
         }));
 
-        IEnumerable<Func0<Boolean>> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = Linq.asEnumerable(source).where((value, index) -> value.apply());
@@ -184,12 +185,12 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_IEnumerable_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
-        IEnumerable<Func0<Boolean>> source = Linq.repeat(() -> {
+        IEnumerable<Predicate0> source = Linq.repeat(() -> {
             funcCalled.value = true;
             return true;
         }, 1);
 
-        IEnumerable<Func0<Boolean>> query = source.where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = source.where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
         query = source.where((value, index) -> value.apply());
@@ -199,7 +200,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_Array_ReturnsExpectedValues_True() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
 
@@ -212,7 +213,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_Array_ReturnsExpectedValues_False() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> falsePredicate = (value) -> false;
+        Predicate1<Integer> falsePredicate = (value) -> false;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
 
@@ -222,7 +223,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_Array_ReturnsExpectedValues_Complex() {
         int[] source = new int[]{2, 1, 3, 5, 4};
-        Func2<Integer, Integer, Boolean> complexPredicate = (value, index) -> (value == index);
+        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -234,7 +235,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_List_ReturnsExpectedValues_True() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
 
@@ -247,7 +248,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_List_ReturnsExpectedValues_False() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
-        Func1<Integer, Boolean> falsePredicate = (value) -> false;
+        Predicate1<Integer> falsePredicate = (value) -> false;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
 
@@ -257,7 +258,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_List_ReturnsExpectedValues_Complex() {
         List<Integer> source = Arrays.asList(2, 1, 3, 5, 4);
-        Func2<Integer, Integer, Boolean> complexPredicate = (value, index) -> (value == index);
+        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -269,7 +270,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IReadOnlyCollection_ReturnsExpectedValues_True() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
 
@@ -282,7 +283,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IReadOnlyCollection_ReturnsExpectedValues_False() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> falsePredicate = (value) -> false;
+        Predicate1<Integer> falsePredicate = (value) -> false;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
 
@@ -292,7 +293,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IReadOnlyCollection_ReturnsExpectedValues_Complex() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(2, 1, 3, 5, 4));
-        Func2<Integer, Integer, Boolean> complexPredicate = (value, index) -> (value == index);
+        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -304,7 +305,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_ICollection_ReturnsExpectedValues_True() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
 
@@ -317,7 +318,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_ICollection_ReturnsExpectedValues_False() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> falsePredicate = (value) -> false;
+        Predicate1<Integer> falsePredicate = (value) -> false;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
 
@@ -327,7 +328,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_ICollection_ReturnsExpectedValues_Complex() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(2, 1, 3, 5, 4));
-        Func2<Integer, Integer, Boolean> complexPredicate = (value, index) -> (value == index);
+        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -339,7 +340,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IEnumerable_ReturnsExpectedValues_True() {
         IEnumerable<Integer> source = Linq.range(1, 5);
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerable<Integer> result = source.where(truePredicate);
 
@@ -352,7 +353,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IEnumerable_ReturnsExpectedValues_False() {
         IEnumerable<Integer> source = Linq.range(1, 5);
-        Func1<Integer, Boolean> falsePredicate = (value) -> false;
+        Predicate1<Integer> falsePredicate = (value) -> false;
 
         IEnumerable<Integer> result = source.where(falsePredicate);
 
@@ -362,7 +363,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IEnumerable_ReturnsExpectedValues_Complex() {
         IEnumerable<Integer> source = Linq.asEnumerable(new LinkedList<>(Arrays.asList(2, 1, 3, 5, 4)));
-        Func2<Integer, Integer, Boolean> complexPredicate = (value, index) -> (value == index);
+        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = source.where(complexPredicate);
 
@@ -393,7 +394,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_Array_CurrentIsDefaultOfTAfterEnumeration() {
         int[] source = new int[]{1};
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
@@ -404,7 +405,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_List_CurrentIsDefaultOfTAfterEnumeration() {
         List<Integer> source = Collections.singletonList(1);
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
@@ -415,7 +416,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IReadOnlyCollection_CurrentIsDefaultOfTAfterEnumeration() {
         Collection<Integer> source = Collections.unmodifiableCollection(Collections.singletonList(1));
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
@@ -426,7 +427,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_ICollection_CurrentIsDefaultOfTAfterEnumeration() {
         Collection<Integer> source = new LinkedList<>(Collections.singletonList(1));
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
@@ -437,7 +438,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IEnumerable_CurrentIsDefaultOfTAfterEnumeration() {
         IEnumerable<Integer> source = Linq.repeat(1, 1);
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = source.where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
@@ -448,7 +449,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_Array_ReturnsExpectedValues() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
 
@@ -460,7 +461,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_List_ReturnsExpectedValues() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
 
@@ -472,7 +473,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_IReadOnlyCollection_ReturnsExpectedValues() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
 
@@ -484,7 +485,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_ICollection_ReturnsExpectedValues() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
 
@@ -496,7 +497,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereWhere_IEnumerable_ReturnsExpectedValues() {
         IEnumerable<Integer> source = Linq.range(1, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
         IEnumerable<Integer> result = source.where(evenPredicate).where(evenPredicate);
 
@@ -508,7 +509,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelect_Array_ReturnsExpectedValues() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
@@ -521,7 +522,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelectSelect_Array_ReturnsExpectedValues() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
@@ -534,7 +535,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelect_List_ReturnsExpectedValues() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
@@ -547,7 +548,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelectSelect_List_ReturnsExpectedValues() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
@@ -560,7 +561,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelect_IReadOnlyCollection_ReturnsExpectedValues() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
@@ -573,7 +574,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelectSelect_IReadOnlyCollection_ReturnsExpectedValues() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
@@ -586,7 +587,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelect_ICollection_ReturnsExpectedValues() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
@@ -599,7 +600,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelectSelect_ICollection_ReturnsExpectedValues() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
@@ -612,7 +613,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelect_IEnumerable_ReturnsExpectedValues() {
         IEnumerable<Integer> source = Linq.range(1, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = source.where(evenPredicate).select(addSelector);
@@ -625,7 +626,7 @@ public class WhereTest extends TestCase {
     @Test
     public void WhereSelectSelect_IEnumerable_ReturnsExpectedValues() {
         IEnumerable<Integer> source = Linq.range(1, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = source.where(evenPredicate).select(i -> i).select(addSelector);
@@ -638,7 +639,7 @@ public class WhereTest extends TestCase {
     @Test
     public void SelectWhere_Array_ReturnsExpectedValues() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
@@ -652,7 +653,7 @@ public class WhereTest extends TestCase {
     @Test
     public void SelectWhere_List_ReturnsExpectedValues() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
@@ -666,7 +667,7 @@ public class WhereTest extends TestCase {
     @Test
     public void SelectWhere_IReadOnlyCollection_ReturnsExpectedValues() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
@@ -680,7 +681,7 @@ public class WhereTest extends TestCase {
     @Test
     public void SelectWhere_ICollection_ReturnsExpectedValues() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
@@ -694,7 +695,7 @@ public class WhereTest extends TestCase {
     @Test
     public void SelectWhere_IEnumerable_ReturnsExpectedValues() {
         IEnumerable<Integer> source = Linq.range(1, 5);
-        Func1<Integer, Boolean> evenPredicate = (value) -> value % 2 == 0;
+        Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
         IEnumerable<Integer> result = source.select(addSelector).where(evenPredicate);
@@ -708,7 +709,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_PredicateThrowsException() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        Func1<Integer, Boolean> predicate = value -> {
+        Predicate1<Integer> predicate = value -> {
             if (value == 1) {
                 throw new InvalidOperationException();
             }
@@ -732,7 +733,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_SourceThrowsOnCurrent() {
         IEnumerable<Integer> source = new ThrowsOnCurrentEnumerator();
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = source.where(truePredicate).enumerator();
 
@@ -747,7 +748,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_SourceThrowsOnMoveNext() {
         IEnumerable<Integer> source = new ThrowsOnMoveNext();
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = source.where(truePredicate).enumerator();
 
@@ -766,7 +767,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_SourceThrowsOnGetEnumerator() {
         IEnumerable<Integer> source = new ThrowsOnGetEnumerator();
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = source.where(truePredicate).enumerator();
 
@@ -795,7 +796,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_SourceThrowsOnConcurrentModification() {
         List<Integer> source = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
-        Func1<Integer, Boolean> truePredicate = (value) -> true;
+        Predicate1<Integer> truePredicate = (value) -> true;
 
         IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
 

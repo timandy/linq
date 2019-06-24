@@ -2,7 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -123,7 +123,7 @@ public class LastTest extends TestCase {
     @Test
     public void OneElementIListTruePredicate() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{4}));
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
 
         assertEquals(expected, source.last(predicate));
@@ -132,7 +132,7 @@ public class LastTest extends TestCase {
     @Test
     public void ManyElementsIListPredicateFalseForAll() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21}));
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
 
         assertThrows(InvalidOperationException.class, () -> source.last(predicate));
     }
@@ -140,7 +140,7 @@ public class LastTest extends TestCase {
     @Test
     public void IListPredicateTrueOnlyForLast() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21, 50}));
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
 
         assertEquals(expected, source.last(predicate));
@@ -149,7 +149,7 @@ public class LastTest extends TestCase {
     @Test
     public void IListPredicateTrueForSome() {
         IEnumerable<Integer> source = Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
         assertEquals(expected, source.last(predicate));
@@ -158,7 +158,7 @@ public class LastTest extends TestCase {
     @Test
     public void IListPredicateTrueForSomeRunOnce() {
         IEnumerable<Integer> source = Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
         assertEquals(expected, source.runOnce().last(predicate));
@@ -175,7 +175,7 @@ public class LastTest extends TestCase {
     @Test
     public void OneElementNotIListTruePredicate() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(4, 1);
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
 
         assertEquals(expected, source.last(predicate));
@@ -184,7 +184,7 @@ public class LastTest extends TestCase {
     @Test
     public void ManyElementsNotIListPredicateFalseForAll() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21}));
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
 
         assertThrows(InvalidOperationException.class, () -> source.last(predicate));
     }
@@ -192,7 +192,7 @@ public class LastTest extends TestCase {
     @Test
     public void NotIListPredicateTrueOnlyForLast() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21, 50}));
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
 
         assertEquals(expected, source.last(predicate));
@@ -201,7 +201,7 @@ public class LastTest extends TestCase {
     @Test
     public void NotIListPredicateTrueForSome() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
         assertEquals(expected, source.last(predicate));
@@ -210,7 +210,7 @@ public class LastTest extends TestCase {
     @Test
     public void NotIListPredicateTrueForSomeRunOnce() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
         assertEquals(expected, source.runOnce().last(predicate));
@@ -228,7 +228,7 @@ public class LastTest extends TestCase {
 
     @Test
     public void NullPredicate() {
-        Func1<Integer, Boolean> predicate = null;
+        Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).last(predicate));
     }
 

@@ -2,7 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -17,7 +17,7 @@ public class FindIndexTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         assertEquals(q.findIndex(predicate), q.findIndex(predicate));
     }
 
@@ -25,13 +25,13 @@ public class FindIndexTest extends TestCase {
     public void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
-        Func1<String, Boolean> predicate = TestCase::IsNullOrEmpty;
+        Predicate1<String> predicate = TestCase::IsNullOrEmpty;
         assertEquals(q.findIndex(predicate), q.findIndex(predicate));
     }
 
     @Test
     public void FindIndex() {
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.FindIndex(Linq.empty(), isEvenFunc, -1);
         this.FindIndex(Linq.singleton(4), isEvenFunc, 0);
         this.FindIndex(Linq.singleton(5), isEvenFunc, -1);
@@ -46,13 +46,13 @@ public class FindIndexTest extends TestCase {
         }
     }
 
-    private void FindIndex(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
+    private void FindIndex(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         assertEquals(expected, source.findIndex(predicate));
     }
 
     @Test
     public void FindIndexRunOnce() {
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.FindIndexRunOnce(Linq.empty(), isEvenFunc, -1);
         this.FindIndexRunOnce(Linq.singleton(4), isEvenFunc, 0);
         this.FindIndexRunOnce(Linq.singleton(5), isEvenFunc, -1);
@@ -67,7 +67,7 @@ public class FindIndexTest extends TestCase {
         }
     }
 
-    private void FindIndexRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
+    private void FindIndexRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         assertEquals(expected, source.runOnce().findIndex(predicate));
     }
 
@@ -78,7 +78,7 @@ public class FindIndexTest extends TestCase {
 
     @Test
     public void NullPredicate_ThrowsArgumentNullException() {
-        Func1<Integer, Boolean> predicate = null;
+        Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).findIndex(predicate));
     }
 

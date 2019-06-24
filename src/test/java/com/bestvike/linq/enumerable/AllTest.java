@@ -2,7 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -17,7 +17,7 @@ public class AllTest extends TestCase {
         IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         assertEquals(q.all(predicate), q.all(predicate));
     }
 
@@ -25,13 +25,13 @@ public class AllTest extends TestCase {
     public void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
-        Func1<String, Boolean> predicate = TestCase::IsNullOrEmpty;
+        Predicate1<String> predicate = TestCase::IsNullOrEmpty;
         assertEquals(q.all(predicate), q.all(predicate));
     }
 
     @Test
     public void All() {
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.All(Linq.singleton(0), isEvenFunc, true);
         this.All(Linq.singleton(3), isEvenFunc, false);
         this.All(Linq.singleton(4), isEvenFunc, true);
@@ -49,13 +49,13 @@ public class AllTest extends TestCase {
         }
     }
 
-    private void All(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
+    private void All(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
         assertEquals(expected, source.all(predicate));
     }
 
     @Test
     public void AllRunOnce() {
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.AllRunOnce(Linq.singleton(0), isEvenFunc, true);
         this.AllRunOnce(Linq.singleton(3), isEvenFunc, false);
         this.AllRunOnce(Linq.singleton(4), isEvenFunc, true);
@@ -73,7 +73,7 @@ public class AllTest extends TestCase {
         }
     }
 
-    private void AllRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, boolean expected) {
+    private void AllRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
         assertEquals(expected, source.runOnce().all(predicate));
     }
 
@@ -84,7 +84,7 @@ public class AllTest extends TestCase {
 
     @Test
     public void NullPredicate_ThrowsArgumentNullException() {
-        Func1<Integer, Boolean> predicate = null;
+        Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).all(predicate));
     }
 

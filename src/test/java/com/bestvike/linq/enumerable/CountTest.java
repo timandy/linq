@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -33,7 +33,7 @@ public class CountTest extends TestCase {
     }
 
     private IEnumerable<Object[]> Int_TestData() {
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
 
         return Linq.asEnumerable(
                 new Object[]{Linq.asEnumerable(new int[0]), null, 0},
@@ -54,10 +54,10 @@ public class CountTest extends TestCase {
     public void Int() {
         for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
-            this.Int((IEnumerable<Integer>) objects[0], (Func1<Integer, Boolean>) objects[1], (int) objects[2]);
+            this.Int((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (int) objects[2]);
     }
 
-    private void Int(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
+    private void Int(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         if (predicate == null) {
             assertEquals(expected, source.count());
         } else {
@@ -69,10 +69,10 @@ public class CountTest extends TestCase {
     public void IntRunOnce() {
         for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
-            this.IntRunOnce((IEnumerable<Integer>) objects[0], (Func1<Integer, Boolean>) objects[1], (int) objects[2]);
+            this.IntRunOnce((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (int) objects[2]);
     }
 
-    private void IntRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, int expected) {
+    private void IntRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         if (predicate == null) {
             assertEquals(expected, source.runOnce().count());
         } else {
@@ -146,7 +146,7 @@ public class CountTest extends TestCase {
 
     @Test
     public void NullPredicate_ThrowsArgumentNullException() {
-        Func1<Integer, Boolean> predicate = null;
+        Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).count(predicate));
     }
 

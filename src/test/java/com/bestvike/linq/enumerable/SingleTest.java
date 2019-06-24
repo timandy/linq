@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -154,7 +154,7 @@ public class SingleTest extends TestCase {
     @Test
     public void ThrowsOnNullPredicate() {
         int[] source = {};
-        Func1<Integer, Boolean> nullPredicate = null;
+        Predicate1<Integer> nullPredicate = null;
 
         assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).single(nullPredicate));
     }

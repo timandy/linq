@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -34,7 +34,7 @@ public class LongCountTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.asEnumerable(new int[0]), null, 0L});
         lst.add(new Object[]{Linq.asEnumerable(new int[]{3}), null, 1L});
-        Func1<Integer, Boolean> isEvenFunc = TestCase::IsEven;
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         lst.add(new Object[]{Linq.asEnumerable(new int[0]), isEvenFunc, 0L});
         lst.add(new Object[]{Linq.asEnumerable(new int[]{4}), isEvenFunc, 1L});
         lst.add(new Object[]{Linq.asEnumerable(new int[]{5}), isEvenFunc, 0L});
@@ -46,11 +46,11 @@ public class LongCountTest extends TestCase {
     @Test
     public void LongCount() {
         for (Object[] objects : this.LongCount_TestData()) {
-            this.LongCount((IEnumerable<Integer>) objects[0], (Func1<Integer, Boolean>) objects[1], (long) objects[2]);
+            this.LongCount((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (long) objects[2]);
         }
     }
 
-    private void LongCount(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, long expected) {
+    private void LongCount(IEnumerable<Integer> source, Predicate1<Integer> predicate, long expected) {
         if (predicate == null) {
             assertEquals(expected, source.longCount());
         } else {
@@ -61,11 +61,11 @@ public class LongCountTest extends TestCase {
     @Test
     public void LongCountRunOnce() {
         for (Object[] objects : this.LongCount_TestData()) {
-            this.LongCountRunOnce((IEnumerable<Integer>) objects[0], (Func1<Integer, Boolean>) objects[1], (long) objects[2]);
+            this.LongCountRunOnce((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (long) objects[2]);
         }
     }
 
-    private void LongCountRunOnce(IEnumerable<Integer> source, Func1<Integer, Boolean> predicate, long expected) {
+    private void LongCountRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, long expected) {
         if (predicate == null) {
             assertEquals(expected, source.runOnce().longCount());
         } else {
@@ -87,7 +87,7 @@ public class LongCountTest extends TestCase {
 
     @Test
     public void NullPredicate_ThrowsArgumentNullException() {
-        Func1<Integer, Boolean> predicate = null;
+        Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).longCount(predicate));
     }
 

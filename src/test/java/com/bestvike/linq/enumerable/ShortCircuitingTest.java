@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -17,7 +17,7 @@ public class ShortCircuitingTest extends TestCase {
     @Test
     public void ListLastDoesntCheckAll() {
         List<Integer> source = Linq.range(0, 10).toList();
-        CountedFunction<Integer, Boolean> pred = new CountedFunction<>(i -> i < 7);
+        CountedFunction<Integer> pred = new CountedFunction<>(i -> i < 7);
         assertEquals(6, Linq.asEnumerable(source).last(pred.getFunc()));
 
         // .NET Core shortcircuits as an optimization.
@@ -144,7 +144,7 @@ public class ShortCircuitingTest extends TestCase {
     @Test
     public void SingleWithPredicateDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
-        CountedFunction<Integer, Boolean> pred = new CountedFunction<>(i -> i > 2);
+        CountedFunction<Integer> pred = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker.single(pred.getFunc()));
 
         // .NET Core shortcircuits as an optimization.
@@ -156,7 +156,7 @@ public class ShortCircuitingTest extends TestCase {
     @Test
     public void SingleOrDefaultWithPredicateDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
-        CountedFunction<Integer, Boolean> pred = new CountedFunction<>(i -> i > 2);
+        CountedFunction<Integer> pred = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker.singleOrDefault(pred.getFunc()));
 
         // .NET Core shortcircuits as an optimization.
@@ -168,10 +168,10 @@ public class ShortCircuitingTest extends TestCase {
     @Test
     public void SingleWithPredicateWorksLikeWhereFollowedBySingle() {
         TrackingEnumerable tracker0 = new TrackingEnumerable(10);
-        CountedFunction<Integer, Boolean> pred0 = new CountedFunction<>(i -> i > 2);
+        CountedFunction<Integer> pred0 = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker0.single(pred0.getFunc()));
         TrackingEnumerable tracker1 = new TrackingEnumerable(10);
-        CountedFunction<Integer, Boolean> pred1 = new CountedFunction<>(i -> i > 2);
+        CountedFunction<Integer> pred1 = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker1.where(pred1.getFunc()).single());
 
         // .NET Core shortcircuits as an optimization.
@@ -183,10 +183,10 @@ public class ShortCircuitingTest extends TestCase {
     @Test
     public void SingleOrDefaultWithPredicateWorksLikeWhereFollowedBySingleOrDefault() {
         TrackingEnumerable tracker0 = new TrackingEnumerable(10);
-        CountedFunction<Integer, Boolean> pred0 = new CountedFunction<>(i -> i > 2);
+        CountedFunction<Integer> pred0 = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker0.singleOrDefault(pred0.getFunc()));
         TrackingEnumerable tracker1 = new TrackingEnumerable(10);
-        CountedFunction<Integer, Boolean> pred1 = new CountedFunction<>(i -> i > 2);
+        CountedFunction<Integer> pred1 = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker1.where(pred1.getFunc()).singleOrDefault());
 
         // .NET Core shortcircuits as an optimization.
@@ -223,15 +223,15 @@ public class ShortCircuitingTest extends TestCase {
         }
     }
 
-    private static class CountedFunction<T, TResult> {
-        private final Func1<T, TResult> basefunc;
+    private static class CountedFunction<T> {
+        private final Predicate1<T> basefunc;
         int Calls;
 
-        CountedFunction(Func1<T, TResult> baseFunc) {
+        CountedFunction(Predicate1<T> baseFunc) {
             this.basefunc = baseFunc;
         }
 
-        Func1<T, TResult> getFunc() {
+        Predicate1<T> getFunc() {
             return x -> {
                 ++this.Calls;
                 return this.basefunc.apply(x);

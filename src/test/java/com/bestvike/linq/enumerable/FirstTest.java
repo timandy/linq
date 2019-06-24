@@ -2,7 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
@@ -124,7 +124,7 @@ public class FirstTest extends TestCase {
     @Test
     public void OneElementTruePredicate() {
         int[] source = {4};
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
 
         assertEquals(expected, Linq.asEnumerable(source).first(predicate));
@@ -133,7 +133,7 @@ public class FirstTest extends TestCase {
     @Test
     public void ManyElementsPredicateFalseForAll() {
         int[] source = {9, 5, 1, 3, 17, 21};
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
 
         assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).first(predicate));
     }
@@ -141,7 +141,7 @@ public class FirstTest extends TestCase {
     @Test
     public void PredicateTrueOnlyForLast() {
         int[] source = {9, 5, 1, 3, 17, 21, 50};
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
 
         assertEquals(expected, Linq.asEnumerable(source).first(predicate));
@@ -150,7 +150,7 @@ public class FirstTest extends TestCase {
     @Test
     public void PredicateTrueForSome() {
         int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
 
         assertEquals(expected, Linq.asEnumerable(source).first(predicate));
@@ -159,7 +159,7 @@ public class FirstTest extends TestCase {
     @Test
     public void PredicateTrueForSomeRunOnce() {
         int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
-        Func1<Integer, Boolean> predicate = TestCase::IsEven;
+        Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
 
         assertEquals(expected, Linq.asEnumerable(source).runOnce().first(predicate));
@@ -177,7 +177,7 @@ public class FirstTest extends TestCase {
 
     @Test
     public void NullPredicate() {
-        Func1<Integer, Boolean> predicate = null;
+        Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).first(predicate));
     }
 
