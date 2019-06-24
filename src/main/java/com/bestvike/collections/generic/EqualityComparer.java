@@ -17,7 +17,7 @@ public final class EqualityComparer<T> implements IEqualityComparer<T> {
     }
 
     @Override
-    public boolean equals(Object x, Object y) {
+    public boolean equals(T x, T y) {
         return Objects.equals(x, y);
     }
 
