@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -23,7 +23,7 @@ public final class First {
         return first;
     }
 
-    public static <TSource> TSource first(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> TSource first(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         out<Boolean> foundRef = out.init();
         TSource first = tryGetFirst(source, predicate, foundRef);
         if (!foundRef.value)
@@ -36,7 +36,7 @@ public final class First {
         return tryGetFirst(source, foundRef);
     }
 
-    public static <TSource> TSource firstOrDefault(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> TSource firstOrDefault(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         out<Boolean> foundRef = out.init();
         return tryGetFirst(source, predicate, foundRef);
     }
@@ -69,7 +69,7 @@ public final class First {
         return null;
     }
 
-    private static <TSource> TSource tryGetFirst(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate, out<Boolean> found) {
+    private static <TSource> TSource tryGetFirst(IEnumerable<TSource> source, Predicate1<TSource> predicate, out<Boolean> found) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)

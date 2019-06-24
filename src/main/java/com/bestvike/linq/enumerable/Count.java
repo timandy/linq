@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.ICollection;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -37,7 +37,7 @@ public final class Count {
         return count;
     }
 
-    public static <TSource> int count(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> int count(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -65,7 +65,7 @@ public final class Count {
         return count;
     }
 
-    public static <TSource> long longCount(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> long longCount(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)

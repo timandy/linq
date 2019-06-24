@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -41,7 +41,7 @@ public final class Single {
         return null;
     }
 
-    public static <TSource> TSource single(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> TSource single(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -90,7 +90,7 @@ public final class Single {
         return null;
     }
 
-    public static <TSource> TSource singleOrDefault(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> TSource singleOrDefault(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)

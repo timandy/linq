@@ -1,8 +1,8 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.Func1;
-import com.bestvike.function.Func2;
+import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -38,7 +38,7 @@ public final class Take {
         return new EnumerablePartition<>(source, 0, count - 1);
     }
 
-    public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -47,7 +47,7 @@ public final class Take {
         return new TakeWhileIterator<>(source, predicate);
     }
 
-    public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
+    public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -83,10 +83,10 @@ public final class Take {
 
 final class TakeWhileIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
+    private final Predicate1<TSource> predicate;
     private IEnumerator<TSource> enumerator;
 
-    TakeWhileIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    TakeWhileIterator(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         this.source = source;
         this.predicate = predicate;
     }
@@ -130,11 +130,11 @@ final class TakeWhileIterator<TSource> extends AbstractIterator<TSource> {
 
 final class TakeWhileIterator2<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
-    private final Func2<TSource, Integer, Boolean> predicate;
+    private final IntPredicate2<TSource> predicate;
     private IEnumerator<TSource> enumerator;
     private int index;
 
-    TakeWhileIterator2(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
+    TakeWhileIterator2(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
         this.source = source;
         this.predicate = predicate;
     }

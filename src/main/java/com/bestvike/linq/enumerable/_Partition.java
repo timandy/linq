@@ -2,6 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -66,7 +67,7 @@ final class EmptyPartition<TElement> extends Iterator<TElement> implements IPart
     }
 
     @Override
-    public IEnumerable<TElement> _where(Func1<TElement, Boolean> predicate) {
+    public IEnumerable<TElement> _where(Predicate1<TElement> predicate) {
         return this;
     }
 

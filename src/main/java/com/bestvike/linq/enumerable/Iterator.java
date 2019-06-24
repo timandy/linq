@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 
 /**
@@ -11,7 +12,7 @@ public abstract class Iterator<TSource> extends AbstractIterator<TSource> {
         return new SelectEnumerableIterator<>(this, selector);
     }
 
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+    public IEnumerable<TSource> _where(Predicate1<TSource> predicate) {
         return new WhereEnumerableIterator<>(this, predicate);
     }
 }

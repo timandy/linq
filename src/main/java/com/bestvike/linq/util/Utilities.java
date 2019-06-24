@@ -3,6 +3,7 @@ package com.bestvike.linq.util;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 
 /**
  * Created by 许崇雷 on 2017-07-16.
@@ -29,7 +30,7 @@ public final class Utilities {
         return left.equals(right);
     }
 
-    public static <TSource> Func1<TSource, Boolean> combinePredicates(Func1<TSource, Boolean> predicate1, Func1<TSource, Boolean> predicate2) {
+    public static <TSource> Predicate1<TSource> combinePredicates(Predicate1<TSource> predicate1, Predicate1<TSource> predicate2) {
         return x -> predicate1.apply(x) && predicate2.apply(x);
     }
 

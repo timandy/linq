@@ -4,6 +4,8 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
+import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.enumerable.Aggregate;
 import com.bestvike.linq.enumerable.AnyAll;
 import com.bestvike.linq.enumerable.AppendPrepend;
@@ -115,7 +117,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Aggregate.aggregate(this, seed, func, resultSelector);
     }
 
-    default boolean all(Func1<TSource, Boolean> predicate) {
+    default boolean all(Predicate1<TSource> predicate) {
         return AnyAll.all(this, predicate);
     }
 
@@ -123,7 +125,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return AnyAll.any(this);
     }
 
-    default boolean any(Func1<TSource, Boolean> predicate) {
+    default boolean any(Predicate1<TSource> predicate) {
         return AnyAll.any(this, predicate);
     }
 
@@ -235,7 +237,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Count.count(this);
     }
 
-    default int count(Func1<TSource, Boolean> predicate) {
+    default int count(Predicate1<TSource> predicate) {
         return Count.count(this, predicate);
     }
 
@@ -291,11 +293,11 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ExceptBy.exceptBy(this, second, keySelector, comparer);
     }
 
-    default int findIndex(Func1<TSource, Boolean> predicate) {
+    default int findIndex(Predicate1<TSource> predicate) {
         return FindIndex.findIndex(this, predicate);
     }
 
-    default int findLastIndex(Func1<TSource, Boolean> predicate) {
+    default int findLastIndex(Predicate1<TSource> predicate) {
         return FindIndex.findLastIndex(this, predicate);
     }
 
@@ -303,7 +305,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return First.first(this);
     }
 
-    default TSource first(Func1<TSource, Boolean> predicate) {
+    default TSource first(Predicate1<TSource> predicate) {
         return First.first(this, predicate);
     }
 
@@ -311,7 +313,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return First.firstOrDefault(this);
     }
 
-    default TSource firstOrDefault(Func1<TSource, Boolean> predicate) {
+    default TSource firstOrDefault(Predicate1<TSource> predicate) {
         return First.firstOrDefault(this, predicate);
     }
 
@@ -415,7 +417,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Last.last(this);
     }
 
-    default TSource last(Func1<TSource, Boolean> predicate) {
+    default TSource last(Predicate1<TSource> predicate) {
         return Last.last(this, predicate);
     }
 
@@ -431,7 +433,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Last.lastOrDefault(this);
     }
 
-    default TSource lastOrDefault(Func1<TSource, Boolean> predicate) {
+    default TSource lastOrDefault(Predicate1<TSource> predicate) {
         return Last.lastOrDefault(this, predicate);
     }
 
@@ -455,7 +457,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Count.longCount(this);
     }
 
-    default long longCount(Func1<TSource, Boolean> predicate) {
+    default long longCount(Predicate1<TSource> predicate) {
         return Count.longCount(this, predicate);
     }
 
@@ -839,7 +841,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Single.single(this);
     }
 
-    default TSource single(Func1<TSource, Boolean> predicate) {
+    default TSource single(Predicate1<TSource> predicate) {
         return Single.single(this, predicate);
     }
 
@@ -847,7 +849,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Single.singleOrDefault(this);
     }
 
-    default TSource singleOrDefault(Func1<TSource, Boolean> predicate) {
+    default TSource singleOrDefault(Predicate1<TSource> predicate) {
         return Single.singleOrDefault(this, predicate);
     }
 
@@ -859,11 +861,11 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Skip.skipLast(this, count);
     }
 
-    default IEnumerable<TSource> skipWhile(Func1<TSource, Boolean> predicate) {
+    default IEnumerable<TSource> skipWhile(Predicate1<TSource> predicate) {
         return Skip.skipWhile(this, predicate);
     }
 
-    default IEnumerable<TSource> skipWhile(Func2<TSource, Integer, Boolean> predicate) {
+    default IEnumerable<TSource> skipWhile(IntPredicate2<TSource> predicate) {
         return Skip.skipWhile(this, predicate);
     }
 
@@ -915,11 +917,11 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Take.takeLast(this, count);
     }
 
-    default IEnumerable<TSource> takeWhile(Func1<TSource, Boolean> predicate) {
+    default IEnumerable<TSource> takeWhile(Predicate1<TSource> predicate) {
         return Take.takeWhile(this, predicate);
     }
 
-    default IEnumerable<TSource> takeWhile(Func2<TSource, Integer, Boolean> predicate) {
+    default IEnumerable<TSource> takeWhile(IntPredicate2<TSource> predicate) {
         return Take.takeWhile(this, predicate);
     }
 
@@ -992,11 +994,11 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return UnionBy.unionBy(this, second, keySelector, comparer);
     }
 
-    default IEnumerable<TSource> where(Func1<TSource, Boolean> predicate) {
+    default IEnumerable<TSource> where(Predicate1<TSource> predicate) {
         return Where.where(this, predicate);
     }
 
-    default IEnumerable<TSource> where(Func2<TSource, Integer, Boolean> predicate) {
+    default IEnumerable<TSource> where(IntPredicate2<TSource> predicate) {
         return Where.where(this, predicate);
     }
 

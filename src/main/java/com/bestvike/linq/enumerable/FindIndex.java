@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -13,7 +13,7 @@ public final class FindIndex {
     private FindIndex() {
     }
 
-    public static <TSource> int findIndex(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> int findIndex(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -31,7 +31,7 @@ public final class FindIndex {
         return -1;
     }
 
-    public static <TSource> int findLastIndex(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> int findLastIndex(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)

@@ -3,6 +3,7 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IOrderedEnumerable;
@@ -57,7 +58,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         return new OrderedEnumerable<>(this.source, keySelector, comparer, descending, this);
     }
 
-    public TElement _tryGetFirst(Func1<TElement, Boolean> predicate, out<Boolean> found) {
+    public TElement _tryGetFirst(Predicate1<TElement> predicate, out<Boolean> found) {
         AbstractCachingComparer<TElement> comparer = this.getComparer();
         try (IEnumerator<TElement> e = this.source.enumerator()) {
             TElement value;
@@ -81,7 +82,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
         }
     }
 
-    public TElement _tryGetLast(Func1<TElement, Boolean> predicate, out<Boolean> found) {
+    public TElement _tryGetLast(Predicate1<TElement> predicate, out<Boolean> found) {
         AbstractCachingComparer<TElement> comparer = this.getComparer();
         try (IEnumerator<TElement> e = this.source.enumerator()) {
             TElement value;

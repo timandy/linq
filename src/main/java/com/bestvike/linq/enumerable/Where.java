@@ -3,7 +3,8 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
-import com.bestvike.function.Func2;
+import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -20,7 +21,7 @@ public final class Where {
     private Where() {
     }
 
-    public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -48,7 +49,7 @@ public final class Where {
         return new WhereEnumerableIterator<>(source, predicate);
     }
 
-    public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
+    public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -61,11 +62,11 @@ public final class Where {
 
 final class WhereIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
-    private final Func2<TSource, Integer, Boolean> predicate;
+    private final IntPredicate2<TSource> predicate;
     private IEnumerator<TSource> enumerator;
     private int index;
 
-    WhereIterator(IEnumerable<TSource> source, Func2<TSource, Integer, Boolean> predicate) {
+    WhereIterator(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
         assert source != null;
         assert predicate != null;
         this.source = source;
@@ -113,10 +114,10 @@ final class WhereIterator<TSource> extends AbstractIterator<TSource> {
 
 final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
     private final IEnumerable<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
+    private final Predicate1<TSource> predicate;
     private IEnumerator<TSource> enumerator;
 
-    WhereEnumerableIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate) {
+    WhereEnumerableIterator(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         assert source != null;
         assert predicate != null;
         this.source = source;
@@ -164,7 +165,7 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     }
 
     @Override
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+    public IEnumerable<TSource> _where(Predicate1<TSource> predicate) {
         return new WhereEnumerableIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
     }
 
@@ -219,9 +220,9 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
 
 final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
     private final IArray<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
+    private final Predicate1<TSource> predicate;
 
-    WhereArrayIterator(IArray<TSource> source, Func1<TSource, Boolean> predicate) {
+    WhereArrayIterator(IArray<TSource> source, Predicate1<TSource> predicate) {
         assert source != null && source._getCount() > 0;
         assert predicate != null;
         this.source = source;
@@ -257,7 +258,7 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
     }
 
     @Override
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+    public IEnumerable<TSource> _where(Predicate1<TSource> predicate) {
         return new WhereArrayIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
     }
 
@@ -312,10 +313,10 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
 
 final class WhereListIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
     private final ICollection<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
+    private final Predicate1<TSource> predicate;
     private IEnumerator<TSource> enumerator;
 
-    WhereListIterator(ICollection<TSource> source, Func1<TSource, Boolean> predicate) {
+    WhereListIterator(ICollection<TSource> source, Predicate1<TSource> predicate) {
         assert source != null;
         assert predicate != null;
         this.source = source;
@@ -363,7 +364,7 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     }
 
     @Override
-    public IEnumerable<TSource> _where(Func1<TSource, Boolean> predicate) {
+    public IEnumerable<TSource> _where(Predicate1<TSource> predicate) {
         return new WhereListIterator<>(this.source, Utilities.combinePredicates(this.predicate, predicate));
     }
 
@@ -418,10 +419,10 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
 
 final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult> implements IIListProvider<TResult> {
     private final IArray<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
+    private final Predicate1<TSource> predicate;
     private final Func1<TSource, TResult> selector;
 
-    WhereSelectArrayIterator(IArray<TSource> source, Func1<TSource, Boolean> predicate, Func1<TSource, TResult> selector) {
+    WhereSelectArrayIterator(IArray<TSource> source, Predicate1<TSource> predicate, Func1<TSource, TResult> selector) {
         assert source != null && source._getCount() > 0;
         assert predicate != null;
         assert selector != null;
@@ -513,11 +514,11 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
 
 final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> implements IIListProvider<TResult> {
     private final ICollection<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
+    private final Predicate1<TSource> predicate;
     private final Func1<TSource, TResult> selector;
     private IEnumerator<TSource> enumerator;
 
-    WhereSelectListIterator(ICollection<TSource> source, Func1<TSource, Boolean> predicate, Func1<TSource, TResult> selector) {
+    WhereSelectListIterator(ICollection<TSource> source, Predicate1<TSource> predicate, Func1<TSource, TResult> selector) {
         assert source != null;
         assert predicate != null;
         assert selector != null;
@@ -621,11 +622,11 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
 
 final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TResult> implements IIListProvider<TResult> {
     private final IEnumerable<TSource> source;
-    private final Func1<TSource, Boolean> predicate;
+    private final Predicate1<TSource> predicate;
     private final Func1<TSource, TResult> selector;
     private IEnumerator<TSource> enumerator;
 
-    WhereSelectEnumerableIterator(IEnumerable<TSource> source, Func1<TSource, Boolean> predicate, Func1<TSource, TResult> selector) {
+    WhereSelectEnumerableIterator(IEnumerable<TSource> source, Predicate1<TSource> predicate, Func1<TSource, TResult> selector) {
         assert source != null;
         assert predicate != null;
         assert selector != null;
