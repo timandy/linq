@@ -1,7 +1,17 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.Comparer;
+import com.bestvike.function.DecimalFunc1;
+import com.bestvike.function.DoubleFunc1;
+import com.bestvike.function.FloatFunc1;
 import com.bestvike.function.Func1;
+import com.bestvike.function.IntFunc1;
+import com.bestvike.function.LongFunc1;
+import com.bestvike.function.NullableDecimalFunc1;
+import com.bestvike.function.NullableDoubleFunc1;
+import com.bestvike.function.NullableFloatFunc1;
+import com.bestvike.function.NullableIntFunc1;
+import com.bestvike.function.NullableLongFunc1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -18,9 +28,22 @@ public final class Max {
     }
 
     public static int maxInt(IEnumerable<Integer> source) {
-        Integer value = maxIntNull(source);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        int value;
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = e.current();
+            while (e.moveNext()) {
+                int x = e.current();
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
@@ -48,9 +71,22 @@ public final class Max {
     }
 
     public static long maxLong(IEnumerable<Long> source) {
-        Long value = maxLongNull(source);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        long value;
+        try (IEnumerator<Long> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = e.current();
+            while (e.moveNext()) {
+                long x = e.current();
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
@@ -78,9 +114,28 @@ public final class Max {
     }
 
     public static float maxFloat(IEnumerable<Float> source) {
-        Float value = maxFloatNull(source);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        float value;
+        try (IEnumerator<Float> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = e.current();
+            while (Float.isNaN(value)) {
+                if (!e.moveNext())
+                    return value;
+                value = e.current();
+            }
+
+            while (e.moveNext()) {
+                float x = e.current();
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
@@ -116,16 +171,34 @@ public final class Max {
     }
 
     public static double maxDouble(IEnumerable<Double> source) {
-        Double value = maxDoubleNull(source);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        double value;
+        try (IEnumerator<Double> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = e.current();
+            while (Double.isNaN(value)) {
+                if (!e.moveNext())
+                    return value;
+                value = e.current();
+            }
+
+            while (e.moveNext()) {
+                double x = e.current();
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
     public static Double maxDoubleNull(IEnumerable<Double> source) {
-        if (source == null) {
+        if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-        }
 
         Double value = null;
         try (IEnumerator<Double> e = source.enumerator()) {
@@ -155,9 +228,24 @@ public final class Max {
     }
 
     public static BigDecimal maxDecimal(IEnumerable<BigDecimal> source) {
-        BigDecimal value = maxDecimalNull(source);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        BigDecimal value;
+        try (IEnumerator<BigDecimal> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = e.current();
+            if (value == null)
+                ThrowHelper.throwNullPointerException();
+            while (e.moveNext()) {
+                BigDecimal x = e.current();
+                if (x.compareTo(value) > 0)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
@@ -185,9 +273,27 @@ public final class Max {
     }
 
     public static <TSource> TSource max(IEnumerable<TSource> source) {
-        TSource value = maxNull(source);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        Comparator<TSource> comparer = Comparer.Default();
+        TSource value;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = e.current();
+            if (value == null)
+                ThrowHelper.throwNullPointerException();
+            while (e.moveNext()) {
+                TSource x = e.current();
+                if (x == null)
+                    ThrowHelper.throwNullPointerException();
+                if (comparer.compare(x, value) > 0)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
@@ -215,14 +321,29 @@ public final class Max {
         return value;
     }
 
-    public static <TSource> int maxInt(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
-        Integer value = maxIntNull(source, selector);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+    public static <TSource> int maxInt(IEnumerable<TSource> source, IntFunc1<TSource> selector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+
+        int value;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = selector.apply(e.current());
+            while (e.moveNext()) {
+                int x = selector.apply(e.current());
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
-    public static <TSource> Integer maxIntNull(IEnumerable<TSource> source, Func1<TSource, Integer> selector) {
+    public static <TSource> Integer maxIntNull(IEnumerable<TSource> source, NullableIntFunc1<TSource> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
@@ -247,14 +368,29 @@ public final class Max {
         return value;
     }
 
-    public static <TSource> long maxLong(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
-        Long value = maxLongNull(source, selector);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+    public static <TSource> long maxLong(IEnumerable<TSource> source, LongFunc1<TSource> selector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+
+        long value;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = selector.apply(e.current());
+            while (e.moveNext()) {
+                long x = selector.apply(e.current());
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
-    public static <TSource> Long maxLongNull(IEnumerable<TSource> source, Func1<TSource, Long> selector) {
+    public static <TSource> Long maxLongNull(IEnumerable<TSource> source, NullableLongFunc1<TSource> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
@@ -279,14 +415,35 @@ public final class Max {
         return value;
     }
 
-    public static <TSource> float maxFloat(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
-        Float value = maxFloatNull(source, selector);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+    public static <TSource> float maxFloat(IEnumerable<TSource> source, FloatFunc1<TSource> selector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+
+        float value;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = selector.apply(e.current());
+            while (Float.isNaN(value)) {
+                if (!e.moveNext())
+                    return value;
+                value = selector.apply(e.current());
+            }
+
+            while (e.moveNext()) {
+                float x = selector.apply(e.current());
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
-    public static <TSource> Float maxFloatNull(IEnumerable<TSource> source, Func1<TSource, Float> selector) {
+    public static <TSource> Float maxFloatNull(IEnumerable<TSource> source, NullableFloatFunc1<TSource> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
@@ -319,14 +476,35 @@ public final class Max {
         return value;
     }
 
-    public static <TSource> double maxDouble(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
-        Double value = maxDoubleNull(source, selector);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+    public static <TSource> double maxDouble(IEnumerable<TSource> source, DoubleFunc1<TSource> selector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+
+        double value;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = selector.apply(e.current());
+            while (Double.isNaN(value)) {
+                if (!e.moveNext())
+                    return value;
+                value = selector.apply(e.current());
+            }
+
+            while (e.moveNext()) {
+                double x = selector.apply(e.current());
+                if (x > value)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
-    public static <TSource> Double maxDoubleNull(IEnumerable<TSource> source, Func1<TSource, Double> selector) {
+    public static <TSource> Double maxDoubleNull(IEnumerable<TSource> source, NullableDoubleFunc1<TSource> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
@@ -359,14 +537,31 @@ public final class Max {
         return value;
     }
 
-    public static <TSource> BigDecimal maxDecimal(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
-        BigDecimal value = maxDecimalNull(source, selector);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+    public static <TSource> BigDecimal maxDecimal(IEnumerable<TSource> source, DecimalFunc1<TSource> selector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+
+        BigDecimal value;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = selector.apply(e.current());
+            if (value == null)
+                ThrowHelper.throwNullPointerException();
+            while (e.moveNext()) {
+                BigDecimal x = selector.apply(e.current());
+                if (x.compareTo(value) > 0)
+                    value = x;
+            }
+        }
+
         return value;
     }
 
-    public static <TSource> BigDecimal maxDecimalNull(IEnumerable<TSource> source, Func1<TSource, BigDecimal> selector) {
+    public static <TSource> BigDecimal maxDecimalNull(IEnumerable<TSource> source, NullableDecimalFunc1<TSource> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
@@ -392,9 +587,29 @@ public final class Max {
     }
 
     public static <TSource, TResult> TResult max(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
-        TResult value = maxNull(source, selector);
-        if (value == null)
-            ThrowHelper.throwNoElementsException();
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (selector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+
+        Comparator<TResult> comparer = Comparer.Default();
+        TResult value;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            if (!e.moveNext())
+                ThrowHelper.throwNoElementsException();
+
+            value = selector.apply(e.current());
+            if (value == null)
+                ThrowHelper.throwNullPointerException();
+            while (e.moveNext()) {
+                TResult x = selector.apply(e.current());
+                if (x == null)
+                    ThrowHelper.throwNullPointerException();
+                if (comparer.compare(x, value) > 0)
+                    value = x;
+            }
+        }
+
         return value;
     }
 

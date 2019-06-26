@@ -63,6 +63,10 @@ public final class ThrowHelper {
         throw new RuntimeException(cause);
     }
 
+    public static void throwNullPointerException() {
+        throw new NullPointerException();
+    }
+
     private static String getArgumentString(ExceptionArgument argument) {
         if (argument == null)
             throw new NullPointerException("The ExceptionArgument value is not defined.");

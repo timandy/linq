@@ -65,7 +65,7 @@ public class OfTypeTest extends TestCase {
 
     @Test
     public void HeterogenousSourceSomeOfType() {
-        IEnumerable<Object> source = Linq.asEnumerable(new BigDecimal("3.5"), -4, "Test", "Check", 4, 8.0, 10.5, 9);
+        IEnumerable<Object> source = Linq.asEnumerable(m("3.5"), -4, "Test", "Check", 4, 8.0, 10.5, 9);
         IEnumerable<Integer> expected = Linq.asEnumerable(new int[]{-4, 4, 9});
 
         assertEquals(expected, source.ofType(Integer.class));
@@ -73,7 +73,7 @@ public class OfTypeTest extends TestCase {
 
     @Test
     public void RunOnce() {
-        IEnumerable<Object> source = Linq.asEnumerable(new BigDecimal("3.5"), -4, "Test", "Check", 4, 8.0, 10.5, 9);
+        IEnumerable<Object> source = Linq.asEnumerable(m("3.5"), -4, "Test", "Check", 4, 8.0, 10.5, 9);
         IEnumerable<Integer> expected = Linq.asEnumerable(new int[]{-4, 4, 9});
 
         assertEquals(expected, source.runOnce().ofType(Integer.class));

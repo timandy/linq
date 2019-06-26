@@ -10,7 +10,6 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -173,7 +172,7 @@ public class DistinctTest extends TestCase {
         lst.add(new Object[]{Linq.asEnumerable(new long[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
         lst.add(new Object[]{Linq.asEnumerable(new float[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
         lst.add(new Object[]{Linq.asEnumerable(new double[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new BigDecimal(1), new BigDecimal(1), new BigDecimal(1), new BigDecimal(2), new BigDecimal(3), new BigDecimal(5), new BigDecimal(5), new BigDecimal(6), new BigDecimal(6), new BigDecimal(10))});
+        lst.add(new Object[]{Linq.asEnumerable(m(1), m(1), m(1), m(2), m(3), m(5), m(5), m(6), m(6), m(10))});
         // Try strings
         lst.add(new Object[]{Linq.asEnumerable("add",
                 "add",

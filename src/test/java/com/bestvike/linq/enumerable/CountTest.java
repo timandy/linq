@@ -7,7 +7,6 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -109,7 +108,7 @@ public class CountTest extends TestCase {
             list.add(variant);
         for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> (double) i)))
             list.add(variant);
-        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> new BigDecimal(i))))
+        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> m(i))))
             list.add(variant);
         return Linq.asEnumerable(list);
     }

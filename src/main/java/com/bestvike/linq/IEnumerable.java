@@ -2,9 +2,19 @@ package com.bestvike.linq;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.function.DecimalFunc1;
+import com.bestvike.function.DoubleFunc1;
+import com.bestvike.function.FloatFunc1;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
+import com.bestvike.function.IntFunc1;
 import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.LongFunc1;
+import com.bestvike.function.NullableDecimalFunc1;
+import com.bestvike.function.NullableDoubleFunc1;
+import com.bestvike.function.NullableFloatFunc1;
+import com.bestvike.function.NullableIntFunc1;
+import com.bestvike.function.NullableLongFunc1;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.enumerable.Aggregate;
 import com.bestvike.linq.enumerable.AnyAll;
@@ -177,43 +187,43 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Average.averageDecimalNull((IEnumerable<BigDecimal>) this);
     }
 
-    default double averageInt(Func1<TSource, Integer> selector) {
+    default double averageInt(IntFunc1<TSource> selector) {
         return Average.averageInt(this, selector);
     }
 
-    default Double averageIntNull(Func1<TSource, Integer> selector) {
+    default Double averageIntNull(NullableIntFunc1<TSource> selector) {
         return Average.averageIntNull(this, selector);
     }
 
-    default double averageLong(Func1<TSource, Long> selector) {
+    default double averageLong(LongFunc1<TSource> selector) {
         return Average.averageLong(this, selector);
     }
 
-    default Double averageLongNull(Func1<TSource, Long> selector) {
+    default Double averageLongNull(NullableLongFunc1<TSource> selector) {
         return Average.averageLongNull(this, selector);
     }
 
-    default float averageFloat(Func1<TSource, Float> selector) {
+    default float averageFloat(FloatFunc1<TSource> selector) {
         return Average.averageFloat(this, selector);
     }
 
-    default Float averageFloatNull(Func1<TSource, Float> selector) {
+    default Float averageFloatNull(NullableFloatFunc1<TSource> selector) {
         return Average.averageFloatNull(this, selector);
     }
 
-    default double averageDouble(Func1<TSource, Double> selector) {
+    default double averageDouble(DoubleFunc1<TSource> selector) {
         return Average.averageDouble(this, selector);
     }
 
-    default Double averageDoubleNull(Func1<TSource, Double> selector) {
+    default Double averageDoubleNull(NullableDoubleFunc1<TSource> selector) {
         return Average.averageDoubleNull(this, selector);
     }
 
-    default BigDecimal averageDecimal(Func1<TSource, BigDecimal> selector) {
+    default BigDecimal averageDecimal(DecimalFunc1<TSource> selector) {
         return Average.averageDecimal(this, selector);
     }
 
-    default BigDecimal averageDecimalNull(Func1<TSource, BigDecimal> selector) {
+    default BigDecimal averageDecimalNull(NullableDecimalFunc1<TSource> selector) {
         return Average.averageDecimalNull(this, selector);
     }
 
@@ -509,43 +519,43 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Max.maxNull(this);
     }
 
-    default int maxInt(Func1<TSource, Integer> selector) {
+    default int maxInt(IntFunc1<TSource> selector) {
         return Max.maxInt(this, selector);
     }
 
-    default Integer maxIntNull(Func1<TSource, Integer> selector) {
+    default Integer maxIntNull(NullableIntFunc1<TSource> selector) {
         return Max.maxIntNull(this, selector);
     }
 
-    default long maxLong(Func1<TSource, Long> selector) {
+    default long maxLong(LongFunc1<TSource> selector) {
         return Max.maxLong(this, selector);
     }
 
-    default Long maxLongNull(Func1<TSource, Long> selector) {
+    default Long maxLongNull(NullableLongFunc1<TSource> selector) {
         return Max.maxLongNull(this, selector);
     }
 
-    default float maxFloat(Func1<TSource, Float> selector) {
+    default float maxFloat(FloatFunc1<TSource> selector) {
         return Max.maxFloat(this, selector);
     }
 
-    default Float maxFloatNull(Func1<TSource, Float> selector) {
+    default Float maxFloatNull(NullableFloatFunc1<TSource> selector) {
         return Max.maxFloatNull(this, selector);
     }
 
-    default double maxDouble(Func1<TSource, Double> selector) {
+    default double maxDouble(DoubleFunc1<TSource> selector) {
         return Max.maxDouble(this, selector);
     }
 
-    default Double maxDoubleNull(Func1<TSource, Double> selector) {
+    default Double maxDoubleNull(NullableDoubleFunc1<TSource> selector) {
         return Max.maxDoubleNull(this, selector);
     }
 
-    default BigDecimal maxDecimal(Func1<TSource, BigDecimal> selector) {
+    default BigDecimal maxDecimal(DecimalFunc1<TSource> selector) {
         return Max.maxDecimal(this, selector);
     }
 
-    default BigDecimal maxDecimalNull(Func1<TSource, BigDecimal> selector) {
+    default BigDecimal maxDecimalNull(NullableDecimalFunc1<TSource> selector) {
         return Max.maxDecimalNull(this, selector);
     }
 
@@ -557,43 +567,43 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Max.maxNull(this, selector);
     }
 
-    default TSource maxByInt(Func1<TSource, Integer> keySelector) {
+    default TSource maxByInt(IntFunc1<TSource> keySelector) {
         return MaxBy.maxByInt(this, keySelector);
     }
 
-    default TSource maxByIntNull(Func1<TSource, Integer> keySelector) {
+    default TSource maxByIntNull(NullableIntFunc1<TSource> keySelector) {
         return MaxBy.maxByIntNull(this, keySelector);
     }
 
-    default TSource maxByLong(Func1<TSource, Long> keySelector) {
+    default TSource maxByLong(LongFunc1<TSource> keySelector) {
         return MaxBy.maxByLong(this, keySelector);
     }
 
-    default TSource maxByLongNull(Func1<TSource, Long> keySelector) {
+    default TSource maxByLongNull(NullableLongFunc1<TSource> keySelector) {
         return MaxBy.maxByLongNull(this, keySelector);
     }
 
-    default TSource maxByFloat(Func1<TSource, Float> keySelector) {
+    default TSource maxByFloat(FloatFunc1<TSource> keySelector) {
         return MaxBy.maxByFloat(this, keySelector);
     }
 
-    default TSource maxByFloatNull(Func1<TSource, Float> keySelector) {
+    default TSource maxByFloatNull(NullableFloatFunc1<TSource> keySelector) {
         return MaxBy.maxByFloatNull(this, keySelector);
     }
 
-    default TSource maxByDouble(Func1<TSource, Double> keySelector) {
+    default TSource maxByDouble(DoubleFunc1<TSource> keySelector) {
         return MaxBy.maxByDouble(this, keySelector);
     }
 
-    default TSource maxByDoubleNull(Func1<TSource, Double> keySelector) {
+    default TSource maxByDoubleNull(NullableDoubleFunc1<TSource> keySelector) {
         return MaxBy.maxByDoubleNull(this, keySelector);
     }
 
-    default TSource maxByDecimal(Func1<TSource, BigDecimal> keySelector) {
+    default TSource maxByDecimal(DecimalFunc1<TSource> keySelector) {
         return MaxBy.maxByDecimal(this, keySelector);
     }
 
-    default TSource maxByDecimalNull(Func1<TSource, BigDecimal> keySelector) {
+    default TSource maxByDecimalNull(NullableDecimalFunc1<TSource> keySelector) {
         return MaxBy.maxByDecimalNull(this, keySelector);
     }
 
@@ -653,43 +663,43 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Min.minNull(this);
     }
 
-    default int minInt(Func1<TSource, Integer> selector) {
+    default int minInt(IntFunc1<TSource> selector) {
         return Min.minInt(this, selector);
     }
 
-    default Integer minIntNull(Func1<TSource, Integer> selector) {
+    default Integer minIntNull(NullableIntFunc1<TSource> selector) {
         return Min.minIntNull(this, selector);
     }
 
-    default long minLong(Func1<TSource, Long> selector) {
+    default long minLong(LongFunc1<TSource> selector) {
         return Min.minLong(this, selector);
     }
 
-    default Long minLongNull(Func1<TSource, Long> selector) {
+    default Long minLongNull(NullableLongFunc1<TSource> selector) {
         return Min.minLongNull(this, selector);
     }
 
-    default float minFloat(Func1<TSource, Float> selector) {
+    default float minFloat(FloatFunc1<TSource> selector) {
         return Min.minFloat(this, selector);
     }
 
-    default Float minFloatNull(Func1<TSource, Float> selector) {
+    default Float minFloatNull(NullableFloatFunc1<TSource> selector) {
         return Min.minFloatNull(this, selector);
     }
 
-    default double minDouble(Func1<TSource, Double> selector) {
+    default double minDouble(DoubleFunc1<TSource> selector) {
         return Min.minDouble(this, selector);
     }
 
-    default Double minDoubleNull(Func1<TSource, Double> selector) {
+    default Double minDoubleNull(NullableDoubleFunc1<TSource> selector) {
         return Min.minDoubleNull(this, selector);
     }
 
-    default BigDecimal minDecimal(Func1<TSource, BigDecimal> selector) {
+    default BigDecimal minDecimal(DecimalFunc1<TSource> selector) {
         return Min.minDecimal(this, selector);
     }
 
-    default BigDecimal minDecimalNull(Func1<TSource, BigDecimal> selector) {
+    default BigDecimal minDecimalNull(NullableDecimalFunc1<TSource> selector) {
         return Min.minDecimalNull(this, selector);
     }
 
@@ -701,43 +711,43 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Min.minNull(this, selector);
     }
 
-    default TSource minByInt(Func1<TSource, Integer> keySelector) {
+    default TSource minByInt(IntFunc1<TSource> keySelector) {
         return MinBy.minByInt(this, keySelector);
     }
 
-    default TSource minByIntNull(Func1<TSource, Integer> keySelector) {
+    default TSource minByIntNull(NullableIntFunc1<TSource> keySelector) {
         return MinBy.minByIntNull(this, keySelector);
     }
 
-    default TSource minByLong(Func1<TSource, Long> keySelector) {
+    default TSource minByLong(LongFunc1<TSource> keySelector) {
         return MinBy.minByLong(this, keySelector);
     }
 
-    default TSource minByLongNull(Func1<TSource, Long> keySelector) {
+    default TSource minByLongNull(NullableLongFunc1<TSource> keySelector) {
         return MinBy.minByLongNull(this, keySelector);
     }
 
-    default TSource minByFloat(Func1<TSource, Float> keySelector) {
+    default TSource minByFloat(FloatFunc1<TSource> keySelector) {
         return MinBy.minByFloat(this, keySelector);
     }
 
-    default TSource minByFloatNull(Func1<TSource, Float> keySelector) {
+    default TSource minByFloatNull(NullableFloatFunc1<TSource> keySelector) {
         return MinBy.minByFloatNull(this, keySelector);
     }
 
-    default TSource minByDouble(Func1<TSource, Double> keySelector) {
+    default TSource minByDouble(DoubleFunc1<TSource> keySelector) {
         return MinBy.minByDouble(this, keySelector);
     }
 
-    default TSource minByDoubleNull(Func1<TSource, Double> keySelector) {
+    default TSource minByDoubleNull(NullableDoubleFunc1<TSource> keySelector) {
         return MinBy.minByDoubleNull(this, keySelector);
     }
 
-    default TSource minByDecimal(Func1<TSource, BigDecimal> keySelector) {
+    default TSource minByDecimal(DecimalFunc1<TSource> keySelector) {
         return MinBy.minByDecimal(this, keySelector);
     }
 
-    default TSource minByDecimalNull(Func1<TSource, BigDecimal> keySelector) {
+    default TSource minByDecimalNull(NullableDecimalFunc1<TSource> keySelector) {
         return MinBy.minByDecimalNull(this, keySelector);
     }
 
@@ -873,40 +883,80 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Sum.sumInt((IEnumerable<Integer>) this);
     }
 
+    default int sumIntNull() {
+        return Sum.sumIntNull((IEnumerable<Integer>) this);
+    }
+
     default long sumLong() {
         return Sum.sumLong((IEnumerable<Long>) this);
+    }
+
+    default long sumLongNull() {
+        return Sum.sumLongNull((IEnumerable<Long>) this);
     }
 
     default float sumFloat() {
         return Sum.sumFloat((IEnumerable<Float>) this);
     }
 
+    default float sumFloatNull() {
+        return Sum.sumFloatNull((IEnumerable<Float>) this);
+    }
+
     default double sumDouble() {
         return Sum.sumDouble((IEnumerable<Double>) this);
+    }
+
+    default double sumDoubleNull() {
+        return Sum.sumDoubleNull((IEnumerable<Double>) this);
     }
 
     default BigDecimal sumDecimal() {
         return Sum.sumDecimal((IEnumerable<BigDecimal>) this);
     }
 
-    default int sumInt(Func1<TSource, Integer> selector) {
+    default BigDecimal sumDecimalNull() {
+        return Sum.sumDecimalNull((IEnumerable<BigDecimal>) this);
+    }
+
+    default int sumInt(IntFunc1<TSource> selector) {
         return Sum.sumInt(this, selector);
     }
 
-    default long sumLong(Func1<TSource, Long> selector) {
+    default int sumIntNull(NullableIntFunc1<TSource> selector) {
+        return Sum.sumIntNull(this, selector);
+    }
+
+    default long sumLong(LongFunc1<TSource> selector) {
         return Sum.sumLong(this, selector);
     }
 
-    default float sumFloat(Func1<TSource, Float> selector) {
+    default long sumLongNull(NullableLongFunc1<TSource> selector) {
+        return Sum.sumLongNull(this, selector);
+    }
+
+    default float sumFloat(FloatFunc1<TSource> selector) {
         return Sum.sumFloat(this, selector);
     }
 
-    default double sumDouble(Func1<TSource, Double> selector) {
+    default float sumFloatNull(NullableFloatFunc1<TSource> selector) {
+        return Sum.sumFloatNull(this, selector);
+    }
+
+    default double sumDouble(DoubleFunc1<TSource> selector) {
         return Sum.sumDouble(this, selector);
     }
 
-    default BigDecimal sumDecimal(Func1<TSource, BigDecimal> selector) {
+    default double sumDoubleNull(NullableDoubleFunc1<TSource> selector) {
+        return Sum.sumDoubleNull(this, selector);
+    }
+
+    default BigDecimal sumDecimal(DecimalFunc1<TSource> selector) {
         return Sum.sumDecimal(this, selector);
+    }
+
+    default BigDecimal sumDecimalNull(NullableDecimalFunc1<TSource> selector) {
+        return Sum.sumDecimalNull(this, selector);
     }
 
     default IEnumerable<TSource> take(int count) {

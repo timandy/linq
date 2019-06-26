@@ -2,7 +2,17 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.ValueType;
+import com.bestvike.function.DecimalFunc1;
+import com.bestvike.function.DoubleFunc1;
+import com.bestvike.function.FloatFunc1;
 import com.bestvike.function.Func1;
+import com.bestvike.function.IntFunc1;
+import com.bestvike.function.LongFunc1;
+import com.bestvike.function.NullableDecimalFunc1;
+import com.bestvike.function.NullableDoubleFunc1;
+import com.bestvike.function.NullableFloatFunc1;
+import com.bestvike.function.NullableIntFunc1;
+import com.bestvike.function.NullableLongFunc1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -594,7 +604,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Int_NullSelector_ThrowsArgumentNullException() {
-        Func1<Integer, Integer> selector = null;
+        IntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().minInt(selector));
     }
 
@@ -611,7 +621,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Long_NullSelector_ThrowsArgumentNullException() {
-        Func1<Long, Long> selector = null;
+        LongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().minLong(selector));
     }
 
@@ -627,7 +637,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Float_NullSelector_ThrowsArgumentNullException() {
-        Func1<Float, Float> selector = null;
+        FloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().minFloat(selector));
     }
 
@@ -643,7 +653,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Double_NullSelector_ThrowsArgumentNullException() {
-        Func1<Double, Double> selector = null;
+        DoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().minDouble(selector));
     }
 
@@ -659,7 +669,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_Decimal_NullSelector_ThrowsArgumentNullException() {
-        Func1<BigDecimal, BigDecimal> selector = null;
+        DecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().minDecimal(selector));
     }
 
@@ -675,7 +685,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableInt_NullSelector_ThrowsArgumentNullException() {
-        Func1<Integer, Integer> selector = null;
+        NullableIntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().minIntNull(selector));
     }
 
@@ -691,7 +701,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableLong_NullSelector_ThrowsArgumentNullException() {
-        Func1<Long, Long> selector = null;
+        NullableLongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().minLongNull(selector));
     }
 
@@ -708,7 +718,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableFloat_NullSelector_ThrowsArgumentNullException() {
-        Func1<Float, Float> selector = null;
+        NullableFloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().minFloatNull(selector));
     }
 
@@ -724,7 +734,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableDouble_NullSelector_ThrowsArgumentNullException() {
-        Func1<Double, Double> selector = null;
+        NullableDoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().minDoubleNull(selector));
     }
 
@@ -740,7 +750,7 @@ public class MinTest extends TestCase {
 
     @Test
     public void Min_NullableDecimal_NullSelector_ThrowsArgumentNullException() {
-        Func1<BigDecimal, BigDecimal> selector = null;
+        NullableDecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().minDecimalNull(selector));
     }
 
@@ -773,15 +783,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinInt() {
-        Integer[] numbers = {null, 0, 2, 3};
+        Integer[] numbers = {0, 2, 3};
         assertEquals(0, Linq.asEnumerable(numbers).minInt());
 
         Integer[] numbers2 = {null};
-        try {
-            int min = Linq.asEnumerable(numbers2).minInt();
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minInt());
     }
 
     @Test
@@ -795,15 +801,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinLong() {
-        Long[] numbers = {null, 0L, 2L, 3L};
+        Long[] numbers = {0L, 2L, 3L};
         assertEquals(0L, Linq.asEnumerable(numbers).minLong());
 
         Long[] numbers2 = {null};
-        try {
-            long min = Linq.asEnumerable(numbers2).minLong();
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minLong());
     }
 
     @Test
@@ -817,15 +819,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinFloat() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.asEnumerable(numbers).minFloat());
 
         Float[] numbers2 = {null};
-        try {
-            float min = Linq.asEnumerable(numbers2).minFloat();
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minFloat());
     }
 
     @Test
@@ -839,15 +837,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinDouble() {
-        Double[] numbers = {null, 0d, 2d, Double.NaN};
+        Double[] numbers = {0d, 2d, Double.NaN};
         assertEquals(Double.NaN, Linq.asEnumerable(numbers).minDouble());
 
         Double[] numbers2 = {null};
-        try {
-            double min = Linq.asEnumerable(numbers2).minDouble();
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minDouble());
     }
 
     @Test
@@ -861,21 +855,17 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinDecimal() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("0"), Linq.asEnumerable(numbers).minDecimal());
+        BigDecimal[] numbers = {m("0"), m("2"), m("3")};
+        assertEquals(m("0"), Linq.asEnumerable(numbers).minDecimal());
 
-        Integer[] numbers2 = {null};
-        try {
-            BigDecimal min = Linq.asEnumerable(numbers2).minDecimal();
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        BigDecimal[] numbers2 = {null};
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minDecimal());
     }
 
     @Test
     public void testMinDecimalNull() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("0"), Linq.asEnumerable(numbers).minDecimalNull());
+        BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
+        assertEquals(m("0"), Linq.asEnumerable(numbers).minDecimalNull());
 
         Integer[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).minDecimalNull());
@@ -883,15 +873,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMin() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(0f, Linq.asEnumerable(numbers).min());
 
         Float[] numbers2 = {null};
-        try {
-            Float min = Linq.asEnumerable(numbers2).min();
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).min());
     }
 
     @Test
@@ -905,15 +891,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinIntWithSelector() {
-        Integer[] numbers = {null, 0, 2, 3};
+        Integer[] numbers = {0, 2, 3};
         assertEquals(0, Linq.asEnumerable(numbers).minInt(n -> n));
 
         Integer[] numbers2 = {null};
-        try {
-            int min = Linq.asEnumerable(numbers2).minInt(n -> n);
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minInt(n -> n));
     }
 
     @Test
@@ -927,15 +909,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinLongWithSelector() {
-        Long[] numbers = {null, 0L, 2L, 3L};
+        Long[] numbers = {0L, 2L, 3L};
         assertEquals(0L, Linq.asEnumerable(numbers).minLong(n -> n));
 
         Long[] numbers2 = {null};
-        try {
-            long min = Linq.asEnumerable(numbers2).minLong(n -> n);
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minLong(n -> n));
     }
 
     @Test
@@ -949,15 +927,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinFloatWithSelector() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.asEnumerable(numbers).minFloat(n -> n));
 
         Float[] numbers2 = {null};
-        try {
-            float min = Linq.asEnumerable(numbers2).minFloat(n -> n);
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minFloat(n -> n));
     }
 
     @Test
@@ -971,15 +945,11 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinDoubleWithSelector() {
-        Double[] numbers = {null, 0d, 2d, Double.NaN};
+        Double[] numbers = {0d, 2d, Double.NaN};
         assertEquals(Double.NaN, Linq.asEnumerable(numbers).minDouble(n -> n));
 
         Double[] numbers2 = {null};
-        try {
-            double min = Linq.asEnumerable(numbers2).minDouble(n -> n);
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minDouble(n -> n));
     }
 
     @Test
@@ -993,21 +963,17 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinDecimalWithSelector() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("0"), Linq.asEnumerable(numbers).minDecimal(n -> n));
+        BigDecimal[] numbers = {m("0"), m("2"), m("3")};
+        assertEquals(m("0"), Linq.asEnumerable(numbers).minDecimal(n -> n));
 
         BigDecimal[] numbers2 = {null};
-        try {
-            BigDecimal min = Linq.asEnumerable(numbers2).minDecimal(n -> n);
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).minDecimal(n -> n));
     }
 
     @Test
     public void testMinDecimalNullWithSelector() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("0"), Linq.asEnumerable(numbers).minDecimalNull(n -> n));
+        BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
+        assertEquals(m("0"), Linq.asEnumerable(numbers).minDecimalNull(n -> n));
 
         BigDecimal[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).minDecimalNull(n -> n));
@@ -1015,16 +981,12 @@ public class MinTest extends TestCase {
 
     @Test
     public void testMinWithSelector() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         Float f = Linq.asEnumerable(numbers).min(n -> n);
         assertEquals(0f, f);
 
         Float[] numbers2 = {null};
-        try {
-            Float min = Linq.asEnumerable(numbers2).min(n -> n);
-            fail("expect error,but got " + min);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).min(n -> n));
     }
 
     @Test

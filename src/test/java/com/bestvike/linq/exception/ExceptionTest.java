@@ -243,7 +243,17 @@ public class ExceptionTest extends TestCase {
             ThrowHelper.throwRuntimeException(new IllegalAccessException());
             fail("should not be here");
         } catch (RuntimeException e) {
-            assertIsAssignableFrom(IllegalAccessException.class, e.getCause());
+            assertIsType(IllegalAccessException.class, e.getCause());
+        }
+    }
+
+    @Test
+    public void testNullPointerException() {
+        try {
+            ThrowHelper.throwNullPointerException();
+            fail("should not be here");
+        } catch (RuntimeException e) {
+            assertIsType(NullPointerException.class, e);
         }
     }
 

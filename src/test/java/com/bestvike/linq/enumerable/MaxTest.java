@@ -2,7 +2,17 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.ValueType;
+import com.bestvike.function.DecimalFunc1;
+import com.bestvike.function.DoubleFunc1;
+import com.bestvike.function.FloatFunc1;
 import com.bestvike.function.Func1;
+import com.bestvike.function.IntFunc1;
+import com.bestvike.function.LongFunc1;
+import com.bestvike.function.NullableDecimalFunc1;
+import com.bestvike.function.NullableDoubleFunc1;
+import com.bestvike.function.NullableFloatFunc1;
+import com.bestvike.function.NullableIntFunc1;
+import com.bestvike.function.NullableLongFunc1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -248,7 +258,7 @@ public class MaxTest extends TestCase {
     @Test
     public void Max_Double_SeveralNaNOrNullWithSelector() {
         Double[] source = new Double[]{Double.NaN, null, Double.NaN, null};
-        assertTrue(Double.isNaN(Linq.asEnumerable(source).maxDouble(i -> i)));
+        assertTrue(Double.isNaN(Linq.asEnumerable(source).maxDoubleNull(i -> i)));
     }
 
     @Test
@@ -595,7 +605,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_Int_NullSelector_ThrowsArgumentNullException() {
-        Func1<Integer, Integer> selector = null;
+        IntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().maxInt(selector));
     }
 
@@ -612,7 +622,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_Long_NullSelector_ThrowsArgumentNullException() {
-        Func1<Long, Long> selector = null;
+        LongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().maxLong(selector));
     }
 
@@ -639,13 +649,13 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_Float_NullSelector_ThrowsArgumentNullException() {
-        Func1<Float, Float> selector = null;
+        FloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().maxFloat(selector));
     }
 
     @Test
     public void Max_Double_NullSelector_ThrowsArgumentNullException() {
-        Func1<Double, Double> selector = null;
+        DoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().maxDouble(selector));
     }
 
@@ -661,7 +671,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_Decimal_NullSelector_ThrowsArgumentNullException() {
-        Func1<BigDecimal, BigDecimal> selector = null;
+        DecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().maxDecimal(selector));
     }
 
@@ -677,7 +687,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableInt_NullSelector_ThrowsArgumentNullException() {
-        Func1<Integer, Integer> selector = null;
+        NullableIntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().maxIntNull(selector));
     }
 
@@ -694,7 +704,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableLong_NullSelector_ThrowsArgumentNullException() {
-        Func1<Long, Long> selector = null;
+        NullableLongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().maxLongNull(selector));
     }
 
@@ -710,7 +720,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableFloat_NullSelector_ThrowsArgumentNullException() {
-        Func1<Float, Float> selector = null;
+        NullableFloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().maxFloatNull(selector));
     }
 
@@ -726,7 +736,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableDouble_NullSelector_ThrowsArgumentNullException() {
-        Func1<Double, Double> selector = null;
+        NullableDoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().maxDoubleNull(selector));
     }
 
@@ -742,7 +752,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void Max_NullableDecimal_NullSelector_ThrowsArgumentNullException() {
-        Func1<BigDecimal, BigDecimal> selector = null;
+        NullableDecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().maxDecimalNull(selector));
     }
 
@@ -790,15 +800,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxInt() {
-        Integer[] numbers = {null, 0, 2, 3};
+        Integer[] numbers = {0, 2, 3};
         assertEquals(3, Linq.asEnumerable(numbers).maxInt());
 
         Integer[] numbers2 = {null};
-        try {
-            int max = Linq.asEnumerable(numbers2).maxInt();
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxInt());
     }
 
     @Test
@@ -812,15 +818,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxLong() {
-        Long[] numbers = {null, 0L, 2L, 3L};
+        Long[] numbers = {0L, 2L, 3L};
         assertEquals(3L, Linq.asEnumerable(numbers).maxLong());
 
         Long[] numbers2 = {null};
-        try {
-            long max = Linq.asEnumerable(numbers2).maxLong();
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxLong());
     }
 
     @Test
@@ -834,15 +836,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxFloat() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(2f, Linq.asEnumerable(numbers).maxFloat());
 
         Float[] numbers2 = {null};
-        try {
-            float max = Linq.asEnumerable(numbers2).maxFloat();
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxFloat());
     }
 
     @Test
@@ -856,15 +854,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxDouble() {
-        Double[] numbers = {null, 2d, Double.NaN};
+        Double[] numbers = {2d, Double.NaN};
         assertEquals(2d, Linq.asEnumerable(numbers).maxDouble());
 
         Double[] numbers2 = {null};
-        try {
-            double max = Linq.asEnumerable(numbers2).maxDouble();
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDouble());
     }
 
     @Test
@@ -878,21 +872,17 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxDecimal() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("3"), Linq.asEnumerable(numbers).maxDecimal());
+        BigDecimal[] numbers = {m("0"), m("2"), m("3")};
+        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimal());
 
         Integer[] numbers2 = {null};
-        try {
-            BigDecimal max = Linq.asEnumerable(numbers2).maxDecimal();
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDecimal());
     }
 
     @Test
     public void testMaxDecimalNull() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("3"), Linq.asEnumerable(numbers).maxDecimalNull());
+        BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
+        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimalNull());
 
         Integer[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).maxDecimalNull());
@@ -900,15 +890,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMax() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.asEnumerable(numbers).max());
 
         Float[] numbers2 = {null};
-        try {
-            Float max = Linq.asEnumerable(numbers2).max();
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).max());
     }
 
     @Test
@@ -922,15 +908,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxIntWithSelector() {
-        Integer[] numbers = {null, 0, 2, 3};
+        Integer[] numbers = {0, 2, 3};
         assertEquals(3, Linq.asEnumerable(numbers).maxInt(n -> n));
 
         Integer[] numbers2 = {null};
-        try {
-            int max = Linq.asEnumerable(numbers2).maxInt(n -> n);
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxInt(n -> n));
     }
 
     @Test
@@ -944,15 +926,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxLongWithSelector() {
-        Long[] numbers = {null, 0L, 2L, 3L};
+        Long[] numbers = {0L, 2L, 3L};
         assertEquals(3L, Linq.asEnumerable(numbers).maxLong(n -> n));
 
         Long[] numbers2 = {null};
-        try {
-            long max = Linq.asEnumerable(numbers2).maxLong(n -> n);
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxLong(n -> n));
     }
 
     @Test
@@ -966,15 +944,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxFloatWithSelector() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(2f, Linq.asEnumerable(numbers).maxFloat(n -> n));
 
         Float[] numbers2 = {null};
-        try {
-            float max = Linq.asEnumerable(numbers2).maxFloat(n -> n);
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxFloat(n -> n));
     }
 
     @Test
@@ -988,15 +962,11 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxDoubleWithSelector() {
-        Double[] numbers = {null, 2d, Double.NaN};
+        Double[] numbers = {2d, Double.NaN};
         assertEquals(2d, Linq.asEnumerable(numbers).maxDouble(n -> n));
 
         Double[] numbers2 = {null};
-        try {
-            double max = Linq.asEnumerable(numbers2).maxDouble(n -> n);
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDouble(n -> n));
     }
 
     @Test
@@ -1010,21 +980,17 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxDecimalWithSelector() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("3"), Linq.asEnumerable(numbers).maxDecimal(n -> n));
+        BigDecimal[] numbers = {m("0"), m("2"), m("3")};
+        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimal(n -> n));
 
         BigDecimal[] numbers2 = {null};
-        try {
-            BigDecimal max = Linq.asEnumerable(numbers2).maxDecimal(n -> n);
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDecimal(n -> n));
     }
 
     @Test
     public void testMaxDecimalNullWithSelector() {
-        BigDecimal[] numbers = {null, new BigDecimal("0"), new BigDecimal("2"), new BigDecimal("3")};
-        assertEquals(new BigDecimal("3"), Linq.asEnumerable(numbers).maxDecimalNull(n -> n));
+        BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
+        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimalNull(n -> n));
 
         BigDecimal[] numbers2 = {null};
         assertEquals(null, Linq.asEnumerable(numbers2).maxDecimalNull(n -> n));
@@ -1032,16 +998,12 @@ public class MaxTest extends TestCase {
 
     @Test
     public void testMaxWithSelector() {
-        Float[] numbers = {null, 0f, 2f, Float.NaN};
+        Float[] numbers = {0f, 2f, Float.NaN};
         Float f = Linq.asEnumerable(numbers).max(n -> n);
         assertEquals(Float.NaN, f);
 
         Float[] numbers2 = {null};
-        try {
-            Float max = Linq.asEnumerable(numbers2).max(n -> n);
-            fail("expect error,but got " + max);
-        } catch (InvalidOperationException ignored) {
-        }
+        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).max(n -> n));
     }
 
     @Test
