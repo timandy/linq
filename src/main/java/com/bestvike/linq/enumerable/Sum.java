@@ -11,6 +11,7 @@ import com.bestvike.function.NullableFloatFunc1;
 import com.bestvike.function.NullableIntFunc1;
 import com.bestvike.function.NullableLongFunc1;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -28,8 +29,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         int sum = 0;
-        for (Integer v : source)
-            sum = Math.addExact(sum, v);
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            while (e.moveNext())
+                sum = Math.addExact(sum, e.current());
+        }
         return sum;
     }
 
@@ -38,9 +41,13 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         int sum = 0;
-        for (Integer v : source)
-            if (v != null)
-                sum = Math.addExact(sum, v);
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Integer v = e.current();
+                if (v != null)
+                    sum = Math.addExact(sum, v);
+            }
+        }
         return sum;
     }
 
@@ -49,8 +56,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         long sum = 0;
-        for (Long v : source)
-            sum = Math.addExact(sum, v);
+        try (IEnumerator<Long> e = source.enumerator()) {
+            while (e.moveNext())
+                sum = Math.addExact(sum, e.current());
+        }
         return sum;
     }
 
@@ -59,9 +68,13 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         long sum = 0;
-        for (Long v : source)
-            if (v != null)
-                sum = Math.addExact(sum, v);
+        try (IEnumerator<Long> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Long v = e.current();
+                if (v != null)
+                    sum = Math.addExact(sum, v);
+            }
+        }
         return sum;
     }
 
@@ -70,8 +83,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
-        for (Float v : source)
-            sum += v;
+        try (IEnumerator<Float> e = source.enumerator()) {
+            while (e.moveNext())
+                sum += e.current();
+        }
         return (float) sum;
     }
 
@@ -80,9 +95,13 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
-        for (Float v : source)
-            if (v != null)
-                sum += v;
+        try (IEnumerator<Float> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Float v = e.current();
+                if (v != null)
+                    sum += v;
+            }
+        }
         return (float) sum;
     }
 
@@ -91,8 +110,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
-        for (Double v : source)
-            sum += v;
+        try (IEnumerator<Double> e = source.enumerator()) {
+            while (e.moveNext())
+                sum += e.current();
+        }
         return sum;
     }
 
@@ -101,9 +122,13 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         double sum = 0;
-        for (Double v : source)
-            if (v != null)
-                sum += v;
+        try (IEnumerator<Double> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Double v = e.current();
+                if (v != null)
+                    sum += v;
+            }
+        }
         return sum;
     }
 
@@ -112,8 +137,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         BigDecimal sum = BigDecimal.ZERO;
-        for (BigDecimal v : source)
-            sum = sum.add(v);
+        try (IEnumerator<BigDecimal> e = source.enumerator()) {
+            while (e.moveNext())
+                sum = sum.add(e.current());
+        }
         return sum;
     }
 
@@ -122,9 +149,13 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         BigDecimal sum = BigDecimal.ZERO;
-        for (BigDecimal v : source)
-            if (v != null)
-                sum = sum.add(v);
+        try (IEnumerator<BigDecimal> e = source.enumerator()) {
+            while (e.moveNext()) {
+                BigDecimal v = e.current();
+                if (v != null)
+                    sum = sum.add(v);
+            }
+        }
         return sum;
     }
 
@@ -135,8 +166,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         int sum = 0;
-        for (TSource item : source)
-            sum = Math.addExact(sum, selector.apply(item));
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                sum = Math.addExact(sum, selector.apply(e.current()));
+        }
         return sum;
     }
 
@@ -147,10 +180,12 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         int sum = 0;
-        for (TSource item : source) {
-            Integer v = selector.apply(item);
-            if (v != null)
-                sum = Math.addExact(sum, v);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Integer v = selector.apply(e.current());
+                if (v != null)
+                    sum = Math.addExact(sum, v);
+            }
         }
         return sum;
     }
@@ -162,8 +197,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         long sum = 0;
-        for (TSource item : source)
-            sum = Math.addExact(sum, selector.apply(item));
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                sum = Math.addExact(sum, selector.apply(e.current()));
+        }
         return sum;
     }
 
@@ -174,10 +211,12 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         long sum = 0;
-        for (TSource item : source) {
-            Long v = selector.apply(item);
-            if (v != null)
-                sum = Math.addExact(sum, v);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Long v = selector.apply(e.current());
+                if (v != null)
+                    sum = Math.addExact(sum, v);
+            }
         }
         return sum;
     }
@@ -189,8 +228,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         double sum = 0;
-        for (TSource item : source)
-            sum += selector.apply(item);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                sum += selector.apply(e.current());
+        }
         return (float) sum;
     }
 
@@ -201,10 +242,12 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         double sum = 0;
-        for (TSource item : source) {
-            Float v = selector.apply(item);
-            if (v != null)
-                sum += v;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Float v = selector.apply(e.current());
+                if (v != null)
+                    sum += v;
+            }
         }
         return (float) sum;
     }
@@ -216,8 +259,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         double sum = 0;
-        for (TSource item : source)
-            sum += selector.apply(item);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                sum += selector.apply(e.current());
+        }
         return sum;
     }
 
@@ -228,10 +273,12 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         double sum = 0;
-        for (TSource item : source) {
-            Double v = selector.apply(item);
-            if (v != null)
-                sum += v;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                Double v = selector.apply(e.current());
+                if (v != null)
+                    sum += v;
+            }
         }
         return sum;
     }
@@ -243,8 +290,10 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         BigDecimal sum = BigDecimal.ZERO;
-        for (TSource item : source)
-            sum = sum.add(selector.apply(item));
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                sum = sum.add(selector.apply(e.current()));
+        }
         return sum;
     }
 
@@ -255,10 +304,12 @@ public final class Sum {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
 
         BigDecimal sum = BigDecimal.ZERO;
-        for (TSource item : source) {
-            BigDecimal v = selector.apply(item);
-            if (v != null)
-                sum = sum.add(v);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                BigDecimal v = selector.apply(e.current());
+                if (v != null)
+                    sum = sum.add(v);
+            }
         }
         return sum;
     }
