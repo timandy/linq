@@ -1,7 +1,5 @@
 package com.bestvike.function;
 
-import com.sun.istack.internal.NotNull;
-
 import java.math.BigDecimal;
 
 /**
@@ -9,6 +7,5 @@ import java.math.BigDecimal;
  */
 @FunctionalInterface
 public interface DecimalFunc1<T> {
-    @NotNull
     BigDecimal apply(T arg);
 }
