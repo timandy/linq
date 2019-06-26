@@ -43,7 +43,7 @@ public final class MinBy {
             key = keySelector.apply(value);
             while (e.moveNext()) {
                 TSource curValue = e.current();
-                Integer curKey = keySelector.apply(curValue);
+                int curKey = keySelector.apply(curValue);
                 if (curKey < key) {
                     value = curValue;
                     key = curKey;
@@ -100,7 +100,7 @@ public final class MinBy {
             key = keySelector.apply(value);
             while (e.moveNext()) {
                 TSource curValue = e.current();
-                Long curKey = keySelector.apply(curValue);
+                long curKey = keySelector.apply(curValue);
                 if (curKey < key) {
                     value = curValue;
                     key = curKey;
@@ -160,7 +160,7 @@ public final class MinBy {
 
             while (e.moveNext()) {
                 TSource curValue = e.current();
-                Float curKey = keySelector.apply(curValue);
+                float curKey = keySelector.apply(curValue);
                 if (curKey < key) {
                     value = curValue;
                     key = curKey;
@@ -229,7 +229,7 @@ public final class MinBy {
 
             while (e.moveNext()) {
                 TSource curValue = e.current();
-                Double curKey = keySelector.apply(curValue);
+                double curKey = keySelector.apply(curValue);
                 if (curKey < key) {
                     value = curValue;
                     key = curKey;
