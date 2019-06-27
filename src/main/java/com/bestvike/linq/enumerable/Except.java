@@ -29,7 +29,7 @@ public final class Except {
 
 
 final class ExceptIterator<TSource> extends AbstractIterator<TSource> {
-    private final com.bestvike.linq.IEnumerable<TSource> first;
+    private final IEnumerable<TSource> first;
     private final IEnumerable<TSource> second;
     private final IEqualityComparer<TSource> comparer;
     private Set<TSource> set;
