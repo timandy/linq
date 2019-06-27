@@ -11,7 +11,6 @@ import com.bestvike.linq.util.ListUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Created by 许崇雷 on 2017-09-11.
  */
@@ -438,9 +437,10 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
 
         ListUtils.addRange(list, this.source);
         if (this.appended != null) {
-            IEnumerator<TSource> e = this.appended.enumerator(this.appendCount);
-            while (e.moveNext())
-                list.add(e.current());
+            try (IEnumerator<TSource> e = this.appended.enumerator(this.appendCount)) {
+                while (e.moveNext())
+                    list.add(e.current());
+            }
         }
 
         return list;
