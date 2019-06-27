@@ -60,8 +60,10 @@ final class EnumerableHelpers {
         assert array != null && array.length - arrayIndex >= count;
 
         int endIndex = arrayIndex + count;
-        for (T item : source)
-            array[arrayIndex++] = item;
+        try (IEnumerator<T> e = source.enumerator()) {
+            while (e.moveNext())
+                array[arrayIndex++] = e.current();
+        }
 
         assert arrayIndex == endIndex;
     }

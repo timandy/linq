@@ -44,9 +44,11 @@ public final class Count {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         int count = 0;
-        for (TSource element : source) {
-            if (predicate.apply(element))
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                if (predicate.apply(e.current()))
+                    count = Math.addExact(count, 1);
+            }
         }
 
         return count;
@@ -72,9 +74,11 @@ public final class Count {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
         long count = 0;
-        for (TSource element : source) {
-            if (predicate.apply(element))
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                if (predicate.apply(e.current()))
+                    count = Math.addExact(count, 1);
+            }
         }
 
         return count;

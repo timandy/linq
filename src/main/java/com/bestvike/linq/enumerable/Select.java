@@ -167,8 +167,10 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
-        for (TSource item : this.source)
-            builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                builder.add(this.selector.apply(e.current()));
+        }
 
         return builder.toArray(clazz);
     }
@@ -176,8 +178,10 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
-        for (TSource item : this.source)
-            builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                builder.add(this.selector.apply(e.current()));
+        }
 
         return builder.toArray();
     }
@@ -185,8 +189,10 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
-        for (TSource item : this.source)
-            list.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                list.add(this.selector.apply(e.current()));
+        }
 
         return list;
     }
@@ -199,9 +205,11 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
             return -1;
 
         int count = 0;
-        for (TSource item : this.source) {
-            this.selector.apply(item);
-            count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                this.selector.apply(e.current());
+                count = Math.addExact(count, 1);
+            }
         }
 
         return count;
@@ -282,8 +290,10 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
         if (!onlyIfCheap) {
-            for (TSource item : this.source)
-                this.selector.apply(item);
+            try (IEnumerator<TSource> e = this.source.enumerator()) {
+                while (e.moveNext())
+                    this.selector.apply(e.current());
+            }
         }
 
         return this.source._getCount();
@@ -795,8 +805,10 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         assert this.source._getCount(true) == -1;
 
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
-        for (TSource input : this.source)
-            builder.add(this.selector.apply(input));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                builder.add(this.selector.apply(e.current()));
+        }
 
         return builder.toArray(clazz);
     }
@@ -805,8 +817,10 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         assert this.source._getCount(true) == -1;
 
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
-        for (TSource input : this.source)
-            builder.add(this.selector.apply(input));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                builder.add(this.selector.apply(e.current()));
+        }
 
         return builder.toArray();
     }
@@ -817,9 +831,11 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
 
         TResult[] array = ArrayUtils.newInstance(clazz, count);
         int index = 0;
-        for (TSource input : this.source) {
-            array[index] = this.selector.apply(input);
-            ++index;
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                array[index] = this.selector.apply(e.current());
+                ++index;
+            }
         }
 
         return array;
@@ -831,9 +847,11 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
 
         Object[] array = new Object[count];
         int index = 0;
-        for (TSource input : this.source) {
-            array[index] = this.selector.apply(input);
-            ++index;
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                array[index] = this.selector.apply(e.current());
+                ++index;
+            }
         }
 
         return array;
@@ -880,8 +898,10 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
                 break;
         }
 
-        for (TSource input : this.source)
-            list.add(this.selector.apply(input));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                list.add(this.selector.apply(e.current()));
+        }
 
         return list;
     }
@@ -891,8 +911,10 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
         if (!onlyIfCheap) {
-            for (TSource item : this.source)
-                this.selector.apply(item);
+            try (IEnumerator<TSource> e = this.source.enumerator()) {
+                while (e.moveNext())
+                    this.selector.apply(e.current());
+            }
         }
 
         return this.source._getCount(onlyIfCheap);

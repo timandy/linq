@@ -172,9 +172,12 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(item);
+            }
         }
 
         return builder.toArray(clazz);
@@ -183,9 +186,12 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(item);
+            }
         }
 
         return builder.toArray();
@@ -194,9 +200,12 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                list.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    list.add(item);
+            }
         }
 
         return list;
@@ -208,9 +217,11 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
             return -1;
 
         int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                if (this.predicate.apply(e.current()))
+                    count = Math.addExact(count, 1);
+            }
         }
 
         return count;
@@ -265,9 +276,12 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
     @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(item);
+            }
         }
 
         return builder.toArray(clazz);
@@ -276,9 +290,12 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(item);
+            }
         }
 
         return builder.toArray();
@@ -287,9 +304,12 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
     @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                list.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    list.add(item);
+            }
         }
 
         return list;
@@ -301,9 +321,11 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
             return -1;
 
         int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                if (this.predicate.apply(e.current()))
+                    count = Math.addExact(count, 1);
+            }
         }
 
         return count;
@@ -371,9 +393,12 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     @Override
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(item);
+            }
         }
 
         return builder.toArray(clazz);
@@ -382,9 +407,12 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(item);
+            }
         }
 
         return builder.toArray();
@@ -393,9 +421,12 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
     @Override
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                list.add(item);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    list.add(item);
+            }
         }
 
         return list;
@@ -407,9 +438,11 @@ final class WhereListIterator<TSource> extends Iterator<TSource> implements IILi
             return -1;
 
         int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                if (this.predicate.apply(e.current()))
+                    count = Math.addExact(count, 1);
+            }
         }
 
         return count;
@@ -462,9 +495,12 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(this.selector.apply(item));
+            }
         }
 
         return builder.toArray(clazz);
@@ -473,9 +509,12 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(this.selector.apply(item));
+            }
         }
 
         return builder.toArray();
@@ -484,9 +523,12 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
     @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                list.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    list.add(this.selector.apply(item));
+            }
         }
 
         return list;
@@ -500,10 +542,13 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
             return -1;
 
         int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
-                this.selector.apply(item);
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item)) {
+                    this.selector.apply(item);
+                    count = Math.addExact(count, 1);
+                }
             }
         }
 
@@ -570,9 +615,12 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
     @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(this.selector.apply(item));
+            }
         }
 
         return builder.toArray(clazz);
@@ -581,9 +629,12 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>(this.source._getCount());
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(this.selector.apply(item));
+            }
         }
 
         return builder.toArray();
@@ -592,9 +643,12 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
     @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                list.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    list.add(this.selector.apply(item));
+            }
         }
 
         return list;
@@ -608,10 +662,13 @@ final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> 
             return -1;
 
         int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
-                this.selector.apply(item);
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item)) {
+                    this.selector.apply(item);
+                    count = Math.addExact(count, 1);
+                }
             }
         }
 
@@ -678,9 +735,12 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
     @Override
     public TResult[] _toArray(Class<TResult> clazz) {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(this.selector.apply(item));
+            }
         }
 
         return builder.toArray(clazz);
@@ -689,9 +749,12 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
     @Override
     public Object[] _toArray() {
         LargeArrayBuilder<TResult> builder = new LargeArrayBuilder<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                builder.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    builder.add(this.selector.apply(item));
+            }
         }
 
         return builder.toArray();
@@ -700,9 +763,12 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
     @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item))
-                list.add(this.selector.apply(item));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item))
+                    list.add(this.selector.apply(item));
+            }
         }
 
         return list;
@@ -716,10 +782,13 @@ final class WhereSelectEnumerableIterator<TSource, TResult> extends Iterator<TRe
             return -1;
 
         int count = 0;
-        for (TSource item : this.source) {
-            if (this.predicate.apply(item)) {
-                this.selector.apply(item);
-                count = Math.addExact(count, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                if (this.predicate.apply(item)) {
+                    this.selector.apply(item);
+                    count = Math.addExact(count, 1);
+                }
             }
         }
 

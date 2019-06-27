@@ -80,10 +80,13 @@ public final class First {
             return ordered._tryGetFirst(predicate, found);
         }
 
-        for (TSource element : source) {
-            if (predicate.apply(element)) {
-                found.value = true;
-                return element;
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
+                if (predicate.apply(element)) {
+                    found.value = true;
+                    return element;
+                }
             }
         }
 

@@ -35,8 +35,12 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
         assert keySelector != null;
 
         Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
-        for (TElement item : source)
-            lookup.getGrouping(keySelector.apply(item), true).add(item);
+        try (IEnumerator<TElement> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TElement item = e.current();
+                lookup.getGrouping(keySelector.apply(item), true).add(item);
+            }
+        }
         return lookup;
     }
 
@@ -46,29 +50,39 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
         assert elementSelector != null;
 
         Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
-        for (TSource item : source)
-            lookup.getGrouping(keySelector.apply(item), true).add(elementSelector.apply(item));
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource item = e.current();
+                lookup.getGrouping(keySelector.apply(item), true).add(elementSelector.apply(item));
+            }
+        }
         return lookup;
     }
 
     static <TKey, TElement> Lookup<TKey, TElement> createForJoin(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
-        for (TElement item : source) {
-            TKey key = keySelector.apply(item);
-            if (key != null)
-                lookup.getGrouping(key, true).add(item);
+        try (IEnumerator<TElement> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TElement item = e.current();
+                TKey key = keySelector.apply(item);
+                if (key != null)
+                    lookup.getGrouping(key, true).add(item);
+            }
         }
         return lookup;
     }
 
     static <TKey, TElement> Lookup<TKey, TElement> createForFullJoin(IEnumerable<TElement> source, Func1<TElement, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         Lookup<TKey, TElement> lookup = new Lookup<>(comparer);
-        for (TElement item : source) {
-            TKey key = keySelector.apply(item);
-            if (key == null)
-                lookup.getNullKeyGrouping().add(item);
-            else
-                lookup.getGrouping(key, true).add(item);
+        try (IEnumerator<TElement> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TElement item = e.current();
+                TKey key = keySelector.apply(item);
+                if (key == null)
+                    lookup.getNullKeyGrouping().add(item);
+                else
+                    lookup.getGrouping(key, true).add(item);
+            }
         }
         return lookup;
     }

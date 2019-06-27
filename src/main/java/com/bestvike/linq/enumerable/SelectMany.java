@@ -127,10 +127,12 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
     public TResult[] _toArray(Class<TResult> clazz) {
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
-        for (TSource element : this.source) {
-            IEnumerable<TResult> enumerable = this.selector.apply(element);
-            if (builder.reserveOrAdd(enumerable))
-                deferredCopies.add(enumerable);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                IEnumerable<TResult> enumerable = this.selector.apply(e.current());
+                if (builder.reserveOrAdd(enumerable))
+                    deferredCopies.add(enumerable);
+            }
         }
 
         TResult[] array = builder.toArray(clazz);
@@ -148,10 +150,12 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
     public Object[] _toArray() {
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
-        for (TSource element : this.source) {
-            IEnumerable<TResult> enumerable = this.selector.apply(element);
-            if (builder.reserveOrAdd(enumerable))
-                deferredCopies.add(enumerable);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                IEnumerable<TResult> enumerable = this.selector.apply(e.current());
+                if (builder.reserveOrAdd(enumerable))
+                    deferredCopies.add(enumerable);
+            }
         }
 
         Object[] array = builder.toArray();
@@ -168,8 +172,10 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
     @Override
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
-        for (TSource element : this.source)
-            ListUtils.addRange(list, this.selector.apply(element));
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                ListUtils.addRange(list, this.selector.apply(e.current()));
+        }
 
         return list;
     }
@@ -180,8 +186,10 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
             return -1;
 
         int count = 0;
-        for (TSource element : this.source)
-            count = Math.addExact(count, this.selector.apply(element).count());
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                count = Math.addExact(count, this.selector.apply(e.current()).count());
+        }
 
         return count;
     }
@@ -259,11 +267,13 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
         int index = 0;
-        for (TSource element : this.source) {
-            IEnumerable<TResult> enumerable = this.selector.apply(element, index);
-            index = Math.addExact(index, 1);
-            if (builder.reserveOrAdd(enumerable))
-                deferredCopies.add(enumerable);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                IEnumerable<TResult> enumerable = this.selector.apply(e.current(), index);
+                index = Math.addExact(index, 1);
+                if (builder.reserveOrAdd(enumerable))
+                    deferredCopies.add(enumerable);
+            }
         }
 
         TResult[] array = builder.toArray(clazz);
@@ -282,11 +292,13 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
         SparseArrayBuilder<TResult> builder = new SparseArrayBuilder<>();
         ArrayBuilder<IEnumerable<TResult>> deferredCopies = new ArrayBuilder<>();
         int index = 0;
-        for (TSource element : this.source) {
-            IEnumerable<TResult> enumerable = this.selector.apply(element, index);
-            index = Math.addExact(index, 1);
-            if (builder.reserveOrAdd(enumerable))
-                deferredCopies.add(enumerable);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                IEnumerable<TResult> enumerable = this.selector.apply(e.current(), index);
+                index = Math.addExact(index, 1);
+                if (builder.reserveOrAdd(enumerable))
+                    deferredCopies.add(enumerable);
+            }
         }
 
         Object[] array = builder.toArray();
@@ -304,9 +316,11 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
     public List<TResult> _toList() {
         List<TResult> list = new ArrayList<>();
         int index = 0;
-        for (TSource element : this.source) {
-            ListUtils.addRange(list, this.selector.apply(element, index));
-            index = Math.addExact(index, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                ListUtils.addRange(list, this.selector.apply(e.current(), index));
+                index = Math.addExact(index, 1);
+            }
         }
 
         return list;
@@ -319,9 +333,11 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
 
         int count = 0;
         int index = 0;
-        for (TSource element : this.source) {
-            count = Math.addExact(count, this.selector.apply(element, index).count());
-            index = Math.addExact(index, 1);
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                count = Math.addExact(count, this.selector.apply(e.current(), index).count());
+                index = Math.addExact(index, 1);
+            }
         }
 
         return count;

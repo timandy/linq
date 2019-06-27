@@ -2,6 +2,7 @@ package com.bestvike.linq.util;
 
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -36,7 +37,9 @@ public final class ListUtils {
             list.addAll(collection.getCollection());
             return;
         }
-        for (T item : enumerable)
-            list.add(item);
+        try (IEnumerator<T> e = enumerable.enumerator()) {
+            while (e.moveNext())
+                list.add(e.current());
+        }
     }
 }
