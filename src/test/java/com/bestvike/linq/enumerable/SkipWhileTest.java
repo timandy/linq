@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -32,7 +32,7 @@ public class SkipWhileTest extends TestCase {
     public void SkipWhileThrowsOnNull() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).skipWhile(i -> i < 40));
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).skipWhile((i, idx) -> i == idx));
-        assertThrows(ArgumentNullException.class, () -> Linq.range(0, 20).skipWhile((IntPredicate2<Integer>) null));
+        assertThrows(ArgumentNullException.class, () -> Linq.range(0, 20).skipWhile((IndexPredicate2<Integer>) null));
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 20).skipWhile((Predicate1<Integer>) null));
     }
 

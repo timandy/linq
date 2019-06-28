@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -47,7 +47,7 @@ public final class Take {
         return new TakeWhileIterator<>(source, predicate);
     }
 
-    public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
+    public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, IndexPredicate2<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -130,11 +130,11 @@ final class TakeWhileIterator<TSource> extends AbstractIterator<TSource> {
 
 final class TakeWhileIterator2<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
-    private final IntPredicate2<TSource> predicate;
+    private final IndexPredicate2<TSource> predicate;
     private IEnumerator<TSource> enumerator;
     private int index;
 
-    TakeWhileIterator2(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
+    TakeWhileIterator2(IEnumerable<TSource> source, IndexPredicate2<TSource> predicate) {
         this.source = source;
         this.predicate = predicate;
     }

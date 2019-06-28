@@ -7,8 +7,8 @@ import com.bestvike.function.DoubleFunc1;
 import com.bestvike.function.FloatFunc1;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
+import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.IntFunc1;
-import com.bestvike.function.IntPredicate2;
 import com.bestvike.function.LongFunc1;
 import com.bestvike.function.NullableDecimalFunc1;
 import com.bestvike.function.NullableDoubleFunc1;
@@ -875,7 +875,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Skip.skipWhile(this, predicate);
     }
 
-    default IEnumerable<TSource> skipWhile(IntPredicate2<TSource> predicate) {
+    default IEnumerable<TSource> skipWhile(IndexPredicate2<TSource> predicate) {
         return Skip.skipWhile(this, predicate);
     }
 
@@ -971,7 +971,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Take.takeWhile(this, predicate);
     }
 
-    default IEnumerable<TSource> takeWhile(IntPredicate2<TSource> predicate) {
+    default IEnumerable<TSource> takeWhile(IndexPredicate2<TSource> predicate) {
         return Take.takeWhile(this, predicate);
     }
 
@@ -1048,7 +1048,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Where.where(this, predicate);
     }
 
-    default IEnumerable<TSource> where(IntPredicate2<TSource> predicate) {
+    default IEnumerable<TSource> where(IndexPredicate2<TSource> predicate) {
         return Where.where(this, predicate);
     }
 

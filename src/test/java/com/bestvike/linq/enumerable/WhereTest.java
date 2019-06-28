@@ -2,7 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
 import com.bestvike.function.Func1;
-import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate0;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -31,7 +31,7 @@ public class WhereTest extends TestCase {
     public void Where_SourceIsNull_ArgumentNullExceptionThrown() {
         IEnumerable<Integer> source = null;
         Predicate1<Integer> simplePredicate = (value) -> true;
-        IntPredicate2<Integer> complexPredicate = (value, index) -> true;
+        IndexPredicate2<Integer> complexPredicate = (value, index) -> true;
 
         assertThrows(NullPointerException.class, () -> source.where(simplePredicate));
         assertThrows(NullPointerException.class, () -> source.where(complexPredicate));
@@ -41,7 +41,7 @@ public class WhereTest extends TestCase {
     public void Where_PredicateIsNull_ArgumentNullExceptionThrown() {
         IEnumerable<Integer> source = Linq.range(1, 10);
         Predicate1<Integer> simplePredicate = null;
-        IntPredicate2<Integer> complexPredicate = null;
+        IndexPredicate2<Integer> complexPredicate = null;
 
         assertThrows(ArgumentNullException.class, () -> source.where(simplePredicate));
         assertThrows(ArgumentNullException.class, () -> source.where(complexPredicate));
@@ -223,7 +223,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_Array_ReturnsExpectedValues_Complex() {
         int[] source = new int[]{2, 1, 3, 5, 4};
-        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
+        IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -258,7 +258,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_List_ReturnsExpectedValues_Complex() {
         List<Integer> source = Arrays.asList(2, 1, 3, 5, 4);
-        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
+        IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -293,7 +293,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IReadOnlyCollection_ReturnsExpectedValues_Complex() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(2, 1, 3, 5, 4));
-        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
+        IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -328,7 +328,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_ICollection_ReturnsExpectedValues_Complex() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(2, 1, 3, 5, 4));
-        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
+        IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
 
@@ -363,7 +363,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Where_IEnumerable_ReturnsExpectedValues_Complex() {
         IEnumerable<Integer> source = Linq.asEnumerable(new LinkedList<>(Arrays.asList(2, 1, 3, 5, 4)));
-        IntPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
+        IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = source.where(complexPredicate);
 

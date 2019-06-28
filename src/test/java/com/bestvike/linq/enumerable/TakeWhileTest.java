@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -141,7 +141,7 @@ public class TakeWhileTest extends TestCase {
     @Test
     public void ThrowsOnNullPredicateIndexed() {
         int[] source = {1, 2, 3};
-        IntPredicate2<Integer> nullPredicate = null;
+        IndexPredicate2<Integer> nullPredicate = null;
 
         assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).takeWhile(nullPredicate));
     }

@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IList;
-import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -48,7 +48,7 @@ public final class Skip {
         return new SkipWhileIterator<>(source, predicate);
     }
 
-    public static <TSource> IEnumerable<TSource> skipWhile(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
+    public static <TSource> IEnumerable<TSource> skipWhile(IEnumerable<TSource> source, IndexPredicate2<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -126,10 +126,10 @@ final class SkipWhileIterator<TSource> extends AbstractIterator<TSource> {
 
 final class SkipWhileIterator2<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
-    private final IntPredicate2<TSource> predicate;
+    private final IndexPredicate2<TSource> predicate;
     private IEnumerator<TSource> enumerator;
 
-    SkipWhileIterator2(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
+    SkipWhileIterator2(IEnumerable<TSource> source, IndexPredicate2<TSource> predicate) {
         assert source != null;
         assert predicate != null;
         this.source = source;

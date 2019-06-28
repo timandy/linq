@@ -3,7 +3,7 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Func1;
-import com.bestvike.function.IntPredicate2;
+import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -49,7 +49,7 @@ public final class Where {
         return new WhereEnumerableIterator<>(source, predicate);
     }
 
-    public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
+    public static <TSource> IEnumerable<TSource> where(IEnumerable<TSource> source, IndexPredicate2<TSource> predicate) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
@@ -62,11 +62,11 @@ public final class Where {
 
 final class WhereIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
-    private final IntPredicate2<TSource> predicate;
+    private final IndexPredicate2<TSource> predicate;
     private IEnumerator<TSource> enumerator;
     private int index;
 
-    WhereIterator(IEnumerable<TSource> source, IntPredicate2<TSource> predicate) {
+    WhereIterator(IEnumerable<TSource> source, IndexPredicate2<TSource> predicate) {
         assert source != null;
         assert predicate != null;
         this.source = source;
