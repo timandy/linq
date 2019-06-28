@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * Created by 许崇雷 on 2017-07-18.
  */
+@SuppressWarnings("unchecked")
 public final class Linq {
     private Linq() {
     }
@@ -63,20 +64,20 @@ public final class Linq {
         return Enumerable.asEnumerable(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(List<TSource> source) {
-        return Enumerable.asEnumerable(source);
+    public static <TSource> IEnumerable<TSource> asEnumerable(List<? extends TSource> source) {
+        return Enumerable.asEnumerable((List<TSource>) source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(Collection<TSource> source) {
-        return Enumerable.asEnumerable(source);
+    public static <TSource> IEnumerable<TSource> asEnumerable(Collection<? extends TSource> source) {
+        return Enumerable.asEnumerable((Collection<TSource>) source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(Iterable<TSource> source) {
-        return Enumerable.asEnumerable(source);
+    public static <TSource> IEnumerable<TSource> asEnumerable(Iterable<? extends TSource> source) {
+        return Enumerable.asEnumerable((Iterable<TSource>) source);
     }
 
-    public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {
-        return Enumerable.asEnumerable(source);
+    public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<? extends TKey, ? extends TValue> source) {
+        return Enumerable.asEnumerable((Map<TKey, TValue>) source);
     }
 
     public static IEnumerable<Integer> range(int start, int count) {

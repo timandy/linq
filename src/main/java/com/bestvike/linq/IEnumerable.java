@@ -116,28 +116,28 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return StreamSupport.stream(this.spliterator(), true);
     }
 
-    default TSource aggregate(Func2<TSource, TSource, TSource> func) {
-        return Aggregate.aggregate(this, func);
+    default TSource aggregate(Func2<? super TSource, ? super TSource, ? extends TSource> func) {
+        return Aggregate.aggregate(this, (Func2<TSource, TSource, TSource>) func);
     }
 
-    default <TAccumulate> TAccumulate aggregate(TAccumulate seed, Func2<TAccumulate, TSource, TAccumulate> func) {
-        return Aggregate.aggregate(this, seed, func);
+    default <TAccumulate> TAccumulate aggregate(TAccumulate seed, Func2<? super TAccumulate, ? super TSource, ? extends TAccumulate> func) {
+        return Aggregate.aggregate(this, seed, (Func2<TAccumulate, TSource, TAccumulate>) func);
     }
 
-    default <TAccumulate, TResult> TResult aggregate(TAccumulate seed, Func2<TAccumulate, TSource, TAccumulate> func, Func1<TAccumulate, TResult> resultSelector) {
-        return Aggregate.aggregate(this, seed, func, resultSelector);
+    default <TAccumulate, TResult> TResult aggregate(TAccumulate seed, Func2<? super TAccumulate, ? super TSource, ? extends TAccumulate> func, Func1<? super TAccumulate, ? extends TResult> resultSelector) {
+        return Aggregate.aggregate(this, seed, (Func2<TAccumulate, TSource, TAccumulate>) func, (Func1<TAccumulate, TResult>) resultSelector);
     }
 
-    default boolean all(Predicate1<TSource> predicate) {
-        return AnyAll.all(this, predicate);
+    default boolean all(Predicate1<? super TSource> predicate) {
+        return AnyAll.all(this, (Predicate1<TSource>) predicate);
     }
 
     default boolean any() {
         return AnyAll.any(this);
     }
 
-    default boolean any(Predicate1<TSource> predicate) {
-        return AnyAll.any(this, predicate);
+    default boolean any(Predicate1<? super TSource> predicate) {
+        return AnyAll.any(this, (Predicate1<TSource>) predicate);
     }
 
     default IEnumerable<TSource> append(TSource element) {
@@ -188,72 +188,72 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Average.averageDecimalNull((IEnumerable<BigDecimal>) this);
     }
 
-    default double averageInt(IntFunc1<TSource> selector) {
-        return Average.averageInt(this, selector);
+    default double averageInt(IntFunc1<? super TSource> selector) {
+        return Average.averageInt(this, (IntFunc1<TSource>) selector);
     }
 
-    default Double averageIntNull(NullableIntFunc1<TSource> selector) {
-        return Average.averageIntNull(this, selector);
+    default Double averageIntNull(NullableIntFunc1<? super TSource> selector) {
+        return Average.averageIntNull(this, (NullableIntFunc1<TSource>) selector);
     }
 
-    default double averageLong(LongFunc1<TSource> selector) {
-        return Average.averageLong(this, selector);
+    default double averageLong(LongFunc1<? super TSource> selector) {
+        return Average.averageLong(this, (LongFunc1<TSource>) selector);
     }
 
-    default Double averageLongNull(NullableLongFunc1<TSource> selector) {
-        return Average.averageLongNull(this, selector);
+    default Double averageLongNull(NullableLongFunc1<? super TSource> selector) {
+        return Average.averageLongNull(this, (NullableLongFunc1<TSource>) selector);
     }
 
-    default float averageFloat(FloatFunc1<TSource> selector) {
-        return Average.averageFloat(this, selector);
+    default float averageFloat(FloatFunc1<? super TSource> selector) {
+        return Average.averageFloat(this, (FloatFunc1<TSource>) selector);
     }
 
-    default Float averageFloatNull(NullableFloatFunc1<TSource> selector) {
-        return Average.averageFloatNull(this, selector);
+    default Float averageFloatNull(NullableFloatFunc1<? super TSource> selector) {
+        return Average.averageFloatNull(this, (NullableFloatFunc1<TSource>) selector);
     }
 
-    default double averageDouble(DoubleFunc1<TSource> selector) {
-        return Average.averageDouble(this, selector);
+    default double averageDouble(DoubleFunc1<? super TSource> selector) {
+        return Average.averageDouble(this, (DoubleFunc1<TSource>) selector);
     }
 
-    default Double averageDoubleNull(NullableDoubleFunc1<TSource> selector) {
-        return Average.averageDoubleNull(this, selector);
+    default Double averageDoubleNull(NullableDoubleFunc1<? super TSource> selector) {
+        return Average.averageDoubleNull(this, (NullableDoubleFunc1<TSource>) selector);
     }
 
-    default BigDecimal averageDecimal(DecimalFunc1<TSource> selector) {
-        return Average.averageDecimal(this, selector);
+    default BigDecimal averageDecimal(DecimalFunc1<? super TSource> selector) {
+        return Average.averageDecimal(this, (DecimalFunc1<TSource>) selector);
     }
 
-    default BigDecimal averageDecimalNull(NullableDecimalFunc1<TSource> selector) {
-        return Average.averageDecimalNull(this, selector);
+    default BigDecimal averageDecimalNull(NullableDecimalFunc1<? super TSource> selector) {
+        return Average.averageDecimalNull(this, (NullableDecimalFunc1<TSource>) selector);
     }
 
     default <TResult> IEnumerable<TResult> cast(Class<TResult> clazz) {
         return Cast.cast(this, clazz);
     }
 
-    default IEnumerable<TSource> concat(IEnumerable<TSource> second) {
-        return Concat.concat(this, second);
+    default IEnumerable<TSource> concat(IEnumerable<? extends TSource> second) {
+        return Concat.concat(this, (IEnumerable<TSource>) second);
     }
 
     default boolean contains(TSource value) {
         return Contains.contains(this, value);
     }
 
-    default boolean contains(TSource value, IEqualityComparer<TSource> comparer) {
-        return Contains.contains(this, value, comparer);
+    default boolean contains(TSource value, IEqualityComparer<? super TSource> comparer) {
+        return Contains.contains(this, value, (IEqualityComparer<TSource>) comparer);
     }
 
     default int count() {
         return Count.count(this);
     }
 
-    default int count(Predicate1<TSource> predicate) {
-        return Count.count(this, predicate);
+    default int count(Predicate1<? super TSource> predicate) {
+        return Count.count(this, (Predicate1<TSource>) predicate);
     }
 
-    default <TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<TInner> inner, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.crossJoin(this, inner, resultSelector);
+    default <TInner, TResult> IEnumerable<TResult> crossJoin(IEnumerable<? extends TInner> inner, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.crossJoin(this, (IEnumerable<TInner>) inner, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
     default IEnumerable<TSource> defaultIfEmpty() {
@@ -268,16 +268,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Distinct.distinct(this);
     }
 
-    default IEnumerable<TSource> distinct(IEqualityComparer<TSource> comparer) {
-        return Distinct.distinct(this, comparer);
+    default IEnumerable<TSource> distinct(IEqualityComparer<? super TSource> comparer) {
+        return Distinct.distinct(this, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> distinctBy(Func1<TSource, TKey> keySelector) {
-        return DistinctBy.distinctBy(this, keySelector);
+    default <TKey> IEnumerable<TSource> distinctBy(Func1<? super TSource, ? extends TKey> keySelector) {
+        return DistinctBy.distinctBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> distinctBy(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return DistinctBy.distinctBy(this, keySelector, comparer);
+    default <TKey> IEnumerable<TSource> distinctBy(Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return DistinctBy.distinctBy(this, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default TSource elementAt(int index) {
@@ -288,44 +288,44 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ElementAt.elementAtOrDefault(this, index);
     }
 
-    default IEnumerable<TSource> except(IEnumerable<TSource> second) {
-        return Except.except(this, second);
+    default IEnumerable<TSource> except(IEnumerable<? extends TSource> second) {
+        return Except.except(this, (IEnumerable<TSource>) second);
     }
 
-    default IEnumerable<TSource> except(IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
-        return Except.except(this, second, comparer);
+    default IEnumerable<TSource> except(IEnumerable<? extends TSource> second, IEqualityComparer<? super TSource> comparer) {
+        return Except.except(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
-        return ExceptBy.exceptBy(this, second, keySelector);
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector) {
+        return ExceptBy.exceptBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return ExceptBy.exceptBy(this, second, keySelector, comparer);
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return ExceptBy.exceptBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default int findIndex(Predicate1<TSource> predicate) {
-        return FindIndex.findIndex(this, predicate);
+    default int findIndex(Predicate1<? super TSource> predicate) {
+        return FindIndex.findIndex(this, (Predicate1<TSource>) predicate);
     }
 
-    default int findLastIndex(Predicate1<TSource> predicate) {
-        return FindIndex.findLastIndex(this, predicate);
+    default int findLastIndex(Predicate1<? super TSource> predicate) {
+        return FindIndex.findLastIndex(this, (Predicate1<TSource>) predicate);
     }
 
     default TSource first() {
         return First.first(this);
     }
 
-    default TSource first(Predicate1<TSource> predicate) {
-        return First.first(this, predicate);
+    default TSource first(Predicate1<? super TSource> predicate) {
+        return First.first(this, (Predicate1<TSource>) predicate);
     }
 
     default TSource firstOrDefault() {
         return First.firstOrDefault(this);
     }
 
-    default TSource firstOrDefault(Predicate1<TSource> predicate) {
-        return First.firstOrDefault(this, predicate);
+    default TSource firstOrDefault(Predicate1<? super TSource> predicate) {
+        return First.firstOrDefault(this, (Predicate1<TSource>) predicate);
     }
 
     default String format() {
@@ -336,140 +336,140 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Format.format(this, formatter);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.fullJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.fullJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, defaultOuter, defaultInner, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return Join.fullJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.fullJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, defaultInner, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> fullJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, TSource defaultOuter, TInner defaultInner, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return Join.fullJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, defaultOuter, defaultInner, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(Func1<TSource, TKey> keySelector) {
-        return GroupBy.groupBy(this, keySelector);
+    default <TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(Func1<? super TSource, ? extends TKey> keySelector) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return GroupBy.groupBy(this, keySelector, comparer);
+    default <TKey> IEnumerable<IGrouping<TKey, TSource>> groupBy(Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TKey, TElement> IEnumerable<IGrouping<TKey, TElement>> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return GroupBy.groupBy(this, keySelector, elementSelector);
+    default <TKey, TElement> IEnumerable<IGrouping<TKey, TElement>> groupBy(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector);
     }
 
-    default <TKey, TElement> IEnumerable<IGrouping<TKey, TElement>> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
-        return GroupBy.groupBy(this, keySelector, elementSelector, comparer);
+    default <TKey, TElement> IEnumerable<IGrouping<TKey, TElement>> groupBy(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector, IEqualityComparer<? super TKey> comparer) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TKey, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector) {
-        return GroupBy.groupBy(this, keySelector, resultSelector);
+    default <TKey, TResult> IEnumerable<TResult> groupBy(Func1<? super TSource, ? extends TKey> keySelector, Func2<? super TKey, ? super IEnumerable<TSource>, ? extends TResult> resultSelector) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector, (Func2<TKey, IEnumerable<TSource>, TResult>) resultSelector);
     }
 
-    default <TKey, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func2<TKey, IEnumerable<TSource>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return GroupBy.groupBy(this, keySelector, resultSelector, comparer);
+    default <TKey, TResult> IEnumerable<TResult> groupBy(Func1<? super TSource, ? extends TKey> keySelector, Func2<? super TKey, ? super IEnumerable<TSource>, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector, (Func2<TKey, IEnumerable<TSource>, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector) {
-        return GroupBy.groupBy(this, keySelector, elementSelector, resultSelector);
+    default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector, Func2<? super TKey, ? super IEnumerable<TElement>, ? extends TResult> resultSelector) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector, (Func2<TKey, IEnumerable<TElement>, TResult>) resultSelector);
     }
 
-    default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TKey, IEnumerable<TElement>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return GroupBy.groupBy(this, keySelector, elementSelector, resultSelector, comparer);
+    default <TKey, TElement, TResult> IEnumerable<TResult> groupBy(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector, Func2<? super TKey, ? super IEnumerable<TElement>, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return GroupBy.groupBy(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector, (Func2<TKey, IEnumerable<TElement>, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, IEnumerable<TInner>, TResult> resultSelector) {
-        return GroupJoin.groupJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super IEnumerable<TInner>, ? extends TResult> resultSelector) {
+        return GroupJoin.groupJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, IEnumerable<TInner>, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, IEnumerable<TInner>, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return GroupJoin.groupJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> groupJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super IEnumerable<TInner>, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return GroupJoin.groupJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, IEnumerable<TInner>, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default int indexOf(TSource value) {
         return IndexOf.indexOf(this, value);
     }
 
-    default int indexOf(TSource value, IEqualityComparer<TSource> comparer) {
-        return IndexOf.indexOf(this, value, comparer);
+    default int indexOf(TSource value, IEqualityComparer<? super TSource> comparer) {
+        return IndexOf.indexOf(this, value, (IEqualityComparer<TSource>) comparer);
     }
 
-    default IEnumerable<TSource> intersect(IEnumerable<TSource> second) {
-        return Intersect.intersect(this, second);
+    default IEnumerable<TSource> intersect(IEnumerable<? extends TSource> second) {
+        return Intersect.intersect(this, (IEnumerable<TSource>) second);
     }
 
-    default IEnumerable<TSource> intersect(IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
-        return Intersect.intersect(this, second, comparer);
+    default IEnumerable<TSource> intersect(IEnumerable<? extends TSource> second, IEqualityComparer<? super TSource> comparer) {
+        return Intersect.intersect(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
-        return IntersectBy.intersectBy(this, second, keySelector);
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector) {
+        return IntersectBy.intersectBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return IntersectBy.intersectBy(this, second, keySelector, comparer);
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return IntersectBy.intersectBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.join(this, inner, outerKeySelector, innerKeySelector, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.join(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.join(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return Join.join(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default TSource last() {
         return Last.last(this);
     }
 
-    default TSource last(Predicate1<TSource> predicate) {
-        return Last.last(this, predicate);
+    default TSource last(Predicate1<? super TSource> predicate) {
+        return Last.last(this, (Predicate1<TSource>) predicate);
     }
 
     default int lastIndexOf(TSource value) {
         return IndexOf.lastIndexOf(this, value);
     }
 
-    default int lastIndexOf(TSource value, IEqualityComparer<TSource> comparer) {
-        return IndexOf.lastIndexOf(this, value, comparer);
+    default int lastIndexOf(TSource value, IEqualityComparer<? super TSource> comparer) {
+        return IndexOf.lastIndexOf(this, value, (IEqualityComparer<TSource>) comparer);
     }
 
     default TSource lastOrDefault() {
         return Last.lastOrDefault(this);
     }
 
-    default TSource lastOrDefault(Predicate1<TSource> predicate) {
-        return Last.lastOrDefault(this, predicate);
+    default TSource lastOrDefault(Predicate1<? super TSource> predicate) {
+        return Last.lastOrDefault(this, (Predicate1<TSource>) predicate);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.leftJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, TInner defaultInner, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.leftJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, defaultInner, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return Join.leftJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TInner defaultInner, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.leftJoin(this, inner, outerKeySelector, innerKeySelector, defaultInner, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, TInner defaultInner, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return Join.leftJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, defaultInner, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default long longCount() {
         return Count.longCount(this);
     }
 
-    default long longCount(Predicate1<TSource> predicate) {
-        return Count.longCount(this, predicate);
+    default long longCount(Predicate1<? super TSource> predicate) {
+        return Count.longCount(this, (Predicate1<TSource>) predicate);
     }
 
     default int maxInt() {
@@ -520,100 +520,100 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Max.maxNull(this);
     }
 
-    default int maxInt(IntFunc1<TSource> selector) {
-        return Max.maxInt(this, selector);
+    default int maxInt(IntFunc1<? super TSource> selector) {
+        return Max.maxInt(this, (IntFunc1<TSource>) selector);
     }
 
-    default Integer maxIntNull(NullableIntFunc1<TSource> selector) {
-        return Max.maxIntNull(this, selector);
+    default Integer maxIntNull(NullableIntFunc1<? super TSource> selector) {
+        return Max.maxIntNull(this, (NullableIntFunc1<TSource>) selector);
     }
 
-    default long maxLong(LongFunc1<TSource> selector) {
-        return Max.maxLong(this, selector);
+    default long maxLong(LongFunc1<? super TSource> selector) {
+        return Max.maxLong(this, (LongFunc1<TSource>) selector);
     }
 
-    default Long maxLongNull(NullableLongFunc1<TSource> selector) {
-        return Max.maxLongNull(this, selector);
+    default Long maxLongNull(NullableLongFunc1<? super TSource> selector) {
+        return Max.maxLongNull(this, (NullableLongFunc1<TSource>) selector);
     }
 
-    default float maxFloat(FloatFunc1<TSource> selector) {
-        return Max.maxFloat(this, selector);
+    default float maxFloat(FloatFunc1<? super TSource> selector) {
+        return Max.maxFloat(this, (FloatFunc1<TSource>) selector);
     }
 
-    default Float maxFloatNull(NullableFloatFunc1<TSource> selector) {
-        return Max.maxFloatNull(this, selector);
+    default Float maxFloatNull(NullableFloatFunc1<? super TSource> selector) {
+        return Max.maxFloatNull(this, (NullableFloatFunc1<TSource>) selector);
     }
 
-    default double maxDouble(DoubleFunc1<TSource> selector) {
-        return Max.maxDouble(this, selector);
+    default double maxDouble(DoubleFunc1<? super TSource> selector) {
+        return Max.maxDouble(this, (DoubleFunc1<TSource>) selector);
     }
 
-    default Double maxDoubleNull(NullableDoubleFunc1<TSource> selector) {
-        return Max.maxDoubleNull(this, selector);
+    default Double maxDoubleNull(NullableDoubleFunc1<? super TSource> selector) {
+        return Max.maxDoubleNull(this, (NullableDoubleFunc1<TSource>) selector);
     }
 
-    default BigDecimal maxDecimal(DecimalFunc1<TSource> selector) {
-        return Max.maxDecimal(this, selector);
+    default BigDecimal maxDecimal(DecimalFunc1<? super TSource> selector) {
+        return Max.maxDecimal(this, (DecimalFunc1<TSource>) selector);
     }
 
-    default BigDecimal maxDecimalNull(NullableDecimalFunc1<TSource> selector) {
-        return Max.maxDecimalNull(this, selector);
+    default BigDecimal maxDecimalNull(NullableDecimalFunc1<? super TSource> selector) {
+        return Max.maxDecimalNull(this, (NullableDecimalFunc1<TSource>) selector);
     }
 
-    default <TResult> TResult max(Func1<TSource, TResult> selector) {
-        return Max.max(this, selector);
+    default <TResult> TResult max(Func1<? super TSource, ? extends TResult> selector) {
+        return Max.max(this, (Func1<TSource, TResult>) selector);
     }
 
-    default <TResult> TResult maxNull(Func1<TSource, TResult> selector) {
-        return Max.maxNull(this, selector);
+    default <TResult> TResult maxNull(Func1<? super TSource, ? extends TResult> selector) {
+        return Max.maxNull(this, (Func1<TSource, TResult>) selector);
     }
 
-    default TSource maxByInt(IntFunc1<TSource> keySelector) {
-        return MaxBy.maxByInt(this, keySelector);
+    default TSource maxByInt(IntFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByInt(this, (IntFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByIntNull(NullableIntFunc1<TSource> keySelector) {
-        return MaxBy.maxByIntNull(this, keySelector);
+    default TSource maxByIntNull(NullableIntFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByIntNull(this, (NullableIntFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByLong(LongFunc1<TSource> keySelector) {
-        return MaxBy.maxByLong(this, keySelector);
+    default TSource maxByLong(LongFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByLong(this, (LongFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByLongNull(NullableLongFunc1<TSource> keySelector) {
-        return MaxBy.maxByLongNull(this, keySelector);
+    default TSource maxByLongNull(NullableLongFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByLongNull(this, (NullableLongFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByFloat(FloatFunc1<TSource> keySelector) {
-        return MaxBy.maxByFloat(this, keySelector);
+    default TSource maxByFloat(FloatFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByFloat(this, (FloatFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByFloatNull(NullableFloatFunc1<TSource> keySelector) {
-        return MaxBy.maxByFloatNull(this, keySelector);
+    default TSource maxByFloatNull(NullableFloatFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByFloatNull(this, (NullableFloatFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByDouble(DoubleFunc1<TSource> keySelector) {
-        return MaxBy.maxByDouble(this, keySelector);
+    default TSource maxByDouble(DoubleFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByDouble(this, (DoubleFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByDoubleNull(NullableDoubleFunc1<TSource> keySelector) {
-        return MaxBy.maxByDoubleNull(this, keySelector);
+    default TSource maxByDoubleNull(NullableDoubleFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByDoubleNull(this, (NullableDoubleFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByDecimal(DecimalFunc1<TSource> keySelector) {
-        return MaxBy.maxByDecimal(this, keySelector);
+    default TSource maxByDecimal(DecimalFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByDecimal(this, (DecimalFunc1<TSource>) keySelector);
     }
 
-    default TSource maxByDecimalNull(NullableDecimalFunc1<TSource> keySelector) {
-        return MaxBy.maxByDecimalNull(this, keySelector);
+    default TSource maxByDecimalNull(NullableDecimalFunc1<? super TSource> keySelector) {
+        return MaxBy.maxByDecimalNull(this, (NullableDecimalFunc1<TSource>) keySelector);
     }
 
-    default <TKey> TSource maxBy(Func1<TSource, TKey> keySelector) {
-        return MaxBy.maxBy(this, keySelector);
+    default <TKey> TSource maxBy(Func1<? super TSource, ? extends TKey> keySelector) {
+        return MaxBy.maxBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> TSource maxByNull(Func1<TSource, TKey> keySelector) {
-        return MaxBy.maxByNull(this, keySelector);
+    default <TKey> TSource maxByNull(Func1<? super TSource, ? extends TKey> keySelector) {
+        return MaxBy.maxByNull(this, (Func1<TSource, TKey>) keySelector);
     }
 
     default int minInt() {
@@ -664,120 +664,120 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Min.minNull(this);
     }
 
-    default int minInt(IntFunc1<TSource> selector) {
-        return Min.minInt(this, selector);
+    default int minInt(IntFunc1<? super TSource> selector) {
+        return Min.minInt(this, (IntFunc1<TSource>) selector);
     }
 
-    default Integer minIntNull(NullableIntFunc1<TSource> selector) {
-        return Min.minIntNull(this, selector);
+    default Integer minIntNull(NullableIntFunc1<? super TSource> selector) {
+        return Min.minIntNull(this, (NullableIntFunc1<TSource>) selector);
     }
 
-    default long minLong(LongFunc1<TSource> selector) {
-        return Min.minLong(this, selector);
+    default long minLong(LongFunc1<? super TSource> selector) {
+        return Min.minLong(this, (LongFunc1<TSource>) selector);
     }
 
-    default Long minLongNull(NullableLongFunc1<TSource> selector) {
-        return Min.minLongNull(this, selector);
+    default Long minLongNull(NullableLongFunc1<? super TSource> selector) {
+        return Min.minLongNull(this, (NullableLongFunc1<TSource>) selector);
     }
 
-    default float minFloat(FloatFunc1<TSource> selector) {
-        return Min.minFloat(this, selector);
+    default float minFloat(FloatFunc1<? super TSource> selector) {
+        return Min.minFloat(this, (FloatFunc1<TSource>) selector);
     }
 
-    default Float minFloatNull(NullableFloatFunc1<TSource> selector) {
-        return Min.minFloatNull(this, selector);
+    default Float minFloatNull(NullableFloatFunc1<? super TSource> selector) {
+        return Min.minFloatNull(this, (NullableFloatFunc1<TSource>) selector);
     }
 
-    default double minDouble(DoubleFunc1<TSource> selector) {
-        return Min.minDouble(this, selector);
+    default double minDouble(DoubleFunc1<? super TSource> selector) {
+        return Min.minDouble(this, (DoubleFunc1<TSource>) selector);
     }
 
-    default Double minDoubleNull(NullableDoubleFunc1<TSource> selector) {
-        return Min.minDoubleNull(this, selector);
+    default Double minDoubleNull(NullableDoubleFunc1<? super TSource> selector) {
+        return Min.minDoubleNull(this, (NullableDoubleFunc1<TSource>) selector);
     }
 
-    default BigDecimal minDecimal(DecimalFunc1<TSource> selector) {
-        return Min.minDecimal(this, selector);
+    default BigDecimal minDecimal(DecimalFunc1<? super TSource> selector) {
+        return Min.minDecimal(this, (DecimalFunc1<TSource>) selector);
     }
 
-    default BigDecimal minDecimalNull(NullableDecimalFunc1<TSource> selector) {
-        return Min.minDecimalNull(this, selector);
+    default BigDecimal minDecimalNull(NullableDecimalFunc1<? super TSource> selector) {
+        return Min.minDecimalNull(this, (NullableDecimalFunc1<TSource>) selector);
     }
 
-    default <TResult> TResult min(Func1<TSource, TResult> selector) {
-        return Min.min(this, selector);
+    default <TResult> TResult min(Func1<? super TSource, ? extends TResult> selector) {
+        return Min.min(this, (Func1<TSource, TResult>) selector);
     }
 
-    default <TResult> TResult minNull(Func1<TSource, TResult> selector) {
-        return Min.minNull(this, selector);
+    default <TResult> TResult minNull(Func1<? super TSource, ? extends TResult> selector) {
+        return Min.minNull(this, (Func1<TSource, TResult>) selector);
     }
 
-    default TSource minByInt(IntFunc1<TSource> keySelector) {
-        return MinBy.minByInt(this, keySelector);
+    default TSource minByInt(IntFunc1<? super TSource> keySelector) {
+        return MinBy.minByInt(this, (IntFunc1<TSource>) keySelector);
     }
 
-    default TSource minByIntNull(NullableIntFunc1<TSource> keySelector) {
-        return MinBy.minByIntNull(this, keySelector);
+    default TSource minByIntNull(NullableIntFunc1<? super TSource> keySelector) {
+        return MinBy.minByIntNull(this, (NullableIntFunc1<TSource>) keySelector);
     }
 
-    default TSource minByLong(LongFunc1<TSource> keySelector) {
-        return MinBy.minByLong(this, keySelector);
+    default TSource minByLong(LongFunc1<? super TSource> keySelector) {
+        return MinBy.minByLong(this, (LongFunc1<TSource>) keySelector);
     }
 
-    default TSource minByLongNull(NullableLongFunc1<TSource> keySelector) {
-        return MinBy.minByLongNull(this, keySelector);
+    default TSource minByLongNull(NullableLongFunc1<? super TSource> keySelector) {
+        return MinBy.minByLongNull(this, (NullableLongFunc1<TSource>) keySelector);
     }
 
-    default TSource minByFloat(FloatFunc1<TSource> keySelector) {
-        return MinBy.minByFloat(this, keySelector);
+    default TSource minByFloat(FloatFunc1<? super TSource> keySelector) {
+        return MinBy.minByFloat(this, (FloatFunc1<TSource>) keySelector);
     }
 
-    default TSource minByFloatNull(NullableFloatFunc1<TSource> keySelector) {
-        return MinBy.minByFloatNull(this, keySelector);
+    default TSource minByFloatNull(NullableFloatFunc1<? super TSource> keySelector) {
+        return MinBy.minByFloatNull(this, (NullableFloatFunc1<TSource>) keySelector);
     }
 
-    default TSource minByDouble(DoubleFunc1<TSource> keySelector) {
-        return MinBy.minByDouble(this, keySelector);
+    default TSource minByDouble(DoubleFunc1<? super TSource> keySelector) {
+        return MinBy.minByDouble(this, (DoubleFunc1<TSource>) keySelector);
     }
 
-    default TSource minByDoubleNull(NullableDoubleFunc1<TSource> keySelector) {
-        return MinBy.minByDoubleNull(this, keySelector);
+    default TSource minByDoubleNull(NullableDoubleFunc1<? super TSource> keySelector) {
+        return MinBy.minByDoubleNull(this, (NullableDoubleFunc1<TSource>) keySelector);
     }
 
-    default TSource minByDecimal(DecimalFunc1<TSource> keySelector) {
-        return MinBy.minByDecimal(this, keySelector);
+    default TSource minByDecimal(DecimalFunc1<? super TSource> keySelector) {
+        return MinBy.minByDecimal(this, (DecimalFunc1<TSource>) keySelector);
     }
 
-    default TSource minByDecimalNull(NullableDecimalFunc1<TSource> keySelector) {
-        return MinBy.minByDecimalNull(this, keySelector);
+    default TSource minByDecimalNull(NullableDecimalFunc1<? super TSource> keySelector) {
+        return MinBy.minByDecimalNull(this, (NullableDecimalFunc1<TSource>) keySelector);
     }
 
-    default <TKey> TSource minBy(Func1<TSource, TKey> keySelector) {
-        return MinBy.minBy(this, keySelector);
+    default <TKey> TSource minBy(Func1<? super TSource, ? extends TKey> keySelector) {
+        return MinBy.minBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> TSource minByNull(Func1<TSource, TKey> keySelector) {
-        return MinBy.minByNull(this, keySelector);
+    default <TKey> TSource minByNull(Func1<? super TSource, ? extends TKey> keySelector) {
+        return MinBy.minByNull(this, (Func1<TSource, TKey>) keySelector);
     }
 
     default <TResult> IEnumerable<TResult> ofType(Class<TResult> clazz) {
         return Cast.ofType(this, clazz);
     }
 
-    default <TKey> IOrderedEnumerable<TSource> orderBy(Func1<TSource, TKey> keySelector) {
-        return OrderBy.orderBy(this, keySelector);
+    default <TKey> IOrderedEnumerable<TSource> orderBy(Func1<? super TSource, ? extends TKey> keySelector) {
+        return OrderBy.orderBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IOrderedEnumerable<TSource> orderBy(Func1<TSource, TKey> keySelector, Comparator<TKey> comparer) {
-        return OrderBy.orderBy(this, keySelector, comparer);
+    default <TKey> IOrderedEnumerable<TSource> orderBy(Func1<? super TSource, ? extends TKey> keySelector, Comparator<? super TKey> comparer) {
+        return OrderBy.orderBy(this, (Func1<TSource, TKey>) keySelector, (Comparator<TKey>) comparer);
     }
 
-    default <TKey> IOrderedEnumerable<TSource> orderByDescending(Func1<TSource, TKey> keySelector) {
-        return OrderBy.orderByDescending(this, keySelector);
+    default <TKey> IOrderedEnumerable<TSource> orderByDescending(Func1<? super TSource, ? extends TKey> keySelector) {
+        return OrderBy.orderByDescending(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IOrderedEnumerable<TSource> orderByDescending(Func1<TSource, TKey> keySelector, Comparator<TKey> comparer) {
-        return OrderBy.orderByDescending(this, keySelector, comparer);
+    default <TKey> IOrderedEnumerable<TSource> orderByDescending(Func1<? super TSource, ? extends TKey> keySelector, Comparator<? super TKey> comparer) {
+        return OrderBy.orderByDescending(this, (Func1<TSource, TKey>) keySelector, (Comparator<TKey>) comparer);
     }
 
     default IEnumerable<TSource> prepend(TSource element) {
@@ -788,56 +788,56 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Reverse.reverse(this);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.rightJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, Func2<TSource, TInner, TResult> resultSelector) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector);
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, TSource defaultOuter, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
+        return Join.rightJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, defaultOuter, (Func2<TSource, TInner, TResult>) resultSelector);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return Join.rightJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<TInner> inner, Func1<TSource, TKey> outerKeySelector, Func1<TInner, TKey> innerKeySelector, TSource defaultOuter, Func2<TSource, TInner, TResult> resultSelector, IEqualityComparer<TKey> comparer) {
-        return Join.rightJoin(this, inner, outerKeySelector, innerKeySelector, defaultOuter, resultSelector, comparer);
+    default <TInner, TKey, TResult> IEnumerable<TResult> rightJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, TSource defaultOuter, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
+        return Join.rightJoin(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, defaultOuter, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default IEnumerable<TSource> runOnce() {
         return RunOnce.runOnce(this);
     }
 
-    default <TResult> IEnumerable<TResult> select(Func1<TSource, TResult> selector) {
-        return Select.select(this, selector);
+    default <TResult> IEnumerable<TResult> select(Func1<? super TSource, ? extends TResult> selector) {
+        return Select.select(this, (Func1<TSource, TResult>) selector);
     }
 
-    default <TResult> IEnumerable<TResult> select(IndexFunc2<TSource, TResult> selector) {
-        return Select.select(this, selector);
+    default <TResult> IEnumerable<TResult> select(IndexFunc2<? super TSource, ? extends TResult> selector) {
+        return Select.select(this, (IndexFunc2<TSource, TResult>) selector);
     }
 
-    default <TResult> IEnumerable<TResult> selectMany(Func1<TSource, IEnumerable<TResult>> selector) {
-        return SelectMany.selectMany(this, selector);
+    default <TResult> IEnumerable<TResult> selectMany(Func1<? super TSource, ? extends IEnumerable<? extends TResult>> selector) {
+        return SelectMany.selectMany(this, (Func1<TSource, IEnumerable<TResult>>) selector);
     }
 
-    default <TResult> IEnumerable<TResult> selectMany(IndexFunc2<TSource, IEnumerable<TResult>> selector) {
-        return SelectMany.selectMany(this, selector);
+    default <TResult> IEnumerable<TResult> selectMany(IndexFunc2<? super TSource, ? extends IEnumerable<? extends TResult>> selector) {
+        return SelectMany.selectMany(this, (IndexFunc2<TSource, IEnumerable<TResult>>) selector);
     }
 
-    default <TCollection, TResult> IEnumerable<TResult> selectMany(Func1<TSource, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
-        return SelectMany.selectMany(this, collectionSelector, resultSelector);
+    default <TCollection, TResult> IEnumerable<TResult> selectMany(Func1<? super TSource, ? extends IEnumerable<? extends TCollection>> collectionSelector, Func2<? super TSource, ? super TCollection, ? extends TResult> resultSelector) {
+        return SelectMany.selectMany(this, (Func1<TSource, IEnumerable<TCollection>>) collectionSelector, (Func2<TSource, TCollection, TResult>) resultSelector);
     }
 
-    default <TCollection, TResult> IEnumerable<TResult> selectMany(IndexFunc2<TSource, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
-        return SelectMany.selectMany(this, collectionSelector, resultSelector);
+    default <TCollection, TResult> IEnumerable<TResult> selectMany(IndexFunc2<? super TSource, ? extends IEnumerable<? extends TCollection>> collectionSelector, Func2<? super TSource, ? super TCollection, ? extends TResult> resultSelector) {
+        return SelectMany.selectMany(this, (IndexFunc2<TSource, IEnumerable<TCollection>>) collectionSelector, (Func2<TSource, TCollection, TResult>) resultSelector);
     }
 
-    default boolean sequenceEqual(IEnumerable<TSource> second) {
-        return SequenceEqual.sequenceEqual(this, second);
+    default boolean sequenceEqual(IEnumerable<? extends TSource> second) {
+        return SequenceEqual.sequenceEqual(this, (IEnumerable<TSource>) second);
     }
 
-    default boolean sequenceEqual(IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
-        return SequenceEqual.sequenceEqual(this, second, comparer);
+    default boolean sequenceEqual(IEnumerable<? extends TSource> second, IEqualityComparer<? super TSource> comparer) {
+        return SequenceEqual.sequenceEqual(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
     default IEnumerable<TSource> shuffle() {
@@ -852,16 +852,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Single.single(this);
     }
 
-    default TSource single(Predicate1<TSource> predicate) {
-        return Single.single(this, predicate);
+    default TSource single(Predicate1<? super TSource> predicate) {
+        return Single.single(this, (Predicate1<TSource>) predicate);
     }
 
     default TSource singleOrDefault() {
         return Single.singleOrDefault(this);
     }
 
-    default TSource singleOrDefault(Predicate1<TSource> predicate) {
-        return Single.singleOrDefault(this, predicate);
+    default TSource singleOrDefault(Predicate1<? super TSource> predicate) {
+        return Single.singleOrDefault(this, (Predicate1<TSource>) predicate);
     }
 
     default IEnumerable<TSource> skip(int count) {
@@ -872,12 +872,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Skip.skipLast(this, count);
     }
 
-    default IEnumerable<TSource> skipWhile(Predicate1<TSource> predicate) {
-        return Skip.skipWhile(this, predicate);
+    default IEnumerable<TSource> skipWhile(Predicate1<? super TSource> predicate) {
+        return Skip.skipWhile(this, (Predicate1<TSource>) predicate);
     }
 
-    default IEnumerable<TSource> skipWhile(IndexPredicate2<TSource> predicate) {
-        return Skip.skipWhile(this, predicate);
+    default IEnumerable<TSource> skipWhile(IndexPredicate2<? super TSource> predicate) {
+        return Skip.skipWhile(this, (IndexPredicate2<TSource>) predicate);
     }
 
     default int sumInt() {
@@ -920,44 +920,44 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Sum.sumDecimalNull((IEnumerable<BigDecimal>) this);
     }
 
-    default int sumInt(IntFunc1<TSource> selector) {
-        return Sum.sumInt(this, selector);
+    default int sumInt(IntFunc1<? super TSource> selector) {
+        return Sum.sumInt(this, (IntFunc1<TSource>) selector);
     }
 
-    default int sumIntNull(NullableIntFunc1<TSource> selector) {
-        return Sum.sumIntNull(this, selector);
+    default int sumIntNull(NullableIntFunc1<? super TSource> selector) {
+        return Sum.sumIntNull(this, (NullableIntFunc1<TSource>) selector);
     }
 
-    default long sumLong(LongFunc1<TSource> selector) {
-        return Sum.sumLong(this, selector);
+    default long sumLong(LongFunc1<? super TSource> selector) {
+        return Sum.sumLong(this, (LongFunc1<TSource>) selector);
     }
 
-    default long sumLongNull(NullableLongFunc1<TSource> selector) {
-        return Sum.sumLongNull(this, selector);
+    default long sumLongNull(NullableLongFunc1<? super TSource> selector) {
+        return Sum.sumLongNull(this, (NullableLongFunc1<TSource>) selector);
     }
 
-    default float sumFloat(FloatFunc1<TSource> selector) {
-        return Sum.sumFloat(this, selector);
+    default float sumFloat(FloatFunc1<? super TSource> selector) {
+        return Sum.sumFloat(this, (FloatFunc1<TSource>) selector);
     }
 
-    default float sumFloatNull(NullableFloatFunc1<TSource> selector) {
-        return Sum.sumFloatNull(this, selector);
+    default float sumFloatNull(NullableFloatFunc1<? super TSource> selector) {
+        return Sum.sumFloatNull(this, (NullableFloatFunc1<TSource>) selector);
     }
 
-    default double sumDouble(DoubleFunc1<TSource> selector) {
-        return Sum.sumDouble(this, selector);
+    default double sumDouble(DoubleFunc1<? super TSource> selector) {
+        return Sum.sumDouble(this, (DoubleFunc1<TSource>) selector);
     }
 
-    default double sumDoubleNull(NullableDoubleFunc1<TSource> selector) {
-        return Sum.sumDoubleNull(this, selector);
+    default double sumDoubleNull(NullableDoubleFunc1<? super TSource> selector) {
+        return Sum.sumDoubleNull(this, (NullableDoubleFunc1<TSource>) selector);
     }
 
-    default BigDecimal sumDecimal(DecimalFunc1<TSource> selector) {
-        return Sum.sumDecimal(this, selector);
+    default BigDecimal sumDecimal(DecimalFunc1<? super TSource> selector) {
+        return Sum.sumDecimal(this, (DecimalFunc1<TSource>) selector);
     }
 
-    default BigDecimal sumDecimalNull(NullableDecimalFunc1<TSource> selector) {
-        return Sum.sumDecimalNull(this, selector);
+    default BigDecimal sumDecimalNull(NullableDecimalFunc1<? super TSource> selector) {
+        return Sum.sumDecimalNull(this, (NullableDecimalFunc1<TSource>) selector);
     }
 
     default IEnumerable<TSource> take(int count) {
@@ -968,12 +968,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Take.takeLast(this, count);
     }
 
-    default IEnumerable<TSource> takeWhile(Predicate1<TSource> predicate) {
-        return Take.takeWhile(this, predicate);
+    default IEnumerable<TSource> takeWhile(Predicate1<? super TSource> predicate) {
+        return Take.takeWhile(this, (Predicate1<TSource>) predicate);
     }
 
-    default IEnumerable<TSource> takeWhile(IndexPredicate2<TSource> predicate) {
-        return Take.takeWhile(this, predicate);
+    default IEnumerable<TSource> takeWhile(IndexPredicate2<? super TSource> predicate) {
+        return Take.takeWhile(this, (IndexPredicate2<TSource>) predicate);
     }
 
     default Array<TSource> toArray() {
@@ -985,12 +985,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ToCollection.toArray(this, clazz);
     }
 
-    default <TKey> Map<TKey, TSource> toLinkedMap(Func1<TSource, TKey> keySelector) {
-        return ToCollection.toLinkedMap(this, keySelector);
+    default <TKey> Map<TKey, TSource> toLinkedMap(Func1<? super TSource, ? extends TKey> keySelector) {
+        return ToCollection.toLinkedMap(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey, TElement> Map<TKey, TElement> toLinkedMap(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return ToCollection.toLinkedMap(this, keySelector, elementSelector);
+    default <TKey, TElement> Map<TKey, TElement> toLinkedMap(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector) {
+        return ToCollection.toLinkedMap(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector);
     }
 
     default Set<TSource> toLinkedSet() {
@@ -1001,63 +1001,63 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ToCollection.toList(this);
     }
 
-    default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector) {
-        return ToLookup.toLookup(this, keySelector);
+    default <TKey> ILookup<TKey, TSource> toLookup(Func1<? super TSource, ? extends TKey> keySelector) {
+        return ToLookup.toLookup(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> ILookup<TKey, TSource> toLookup(Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return ToLookup.toLookup(this, keySelector, comparer);
+    default <TKey> ILookup<TKey, TSource> toLookup(Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return ToLookup.toLookup(this, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return ToLookup.toLookup(this, keySelector, elementSelector);
+    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector) {
+        return ToLookup.toLookup(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector);
     }
 
-    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, IEqualityComparer<TKey> comparer) {
-        return ToLookup.toLookup(this, keySelector, elementSelector, comparer);
+    default <TKey, TElement> ILookup<TKey, TElement> toLookup(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector, IEqualityComparer<? super TKey> comparer) {
+        return ToLookup.toLookup(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default <TKey> Map<TKey, TSource> toMap(Func1<TSource, TKey> keySelector) {
-        return ToCollection.toMap(this, keySelector);
+    default <TKey> Map<TKey, TSource> toMap(Func1<? super TSource, ? extends TKey> keySelector) {
+        return ToCollection.toMap(this, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey, TElement> Map<TKey, TElement> toMap(Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector) {
-        return ToCollection.toMap(this, keySelector, elementSelector);
+    default <TKey, TElement> Map<TKey, TElement> toMap(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector) {
+        return ToCollection.toMap(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector);
     }
 
     default Set<TSource> toSet() {
         return ToCollection.toSet(this);
     }
 
-    default IEnumerable<TSource> union(IEnumerable<TSource> second) {
-        return Union.union(this, second);
+    default IEnumerable<TSource> union(IEnumerable<? extends TSource> second) {
+        return Union.union(this, (IEnumerable<TSource>) second);
     }
 
-    default IEnumerable<TSource> union(IEnumerable<TSource> second, IEqualityComparer<TSource> comparer) {
-        return Union.union(this, second, comparer);
+    default IEnumerable<TSource> union(IEnumerable<? extends TSource> second, IEqualityComparer<? super TSource> comparer) {
+        return Union.union(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> unionBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
-        return UnionBy.unionBy(this, second, keySelector);
+    default <TKey> IEnumerable<TSource> unionBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector) {
+        return UnionBy.unionBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> unionBy(IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
-        return UnionBy.unionBy(this, second, keySelector, comparer);
+    default <TKey> IEnumerable<TSource> unionBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return UnionBy.unionBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
-    default IEnumerable<TSource> where(Predicate1<TSource> predicate) {
-        return Where.where(this, predicate);
+    default IEnumerable<TSource> where(Predicate1<? super TSource> predicate) {
+        return Where.where(this, (Predicate1<TSource>) predicate);
     }
 
-    default IEnumerable<TSource> where(IndexPredicate2<TSource> predicate) {
-        return Where.where(this, predicate);
+    default IEnumerable<TSource> where(IndexPredicate2<? super TSource> predicate) {
+        return Where.where(this, (IndexPredicate2<TSource>) predicate);
     }
 
-    default <TSecond> IEnumerable<Tuple2<TSource, TSecond>> zip(IEnumerable<TSecond> second) {
-        return Zip.zip(this, second);
+    default <TSecond> IEnumerable<Tuple2<TSource, TSecond>> zip(IEnumerable<? extends TSecond> second) {
+        return Zip.zip(this, (IEnumerable<TSecond>) second);
     }
 
-    default <TSecond, TResult> IEnumerable<TResult> zip(IEnumerable<TSecond> second, Func2<TSource, TSecond, TResult> resultSelector) {
-        return Zip.zip(this, second, resultSelector);
+    default <TSecond, TResult> IEnumerable<TResult> zip(IEnumerable<? extends TSecond> second, Func2<? super TSource, ? super TSecond, ? extends TResult> resultSelector) {
+        return Zip.zip(this, (IEnumerable<TSecond>) second, (Func2<TSource, TSecond, TResult>) resultSelector);
     }
 }

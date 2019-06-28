@@ -37,7 +37,7 @@ public final class Comparer<T> implements Comparator<T> {
         return new Comparer<>(collator);
     }
 
-    public static <T> Comparator<T> create(IComparison<T> comparison) {
+    public static <T> Comparator<T> create(IComparison<? super T> comparison) {
         if (comparison == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.comparison);
         return new ComparisonComparer<>(comparison);
