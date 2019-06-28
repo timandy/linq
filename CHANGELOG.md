@@ -19,6 +19,8 @@
 - Add `StringComparer` for string equals, hashCode and compare actions.
 - Add `ValueType` as super class for value type.
 - Add debug view support.
+- Add primitive functional interface.
+- Add covariant & contravariant support.
 - Remove override runOnce() for IList.
 - Not copy data when cast primitive array to IEnumerable.
 - Not create array when cast singleton to IEnumerable.
@@ -28,12 +30,27 @@
 - Optimize `TakeLastIterator` dispose action.
 - Optimize `toMap` and `toSet` methods.
 - Optimize `indexOf` and `lastIndexOf` in EqualityComparer.
+- Optimize performance by use enumerator instead of iterator.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
 - Translated all LINQ to Objects API of .net core 3.0.
 - Use ThrowHelper to throw Exceptions.
 - Rename package `bridge` to `adapter`.
 - Update plugin version to latest.
 - Change the year of copyright.
+
+**`Parameters covariant`**
+- IEnumerable<T> (T is covariant)
+- IEnumerator<T> (T is covariant)
+- IGrouping<TKey, TElement> (TKey and TElement are covariant)
+
+**`Parameters contravariant`**
+- Comparator<T> (T is contravariant)
+- Comparable<T> (T is contravariant)
+- IEqualityComparer<T> (T is contravariant)
+- IComparison<T> (T is contravariant)
+- Action<T1, T2, ... TN> (T1...TN are contravariant)
+- Func<T1, T2, ... TResult> (T1...TN are contravariant, TResult is covariant)
+- Predicate<T1, T2, ... TN> (T1...TN are contravariant)
 
 ## v2.0.1
 - Add test cases.
