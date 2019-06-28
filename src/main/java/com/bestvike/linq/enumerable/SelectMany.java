@@ -2,6 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
+import com.bestvike.function.IndexFunc2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -27,7 +28,7 @@ public final class SelectMany {
         return new SelectManyIterator<>(source, selector);
     }
 
-    public static <TSource, TResult> IEnumerable<TResult> selectMany(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TResult>> selector) {
+    public static <TSource, TResult> IEnumerable<TResult> selectMany(IEnumerable<TSource> source, IndexFunc2<TSource, IEnumerable<TResult>> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
@@ -47,7 +48,7 @@ public final class SelectMany {
         return new SelectManyResultIterator<>(source, collectionSelector, resultSelector);
     }
 
-    public static <TSource, TCollection, TResult> IEnumerable<TResult> selectMany(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
+    public static <TSource, TCollection, TResult> IEnumerable<TResult> selectMany(IEnumerable<TSource> source, IndexFunc2<TSource, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (collectionSelector == null)
@@ -198,12 +199,12 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
 
 final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> implements IIListProvider<TResult> {
     private final IEnumerable<TSource> source;
-    private final Func2<TSource, Integer, IEnumerable<TResult>> selector;
+    private final IndexFunc2<TSource, IEnumerable<TResult>> selector;
     private IEnumerator<TSource> enumerator;
     private IEnumerator<TResult> subEnumerator;
     private int index;
 
-    SelectManyIterator2(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TResult>> selector) {
+    SelectManyIterator2(IEnumerable<TSource> source, IndexFunc2<TSource, IEnumerable<TResult>> selector) {
         assert source != null;
         assert selector != null;
 
@@ -418,7 +419,7 @@ final class SelectManyResultIterator<TSource, TCollection, TResult> extends Iter
 
 final class SelectManyResultIterator2<TSource, TCollection, TResult> extends Iterator<TResult> {
     private final IEnumerable<TSource> source;
-    private final Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector;
+    private final IndexFunc2<TSource, IEnumerable<TCollection>> collectionSelector;
     private final Func2<TSource, TCollection, TResult> resultSelector;
     private IEnumerator<TSource> enumerator;
     private IEnumerator<TCollection> subEnumerator;
@@ -426,7 +427,7 @@ final class SelectManyResultIterator2<TSource, TCollection, TResult> extends Ite
     private int index;
 
 
-    SelectManyResultIterator2(IEnumerable<TSource> source, Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
+    SelectManyResultIterator2(IEnumerable<TSource> source, IndexFunc2<TSource, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
         assert source != null;
         assert collectionSelector != null;
         assert resultSelector != null;

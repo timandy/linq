@@ -7,6 +7,7 @@ import com.bestvike.function.DoubleFunc1;
 import com.bestvike.function.FloatFunc1;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
+import com.bestvike.function.IndexFunc2;
 import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.IntFunc1;
 import com.bestvike.function.LongFunc1;
@@ -811,7 +812,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Select.select(this, selector);
     }
 
-    default <TResult> IEnumerable<TResult> select(Func2<TSource, Integer, TResult> selector) {
+    default <TResult> IEnumerable<TResult> select(IndexFunc2<TSource, TResult> selector) {
         return Select.select(this, selector);
     }
 
@@ -819,7 +820,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return SelectMany.selectMany(this, selector);
     }
 
-    default <TResult> IEnumerable<TResult> selectMany(Func2<TSource, Integer, IEnumerable<TResult>> selector) {
+    default <TResult> IEnumerable<TResult> selectMany(IndexFunc2<TSource, IEnumerable<TResult>> selector) {
         return SelectMany.selectMany(this, selector);
     }
 
@@ -827,7 +828,7 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return SelectMany.selectMany(this, collectionSelector, resultSelector);
     }
 
-    default <TCollection, TResult> IEnumerable<TResult> selectMany(Func2<TSource, Integer, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
+    default <TCollection, TResult> IEnumerable<TResult> selectMany(IndexFunc2<TSource, IEnumerable<TCollection>> collectionSelector, Func2<TSource, TCollection, TResult> resultSelector) {
         return SelectMany.selectMany(this, collectionSelector, resultSelector);
     }
 

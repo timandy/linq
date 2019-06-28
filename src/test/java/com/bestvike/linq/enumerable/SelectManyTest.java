@@ -4,10 +4,10 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
+import com.bestvike.function.IndexFunc2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
-import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
@@ -244,7 +244,7 @@ public class SelectManyTest extends TestCase {
 
     @Test
     public void NullIndexedCollectionSelector() {
-        Func2<StringWithIntArray, Integer, IEnumerable<Integer>> collectionSelector = null;
+        IndexFunc2<StringWithIntArray, IEnumerable<Integer>> collectionSelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany(collectionSelector, (e, f) -> f.toString()));
     }
 
@@ -274,7 +274,7 @@ public class SelectManyTest extends TestCase {
 
     @Test
     public void NullIndexedSelector() {
-        Func2<StringWithIntArray, Integer, IEnumerable<Integer>> selector = null;
+        IndexFunc2<StringWithIntArray, IEnumerable<Integer>> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(new StringWithIntArray[0]).selectMany(selector));
     }
 
@@ -610,7 +610,7 @@ public class SelectManyTest extends TestCase {
     @Test
     public void testSelectManyIndexedSelect() {
         List<String> nameSeqs = Linq.asEnumerable(depts)
-                .selectMany((Department dept, Integer index) -> Linq.asEnumerable(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
+                .selectMany((dept, index) -> Linq.asEnumerable(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
                 .toList();
         assertEquals("[#0: Sales: Fred, #0: Sales: Eric, #0: Sales: Janet, #2: Marketing: Bill]", nameSeqs.toString());
     }

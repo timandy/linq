@@ -4,7 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.ValueType;
 import com.bestvike.function.Func0;
 import com.bestvike.function.Func1;
-import com.bestvike.function.Func2;
+import com.bestvike.function.IndexFunc2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -164,7 +164,7 @@ public class SelectTest extends TestCase {
     @Test
     public void Select_SelectorIsNull_ArgumentNullExceptionThrown_Indexed() {
         IEnumerable<Integer> source = Linq.range(1, 10);
-        Func2<Integer, Integer, Integer> selector = null;
+        IndexFunc2<Integer, Integer> selector = null;
 
         assertThrows(ArgumentNullException.class, () -> source.select(selector));
     }
@@ -172,7 +172,7 @@ public class SelectTest extends TestCase {
     @Test
     public void Select_SourceIsNull_ArgumentNullExceptionThrown_Indexed() {
         IEnumerable<Integer> source = null;
-        Func2<Integer, Integer, Integer> selector = (e, i) -> i + 1;
+        IndexFunc2<Integer, Integer> selector = (e, i) -> i + 1;
 
         assertThrows(NullPointerException.class, () -> source.select(selector));
     }

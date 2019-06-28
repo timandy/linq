@@ -3,7 +3,7 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
-import com.bestvike.function.Func2;
+import com.bestvike.function.IndexFunc2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -55,7 +55,7 @@ public final class Select {
         return new SelectEnumerableIterator<>(source, selector);
     }
 
-    public static <TSource, TResult> IEnumerable<TResult> select(IEnumerable<TSource> source, Func2<TSource, Integer, TResult> selector) {
+    public static <TSource, TResult> IEnumerable<TResult> select(IEnumerable<TSource> source, IndexFunc2<TSource, TResult> selector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
@@ -69,11 +69,11 @@ public final class Select {
 
 final class SelectIterator<TSource, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TSource> source;
-    private final Func2<TSource, Integer, TResult> selector;
+    private final IndexFunc2<TSource, TResult> selector;
     private IEnumerator<TSource> enumerator;
     private int index;
 
-    SelectIterator(IEnumerable<TSource> source, Func2<TSource, Integer, TResult> selector) {
+    SelectIterator(IEnumerable<TSource> source, IndexFunc2<TSource, TResult> selector) {
         this.source = source;
         this.selector = selector;
     }
