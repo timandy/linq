@@ -216,7 +216,7 @@ System.out.println(result);
 [1, 2, 3, 4, 5]
 ```
 
-- Compute average of double sequence.
+- Compute average of integer sequence.
 ```
 double result = Linq.asEnumerable(5, -10, 15, 40, 28).averageInt();
 
