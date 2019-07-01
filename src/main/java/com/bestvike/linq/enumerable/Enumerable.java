@@ -163,8 +163,7 @@ public final class Enumerable {
 
     public static <TSource> IEnumerable<TSource> as(Object source) {
         if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
+            return null;
         if (source instanceof boolean[])
             return (IEnumerable<TSource>) of((boolean[]) source);
         if (source instanceof byte[])
@@ -199,7 +198,6 @@ public final class Enumerable {
             return of((Enumeration<TSource>) source);
         if (source instanceof Map)
             return (IEnumerable<TSource>) of((Map<?, ?>) source);
-        ThrowHelper.throwNotSupportedException();
         return null;
     }
 }

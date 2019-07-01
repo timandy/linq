@@ -191,8 +191,8 @@ public class LinqTest extends TestCase {
 
     @Test
     public void testObject() {
-        assertThrows(ArgumentNullException.class, () -> Linq.as(null));
-        assertThrows(NotSupportedException.class, () -> Linq.as(new Object()));
+        assertNull(Linq.as(null));
+        assertNull(Linq.as(new Object()));
 
         boolean[] booleans = {true, false, true};
         assertEquals(Linq.of(booleans), Linq.as(booleans));
