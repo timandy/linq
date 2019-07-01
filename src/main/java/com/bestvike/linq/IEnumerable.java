@@ -57,6 +57,7 @@ import com.bestvike.linq.enumerable.Skip;
 import com.bestvike.linq.enumerable.Sum;
 import com.bestvike.linq.enumerable.Take;
 import com.bestvike.linq.enumerable.ToCollection;
+import com.bestvike.linq.enumerable.ToEnumeration;
 import com.bestvike.linq.enumerable.ToLookup;
 import com.bestvike.linq.enumerable.ToSpliterator;
 import com.bestvike.linq.enumerable.Union;
@@ -71,6 +72,7 @@ import com.bestvike.tuple.Tuple2;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -983,6 +985,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default TSource[] toArray(Class<TSource> clazz) {
         return ToCollection.toArray(this, clazz);
+    }
+
+    default Enumeration<TSource> toEnumeration() {
+        return ToEnumeration.toEnumeration(this);
     }
 
     default <TKey> Map<TKey, TSource> toLinkedMap(Func1<? super TSource, ? extends TKey> keySelector) {
