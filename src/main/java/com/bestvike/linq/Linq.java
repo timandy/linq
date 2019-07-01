@@ -5,6 +5,8 @@ import com.bestvike.linq.enumerable.Range;
 import com.bestvike.linq.enumerable.Repeat;
 
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +66,10 @@ public final class Linq {
         return Enumerable.asEnumerable(source);
     }
 
+    public static <TSource> IEnumerable<TSource> asEnumerable(IEnumerable<? extends TSource> source) {
+        return Enumerable.asEnumerable((IEnumerable<TSource>) source);
+    }
+
     public static <TSource> IEnumerable<TSource> asEnumerable(List<? extends TSource> source) {
         return Enumerable.asEnumerable((List<TSource>) source);
     }
@@ -76,8 +82,20 @@ public final class Linq {
         return Enumerable.asEnumerable((Iterable<TSource>) source);
     }
 
+    public static <TSource> IEnumerable<TSource> asEnumerable(Iterator<? extends TSource> source) {
+        return Enumerable.asEnumerable((Iterator<TSource>) source);
+    }
+
+    public static <TSource> IEnumerable<TSource> asEnumerable(Enumeration<? extends TSource> source) {
+        return Enumerable.asEnumerable((Enumeration<TSource>) source);
+    }
+
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<? extends TKey, ? extends TValue> source) {
         return Enumerable.asEnumerable((Map<TKey, TValue>) source);
+    }
+
+    public static <TSource> IEnumerable<TSource> ofEnumerable(Object source) {
+        return Enumerable.ofEnumerable(source);
     }
 
     public static IEnumerable<Integer> range(int start, int count) {

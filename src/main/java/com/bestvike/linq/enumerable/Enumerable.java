@@ -7,10 +7,12 @@ import com.bestvike.linq.adapter.enumerable.CharSequenceEnumerable;
 import com.bestvike.linq.adapter.enumerable.CharacterArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.CollectionEnumerable;
 import com.bestvike.linq.adapter.enumerable.DoubleArrayEnumerable;
+import com.bestvike.linq.adapter.enumerable.EnumerationEnumerable;
 import com.bestvike.linq.adapter.enumerable.FloatArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.GenericArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.IntegerArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.IterableEnumerable;
+import com.bestvike.linq.adapter.enumerable.IteratorEnumerable;
 import com.bestvike.linq.adapter.enumerable.ListEnumerable;
 import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
@@ -19,12 +21,15 @@ import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by 许崇雷 on 2018-04-27.
  */
+@SuppressWarnings("unchecked")
 public final class Enumerable {
     private Enumerable() {
     }
@@ -107,6 +112,13 @@ public final class Enumerable {
         return new GenericArrayEnumerable<>(source);
     }
 
+    public static <TSource> IEnumerable<TSource> asEnumerable(IEnumerable<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return source;
+    }
+
     public static <TSource> IEnumerable<TSource> asEnumerable(List<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -128,10 +140,66 @@ public final class Enumerable {
         return new IterableEnumerable<>(source);
     }
 
+    public static <TSource> IEnumerable<TSource> asEnumerable(Iterator<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new IteratorEnumerable<>(source);
+    }
+
+    public static <TSource> IEnumerable<TSource> asEnumerable(Enumeration<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new EnumerationEnumerable<>(source);
+    }
+
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new CollectionEnumerable<>(source.entrySet());
+    }
+
+    public static <TSource> IEnumerable<TSource> ofEnumerable(Object source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        if (source instanceof boolean[])
+            return (IEnumerable<TSource>) asEnumerable((boolean[]) source);
+        if (source instanceof byte[])
+            return (IEnumerable<TSource>) asEnumerable((byte[]) source);
+        if (source instanceof short[])
+            return (IEnumerable<TSource>) asEnumerable((short[]) source);
+        if (source instanceof int[])
+            return (IEnumerable<TSource>) asEnumerable((int[]) source);
+        if (source instanceof long[])
+            return (IEnumerable<TSource>) asEnumerable((long[]) source);
+        if (source instanceof float[])
+            return (IEnumerable<TSource>) asEnumerable((float[]) source);
+        if (source instanceof double[])
+            return (IEnumerable<TSource>) asEnumerable((double[]) source);
+        if (source instanceof char[])
+            return (IEnumerable<TSource>) asEnumerable((char[]) source);
+        if (source instanceof CharSequence)
+            return (IEnumerable<TSource>) asEnumerable((CharSequence) source);
+        if (source instanceof Object[])
+            return asEnumerable((TSource[]) source);
+        if (source instanceof IEnumerable)
+            return asEnumerable((IEnumerable<TSource>) source);
+        if (source instanceof List)
+            return asEnumerable((List<TSource>) source);
+        if (source instanceof Collection)
+            return asEnumerable((Collection<TSource>) source);
+        if (source instanceof Iterable)
+            return asEnumerable((Iterable<TSource>) source);
+        if (source instanceof Iterator)
+            return asEnumerable((Iterator<TSource>) source);
+        if (source instanceof Enumeration)
+            return asEnumerable((Enumeration<TSource>) source);
+        if (source instanceof Map)
+            return (IEnumerable<TSource>) asEnumerable((Map<?, ?>) source);
+        ThrowHelper.throwNotSupportedException();
+        return null;
     }
 }
