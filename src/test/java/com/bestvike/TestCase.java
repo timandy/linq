@@ -1052,7 +1052,7 @@ public class TestCase {
         private final long count;
         private long current = 0;
 
-        CountIterator(long count) {
+        public CountIterator(long count) {
             this.count = count;
         }
 
