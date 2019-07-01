@@ -191,65 +191,65 @@ public class LinqTest extends TestCase {
 
     @Test
     public void testObject() {
-        assertThrows(ArgumentNullException.class, () -> Linq.ofEnumerable(null));
-        assertThrows(NotSupportedException.class, () -> Linq.ofEnumerable(new Object()));
+        assertThrows(ArgumentNullException.class, () -> Linq.as(null));
+        assertThrows(NotSupportedException.class, () -> Linq.as(new Object()));
 
         boolean[] booleans = {true, false, true};
-        assertEquals(Linq.of(booleans), Linq.ofEnumerable(booleans));
+        assertEquals(Linq.of(booleans), Linq.as(booleans));
 
         byte[] bytes = {0x01, 0x02, 0x03};
-        assertEquals(Linq.of(bytes), Linq.ofEnumerable(bytes));
+        assertEquals(Linq.of(bytes), Linq.as(bytes));
 
         short[] shorts = {0x01, 0x02, 0x03};
-        assertEquals(Linq.of(shorts), Linq.ofEnumerable(shorts));
+        assertEquals(Linq.of(shorts), Linq.as(shorts));
 
         int[] ints = {0x01, 0x02, 0x03};
-        assertEquals(Linq.of(ints), Linq.ofEnumerable(ints));
+        assertEquals(Linq.of(ints), Linq.as(ints));
 
         long[] longs = {0x01, 0x02, 0x03};
-        assertEquals(Linq.of(longs), Linq.ofEnumerable(longs));
+        assertEquals(Linq.of(longs), Linq.as(longs));
 
         float[] floats = {1f, 2f, Float.NaN};
-        assertEquals(Linq.of(floats), Linq.ofEnumerable(floats));
+        assertEquals(Linq.of(floats), Linq.as(floats));
 
         double[] doubles = {1d, 2d, Double.NaN};
-        assertEquals(Linq.of(doubles), Linq.ofEnumerable(doubles));
+        assertEquals(Linq.of(doubles), Linq.as(doubles));
 
         char[] chars = {'a', 'b', 'c'};
-        assertEquals(Linq.of(chars), Linq.ofEnumerable(chars));
+        assertEquals(Linq.of(chars), Linq.as(chars));
 
         //CharSequence
         String str = "123";
-        assertEquals(Linq.of(str), Linq.ofEnumerable(str));
+        assertEquals(Linq.of(str), Linq.as(str));
 
         //Array
         String[] strings = {"1", "2", "3"};
-        assertEquals(Linq.of(strings), Linq.ofEnumerable(strings));
+        assertEquals(Linq.of(strings), Linq.as(strings));
 
         //IEnumerable
         IEnumerable<String> enumerable = Linq.of(strings);
-        assertSame(enumerable, Linq.ofEnumerable(enumerable));
+        assertSame(enumerable, Linq.as(enumerable));
 
         //List
-        assertEquals(Linq.of(strings), Linq.ofEnumerable(Arrays.asList(strings)));
+        assertEquals(Linq.of(strings), Linq.as(Arrays.asList(strings)));
 
         //Collection
-        assertEquals(Linq.of(strings), Linq.ofEnumerable(ArrayUtils.toCollection(strings)));
+        assertEquals(Linq.of(strings), Linq.as(ArrayUtils.toCollection(strings)));
 
         //Iterable
-        assertEquals(Linq.of(1L, 2L, 3L), Linq.ofEnumerable(new CountIterable(3)));
+        assertEquals(Linq.of(1L, 2L, 3L), Linq.as(new CountIterable(3)));
 
         //Iterator
-        assertEquals(Linq.of(1L, 2L, 3L), Linq.ofEnumerable(new CountIterator(3)));
+        assertEquals(Linq.of(1L, 2L, 3L), Linq.as(new CountIterator(3)));
 
         //Enumeration
-        assertEquals(Linq.range(1, 3), Linq.ofEnumerable(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
+        assertEquals(Linq.range(1, 3), Linq.as(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
 
         //Map
         Map<String, Integer> map = new HashMap<>();
         map.put("hello", 1);
         map.put("world", 2);
-        IEnumerable<Map.Entry<String, Integer>> entries = Linq.ofEnumerable(map);
+        IEnumerable<Map.Entry<String, Integer>> entries = Linq.as(map);
         assertEquals(2, entries.count());
         assertEquals(2, entries.where(a -> a.getKey().equals("world")).first().getValue());
     }

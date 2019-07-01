@@ -94,8 +94,8 @@ public final class Linq {
         return Enumerable.of((Map<TKey, TValue>) source);
     }
 
-    public static <TSource> IEnumerable<TSource> ofEnumerable(Object source) {
-        return Enumerable.ofEnumerable(source);
+    public static <TSource> IEnumerable<TSource> as(Object source) {
+        return Enumerable.as(source);
     }
 
     public static IEnumerable<Integer> range(int start, int count) {

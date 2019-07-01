@@ -161,7 +161,7 @@ public final class Enumerable {
         return new CollectionEnumerable<>(source.entrySet());
     }
 
-    public static <TSource> IEnumerable<TSource> ofEnumerable(Object source) {
+    public static <TSource> IEnumerable<TSource> as(Object source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
