@@ -1,15 +1,22 @@
 package com.bestvike.linq;
 
 import com.bestvike.TestCase;
+import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.linq.util.ArrayUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Vector;
 
 /**
  * Created by 许崇雷 on 2017-07-24.
@@ -114,6 +121,17 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testCharSequence() {
+        String str = "123";
+        char[] chars = {'1', '2', '3'};
+        char c = Linq.asEnumerable(str).elementAt(1);
+        assertEquals('2', c);
+        assertEquals(3, Linq.asEnumerable(str).count());
+        assertEquals(3, Linq.asEnumerable(chars).count());
+        assertTrue(Linq.asEnumerable(str).sequenceEqual(Linq.asEnumerable(str)));
+    }
+
+    @Test
     public void testArrayAndList() {
         String[] array = {"1", "2", "3"};
         List<String> list = new ArrayList<>();
@@ -138,14 +156,102 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testCharSequence() {
+    public void testEnumerable() {
+        IEnumerable<Integer> enumerable = Linq.repeat(1, 5);
+        IEnumerable<Integer> source = Linq.asEnumerable(enumerable);
+        assertSame(enumerable, source);
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((IEnumerable<?>) null));
+    }
+
+    @Test
+    public void testIterator() {
+        Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
+        IEnumerable<Integer> source = Linq.asEnumerable(iterator);
+        assertEquals(Linq.range(1, 3), source);
+        assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((Iterator<?>) null));
+    }
+
+    @Test
+    public void testEnumeration() {
+        Enumeration<Integer> elements = new Vector<>(Arrays.asList(1, 2, 3)).elements();
+        IEnumerable<Integer> source = Linq.asEnumerable(elements);
+        assertEquals(Linq.range(1, 3), source);
+        assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((Enumeration<?>) null));
+
+        //append,prepend,concat
+        IEnumerable<Integer> source2 = Linq.asEnumerable(new Vector<>(Arrays.asList(1, 2, 3)).elements()).prepend(0).append(4).append(5).concat(Linq.range(6, 5));
+        assertEquals(Linq.range(0, 11), source2);
+        assertThrows(NotSupportedException.class, () -> source2.toArray());
+    }
+
+    @Test
+    public void testObject() {
+        assertThrows(ArgumentNullException.class, () -> Linq.ofEnumerable(null));
+        assertThrows(NotSupportedException.class, () -> Linq.ofEnumerable(new Object()));
+
+        boolean[] booleans = {true, false, true};
+        assertEquals(Linq.asEnumerable(booleans), Linq.ofEnumerable(booleans));
+
+        byte[] bytes = {0x01, 0x02, 0x03};
+        assertEquals(Linq.asEnumerable(bytes), Linq.ofEnumerable(bytes));
+
+        short[] shorts = {0x01, 0x02, 0x03};
+        assertEquals(Linq.asEnumerable(shorts), Linq.ofEnumerable(shorts));
+
+        int[] ints = {0x01, 0x02, 0x03};
+        assertEquals(Linq.asEnumerable(ints), Linq.ofEnumerable(ints));
+
+        long[] longs = {0x01, 0x02, 0x03};
+        assertEquals(Linq.asEnumerable(longs), Linq.ofEnumerable(longs));
+
+        float[] floats = {1f, 2f, Float.NaN};
+        assertEquals(Linq.asEnumerable(floats), Linq.ofEnumerable(floats));
+
+        double[] doubles = {1d, 2d, Double.NaN};
+        assertEquals(Linq.asEnumerable(doubles), Linq.ofEnumerable(doubles));
+
+        char[] chars = {'a', 'b', 'c'};
+        assertEquals(Linq.asEnumerable(chars), Linq.ofEnumerable(chars));
+
+        //CharSequence
         String str = "123";
-        char[] chars = {'1', '2', '3'};
-        char c = Linq.asEnumerable(str).elementAt(1);
-        assertEquals('2', c);
-        assertEquals(3, Linq.asEnumerable(str).count());
-        assertEquals(3, Linq.asEnumerable(chars).count());
-        assertTrue(Linq.asEnumerable(str).sequenceEqual(Linq.asEnumerable(str)));
+        assertEquals(Linq.asEnumerable(str), Linq.ofEnumerable(str));
+
+        //Array
+        String[] strings = {"1", "2", "3"};
+        assertEquals(Linq.asEnumerable(strings), Linq.ofEnumerable(strings));
+
+        //IEnumerable
+        IEnumerable<String> enumerable = Linq.asEnumerable(strings);
+        assertSame(enumerable, Linq.ofEnumerable(enumerable));
+
+        //List
+        assertEquals(Linq.asEnumerable(strings), Linq.ofEnumerable(Arrays.asList(strings)));
+
+        //Collection
+        assertEquals(Linq.asEnumerable(strings), Linq.ofEnumerable(ArrayUtils.toCollection(strings)));
+
+        //Iterable
+        assertEquals(Linq.asEnumerable(1L, 2L, 3L), Linq.ofEnumerable(new CountIterable(3)));
+
+        //Iterator
+        assertEquals(Linq.asEnumerable(1L, 2L, 3L), Linq.ofEnumerable(new CountIterator(3)));
+
+        //Enumeration
+        assertEquals(Linq.range(1, 3), Linq.ofEnumerable(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
+
+        //Map
+        Map<String, Integer> map = new HashMap<>();
+        map.put("hello", 1);
+        map.put("world", 2);
+        IEnumerable<Map.Entry<String, Integer>> entries = Linq.ofEnumerable(map);
+        assertEquals(2, entries.count());
+        assertEquals(2, entries.where(a -> a.getKey().equals("world")).first().getValue());
     }
 
     @Test
