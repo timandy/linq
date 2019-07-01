@@ -53,4 +53,12 @@ public class AsEnumerableTest extends TestCase {
 
         assertEquals(source, source.runOnce().asEnumerable());
     }
+
+    @Test
+    public void testAsEnumerable() {
+        IEnumerable<String> as = Linq.as(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty});
+        IEnumerable<String> q = as.where(x -> !IsNullOrEmpty(x));
+
+        assertEquals(q.asEnumerable(), q.asEnumerable());
+    }
 }
