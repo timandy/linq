@@ -149,7 +149,6 @@ public class ToListTest extends TestCase {
         this.ToList_IListWhereSelect(new int[]{}, new String[]{});
         this.ToList_IListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToList_IListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-
     }
 
     private void ToList_IListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
