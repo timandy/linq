@@ -18,7 +18,7 @@ import java.util.Date;
 public class LastOrDefaultTest extends TestCase {
     @Test
     public void SameResultsrepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
+        IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.lastOrDefault(), q.lastOrDefault());
@@ -26,14 +26,14 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void SameResultsrepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.lastOrDefault(), q.lastOrDefault());
     }
 
     private <T> void TestEmptyIList() {
-        IEnumerable<T> source = Linq.asEnumerable(Collections.EMPTY_LIST);
+        IEnumerable<T> source = Linq.of(Collections.EMPTY_LIST);
         T expected = null;
 
         assertIsAssignableFrom(IList.class, source);
@@ -50,7 +50,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void IListTOneElement() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{5});
+        IEnumerable<Integer> source = Linq.of(new int[]{5});
         int expected = 5;
 
         assertIsAssignableFrom(IList.class, source);
@@ -59,7 +59,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void IListTManyElementsLastIsDefault() {
-        IEnumerable<Integer> source = Linq.asEnumerable(-10, 2, 4, 3, 0, 2, null);
+        IEnumerable<Integer> source = Linq.of(-10, 2, 4, 3, 0, 2, null);
         Integer expected = null;
 
         assertIsAssignableFrom(IList.class, source);
@@ -68,7 +68,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void IListTManyElementsLastIsNotDefault() {
-        IEnumerable<Integer> source = Linq.asEnumerable(-10, 2, 4, 3, 0, 2, null, 19);
+        IEnumerable<Integer> source = Linq.of(-10, 2, 4, 3, 0, 2, null, 19);
         Integer expected = 19;
 
         assertIsAssignableFrom(IList.class, source);
@@ -123,7 +123,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void OneElementIListTruePredicate() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{4});
+        IEnumerable<Integer> source = Linq.of(new int[]{4});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
 
@@ -132,7 +132,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void ManyElementsIListPredicateFalseForAll() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21});
+        IEnumerable<Integer> source = Linq.of(new int[]{9, 5, 1, 3, 17, 21});
         Predicate1<Integer> predicate = TestCase::IsEven;
         Integer expected = null;
 
@@ -141,7 +141,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void IListPredicateTrueOnlyForLast() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21, 50});
+        IEnumerable<Integer> source = Linq.of(new int[]{9, 5, 1, 3, 17, 21, 50});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
 
@@ -150,7 +150,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void IListPredicateTrueForSome() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
+        IEnumerable<Integer> source = Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
@@ -159,7 +159,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void IListPredicateTrueForSomeRunOnce() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
+        IEnumerable<Integer> source = Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
@@ -176,7 +176,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void OneElementNotIListTruePredicate() {
-        IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{4}));
+        IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{4}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
 
@@ -185,7 +185,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void ManyElementsNotIListPredicateFalseForAll() {
-        IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21}));
+        IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{9, 5, 1, 3, 17, 21}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         Integer expected = null;
 
@@ -194,7 +194,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void NotIListPredicateTrueOnlyForLast() {
-        IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{9, 5, 1, 3, 17, 21, 50}));
+        IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{9, 5, 1, 3, 17, 21, 50}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
 
@@ -203,7 +203,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void NotIListPredicateTrueForSome() {
-        IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
+        IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
@@ -212,7 +212,7 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void NotIListPredicateTrueForSomeRunOnce() {
-        IEnumerable<Integer> source = ForceNotCollection(Linq.asEnumerable(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
+        IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
 
@@ -237,19 +237,19 @@ public class LastOrDefaultTest extends TestCase {
 
     @Test
     public void testLastOrDefault() {
-        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
+        IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch"));
         assertEquals("mitch", enumerable.lastOrDefault());
 
-        IEnumerable emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
+        IEnumerable emptyEnumerable = Linq.of(Collections.emptyList());
         assertNull(emptyEnumerable.lastOrDefault());
     }
 
     @Test
     public void testLastOrDefaultWithPredicate() {
-        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch", "ming"));
+        IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch", "ming"));
         assertEquals("mitch", enumerable.lastOrDefault(x -> x.startsWith("mit")));
         assertNull(enumerable.lastOrDefault(x -> false));
-        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Collections.emptyList());
+        IEnumerable<String> emptyEnumerable = Linq.of(Collections.emptyList());
         assertNull(emptyEnumerable.lastOrDefault(x -> {
             fail("should not run at here");
             return false;

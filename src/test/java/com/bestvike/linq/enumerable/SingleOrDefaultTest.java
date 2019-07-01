@@ -14,14 +14,14 @@ import org.junit.Test;
 public class SingleOrDefaultTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Float> q = Linq.asEnumerable(new float[]{0.12335f}).select(x -> x);
+        IEnumerable<Float> q = Linq.of(new float[]{0.12335f}).select(x -> x);
 
         assertEquals(q.singleOrDefault(), q.singleOrDefault());
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{""}).select(x -> x);
+        IEnumerable<String> q = Linq.of(new String[]{""}).select(x -> x);
 
         assertEquals(q.singleOrDefault(TestCase::IsNullOrEmpty), q.singleOrDefault(TestCase::IsNullOrEmpty));
     }
@@ -31,7 +31,7 @@ public class SingleOrDefaultTest extends TestCase {
         Integer[] source = {};
         Integer expected = null;
 
-        assertEquals(expected, Linq.asEnumerable(source).singleOrDefault());
+        assertEquals(expected, Linq.of(source).singleOrDefault());
     }
 
     @Test
@@ -39,14 +39,14 @@ public class SingleOrDefaultTest extends TestCase {
         int[] source = {4};
         int expected = 4;
 
-        assertEquals(expected, Linq.asEnumerable(source).singleOrDefault());
+        assertEquals(expected, Linq.of(source).singleOrDefault());
     }
 
     @Test
     public void ManyElementIList() {
         int[] source = {4, 4, 4, 4, 4};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).singleOrDefault());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class SingleOrDefaultTest extends TestCase {
         int[] source = {};
         Integer expected = null;
 
-        assertEquals(expected, Linq.asEnumerable(source).singleOrDefault(i -> i % 2 == 0));
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
@@ -85,7 +85,7 @@ public class SingleOrDefaultTest extends TestCase {
         int[] source = {4};
         int expected = 4;
 
-        assertEquals(expected, Linq.asEnumerable(source).singleOrDefault(i -> i % 2 == 0));
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class SingleOrDefaultTest extends TestCase {
         int[] source = {3};
         Integer expected = null;
 
-        assertEquals(expected, Linq.asEnumerable(source).singleOrDefault(i -> i % 2 == 0));
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class SingleOrDefaultTest extends TestCase {
         int[] source = {3, 1, 7, 9, 13, 19};
         Integer expected = null;
 
-        assertEquals(expected, Linq.asEnumerable(source).singleOrDefault(i -> i % 2 == 0));
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
@@ -109,14 +109,14 @@ public class SingleOrDefaultTest extends TestCase {
         int[] source = {3, 1, 7, 9, 13, 19, 20};
         int expected = 20;
 
-        assertEquals(expected, Linq.asEnumerable(source).singleOrDefault(i -> i % 2 == 0));
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
     public void ManyElementsPredicateTrueForFirstAndFifth() {
         int[] source = {2, 3, 1, 7, 10, 13, 19, 9};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).singleOrDefault(i -> i % 2 == 0));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
@@ -160,15 +160,15 @@ public class SingleOrDefaultTest extends TestCase {
         Integer[] number = {20};
         Integer[] numbers = {5, 10, 15, 20};
 
-        assertEquals(person[0], Linq.asEnumerable(person).singleOrDefault());
-        assertEquals(number[0], Linq.asEnumerable(number).singleOrDefault());
+        assertEquals(person[0], Linq.of(person).singleOrDefault());
+        assertEquals(number[0], Linq.of(number).singleOrDefault());
         try {
-            String s = Linq.asEnumerable(people).singleOrDefault();
+            String s = Linq.of(people).singleOrDefault();
             fail("expected exception, but got" + s);
         } catch (InvalidOperationException ignored) {
         }
         try {
-            Integer i = Linq.asEnumerable(numbers).singleOrDefault();
+            Integer i = Linq.of(numbers).singleOrDefault();
             fail("expected exception, but got" + i);
         } catch (InvalidOperationException ignored) {
         }
@@ -183,20 +183,20 @@ public class SingleOrDefaultTest extends TestCase {
         Integer[] numbersWithTwoGT15 = {5, 10, 15, 20, 25};
         Integer[] numbersWithoutGT15 = {5, 10, 15};
 
-        assertEquals(people[1], Linq.asEnumerable(people).singleOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
-        assertEquals(numbers[3], Linq.asEnumerable(numbers).singleOrDefault(n -> n > 15));
+        assertEquals(people[1], Linq.of(people).singleOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertEquals(numbers[3], Linq.of(numbers).singleOrDefault(n -> n > 15));
         try {
-            String ss = Linq.asEnumerable(twoPeopleWithCharS).singleOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
+            String ss = Linq.of(twoPeopleWithCharS).singleOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
             fail("expected exception, but got" + ss);
         } catch (InvalidOperationException ignored) {
         }
         try {
 
-            Integer i = Linq.asEnumerable(numbersWithTwoGT15).singleOrDefault(n -> n > 15);
+            Integer i = Linq.of(numbersWithTwoGT15).singleOrDefault(n -> n > 15);
             fail("expected exception, but got" + i);
         } catch (InvalidOperationException ignored) {
         }
-        assertNull(Linq.asEnumerable(peopleWithoutCharS).singleOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
-        assertNull(Linq.asEnumerable(numbersWithoutGT15).singleOrDefault(n -> n > 15));
+        assertNull(Linq.of(peopleWithoutCharS).singleOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertNull(Linq.of(numbersWithoutGT15).singleOrDefault(n -> n > 15));
     }
 }

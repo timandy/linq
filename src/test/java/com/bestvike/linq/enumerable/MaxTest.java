@@ -30,7 +30,7 @@ import java.util.List;
 public class MaxTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
+        IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.max(), q.max());
@@ -38,7 +38,7 @@ public class MaxTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.max(), q.max());
@@ -60,16 +60,16 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42, 1), 42});
         lst.add(new Object[]{Linq.range(1, 10).toArray(), 10});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{-100, -15, -50, -10}), -10});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{-16, 0, 50, 100, 1000}), 1000});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Integer.MAX_VALUE, 1)), Integer.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(new int[]{-100, -15, -50, -10}), -10});
+        lst.add(new Object[]{Linq.of(new int[]{-16, 0, 50, 100, 1000}), 1000});
+        lst.add(new Object[]{Linq.of(new int[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Integer.MAX_VALUE, 1)), Integer.MAX_VALUE});
 
         lst.add(new Object[]{Linq.repeat(20, 1), 20});
         lst.add(new Object[]{Linq.repeat(-2, 5), -2});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{16, 9, 10, 7, 8}), 16});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{6, 9, 10, 0, 50}), 50});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{-6, 0, -9, 0, -10, 0}), 0});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new int[]{16, 9, 10, 7, 8}), 16});
+        lst.add(new Object[]{Linq.of(new int[]{6, 9, 10, 0, 50}), 50});
+        lst.add(new Object[]{Linq.of(new int[]{-6, 0, -9, 0, -10, 0}), 0});
+        return Linq.of(lst);
     }
 
     @Test
@@ -88,16 +88,16 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42L, 1), 42L});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (long) i).toArray(), 10L});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{-100, -15, -50, -10}), -10L});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{-16, 0, 50, 100, 1000}), 1000L});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Long.MAX_VALUE, 1)), Long.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(new long[]{-100, -15, -50, -10}), -10L});
+        lst.add(new Object[]{Linq.of(new long[]{-16, 0, 50, 100, 1000}), 1000L});
+        lst.add(new Object[]{Linq.of(new long[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Long.MAX_VALUE, 1)), Long.MAX_VALUE});
 
         lst.add(new Object[]{Linq.repeat(Integer.MAX_VALUE + 10L, 1), Integer.MAX_VALUE + 10L});
         lst.add(new Object[]{Linq.repeat(500L, 5), 500L});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{250, 49, 130, 47, 28}), 250L});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{6, 9, 10, 0, Integer.MAX_VALUE + 50L}), Integer.MAX_VALUE + 50L});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{6, 50, 9, 50, 10, 50}), 50L});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new long[]{250, 49, 130, 47, 28}), 250L});
+        lst.add(new Object[]{Linq.of(new long[]{6, 9, 10, 0, Integer.MAX_VALUE + 50L}), Integer.MAX_VALUE + 50L});
+        lst.add(new Object[]{Linq.of(new long[]{6, 50, 9, 50, 10, 50}), 50L});
+        return Linq.of(lst);
     }
 
     @Test
@@ -128,20 +128,20 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42f, 1), 42f});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (float) i).toArray(), 10f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{-100, -15, -50, -10}), -10f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{-16, 0, 50, 100, 1000}), 1000f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Float.MAX_VALUE, 1)), Float.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(new float[]{-100, -15, -50, -10}), -10f});
+        lst.add(new Object[]{Linq.of(new float[]{-16, 0, 50, 100, 1000}), 1000f});
+        lst.add(new Object[]{Linq.of(new float[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Float.MAX_VALUE, 1)), Float.MAX_VALUE});
 
         lst.add(new Object[]{Linq.repeat(5.5f, 1), 5.5f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{112.5f, 4.9f, 30f, 4.7f, 28f}), 112.5f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{6.8f, 9.4f, -10f, 0f, Float.NaN, 53.6f}), 53.6f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{-5.5f, Float.POSITIVE_INFINITY, 9.9f, Float.POSITIVE_INFINITY}), Float.POSITIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(new float[]{112.5f, 4.9f, 30f, 4.7f, 28f}), 112.5f});
+        lst.add(new Object[]{Linq.of(new float[]{6.8f, 9.4f, -10f, 0f, Float.NaN, 53.6f}), 53.6f});
+        lst.add(new Object[]{Linq.of(new float[]{-5.5f, Float.POSITIVE_INFINITY, 9.9f, Float.POSITIVE_INFINITY}), Float.POSITIVE_INFINITY});
 
         lst.add(new Object[]{Linq.repeat(Float.NaN, 5), Float.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{Float.NaN, 6.8f, 9.4f, 10f, 0, -5.6f}), 10f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{6.8f, 9.4f, 10f, 0, -5.6f, Float.NaN}), 10f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{Float.NaN, Float.NEGATIVE_INFINITY}), Float.NEGATIVE_INFINITY});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{Float.NEGATIVE_INFINITY, Float.NaN}), Float.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(new float[]{Float.NaN, 6.8f, 9.4f, 10f, 0, -5.6f}), 10f});
+        lst.add(new Object[]{Linq.of(new float[]{6.8f, 9.4f, 10f, 0, -5.6f, Float.NaN}), 10f});
+        lst.add(new Object[]{Linq.of(new float[]{Float.NaN, Float.NEGATIVE_INFINITY}), Float.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(new float[]{Float.NEGATIVE_INFINITY, Float.NaN}), Float.NEGATIVE_INFINITY});
 
         // Normally NaN < anything and anything < NaN returns false
         // However, this leads to some irksome outcomes in Min and Max.
@@ -150,9 +150,9 @@ public class MaxTest extends TestCase {
         // ordering where NaN is smaller than every value, including
         // negative infinity.
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (float) i).concat(Linq.repeat(Float.NaN, 1)).toArray(), 10f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{-1f, -10, Float.NaN, 10, 200, 1000}), 1000f});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{Float.MIN_VALUE, 3000f, 100, 200, Float.NaN, 1000}), 3000f});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new float[]{-1f, -10, Float.NaN, 10, 200, 1000}), 1000f});
+        lst.add(new Object[]{Linq.of(new float[]{Float.MIN_VALUE, 3000f, 100, 200, Float.NaN, 1000}), 3000f});
+        return Linq.of(lst);
     }
 
     @Test
@@ -187,32 +187,32 @@ public class MaxTest extends TestCase {
     @Test
     public void Max_NullableFloat_SeveralNaNOrNullWithSelector() {
         Float[] source = new Float[]{Float.NaN, null, Float.NaN, null};
-        assertTrue(Float.isNaN(Linq.asEnumerable(source).maxFloatNull(i -> i)));
+        assertTrue(Float.isNaN(Linq.of(source).maxFloatNull(i -> i)));
     }
 
     @Test
     public void Max_Float_NaNAtStartWithSelector() {
         float[] source = {Float.NaN, 6.8f, 9.4f, 10f, 0, -5.6f};
-        assertEquals(10f, Linq.asEnumerable(source).maxFloat(i -> i));
+        assertEquals(10f, Linq.of(source).maxFloat(i -> i));
     }
 
     private IEnumerable<Object[]> Max_Double_TestData() {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42.0, 1), 42.0});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (double) i).toArray(), 10.0});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{-100, -15, -50, -10}), -10.0});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{-16, 0, 50, 100, 1000}), 1000.0});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Double.MAX_VALUE, 1)), Double.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(new double[]{-100, -15, -50, -10}), -10.0});
+        lst.add(new Object[]{Linq.of(new double[]{-16, 0, 50, 100, 1000}), 1000.0});
+        lst.add(new Object[]{Linq.of(new double[]{-16, 0, 50, 100, 1000}).concat(Linq.repeat(Double.MAX_VALUE, 1)), Double.MAX_VALUE});
 
         lst.add(new Object[]{Linq.repeat(5.5, 1), 5.5});
         lst.add(new Object[]{Linq.repeat(Double.NaN, 5), Double.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{112.5, 4.9, 30, 4.7, 28}), 112.5});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{6.8, 9.4, -10, 0, Double.NaN, 53.6}), 53.6});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{-5.5, Double.POSITIVE_INFINITY, 9.9, Double.POSITIVE_INFINITY}), Double.POSITIVE_INFINITY});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{Double.NaN, 6.8, 9.4, 10.5, 0, -5.6}), 10.5});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{6.8, 9.4, 10.5, 0, -5.6, Double.NaN}), 10.5});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{Double.NaN, Double.NEGATIVE_INFINITY}), Double.NEGATIVE_INFINITY});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{Double.NEGATIVE_INFINITY, Double.NaN}), Double.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(new double[]{112.5, 4.9, 30, 4.7, 28}), 112.5});
+        lst.add(new Object[]{Linq.of(new double[]{6.8, 9.4, -10, 0, Double.NaN, 53.6}), 53.6});
+        lst.add(new Object[]{Linq.of(new double[]{-5.5, Double.POSITIVE_INFINITY, 9.9, Double.POSITIVE_INFINITY}), Double.POSITIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(new double[]{Double.NaN, 6.8, 9.4, 10.5, 0, -5.6}), 10.5});
+        lst.add(new Object[]{Linq.of(new double[]{6.8, 9.4, 10.5, 0, -5.6, Double.NaN}), 10.5});
+        lst.add(new Object[]{Linq.of(new double[]{Double.NaN, Double.NEGATIVE_INFINITY}), Double.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(new double[]{Double.NEGATIVE_INFINITY, Double.NaN}), Double.NEGATIVE_INFINITY});
 
         // Normally NaN < anything and anything < NaN returns false
         // However, this leads to some irksome outcomes in Min and Max.
@@ -221,9 +221,9 @@ public class MaxTest extends TestCase {
         // ordering where NaN is smaller than every value, including
         // negative infinity.
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (double) i).concat(Linq.repeat(Double.NaN, 1)).toArray(), 10.0});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{-1F, -10, Double.NaN, 10, 200, 1000}), 1000.0});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{Double.MIN_VALUE, 3000F, 100, 200, Double.NaN, 1000}), 3000.0});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new double[]{-1F, -10, Double.NaN, 10, 200, 1000}), 1000.0});
+        lst.add(new Object[]{Linq.of(new double[]{Double.MIN_VALUE, 3000F, 100, 200, Double.NaN, 1000}), 3000.0});
+        return Linq.of(lst);
     }
 
     @Test
@@ -258,29 +258,29 @@ public class MaxTest extends TestCase {
     @Test
     public void Max_Double_SeveralNaNOrNullWithSelector() {
         Double[] source = new Double[]{Double.NaN, null, Double.NaN, null};
-        assertTrue(Double.isNaN(Linq.asEnumerable(source).maxDoubleNull(i -> i)));
+        assertTrue(Double.isNaN(Linq.of(source).maxDoubleNull(i -> i)));
     }
 
     @Test
     public void Max_Double_NaNThenNegativeInfinityWithSelector() {
         double[] source = {Double.NaN, Double.NEGATIVE_INFINITY};
-        assertEquals(Linq.asEnumerable(source).maxDouble(i -> i), Double.NEGATIVE_INFINITY);
+        assertEquals(Linq.of(source).maxDouble(i -> i), Double.NEGATIVE_INFINITY);
     }
 
     private IEnumerable<Object[]> Max_Decimal_TestData() {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(m(42), 1), m(42)});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> m(i)).toArray(), m(10)});
-        lst.add(new Object[]{Linq.asEnumerable(m(-100), m(-15), m(-50), m(-10)), m(-10)});
-        lst.add(new Object[]{Linq.asEnumerable(m(-16), m(0), m(50), m(100), m(1000)), m(1000)});
-        lst.add(new Object[]{Linq.asEnumerable(m(-16), m(0), m(50), m(100), m(1000)).concat(Linq.repeat(MAX_DECIMAL, 1)), MAX_DECIMAL});
+        lst.add(new Object[]{Linq.of(m(-100), m(-15), m(-50), m(-10)), m(-10)});
+        lst.add(new Object[]{Linq.of(m(-16), m(0), m(50), m(100), m(1000)), m(1000)});
+        lst.add(new Object[]{Linq.of(m(-16), m(0), m(50), m(100), m(1000)).concat(Linq.repeat(MAX_DECIMAL, 1)), MAX_DECIMAL});
 
-        lst.add(new Object[]{Linq.asEnumerable(m("5.5")), m("5.5")});
+        lst.add(new Object[]{Linq.of(m("5.5")), m("5.5")});
         lst.add(new Object[]{Linq.repeat(m("-3.4"), 5), m("-3.4")});
-        lst.add(new Object[]{Linq.asEnumerable(m("122.5"), m("4.9"), m("10"), m("4.7"), m("28")), m("122.5")});
-        lst.add(new Object[]{Linq.asEnumerable(m("6.8"), m("9.4"), m("10"), m("0"), m("0"), MAX_DECIMAL), MAX_DECIMAL});
-        lst.add(new Object[]{Linq.asEnumerable(m("-5.5"), m("0"), m("9.9"), m("-5.5"), m("9.9")), m("9.9")});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(m("122.5"), m("4.9"), m("10"), m("4.7"), m("28")), m("122.5")});
+        lst.add(new Object[]{Linq.of(m("6.8"), m("9.4"), m("10"), m("0"), m("0"), MAX_DECIMAL), MAX_DECIMAL});
+        lst.add(new Object[]{Linq.of(m("-5.5"), m("0"), m("9.9"), m("-5.5"), m("9.9")), m("9.9")});
+        return Linq.of(lst);
     }
 
     @Test
@@ -311,18 +311,18 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42, 1), 42});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> i).toArray(), 10});
-        lst.add(new Object[]{Linq.asEnumerable(null, -100, -15, -50, -10), -10});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16, 0, 50, 100, 1000), 1000});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16, 0, 50, 100, 1000).concat(Linq.repeat(Integer.MAX_VALUE, 1)), Integer.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(null, -100, -15, -50, -10), -10});
+        lst.add(new Object[]{Linq.of(null, -16, 0, 50, 100, 1000), 1000});
+        lst.add(new Object[]{Linq.of(null, -16, 0, 50, 100, 1000).concat(Linq.repeat(Integer.MAX_VALUE, 1)), Integer.MAX_VALUE});
         lst.add(new Object[]{Linq.repeat(null, 100), null});
 
         lst.add(new Object[]{Linq.<Integer>empty(), null});
         lst.add(new Object[]{Linq.repeat(-20, 1), -20});
-        lst.add(new Object[]{Linq.asEnumerable(-6, null, -9, -10, null, -17, -18), -6});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, null, null, -5), -5});
-        lst.add(new Object[]{Linq.asEnumerable(6, null, null, 100, 9, 100, 10, 100), 100});
+        lst.add(new Object[]{Linq.of(-6, null, -9, -10, null, -17, -18), -6});
+        lst.add(new Object[]{Linq.of(null, null, null, null, null, -5), -5});
+        lst.add(new Object[]{Linq.of(6, null, null, 100, 9, 100, 10, 100), 100});
         lst.add(new Object[]{Linq.repeat(null, 5), null});
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
@@ -359,18 +359,18 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42L, 1), 42L});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (long) i).toArray(), 10L});
-        lst.add(new Object[]{Linq.asEnumerable(null, -100L, -15L, -50L, -10L), -10L});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16L, 0L, 50L, 100L, 1000L), 1000L});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16L, 0L, 50L, 100L, 1000L).concat(Linq.repeat(Long.MAX_VALUE, 1)), Long.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(null, -100L, -15L, -50L, -10L), -10L});
+        lst.add(new Object[]{Linq.of(null, -16L, 0L, 50L, 100L, 1000L), 1000L});
+        lst.add(new Object[]{Linq.of(null, -16L, 0L, 50L, 100L, 1000L).concat(Linq.repeat(Long.MAX_VALUE, 1)), Long.MAX_VALUE});
         lst.add(new Object[]{Linq.repeat(null, 100), null});
 
         lst.add(new Object[]{Linq.<Long>empty(), null});
         lst.add(new Object[]{Linq.repeat(Long.MAX_VALUE, 1), Long.MAX_VALUE});
         lst.add(new Object[]{Linq.repeat(null, 5), null});
-        lst.add(new Object[]{Linq.asEnumerable(Long.MAX_VALUE, null, 9L, 10L, null, 7L, 8L), Long.MAX_VALUE});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, null, null, -Long.MAX_VALUE), -Long.MAX_VALUE});
-        lst.add(new Object[]{Linq.asEnumerable(-6L, null, null, 0L, -9L, 0L, -10L, -30L), 0L});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(Long.MAX_VALUE, null, 9L, 10L, null, 7L, 8L), Long.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(null, null, null, null, null, -Long.MAX_VALUE), -Long.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(-6L, null, null, 0L, -9L, 0L, -10L, -30L), 0L});
+        return Linq.of(lst);
     }
 
     @Test
@@ -395,27 +395,27 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42f, 1), 42f});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (float) i).toArray(), 10f});
-        lst.add(new Object[]{Linq.asEnumerable(null, -100f, -15f, -50f, -10f), -10f});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16f, 0f, 50f, 100f, 1000f), 1000f});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16f, 0f, 50f, 100f, 1000f).concat(Linq.repeat(Float.MAX_VALUE, 1)), Float.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(null, -100f, -15f, -50f, -10f), -10f});
+        lst.add(new Object[]{Linq.of(null, -16f, 0f, 50f, 100f, 1000f), 1000f});
+        lst.add(new Object[]{Linq.of(null, -16f, 0f, 50f, 100f, 1000f).concat(Linq.repeat(Float.MAX_VALUE, 1)), Float.MAX_VALUE});
         lst.add(new Object[]{Linq.repeat(null, 100), null});
 
         lst.add(new Object[]{Linq.<Float>empty(), null});
         lst.add(new Object[]{Linq.repeat(Float.MIN_VALUE, 1), Float.MIN_VALUE});
         lst.add(new Object[]{Linq.repeat(null, 5), null});
-        lst.add(new Object[]{Linq.asEnumerable(14.50f, null, Float.NaN, 10.98f, null, 7.5f, 8.6f), 14.50f});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, null, null, 0f), 0f});
-        lst.add(new Object[]{Linq.asEnumerable(-6.4f, null, null, -0.5f, -9.4f, -0.5f, -10.9f, -0.5f), -0.5f});
+        lst.add(new Object[]{Linq.of(14.50f, null, Float.NaN, 10.98f, null, 7.5f, 8.6f), 14.50f});
+        lst.add(new Object[]{Linq.of(null, null, null, null, null, 0f), 0f});
+        lst.add(new Object[]{Linq.of(-6.4f, null, null, -0.5f, -9.4f, -0.5f, -10.9f, -0.5f), -0.5f});
 
-        lst.add(new Object[]{Linq.asEnumerable(Float.NaN, 6.8f, 9.4f, 10f, 0f, null, -5.6f), 10f});
-        lst.add(new Object[]{Linq.asEnumerable(6.8f, 9.4f, 10f, 0f, null, -5.6f, Float.NaN), 10f});
-        lst.add(new Object[]{Linq.asEnumerable(Float.NaN, Float.NEGATIVE_INFINITY), Float.NEGATIVE_INFINITY});
-        lst.add(new Object[]{Linq.asEnumerable(Float.NEGATIVE_INFINITY, Float.NaN), Float.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(Float.NaN, 6.8f, 9.4f, 10f, 0f, null, -5.6f), 10f});
+        lst.add(new Object[]{Linq.of(6.8f, 9.4f, 10f, 0f, null, -5.6f, Float.NaN), 10f});
+        lst.add(new Object[]{Linq.of(Float.NaN, Float.NEGATIVE_INFINITY), Float.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(Float.NEGATIVE_INFINITY, Float.NaN), Float.NEGATIVE_INFINITY});
         lst.add(new Object[]{Linq.repeat(Float.NaN, 3), Float.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(Float.NaN, null, null, null), Float.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, Float.NaN), Float.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(null, Float.NaN, null), Float.NaN});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(Float.NaN, null, null, null), Float.NaN});
+        lst.add(new Object[]{Linq.of(null, null, null, Float.NaN), Float.NaN});
+        lst.add(new Object[]{Linq.of(null, Float.NaN, null), Float.NaN});
+        return Linq.of(lst);
     }
 
     @Test
@@ -440,27 +440,27 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(42d, 1), 42.0});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> (double) i).toArray(), 10.0});
-        lst.add(new Object[]{Linq.asEnumerable(null, -100d, -15d, -50d, -10d), -10.0});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16d, 0d, 50d, 100d, 1000d), 1000.0});
-        lst.add(new Object[]{Linq.asEnumerable(null, -16d, 0d, 50d, 100d, 1000d).concat(Linq.repeat(Double.MAX_VALUE, 1)), Double.MAX_VALUE});
+        lst.add(new Object[]{Linq.of(null, -100d, -15d, -50d, -10d), -10.0});
+        lst.add(new Object[]{Linq.of(null, -16d, 0d, 50d, 100d, 1000d), 1000.0});
+        lst.add(new Object[]{Linq.of(null, -16d, 0d, 50d, 100d, 1000d).concat(Linq.repeat(Double.MAX_VALUE, 1)), Double.MAX_VALUE});
         lst.add(new Object[]{Linq.repeat(null, 100), null});
 
         lst.add(new Object[]{Linq.<Double>empty(), null});
         lst.add(new Object[]{Linq.repeat(Double.MIN_VALUE, 1), Double.MIN_VALUE});
         lst.add(new Object[]{Linq.repeat(null, 5), null});
-        lst.add(new Object[]{Linq.asEnumerable(14.50, null, Double.NaN, 10.98, null, 7.5, 8.6), 14.50});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, null, null, 0d), 0.0});
-        lst.add(new Object[]{Linq.asEnumerable(-6.4, null, null, -0.5, -9.4, -0.5, -10.9, -0.5), -0.5});
+        lst.add(new Object[]{Linq.of(14.50, null, Double.NaN, 10.98, null, 7.5, 8.6), 14.50});
+        lst.add(new Object[]{Linq.of(null, null, null, null, null, 0d), 0.0});
+        lst.add(new Object[]{Linq.of(-6.4, null, null, -0.5, -9.4, -0.5, -10.9, -0.5), -0.5});
 
-        lst.add(new Object[]{Linq.asEnumerable(Double.NaN, 6.8, 9.4, 10.5, 0d, null, -5.6), 10.5});
-        lst.add(new Object[]{Linq.asEnumerable(6.8, 9.4, 10.8, 0d, null, -5.6, Double.NaN), 10.8});
-        lst.add(new Object[]{Linq.asEnumerable(Double.NaN, Double.NEGATIVE_INFINITY), Double.NEGATIVE_INFINITY});
-        lst.add(new Object[]{Linq.asEnumerable(Double.NEGATIVE_INFINITY, Double.NaN), Double.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(Double.NaN, 6.8, 9.4, 10.5, 0d, null, -5.6), 10.5});
+        lst.add(new Object[]{Linq.of(6.8, 9.4, 10.8, 0d, null, -5.6, Double.NaN), 10.8});
+        lst.add(new Object[]{Linq.of(Double.NaN, Double.NEGATIVE_INFINITY), Double.NEGATIVE_INFINITY});
+        lst.add(new Object[]{Linq.of(Double.NEGATIVE_INFINITY, Double.NaN), Double.NEGATIVE_INFINITY});
         lst.add(new Object[]{Linq.repeat(Double.NaN, 3), Double.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(Double.NaN, null, null, null), Double.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, Double.NaN), Double.NaN});
-        lst.add(new Object[]{Linq.asEnumerable(null, Double.NaN, null), Double.NaN});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(Double.NaN, null, null, null), Double.NaN});
+        lst.add(new Object[]{Linq.of(null, null, null, Double.NaN), Double.NaN});
+        lst.add(new Object[]{Linq.of(null, Double.NaN, null), Double.NaN});
+        return Linq.of(lst);
     }
 
     @Test
@@ -485,18 +485,18 @@ public class MaxTest extends TestCase {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.repeat(m(42), 1), m(42)});
         lst.add(new Object[]{Linq.range(1, 10).select(i -> m(i)).toArray(), m(10)});
-        lst.add(new Object[]{Linq.asEnumerable(null, m(-100), m(-15), m(-50), m(-10)), m(-10)});
-        lst.add(new Object[]{Linq.asEnumerable(null, m(-16), m(0), m(50), m(100), m(1000)), m(1000)});
-        lst.add(new Object[]{Linq.asEnumerable(null, m(-16), m(0), m(50), m(100), m(1000)).concat(Linq.repeat(MAX_DECIMAL, 1)), MAX_DECIMAL});
+        lst.add(new Object[]{Linq.of(null, m(-100), m(-15), m(-50), m(-10)), m(-10)});
+        lst.add(new Object[]{Linq.of(null, m(-16), m(0), m(50), m(100), m(1000)), m(1000)});
+        lst.add(new Object[]{Linq.of(null, m(-16), m(0), m(50), m(100), m(1000)).concat(Linq.repeat(MAX_DECIMAL, 1)), MAX_DECIMAL});
         lst.add(new Object[]{Linq.repeat(null, 100), null});
 
         lst.add(new Object[]{Linq.<BigDecimal>empty(), null});
         lst.add(new Object[]{Linq.repeat(MAX_DECIMAL, 1), MAX_DECIMAL});
         lst.add(new Object[]{Linq.repeat(null, 5), null});
-        lst.add(new Object[]{Linq.asEnumerable(m("14.50"), null, null, m("10.98"), null, m("7.5"), m("8.6")), m("14.50")});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, null, null, m(0)), m(0)});
-        lst.add(new Object[]{Linq.asEnumerable(m("6.4"), null, null, MAX_DECIMAL, m("9.4"), MAX_DECIMAL, m("10.9"), MAX_DECIMAL), MAX_DECIMAL});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(m("14.50"), null, null, m("10.98"), null, m("7.5"), m("8.6")), m("14.50")});
+        lst.add(new Object[]{Linq.of(null, null, null, null, null, m(0)), m(0)});
+        lst.add(new Object[]{Linq.of(m("6.4"), null, null, MAX_DECIMAL, m("9.4"), MAX_DECIMAL, m("10.9"), MAX_DECIMAL), MAX_DECIMAL});
+        return Linq.of(lst);
     }
 
     @Test
@@ -520,7 +520,7 @@ public class MaxTest extends TestCase {
     private IEnumerable<Object[]> Max_DateTime_TestData() {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.range(1, 10).select(i -> newDate(2000, 1, i)).toArray(), newDate(2000, 1, 10)});
-        lst.add(new Object[]{Linq.asEnumerable(newDate(2000, 12, 1), newDate(2000, 12, 31), newDate(2000, 1, 12)), newDate(2000, 12, 31)});
+        lst.add(new Object[]{Linq.of(newDate(2000, 12, 1), newDate(2000, 12, 31), newDate(2000, 1, 12)), newDate(2000, 12, 31)});
 
         Date[] threeThousand = new Date[]{
                 newDate(3000, 1, 1),
@@ -528,9 +528,9 @@ public class MaxTest extends TestCase {
                 newDate(200, 1, 1),
                 newDate(1000, 1, 1)
         };
-        lst.add(new Object[]{Linq.asEnumerable(threeThousand), newDate(3000, 1, 1)});
-        lst.add(new Object[]{Linq.asEnumerable(threeThousand).concat(Linq.repeat(MAX_DATE, 1)), MAX_DATE});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(threeThousand), newDate(3000, 1, 1)});
+        lst.add(new Object[]{Linq.of(threeThousand).concat(Linq.repeat(MAX_DATE, 1)), MAX_DATE});
+        return Linq.of(lst);
     }
 
     @Test
@@ -560,17 +560,17 @@ public class MaxTest extends TestCase {
     private IEnumerable<Object[]> Max_String_TestData() {
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.range(1, 10).select(i -> i.toString()).toArray(), "9"});
-        lst.add(new Object[]{Linq.asEnumerable("Alice", "Bob", "Charlie", "Eve", "Mallory", "Victor", "Trent"), "Victor"});
-        lst.add(new Object[]{Linq.asEnumerable(null, "Charlie", null, "Victor", "Trent", null, "Eve", "Alice", "Mallory", "Bob"), "Victor"});
+        lst.add(new Object[]{Linq.of("Alice", "Bob", "Charlie", "Eve", "Mallory", "Victor", "Trent"), "Victor"});
+        lst.add(new Object[]{Linq.of(null, "Charlie", null, "Victor", "Trent", null, "Eve", "Alice", "Mallory", "Bob"), "Victor"});
 
         lst.add(new Object[]{Linq.<String>empty(), null});
         lst.add(new Object[]{Linq.repeat("Hello", 1), "Hello"});
         lst.add(new Object[]{Linq.repeat("hi", 5), "hi"});
-        lst.add(new Object[]{Linq.asEnumerable("zzz", "aaa", "abcd", "bark", "temp", "cat"), "zzz"});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, null, null, "aAa"), "aAa"});
-        lst.add(new Object[]{Linq.asEnumerable("ooo", "ccc", "ccc", "ooo", "ooo", "nnn"), "ooo"});
+        lst.add(new Object[]{Linq.of("zzz", "aaa", "abcd", "bark", "temp", "cat"), "zzz"});
+        lst.add(new Object[]{Linq.of(null, null, null, null, "aAa"), "aAa"});
+        lst.add(new Object[]{Linq.of("ooo", "ccc", "ccc", "ooo", "ooo", "nnn"), "ooo"});
         lst.add(new Object[]{Linq.repeat(null, 5), null});
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
@@ -617,7 +617,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("Bob", 30)
         };
 
-        assertEquals(30, Linq.asEnumerable(source).maxInt(e -> e.num));
+        assertEquals(30, Linq.of(source).maxInt(e -> e.num));
     }
 
     @Test
@@ -633,7 +633,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", -105L),
                 new NameNum<>("Bob", Long.MAX_VALUE)
         };
-        assertEquals(Long.MAX_VALUE, Linq.asEnumerable(source).maxLong(e -> e.num));
+        assertEquals(Long.MAX_VALUE, Linq.of(source).maxLong(e -> e.num));
     }
 
     @Test
@@ -644,7 +644,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("Bob", 100.45f)
         };
 
-        assertEquals(100.45f, Linq.asEnumerable(source).select(e -> e.num).maxFloat());
+        assertEquals(100.45f, Linq.of(source).select(e -> e.num).maxFloat());
     }
 
     @Test
@@ -666,7 +666,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", -10.25d),
                 new NameNum<>("Bob", 100.45d)
         };
-        assertEquals(100.45, Linq.asEnumerable(source).maxDouble(e -> e.num));
+        assertEquals(100.45, Linq.of(source).maxDouble(e -> e.num));
     }
 
     @Test
@@ -682,7 +682,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", m("900.25")),
                 new NameNum<>("Bob", m("10.45"))
         };
-        assertEquals(m("900.25"), Linq.asEnumerable(source).maxDecimal(e -> e.num));
+        assertEquals(m("900.25"), Linq.of(source).maxDecimal(e -> e.num));
     }
 
     @Test
@@ -699,7 +699,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("Bob", null)
         };
 
-        assertEquals(10, Linq.asEnumerable(source).maxIntNull(e -> e.num));
+        assertEquals(10, Linq.of(source).maxIntNull(e -> e.num));
     }
 
     @Test
@@ -715,7 +715,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", -105L),
                 new NameNum<>("Bob", Long.MAX_VALUE)
         };
-        assertEquals(Long.MAX_VALUE, Linq.asEnumerable(source).maxLongNull(e -> e.num));
+        assertEquals(Long.MAX_VALUE, Linq.of(source).maxLongNull(e -> e.num));
     }
 
     @Test
@@ -731,7 +731,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", null),
                 new NameNum<>("Bob", 100.45f)
         };
-        assertEquals(100.45f, Linq.asEnumerable(source).maxFloatNull(e -> e.num));
+        assertEquals(100.45f, Linq.of(source).maxFloatNull(e -> e.num));
     }
 
     @Test
@@ -747,7 +747,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", null),
                 new NameNum<>("Bob", 100.45)
         };
-        assertEquals(100.45, Linq.asEnumerable(source).maxDoubleNull(e -> e.num));
+        assertEquals(100.45, Linq.of(source).maxDoubleNull(e -> e.num));
     }
 
     @Test
@@ -763,7 +763,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", null),
                 new NameNum<>("Bob", m("10.45"))
         };
-        assertEquals(m("420.5"), Linq.asEnumerable(source).maxDecimalNull(e -> e.num));
+        assertEquals(m("420.5"), Linq.of(source).maxDecimalNull(e -> e.num));
     }
 
     @Test
@@ -790,7 +790,7 @@ public class MaxTest extends TestCase {
                 new NameNum<>("John", m("900.25")),
                 new NameNum<>("Bob", m("10.45"))
         };
-        assertEquals("Tim", Linq.asEnumerable(source).maxNull(e -> e.name));
+        assertEquals("Tim", Linq.of(source).maxNull(e -> e.name));
     }
 
     @Test
@@ -801,219 +801,219 @@ public class MaxTest extends TestCase {
     @Test
     public void testMaxInt() {
         Integer[] numbers = {0, 2, 3};
-        assertEquals(3, Linq.asEnumerable(numbers).maxInt());
+        assertEquals(3, Linq.of(numbers).maxInt());
 
         Integer[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxInt());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxInt());
     }
 
     @Test
     public void testMaxIntNull() {
         Integer[] numbers = {null, 0, 2, 3};
-        assertEquals(3, Linq.asEnumerable(numbers).maxIntNull());
+        assertEquals(3, Linq.of(numbers).maxIntNull());
 
         Integer[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxIntNull());
+        assertEquals(null, Linq.of(numbers2).maxIntNull());
     }
 
     @Test
     public void testMaxLong() {
         Long[] numbers = {0L, 2L, 3L};
-        assertEquals(3L, Linq.asEnumerable(numbers).maxLong());
+        assertEquals(3L, Linq.of(numbers).maxLong());
 
         Long[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxLong());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxLong());
     }
 
     @Test
     public void testMaxLongNull() {
         Long[] numbers = {null, 0L, 2L, 3L};
-        assertEquals(3L, Linq.asEnumerable(numbers).maxLongNull());
+        assertEquals(3L, Linq.of(numbers).maxLongNull());
 
         Long[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxLongNull());
+        assertEquals(null, Linq.of(numbers2).maxLongNull());
     }
 
     @Test
     public void testMaxFloat() {
         Float[] numbers = {0f, 2f, Float.NaN};
-        assertEquals(2f, Linq.asEnumerable(numbers).maxFloat());
+        assertEquals(2f, Linq.of(numbers).maxFloat());
 
         Float[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxFloat());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxFloat());
     }
 
     @Test
     public void testMaxFloatNull() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        assertEquals(2f, Linq.asEnumerable(numbers).maxFloatNull());
+        assertEquals(2f, Linq.of(numbers).maxFloatNull());
 
         Float[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxFloatNull());
+        assertEquals(null, Linq.of(numbers2).maxFloatNull());
     }
 
     @Test
     public void testMaxDouble() {
         Double[] numbers = {2d, Double.NaN};
-        assertEquals(2d, Linq.asEnumerable(numbers).maxDouble());
+        assertEquals(2d, Linq.of(numbers).maxDouble());
 
         Double[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDouble());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxDouble());
     }
 
     @Test
     public void testMaxDoubleNull() {
         Double[] numbers = {null, 2d, Double.NaN};
-        assertEquals(2d, Linq.asEnumerable(numbers).maxDoubleNull());
+        assertEquals(2d, Linq.of(numbers).maxDoubleNull());
 
         Double[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxDoubleNull());
+        assertEquals(null, Linq.of(numbers2).maxDoubleNull());
     }
 
     @Test
     public void testMaxDecimal() {
         BigDecimal[] numbers = {m("0"), m("2"), m("3")};
-        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimal());
+        assertEquals(m("3"), Linq.of(numbers).maxDecimal());
 
         Integer[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDecimal());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxDecimal());
     }
 
     @Test
     public void testMaxDecimalNull() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
-        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimalNull());
+        assertEquals(m("3"), Linq.of(numbers).maxDecimalNull());
 
         Integer[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxDecimalNull());
+        assertEquals(null, Linq.of(numbers2).maxDecimalNull());
     }
 
     @Test
     public void testMax() {
         Float[] numbers = {0f, 2f, Float.NaN};
-        assertEquals(Float.NaN, Linq.asEnumerable(numbers).max());
+        assertEquals(Float.NaN, Linq.of(numbers).max());
 
         Float[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).max());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).max());
     }
 
     @Test
     public void testMaxNull() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        assertEquals(Float.NaN, Linq.asEnumerable(numbers).maxNull());
+        assertEquals(Float.NaN, Linq.of(numbers).maxNull());
 
         Float[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxNull());
+        assertEquals(null, Linq.of(numbers2).maxNull());
     }
 
     @Test
     public void testMaxIntWithSelector() {
         Integer[] numbers = {0, 2, 3};
-        assertEquals(3, Linq.asEnumerable(numbers).maxInt(n -> n));
+        assertEquals(3, Linq.of(numbers).maxInt(n -> n));
 
         Integer[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxInt(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxInt(n -> n));
     }
 
     @Test
     public void testMaxIntNullWithSelector() {
         Integer[] numbers = {null, 0, 2, 3};
-        assertEquals(3, Linq.asEnumerable(numbers).maxIntNull(n -> n));
+        assertEquals(3, Linq.of(numbers).maxIntNull(n -> n));
 
         Integer[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxIntNull(n -> n));
+        assertEquals(null, Linq.of(numbers2).maxIntNull(n -> n));
     }
 
     @Test
     public void testMaxLongWithSelector() {
         Long[] numbers = {0L, 2L, 3L};
-        assertEquals(3L, Linq.asEnumerable(numbers).maxLong(n -> n));
+        assertEquals(3L, Linq.of(numbers).maxLong(n -> n));
 
         Long[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxLong(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxLong(n -> n));
     }
 
     @Test
     public void testMaxLongNullWithSelector() {
         Long[] numbers = {null, 0L, 2L, 3L};
-        assertEquals(3L, Linq.asEnumerable(numbers).maxLongNull(n -> n));
+        assertEquals(3L, Linq.of(numbers).maxLongNull(n -> n));
 
         Long[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxLongNull(n -> n));
+        assertEquals(null, Linq.of(numbers2).maxLongNull(n -> n));
     }
 
     @Test
     public void testMaxFloatWithSelector() {
         Float[] numbers = {0f, 2f, Float.NaN};
-        assertEquals(2f, Linq.asEnumerable(numbers).maxFloat(n -> n));
+        assertEquals(2f, Linq.of(numbers).maxFloat(n -> n));
 
         Float[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxFloat(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxFloat(n -> n));
     }
 
     @Test
     public void testMaxFloatNullWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        assertEquals(2f, Linq.asEnumerable(numbers).maxFloatNull(n -> n));
+        assertEquals(2f, Linq.of(numbers).maxFloatNull(n -> n));
 
         Float[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxFloatNull(n -> n));
+        assertEquals(null, Linq.of(numbers2).maxFloatNull(n -> n));
     }
 
     @Test
     public void testMaxDoubleWithSelector() {
         Double[] numbers = {2d, Double.NaN};
-        assertEquals(2d, Linq.asEnumerable(numbers).maxDouble(n -> n));
+        assertEquals(2d, Linq.of(numbers).maxDouble(n -> n));
 
         Double[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDouble(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxDouble(n -> n));
     }
 
     @Test
     public void testMaxDoubleNullWithSelector() {
         Double[] numbers = {null, 2d, Double.NaN};
-        assertEquals(2d, Linq.asEnumerable(numbers).maxDoubleNull(n -> n));
+        assertEquals(2d, Linq.of(numbers).maxDoubleNull(n -> n));
 
         Double[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxDoubleNull(n -> n));
+        assertEquals(null, Linq.of(numbers2).maxDoubleNull(n -> n));
     }
 
     @Test
     public void testMaxDecimalWithSelector() {
         BigDecimal[] numbers = {m("0"), m("2"), m("3")};
-        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimal(n -> n));
+        assertEquals(m("3"), Linq.of(numbers).maxDecimal(n -> n));
 
         BigDecimal[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).maxDecimal(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).maxDecimal(n -> n));
     }
 
     @Test
     public void testMaxDecimalNullWithSelector() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
-        assertEquals(m("3"), Linq.asEnumerable(numbers).maxDecimalNull(n -> n));
+        assertEquals(m("3"), Linq.of(numbers).maxDecimalNull(n -> n));
 
         BigDecimal[] numbers2 = {null};
-        assertEquals(null, Linq.asEnumerable(numbers2).maxDecimalNull(n -> n));
+        assertEquals(null, Linq.of(numbers2).maxDecimalNull(n -> n));
     }
 
     @Test
     public void testMaxWithSelector() {
         Float[] numbers = {0f, 2f, Float.NaN};
-        Float f = Linq.asEnumerable(numbers).max(n -> n);
+        Float f = Linq.of(numbers).max(n -> n);
         assertEquals(Float.NaN, f);
 
         Float[] numbers2 = {null};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers2).max(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers2).max(n -> n));
     }
 
     @Test
     public void testMaxNullWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
-        Float f = Linq.asEnumerable(numbers).maxNull(n -> n);
+        Float f = Linq.of(numbers).maxNull(n -> n);
         assertEquals(Float.NaN, f);
 
         Float[] numbers2 = {null};
-        Float f2 = Linq.asEnumerable(numbers2).maxNull(n -> n);
+        Float f2 = Linq.of(numbers2).maxNull(n -> n);
         assertEquals(null, f2);
     }
 

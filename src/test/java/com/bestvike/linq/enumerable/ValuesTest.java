@@ -56,9 +56,9 @@ public class ValuesTest extends TestCase {
         this.emptyMoreFieldBean.doubleArr = new double[]{};
         this.emptyMoreFieldBean.objArr = new Object[]{};
         this.emptyMoreFieldBean.objArr2 = new BigDecimal[]{};
-        this.emptyMoreFieldBean.iCollection = (ICollection<?>) Linq.asEnumerable();
-        this.emptyMoreFieldBean.listProvider = Linq.asEnumerable().select(a -> a + "_suffix");
-        this.emptyMoreFieldBean.enumerable = Linq.asEnumerable().where(Objects::nonNull);
+        this.emptyMoreFieldBean.iCollection = (ICollection<?>) Linq.of();
+        this.emptyMoreFieldBean.listProvider = Linq.of().select(a -> a + "_suffix");
+        this.emptyMoreFieldBean.enumerable = Linq.of().where(Objects::nonNull);
         this.emptyMoreFieldBean.collection = Collections.emptyList();
         this.emptyMoreFieldBean.iterable = new ArrayIterable<>();
         this.emptyMoreFieldBean.map = new LinkedHashMap<>();
@@ -76,9 +76,9 @@ public class ValuesTest extends TestCase {
         this.emptyMoreFieldBeanExpected.doubleArr = new double[]{};
         this.emptyMoreFieldBeanExpected.objArr = new Object[]{};
         this.emptyMoreFieldBeanExpected.objArr2 = new BigDecimal[]{};
-        this.emptyMoreFieldBeanExpected.iCollection = (ICollection<?>) Linq.asEnumerable();
-        this.emptyMoreFieldBeanExpected.listProvider = Linq.asEnumerable().select(a -> a + "_suffix");
-        this.emptyMoreFieldBeanExpected.enumerable = Linq.asEnumerable().where(Objects::nonNull);
+        this.emptyMoreFieldBeanExpected.iCollection = (ICollection<?>) Linq.of();
+        this.emptyMoreFieldBeanExpected.listProvider = Linq.of().select(a -> a + "_suffix");
+        this.emptyMoreFieldBeanExpected.enumerable = Linq.of().where(Objects::nonNull);
         this.emptyMoreFieldBeanExpected.collection = Collections.emptyList();
         this.emptyMoreFieldBeanExpected.iterable = new ArrayIterable<>();
         this.emptyMoreFieldBeanExpected.map = new LinkedHashMap<>();
@@ -96,9 +96,9 @@ public class ValuesTest extends TestCase {
         this.moreFieldBean.doubleArr = new double[]{Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.MIN_VALUE, Double.MAX_VALUE};
         this.moreFieldBean.objArr = new Object[]{null, "!@#$%^&*()_+", m("123.456"), m("9999999.099999999"), new NoFieldBean()};
         this.moreFieldBean.objArr2 = new BigDecimal[]{null, m("355.99")};
-        this.moreFieldBean.iCollection = (ICollection<?>) Linq.asEnumerable(null, "", Empty, "你好世界");
-        this.moreFieldBean.listProvider = Linq.asEnumerable(null, "", Empty, "你好世界").select(a -> a + "_suffix");
-        this.moreFieldBean.enumerable = Linq.asEnumerable(null, "", Empty, "你好世界").where(Objects::nonNull);
+        this.moreFieldBean.iCollection = (ICollection<?>) Linq.of(null, "", Empty, "你好世界");
+        this.moreFieldBean.listProvider = Linq.of(null, "", Empty, "你好世界").select(a -> a + "_suffix");
+        this.moreFieldBean.enumerable = Linq.of(null, "", Empty, "你好世界").where(Objects::nonNull);
         this.moreFieldBean.collection = Arrays.asList(null, "", Empty, "你好世界");
         this.moreFieldBean.iterable = new ArrayIterable<>(null, "", Empty, "你好世界");
         Map<Object, Object> map = new HashMap<>();
@@ -121,9 +121,9 @@ public class ValuesTest extends TestCase {
         this.moreFieldBeanExpected.doubleArr = new double[]{Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.MIN_VALUE, Double.MAX_VALUE};
         this.moreFieldBeanExpected.objArr = new Object[]{null, "!@#$%^&*()_+", m("123.45600"), m("9999999.0999999990"), new NoFieldBean()};
         this.moreFieldBeanExpected.objArr2 = new BigDecimal[]{null, m("355.99000")};
-        this.moreFieldBeanExpected.iCollection = (ICollection<?>) Linq.asEnumerable(null, "", Empty, "你好世界");
-        this.moreFieldBeanExpected.listProvider = Linq.asEnumerable(null, "", Empty, "你好世界").select(a -> a + "_suffix");
-        this.moreFieldBeanExpected.enumerable = Linq.asEnumerable(null, "", Empty, "你好世界").where(Objects::nonNull);
+        this.moreFieldBeanExpected.iCollection = (ICollection<?>) Linq.of(null, "", Empty, "你好世界");
+        this.moreFieldBeanExpected.listProvider = Linq.of(null, "", Empty, "你好世界").select(a -> a + "_suffix");
+        this.moreFieldBeanExpected.enumerable = Linq.of(null, "", Empty, "你好世界").where(Objects::nonNull);
         this.moreFieldBeanExpected.collection = Arrays.asList(null, "", Empty, "你好世界");
         this.moreFieldBeanExpected.iterable = new ArrayIterable<>(null, "", Empty, "你好世界");
         Map<Object, Object> map2 = new HashMap<>();
@@ -188,30 +188,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new Object[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new Object[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
 
-        assertTrue(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE) instanceof ICollection);
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE)));
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE)));
-        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)));
+        assertTrue(Linq.of(Boolean.TRUE, Boolean.FALSE) instanceof ICollection);
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.FALSE)));
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE)));
+        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)));
 
-        assertFalse(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).select(a -> a)));
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE).select(a -> a)));
-        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a)));
+        assertFalse(Linq.of(Boolean.TRUE, Boolean.FALSE).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Boolean.TRUE, Boolean.FALSE).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Boolean.TRUE, Boolean.FALSE).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.FALSE).select(a -> a)));
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE).select(a -> a)));
+        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE).where(a -> true)));
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE).where(a -> true)));
-        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true)));
+        assertFalse(Linq.of(Boolean.TRUE, Boolean.FALSE).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Boolean.TRUE, Boolean.FALSE).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Boolean.TRUE, Boolean.FALSE).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.FALSE).where(a -> true)));
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE).where(a -> true)));
+        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE)) instanceof IIListProvider);
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE))));
-        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE))));
-        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE)) instanceof IIListProvider);
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE))));
+        assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE))));
+        assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE))));
 
         assertFalse(Arrays.asList(Boolean.TRUE, Boolean.FALSE) instanceof IEnumerable);
         assertTrue(Arrays.asList(Boolean.TRUE, Boolean.FALSE) instanceof Collection);
@@ -238,30 +238,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, new Object[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
         assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, new Object[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO)));
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE)));
-        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)));
+        assertTrue(Linq.of(Byte.MIN_VALUE, BYTE_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ZERO)));
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE)));
+        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO))));
-        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE))));
-        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO))));
+        assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE))));
+        assertTrue(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Byte.MIN_VALUE, BYTE_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Byte.MIN_VALUE, BYTE_ZERO) instanceof Collection);
@@ -288,30 +288,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, new Object[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
         assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, new Object[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO)));
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE)));
-        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)));
+        assertTrue(Linq.of(Short.MIN_VALUE, SHORT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ZERO)));
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE)));
+        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Short.MIN_VALUE, SHORT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Short.MIN_VALUE, SHORT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Short.MIN_VALUE, SHORT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Short.MIN_VALUE, SHORT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Short.MIN_VALUE, SHORT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Short.MIN_VALUE, SHORT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO))));
-        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE))));
-        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO))));
+        assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE))));
+        assertTrue(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Short.MIN_VALUE, SHORT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Short.MIN_VALUE, SHORT_ZERO) instanceof Collection);
@@ -338,30 +338,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
         assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
@@ -388,30 +388,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, new Object[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
         assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, new Object[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO)));
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE)));
-        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)));
+        assertTrue(Linq.of(Long.MIN_VALUE, LONG_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ZERO)));
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE)));
+        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Long.MIN_VALUE, LONG_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Long.MIN_VALUE, LONG_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Long.MIN_VALUE, LONG_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Long.MIN_VALUE, LONG_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Long.MIN_VALUE, LONG_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Long.MIN_VALUE, LONG_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO))));
-        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE))));
-        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO))));
+        assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE))));
+        assertTrue(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Long.MIN_VALUE, LONG_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Long.MIN_VALUE, LONG_ZERO) instanceof Collection);
@@ -438,30 +438,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, new Object[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
         assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, new Object[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO)));
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE)));
-        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)));
+        assertTrue(Linq.of(Character.MIN_VALUE, CHAR_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ZERO)));
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE)));
+        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Character.MIN_VALUE, CHAR_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Character.MIN_VALUE, CHAR_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Character.MIN_VALUE, CHAR_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Character.MIN_VALUE, CHAR_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Character.MIN_VALUE, CHAR_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Character.MIN_VALUE, CHAR_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO))));
-        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE))));
-        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO))));
+        assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE))));
+        assertTrue(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Character.MIN_VALUE, CHAR_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Character.MIN_VALUE, CHAR_ZERO) instanceof Collection);
@@ -488,30 +488,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, new Object[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
         assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, new Object[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO)));
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE)));
-        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)));
+        assertTrue(Linq.of(Float.MIN_VALUE, FLOAT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ZERO)));
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE)));
+        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO))));
-        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE))));
-        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO))));
+        assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE))));
+        assertTrue(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Float.MIN_VALUE, FLOAT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Float.MIN_VALUE, FLOAT_ZERO) instanceof Collection);
@@ -538,30 +538,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, new Object[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
         assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, new Object[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO)));
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE)));
-        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)));
+        assertTrue(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ZERO)));
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE)));
+        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO))));
-        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE))));
-        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO))));
+        assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE))));
+        assertTrue(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Double.MIN_VALUE, DOUBLE_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Double.MIN_VALUE, DOUBLE_ZERO) instanceof Collection);
@@ -628,30 +628,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
         assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
@@ -668,362 +668,362 @@ public class ValuesTest extends TestCase {
 
     @Test
     public void testEqualsICollection() {
-        assertFalse(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
-        assertFalse(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
+        assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
+        assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
+        assertTrue(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
 
         final byte BYTE_ZERO = 0;
         final byte BYTE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
+        assertFalse(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
 
         final short SHORT_ZERO = 0;
         final short SHORT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
 
         final int INT_ZERO = 0;
         final int INT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new int[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new int[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
         final long LONG_ZERO = 0;
         final long LONG_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE), new long[]{Long.MIN_VALUE, LONG_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE), new long[]{Long.MIN_VALUE, LONG_ZERO}));
+        assertFalse(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
 
         final char CHAR_ZERO = 0;
         final char CHAR_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
+        assertFalse(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
 
         final float FLOAT_ZERO = 0;
         final float FLOAT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
 
         final double DOUBLE_ZERO = 0;
         final double DOUBLE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
+        assertFalse(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object()));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object()));
     }
 
     @Test
     public void testEqualsIIListProviderLength() {
-        assertFalse(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
-        assertFalse(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
+        assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
+        assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
+        assertTrue(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
 
         final byte BYTE_ZERO = 0;
         final byte BYTE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
+        assertFalse(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).select(a -> a), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
 
         final short SHORT_ZERO = 0;
         final short SHORT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).select(a -> a), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
 
         final int INT_ZERO = 0;
         final int INT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new int[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new int[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
         final long LONG_ZERO = 0;
         final long LONG_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a), new long[]{Long.MIN_VALUE, LONG_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a), new long[]{Long.MIN_VALUE, LONG_ZERO}));
+        assertFalse(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).select(a -> a), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
 
         final char CHAR_ZERO = 0;
         final char CHAR_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
+        assertFalse(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).select(a -> a), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
 
         final float FLOAT_ZERO = 0;
         final float FLOAT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).select(a -> a), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
 
         final double DOUBLE_ZERO = 0;
         final double DOUBLE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
+        assertFalse(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).select(a -> a), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object()));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a), new Object()));
     }
 
     @Test
     public void testEqualsIIListProviderNoLength() {
-        assertFalse(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
-        assertFalse(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
+        assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
+        assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
+        assertTrue(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
 
         final byte BYTE_ZERO = 0;
         final byte BYTE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
+        assertFalse(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE).where(a -> true), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
 
         final short SHORT_ZERO = 0;
         final short SHORT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE).where(a -> true), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
 
         final int INT_ZERO = 0;
         final int INT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new int[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new int[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
         final long LONG_ZERO = 0;
         final long LONG_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true), new long[]{Long.MIN_VALUE, LONG_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true), new long[]{Long.MIN_VALUE, LONG_ZERO}));
+        assertFalse(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE).where(a -> true), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
 
         final char CHAR_ZERO = 0;
         final char CHAR_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
+        assertFalse(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE).where(a -> true), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
 
         final float FLOAT_ZERO = 0;
         final float FLOAT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE).where(a -> true), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
 
         final double DOUBLE_ZERO = 0;
         final double DOUBLE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
+        assertFalse(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE).where(a -> true), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object()));
+        assertFalse(Values.equals(Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true), new Object()));
     }
 
     @Test
     public void testEqualsIEnumerable() {
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
 
         final byte BYTE_ZERO = 0;
         final byte BYTE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)), new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)), new byte[]{Byte.MIN_VALUE, BYTE_ONE, Byte.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE)), new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}));
 
         final short SHORT_ZERO = 0;
         final short SHORT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)), new short[]{Short.MIN_VALUE, SHORT_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)), new short[]{Short.MIN_VALUE, SHORT_ONE, Short.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE)), new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}));
 
         final int INT_ZERO = 0;
         final int INT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new int[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new int[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new int[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
         final long LONG_ZERO = 0;
         final long LONG_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)), new long[]{Long.MIN_VALUE, LONG_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)), new long[]{Long.MIN_VALUE, LONG_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)), new long[]{Long.MIN_VALUE, LONG_ONE, Long.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE)), new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}));
 
         final char CHAR_ZERO = 0;
         final char CHAR_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)), new char[]{Character.MIN_VALUE, CHAR_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)), new char[]{Character.MIN_VALUE, CHAR_ONE, Character.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE)), new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}));
 
         final float FLOAT_ZERO = 0;
         final float FLOAT_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)), new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)), new float[]{Float.MIN_VALUE, FLOAT_ONE, Float.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE)), new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}));
 
         final double DOUBLE_ZERO = 0;
         final double DOUBLE_ONE = 1;
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)), new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)), new double[]{Double.MIN_VALUE, DOUBLE_ONE, Double.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE)), new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}));
 
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object[]{Integer.MIN_VALUE, INT_ZERO}));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Arrays.asList(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Arrays.asList(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Values.equals(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object()));
+        assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)), new Object()));
     }
 
     @Test
@@ -1078,30 +1078,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
         assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(Arrays.asList(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
@@ -1168,30 +1168,30 @@ public class ValuesTest extends TestCase {
         assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE}));
         assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), new Object[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}));
 
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO)));
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
-        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO) instanceof ICollection);
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO)));
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE)));
+        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
-        assertEquals(2, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
-        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a) instanceof IIListProvider);
+        assertEquals(2, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a))._getCount(true));
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO).select(a -> a)));
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).select(a -> a)));
+        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).select(a -> a)));
 
-        assertFalse(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
-        assertTrue(Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
-        assertEquals(-1, ((IIListProvider) Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
-        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
+        assertFalse(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof ICollection);
+        assertTrue(Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true) instanceof IIListProvider);
+        assertEquals(-1, ((IIListProvider) Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true))._getCount(true));
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO).where(a -> true)));
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE).where(a -> true)));
+        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE).where(a -> true)));
 
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
-        assertFalse(Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
-        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
-        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.asEnumerable(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof ICollection);
+        assertFalse(Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO)) instanceof IIListProvider);
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO))));
+        assertFalse(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ONE, Integer.MAX_VALUE))));
+        assertTrue(Values.equals(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE), Linq.of(new ArrayIterable<>(Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE))));
 
         assertFalse(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof IEnumerable);
         assertTrue(Arrays.asList(Integer.MIN_VALUE, INT_ZERO) instanceof Collection);
@@ -1285,7 +1285,7 @@ public class ValuesTest extends TestCase {
         assertEquals(Values.hashCode(new Double[]{Double.MIN_VALUE, 0d, Double.MAX_VALUE}), Values.hashCode(new double[]{Double.MIN_VALUE, 0d, Double.MAX_VALUE}));
 
         assertEquals(Values.hashCode(new Object[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}), Values.hashCode(new Integer[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}));
-        assertEquals(Values.hashCode(new Object[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}), Values.hashCode(Linq.asEnumerable(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
+        assertEquals(Values.hashCode(new Object[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}), Values.hashCode(Linq.of(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
         assertEquals(Values.hashCode(new Object[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}), Values.hashCode(new ArrayIterable<>(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
 
         Map<Object, Object> a = new LinkedHashMap<>();
@@ -1345,7 +1345,7 @@ public class ValuesTest extends TestCase {
         assertEquals("[4.9E-324, 0.0, 1.7976931348623157E308]", Values.toString(new double[]{Double.MIN_VALUE, 0d, Double.MAX_VALUE}));
 
         assertEquals("[-2147483648, 0, 2147483647]", Values.toString(new Object[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}));
-        assertEquals("[-2147483648, 0, 2147483647]", Values.toString(Linq.asEnumerable(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
+        assertEquals("[-2147483648, 0, 2147483647]", Values.toString(Linq.of(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
         assertEquals("[-2147483648, 0, 2147483647]", Values.toString(new ArrayIterable<>(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
 
         Map<Object, Object> a = new LinkedHashMap<>();

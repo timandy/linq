@@ -15,7 +15,7 @@ import org.junit.Test;
 public class AggregateTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.aggregate((x, y) -> x + y), q.aggregate((x, y) -> x + y));
@@ -23,7 +23,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.aggregate((x, y) -> x + y), q.aggregate((x, y) -> x + y));
@@ -54,7 +54,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void TwoElements() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6);
+        IEnumerable<Integer> source = Linq.of(5, 6);
         Integer expected = 11;
 
         assertEquals(expected, source.aggregate((x, y) -> x + y));
@@ -62,7 +62,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void MultipleElements() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 0, -4);
+        IEnumerable<Integer> source = Linq.of(5, 6, 0, -4);
         Integer expected = 7;
 
         assertEquals(expected, source.aggregate((x, y) -> x + y));
@@ -70,7 +70,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void MultipleElementsRunOnce() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 0, -4);
+        IEnumerable<Integer> source = Linq.of(5, 6, 0, -4);
         Integer expected = 7;
 
         assertEquals(expected, source.runOnce().aggregate((x, y) -> x + y));
@@ -96,7 +96,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void TwoElementsAndSeed() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6);
+        IEnumerable<Integer> source = Linq.of(5, 6);
         Integer seed = 2;
         Integer expected = 60;
 
@@ -105,7 +105,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void MultipleElementsAndSeed() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 2, -4);
+        IEnumerable<Integer> source = Linq.of(5, 6, 2, -4);
         Integer seed = 2;
         Integer expected = -480;
 
@@ -114,7 +114,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void MultipleElementsAndSeedRunOnce() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 2, -4);
+        IEnumerable<Integer> source = Linq.of(5, 6, 2, -4);
         Integer seed = 2;
         Integer expected = -480;
 
@@ -141,7 +141,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void TwoElementsSeedResultSelector() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6);
+        IEnumerable<Integer> source = Linq.of(5, 6);
         Double seed = 2d;
         Double expected = 65d;
 
@@ -150,7 +150,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void MultipleElementsSeedResultSelector() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 2, -4);
+        IEnumerable<Integer> source = Linq.of(5, 6, 2, -4);
         Double seed = 2d;
         Double expected = -475d;
 
@@ -159,7 +159,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void MultipleElementsSeedResultSelectorRunOnce() {
-        IEnumerable<Integer> source = Linq.asEnumerable(5, 6, 2, -4);
+        IEnumerable<Integer> source = Linq.of(5, 6, 2, -4);
         Double seed = 2d;
         Double expected = -475d;
 
@@ -189,7 +189,7 @@ public class AggregateTest extends TestCase {
 
     @Test
     public void testAggregate() {
-        assertEquals("Sales,HR,Marketing", Linq.asEnumerable(depts)
+        assertEquals("Sales,HR,Marketing", Linq.of(depts)
                 .select(dept -> dept.name)
                 .aggregate((res, name) -> res == null ? name : res + "," + name));
     }
@@ -197,14 +197,14 @@ public class AggregateTest extends TestCase {
     @Test
     public void testAggregateWithSeed() {
         assertEquals("A,Sales,HR,Marketing",
-                Linq.asEnumerable(depts)
+                Linq.of(depts)
                         .select(dept -> dept.name)
                         .aggregate("A", (res, name) -> res == null ? name : res + "," + name));
     }
 
     @Test
     public void testAggregateWithSeedWithResultSelector() {
-        String s = Linq.asEnumerable(emps)
+        String s = Linq.of(emps)
                 .select(emp -> emp.name)
                 .aggregate(null,
                         (res, name) -> res == null ? name : res + "+" + name,

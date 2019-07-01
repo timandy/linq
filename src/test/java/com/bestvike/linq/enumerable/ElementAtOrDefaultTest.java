@@ -15,7 +15,7 @@ import java.util.List;
 public class ElementAtOrDefaultTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
+        IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.elementAtOrDefault(3), q.elementAtOrDefault(3));
@@ -23,7 +23,7 @@ public class ElementAtOrDefaultTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
+        IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.elementAtOrDefault(4), q.elementAtOrDefault(4));
@@ -36,15 +36,15 @@ public class ElementAtOrDefaultTest extends TestCase {
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(9, 10), 9, 18});
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(-4, 10), 3, -1});
 
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 2, 3, 4}), 4, null});
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), 0, null});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{-4}), 0, -4});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{9, 8, 0, -5, 10}), 4, 10});
+        lst.add(new Object[]{Linq.of(new int[]{1, 2, 3, 4}), 4, null});
+        lst.add(new Object[]{Linq.of(new int[0]), 0, null});
+        lst.add(new Object[]{Linq.of(new int[]{-4}), 0, -4});
+        lst.add(new Object[]{Linq.of(new int[]{9, 8, 0, -5, 10}), 4, 10});
 
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(-4, 5), -1, null});
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(5, 5), 5, null});
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(0, 0), 0, null});
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
@@ -72,15 +72,15 @@ public class ElementAtOrDefaultTest extends TestCase {
     @Test
     public void NullableArray_NegativeIndex_ReturnsNull() {
         Integer[] source = {9, 8};
-        assertNull(Linq.asEnumerable(source).elementAtOrDefault(-1));
+        assertNull(Linq.of(source).elementAtOrDefault(-1));
     }
 
     @Test
     public void NullableArray_ValidIndex_ReturnsCorrectObject() {
         Integer[] source = {9, 8, null, -5, 10};
 
-        assertNull(Linq.asEnumerable(source).elementAtOrDefault(2));
-        assertEquals(-5, Linq.asEnumerable(source).elementAtOrDefault(3));
+        assertNull(Linq.of(source).elementAtOrDefault(2));
+        assertEquals(-5, Linq.of(source).elementAtOrDefault(3));
     }
 
     @Test
@@ -90,12 +90,12 @@ public class ElementAtOrDefaultTest extends TestCase {
 
     @Test
     public void testElementAtOrDefault() {
-        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
+        IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch"));
         assertEquals("jimi", enumerable.elementAtOrDefault(0));
         assertNull(enumerable.elementAtOrDefault(2));
         assertNull(enumerable.elementAtOrDefault(-1));
 
-        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new CountIterable(2));
+        IEnumerable<Long> enumerable2 = Linq.of(new CountIterable(2));
         assertEquals(1L, enumerable2.elementAtOrDefault(0));
         assertNull(enumerable2.elementAtOrDefault(2));
         assertNull(enumerable2.elementAtOrDefault(-1));

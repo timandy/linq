@@ -20,25 +20,25 @@ import java.util.Objects;
 public class UnionTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
-        IEnumerable<Integer> q2 = Linq.asEnumerable(1, 9, null, 4);
+        IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
 
         assertEquals(q1.union(q2), q1.union(q2));
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
-        IEnumerable<String> q2 = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
+        IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
 
         assertEquals(q1.union(q2), q1.union(q2));
     }
 
     @Test
     public void SameResultsRepeatCallsMultipleUnions() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
-        IEnumerable<Integer> q2 = Linq.asEnumerable(1, 9, null, 4);
-        IEnumerable<Integer> q3 = Linq.asEnumerable(null, 8, 2, 2, 3);
+        IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
+        IEnumerable<Integer> q3 = Linq.of(null, 8, 2, 2, 3);
 
         assertEquals(q1.union(q2).union(q3), q1.union(q2).union(q3));
     }
@@ -47,7 +47,7 @@ public class UnionTest extends TestCase {
     public void BothEmpty() {
         int[] first = {};
         int[] second = {};
-        assertEmpty(Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEmpty(Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -56,7 +56,7 @@ public class UnionTest extends TestCase {
         int[] second = {};
         int[] third = {};
         int[] fourth = {};
-        assertEmpty(Linq.asEnumerable(first).union(Linq.asEnumerable(second)).union(Linq.asEnumerable(third)).union(Linq.asEnumerable(fourth)));
+        assertEmpty(Linq.of(first).union(Linq.of(second)).union(Linq.of(third)).union(Linq.of(fourth)));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class UnionTest extends TestCase {
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "Charlie"};
 
         AnagramEqualityComparer comparer = new AnagramEqualityComparer();
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second), comparer), comparer);
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second), comparer), comparer);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class UnionTest extends TestCase {
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "Charlie"};
 
         AnagramEqualityComparer comparer = new AnagramEqualityComparer();
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).runOnce().union(Linq.asEnumerable(second).runOnce(), comparer), comparer);
+        assertEquals(Linq.of(expected), Linq.of(first).runOnce().union(Linq.of(second).runOnce(), comparer), comparer);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UnionTest extends TestCase {
         String[] first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).union(Linq.asEnumerable(second), new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second), new AnagramEqualityComparer()));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class UnionTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).union(Linq.asEnumerable(second), new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second), new AnagramEqualityComparer()));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class UnionTest extends TestCase {
         String[] first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class UnionTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class UnionTest extends TestCase {
         String[] second = new String[0];
         String[] expected = {null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second), EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second), EqualityComparer.Default()));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class UnionTest extends TestCase {
         String[] second = {null, null};
         String[] expected = {null, Empty};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second), EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second), EqualityComparer.Default()));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class UnionTest extends TestCase {
         String[] second = new String[0];
         String[] expected = {null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second), EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second), EqualityComparer.Default()));
     }
 
     @Test
@@ -144,7 +144,7 @@ public class UnionTest extends TestCase {
         int[] second = {2, 4, 5, 3, 2, 3, 9};
         int[] expected = {2, 4, 5, 3, 9};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class UnionTest extends TestCase {
         int[] second = {};
         int[] expected = {2, 4, 5, 3, 9};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class UnionTest extends TestCase {
         int[] second = {6, 7, 7, 7, 8, 1};
         int[] expected = {1, 2, 3, 4, 5, 6, 7, 8};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -171,7 +171,7 @@ public class UnionTest extends TestCase {
         int[] second = {1, 1, 1, 1, 1, 1};
         int[] expected = {1};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -180,7 +180,7 @@ public class UnionTest extends TestCase {
         int[] second = {7};
         int[] expected = {1, 2, 3, 5, 6, 7};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -189,7 +189,7 @@ public class UnionTest extends TestCase {
         Integer[] second = {3, null, 4, 5};
         Integer[] expected = {2, 3, null, 4, 5};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -198,7 +198,7 @@ public class UnionTest extends TestCase {
         Integer[] second = {6, 2, 3, 4, 5, 6};
         Integer[] expected = {1, 2, 3, 4, null, 5, 6};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
@@ -209,7 +209,7 @@ public class UnionTest extends TestCase {
         Integer[] fourth = {null, 1, 7, 2, 7};
         Integer[] expected = {1, 2, 3, 4, null, 5, 6, 8, 7};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)).union(Linq.asEnumerable(third)).union(Linq.asEnumerable(fourth)));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)).union(Linq.of(third)).union(Linq.of(fourth)));
     }
 
     @Test
@@ -220,7 +220,7 @@ public class UnionTest extends TestCase {
         Integer[] fourth = {null, 101, 207, 202, 207};
         Integer[] expected = {1, 102, 903, 204, null, 5, 6, 308, 207};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second), new Modulo100EqualityComparer()).union(Linq.asEnumerable(third), new Modulo100EqualityComparer()).union(Linq.asEnumerable(fourth), new Modulo100EqualityComparer()));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second), new Modulo100EqualityComparer()).union(Linq.of(third), new Modulo100EqualityComparer()).union(Linq.of(fourth), new Modulo100EqualityComparer()));
     }
 
     @Test
@@ -232,8 +232,8 @@ public class UnionTest extends TestCase {
         String[] plainThenAnagram = {"Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Tango"};
         String[] anagramThenPlain = {"Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "trotFox", "Golf", "choE", "Tango"};
 
-        assertEquals(Linq.asEnumerable(plainThenAnagram), Linq.asEnumerable(first).union(Linq.asEnumerable(second)).union(Linq.asEnumerable(third), new AnagramEqualityComparer()));
-        assertEquals(Linq.asEnumerable(anagramThenPlain), Linq.asEnumerable(first).union(Linq.asEnumerable(second), new AnagramEqualityComparer()).union(Linq.asEnumerable(third)));
+        assertEquals(Linq.of(plainThenAnagram), Linq.of(first).union(Linq.of(second)).union(Linq.of(third), new AnagramEqualityComparer()));
+        assertEquals(Linq.of(anagramThenPlain), Linq.of(first).union(Linq.of(second), new AnagramEqualityComparer()).union(Linq.of(third)));
     }
 
     @Test
@@ -242,7 +242,7 @@ public class UnionTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second), null));
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second), null));
     }
 
     @Test
@@ -255,7 +255,7 @@ public class UnionTest extends TestCase {
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateMultipleUnions() {
-        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).union(Linq.range(0, 3)).union(Linq.range(2, 4)).union(Linq.asEnumerable(new int[]{
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).union(Linq.range(0, 3)).union(Linq.range(2, 4)).union(Linq.of(new int[]{
                 9, 2, 4
         }));
         // Don't insist on this behaviour, but check it's correct if it happens
@@ -269,7 +269,7 @@ public class UnionTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)).toArray());
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)).toArray());
     }
 
     @Test
@@ -279,7 +279,7 @@ public class UnionTest extends TestCase {
         String[] third = {"Bob", "Albert", "Tim"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo", "Albert"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).union(Linq.asEnumerable(second)).union(Linq.asEnumerable(third)).toArray());
+        assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)).union(Linq.of(third)).toArray());
     }
 
     @Test
@@ -288,7 +288,7 @@ public class UnionTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(Linq.asEnumerable(first).union(Linq.asEnumerable(second)).toList()));
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(first).union(Linq.of(second)).toList()));
     }
 
     @Test
@@ -298,7 +298,7 @@ public class UnionTest extends TestCase {
         String[] third = {"Bob", "Albert", "Tim"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo", "Albert"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(Linq.asEnumerable(first).union(Linq.asEnumerable(second)).union(Linq.asEnumerable(third)).toList()));
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(first).union(Linq.of(second)).union(Linq.of(third)).toList()));
     }
 
     @Test
@@ -306,7 +306,7 @@ public class UnionTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertEquals(8, Linq.asEnumerable(first).union(Linq.asEnumerable(second)).count());
+        assertEquals(8, Linq.of(first).union(Linq.of(second)).count());
     }
 
     @Test
@@ -315,7 +315,7 @@ public class UnionTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Bob", "Albert", "Tim"};
 
-        assertEquals(9, Linq.asEnumerable(first).union(Linq.asEnumerable(second)).union(Linq.asEnumerable(third)).count());
+        assertEquals(9, Linq.of(first).union(Linq.of(second)).union(Linq.of(third)).count());
     }
 
     @Test
@@ -323,7 +323,7 @@ public class UnionTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        IEnumerable<String> result = Linq.asEnumerable(first).union(Linq.asEnumerable(second));
+        IEnumerable<String> result = Linq.of(first).union(Linq.of(second));
 
         assertEquals(result, result);
     }
@@ -334,7 +334,7 @@ public class UnionTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Matt", "Albert", "Ichabod"};
 
-        IEnumerable<String> result = Linq.asEnumerable(first).union(Linq.asEnumerable(second)).union(Linq.asEnumerable(third));
+        IEnumerable<String> result = Linq.of(first).union(Linq.of(second)).union(Linq.of(third));
         assertEquals(result, result);
     }
 
@@ -342,25 +342,25 @@ public class UnionTest extends TestCase {
     public void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
         HashSet<String> set1 = new HashSet<>(StringComparer.OrdinalIgnoreCase);
         set1.add("a");
-        IEnumerable<String> input1 = Linq.asEnumerable(set1);
-        IEnumerable<String> input2 = Linq.asEnumerable(new String[]{"A"});
+        IEnumerable<String> input1 = Linq.of(set1);
+        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
 
-        assertEquals(Linq.asEnumerable("a", "A"), input1.union(input2));
-        assertEquals(Linq.asEnumerable("a", "A"), input1.union(input2, null));
-        assertEquals(Linq.asEnumerable("a", "A"), input1.union(input2, EqualityComparer.Default()));
-        assertEquals(Linq.asEnumerable(new String[]{"a"}), input1.union(input2, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("a", "A"), input1.union(input2));
+        assertEquals(Linq.of("a", "A"), input1.union(input2, null));
+        assertEquals(Linq.of("a", "A"), input1.union(input2, EqualityComparer.Default()));
+        assertEquals(Linq.of(new String[]{"a"}), input1.union(input2, StringComparer.OrdinalIgnoreCase));
 
-        assertEquals(Linq.asEnumerable("A", "a"), input2.union(input1));
-        assertEquals(Linq.asEnumerable("A", "a"), input2.union(input1, null));
-        assertEquals(Linq.asEnumerable("A", "a"), input2.union(input1, EqualityComparer.Default()));
-        assertEquals(Linq.asEnumerable(new String[]{"A"}), input2.union(input1, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("A", "a"), input2.union(input1));
+        assertEquals(Linq.of("A", "a"), input2.union(input1, null));
+        assertEquals(Linq.of("A", "a"), input2.union(input1, EqualityComparer.Default()));
+        assertEquals(Linq.of(new String[]{"A"}), input2.union(input1, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test
     public void testUnion() {
-        assertEquals(6, Linq.asEnumerable(emps)
-                .union(Linq.asEnumerable(badEmps))
-                .union(Linq.asEnumerable(emps))
+        assertEquals(6, Linq.of(emps)
+                .union(Linq.of(badEmps))
+                .union(Linq.of(emps))
                 .count());
     }
 
@@ -378,9 +378,9 @@ public class UnionTest extends TestCase {
             }
         };
 
-        assertEquals(4, Linq.asEnumerable(emps)
-                .union(Linq.asEnumerable(badEmps), comparer)
-                .union(Linq.asEnumerable(emps), comparer)
+        assertEquals(4, Linq.of(emps)
+                .union(Linq.of(badEmps), comparer)
+                .union(Linq.of(emps), comparer)
                 .count());
     }
 

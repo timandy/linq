@@ -22,8 +22,8 @@ import java.util.Random;
 public class ThenByTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Tuple2<Integer, Integer>> q = Linq.asEnumerable(new int[]{1, 6, 0, -1, 3})
-                .selectMany(x -> Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25}), (x1, x2) -> Tuple.create(x1, x2));
+        IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
+                .selectMany(x -> Linq.of(new int[]{55, 49, 9, -100, 24, 25}), (x1, x2) -> Tuple.create(x1, x2));
 
         assertEquals(q.orderByDescending(e -> e.getItem1()).thenBy(f -> f.getItem2()),
                 q.orderByDescending(e -> e.getItem1()).thenBy(f -> f.getItem2()));
@@ -31,8 +31,8 @@ public class ThenByTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<Tuple2<Integer, String>> q = Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
-                .selectMany(x -> Linq.asEnumerable("!@#$%^", "C", "AAA", "", null, "Calling Twice", "SoS", Empty).where(a -> !IsNullOrEmpty(a)), (x1, x2) -> Tuple.create(x1, x2));
+        IEnumerable<Tuple2<Integer, String>> q = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
+                .selectMany(x -> Linq.of("!@#$%^", "C", "AAA", "", null, "Calling Twice", "SoS", Empty).where(a -> !IsNullOrEmpty(a)), (x1, x2) -> Tuple.create(x1, x2));
 
         assertEquals(q.orderBy(e -> e.getItem2()).thenBy(f -> f.getItem1()),
                 q.orderBy(e -> e.getItem2()).thenBy(f -> f.getItem1()));
@@ -42,7 +42,7 @@ public class ThenByTest extends TestCase {
     public void SourceEmpty() {
         int[] source = {};
 
-        assertEmpty(Linq.asEnumerable(source).orderBy(e -> e).thenBy(e -> e));
+        assertEmpty(Linq.of(source).orderBy(e -> e).thenBy(e -> e));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ThenByTest extends TestCase {
                 new UserAddress("Tim", "Seattle", "USA")
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Country).thenBy(e -> e.City));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e.Country).thenBy(e -> e.City));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class ThenByTest extends TestCase {
                 new UserAddress("Jim", "Minneapolis", "USA")
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Country).thenBy(e -> e.Country, null));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e.Country).thenBy(e -> e.Country, null));
     }
 
     @Test
@@ -98,7 +98,7 @@ public class ThenByTest extends TestCase {
                 new UserAddress("Tim", "Seattle", "USA")
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Name).thenBy(e -> e.City, null));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e.Name).thenBy(e -> e.City, null));
     }
 
     @Test
@@ -109,7 +109,7 @@ public class ThenByTest extends TestCase {
                 "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(word -> Character.isUpperCase(word.charAt(0))).thenBy(word -> word.length()));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(word -> Character.isUpperCase(word.charAt(0))).thenBy(word -> word.length()));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class ThenByTest extends TestCase {
                 "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().orderBy(word -> Character.isUpperCase(word.charAt(0))).thenBy(word -> word.length()));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().orderBy(word -> Character.isUpperCase(word.charAt(0))).thenBy(word -> word.length()));
     }
 
     @Test
@@ -216,7 +216,7 @@ public class ThenByTest extends TestCase {
 
         Integer[] randomized = Linq.range(0, Items).select(i -> r.nextInt()).toArray(Integer.class);
 
-        IOrderedEnumerable<Integer> orderedEnumerable = Linq.asEnumerable(randomized).orderBy(x -> 0);
+        IOrderedEnumerable<Integer> orderedEnumerable = Linq.of(randomized).orderBy(x -> 0);
         switch (thenBys) {
             case 1:
                 orderedEnumerable = orderedEnumerable.thenBy(i -> i);
@@ -231,7 +231,7 @@ public class ThenByTest extends TestCase {
         Array<Integer> ordered = orderedEnumerable.toArray();
 
         Arrays.sort(randomized);
-        assertEquals(Linq.asEnumerable(randomized), orderedEnumerable);
+        assertEquals(Linq.of(randomized), orderedEnumerable);
     }
 
 

@@ -14,7 +14,7 @@ import org.junit.Test;
 public class FindIndexTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
         Predicate1<Integer> predicate = TestCase::IsEven;
@@ -23,7 +23,7 @@ public class FindIndexTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Predicate1<String> predicate = TestCase::IsNullOrEmpty;
         assertEquals(q.findIndex(predicate), q.findIndex(predicate));
@@ -35,8 +35,8 @@ public class FindIndexTest extends TestCase {
         this.FindIndex(Linq.empty(), isEvenFunc, -1);
         this.FindIndex(Linq.singleton(4), isEvenFunc, 0);
         this.FindIndex(Linq.singleton(5), isEvenFunc, -1);
-        this.FindIndex(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.FindIndex(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
+        this.FindIndex(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
+        this.FindIndex(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.FindIndex(range, i -> i > 10, -1);
@@ -56,8 +56,8 @@ public class FindIndexTest extends TestCase {
         this.FindIndexRunOnce(Linq.empty(), isEvenFunc, -1);
         this.FindIndexRunOnce(Linq.singleton(4), isEvenFunc, 0);
         this.FindIndexRunOnce(Linq.singleton(5), isEvenFunc, -1);
-        this.FindIndexRunOnce(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.FindIndexRunOnce(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
+        this.FindIndexRunOnce(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
+        this.FindIndexRunOnce(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.FindIndexRunOnce(range, i -> i > 10, -1);
@@ -84,7 +84,7 @@ public class FindIndexTest extends TestCase {
 
     @Test
     public void testFindIndexPredicate() {
-        assertEquals(-1, Linq.asEnumerable(depts).findIndex(dept -> dept.name != null && dept.name.equals("IT")));
-        assertEquals(0, Linq.asEnumerable(depts).findIndex(dept -> dept.name != null && dept.name.equals("Sales")));
+        assertEquals(-1, Linq.of(depts).findIndex(dept -> dept.name != null && dept.name.equals("IT")));
+        assertEquals(0, Linq.of(depts).findIndex(dept -> dept.name != null && dept.name.equals("Sales")));
     }
 }

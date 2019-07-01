@@ -82,9 +82,9 @@ public class FormatterTest extends TestCase {
         this.emptyMoreFieldBean.doubleArr = new double[]{};
         this.emptyMoreFieldBean.objArr = new Object[]{};
         this.emptyMoreFieldBean.objArr2 = new BigDecimal[]{};
-        this.emptyMoreFieldBean.iCollection = (ICollection<?>) Linq.asEnumerable();
-        this.emptyMoreFieldBean.listProvider = Linq.asEnumerable().select(a -> a + "_suffix");
-        this.emptyMoreFieldBean.enumerable = Linq.asEnumerable().where(Objects::nonNull);
+        this.emptyMoreFieldBean.iCollection = (ICollection<?>) Linq.of();
+        this.emptyMoreFieldBean.listProvider = Linq.of().select(a -> a + "_suffix");
+        this.emptyMoreFieldBean.enumerable = Linq.of().where(Objects::nonNull);
         this.emptyMoreFieldBean.collection = Collections.emptyList();
         this.emptyMoreFieldBean.iterable = new ArrayIterable<>();
         this.emptyMoreFieldBean.map = new LinkedHashMap<>();
@@ -102,9 +102,9 @@ public class FormatterTest extends TestCase {
         this.emptyMoreFieldBeanExpected.doubleArr = new double[]{};
         this.emptyMoreFieldBeanExpected.objArr = new Object[]{};
         this.emptyMoreFieldBeanExpected.objArr2 = new BigDecimal[]{};
-        this.emptyMoreFieldBeanExpected.iCollection = (ICollection<?>) Linq.asEnumerable();
-        this.emptyMoreFieldBeanExpected.listProvider = Linq.asEnumerable().select(a -> a + "_suffix");
-        this.emptyMoreFieldBeanExpected.enumerable = Linq.asEnumerable().where(Objects::nonNull);
+        this.emptyMoreFieldBeanExpected.iCollection = (ICollection<?>) Linq.of();
+        this.emptyMoreFieldBeanExpected.listProvider = Linq.of().select(a -> a + "_suffix");
+        this.emptyMoreFieldBeanExpected.enumerable = Linq.of().where(Objects::nonNull);
         this.emptyMoreFieldBeanExpected.collection = Collections.emptyList();
         this.emptyMoreFieldBeanExpected.iterable = new ArrayIterable<>();
         this.emptyMoreFieldBeanExpected.map = new LinkedHashMap<>();
@@ -122,9 +122,9 @@ public class FormatterTest extends TestCase {
         this.moreFieldBean.doubleArr = new double[]{Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.MIN_VALUE, Double.MAX_VALUE};
         this.moreFieldBean.objArr = new Object[]{null, "!@#$%^&*()_+", m("123.456"), m("9999999.099999999"), new NoFieldBean()};
         this.moreFieldBean.objArr2 = new BigDecimal[]{null, m("355.99")};
-        this.moreFieldBean.iCollection = (ICollection<?>) Linq.asEnumerable(null, "", Empty, "你好世界");
-        this.moreFieldBean.listProvider = Linq.asEnumerable(null, "", Empty, "你好世界").select(a -> a + "_suffix");
-        this.moreFieldBean.enumerable = Linq.asEnumerable(null, "", Empty, "你好世界").where(Objects::nonNull);
+        this.moreFieldBean.iCollection = (ICollection<?>) Linq.of(null, "", Empty, "你好世界");
+        this.moreFieldBean.listProvider = Linq.of(null, "", Empty, "你好世界").select(a -> a + "_suffix");
+        this.moreFieldBean.enumerable = Linq.of(null, "", Empty, "你好世界").where(Objects::nonNull);
         this.moreFieldBean.collection = Arrays.asList(null, "", Empty, "你好世界");
         this.moreFieldBean.iterable = new ArrayIterable<>(null, "", Empty, "你好世界");
         Map<Object, Object> map = new HashMap<>();
@@ -147,9 +147,9 @@ public class FormatterTest extends TestCase {
         this.moreFieldBeanExpected.doubleArr = new double[]{Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, Double.MIN_VALUE, Double.MAX_VALUE};
         this.moreFieldBeanExpected.objArr = new Object[]{null, "!@#$%^&*()_+", m("123.45600"), m("9999999.0999999990"), new NoFieldBean()};
         this.moreFieldBeanExpected.objArr2 = new BigDecimal[]{null, m("355.99000")};
-        this.moreFieldBeanExpected.iCollection = (ICollection<?>) Linq.asEnumerable(null, "", Empty, "你好世界");
-        this.moreFieldBeanExpected.listProvider = Linq.asEnumerable(null, "", Empty, "你好世界").select(a -> a + "_suffix");
-        this.moreFieldBeanExpected.enumerable = Linq.asEnumerable(null, "", Empty, "你好世界").where(Objects::nonNull);
+        this.moreFieldBeanExpected.iCollection = (ICollection<?>) Linq.of(null, "", Empty, "你好世界");
+        this.moreFieldBeanExpected.listProvider = Linq.of(null, "", Empty, "你好世界").select(a -> a + "_suffix");
+        this.moreFieldBeanExpected.enumerable = Linq.of(null, "", Empty, "你好世界").where(Objects::nonNull);
         this.moreFieldBeanExpected.collection = Arrays.asList(null, "", Empty, "你好世界");
         this.moreFieldBeanExpected.iterable = new ArrayIterable<>(null, "", Empty, "你好世界");
         Map<Object, Object> map2 = new HashMap<>();
@@ -231,7 +231,7 @@ public class FormatterTest extends TestCase {
         assertEquals("[4.9E-324, 0.0, 1.7976931348623157E308]", Formatter.DEFAULT.format(new double[]{Double.MIN_VALUE, 0d, Double.MAX_VALUE}));
 
         assertEquals("[-2147483648, 0, 2147483647]", Formatter.DEFAULT.format(new Object[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}));
-        assertEquals("[-2147483648, 0, 2147483647]", Formatter.DEFAULT.format(Linq.asEnumerable(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
+        assertEquals("[-2147483648, 0, 2147483647]", Formatter.DEFAULT.format(Linq.of(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
         assertEquals("[-2147483648, 0, 2147483647]", Formatter.DEFAULT.format(new ArrayIterable<>(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
 
         Map<Object, Object> a = new LinkedHashMap<>();
@@ -292,7 +292,7 @@ public class FormatterTest extends TestCase {
         assertEquals("double[][ 4.9E-324,0.0,1.7976931348623157E308 ]", this.formatter.format(new double[]{Double.MIN_VALUE, 0d, Double.MAX_VALUE}));
 
         assertEquals("Object[][ -2147483648,0,2147483647 ]", this.formatter.format(new Object[]{Integer.MIN_VALUE, 0, Integer.MAX_VALUE}));
-        assertEquals("GenericArrayEnumerable[ -2147483648,0,2147483647 ]", this.formatter.format(Linq.asEnumerable(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
+        assertEquals("GenericArrayEnumerable[ -2147483648,0,2147483647 ]", this.formatter.format(Linq.of(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
         assertEquals("ArrayIterable[ -2147483648,0,2147483647 ]", this.formatter.format(new ArrayIterable<>(Integer.MIN_VALUE, 0, Integer.MAX_VALUE)));
 
         Map<Object, Object> a = new LinkedHashMap<>();

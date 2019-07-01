@@ -100,7 +100,7 @@ public class RangeTest extends TestCase {
         assertEquals(count, rangeEnumerable.count());
 
         int[] expected = {Integer.MAX_VALUE - 3, Integer.MAX_VALUE - 2, Integer.MAX_VALUE - 1, Integer.MAX_VALUE};
-        assertEquals(Linq.asEnumerable(expected), rangeEnumerable);
+        assertEquals(Linq.of(expected), rangeEnumerable);
     }
 
     @Test
@@ -115,7 +115,7 @@ public class RangeTest extends TestCase {
         int count = 1;
         int[] expected = {-5};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.range(start, count));
+        assertEquals(Linq.of(expected), Linq.range(start, count));
     }
 
     @Test
@@ -124,7 +124,7 @@ public class RangeTest extends TestCase {
         int count = 6;
         int[] expected = {12, 13, 14, 15, 16, 17};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.range(start, count));
+        assertEquals(Linq.of(expected), Linq.range(start, count));
     }
 
     @Test
@@ -149,10 +149,10 @@ public class RangeTest extends TestCase {
 
     @Test
     public void SkipTakeCanOnlyBeOne() {
-        assertEquals(Linq.asEnumerable(new int[]{1}), Linq.range(1, 10).take(1));
-        assertEquals(Linq.asEnumerable(new int[]{2}), Linq.range(1, 10).skip(1).take(1));
-        assertEquals(Linq.asEnumerable(new int[]{3}), Linq.range(1, 10).take(3).skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{1}), Linq.range(1, 10).take(3).take(1));
+        assertEquals(Linq.of(new int[]{1}), Linq.range(1, 10).take(1));
+        assertEquals(Linq.of(new int[]{2}), Linq.range(1, 10).skip(1).take(1));
+        assertEquals(Linq.of(new int[]{3}), Linq.range(1, 10).take(3).skip(2));
+        assertEquals(Linq.of(new int[]{1}), Linq.range(1, 10).take(3).take(1));
     }
 
     @Test

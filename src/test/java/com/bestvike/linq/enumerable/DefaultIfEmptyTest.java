@@ -16,7 +16,7 @@ import java.util.List;
 public class DefaultIfEmptyTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsNonEmptyQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(a -> a > Integer.MIN_VALUE);
 
         assertEquals(q.defaultIfEmpty(5), q.defaultIfEmpty(5));
@@ -30,15 +30,15 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     private IEnumerable<Object[]> TestData() {
-        return Linq.asEnumerable(
-                new Object[]{Linq.asEnumerable(new int[0]), null, new Integer[]{null}},
-                new Object[]{Linq.asEnumerable(new int[0]), 0, new Integer[]{0}},
-                new Object[]{Linq.asEnumerable(new int[]{3}), 0, new Integer[]{3}},
-                new Object[]{Linq.asEnumerable(new int[]{3, -1, 0, 10, 15}), 0, new Integer[]{3, -1, 0, 10, 15}},
+        return Linq.of(
+                new Object[]{Linq.of(new int[0]), null, new Integer[]{null}},
+                new Object[]{Linq.of(new int[0]), 0, new Integer[]{0}},
+                new Object[]{Linq.of(new int[]{3}), 0, new Integer[]{3}},
+                new Object[]{Linq.of(new int[]{3, -1, 0, 10, 15}), 0, new Integer[]{3, -1, 0, 10, 15}},
 
-                new Object[]{Linq.asEnumerable(new int[0]), -10, new Integer[]{-10}},
-                new Object[]{Linq.asEnumerable(new int[]{3}), 9, new Integer[]{3}},
-                new Object[]{Linq.asEnumerable(new int[]{3, -1, 0, 10, 15}), 9, new Integer[]{3, -1, 0, 10, 15}},
+                new Object[]{Linq.of(new int[0]), -10, new Integer[]{-10}},
+                new Object[]{Linq.of(new int[]{3}), 9, new Integer[]{3}},
+                new Object[]{Linq.of(new int[]{3, -1, 0, 10, 15}), 9, new Integer[]{3, -1, 0, 10, 15}},
                 new Object[]{Linq.empty(), 0, new Integer[]{0}}
         );
     }
@@ -55,17 +55,17 @@ public class DefaultIfEmptyTest extends TestCase {
         if (defaultValue == null) {
             result = source.defaultIfEmpty();
             assertEquals(result, result);
-            assertEquals(Linq.asEnumerable(expected), result);
+            assertEquals(Linq.of(expected), result);
             assertEquals(expected.length, result.count());
-            assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(result.toList()));
-            assertEquals(Linq.asEnumerable(expected), result.toArray());
+            assertEquals(Linq.of(expected), Linq.of(result.toList()));
+            assertEquals(Linq.of(expected), result.toArray());
         }
         result = source.defaultIfEmpty(defaultValue);
         assertEquals(result, result);
-        assertEquals(Linq.asEnumerable(expected), result);
+        assertEquals(Linq.of(expected), result);
         assertEquals(expected.length, result.count());
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(result.toList()));
-        assertEquals(Linq.asEnumerable(expected), result.toArray());
+        assertEquals(Linq.of(expected), Linq.of(result.toList()));
+        assertEquals(Linq.of(expected), result.toArray());
     }
 
     @Test
@@ -77,16 +77,16 @@ public class DefaultIfEmptyTest extends TestCase {
 
     private void DefaultIfEmptyRunOnce(IEnumerable<Integer> source, Integer defaultValue, Integer[] expected) {
         if (defaultValue == null) {
-            assertEquals(Linq.asEnumerable(expected), source.runOnce().defaultIfEmpty());
+            assertEquals(Linq.of(expected), source.runOnce().defaultIfEmpty());
         }
 
-        assertEquals(Linq.asEnumerable(expected), source.runOnce().defaultIfEmpty(defaultValue));
+        assertEquals(Linq.of(expected), source.runOnce().defaultIfEmpty(defaultValue));
     }
 
     @Test
     public void NullableArray_Empty_WithoutDefaultValue() {
         Integer[] source = new Integer[0];
-        assertEquals(Linq.asEnumerable(new Integer[]{null}), Linq.asEnumerable(source).defaultIfEmpty());
+        assertEquals(Linq.of(new Integer[]{null}), Linq.of(source).defaultIfEmpty());
     }
 
     @Test
@@ -94,15 +94,15 @@ public class DefaultIfEmptyTest extends TestCase {
         Integer[] source = new Integer[0];
         Integer defaultValue = 9;
         //noinspection RedundantArrayCreation
-        assertEquals(Linq.asEnumerable(new Integer[]{defaultValue}), Linq.asEnumerable(source).defaultIfEmpty(defaultValue));
+        assertEquals(Linq.of(new Integer[]{defaultValue}), Linq.of(source).defaultIfEmpty(defaultValue));
     }
 
     @Test
     public void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).defaultIfEmpty());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).defaultIfEmpty(42));
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((Integer[]) null).defaultIfEmpty());
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((Integer[]) null).defaultIfEmpty(42));
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Integer[]) null).defaultIfEmpty());
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Integer[]) null).defaultIfEmpty(42));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class DefaultIfEmptyTest extends TestCase {
     @Test
     public void testDefaultIfEmpty() {
         List<String> experience = Arrays.asList("jimi", "mitch", "noel");
-        IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty();
+        IEnumerable<String> notEmptyEnumerable = Linq.of(experience).defaultIfEmpty();
         IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
         notEmptyEnumerator.moveNext();
         assertEquals("jimi", notEmptyEnumerator.current());
@@ -126,7 +126,7 @@ public class DefaultIfEmptyTest extends TestCase {
         notEmptyEnumerator.moveNext();
         assertEquals("noel", notEmptyEnumerator.current());
 
-        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty();
+        IEnumerable<String> emptyEnumerable = Linq.of(Linq.<String>empty()).defaultIfEmpty();
         IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
         assertTrue(emptyEnumerator.moveNext());
         assertNull(emptyEnumerator.current());
@@ -136,7 +136,7 @@ public class DefaultIfEmptyTest extends TestCase {
     @Test
     public void testDefaultIfEmptyWithDefaultValue() {
         List<String> experience = Arrays.asList("jimi", "mitch", "noel");
-        IEnumerable<String> notEmptyEnumerable = Linq.asEnumerable(experience).defaultIfEmpty("dummy");
+        IEnumerable<String> notEmptyEnumerable = Linq.of(experience).defaultIfEmpty("dummy");
         IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
         notEmptyEnumerator.moveNext();
         assertEquals("jimi", notEmptyEnumerator.current());
@@ -145,7 +145,7 @@ public class DefaultIfEmptyTest extends TestCase {
         notEmptyEnumerator.moveNext();
         assertEquals("noel", notEmptyEnumerator.current());
 
-        IEnumerable<String> emptyEnumerable = Linq.asEnumerable(Linq.<String>empty()).defaultIfEmpty("N/A");
+        IEnumerable<String> emptyEnumerable = Linq.of(Linq.<String>empty()).defaultIfEmpty("N/A");
         IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
         assertTrue(emptyEnumerator.moveNext());
         assertEquals("N/A", emptyEnumerator.current());

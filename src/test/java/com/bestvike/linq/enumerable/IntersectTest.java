@@ -22,27 +22,27 @@ import java.util.Objects;
 public class IntersectTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> first = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
-        IEnumerable<Integer> second = Linq.asEnumerable(1, 9, null, 4);
+        IEnumerable<Integer> first = Linq.of(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> second = Linq.of(1, 9, null, 4);
 
         assertEquals(first.intersect(second), first.intersect(second));
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> first = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
-        IEnumerable<String> second = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
+        IEnumerable<String> first = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> second = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
 
         assertEquals(first.intersect(second), first.intersect(second));
     }
 
     private IEnumerable<Object[]> Int_TestData() {
         List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), Linq.asEnumerable(new int[0]), new int[0]});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{-5, 3, -2, 6, 9}), Linq.asEnumerable(new int[]{0, 5, 2, 10, 20}), new int[0]});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 2, 2, 3, 4, 3, 5}), Linq.asEnumerable(new int[]{1, 4, 4, 2, 2, 2}), new int[]{1, 2, 4}});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 1, 1, 1, 1, 1}), Linq.asEnumerable(new int[]{1, 1, 1, 1, 1}), new int[]{1}});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new int[0]), Linq.of(new int[0]), new int[0]});
+        lst.add(new Object[]{Linq.of(new int[]{-5, 3, -2, 6, 9}), Linq.of(new int[]{0, 5, 2, 10, 20}), new int[0]});
+        lst.add(new Object[]{Linq.of(new int[]{1, 2, 2, 3, 4, 3, 5}), Linq.of(new int[]{1, 4, 4, 2, 2, 2}), new int[]{1, 2, 4}});
+        lst.add(new Object[]{Linq.of(new int[]{1, 1, 1, 1, 1, 1}), Linq.of(new int[]{1, 1, 1, 1, 1}), new int[]{1}});
+        return Linq.of(lst);
     }
 
     @Test
@@ -53,20 +53,20 @@ public class IntersectTest extends TestCase {
     }
 
     private void Int(IEnumerable<Integer> first, IEnumerable<Integer> second, int[] expected) {
-        assertEquals(Linq.asEnumerable(expected), first.intersect(second));
-        assertEquals(Linq.asEnumerable(expected), first.intersect(second, null));
+        assertEquals(Linq.of(expected), first.intersect(second));
+        assertEquals(Linq.of(expected), first.intersect(second, null));
     }
 
     private IEnumerable<Object[]> String_TestData() {
         List<Object[]> lst = new ArrayList<>();
         IEqualityComparer<String> defaultComparer = EqualityComparer.Default();
-        lst.add(new Object[]{Linq.asEnumerable(new String[1]), Linq.asEnumerable(), defaultComparer, new String[0]});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, Empty), Linq.asEnumerable(new String[2]), defaultComparer, new String[]{null}});
-        lst.add(new Object[]{Linq.asEnumerable(new String[2]), Linq.asEnumerable(), defaultComparer, new String[0]});
+        lst.add(new Object[]{Linq.of(new String[1]), Linq.of(), defaultComparer, new String[0]});
+        lst.add(new Object[]{Linq.of(null, null, Empty), Linq.of(new String[2]), defaultComparer, new String[]{null}});
+        lst.add(new Object[]{Linq.of(new String[2]), Linq.of(), defaultComparer, new String[0]});
 
-        lst.add(new Object[]{Linq.asEnumerable("Tim", "Bob", "Mike", "Robert"), Linq.asEnumerable("ekiM", "bBo"), null, new String[0]});
-        lst.add(new Object[]{Linq.asEnumerable("Tim", "Bob", "Mike", "Robert"), Linq.asEnumerable("ekiM", "bBo"), new AnagramEqualityComparer(), new String[]{"Bob", "Mike"}});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of("Tim", "Bob", "Mike", "Robert"), Linq.of("ekiM", "bBo"), null, new String[0]});
+        lst.add(new Object[]{Linq.of("Tim", "Bob", "Mike", "Robert"), Linq.of("ekiM", "bBo"), new AnagramEqualityComparer(), new String[]{"Bob", "Mike"}});
+        return Linq.of(lst);
     }
 
     @Test
@@ -78,17 +78,17 @@ public class IntersectTest extends TestCase {
 
     public void String(IEnumerable<String> first, IEnumerable<String> second, IEqualityComparer<String> comparer, String[] expected) {
         if (comparer == null) {
-            assertEquals(Linq.asEnumerable(expected), first.intersect(second));
+            assertEquals(Linq.of(expected), first.intersect(second));
         }
-        assertEquals(Linq.asEnumerable(expected), first.intersect(second, comparer));
+        assertEquals(Linq.of(expected), first.intersect(second, comparer));
     }
 
     private IEnumerable<Object[]> NullableInt_TestData() {
         List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(), Linq.asEnumerable(-5, 0, null, 1, 2, 9, 2), new Integer[0]});
-        lst.add(new Object[]{Linq.asEnumerable(-5, 0, 1, 2, null, 9, 2), Linq.asEnumerable(), new Integer[0]});
-        lst.add(new Object[]{Linq.asEnumerable(1, 2, null, 3, 4, 5, 6), Linq.asEnumerable(6, 7, 7, 7, null, 8, 1), new Integer[]{1, null, 6}});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(), Linq.of(-5, 0, null, 1, 2, 9, 2), new Integer[0]});
+        lst.add(new Object[]{Linq.of(-5, 0, 1, 2, null, 9, 2), Linq.of(), new Integer[0]});
+        lst.add(new Object[]{Linq.of(1, 2, null, 3, 4, 5, 6), Linq.of(6, 7, 7, 7, null, 8, 1), new Integer[]{1, null, 6}});
+        return Linq.of(lst);
     }
 
     @Test
@@ -99,8 +99,8 @@ public class IntersectTest extends TestCase {
     }
 
     private void NullableInt(IEnumerable<Integer> first, IEnumerable<Integer> second, Integer[] expected) {
-        assertEquals(Linq.asEnumerable(expected), first.intersect(second));
-        assertEquals(Linq.asEnumerable(expected), first.intersect(second, null));
+        assertEquals(Linq.of(expected), first.intersect(second));
+        assertEquals(Linq.of(expected), first.intersect(second, null));
     }
 
     @Test
@@ -111,14 +111,14 @@ public class IntersectTest extends TestCase {
     }
 
     private void NullableIntRunOnce(IEnumerable<Integer> first, IEnumerable<Integer> second, Integer[] expected) {
-        assertEquals(Linq.asEnumerable(expected), first.runOnce().intersect(second.runOnce()));
-        assertEquals(Linq.asEnumerable(expected), first.runOnce().intersect(second.runOnce(), null));
+        assertEquals(Linq.of(expected), first.runOnce().intersect(second.runOnce()));
+        assertEquals(Linq.of(expected), first.runOnce().intersect(second.runOnce(), null));
     }
 
     @Test
     public void FirstNull_ThrowsArgumentNullException() {
         IEnumerable<String> first = null;
-        IEnumerable<String> second = Linq.asEnumerable("ekiM", "bBo");
+        IEnumerable<String> second = Linq.of("ekiM", "bBo");
 
         assertThrows(NullPointerException.class, () -> first.intersect(second));
         assertThrows(NullPointerException.class, () -> first.intersect(second, new AnagramEqualityComparer()));
@@ -126,7 +126,7 @@ public class IntersectTest extends TestCase {
 
     @Test
     public void SecondNull_ThrowsArgumentNullException() {
-        IEnumerable<String> first = Linq.asEnumerable("Tim", "Bob", "Mike", "Robert");
+        IEnumerable<String> first = Linq.of("Tim", "Bob", "Mike", "Robert");
         IEnumerable<String> second = null;
 
         assertThrows(ArgumentNullException.class, () -> first.intersect(second));
@@ -146,18 +146,18 @@ public class IntersectTest extends TestCase {
         HashSet<String> set = new HashSet<>(StringComparer.OrdinalIgnoreCase);
         set.add("a");
 
-        IEnumerable<String> input1 = Linq.asEnumerable(set);
-        IEnumerable<String> input2 = Linq.asEnumerable(new String[]{"A"});
+        IEnumerable<String> input1 = Linq.of(set);
+        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
 
         assertEquals(Linq.empty(), input1.intersect(input2));
         assertEquals(Linq.empty(), input1.intersect(input2, null));
         assertEquals(Linq.empty(), input1.intersect(input2, EqualityComparer.Default()));
-        assertEquals(Linq.asEnumerable(new String[]{"a"}), input1.intersect(input2, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of(new String[]{"a"}), input1.intersect(input2, StringComparer.OrdinalIgnoreCase));
 
         assertEquals(Linq.empty(), input2.intersect(input1));
         assertEquals(Linq.empty(), input2.intersect(input1, null));
         assertEquals(Linq.empty(), input2.intersect(input1, EqualityComparer.Default()));
-        assertEquals(Linq.asEnumerable(new String[]{"A"}), input2.intersect(input1, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of(new String[]{"A"}), input2.intersect(input1, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test
@@ -166,8 +166,8 @@ public class IntersectTest extends TestCase {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
-        assertEquals(1, Linq.asEnumerable(emps)
-                .intersect(Linq.asEnumerable(emps2))
+        assertEquals(1, Linq.of(emps)
+                .intersect(Linq.of(emps2))
                 .count());
     }
 
@@ -186,8 +186,8 @@ public class IntersectTest extends TestCase {
         };
 
         Employee[] emps2 = {new Employee(150, "Theodore", 10)};
-        assertEquals(1, Linq.asEnumerable(emps)
-                .intersect(Linq.asEnumerable(emps2), comparer)
+        assertEquals(1, Linq.of(emps)
+                .intersect(Linq.of(emps2), comparer)
                 .count());
     }
 }

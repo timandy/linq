@@ -17,13 +17,13 @@ import java.util.List;
 public class LookupDebugViewTest extends TestCase {
     private static IEnumerable<Object[]> DebuggerAttributesValid_Data() {
         List<Object[]> lst = new ArrayList<>();
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1});
+        IEnumerable<Integer> source = Linq.of(new int[]{1});
         lst.add(new Object[]{source.toLookup(i -> i)});
         lst.add(new Object[]{source.toLookup(i -> i.toString(), i -> i)});
         lst.add(new Object[]{source.toLookup(i -> Duration.ofSeconds(i), i -> i)});
-        lst.add(new Object[]{Linq.asEnumerable(new String[]{null}).toLookup(x -> x)});
-        lst.add(new Object[]{Linq.asEnumerable(new Integer[]{null}).toLookup(x -> x)});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new String[]{null}).toLookup(x -> x)});
+        lst.add(new Object[]{Linq.of(new Integer[]{null}).toLookup(x -> x)});
+        return Linq.of(lst);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class LookupDebugViewTest extends TestCase {
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] groupings = (Object[]) debuggerTypeProxy;
         assertEquals(1, groupings.length);
-        assertAll(Linq.asEnumerable(groupings).zip(lookup, (l, r) -> Tuple.create(l, r)), tuple -> assertSame(tuple.getItem1(), tuple.getItem2()));
+        assertAll(Linq.of(groupings).zip(lookup, (l, r) -> Tuple.create(l, r)), tuple -> assertSame(tuple.getItem1(), tuple.getItem2()));
         assertSame(groupings, DebugView.getDebuggerTypeProxy(lookup)); // The result should be cached, as Lookup is immutable.
     }
 }

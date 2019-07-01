@@ -15,7 +15,7 @@ import java.util.List;
 public class AppendPrependTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQueryAppend() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
 
         assertEquals(q1.append(42), q1.append(42));
         assertEquals(q1.append(42), q1.concat(Linq.singleton(42)));
@@ -23,7 +23,7 @@ public class AppendPrependTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsIntQueryPrepend() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
 
         assertEquals(q1.prepend(42), q1.prepend(42));
         assertEquals(q1.prepend(42), Linq.singleton(42).concat(q1));
@@ -31,7 +31,7 @@ public class AppendPrependTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQueryAppend() {
-        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
 
         assertEquals(q1.append("hi"), q1.append("hi"));
         assertEquals(q1.append("hi"), q1.concat(Linq.singleton("hi")));
@@ -39,7 +39,7 @@ public class AppendPrependTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQueryPrepend() {
-        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
 
         assertEquals(q1.prepend("hi"), q1.prepend("hi"));
         assertEquals(q1.prepend("hi"), Linq.singleton("hi").concat(q1));
@@ -68,9 +68,9 @@ public class AppendPrependTest extends TestCase {
     @Test
     public void PrependNoIteratingSourceBeforeFirstItem() {
         List<Integer> ie = new ArrayList<>();
-        IEnumerable<Integer> prepended = Linq.asEnumerable(ie).prepend(4);
+        IEnumerable<Integer> prepended = Linq.of(ie).prepend(4);
         ie.add(42);
-        assertEquals(prepended, Linq.asEnumerable(ie).prepend(4));
+        assertEquals(prepended, Linq.of(ie).prepend(4));
     }
 
     @Test
@@ -105,17 +105,17 @@ public class AppendPrependTest extends TestCase {
 
     @Test
     public void Combined() {
-        IEnumerable<Character> v = Linq.asEnumerable("foo").append('1').append('2').prepend('3').concat(Linq.asEnumerable("qq").append('Q').prepend('W'));
+        IEnumerable<Character> v = Linq.of("foo").append('1').append('2').prepend('3').concat(Linq.of("qq").append('Q').prepend('W'));
 
-        assertEquals(v.toArray(), Linq.asEnumerable("3foo12WqqQ").toArray());
+        assertEquals(v.toArray(), Linq.of("3foo12WqqQ").toArray());
 
-        IEnumerable<Character> v1 = Linq.asEnumerable("a").append('b').append('c').append('d');
+        IEnumerable<Character> v1 = Linq.of("a").append('b').append('c').append('d');
 
-        assertEquals(v1.toArray(), Linq.asEnumerable("abcd").toArray());
+        assertEquals(v1.toArray(), Linq.of("abcd").toArray());
 
-        IEnumerable<Character> v2 = Linq.asEnumerable("a").prepend('b').prepend('c').prepend('d');
+        IEnumerable<Character> v2 = Linq.of("a").prepend('b').prepend('c').prepend('d');
 
-        assertEquals(v2.toArray(), Linq.asEnumerable("dcba").toArray());
+        assertEquals(v2.toArray(), Linq.of("dcba").toArray());
     }
 
     @Test
@@ -128,12 +128,12 @@ public class AppendPrependTest extends TestCase {
         IEnumerable<Integer> app1ba = app0b.append(9);
         IEnumerable<Integer> app1bb = app0b.append(10);
 
-        assertEquals(Linq.asEnumerable(0, 1, 2, 3, 4, 5), app0a);
-        assertEquals(Linq.asEnumerable(0, 1, 2, 3, 4, 6), app0b);
-        assertEquals(Linq.asEnumerable(0, 1, 2, 3, 4, 5, 7), app1aa);
-        assertEquals(Linq.asEnumerable(0, 1, 2, 3, 4, 5, 8), app1ab);
-        assertEquals(Linq.asEnumerable(0, 1, 2, 3, 4, 6, 9), app1ba);
-        assertEquals(Linq.asEnumerable(0, 1, 2, 3, 4, 6, 10), app1bb);
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), app0a);
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 6), app0b);
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 7), app1aa);
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 8), app1ab);
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 6, 9), app1ba);
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 6, 10), app1bb);
     }
 
     @Test
@@ -146,12 +146,12 @@ public class AppendPrependTest extends TestCase {
         IEnumerable<Integer> pre1ba = pre0b.prepend(9);
         IEnumerable<Integer> pre1bb = pre0b.prepend(10);
 
-        assertEquals(Linq.asEnumerable(5, 0, 1, 2, 3), pre0a);
-        assertEquals(Linq.asEnumerable(6, 0, 1, 2, 3), pre0b);
-        assertEquals(Linq.asEnumerable(7, 5, 0, 1, 2, 3), pre1aa);
-        assertEquals(Linq.asEnumerable(8, 5, 0, 1, 2, 3), pre1ab);
-        assertEquals(Linq.asEnumerable(9, 6, 0, 1, 2, 3), pre1ba);
-        assertEquals(Linq.asEnumerable(10, 6, 0, 1, 2, 3), pre1bb);
+        assertEquals(Linq.of(5, 0, 1, 2, 3), pre0a);
+        assertEquals(Linq.of(6, 0, 1, 2, 3), pre0b);
+        assertEquals(Linq.of(7, 5, 0, 1, 2, 3), pre1aa);
+        assertEquals(Linq.of(8, 5, 0, 1, 2, 3), pre1ab);
+        assertEquals(Linq.of(9, 6, 0, 1, 2, 3), pre1ba);
+        assertEquals(Linq.of(10, 6, 0, 1, 2, 3), pre1bb);
     }
 
     @Test
@@ -243,7 +243,7 @@ public class AppendPrependTest extends TestCase {
 
     @Test
     public void testAppend() {
-        String s = Linq.asEnumerable(emps).append(badEmps[0])
+        String s = Linq.of(emps).append(badEmps[0])
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
@@ -252,7 +252,7 @@ public class AppendPrependTest extends TestCase {
 
     @Test
     public void testPrepend() {
-        String s = Linq.asEnumerable(emps).prepend(badEmps[0])
+        String s = Linq.of(emps).prepend(badEmps[0])
                 .select(emp -> emp.name)
                 .toList()
                 .toString();

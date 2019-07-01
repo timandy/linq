@@ -45,7 +45,7 @@ In general, the more complex the operation you want to perform on the data, the 
 ## API of Linq
 - empty
 - singleton
-- asEnumerable
+- of
 - range
 - repeat
 
@@ -176,7 +176,7 @@ compile 'com.bestvike:linq:2.0.1'
 
 - Join not empty elements.
 ```
-String result = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+String result = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
         .where(x -> x != null && x.length() > 0)
         .aggregate((x, y) -> x + ", " + y);
 
@@ -187,7 +187,7 @@ System.out.println(result);
 
 - Determine all positive numbers is even or not.
 ```
-boolean result = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+boolean result = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
         .where(x -> x > 0)
         .all(x -> x % 2 == 0);
 
@@ -198,7 +198,7 @@ false
 
 - Determine any positive number is even or not.
 ```
-boolean result = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+boolean result = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
         .where(x -> x > 0)
         .any(x -> x % 2 == 0);
 
@@ -218,7 +218,7 @@ System.out.println(result);
 
 - Compute average of integer sequence.
 ```
-double result = Linq.asEnumerable(5, -10, 15, 40, 28).averageInt();
+double result = Linq.of(5, -10, 15, 40, 28).averageInt();
 
 System.out.println(result);
 ----

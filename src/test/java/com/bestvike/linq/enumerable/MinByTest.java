@@ -15,120 +15,120 @@ public class MinByTest extends TestCase {
     @Test
     public void testMinByInt() {
         Tuple1[] tuple1s = {Tuple.create(0), Tuple.create(2), Tuple.create(3)};
-        assertEquals(Tuple.create(0), Linq.asEnumerable(tuple1s).minByInt(tuple -> (Integer) tuple.getItem1()));
+        assertEquals(Tuple.create(0), Linq.of(tuple1s).minByInt(tuple -> (Integer) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(tuple1s2).minByInt(tuple -> (Integer) tuple.getItem1()));
+        assertThrows(NullPointerException.class, () -> Linq.of(tuple1s2).minByInt(tuple -> (Integer) tuple.getItem1()));
     }
 
     @Test
     public void testMinByIntNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
-        assertEquals(Tuple.create(0), Linq.asEnumerable(tuple1s).minByIntNull(tuple -> (Integer) tuple.getItem1()));
+        assertEquals(Tuple.create(0), Linq.of(tuple1s).minByIntNull(tuple -> (Integer) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertEquals(null, Linq.asEnumerable(tuple1s2).minByIntNull(tuple -> (Integer) tuple.getItem1()));
+        assertEquals(null, Linq.of(tuple1s2).minByIntNull(tuple -> (Integer) tuple.getItem1()));
     }
 
     @Test
     public void testMinByLong() {
         Tuple1[] tuple1s = {Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
-        assertEquals(Tuple.create(0L), Linq.asEnumerable(tuple1s).minByLong(tuple -> (Long) tuple.getItem1()));
+        assertEquals(Tuple.create(0L), Linq.of(tuple1s).minByLong(tuple -> (Long) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(tuple1s2).minByLong(tuple -> (Long) tuple.getItem1()));
+        assertThrows(NullPointerException.class, () -> Linq.of(tuple1s2).minByLong(tuple -> (Long) tuple.getItem1()));
     }
 
     @Test
     public void testMinByLongNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
-        assertEquals(Tuple.create(0L), Linq.asEnumerable(tuple1s).minByLongNull(tuple -> (Long) tuple.getItem1()));
+        assertEquals(Tuple.create(0L), Linq.of(tuple1s).minByLongNull(tuple -> (Long) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertEquals(null, Linq.asEnumerable(tuple1s2).minByLongNull(tuple -> (Long) tuple.getItem1()));
+        assertEquals(null, Linq.of(tuple1s2).minByLongNull(tuple -> (Long) tuple.getItem1()));
     }
 
     @Test
     public void testMinByFloat() {
         Tuple1[] tuple1s = {Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
-        assertEquals(Tuple.create(Float.NaN), Linq.asEnumerable(tuple1s).minByFloat(tuple -> (Float) tuple.getItem1()));
+        assertEquals(Tuple.create(Float.NaN), Linq.of(tuple1s).minByFloat(tuple -> (Float) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(tuple1s2).minByFloat(tuple -> (Float) tuple.getItem1()));
+        assertThrows(NullPointerException.class, () -> Linq.of(tuple1s2).minByFloat(tuple -> (Float) tuple.getItem1()));
 
         Tuple1[] tuple1s3 = {Tuple.create(Float.NaN), Tuple.create(Float.NaN)};
-        assertSame(tuple1s3[0], Linq.asEnumerable(tuple1s3).minByFloat(tuple -> (Float) tuple.getItem1()));
+        assertSame(tuple1s3[0], Linq.of(tuple1s3).minByFloat(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
     public void testMinByFloatNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
-        assertEquals(Tuple.create(Float.NaN), Linq.asEnumerable(tuple1s).minByFloatNull(tuple -> (Float) tuple.getItem1()));
+        assertEquals(Tuple.create(Float.NaN), Linq.of(tuple1s).minByFloatNull(tuple -> (Float) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertEquals(null, Linq.asEnumerable(tuple1s2).minByFloatNull(tuple -> (Float) tuple.getItem1()));
+        assertEquals(null, Linq.of(tuple1s2).minByFloatNull(tuple -> (Float) tuple.getItem1()));
 
         Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Float.NaN), Tuple.create(Float.NaN)};
-        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).minByFloatNull(tuple -> (Float) tuple.getItem1()));
+        assertSame(tuple1s3[1], Linq.of(tuple1s3).minByFloatNull(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
     public void testMinByDouble() {
         Tuple1[] tuple1s = {Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
-        assertEquals(Tuple.create(Double.NaN), Linq.asEnumerable(tuple1s).minByDouble(tuple -> (Double) tuple.getItem1()));
+        assertEquals(Tuple.create(Double.NaN), Linq.of(tuple1s).minByDouble(tuple -> (Double) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(tuple1s2).minByDouble(tuple -> (Double) tuple.getItem1()));
+        assertThrows(NullPointerException.class, () -> Linq.of(tuple1s2).minByDouble(tuple -> (Double) tuple.getItem1()));
 
         Tuple1[] tuple1s3 = {Tuple.create(Double.NaN), Tuple.create(Double.NaN)};
-        assertSame(tuple1s3[0], Linq.asEnumerable(tuple1s3).minByDouble(tuple -> (Double) tuple.getItem1()));
+        assertSame(tuple1s3[0], Linq.of(tuple1s3).minByDouble(tuple -> (Double) tuple.getItem1()));
     }
 
     @Test
     public void testMinByDoubleNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
-        assertEquals(Tuple.create(Double.NaN), Linq.asEnumerable(tuple1s).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
+        assertEquals(Tuple.create(Double.NaN), Linq.of(tuple1s).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertEquals(null, Linq.asEnumerable(tuple1s2).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
+        assertEquals(null, Linq.of(tuple1s2).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
 
         Tuple1[] tuple1s3 = {Tuple.create(null), Tuple.create(Double.NaN), Tuple.create(Double.NaN)};
-        assertSame(tuple1s3[1], Linq.asEnumerable(tuple1s3).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
+        assertSame(tuple1s3[1], Linq.of(tuple1s3).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
     }
 
     @Test
     public void testMinByDecimal() {
         Tuple1[] tuple1s = {Tuple.create(m("0")), Tuple.create(m("2")), Tuple.create(m("3"))};
-        assertEquals(Tuple.create(m("0")), Linq.asEnumerable(tuple1s).minByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
+        assertEquals(Tuple.create(m("0")), Linq.of(tuple1s).minByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(tuple1s2).minByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
+        assertThrows(NullPointerException.class, () -> Linq.of(tuple1s2).minByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
     }
 
     @Test
     public void testMinByDecimalNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(m("0")), Tuple.create(m("2")), Tuple.create(m("3"))};
-        assertEquals(Tuple.create(m("0")), Linq.asEnumerable(tuple1s).minByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
+        assertEquals(Tuple.create(m("0")), Linq.of(tuple1s).minByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertEquals(null, Linq.asEnumerable(tuple1s2).minByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
+        assertEquals(null, Linq.of(tuple1s2).minByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
     }
 
     @Test
     public void testMinBy() {
         Tuple1[] tuple1s = {Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
-        assertEquals(Tuple.create(0f), Linq.asEnumerable(tuple1s).minBy(tuple -> (Float) tuple.getItem1()));
+        assertEquals(Tuple.create(0f), Linq.of(tuple1s).minBy(tuple -> (Float) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(tuple1s2).minBy(tuple -> (Float) tuple.getItem1()));
+        assertThrows(NullPointerException.class, () -> Linq.of(tuple1s2).minBy(tuple -> (Float) tuple.getItem1()));
     }
 
     @Test
     public void testMinByNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
-        assertEquals(Tuple.create(0f), Linq.asEnumerable(tuple1s).minByNull(tuple -> (Float) tuple.getItem1()));
+        assertEquals(Tuple.create(0f), Linq.of(tuple1s).minByNull(tuple -> (Float) tuple.getItem1()));
 
         Tuple1[] tuple1s2 = {Tuple.create(null)};
-        assertEquals(null, Linq.asEnumerable(tuple1s2).minByNull(tuple -> (Float) tuple.getItem1()));
+        assertEquals(null, Linq.of(tuple1s2).minByNull(tuple -> (Float) tuple.getItem1()));
     }
 }

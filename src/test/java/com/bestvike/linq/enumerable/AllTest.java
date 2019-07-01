@@ -14,7 +14,7 @@ import org.junit.Test;
 public class AllTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
         Predicate1<Integer> predicate = TestCase::IsEven;
@@ -23,7 +23,7 @@ public class AllTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Predicate1<String> predicate = TestCase::IsNullOrEmpty;
         assertEquals(q.all(predicate), q.all(predicate));
@@ -37,9 +37,9 @@ public class AllTest extends TestCase {
         this.All(Linq.singleton(4), isEvenFunc, true);
         this.All(Linq.singleton(3), isEvenFunc, false);
 
-        this.All(Linq.asEnumerable(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
-        this.All(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
-        this.All(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
+        this.All(Linq.of(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
+        this.All(Linq.of(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
+        this.All(Linq.of(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.All(range, i -> i > 0, true);
@@ -61,9 +61,9 @@ public class AllTest extends TestCase {
         this.AllRunOnce(Linq.singleton(4), isEvenFunc, true);
         this.AllRunOnce(Linq.singleton(3), isEvenFunc, false);
 
-        this.AllRunOnce(Linq.asEnumerable(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
-        this.AllRunOnce(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
-        this.AllRunOnce(Linq.asEnumerable(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
+        this.AllRunOnce(Linq.of(4, 8, 3, 5, 10, 20, 12), isEvenFunc, false);
+        this.AllRunOnce(Linq.of(4, 2, 10, 12, 8, 6, 3), isEvenFunc, false);
+        this.AllRunOnce(Linq.of(4, 2, 10, 12, 8, 6, 14), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.AllRunOnce(range.runOnce(), i -> i > 0, true);
@@ -90,7 +90,7 @@ public class AllTest extends TestCase {
 
     @Test
     public void testAllPredicate() {
-        assertTrue(Linq.asEnumerable(emps).all(emp -> emp.empno >= 100));
-        assertFalse(Linq.asEnumerable(emps).all(emp -> emp.empno > 100));
+        assertTrue(Linq.of(emps).all(emp -> emp.empno >= 100));
+        assertFalse(Linq.of(emps).all(emp -> emp.empno > 100));
     }
 }

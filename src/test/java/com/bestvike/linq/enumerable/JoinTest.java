@@ -34,7 +34,7 @@ public class JoinTest extends TestCase {
                 new OrderRec(45321, 98022, 50),
                 new OrderRec(97865, 32103, 25)};
 
-        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEmpty(Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
@@ -51,7 +51,7 @@ public class JoinTest extends TestCase {
                 new JoinRec("Prakash", 95421, 9),
                 new JoinRec("Robert", 45321, 50)};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
@@ -65,7 +65,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("Prakash", 323232, 9)};
         JoinRec[] expected = {new JoinRec("Prakash", 323232, 9)};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, null));
+        assertEquals(Linq.of(expected), Linq.of(outer).join(Linq.of(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, null));
     }
 
     @Test
@@ -81,7 +81,7 @@ public class JoinTest extends TestCase {
                 new JoinRec("Prakash", 323232, 9),
                 new JoinRec("Tim", 43455, 10)};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+        assertEquals(Linq.of(expected), Linq.of(outer).join(Linq.of(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(NullPointerException.class, () -> outer.join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+        assertThrows(NullPointerException.class, () -> outer.join(Linq.of(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class JoinTest extends TestCase {
                 new CustomerRec("Robert", 99022)};
         IEnumerable<AnagramRec> inner = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(inner, e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(inner, e -> e.name, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), null, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), null, e -> e.name, JoinTest::createJoinRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -128,7 +128,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, null, JoinTest::createJoinRec, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), e -> e.name, null, JoinTest::createJoinRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -141,7 +141,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, AnagramRec, JoinRec>) null, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, AnagramRec, JoinRec>) null, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -151,7 +151,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(NullPointerException.class, () -> outer.join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec));
+        assertThrows(NullPointerException.class, () -> outer.join(Linq.of(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class JoinTest extends TestCase {
                 new CustomerRec("Robert", 99022)};
         IEnumerable<AnagramRec> inner = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec));
     }
 
     @Test
@@ -175,7 +175,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), null, e -> e.name, JoinTest::createJoinRec));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), null, e -> e.name, JoinTest::createJoinRec));
     }
 
     @Test
@@ -188,7 +188,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, null, JoinTest::createJoinRec));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), e -> e.name, null, JoinTest::createJoinRec));
     }
 
     @Test
@@ -201,7 +201,7 @@ public class JoinTest extends TestCase {
                 new AnagramRec("miT", 43455, 10),
                 new AnagramRec("Prakash", 323232, 9)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, AnagramRec, JoinRec>) null));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, AnagramRec, JoinRec>) null));
     }
 
     @Test
@@ -210,7 +210,7 @@ public class JoinTest extends TestCase {
         String[] inner = {null, Empty};
         String[] expected = {Empty};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e, e -> e, (x, y) -> y, EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(outer).join(Linq.of(inner), e -> e, e -> e, (x, y) -> y, EqualityComparer.Default()));
     }
 
     @Test
@@ -219,7 +219,7 @@ public class JoinTest extends TestCase {
                 new CustomerRec("Tim", 43434),
                 new CustomerRec("Bob", 34093)};
         OrderRec[] inner = {};
-        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEmpty(Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
@@ -228,21 +228,21 @@ public class JoinTest extends TestCase {
         OrderRec[] inner = {new OrderRec(45321, 98022, 50)};
         JoinRec[] expected = {new JoinRec("Prakash", 45321, 50)};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
     public void SingleElementEachAndDoesntMatch() {
         CustomerRec[] outer = {new CustomerRec("Prakash", 98922)};
         OrderRec[] inner = {new OrderRec(45321, 98022, 50)};
-        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEmpty(Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
     public void SelectorsReturnNull() {
         Integer[] inner = {null, null, null};
         Integer[] outer = {null, null};
-        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e, e -> e, (x, y) -> x));
+        assertEmpty(Linq.of(outer).join(Linq.of(inner), e -> e, e -> e, (x, y) -> x));
     }
 
     @Test
@@ -264,7 +264,7 @@ public class JoinTest extends TestCase {
                 new JoinRec("Tim", 95421, 9),
                 new JoinRec("Robert", 43421, 20)};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
@@ -284,7 +284,7 @@ public class JoinTest extends TestCase {
                 new JoinRec("Tim", 95421, 9),
                 new JoinRec("Robert", 43421, 20)};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
@@ -298,7 +298,7 @@ public class JoinTest extends TestCase {
                 new OrderRec(45321, 18022, 50),
                 new OrderRec(43421, 29022, 20),
                 new OrderRec(95421, 39021, 9)};
-        assertEmpty(Linq.asEnumerable(outer).join(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
+        assertEmpty(Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
@@ -312,8 +312,8 @@ public class JoinTest extends TestCase {
     @Test
     public void testJoin() {
         //null key 被排除
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .join(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .join(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp.name, dept.name))
@@ -321,8 +321,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Bill works in Marketing, Eric works in Sales, Janet works in Sales]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .join(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .join(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp.name, dept.name))
@@ -346,8 +346,8 @@ public class JoinTest extends TestCase {
             }
         };
 
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .join(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .join(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp.name, dept.name),
@@ -356,8 +356,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Bill works in Sales, Bill works in HR, Bill works in Marketing, Eric works in Sales, Eric works in HR, Eric works in Marketing, Janet works in Sales, Janet works in HR, Janet works in Marketing, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .join(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .join(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp.name, dept.name),
@@ -370,8 +370,8 @@ public class JoinTest extends TestCase {
     @Test
     public void testLeftJoin() {
         //包含左侧数据,另外 null key 不能用来关联
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .leftJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .leftJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp.name, dept == null ? null : dept.name))
@@ -379,8 +379,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Bill works in Marketing, Eric works in Sales, Janet works in Sales, Cedric works in null, Gates works in null]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .leftJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .leftJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp == null ? null : emp.name, dept.name))
@@ -393,8 +393,8 @@ public class JoinTest extends TestCase {
     public void testLeftJoinWithDefaultValue() {
         //包含左侧数据,另外 null key 不能用来关联,使用指定默认值
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .leftJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .leftJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         defaultDept,
@@ -404,8 +404,8 @@ public class JoinTest extends TestCase {
         assertEquals("[Fred works in Sales, Bill works in Marketing, Eric works in Sales, Janet works in Sales, Cedric works in defaultDept, Gates works in defaultDept]", s);
 
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .leftJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .leftJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         defaultEmp,
@@ -430,8 +430,8 @@ public class JoinTest extends TestCase {
             }
         };
 
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .leftJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .leftJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp.name, dept == null ? null : dept.name),
@@ -440,8 +440,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Bill works in Sales, Bill works in HR, Bill works in Marketing, Eric works in Sales, Eric works in HR, Eric works in Marketing, Janet works in Sales, Janet works in HR, Janet works in Marketing, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Gates works in null]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .leftJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .leftJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp == null ? null : emp.name, dept.name),
@@ -467,8 +467,8 @@ public class JoinTest extends TestCase {
         };
 
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .leftJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .leftJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         defaultDept,
@@ -479,8 +479,8 @@ public class JoinTest extends TestCase {
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Bill works in Sales, Bill works in HR, Bill works in Marketing, Eric works in Sales, Eric works in HR, Eric works in Marketing, Janet works in Sales, Janet works in HR, Janet works in Marketing, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Gates works in defaultDept]", s);
 
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .leftJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .leftJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         defaultEmp,
@@ -494,8 +494,8 @@ public class JoinTest extends TestCase {
     @Test
     public void testRightJoin() {
         //包含右侧数据,另外 null key 不能用来关联
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .rightJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .rightJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp == null ? null : emp.name, dept.name))
@@ -503,8 +503,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Eric works in Sales, Janet works in Sales, null works in HR, Bill works in Marketing, null works in Manager]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .rightJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .rightJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp.name, dept == null ? null : dept.name))
@@ -517,8 +517,8 @@ public class JoinTest extends TestCase {
     public void testRightJoinWithDefaultValue() {
         //包含右侧数据,另外 null key 不能用来关联,使用指定默认值
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .rightJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .rightJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         defaultEmp,
@@ -528,8 +528,8 @@ public class JoinTest extends TestCase {
         assertEquals("[Fred works in Sales, Eric works in Sales, Janet works in Sales, defaultEmp works in HR, Bill works in Marketing, defaultEmp works in Manager]", s);
 
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .rightJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .rightJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         defaultDept,
@@ -554,8 +554,8 @@ public class JoinTest extends TestCase {
             }
         };
 
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .rightJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .rightJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp == null ? null : emp.name, dept.name),
@@ -564,8 +564,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing, null works in Manager]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .rightJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .rightJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp.name, dept == null ? null : dept.name),
@@ -591,8 +591,8 @@ public class JoinTest extends TestCase {
         };
 
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .rightJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .rightJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         defaultEmp,
@@ -603,8 +603,8 @@ public class JoinTest extends TestCase {
         assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing, defaultEmp works in Manager]", s);
 
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .rightJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .rightJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         defaultDept,
@@ -618,8 +618,8 @@ public class JoinTest extends TestCase {
     @Test
     public void testFullJoin() {
         //包含两侧数据,另外 null key 不能用来关联
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .fullJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .fullJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp == null ? null : emp.name, dept == null ? null : dept.name))
@@ -627,8 +627,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Bill works in Marketing, Eric works in Sales, Janet works in Sales, Cedric works in null, Gates works in null, null works in HR, null works in Manager]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .fullJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .fullJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp == null ? null : emp.name, dept == null ? null : dept.name))
@@ -642,8 +642,8 @@ public class JoinTest extends TestCase {
         //包含两侧数据,另外 null key 不能用来关联,使用指定默认值
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .fullJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .fullJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         defaultEmp,
@@ -653,8 +653,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Bill works in Marketing, Eric works in Sales, Janet works in Sales, Cedric works in defaultDept, Gates works in defaultDept, defaultEmp works in HR, defaultEmp works in Manager]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .fullJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .fullJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         defaultDept,
@@ -680,8 +680,8 @@ public class JoinTest extends TestCase {
             }
         };
 
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .fullJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .fullJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         (emp, dept) -> String.format("%s works in %s", emp == null ? null : emp.name, dept == null ? null : dept.name),
@@ -690,8 +690,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Bill works in Sales, Bill works in HR, Bill works in Marketing, Eric works in Sales, Eric works in HR, Eric works in Marketing, Janet works in Sales, Janet works in HR, Janet works in Marketing, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Gates works in null, null works in Manager]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .fullJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .fullJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emp) -> String.format("%s works in %s", emp == null ? null : emp.name, dept == null ? null : dept.name),
@@ -718,8 +718,8 @@ public class JoinTest extends TestCase {
 
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .fullJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
+                .fullJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         emp -> emp.deptno,
                         dept -> dept.deptno,
                         defaultEmp,
@@ -730,8 +730,8 @@ public class JoinTest extends TestCase {
                 .toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Bill works in Sales, Bill works in HR, Bill works in Marketing, Eric works in Sales, Eric works in HR, Eric works in Marketing, Janet works in Sales, Janet works in HR, Janet works in Marketing, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Gates works in defaultDept, defaultEmp works in Manager]", s);
 
-        String ss = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .fullJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String ss = Linq.of(depts).concat(Linq.of(badDepts))
+                .fullJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         defaultDept,
@@ -746,8 +746,8 @@ public class JoinTest extends TestCase {
     @Test
     public void testCrossJoin() {
         //交叉关联,不理会 key 是否为 null
-        IEnumerable<String> enumerable = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .crossJoin(Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)),
+        IEnumerable<String> enumerable = Linq.of(emps).concat(Linq.of(badEmps))
+                .crossJoin(Linq.of(depts).concat(Linq.of(badDepts)),
                         (emp, dept) -> String.format("%s works in %s", emp.name, dept.name));
         CrossJoinIterator<Employee, Department, String> crossJoinIterator = (CrossJoinIterator<Employee, Department, String>) enumerable;
         assertEquals(24, crossJoinIterator._toArray(String.class).length);
@@ -758,8 +758,8 @@ public class JoinTest extends TestCase {
         String s = enumerable.toList().toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Fred works in Manager, Bill works in Sales, Bill works in HR, Bill works in Marketing, Bill works in Manager, Eric works in Sales, Eric works in HR, Eric works in Marketing, Eric works in Manager, Janet works in Sales, Janet works in HR, Janet works in Marketing, Janet works in Manager, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Cedric works in Manager, Gates works in Sales, Gates works in HR, Gates works in Marketing, Gates works in Manager]", s);
 
-        IEnumerable<String> enumerable2 = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .crossJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        IEnumerable<String> enumerable2 = Linq.of(depts).concat(Linq.of(badDepts))
+                .crossJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         (dept, emp) -> String.format("%s works in %s", emp.name, dept.name));
         CrossJoinIterator<Department, Employee, String> crossJoinIterator2 = (CrossJoinIterator<Department, Employee, String>) enumerable2;
         assertEquals(24, crossJoinIterator2._toArray(String.class).length);

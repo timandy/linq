@@ -235,147 +235,147 @@ public class SumTest extends TestCase {
 
     @Test
     public void SumOfInt_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Integer> sourceInt = Linq.asEnumerable(new int[]{1, -2, 3, -4});
+        IEnumerable<Integer> sourceInt = Linq.of(new int[]{1, -2, 3, -4});
         assertEquals(-2, sourceInt.sumInt());
         assertEquals(-2, sourceInt.sumInt(x -> x));
     }
 
     @Test
     public void SumOfNullableOfInt_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Integer> sourceNullableInt = Linq.asEnumerable(1, -2, null, 3, -4, null);
+        IEnumerable<Integer> sourceNullableInt = Linq.of(1, -2, null, 3, -4, null);
         assertEquals(-2, sourceNullableInt.sumIntNull());
         assertEquals(-2, sourceNullableInt.sumIntNull(x -> x));
     }
 
     @Test
     public void SumOfLong_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Long> sourceLong = Linq.asEnumerable(new long[]{1L, -2L, 3L, -4L});
+        IEnumerable<Long> sourceLong = Linq.of(new long[]{1L, -2L, 3L, -4L});
         assertEquals(-2L, sourceLong.sumLong());
         assertEquals(-2L, sourceLong.sumLong(x -> x));
     }
 
     @Test
     public void SumOfNullableOfLong_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Long> sourceNullableLong = Linq.asEnumerable(1L, -2L, null, 3L, -4L, null);
+        IEnumerable<Long> sourceNullableLong = Linq.of(1L, -2L, null, 3L, -4L, null);
         assertEquals(-2L, sourceNullableLong.sumLongNull());
         assertEquals(-2L, sourceNullableLong.sumLongNull(x -> x));
     }
 
     @Test
     public void SumOfFloat_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Float> sourceFloat = Linq.asEnumerable(new float[]{1f, 0.5f, -1f, 0.5f});
+        IEnumerable<Float> sourceFloat = Linq.of(new float[]{1f, 0.5f, -1f, 0.5f});
         assertEquals(1f, sourceFloat.sumFloat());
         assertEquals(1f, sourceFloat.sumFloat(x -> x));
     }
 
     @Test
     public void SumOfNullableOfFloat_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Float> sourceNullableFloat = Linq.asEnumerable(1f, 0.5f, null, -1f, 0.5f, null);
+        IEnumerable<Float> sourceNullableFloat = Linq.of(1f, 0.5f, null, -1f, 0.5f, null);
         assertEquals(1f, sourceNullableFloat.sumFloatNull());
         assertEquals(1f, sourceNullableFloat.sumFloatNull(x -> x));
     }
 
     @Test
     public void SumOfDouble_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Double> sourceDouble = Linq.asEnumerable(new double[]{1d, 0.5d, -1d, 0.5d});
+        IEnumerable<Double> sourceDouble = Linq.of(new double[]{1d, 0.5d, -1d, 0.5d});
         assertEquals(1d, sourceDouble.sumDouble());
         assertEquals(1d, sourceDouble.sumDouble(x -> x));
     }
 
     @Test
     public void SumOfNullableOfDouble_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<Double> sourceNullableDouble = Linq.asEnumerable(1d, 0.5d, null, -1d, 0.5d, null);
+        IEnumerable<Double> sourceNullableDouble = Linq.of(1d, 0.5d, null, -1d, 0.5d, null);
         assertEquals(1d, sourceNullableDouble.sumDoubleNull());
         assertEquals(1d, sourceNullableDouble.sumDoubleNull(x -> x));
     }
 
     @Test
     public void SumOfDecimal_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<BigDecimal> sourceDecimal = Linq.asEnumerable(m("1"), m("0.5"), m("-1"), m("0.5"));
+        IEnumerable<BigDecimal> sourceDecimal = Linq.of(m("1"), m("0.5"), m("-1"), m("0.5"));
         assertEquals(m("1"), sourceDecimal.sumDecimal());
         assertEquals(m("1"), sourceDecimal.sumDecimal(x -> x));
     }
 
     @Test
     public void SumOfNullableOfDecimal_SourceIsNotEmpty_ProperSumReturned() {
-        IEnumerable<BigDecimal> sourceNullableDecimal = Linq.asEnumerable(m("1"), m("0.5"), null, m("-1"), m("0.5"), null);
+        IEnumerable<BigDecimal> sourceNullableDecimal = Linq.of(m("1"), m("0.5"), null, m("-1"), m("0.5"), null);
         assertEquals(m("1"), sourceNullableDecimal.sumDecimalNull());
         assertEquals(m("1"), sourceNullableDecimal.sumDecimalNull(x -> x));
     }
 
     @Test
     public void SumOfInt_SourceSumsToOverflow_OverflowExceptionThrown() {
-        IEnumerable<Integer> sourceInt = Linq.asEnumerable(new int[]{Integer.MAX_VALUE, 1});
+        IEnumerable<Integer> sourceInt = Linq.of(new int[]{Integer.MAX_VALUE, 1});
         assertThrows(ArithmeticException.class, () -> sourceInt.sumInt());
         assertThrows(ArithmeticException.class, () -> sourceInt.sumInt(x -> x));
     }
 
     @Test
     public void SumOfNullableOfInt_SourceSumsToOverflow_OverflowExceptionThrown() {
-        IEnumerable<Integer> sourceNullableInt = Linq.asEnumerable(Integer.MAX_VALUE, null, 1);
+        IEnumerable<Integer> sourceNullableInt = Linq.of(Integer.MAX_VALUE, null, 1);
         assertThrows(ArithmeticException.class, () -> sourceNullableInt.sumIntNull());
         assertThrows(ArithmeticException.class, () -> sourceNullableInt.sumIntNull(x -> x));
     }
 
     @Test
     public void SumOfLong_SourceSumsToOverflow_OverflowExceptionThrown() {
-        IEnumerable<Long> sourceLong = Linq.asEnumerable(new long[]{Long.MAX_VALUE, 1L});
+        IEnumerable<Long> sourceLong = Linq.of(new long[]{Long.MAX_VALUE, 1L});
         assertThrows(ArithmeticException.class, () -> sourceLong.sumLong());
         assertThrows(ArithmeticException.class, () -> sourceLong.sumLong(x -> x));
     }
 
     @Test
     public void SumOfNullableOfLong_SourceSumsToOverflow_OverflowExceptionThrown() {
-        IEnumerable<Long> sourceNullableLong = Linq.asEnumerable(Long.MAX_VALUE, null, 1L);
+        IEnumerable<Long> sourceNullableLong = Linq.of(Long.MAX_VALUE, null, 1L);
         assertThrows(ArithmeticException.class, () -> sourceNullableLong.sumLongNull());
         assertThrows(ArithmeticException.class, () -> sourceNullableLong.sumLongNull(x -> x));
     }
 
     @Test
     public void SumOfFloat_SourceSumsToOverflow_InfinityReturned() {
-        IEnumerable<Float> sourceFloat = Linq.asEnumerable(new float[]{Float.MAX_VALUE, Float.MAX_VALUE});
+        IEnumerable<Float> sourceFloat = Linq.of(new float[]{Float.MAX_VALUE, Float.MAX_VALUE});
         assertTrue(Float.isInfinite(sourceFloat.sumFloat()));
         assertTrue(Float.isInfinite(sourceFloat.sumFloat(x -> x)));
     }
 
     @Test
     public void SumOfNullableOfFloat_SourceSumsToOverflow_InfinityReturned() {
-        IEnumerable<Float> sourceNullableFloat = Linq.asEnumerable(Float.MAX_VALUE, null, Float.MAX_VALUE);
+        IEnumerable<Float> sourceNullableFloat = Linq.of(Float.MAX_VALUE, null, Float.MAX_VALUE);
         assertTrue(Float.isInfinite(sourceNullableFloat.sumFloatNull()));
         assertTrue(Float.isInfinite(sourceNullableFloat.sumFloatNull(x -> x)));
     }
 
     @Test
     public void SumOfDouble_SourceSumsToOverflow_InfinityReturned() {
-        IEnumerable<Double> sourceDouble = Linq.asEnumerable(new double[]{Double.MAX_VALUE, Double.MAX_VALUE});
+        IEnumerable<Double> sourceDouble = Linq.of(new double[]{Double.MAX_VALUE, Double.MAX_VALUE});
         assertTrue(Double.isInfinite(sourceDouble.sumDouble()));
         assertTrue(Double.isInfinite(sourceDouble.sumDouble(x -> x)));
     }
 
     @Test
     public void SumOfNullableOfDouble_SourceSumsToOverflow_InfinityReturned() {
-        IEnumerable<Double> sourceNullableDouble = Linq.asEnumerable(Double.MAX_VALUE, null, Double.MAX_VALUE);
+        IEnumerable<Double> sourceNullableDouble = Linq.of(Double.MAX_VALUE, null, Double.MAX_VALUE);
         assertTrue(Double.isInfinite(sourceNullableDouble.sumDoubleNull()));
         assertTrue(Double.isInfinite(sourceNullableDouble.sumDoubleNull(x -> x)));
     }
 
     @Test
     public void SumOfDecimal_SourceSumsToOverflow_OverflowExceptionThrown() {
-        IEnumerable<BigDecimal> sourceDecimal = Linq.asEnumerable(MAX_DECIMAL, m("1"));
+        IEnumerable<BigDecimal> sourceDecimal = Linq.of(MAX_DECIMAL, m("1"));
         assertEquals(MAX_DECIMAL.add(m("1")), sourceDecimal.sumDecimal());
         assertEquals(MAX_DECIMAL.add(m("1")), sourceDecimal.sumDecimal(x -> x));
     }
 
     @Test
     public void SumOfNullableOfDecimal_SourceSumsToOverflow_OverflowExceptionThrown() {
-        IEnumerable<BigDecimal> sourceNullableDecimal = Linq.asEnumerable(MAX_DECIMAL, null, m("1"));
+        IEnumerable<BigDecimal> sourceNullableDecimal = Linq.of(MAX_DECIMAL, null, m("1"));
         assertEquals(MAX_DECIMAL.add(m("1")), sourceNullableDecimal.sumDecimalNull());
         assertEquals(MAX_DECIMAL.add(m("1")), sourceNullableDecimal.sumDecimalNull(x -> x));
     }
 
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, null, -777, 1, 2, -12345).where(x -> x != null && x > Integer.MIN_VALUE);
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, null, -777, 1, 2, -12345).where(x -> x != null && x > Integer.MIN_VALUE);
 
         assertEquals(q.sumInt(), q.sumInt());
     }
@@ -383,13 +383,13 @@ public class SumTest extends TestCase {
     @Test
     public void SolitaryNullableSingle() {
         Float[] source = {20.51f};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumFloatNull());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumFloatNull());
     }
 
     @Test
     public void NaNFromSingles() {
         Float[] source = {20.45f, 0f, -10.55f, Float.NaN};
-        assertTrue(Float.isNaN(Linq.asEnumerable(source).sumFloatNull()));
+        assertTrue(Float.isNaN(Linq.of(source).sumFloatNull()));
     }
 
     @Test
@@ -400,7 +400,7 @@ public class SumTest extends TestCase {
     @Test
     public void NullableSingleToNegativeInfinity() {
         Float[] source = {-Float.MAX_VALUE, -Float.MAX_VALUE};
-        assertTrue(Float.isInfinite(Linq.asEnumerable(source).sumFloatNull()));
+        assertTrue(Float.isInfinite(Linq.of(source).sumFloatNull()));
     }
 
     @Test
@@ -410,19 +410,19 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", 0f),
                 new NameNum<>("Bob", 8.5f)
         };
-        assertEquals(18.0f, Linq.asEnumerable(source).sumFloatNull(e -> e.num));
+        assertEquals(18.0f, Linq.of(source).sumFloatNull(e -> e.num));
     }
 
     @Test
     public void SolitaryInt32() {
         int[] source = {20};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumInt());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumInt());
     }
 
     @Test
     public void OverflowInt32Negative() {
         int[] source = {-Integer.MAX_VALUE, 0, -5, -20};
-        assertThrows(ArithmeticException.class, () -> Linq.asEnumerable(source).sumInt());
+        assertThrows(ArithmeticException.class, () -> Linq.of(source).sumInt());
     }
 
     @Test
@@ -432,13 +432,13 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", 50),
                 new NameNum<>("Bob", -30)
         };
-        assertEquals(30, Linq.asEnumerable(source).sumInt(e -> e.num));
+        assertEquals(30, Linq.of(source).sumInt(e -> e.num));
     }
 
     @Test
     public void SolitaryNullableInt32() {
         Integer[] source = {-9};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumIntNull());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumIntNull());
     }
 
     @Test
@@ -449,7 +449,7 @@ public class SumTest extends TestCase {
     @Test
     public void NullableInt32NegativeOverflow() {
         Integer[] source = {-Integer.MAX_VALUE, 0, -5, null, null, -20};
-        assertThrows(ArithmeticException.class, () -> Linq.asEnumerable(source).sumIntNull());
+        assertThrows(ArithmeticException.class, () -> Linq.of(source).sumIntNull());
     }
 
     @Test
@@ -459,7 +459,7 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", null),
                 new NameNum<>("Bob", -30)
         };
-        assertEquals(-20, Linq.asEnumerable(source).sumIntNull(e -> e.num));
+        assertEquals(-20, Linq.of(source).sumIntNull(e -> e.num));
     }
 
     @Test
@@ -469,19 +469,19 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", 0),
                 new NameNum<>("Bob", -30)
         };
-        assertEquals(-20, Linq.asEnumerable(source).runOnce().sumInt(e -> e.num));
+        assertEquals(-20, Linq.of(source).runOnce().sumInt(e -> e.num));
     }
 
     @Test
     public void SolitaryInt64() {
         long[] source = {Integer.MAX_VALUE + 20L};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumLong());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumLong());
     }
 
     @Test
     public void NullableInt64NegativeOverflow() {
         long[] source = {-Long.MAX_VALUE, 0, -5, 20, -16};
-        assertThrows(ArithmeticException.class, () -> Linq.asEnumerable(source).sumLong());
+        assertThrows(ArithmeticException.class, () -> Linq.of(source).sumLong());
     }
 
     @Test
@@ -492,13 +492,13 @@ public class SumTest extends TestCase {
                 new NameNum<>("Bob", 40L)
         };
 
-        assertEquals(Integer.MAX_VALUE + 50L, Linq.asEnumerable(source).sumLong(e -> e.num));
+        assertEquals(Integer.MAX_VALUE + 50L, Linq.of(source).sumLong(e -> e.num));
     }
 
     @Test
     public void SolitaryNullableInt64() {
         Long[] source = {-Integer.MAX_VALUE - 20L};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumLongNull());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumLongNull());
     }
 
     @Test
@@ -509,7 +509,7 @@ public class SumTest extends TestCase {
     @Test
     public void Int64NegativeOverflow() {
         Long[] source = {-Long.MAX_VALUE, 0L, -5L, -20L, null, null};
-        assertThrows(ArithmeticException.class, () -> Linq.asEnumerable(source).sumLongNull());
+        assertThrows(ArithmeticException.class, () -> Linq.of(source).sumLongNull());
     }
 
     @Test
@@ -520,25 +520,25 @@ public class SumTest extends TestCase {
                 new NameNum<>("Bob", null)
         };
 
-        assertEquals(Integer.MAX_VALUE + 10L, Linq.asEnumerable(source).sumLongNull(e -> e.num));
+        assertEquals(Integer.MAX_VALUE + 10L, Linq.of(source).sumLongNull(e -> e.num));
     }
 
     @Test
     public void SolitaryDouble() {
         double[] source = {20.51};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumDouble());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumDouble());
     }
 
     @Test
     public void DoubleWithNaN() {
         double[] source = {20.45, 0, -10.55, Double.NaN};
-        assertTrue(Double.isNaN(Linq.asEnumerable(source).sumDouble()));
+        assertTrue(Double.isNaN(Linq.of(source).sumDouble()));
     }
 
     @Test
     public void DoubleToNegativeInfinity() {
         double[] source = {-Double.MAX_VALUE, -Double.MAX_VALUE};
-        assertTrue(Double.isInfinite(Linq.asEnumerable(source).sumDouble()));
+        assertTrue(Double.isInfinite(Linq.of(source).sumDouble()));
     }
 
     @Test
@@ -549,13 +549,13 @@ public class SumTest extends TestCase {
                 new NameNum<>("Bob", 3.5d)
         };
 
-        assertEquals(23.5, Linq.asEnumerable(source).sumDouble(e -> e.num));
+        assertEquals(23.5, Linq.of(source).sumDouble(e -> e.num));
     }
 
     @Test
     public void SolitaryNullableDouble() {
         Double[] source = {20.51};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumDoubleNull());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumDoubleNull());
     }
 
     @Test
@@ -566,7 +566,7 @@ public class SumTest extends TestCase {
     @Test
     public void NullableDoubleToNegativeInfinity() {
         Double[] source = {-Double.MAX_VALUE, -Double.MAX_VALUE};
-        assertTrue(Double.isInfinite(Linq.asEnumerable(source).sumDoubleNull()));
+        assertTrue(Double.isInfinite(Linq.of(source).sumDoubleNull()));
     }
 
     @Test
@@ -576,19 +576,19 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", null),
                 new NameNum<>("Bob", 8.5d)
         };
-        assertEquals(18.0, Linq.asEnumerable(source).sumDoubleNull(e -> e.num));
+        assertEquals(18.0, Linq.of(source).sumDoubleNull(e -> e.num));
     }
 
     @Test
     public void SolitaryDecimal() {
         BigDecimal[] source = {m("20.51")};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumDecimal());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumDecimal());
     }
 
     @Test
     public void DecimalNegativeOverflow() {
         BigDecimal[] source = {MAX_DECIMAL.negate(), MAX_DECIMAL.negate()};
-        assertEquals(MAX_DECIMAL.negate().multiply(m("2")), Linq.asEnumerable(source).sumDecimal());
+        assertEquals(MAX_DECIMAL.negate().multiply(m("2")), Linq.of(source).sumDecimal());
     }
 
     @Test
@@ -598,13 +598,13 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", m("10")),
                 new NameNum<>("Bob", m("2.33"))
         };
-        assertEquals(m("32.84"), Linq.asEnumerable(source).sumDecimal(e -> e.num));
+        assertEquals(m("32.84"), Linq.of(source).sumDecimal(e -> e.num));
     }
 
     @Test
     public void SolitaryNullableDecimal() {
         BigDecimal[] source = {m("20.51")};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumDecimalNull());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumDecimalNull());
     }
 
     @Test
@@ -615,7 +615,7 @@ public class SumTest extends TestCase {
     @Test
     public void NullableDecimalNegativeOverflow() {
         BigDecimal[] source = {MAX_DECIMAL.negate(), MAX_DECIMAL.negate()};
-        assertEquals(MAX_DECIMAL.negate().multiply(m("2")), Linq.asEnumerable(source).sumDecimalNull());
+        assertEquals(MAX_DECIMAL.negate().multiply(m("2")), Linq.of(source).sumDecimalNull());
     }
 
     @Test
@@ -625,19 +625,19 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", null),
                 new NameNum<>("Bob", m("2.33"))
         };
-        assertEquals(m("22.84"), Linq.asEnumerable(source).sumDecimalNull(e -> e.num));
+        assertEquals(m("22.84"), Linq.of(source).sumDecimalNull(e -> e.num));
     }
 
     @Test
     public void SolitarySingle() {
         float[] source = {20.51f};
-        assertEquals(Linq.asEnumerable(source).firstOrDefault(), Linq.asEnumerable(source).sumFloat());
+        assertEquals(Linq.of(source).firstOrDefault(), Linq.of(source).sumFloat());
     }
 
     @Test
     public void SingleToNegativeInfinity() {
         float[] source = {-Float.MAX_VALUE, -Float.MAX_VALUE};
-        assertTrue(Float.isInfinite(Linq.asEnumerable(source).sumFloat()));
+        assertTrue(Float.isInfinite(Linq.of(source).sumFloat()));
     }
 
     @Test
@@ -647,109 +647,109 @@ public class SumTest extends TestCase {
                 new NameNum<>("John", 10.5f),
                 new NameNum<>("Bob", 3.5f)
         };
-        assertEquals(23.5f, Linq.asEnumerable(source).sumFloat(e -> e.num));
+        assertEquals(23.5f, Linq.of(source).sumFloat(e -> e.num));
     }
 
     @Test
     public void testSumInt() {
         Integer[] numbers = {null, 0, 2, 3};
-        assertEquals(5, Linq.asEnumerable(numbers).sumIntNull());
+        assertEquals(5, Linq.of(numbers).sumIntNull());
 
         Integer[] numbers2 = {null, Integer.MAX_VALUE - 1, 1};
-        assertEquals(Integer.MAX_VALUE, Linq.asEnumerable(numbers2).sumIntNull());
+        assertEquals(Integer.MAX_VALUE, Linq.of(numbers2).sumIntNull());
 
         Integer[] numbers3 = {null, Integer.MAX_VALUE, 1};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers3).sumInt());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers3).sumInt());
     }
 
     @Test
     public void testSumLong() {
         Long[] numbers = {null, 0L, 2L, 3L};
-        assertEquals(5, Linq.asEnumerable(numbers).sumLongNull());
+        assertEquals(5, Linq.of(numbers).sumLongNull());
 
         Long[] numbers2 = {null, Long.MAX_VALUE - 1, 1L};
-        assertEquals(Long.MAX_VALUE, Linq.asEnumerable(numbers2).sumLongNull());
+        assertEquals(Long.MAX_VALUE, Linq.of(numbers2).sumLongNull());
 
         Long[] numbers3 = {null, Long.MAX_VALUE, 1L};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers3).sumLong());
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers3).sumLong());
     }
 
     @Test
     public void testSumFloat() {
         Float[] numbers = {null, 0f, 2f, 3f};
-        assertEquals(5f, Linq.asEnumerable(numbers).sumFloatNull());
+        assertEquals(5f, Linq.of(numbers).sumFloatNull());
 
         Float[] numbers2 = {null, Float.MAX_VALUE - 1, 1F};
-        assertEquals(Float.MAX_VALUE, Linq.asEnumerable(numbers2).sumFloatNull());
+        assertEquals(Float.MAX_VALUE, Linq.of(numbers2).sumFloatNull());
     }
 
     @Test
     public void testSumDouble() {
         Double[] numbers = {null, 0d, 2d, 3d};
-        assertEquals(5d, Linq.asEnumerable(numbers).sumDoubleNull());
+        assertEquals(5d, Linq.of(numbers).sumDoubleNull());
 
         Double[] numbers2 = {null, Double.MAX_VALUE - 1, 1d};
-        assertEquals(Double.MAX_VALUE, Linq.asEnumerable(numbers2).sumDoubleNull());
+        assertEquals(Double.MAX_VALUE, Linq.of(numbers2).sumDoubleNull());
     }
 
     @Test
     public void testSumDecimal() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
-        assertEquals(m("5"), Linq.asEnumerable(numbers).sumDecimalNull());
+        assertEquals(m("5"), Linq.of(numbers).sumDecimalNull());
 
         BigDecimal[] numbers2 = {null, BigDecimal.ZERO, m("2"), m("3")};
-        assertEquals(m("5"), Linq.asEnumerable(numbers2).sumDecimalNull());
+        assertEquals(m("5"), Linq.of(numbers2).sumDecimalNull());
     }
 
     @Test
     public void testSumIntWithSelector() {
         Integer[] numbers = {null, 0, 2, 3};
-        assertEquals(5, Linq.asEnumerable(numbers).sumIntNull(n -> n));
+        assertEquals(5, Linq.of(numbers).sumIntNull(n -> n));
 
         Integer[] numbers2 = {null, Integer.MAX_VALUE - 1, 1};
-        assertEquals(Integer.MAX_VALUE, Linq.asEnumerable(numbers2).sumIntNull(n -> n));
+        assertEquals(Integer.MAX_VALUE, Linq.of(numbers2).sumIntNull(n -> n));
 
         Integer[] numbers3 = {null, Integer.MAX_VALUE, 1};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers3).sumInt(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers3).sumInt(n -> n));
     }
 
     @Test
     public void testSumLongWithSelector() {
         Long[] numbers = {null, 0L, 2L, 3L};
-        assertEquals(5, Linq.asEnumerable(numbers).sumLongNull(n -> n));
+        assertEquals(5, Linq.of(numbers).sumLongNull(n -> n));
 
         Long[] numbers2 = {null, Long.MAX_VALUE - 1, 1L};
-        assertEquals(Long.MAX_VALUE, Linq.asEnumerable(numbers2).sumLongNull(n -> n));
+        assertEquals(Long.MAX_VALUE, Linq.of(numbers2).sumLongNull(n -> n));
 
         Long[] numbers3 = {null, Long.MAX_VALUE, 1L};
-        assertThrows(NullPointerException.class, () -> Linq.asEnumerable(numbers3).sumLong(n -> n));
+        assertThrows(NullPointerException.class, () -> Linq.of(numbers3).sumLong(n -> n));
     }
 
     @Test
     public void testSumFloatWithSelector() {
         Float[] numbers = {null, 0f, 2f, 3f};
-        assertEquals(5f, Linq.asEnumerable(numbers).sumFloatNull(n -> n));
+        assertEquals(5f, Linq.of(numbers).sumFloatNull(n -> n));
 
         Float[] numbers2 = {null, Float.MAX_VALUE - 1, 1F};
-        assertEquals(Float.MAX_VALUE, Linq.asEnumerable(numbers2).sumFloatNull(n -> n));
+        assertEquals(Float.MAX_VALUE, Linq.of(numbers2).sumFloatNull(n -> n));
     }
 
     @Test
     public void testSumDoubleWithSelector() {
         Double[] numbers = {null, 0d, 2d, 3d};
-        assertEquals(5d, Linq.asEnumerable(numbers).sumDoubleNull(n -> n));
+        assertEquals(5d, Linq.of(numbers).sumDoubleNull(n -> n));
 
         Double[] numbers2 = {null, Double.MAX_VALUE - 1, 1d};
-        assertEquals(Double.MAX_VALUE, Linq.asEnumerable(numbers2).sumDoubleNull(n -> n));
+        assertEquals(Double.MAX_VALUE, Linq.of(numbers2).sumDoubleNull(n -> n));
     }
 
     @Test
     public void testSumDecimalWithSelector() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
-        assertEquals(m("5"), Linq.asEnumerable(numbers).sumDecimalNull(n -> n));
+        assertEquals(m("5"), Linq.of(numbers).sumDecimalNull(n -> n));
 
         BigDecimal[] numbers2 = {null, BigDecimal.ZERO, m("2"), m("3")};
-        assertEquals(m("5"), Linq.asEnumerable(numbers2).sumDecimalNull(n -> n));
+        assertEquals(m("5"), Linq.of(numbers2).sumDecimalNull(n -> n));
     }
 
 

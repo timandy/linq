@@ -29,7 +29,7 @@ public class ReflectionUtilsTest extends TestCase {
 
         Field[] fields = ReflectionUtils.getFields(Bean.class);
         assertEquals(6, fields.length);
-        IEnumerable<String> fieldEnumerable = Linq.asEnumerable(fields).select(Field::getName);
+        IEnumerable<String> fieldEnumerable = Linq.of(fields).select(Field::getName);
         assertEquals(2, fieldEnumerable.count("pri"::equals));
         assertEquals(2, fieldEnumerable.count("pro"::equals));
         assertEquals(1, fieldEnumerable.count("pub"::equals));

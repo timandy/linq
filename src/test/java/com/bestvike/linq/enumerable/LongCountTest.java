@@ -16,7 +16,7 @@ import java.util.List;
 public class LongCountTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
+        IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.longCount(), q.longCount());
@@ -24,7 +24,7 @@ public class LongCountTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.longCount(), q.longCount());
@@ -32,15 +32,15 @@ public class LongCountTest extends TestCase {
 
     private IEnumerable<Object[]> LongCount_TestData() {
         List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), null, 0L});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{3}), null, 1L});
+        lst.add(new Object[]{Linq.of(new int[0]), null, 0L});
+        lst.add(new Object[]{Linq.of(new int[]{3}), null, 1L});
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), isEvenFunc, 0L});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{4}), isEvenFunc, 1L});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{5}), isEvenFunc, 0L});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2L});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6L});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new int[0]), isEvenFunc, 0L});
+        lst.add(new Object[]{Linq.of(new int[]{4}), isEvenFunc, 1L});
+        lst.add(new Object[]{Linq.of(new int[]{5}), isEvenFunc, 0L});
+        lst.add(new Object[]{Linq.of(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2L});
+        lst.add(new Object[]{Linq.of(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6L});
+        return Linq.of(lst);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class LongCountTest extends TestCase {
     @Test
     public void NullableArray_IncludesNullValues() {
         Integer[] data = {-10, 4, 9, null, 11};
-        assertEquals(5, Linq.asEnumerable(data).longCount());
+        assertEquals(5, Linq.of(data).longCount());
     }
 
     @Test
@@ -93,19 +93,19 @@ public class LongCountTest extends TestCase {
 
     @Test
     public void testLongCount() {
-        long count = Linq.asEnumerable(depts).longCount();
+        long count = Linq.of(depts).longCount();
         assertEquals(3, count);
 
-        long count2 = Linq.asEnumerable(new CountIterable(10)).longCount();
+        long count2 = Linq.of(new CountIterable(10)).longCount();
         assertEquals(10, count2);
     }
 
     @Test
     public void testLongCountPredicate() {
-        long count = Linq.asEnumerable(depts).longCount(dept -> dept.employees.size() > 0);
+        long count = Linq.of(depts).longCount(dept -> dept.employees.size() > 0);
         assertEquals(2, count);
 
-        long count2 = Linq.asEnumerable(new CountIterable(10L)).longCount(s -> s > 9);
+        long count2 = Linq.of(new CountIterable(10L)).longCount(s -> s > 9);
         assertEquals(1, count2);
     }
 }

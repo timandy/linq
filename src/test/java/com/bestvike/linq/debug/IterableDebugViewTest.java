@@ -31,7 +31,7 @@ public class IterableDebugViewTest extends TestCase {
         Object debuggerTypeProxy = DebugView.getDebuggerTypeProxy(source);
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] values = (Object[]) debuggerTypeProxy;
-        assertEquals(Linq.asEnumerable(source).cast(Object.class).toArray(), Linq.asEnumerable(values));
+        assertEquals(Linq.of(source).cast(Object.class).toArray(), Linq.of(values));
         assertSame(debuggerTypeProxy, DebugView.getDebuggerTypeProxy(source));
     }
 }

@@ -27,8 +27,8 @@ public class ToSetTest extends TestCase {
     @Test
     public void TolerateNullElements() {
         // Unlike the keys of a dictionary, HashSet tolerates null items.
-        assertFalse(Linq.asEnumerable(new HashSet<String>()).contains(null));
-        Set<String> hs = Linq.asEnumerable(new String[]{"abc", null, "def"}).toSet();
+        assertFalse(Linq.of(new HashSet<String>()).contains(null));
+        Set<String> hs = Linq.of(new String[]{"abc", null, "def"}).toSet();
         assertTrue(hs.contains(null));
     }
 
@@ -43,7 +43,7 @@ public class ToSetTest extends TestCase {
 
         // The OrderBy isn't strictly necessary, but that depends upon an
         // implementation detail of HashSet, so explicitly force ordering.
-        assertEquals(Linq.range(0, 10), Linq.asEnumerable(hs).orderBy(i -> i));
+        assertEquals(Linq.range(0, 10), Linq.of(hs).orderBy(i -> i));
     }
 
     @Test

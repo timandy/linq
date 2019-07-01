@@ -32,7 +32,7 @@ public class EnumerableDebugViewTest extends TestCase {
         Object debuggerTypeProxy = DebugView.getDebuggerTypeProxy(source);
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] values = (Object[]) debuggerTypeProxy;
-        assertEquals(source.cast(Object.class).toArray(), Linq.asEnumerable(values));
+        assertEquals(source.cast(Object.class).toArray(), Linq.of(values));
         assertSame(debuggerTypeProxy, DebugView.getDebuggerTypeProxy(source));
     }
 }

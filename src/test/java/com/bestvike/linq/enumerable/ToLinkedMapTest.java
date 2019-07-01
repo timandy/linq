@@ -44,7 +44,7 @@ public class ToLinkedMapTest extends TestCase {
         source.put(1, 1);
         source.put(2, 2);
         source.put(3, 3);
-        Map<Integer, Integer> result = Linq.asEnumerable(source).toLinkedMap(key -> key.getKey(), val -> val.getValue());
+        Map<Integer, Integer> result = Linq.of(source).toLinkedMap(key -> key.getKey(), val -> val.getValue());
 
         assertIsType(LinkedHashMap.class, result);
         assertNotSame(source, result);
@@ -52,10 +52,10 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     private <T> void RunToDictionaryOnAllCollectionTypes(T[] items, Action1<Map<T, T>> validation) {
-        validation.apply(Linq.asEnumerable(items).toLinkedMap(key -> key));
-        validation.apply(Linq.asEnumerable(items).toLinkedMap(key -> key, value -> value));
-        validation.apply(Linq.asEnumerable(items).toArray().toLinkedMap(key -> key));
-        validation.apply(Linq.asEnumerable(items).toArray().toLinkedMap(key -> key, value -> value));
+        validation.apply(Linq.of(items).toLinkedMap(key -> key));
+        validation.apply(Linq.of(items).toLinkedMap(key -> key, value -> value));
+        validation.apply(Linq.of(items).toArray().toLinkedMap(key -> key));
+        validation.apply(Linq.of(items).toArray().toLinkedMap(key -> key, value -> value));
         validation.apply(new TestEnumerable<>(items).toLinkedMap(key -> key));
         validation.apply(new TestEnumerable<>(items).toLinkedMap(key -> key, value -> value));
         validation.apply(new TestReadOnlyCollection<>(items).toLinkedMap(key -> key));
@@ -77,8 +77,8 @@ public class ToLinkedMapTest extends TestCase {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         this.RunToDictionaryOnAllCollectionTypes(sourceArray, resultDictionary -> {
             assertEquals(sourceArray.length, resultDictionary.size());
-            assertEquals(Linq.asEnumerable(sourceArray), Linq.asEnumerable(resultDictionary.keySet()));
-            assertEquals(Linq.asEnumerable(sourceArray), Linq.asEnumerable(resultDictionary.values()));
+            assertEquals(Linq.of(sourceArray), Linq.of(resultDictionary.keySet()));
+            assertEquals(Linq.of(sourceArray), Linq.of(resultDictionary.values()));
         });
 
         String[] sourceStringArray = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -117,8 +117,8 @@ public class ToLinkedMapTest extends TestCase {
 
         Map<Integer, Integer> result = collection.toLinkedMap(key -> key + 10, val -> val + 100);
 
-        assertEquals(Linq.asEnumerable(collection.Items).cast(Integer.class).select(o -> o + 10), Linq.asEnumerable(result.keySet()).orderBy(x -> x));
-        assertEquals(Linq.asEnumerable(collection.Items).cast(Integer.class).select(o -> o + 100), Linq.asEnumerable(result.values()).orderBy(x -> x));
+        assertEquals(Linq.of(collection.Items).cast(Integer.class).select(o -> o + 10), Linq.of(result.keySet()).orderBy(x -> x));
+        assertEquals(Linq.of(collection.Items).cast(Integer.class).select(o -> o + 100), Linq.of(result.values()).orderBy(x -> x));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ToLinkedMapTest extends TestCase {
     public void ToDictionary_ThrowArgumentNullExceptionWhenKeySelectorIsNull() {
         int[] source = new int[0];
         Func1<Integer, Integer> keySelector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).toLinkedMap(keySelector));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(keySelector));
     }
 
     @Test
@@ -139,20 +139,20 @@ public class ToLinkedMapTest extends TestCase {
         int[] source = new int[0];
         Func1<Integer, Integer> keySelector = key -> key;
         Func1<Integer, Integer> valueSelector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).toLinkedMap(keySelector, valueSelector));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(keySelector, valueSelector));
     }
 
     @Test
     public void ToDictionary_ThrowArgumentNullExceptionWhenSourceIsNullElementSelector() {
         int[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).toLinkedMap(key -> key, e -> e));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(key -> key, e -> e));
     }
 
     @Test
     public void ToDictionary_ThrowArgumentNullExceptionWhenKeySelectorIsNullElementSelector() {
         int[] source = new int[0];
         Func1<Integer, Integer> keySelector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).toLinkedMap(keySelector, e -> e));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(keySelector, e -> e));
     }
 
     @Test
@@ -164,7 +164,7 @@ public class ToLinkedMapTest extends TestCase {
             return key;
         };
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).toLinkedMap(keySelector));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).toLinkedMap(keySelector));
     }
 
     @Test
@@ -172,7 +172,7 @@ public class ToLinkedMapTest extends TestCase {
         int[] source = new int[]{1, 2, 3};
         Func1<Integer, String> keySelector = key -> null;
 
-        Map<String, Integer> map = Linq.asEnumerable(source).toLinkedMap(keySelector);
+        Map<String, Integer> map = Linq.of(source).toLinkedMap(keySelector);
         assertEquals(3, map.get(null));
     }
 
@@ -181,7 +181,7 @@ public class ToLinkedMapTest extends TestCase {
         int[] source = new int[]{1, 2, 3};
         Func1<Integer, Integer> keySelector = key -> 1;
 
-        Map<Integer, Integer> map = Linq.asEnumerable(source).toLinkedMap(keySelector);
+        Map<Integer, Integer> map = Linq.of(source).toLinkedMap(keySelector);
         assertEquals(3, map.get(1));
     }
 
@@ -195,7 +195,7 @@ public class ToLinkedMapTest extends TestCase {
             return value;
         };
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).toLinkedMap(keySelector, valueSelector));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).toLinkedMap(keySelector, valueSelector));
     }
 
     @Test
@@ -206,7 +206,7 @@ public class ToLinkedMapTest extends TestCase {
                 new NameScore("null", 55)
         };
 
-        Linq.asEnumerable(source).toLinkedMap(e -> e.Name); // Doesn't throw;
+        Linq.of(source).toLinkedMap(e -> e.Name); // Doesn't throw;
 
         NameScore[] sourceF = new NameScore[]{
                 new NameScore("Chris", 50),
@@ -214,7 +214,7 @@ public class ToLinkedMapTest extends TestCase {
                 new NameScore(null, 55)
         };
 
-        Linq.asEnumerable(sourceF).toLinkedMap(e -> e.Name);
+        Linq.of(sourceF).toLinkedMap(e -> e.Name);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class ToLinkedMapTest extends TestCase {
                 new NameScore("null", 55)
         };
 
-        Linq.asEnumerable(source).toLinkedMap(e -> e.Name, e -> e); // Doesn't throw;
+        Linq.of(source).toLinkedMap(e -> e.Name, e -> e); // Doesn't throw;
 
         NameScore[] sourceF = new NameScore[]{
                 new NameScore("Chris", 50),
@@ -233,7 +233,7 @@ public class ToLinkedMapTest extends TestCase {
                 new NameScore(null, 55)
         };
 
-        Linq.asEnumerable(sourceF).toLinkedMap(e -> e.Name, e -> e);
+        Linq.of(sourceF).toLinkedMap(e -> e.Name, e -> e);
     }
 
     @Test
@@ -244,7 +244,7 @@ public class ToLinkedMapTest extends TestCase {
                 new NameScore("Bob", 55)
         };
 
-        Map<String, NameScore> map = Linq.asEnumerable(source).toLinkedMap(e -> e.Name, e -> e);
+        Map<String, NameScore> map = Linq.of(source).toLinkedMap(e -> e.Name, e -> e);
         assertEquals(2, map.size());
     }
 
@@ -252,9 +252,9 @@ public class ToLinkedMapTest extends TestCase {
     public void EmtpySource() {
         int[] elements = new int[]{};
         String[] keys = new String[]{};
-        IEnumerable<NameScore> source = Linq.asEnumerable(keys).zip(Linq.asEnumerable(elements), (k, e) -> new NameScore(k, e));
+        IEnumerable<NameScore> source = Linq.of(keys).zip(Linq.of(elements), (k, e) -> new NameScore(k, e));
 
-        AssertMatches(Linq.asEnumerable(keys), Linq.asEnumerable(elements), Linq.asEnumerable(source).toLinkedMap(e -> e.Name, e -> e.Score));
+        AssertMatches(Linq.of(keys), Linq.of(elements), Linq.of(source).toLinkedMap(e -> e.Name, e -> e.Score));
     }
 
     @Test
@@ -263,7 +263,7 @@ public class ToLinkedMapTest extends TestCase {
         String[] keys = new String[]{"Bob"};
         NameScore[] source = new NameScore[]{new NameScore(keys[0], elements[0])};
 
-        AssertMatches(Linq.asEnumerable(keys), Linq.asEnumerable(elements), Linq.asEnumerable(source).toLinkedMap(e -> e.Name, e -> e.Score));
+        AssertMatches(Linq.of(keys), Linq.of(elements), Linq.of(source).toLinkedMap(e -> e.Name, e -> e.Score));
     }
 
     @Test
@@ -277,7 +277,7 @@ public class ToLinkedMapTest extends TestCase {
                 new NameScore(keys[4], 45)
         };
 
-        AssertMatches(Linq.asEnumerable(keys), Linq.asEnumerable(source), Linq.asEnumerable(source).toLinkedMap(e -> e.Name));
+        AssertMatches(Linq.of(keys), Linq.of(source), Linq.of(source).toLinkedMap(e -> e.Name));
     }
 
     @Test
@@ -286,17 +286,17 @@ public class ToLinkedMapTest extends TestCase {
         String[] keys = new String[]{Empty};
         String[] source = new String[]{null};
 
-        AssertMatches(Linq.asEnumerable(keys), Linq.asEnumerable(elements), Linq.asEnumerable(source).toLinkedMap(e -> e == null ? Empty : e, e -> e));
+        AssertMatches(Linq.of(keys), Linq.of(elements), Linq.of(source).toLinkedMap(e -> e == null ? Empty : e, e -> e));
     }
 
     @Test
     public void testToMap() {
-        Map<Integer, Employee> map = Linq.asEnumerable(emps).toLinkedMap(emp -> emp.empno);
+        Map<Integer, Employee> map = Linq.of(emps).toLinkedMap(emp -> emp.empno);
         assertTrue(map.get(110).name.equals("Bill"));
         assertEquals(4, map.size());
 
         //key 重复,保留最后一个
-        Map<Integer, Employee> map2 = Linq.asEnumerable(emps).toLinkedMap(emp -> emp.deptno);
+        Map<Integer, Employee> map2 = Linq.of(emps).toLinkedMap(emp -> emp.deptno);
         assertEquals(emps[3], map2.get(10));
         assertEquals(emps[1], map2.get(30));
         assertEquals(2, map2.size());
@@ -304,12 +304,12 @@ public class ToLinkedMapTest extends TestCase {
 
     @Test
     public void testToMapWithSelector() {
-        Map<Integer, String> map = Linq.asEnumerable(emps).toLinkedMap(emp -> emp.empno, emp -> emp.name);
+        Map<Integer, String> map = Linq.of(emps).toLinkedMap(emp -> emp.empno, emp -> emp.name);
         assertTrue(map.get(110).equals("Bill"));
         assertEquals(4, map.size());
 
         //key 重复,保留最后一个
-        Map<Integer, String> map2 = Linq.asEnumerable(emps).toLinkedMap(emp -> emp.deptno, emp -> emp.name);
+        Map<Integer, String> map2 = Linq.of(emps).toLinkedMap(emp -> emp.deptno, emp -> emp.name);
         assertEquals(emps[3].name, map2.get(10));
         assertEquals(emps[1].name, map2.get(30));
         assertEquals(2, map2.size());

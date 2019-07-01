@@ -19,7 +19,7 @@ public class DistinctByTest extends TestCase {
                 emps[0],
                 emps[3],
         };
-        IEnumerable<Employee> enumerable = Linq.asEnumerable(emps2).distinctBy(emp -> emp.deptno);
+        IEnumerable<Employee> enumerable = Linq.of(emps2).distinctBy(emp -> emp.deptno);
         DistinctByIterator<Employee, Integer> distinctIterator = (DistinctByIterator<Employee, Integer>) enumerable;
         assertEquals(1, distinctIterator._toArray(Employee.class).length);
         assertEquals(1, distinctIterator._toArray().length);
@@ -50,7 +50,7 @@ public class DistinctByTest extends TestCase {
                 emps[3]
         };
 
-        IEnumerable<Employee> enumerable = Linq.asEnumerable(emps2).distinctBy(emp -> emp.empno, comparer);
+        IEnumerable<Employee> enumerable = Linq.of(emps2).distinctBy(emp -> emp.empno, comparer);
         DistinctByIterator<Employee, Integer> distinctIterator = (DistinctByIterator<Employee, Integer>) enumerable;
         assertEquals(1, distinctIterator._toArray(Employee.class).length);
         assertEquals(1, distinctIterator._toArray().length);

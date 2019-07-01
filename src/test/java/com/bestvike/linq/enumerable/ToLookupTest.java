@@ -48,8 +48,8 @@ public class ToLookupTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCall() {
-        IEnumerable<String> q1 = Linq.asEnumerable("Alen", "Felix", null, null, "X", "Have Space", "Clinton", "");
-        IEnumerable<Integer> q2 = Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25, -1, 0});
+        IEnumerable<String> q1 = Linq.of("Alen", "Felix", null, null, "X", "Have Space", "Clinton", "");
+        IEnumerable<Integer> q2 = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0});
         IEnumerable<Tuple2<String, Integer>> q = q1.selectMany(a -> q2, (x3, x4) -> Tuple.create(x3, x4));
 
 
@@ -60,9 +60,9 @@ public class ToLookupTest extends TestCase {
     public void NullKeyIncluded() {
         String[] key = {"Chris", "Bob", null, "Tim"};
         int[] element = {50, 95, 55, 90};
-        IEnumerable<NameScore> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), (k, e) -> new NameScore(k, e));
+        IEnumerable<NameScore> source = Linq.of(key).zip(Linq.of(element), (k, e) -> new NameScore(k, e));
 
-        AssertMatches(Linq.asEnumerable(key), source, source.toLookup(e -> e.Name));
+        AssertMatches(Linq.of(key), source, source.toLookup(e -> e.Name));
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ToLookupTest extends TestCase {
         int[] element = {50};
         NameScore[] source = new NameScore[]{new NameScore("risCh", 50)};
 
-        AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(source), Linq.asEnumerable(source).toLookup(e -> e.Name, new AnagramEqualityComparer()));
+        AssertMatches(Linq.of(key), Linq.of(source), Linq.of(source).toLookup(e -> e.Name, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ToLookupTest extends TestCase {
                 new NameScore(key[4], element[4])
         };
 
-        AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).toLookup(e -> e.Name, e -> e.Score));
+        AssertMatches(Linq.of(key), Linq.of(element), Linq.of(source).toLookup(e -> e.Name, e -> e.Score));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ToLookupTest extends TestCase {
                 new NameScore(key[1], element[4])
         };
 
-        AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
+        AssertMatches(Linq.of(key), Linq.of(element), Linq.of(source).toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class ToLookupTest extends TestCase {
                 new NameScore(key[1], element[4])
         };
 
-        AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).runOnce().toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
+        AssertMatches(Linq.of(key), Linq.of(element), Linq.of(source).runOnce().toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -134,16 +134,16 @@ public class ToLookupTest extends TestCase {
                 new NameScore(key[1], element[4])
         };
 
-        assertEquals(3, Linq.asEnumerable(source).toLookup(e -> e.Name, e -> e.Score).count());
+        assertEquals(3, Linq.of(source).toLookup(e -> e.Name, e -> e.Score).count());
     }
 
     @Test
     public void EmptySource() {
         String[] key = {};
         int[] element = {};
-        IEnumerable<NameScore> source = Linq.asEnumerable(key).zip(Linq.asEnumerable(element), (k, e) -> new NameScore(k, e));
+        IEnumerable<NameScore> source = Linq.of(key).zip(Linq.of(element), (k, e) -> new NameScore(k, e));
 
-        AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
+        AssertMatches(Linq.of(key), Linq.of(element), Linq.of(source).toLookup(e -> e.Name, e -> e.Score, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -152,7 +152,7 @@ public class ToLookupTest extends TestCase {
         String[] element = {null};
         String[] source = new String[]{null};
 
-        AssertMatches(Linq.asEnumerable(key), Linq.asEnumerable(element), Linq.asEnumerable(source).toLookup(e -> e, e -> e, EqualityComparer.Default()));
+        AssertMatches(Linq.of(key), Linq.of(element), Linq.of(source).toLookup(e -> e, e -> e, EqualityComparer.Default()));
     }
 
     @Test
@@ -246,7 +246,7 @@ public class ToLookupTest extends TestCase {
         IEnumerable<RoleMetadata> result;
         switch (enumType) {
             case 1:
-                result = Linq.asEnumerable(grouping.toList());
+                result = Linq.of(grouping.toList());
                 break;
             case 2:
                 result = grouping.toArray();
@@ -262,12 +262,12 @@ public class ToLookupTest extends TestCase {
                 new RoleMetadata(new Role(3), 0, 16)
         };
 
-        assertEquals(Linq.asEnumerable(expected), result);
+        assertEquals(Linq.of(expected), result);
     }
 
     @Test
     public void testToLookup() {
-        ILookup<Integer, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno);
+        ILookup<Integer, Employee> lookup = Linq.of(emps).toLookup(emp -> emp.deptno);
         assertTrue(lookup.containsKey(10));
         assertEquals(3, lookup.get(10).count());
         int n = 0;
@@ -300,7 +300,7 @@ public class ToLookupTest extends TestCase {
                 return obj == null ? 0 : obj.length();
             }
         };
-        ILookup<String, Employee> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.name, comparer);
+        ILookup<String, Employee> lookup = Linq.of(emps).toLookup(emp -> emp.name, comparer);
         assertTrue(lookup.containsKey("Fred"));
         assertEquals(3, lookup.get("Fred").count());
         int n = 0;
@@ -331,7 +331,7 @@ public class ToLookupTest extends TestCase {
             }
         };
         Employee badEmp = new Employee(160, "Tim", null);
-        ILookup<Integer, Employee> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, comparer2);
+        ILookup<Integer, Employee> lookup2 = Linq.singleton(badEmp).concat(Linq.of(emps)).toLookup(emp -> emp.deptno, comparer2);
         assertTrue(lookup2.containsKey(null));
         assertEquals(5, lookup2.get(null).count());
         int n2 = 0;
@@ -348,7 +348,7 @@ public class ToLookupTest extends TestCase {
 
     @Test
     public void testToLookupSelector() {
-        ILookup<Integer, String> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.deptno, emp -> emp.name);
+        ILookup<Integer, String> lookup = Linq.of(emps).toLookup(emp -> emp.deptno, emp -> emp.name);
         assertTrue(lookup.containsKey(10));
         assertEquals(3, lookup.get(10).count());
         int n = 0;
@@ -388,7 +388,7 @@ public class ToLookupTest extends TestCase {
             }
         };
 
-        ILookup<String, Integer> lookup = Linq.asEnumerable(emps).toLookup(emp -> emp.name, emp -> emp.empno, comparer);
+        ILookup<String, Integer> lookup = Linq.of(emps).toLookup(emp -> emp.name, emp -> emp.empno, comparer);
         int n = 0;
         for (IGrouping<String, Integer> grouping : lookup) {
             ++n;
@@ -424,7 +424,7 @@ public class ToLookupTest extends TestCase {
             }
         };
         Employee badEmp = new Employee(160, "Tim", null);
-        ILookup<Integer, String> lookup2 = Linq.singleton(badEmp).concat(Linq.asEnumerable(emps)).toLookup(emp -> emp.deptno, emp -> emp.name, comparer2);
+        ILookup<Integer, String> lookup2 = Linq.singleton(badEmp).concat(Linq.of(emps)).toLookup(emp -> emp.deptno, emp -> emp.name, comparer2);
         assertTrue(lookup2.containsKey(null));
         assertEquals(5, lookup2.get(null).count());
         int n2 = 0;

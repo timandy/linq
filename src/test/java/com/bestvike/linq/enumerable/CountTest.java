@@ -17,7 +17,7 @@ import java.util.Stack;
 public class CountTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(a -> a > Integer.MIN_VALUE);
 
         assertEquals(q.count(), q.count());
@@ -25,7 +25,7 @@ public class CountTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(a -> !IsNullOrEmpty(a));
 
         assertEquals(q.count(), q.count());
@@ -34,14 +34,14 @@ public class CountTest extends TestCase {
     private IEnumerable<Object[]> Int_TestData() {
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
 
-        return Linq.asEnumerable(
-                new Object[]{Linq.asEnumerable(new int[0]), null, 0},
+        return Linq.of(
+                new Object[]{Linq.of(new int[0]), null, 0},
 
-                new Object[]{Linq.asEnumerable(new int[0]), isEvenFunc, 0},
-                new Object[]{Linq.asEnumerable(new int[]{4}), isEvenFunc, 1},
-                new Object[]{Linq.asEnumerable(new int[]{5}), isEvenFunc, 0},
-                new Object[]{Linq.asEnumerable(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2},
-                new Object[]{Linq.asEnumerable(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6},
+                new Object[]{Linq.of(new int[0]), isEvenFunc, 0},
+                new Object[]{Linq.of(new int[]{4}), isEvenFunc, 1},
+                new Object[]{Linq.of(new int[]{5}), isEvenFunc, 0},
+                new Object[]{Linq.of(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2},
+                new Object[]{Linq.of(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6},
 
                 new Object[]{RepeatedNumberGuaranteedNotCollectionType(0, 0), null, 0},
                 new Object[]{RepeatedNumberGuaranteedNotCollectionType(5, 1), null, 1},
@@ -82,18 +82,18 @@ public class CountTest extends TestCase {
     @Test
     public void NullableIntArray_IncludesNullObjects() {
         Integer[] data = {-10, 4, 9, null, 11};
-        assertEquals(5, Linq.asEnumerable(data).count());
+        assertEquals(5, Linq.of(data).count());
     }
 
     private <T> IEnumerable<Object[]> EnumerateCollectionTypesAndCounts(int count, IEnumerable<T> enumerable) {
         Stack<T> stack = new Stack<>();
         enumerable.forEach(stack::push);
 
-        return Linq.asEnumerable(
+        return Linq.of(
                 new Object[]{count, enumerable},
                 new Object[]{count, enumerable.toArray()},
-                new Object[]{count, Linq.asEnumerable(enumerable.toList())},
-                new Object[]{count, Linq.asEnumerable(stack)}
+                new Object[]{count, Linq.of(enumerable.toList())},
+                new Object[]{count, Linq.of(stack)}
         );
     }
 
@@ -110,7 +110,7 @@ public class CountTest extends TestCase {
             list.add(variant);
         for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> m(i))))
             list.add(variant);
-        return Linq.asEnumerable(list);
+        return Linq.of(list);
     }
 
     @Test
@@ -139,8 +139,8 @@ public class CountTest extends TestCase {
     public void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Character>) null).count());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Character>) null).count(i -> i != 0));
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((Character[]) null).count());
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((Character[]) null).count(i -> i != 0));
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Character[]) null).count());
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Character[]) null).count(i -> i != 0));
     }
 
     @Test
@@ -151,13 +151,13 @@ public class CountTest extends TestCase {
 
     @Test
     public void testCount() {
-        int count = Linq.asEnumerable(depts).count();
+        int count = Linq.of(depts).count();
         assertEquals(3, count);
     }
 
     @Test
     public void testCountPredicate() {
-        int count = Linq.asEnumerable(depts).count(dept -> dept.employees.size() > 0);
+        int count = Linq.of(depts).count(dept -> dept.employees.size() > 0);
         assertEquals(2, count);
     }
 }

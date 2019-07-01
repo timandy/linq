@@ -23,22 +23,22 @@ import java.util.List;
 public class SelectManyTest extends TestCase {
     @Test
     public void EmptySource() {
-        assertEmpty(Linq.<StringWithIntArray>empty().selectMany(e -> Linq.asEnumerable(Linq.asEnumerable(e.total))));
+        assertEmpty(Linq.<StringWithIntArray>empty().selectMany(e -> Linq.of(Linq.of(e.total))));
     }
 
     @Test
     public void EmptySourceIndexedSelector() {
-        assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.asEnumerable(e.total)));
+        assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.of(e.total)));
     }
 
     @Test
     public void EmptySourceResultSelector() {
-        assertEmpty(Linq.<StringWithIntArray>empty().selectMany(e -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
+        assertEmpty(Linq.<StringWithIntArray>empty().selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
     public void EmptySourceResultSelectorIndexedSelector() {
-        assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
+        assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class SelectManyTest extends TestCase {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", expected)
         };
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total)));
+        assertEquals(Linq.of(expected), Linq.of(source).selectMany(e -> Linq.of(e.total)));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[0])
         };
 
-        assertEmpty(Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total)));
+        assertEmpty(Linq.of(source).selectMany(e -> Linq.of(e.total)));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[0])
         };
 
-        assertEmpty(Linq.asEnumerable(source).selectMany((e, i) -> Linq.asEnumerable(e.total)));
+        assertEmpty(Linq.of(source).selectMany((e, i) -> Linq.of(e.total)));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[0])
         };
 
-        assertEmpty(Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
+        assertEmpty(Linq.of(source).selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[0])
         };
 
-        assertEmpty(Linq.asEnumerable(source).selectMany((e, i) -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
+        assertEmpty(Linq.of(source).selectMany((e, i) -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[]{-10, 100})
         };
         Integer[] expected = {1, 2, 3, 4, 5, 6, 8, 9, -10, 100};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total)));
+        assertEquals(Linq.of(expected), Linq.of(source).selectMany(e -> Linq.of(e.total)));
     }
 
     @Test
@@ -125,12 +125,12 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[]{-10, 100})
         };
         Integer[] expected = {1, 2, 3, 4, 5, 6, 8, 9, -10, 100};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().selectMany(e -> Linq.asEnumerable(e.total).runOnce()));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().selectMany(e -> Linq.of(e.total).runOnce()));
     }
 
     @Test
     public void SourceEmptyIndexUsed() {
-        assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, index) -> Linq.asEnumerable(e.total)));
+        assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, index) -> Linq.of(e.total)));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class SelectManyTest extends TestCase {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", expected)
         };
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, index) -> Linq.asEnumerable(e.total)));
+        assertEquals(Linq.of(expected), Linq.of(source).selectMany((e, index) -> Linq.of(e.total)));
     }
 
     @Test
@@ -151,7 +151,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray(null, new Integer[0]),
                 new StringWithIntArray("Prakash", new Integer[0])
         };
-        assertEmpty(Linq.asEnumerable(source).selectMany((e, index) -> Linq.asEnumerable(e.total)));
+        assertEmpty(Linq.of(source).selectMany((e, index) -> Linq.of(e.total)));
     }
 
     @Test
@@ -164,7 +164,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[]{-10, 100})
         };
         Integer[] expected = {1, 2, 3, 4, 5, 6, 8, 9, -10, 100};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, index) -> Linq.asEnumerable(e.total)));
+        assertEquals(Linq.of(expected), Linq.of(source).selectMany((e, index) -> Linq.of(e.total)));
     }
 
     @Test
@@ -177,7 +177,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[]{-10, 100})
         };
 
-        assertEquals(Linq.asEnumerable(Linq.asEnumerable(source).first().total), Linq.asEnumerable(source).selectMany((e, i) -> i == 0 ? Linq.asEnumerable(e.total) : Linq.empty()));
+        assertEquals(Linq.of(Linq.of(source).first().total), Linq.of(source).selectMany((e, i) -> i == 0 ? Linq.of(e.total) : Linq.empty()));
     }
 
     @Test
@@ -190,7 +190,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Robert", new Integer[]{-10, 100})
         };
 
-        assertEquals(Linq.asEnumerable(Linq.asEnumerable(source).last().total), Linq.asEnumerable(source).selectMany((e, i) -> i == 4 ? Linq.asEnumerable(e.total) : Linq.empty()));
+        assertEquals(Linq.of(Linq.of(source).last().total), Linq.of(source).selectMany((e, i) -> i == 4 ? Linq.of(e.total) : Linq.empty()));
     }
 
     @Test
@@ -215,25 +215,25 @@ public class SelectManyTest extends TestCase {
         };
         String[] expected = {"1", "2", "3", "4", "5", "6", "8", "9", "-10", "100"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
+        assertEquals(Linq.of(expected), Linq.of(source).selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
     public void NullResultSelector() {
         Func2<StringWithIntArray, Integer, String> resultSelector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany(e -> Linq.asEnumerable(e.total), resultSelector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany(e -> Linq.of(e.total), resultSelector));
     }
 
     @Test
     public void NullResultSelectorIndexedSelector() {
         Func2<StringWithIntArray, Integer, String> resultSelector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.asEnumerable(e.total), resultSelector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.of(e.total), resultSelector));
     }
 
     @Test
     public void NullSourceWithResultSelector() {
         StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
@@ -251,31 +251,31 @@ public class SelectManyTest extends TestCase {
     @Test
     public void NullSource() {
         StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).selectMany(e -> Linq.asEnumerable(e.total)));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany(e -> Linq.of(e.total)));
     }
 
     @Test
     public void NullSourceIndexedSelector() {
         StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).selectMany((e, i) -> Linq.asEnumerable(e.total)));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany((e, i) -> Linq.of(e.total)));
     }
 
     @Test
     public void NullSourceIndexedSelectorWithResultSelector() {
         StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).selectMany((e, i) -> Linq.asEnumerable(e.total), (e, f) -> f.toString()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany((e, i) -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
     public void NullSelector() {
         Func1<StringWithIntArray, IEnumerable<Integer>> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(new StringWithIntArray[0]).selectMany(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(new StringWithIntArray[0]).selectMany(selector));
     }
 
     @Test
     public void NullIndexedSelector() {
         IndexFunc2<StringWithIntArray, IEnumerable<Integer>> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(new StringWithIntArray[0]).selectMany(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(new StringWithIntArray[0]).selectMany(selector));
     }
 
     @Test
@@ -288,7 +288,7 @@ public class SelectManyTest extends TestCase {
                 new StringWithIntArray("Prakash", new Integer[]{-10, 100})
         };
         String[] expected = {"1", "2", "3", "4"};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, i) -> i == 0 ? Linq.asEnumerable(e.total) : Linq.empty(), (e, f) -> f.toString()));
+        assertEquals(Linq.of(expected), Linq.of(source).selectMany((e, i) -> i == 0 ? Linq.of(e.total) : Linq.empty(), (e, f) -> f.toString()));
     }
 
     @Test
@@ -302,12 +302,12 @@ public class SelectManyTest extends TestCase {
         };
 
         String[] expected = {"-10", "100"};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).selectMany((e, i) -> i == 4 ? Linq.asEnumerable(e.total) : Linq.empty(), (e, f) -> f.toString()));
+        assertEquals(Linq.of(expected), Linq.of(source).selectMany((e, i) -> i == 4 ? Linq.of(e.total) : Linq.empty(), (e, f) -> f.toString()));
     }
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerate() {
-        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany(i -> Linq.asEnumerable(new int[0]));
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany(i -> Linq.of(new int[0]));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
@@ -315,21 +315,21 @@ public class SelectManyTest extends TestCase {
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateIndexed() {
-        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany((e, i) -> Linq.asEnumerable(new int[0]));
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany((e, i) -> Linq.of(new int[0]));
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateResultSel() {
-        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany(i -> Linq.asEnumerable(new int[0]), (e, i) -> e);
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany(i -> Linq.of(new int[0]), (e, i) -> e);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateIndexedResultSel() {
-        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany((e, i) -> Linq.asEnumerable(new int[0]), (e, i) -> e);
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany((e, i) -> Linq.of(new int[0]), (e, i) -> e);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
@@ -359,7 +359,7 @@ public class SelectManyTest extends TestCase {
             Func1<Integer, IEnumerable<Integer>> selector = n -> Linq.range(ii, n);
             lst.add(new Object[]{Linq.range(1, i), selector});
         }
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
@@ -406,8 +406,8 @@ public class SelectManyTest extends TestCase {
 
                 // However, all of the sub-collections before us should have been disposed.
                 // Their indices should also be maxed out.
-                assertAll(Linq.asEnumerable(subState).take(subIndex.value), s -> assertEquals(subLength + 1, s));
-                assertAll(Linq.asEnumerable(subCollectionDisposed).take(subIndex.value), t -> assertTrue(t));
+                assertAll(Linq.of(subState).take(subIndex.value), s -> assertEquals(subLength + 1, s));
+                assertAll(Linq.of(subCollectionDisposed).take(subIndex.value), t -> assertTrue(t));
 
                 index++;
             }
@@ -415,8 +415,8 @@ public class SelectManyTest extends TestCase {
 
         assertTrue(sourceDisposed.value);
         assertEquals(sourceLength, subIndex.value);
-        assertAll(Linq.asEnumerable(subState), s -> assertEquals(subLength + 1, s));
-        assertAll(Linq.asEnumerable(subCollectionDisposed), t -> assertTrue(t));
+        assertAll(Linq.of(subState), s -> assertEquals(subLength + 1, s));
+        assertAll(Linq.of(subCollectionDisposed), t -> assertTrue(t));
 
         // .NET Core fixes an oversight where we wouldn't properly dispose
         // the SelectMany iterator. See https://github.com/dotnet/corefx/pull/13942.
@@ -429,7 +429,7 @@ public class SelectManyTest extends TestCase {
     private IEnumerable<Object[]> DisposeAfterEnumerationData() {
         int[] lengths = {1, 2, 3, 5, 8, 13, 21, 34};
 
-        return Linq.asEnumerable(lengths).selectMany(l -> Linq.asEnumerable(lengths), (l1, l2) -> new Object[]{l1, l2});
+        return Linq.of(lengths).selectMany(l -> Linq.of(lengths), (l1, l2) -> new Object[]{l1, l2});
     }
 
     @Test
@@ -440,7 +440,7 @@ public class SelectManyTest extends TestCase {
     }
 
     private void ThrowOverflowExceptionOnConstituentLargeCounts(int[] counts) {
-        IEnumerable<Integer> iterator = Linq.asEnumerable(counts).selectMany(c -> Linq.range(1, c));
+        IEnumerable<Integer> iterator = Linq.of(counts).selectMany(c -> Linq.range(1, c));
         assertThrows(ArithmeticException.class, () -> iterator.count());
     }
 
@@ -454,7 +454,7 @@ public class SelectManyTest extends TestCase {
     private void CollectionInterleavedWithLazyEnumerables_ToArray(IEnumerable<Integer>[] arrays) {
         // See https://github.com/dotnet/corefx/issues/23680
 
-        Array<Integer> results = Linq.asEnumerable(arrays).selectMany(ar -> ar).toArray();
+        Array<Integer> results = Linq.of(arrays).selectMany(ar -> ar).toArray();
 
         for (int i = 0; i < results._getCount(); i++) {
             assertEquals(i, results.get(i));
@@ -469,14 +469,14 @@ public class SelectManyTest extends TestCase {
                         new TestEnumerable<>(new Integer[]{0}),
                         new TestEnumerable<>(new Integer[]{1}),
                         new TestEnumerable<>(new Integer[]{2}),
-                        Linq.asEnumerable(new int[]{3}),
+                        Linq.of(new int[]{3}),
                 }
         });
 
         // Marker at beginning
         lst.add(new Object[]{
                 new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
+                        Linq.of(new int[]{0}),
                         new TestEnumerable<>(new Integer[]{1}),
                         new TestEnumerable<>(new Integer[]{2}),
                         new TestEnumerable<>(new Integer[]{3}),
@@ -487,7 +487,7 @@ public class SelectManyTest extends TestCase {
         lst.add(new Object[]{
                 new IEnumerable[]{
                         new TestEnumerable<>(new Integer[]{0}),
-                        Linq.asEnumerable(new int[]{1}),
+                        Linq.of(new int[]{1}),
                         new TestEnumerable<>(new Integer[]{2}),
                 }
         });
@@ -495,9 +495,9 @@ public class SelectManyTest extends TestCase {
         // Non-marker in middle
         lst.add(new Object[]{
                 new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
+                        Linq.of(new int[]{0}),
                         new TestEnumerable<>(new Integer[]{1}),
-                        Linq.asEnumerable(new int[]{2})
+                        Linq.of(new int[]{2})
                 }
         });
 
@@ -522,11 +522,11 @@ public class SelectManyTest extends TestCase {
         // Interleaved (first marker)
         lst.add(new Object[]{
                 new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
+                        Linq.of(new int[]{0}),
                         new TestEnumerable<>(new Integer[]{1}),
-                        Linq.asEnumerable(new int[]{2}),
+                        Linq.of(new int[]{2}),
                         new TestEnumerable<>(new Integer[]{3}),
-                        Linq.asEnumerable(new int[]{4}),
+                        Linq.of(new int[]{4}),
                 }
         });
 
@@ -534,13 +534,13 @@ public class SelectManyTest extends TestCase {
         lst.add(new Object[]{
                 new IEnumerable[]{
                         new TestEnumerable<>(new Integer[]{0}),
-                        Linq.asEnumerable(new int[]{1}),
+                        Linq.of(new int[]{1}),
                         new TestEnumerable<>(new Integer[]{2}),
-                        Linq.asEnumerable(new int[]{3}),
+                        Linq.of(new int[]{3}),
                         new TestEnumerable<>(new Integer[]{4}),
                 }
         });
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
@@ -554,38 +554,38 @@ public class SelectManyTest extends TestCase {
         IEnumerable<Integer> source = Linq.range(0, 10);
         IEnumerable<Integer> iterator = source.selectMany(index -> {
             timesCalledMap[index]++;
-            return Linq.asEnumerable(index);
+            return Linq.of(index);
         });
 
         // Iteration
         for (int index : iterator) {
-            assertEquals(Linq.repeat(1, index + 1), Linq.asEnumerable(timesCalledMap).take(index + 1));
-            assertEquals(Linq.repeat(0, timesCalledMap.length - index - 1), Linq.asEnumerable(timesCalledMap).skip(index + 1));
+            assertEquals(Linq.repeat(1, index + 1), Linq.of(timesCalledMap).take(index + 1));
+            assertEquals(Linq.repeat(0, timesCalledMap.length - index - 1), Linq.of(timesCalledMap).skip(index + 1));
         }
 
         Arrays.fill(timesCalledMap, 0, timesCalledMap.length, 0);
 
         // ToArray
         iterator.toArray();
-        assertEquals(Linq.repeat(1, timesCalledMap.length), Linq.asEnumerable(timesCalledMap));
+        assertEquals(Linq.repeat(1, timesCalledMap.length), Linq.of(timesCalledMap));
 
         Arrays.fill(timesCalledMap, 0, timesCalledMap.length, 0);
 
         // ToList
         iterator.toList();
-        assertEquals(Linq.repeat(1, timesCalledMap.length), Linq.asEnumerable(timesCalledMap));
+        assertEquals(Linq.repeat(1, timesCalledMap.length), Linq.of(timesCalledMap));
 
         Arrays.fill(timesCalledMap, 0, timesCalledMap.length, 0);
 
         // ToHashSet
         iterator.toSet();
-        assertEquals(Linq.repeat(1, timesCalledMap.length), Linq.asEnumerable(timesCalledMap));
+        assertEquals(Linq.repeat(1, timesCalledMap.length), Linq.of(timesCalledMap));
     }
 
     @Test
     public void testSelectMany() {
-        List<String> nameSeqs = Linq.asEnumerable(depts)
-                .selectMany(dept -> Linq.asEnumerable(dept.employees))
+        List<String> nameSeqs = Linq.of(depts)
+                .selectMany(dept -> Linq.of(dept.employees))
                 .select((emp, index) -> String.format("#%d: %s", index, emp.name))
                 .toList();
         assertEquals("[#0: Fred, #1: Eric, #2: Janet, #3: Bill]", nameSeqs.toString());
@@ -593,24 +593,24 @@ public class SelectManyTest extends TestCase {
 
     @Test
     public void testSelectManyIndexed() {
-        List<String> nameSeqs = Linq.asEnumerable(depts)
-                .selectMany((dept, index) -> Linq.asEnumerable(dept.employees).select(emp -> String.format("#%d: %s", index, emp.name)))
+        List<String> nameSeqs = Linq.of(depts)
+                .selectMany((dept, index) -> Linq.of(dept.employees).select(emp -> String.format("#%d: %s", index, emp.name)))
                 .toList();
         assertEquals("[#0: Fred, #0: Eric, #0: Janet, #2: Bill]", nameSeqs.toString());
     }
 
     @Test
     public void testSelectManySelect() {
-        List<String> nameSeqs = Linq.asEnumerable(depts)
-                .selectMany(dept -> Linq.asEnumerable(dept.employees), (dept, emp) -> String.format("#%s: %s", dept.name, emp.name))
+        List<String> nameSeqs = Linq.of(depts)
+                .selectMany(dept -> Linq.of(dept.employees), (dept, emp) -> String.format("#%s: %s", dept.name, emp.name))
                 .toList();
         assertEquals("[#Sales: Fred, #Sales: Eric, #Sales: Janet, #Marketing: Bill]", nameSeqs.toString());
     }
 
     @Test
     public void testSelectManyIndexedSelect() {
-        List<String> nameSeqs = Linq.asEnumerable(depts)
-                .selectMany((dept, index) -> Linq.asEnumerable(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
+        List<String> nameSeqs = Linq.of(depts)
+                .selectMany((dept, index) -> Linq.of(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
                 .toList();
         assertEquals("[#0: Sales: Fred, #0: Sales: Eric, #0: Sales: Janet, #2: Marketing: Bill]", nameSeqs.toString());
     }
@@ -618,8 +618,8 @@ public class SelectManyTest extends TestCase {
     @Test
     public void testSelectManyCrossJoin() {
         //selectMany 实现简单的 cross join
-        String cross = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
-                .selectMany(emp -> Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)).select(dept -> String.format("%s works in %s", emp.name, dept.name)))
+        String cross = Linq.of(emps).concat(Linq.of(badEmps))
+                .selectMany(emp -> Linq.of(depts).concat(Linq.of(badDepts)).select(dept -> String.format("%s works in %s", emp.name, dept.name)))
                 .toList()
                 .toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Fred works in Manager, Bill works in Sales, Bill works in HR, Bill works in Marketing, Bill works in Manager, Eric works in Sales, Eric works in HR, Eric works in Marketing, Eric works in Manager, Janet works in Sales, Janet works in HR, Janet works in Marketing, Janet works in Manager, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Cedric works in Manager, Gates works in Sales, Gates works in HR, Gates works in Marketing, Gates works in Manager]", cross);

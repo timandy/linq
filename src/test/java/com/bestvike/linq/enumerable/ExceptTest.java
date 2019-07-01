@@ -21,16 +21,16 @@ import java.util.Objects;
 public class ExceptTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
-        IEnumerable<Integer> q2 = Linq.asEnumerable(1, 9, null, 4);
+        IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
 
         assertEquals(q1.except(q2), q1.except(q2));
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
-        IEnumerable<String> q2 = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
+        IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
 
         q1.except(q2);
         q1.except(q2);
@@ -40,10 +40,10 @@ public class ExceptTest extends TestCase {
 
     private IEnumerable<Object[]> Int_TestData() {
         List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), Linq.asEnumerable(new int[0]), null, Linq.asEnumerable(new int[0])});
-        lst.add(new Object[]{Linq.asEnumerable(new int[0]), Linq.asEnumerable(new int[]{-6, -8, -6, 2, 0, 0, 5, 6}), null, Linq.asEnumerable(new int[0])});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 1, 1, 1, 1}), Linq.asEnumerable(new int[]{2, 3, 4}), null, Linq.asEnumerable(new int[]{1})});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new int[0]), Linq.of(new int[0]), null, Linq.of(new int[0])});
+        lst.add(new Object[]{Linq.of(new int[0]), Linq.of(new int[]{-6, -8, -6, 2, 0, 0, 5, 6}), null, Linq.of(new int[0])});
+        lst.add(new Object[]{Linq.of(new int[]{1, 1, 1, 1, 1}), Linq.of(new int[]{2, 3, 4}), null, Linq.of(new int[]{1})});
+        return Linq.of(lst);
     }
 
     @Test
@@ -64,12 +64,12 @@ public class ExceptTest extends TestCase {
         IEqualityComparer<String> defaultComparer = EqualityComparer.Default();
 
         List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(new String[1]), Linq.asEnumerable(), defaultComparer, Linq.asEnumerable(new String[1])});
-        lst.add(new Object[]{Linq.asEnumerable(null, null, Empty), Linq.asEnumerable(new String[1]), defaultComparer, Linq.asEnumerable(new String[]{Empty})});
-        lst.add(new Object[]{Linq.asEnumerable(new String[2]), Linq.asEnumerable(), defaultComparer, Linq.asEnumerable(new String[1])});
-        lst.add(new Object[]{Linq.asEnumerable("Bob", "Tim", "Robert", "Chris"), Linq.asEnumerable("bBo", "shriC"), null, Linq.asEnumerable("Bob", "Tim", "Robert", "Chris")});
-        lst.add(new Object[]{Linq.asEnumerable("Bob", "Tim", "Robert", "Chris"), Linq.asEnumerable("bBo", "shriC"), new AnagramEqualityComparer(), Linq.asEnumerable("Tim", "Robert")});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new String[1]), Linq.of(), defaultComparer, Linq.of(new String[1])});
+        lst.add(new Object[]{Linq.of(null, null, Empty), Linq.of(new String[1]), defaultComparer, Linq.of(new String[]{Empty})});
+        lst.add(new Object[]{Linq.of(new String[2]), Linq.of(), defaultComparer, Linq.of(new String[1])});
+        lst.add(new Object[]{Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), null, Linq.of("Bob", "Tim", "Robert", "Chris")});
+        lst.add(new Object[]{Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), new AnagramEqualityComparer(), Linq.of("Tim", "Robert")});
+        return Linq.of(lst);
     }
 
     @Test
@@ -88,10 +88,10 @@ public class ExceptTest extends TestCase {
 
     private IEnumerable<Object[]> NullableInt_TestData() {
         List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(-6, -8, -6, 2, 0, 0, 5, 6, null, null), Linq.asEnumerable(), Linq.asEnumerable(-6, -8, 2, 0, 5, 6, null)});
-        lst.add(new Object[]{Linq.asEnumerable(1, 2, 2, 3, 4, 5), Linq.asEnumerable(5, 3, 2, 6, 6, 3, 1, null, null), Linq.asEnumerable(4)});
-        lst.add(new Object[]{Linq.asEnumerable(2, 3, null, 2, null, 4, 5), Linq.asEnumerable(1, 9, null, 4), Linq.asEnumerable(2, 3, 5)});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(-6, -8, -6, 2, 0, 0, 5, 6, null, null), Linq.of(), Linq.of(-6, -8, 2, 0, 5, 6, null)});
+        lst.add(new Object[]{Linq.of(1, 2, 2, 3, 4, 5), Linq.of(5, 3, 2, 6, 6, 3, 1, null, null), Linq.of(4)});
+        lst.add(new Object[]{Linq.of(2, 3, null, 2, null, 4, 5), Linq.of(1, 9, null, 4), Linq.of(2, 3, 5)});
+        return Linq.of(lst);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class ExceptTest extends TestCase {
     @Test
     public void FirstNull_ThrowsArgumentNullException() {
         IEnumerable<String> first = null;
-        IEnumerable<String> second = Linq.asEnumerable("bBo", "shriC");
+        IEnumerable<String> second = Linq.of("bBo", "shriC");
 
         assertThrows(NullPointerException.class, () -> first.except(second));
         assertThrows(NullPointerException.class, () -> first.except(second, new AnagramEqualityComparer()));
@@ -127,7 +127,7 @@ public class ExceptTest extends TestCase {
 
     @Test
     public void SecondNull_ThrowsArgumentNullException() {
-        IEnumerable<String> first = Linq.asEnumerable("Bob", "Tim", "Robert", "Chris");
+        IEnumerable<String> first = Linq.of("Bob", "Tim", "Robert", "Chris");
         IEnumerable<String> second = null;
 
         assertThrows(ArgumentNullException.class, () -> first.except(second));
@@ -144,17 +144,17 @@ public class ExceptTest extends TestCase {
 
     @Test
     public void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
-        IEnumerable<String> input1 = Linq.asEnumerable(new String[]{"a"});
-        IEnumerable<String> input2 = Linq.asEnumerable(new String[]{"A"});
+        IEnumerable<String> input1 = Linq.of(new String[]{"a"});
+        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
 
-        assertEquals(Linq.asEnumerable(new String[]{"a"}), input1.except(input2));
-        assertEquals(Linq.asEnumerable(new String[]{"a"}), input1.except(input2, null));
-        assertEquals(Linq.asEnumerable(new String[]{"a"}), input1.except(input2, EqualityComparer.Default()));
+        assertEquals(Linq.of(new String[]{"a"}), input1.except(input2));
+        assertEquals(Linq.of(new String[]{"a"}), input1.except(input2, null));
+        assertEquals(Linq.of(new String[]{"a"}), input1.except(input2, EqualityComparer.Default()));
         assertEquals(Linq.empty(), input1.except(input2, StringComparer.OrdinalIgnoreCase));
 
-        assertEquals(Linq.asEnumerable(new String[]{"A"}), input2.except(input1));
-        assertEquals(Linq.asEnumerable(new String[]{"A"}), input2.except(input1, null));
-        assertEquals(Linq.asEnumerable(new String[]{"A"}), input2.except(input1, EqualityComparer.Default()));
+        assertEquals(Linq.of(new String[]{"A"}), input2.except(input1));
+        assertEquals(Linq.of(new String[]{"A"}), input2.except(input1, null));
+        assertEquals(Linq.of(new String[]{"A"}), input2.except(input1, EqualityComparer.Default()));
         assertEquals(Enumerable.empty(), input2.except(input1, StringComparer.OrdinalIgnoreCase));
     }
 
@@ -164,8 +164,8 @@ public class ExceptTest extends TestCase {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
-        assertEquals(3, Linq.asEnumerable(emps)
-                .except(Linq.asEnumerable(emps2))
+        assertEquals(3, Linq.of(emps)
+                .except(Linq.of(emps2))
                 .count());
 
         IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
@@ -189,8 +189,8 @@ public class ExceptTest extends TestCase {
         };
 
         Employee[] emps2 = {new Employee(150, "Theodore", 10)};
-        assertEquals(1, Linq.asEnumerable(emps)
-                .except(Linq.asEnumerable(emps2), comparer)
+        assertEquals(1, Linq.of(emps)
+                .except(Linq.of(emps2), comparer)
                 .count());
     }
 }

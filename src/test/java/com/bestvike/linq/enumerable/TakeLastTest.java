@@ -20,7 +20,7 @@ public class TakeLastTest extends TestCase {
     }
 
     private void TakeLast(IEnumerable<Integer> source, int count) {
-        assertAll(Linq.asEnumerable(TestCase.<Integer>IdentityTransforms()), transform -> {
+        assertAll(Linq.of(TestCase.<Integer>IdentityTransforms()), transform -> {
             IEnumerable<Integer> equivalent = transform.apply(source);
 
             IEnumerable<Integer> expected = equivalent.reverse().take(count).reverse();
@@ -29,7 +29,7 @@ public class TakeLastTest extends TestCase {
             assertEquals(expected, actual);
             assertEquals(expected.count(), actual.count());
             assertEquals(expected, actual.toArray());
-            assertEquals(expected, Linq.asEnumerable(actual.toList()));
+            assertEquals(expected, Linq.of(actual.toList()));
 
             assertEquals(expected.firstOrDefault(), actual.firstOrDefault());
             assertEquals(expected.lastOrDefault(), actual.lastOrDefault());
@@ -95,13 +95,13 @@ public class TakeLastTest extends TestCase {
 
     @Test
     public void testTakeLast() {
-        assertEquals(1, Linq.asEnumerable(depts).takeLast(1).count());
-        assertEquals(3, Linq.asEnumerable(depts).takeLast(5).count());
+        assertEquals(1, Linq.of(depts).takeLast(1).count());
+        assertEquals(3, Linq.of(depts).takeLast(5).count());
     }
 
     @Test
     public void runOnce() {
-        IEnumerable<Department> expected = Linq.asEnumerable(depts).skip(2);
-        assertEquals(expected, Linq.asEnumerable(depts).takeLast(1).runOnce());
+        IEnumerable<Department> expected = Linq.of(depts).skip(2);
+        assertEquals(expected, Linq.of(depts).takeLast(1).runOnce());
     }
 }

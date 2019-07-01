@@ -18,7 +18,7 @@ public class ShortCircuitingTest extends TestCase {
     public void ListLastDoesntCheckAll() {
         List<Integer> source = Linq.range(0, 10).toList();
         CountedFunction<Integer> pred = new CountedFunction<>(i -> i < 7);
-        assertEquals(6, Linq.asEnumerable(source).last(pred.getFunc()));
+        assertEquals(6, Linq.of(source).last(pred.getFunc()));
 
         // .NET Core shortcircuits as an optimization.
         // See https://github.com/dotnet/corefx/pull/2350.

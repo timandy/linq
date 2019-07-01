@@ -17,16 +17,16 @@ import java.util.List;
 public class SequenceEqualTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(new Integer[]{2, 3, null, 2, null, 4, 5}).select(x1 -> x1);
-        IEnumerable<Integer> q2 = Linq.asEnumerable(new Integer[]{1, 9, null, 4}).select(x2 -> x2);
+        IEnumerable<Integer> q1 = Linq.of(new Integer[]{2, 3, null, 2, null, 4, 5}).select(x1 -> x1);
+        IEnumerable<Integer> q2 = Linq.of(new Integer[]{1, 9, null, 4}).select(x2 -> x2);
 
         assertEquals(q1.sequenceEqual(q2), q1.sequenceEqual(q2));
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice").select(x1 -> x1);
-        IEnumerable<String> q2 = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS").select(x2 -> x2);
+        IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice").select(x1 -> x1);
+        IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS").select(x2 -> x2);
 
         assertEquals(q1.sequenceEqual(q2), q1.sequenceEqual(q2));
     }
@@ -36,10 +36,10 @@ public class SequenceEqualTest extends TestCase {
         int[] first = {};
         int[] second = {};
 
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertTrue(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertTrue(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -47,10 +47,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {1, 2, 3, 4};
         Integer[] second = {1, 2, 6, 4};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -58,10 +58,10 @@ public class SequenceEqualTest extends TestCase {
         String[] first = {"Bob", "Tim", "Chris"};
         String[] second = {"Bbo", "mTi", "rishC"};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second), null));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second), null));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second)), null));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second)), null));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second), null));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second), null));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second)), null));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second)), null));
     }
 
     @Test
@@ -69,10 +69,10 @@ public class SequenceEqualTest extends TestCase {
         String[] first = {"Bob", "Tim", "Chris"};
         String[] second = {"Bbo", "mTi", "rishC"};
 
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second), new AnagramEqualityComparer()));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second), new AnagramEqualityComparer()));
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second)), new AnagramEqualityComparer()));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second)), new AnagramEqualityComparer()));
+        assertTrue(Linq.of(first).sequenceEqual(Linq.of(second), new AnagramEqualityComparer()));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second), new AnagramEqualityComparer()));
+        assertTrue(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second)), new AnagramEqualityComparer()));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second)), new AnagramEqualityComparer()));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class SequenceEqualTest extends TestCase {
         String[] first = {"Bob", "Tim", "Chris"};
         String[] second = {"Bbo", "mTi", "rishC"};
 
-        assertTrue(Linq.asEnumerable(first).runOnce().sequenceEqual(Linq.asEnumerable(second).runOnce(), new AnagramEqualityComparer()));
+        assertTrue(Linq.of(first).runOnce().sequenceEqual(Linq.of(second).runOnce(), new AnagramEqualityComparer()));
     }
 
     @Test
@@ -88,10 +88,10 @@ public class SequenceEqualTest extends TestCase {
         String[] first = {null};
         String[] second = {null};
 
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second), StringComparer.Ordinal));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second), StringComparer.Ordinal));
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second)), StringComparer.Ordinal));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second)), StringComparer.Ordinal));
+        assertTrue(Linq.of(first).sequenceEqual(Linq.of(second), StringComparer.Ordinal));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second), StringComparer.Ordinal));
+        assertTrue(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second)), StringComparer.Ordinal));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second)), StringComparer.Ordinal));
     }
 
     @Test
@@ -99,10 +99,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {-6, null, 0, -4, 9, 10, 20};
         Integer[] second = {-6, null, 0, -4, 9, 10, 20};
 
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertTrue(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertTrue(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertTrue(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertTrue(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertTrue(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -110,10 +110,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {};
         Integer[] second = {2, 3, 4};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -121,10 +121,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {2, 3, 4};
         Integer[] second = {};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -132,10 +132,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {2};
         Integer[] second = {4};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -143,10 +143,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {1, 2, 3, 4, 5};
         Integer[] second = {2, 2, 3, 4, 5};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -154,10 +154,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {1, 2, 3, 4, 4};
         Integer[] second = {1, 2, 3, 4, 5};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -165,10 +165,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {1, 2, 3, 4};
         Integer[] second = {1, 2, 3, 4, 4};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -176,10 +176,10 @@ public class SequenceEqualTest extends TestCase {
         Integer[] first = {1, 2, 3, 4, 4};
         Integer[] second = {1, 2, 3, 4};
 
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(Linq.asEnumerable(second)));
-        assertFalse(Linq.asEnumerable(first).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
-        assertFalse(FlipIsCollection(Linq.asEnumerable(first)).sequenceEqual(FlipIsCollection(Linq.asEnumerable(second))));
+        assertFalse(Linq.of(first).sequenceEqual(Linq.of(second)));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(Linq.of(second)));
+        assertFalse(Linq.of(first).sequenceEqual(FlipIsCollection(Linq.of(second))));
+        assertFalse(FlipIsCollection(Linq.of(first)).sequenceEqual(FlipIsCollection(Linq.of(second))));
     }
 
     @Test
@@ -200,9 +200,9 @@ public class SequenceEqualTest extends TestCase {
 
     @Test
     public void testSequenceEqual() {
-        List<Employee> list = Linq.asEnumerable(emps).toList();
+        List<Employee> list = Linq.of(emps).toList();
 
-        assertTrue(Linq.asEnumerable(list).sequenceEqual(Linq.asEnumerable(emps)));
+        assertTrue(Linq.of(list).sequenceEqual(Linq.of(emps)));
     }
 
     @Test
@@ -222,6 +222,6 @@ public class SequenceEqualTest extends TestCase {
             }
         };
 
-        assertTrue(Linq.asEnumerable(array1).sequenceEqual(Linq.asEnumerable(array2), comparer));
+        assertTrue(Linq.of(array1).sequenceEqual(Linq.of(array2), comparer));
     }
 }

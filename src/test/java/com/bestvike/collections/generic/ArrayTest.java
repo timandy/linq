@@ -37,7 +37,7 @@ public class ArrayTest extends TestCase {
         String[] result = source._toArray(String.class);
 
         assertNotSame(objects, result);
-        assertEquals(Linq.asEnumerable(objects), Linq.asEnumerable(result));
+        assertEquals(Linq.of(objects), Linq.of(result));
     }
 
     @Test

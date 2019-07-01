@@ -17,8 +17,8 @@ public class ExceptByTest extends TestCase {
                 new Employee(150, "Theodore", 10),
                 emps[3],
         };
-        assertEquals(1, Linq.asEnumerable(emps)
-                .exceptBy(Linq.asEnumerable(emps2), emp -> emp.deptno)
+        assertEquals(1, Linq.of(emps)
+                .exceptBy(Linq.of(emps2), emp -> emp.deptno)
                 .count());
 
         IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
@@ -42,8 +42,8 @@ public class ExceptByTest extends TestCase {
         };
 
         Employee[] emps2 = {new Employee(150, "Theodore", 10)};
-        assertEquals(0, Linq.asEnumerable(emps)
-                .exceptBy(Linq.asEnumerable(emps2), emp -> emp.deptno, comparer)
+        assertEquals(0, Linq.of(emps)
+                .exceptBy(Linq.of(emps2), emp -> emp.deptno, comparer)
                 .count());
     }
 }

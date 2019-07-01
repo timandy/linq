@@ -25,7 +25,7 @@ public class EmptyEnumerableTest extends TestCase {
     }
 
     private <T> void TestEmptyEmpty() {
-        assertEquals(Linq.asEnumerable(), Linq.empty());
+        assertEquals(Linq.of(), Linq.empty());
         assertEquals(0, Linq.<T>empty().count());
         assertSame(Linq.<T>empty().enumerator(), Linq.<T>empty().enumerator());
     }

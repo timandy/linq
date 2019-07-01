@@ -20,7 +20,7 @@ import java.util.Date;
 public class FirstTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
+        IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.first(), q.first());
@@ -28,7 +28,7 @@ public class FirstTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
+        IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.first(), q.first());
@@ -37,8 +37,8 @@ public class FirstTest extends TestCase {
     private <T> void TestEmptyIList(Class<T> clazz) {
         T[] source = ArrayUtils.empty(clazz);
 
-        assertNotNull(as(Linq.asEnumerable(source), IList.class));
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).runOnce().first());
+        assertNotNull(as(Linq.of(source), IList.class));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).runOnce().first());
     }
 
     @Test
@@ -54,8 +54,8 @@ public class FirstTest extends TestCase {
         int[] source = {5};
         int expected = 5;
 
-        assertNotNull(as(Linq.asEnumerable(source), IList.class));
-        assertEquals(expected, Linq.asEnumerable(source).first());
+        assertNotNull(as(Linq.of(source), IList.class));
+        assertEquals(expected, Linq.of(source).first());
     }
 
     @Test
@@ -63,8 +63,8 @@ public class FirstTest extends TestCase {
         Integer[] source = {null, -10, 2, 4, 3, 0, 2};
         Integer expected = null;
 
-        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        assertEquals(expected, Linq.asEnumerable(source).first());
+        assertTrue(IList.class.isAssignableFrom(Linq.of(source).getClass()));
+        assertEquals(expected, Linq.of(source).first());
     }
 
     @Test
@@ -72,8 +72,8 @@ public class FirstTest extends TestCase {
         Integer[] source = {19, null, -10, 2, 4, 3, 0, 2};
         Integer expected = 19;
 
-        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        assertEquals(expected, Linq.asEnumerable(source).first());
+        assertTrue(IList.class.isAssignableFrom(Linq.of(source).getClass()));
+        assertEquals(expected, Linq.of(source).first());
     }
 
     private <T> IEnumerable<T> EmptySourceGeneric() {
@@ -117,8 +117,8 @@ public class FirstTest extends TestCase {
     public void EmptySource() {
         int[] source = {};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).first(x -> true));
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).first(x -> false));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).first(x -> true));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).first(x -> false));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class FirstTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
 
-        assertEquals(expected, Linq.asEnumerable(source).first(predicate));
+        assertEquals(expected, Linq.of(source).first(predicate));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class FirstTest extends TestCase {
         int[] source = {9, 5, 1, 3, 17, 21};
         Predicate1<Integer> predicate = TestCase::IsEven;
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).first(predicate));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).first(predicate));
     }
 
     @Test
@@ -144,7 +144,7 @@ public class FirstTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
 
-        assertEquals(expected, Linq.asEnumerable(source).first(predicate));
+        assertEquals(expected, Linq.of(source).first(predicate));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class FirstTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
 
-        assertEquals(expected, Linq.asEnumerable(source).first(predicate));
+        assertEquals(expected, Linq.of(source).first(predicate));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class FirstTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
 
-        assertEquals(expected, Linq.asEnumerable(source).runOnce().first(predicate));
+        assertEquals(expected, Linq.of(source).runOnce().first(predicate));
     }
 
     @Test
@@ -185,11 +185,11 @@ public class FirstTest extends TestCase {
     public void testFirst() {
         Employee e = emps[0];
         assertEquals(e, emps[0]);
-        assertEquals(e, Linq.asEnumerable(emps).first());
+        assertEquals(e, Linq.of(emps).first());
 
         Department d = depts[0];
         assertEquals(d, depts[0]);
-        assertEquals(d, Linq.asEnumerable(depts).first());
+        assertEquals(d, Linq.of(depts).first());
 
         try {
             String s = Linq.<String>empty().first();
@@ -199,13 +199,13 @@ public class FirstTest extends TestCase {
 
         // close occurs if first throws
         try {
-            Long num = Linq.asEnumerable(new CountIterable(0)).first();
+            Long num = Linq.of(new CountIterable(0)).first();
             fail("expected exception, got " + num);
         } catch (InvalidOperationException ignored) {
         }
 
         // close occurs if first does not throw
-        Long num = Linq.asEnumerable(new CountIterable(1)).first();
+        Long num = Linq.of(new CountIterable(1)).first();
         assertEquals(1L, num);
     }
 
@@ -215,11 +215,11 @@ public class FirstTest extends TestCase {
         String[] peopleWithoutCharS = {"Brill", "Andrew", "Alice"};
         Integer[] numbers = {5, 10, 15, 20, 25};
 
-        assertEquals(people[1], Linq.asEnumerable(people).first(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
-        assertEquals(numbers[3], Linq.asEnumerable(numbers).first(i -> i > 15));
+        assertEquals(people[1], Linq.of(people).first(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertEquals(numbers[3], Linq.of(numbers).first(i -> i > 15));
 
         try {
-            String ss = Linq.asEnumerable(peopleWithoutCharS).first(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
+            String ss = Linq.of(peopleWithoutCharS).first(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
             fail("expected exception, but got" + ss);
         } catch (InvalidOperationException ignored) {
         }

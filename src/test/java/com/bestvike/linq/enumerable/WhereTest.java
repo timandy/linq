@@ -55,10 +55,10 @@ public class WhereTest extends TestCase {
             return true;
         }};
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -70,10 +70,10 @@ public class WhereTest extends TestCase {
             return true;
         });
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -85,10 +85,10 @@ public class WhereTest extends TestCase {
             return true;
         }));
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -100,10 +100,10 @@ public class WhereTest extends TestCase {
             return true;
         }));
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -130,10 +130,10 @@ public class WhereTest extends TestCase {
             return true;
         }};
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -145,10 +145,10 @@ public class WhereTest extends TestCase {
             return true;
         });
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -160,10 +160,10 @@ public class WhereTest extends TestCase {
             return true;
         }));
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -175,10 +175,10 @@ public class WhereTest extends TestCase {
             return true;
         }));
 
-        IEnumerable<Predicate0> query = Linq.asEnumerable(source).where(value -> value.apply()).where(value -> value.apply());
+        IEnumerable<Predicate0> query = Linq.of(source).where(value -> value.apply()).where(value -> value.apply());
         assertFalse(funcCalled.value);
 
-        query = Linq.asEnumerable(source).where((value, index) -> value.apply());
+        query = Linq.of(source).where((value, index) -> value.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -202,11 +202,11 @@ public class WhereTest extends TestCase {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(truePredicate);
 
         assertEquals(source.length, result.count());
         for (int i = 0; i < source.length; i++) {
-            assertEquals(Linq.asEnumerable(source).elementAt(i), result.elementAt(i));
+            assertEquals(Linq.of(source).elementAt(i), result.elementAt(i));
         }
     }
 
@@ -215,7 +215,7 @@ public class WhereTest extends TestCase {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Predicate1<Integer> falsePredicate = (value) -> false;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(falsePredicate);
 
         assertEquals(0, result.count());
     }
@@ -225,7 +225,7 @@ public class WhereTest extends TestCase {
         int[] source = new int[]{2, 1, 3, 5, 4};
         IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(complexPredicate);
 
         assertEquals(2, result.count());
         assertEquals(1, result.elementAt(0));
@@ -237,11 +237,11 @@ public class WhereTest extends TestCase {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(truePredicate);
 
         assertEquals(source.size(), result.count());
         for (int i = 0; i < source.size(); i++) {
-            assertEquals(Linq.asEnumerable(source).elementAt(i), result.elementAt(i));
+            assertEquals(Linq.of(source).elementAt(i), result.elementAt(i));
         }
     }
 
@@ -250,7 +250,7 @@ public class WhereTest extends TestCase {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
         Predicate1<Integer> falsePredicate = (value) -> false;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(falsePredicate);
 
         assertEquals(0, result.count());
     }
@@ -260,7 +260,7 @@ public class WhereTest extends TestCase {
         List<Integer> source = Arrays.asList(2, 1, 3, 5, 4);
         IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(complexPredicate);
 
         assertEquals(2, result.count());
         assertEquals(1, result.elementAt(0));
@@ -272,11 +272,11 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(truePredicate);
 
         assertEquals(source.size(), result.count());
         for (int i = 0; i < source.size(); i++) {
-            assertEquals(Linq.asEnumerable(source).elementAt(i), result.elementAt(i));
+            assertEquals(Linq.of(source).elementAt(i), result.elementAt(i));
         }
     }
 
@@ -285,7 +285,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
         Predicate1<Integer> falsePredicate = (value) -> false;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(falsePredicate);
 
         assertEquals(0, result.count());
     }
@@ -295,7 +295,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(2, 1, 3, 5, 4));
         IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(complexPredicate);
 
         assertEquals(2, result.count());
         assertEquals(1, result.elementAt(0));
@@ -307,11 +307,11 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(truePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(truePredicate);
 
         assertEquals(source.size(), result.count());
         for (int i = 0; i < source.size(); i++) {
-            assertEquals(Linq.asEnumerable(source).elementAt(i), result.elementAt(i));
+            assertEquals(Linq.of(source).elementAt(i), result.elementAt(i));
         }
     }
 
@@ -320,7 +320,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
         Predicate1<Integer> falsePredicate = (value) -> false;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(falsePredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(falsePredicate);
 
         assertEquals(0, result.count());
     }
@@ -330,7 +330,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(2, 1, 3, 5, 4));
         IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(complexPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(complexPredicate);
 
         assertEquals(2, result.count());
         assertEquals(1, result.elementAt(0));
@@ -362,7 +362,7 @@ public class WhereTest extends TestCase {
 
     @Test
     public void Where_IEnumerable_ReturnsExpectedValues_Complex() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new LinkedList<>(Arrays.asList(2, 1, 3, 5, 4)));
+        IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(2, 1, 3, 5, 4)));
         IndexPredicate2<Integer> complexPredicate = (value, index) -> (value == index);
 
         IEnumerable<Integer> result = source.where(complexPredicate);
@@ -396,7 +396,7 @@ public class WhereTest extends TestCase {
         int[] source = new int[]{1};
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
+        IEnumerator<Integer> enumerator = Linq.of(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
 
         assertEquals(null, enumerator.current());
@@ -407,7 +407,7 @@ public class WhereTest extends TestCase {
         List<Integer> source = Collections.singletonList(1);
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
+        IEnumerator<Integer> enumerator = Linq.of(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
 
         assertEquals(null, enumerator.current());
@@ -418,7 +418,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Collections.singletonList(1));
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
+        IEnumerator<Integer> enumerator = Linq.of(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
 
         assertEquals(null, enumerator.current());
@@ -429,7 +429,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Collections.singletonList(1));
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
+        IEnumerator<Integer> enumerator = Linq.of(source).where(truePredicate).enumerator();
         while (enumerator.moveNext()) ;
 
         assertEquals(null, enumerator.current());
@@ -451,7 +451,7 @@ public class WhereTest extends TestCase {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).where(evenPredicate);
 
         assertEquals(2, result.count());
         assertEquals(2, result.elementAt(0));
@@ -463,7 +463,7 @@ public class WhereTest extends TestCase {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).where(evenPredicate);
 
         assertEquals(2, result.count());
         assertEquals(2, result.elementAt(0));
@@ -475,7 +475,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).where(evenPredicate);
 
         assertEquals(2, result.count());
         assertEquals(2, result.elementAt(0));
@@ -487,7 +487,7 @@ public class WhereTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).where(evenPredicate);
 
         assertEquals(2, result.count());
         assertEquals(2, result.elementAt(0));
@@ -512,7 +512,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -525,7 +525,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(i -> i).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -538,7 +538,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -551,7 +551,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(i -> i).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -564,7 +564,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -577,7 +577,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(i -> i).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -590,7 +590,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -603,7 +603,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(evenPredicate).select(i -> i).select(addSelector);
+        IEnumerable<Integer> result = Linq.of(source).where(evenPredicate).select(i -> i).select(addSelector);
 
         assertEquals(2, result.count());
         assertEquals(3, result.elementAt(0));
@@ -642,7 +642,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).select(addSelector).where(evenPredicate);
 
         assertEquals(3, result.count());
         assertEquals(2, result.elementAt(0));
@@ -656,7 +656,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).select(addSelector).where(evenPredicate);
 
         assertEquals(3, result.count());
         assertEquals(2, result.elementAt(0));
@@ -670,7 +670,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).select(addSelector).where(evenPredicate);
 
         assertEquals(3, result.count());
         assertEquals(2, result.elementAt(0));
@@ -684,7 +684,7 @@ public class WhereTest extends TestCase {
         Predicate1<Integer> evenPredicate = (value) -> value % 2 == 0;
         Func1<Integer, Integer> addSelector = (value) -> value + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(addSelector).where(evenPredicate);
+        IEnumerable<Integer> result = Linq.of(source).select(addSelector).where(evenPredicate);
 
         assertEquals(3, result.count());
         assertEquals(2, result.elementAt(0));
@@ -716,7 +716,7 @@ public class WhereTest extends TestCase {
             return true;
         };
 
-        IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(predicate).enumerator();
+        IEnumerator<Integer> enumerator = Linq.of(source).where(predicate).enumerator();
 
         // Ensure the first MoveNext call throws an exception
         assertThrows(InvalidOperationException.class, () -> enumerator.moveNext());
@@ -786,7 +786,7 @@ public class WhereTest extends TestCase {
     @Test
     public void Select_ResetEnumerator_ThrowsException() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(value -> true).enumerator();
+        IEnumerator<Integer> enumerator = Linq.of(source).where(value -> true).enumerator();
 
         // The full .NET Framework throws a NotImplementedException.
         // See https://github.com/dotnet/corefx/pull/2959.
@@ -798,7 +798,7 @@ public class WhereTest extends TestCase {
         List<Integer> source = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         Predicate1<Integer> truePredicate = (value) -> true;
 
-        IEnumerator<Integer> enumerator = Linq.asEnumerable(source).where(truePredicate).enumerator();
+        IEnumerator<Integer> enumerator = Linq.of(source).where(truePredicate).enumerator();
 
         assertTrue(enumerator.moveNext());
         assertEquals(1, enumerator.current());
@@ -811,7 +811,7 @@ public class WhereTest extends TestCase {
     public void Where_GetEnumeratorReturnsUniqueInstances() {
         int[] source = new int[]{1, 2, 3, 4, 5};
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).where(value -> true);
+        IEnumerable<Integer> result = Linq.of(source).where(value -> true);
 
         try (IEnumerator<Integer> enumerator1 = result.enumerator();
              IEnumerator<Integer> enumerator2 = result.enumerator()) {
@@ -822,7 +822,7 @@ public class WhereTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
+        IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE)
                 .select(x -> x);
 
@@ -832,7 +832,7 @@ public class WhereTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", null, "SoS", Empty})
+        IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", null, "SoS", Empty})
                 .select(x -> x);
 
         assertEquals(q.where(TestCase::IsNullOrEmpty), q.where(TestCase::IsNullOrEmpty));
@@ -842,45 +842,45 @@ public class WhereTest extends TestCase {
     @Test
     public void SingleElementPredicateFalse() {
         int[] source = {3};
-        assertEmpty(Linq.asEnumerable(source).where(TestCase::IsEven));
+        assertEmpty(Linq.of(source).where(TestCase::IsEven));
     }
 
     @Test
     public void PredicateFalseForAll() {
         int[] source = {9, 7, 15, 3, 27};
-        assertEmpty(Linq.asEnumerable(source).where(TestCase::IsEven));
+        assertEmpty(Linq.of(source).where(TestCase::IsEven));
     }
 
     @Test
     public void PredicateTrueFirstOnly() {
         int[] source = {10, 9, 7, 15, 3, 27};
-        assertEquals(Linq.asEnumerable(source).take(1), Linq.asEnumerable(source).where(TestCase::IsEven));
+        assertEquals(Linq.of(source).take(1), Linq.of(source).where(TestCase::IsEven));
     }
 
     @Test
     public void PredicateTrueLastOnly() {
         int[] source = {9, 7, 15, 3, 27, 20};
-        assertEquals(Linq.asEnumerable(source).skip(source.length - 1), Linq.asEnumerable(source).where(TestCase::IsEven));
+        assertEquals(Linq.of(source).skip(source.length - 1), Linq.of(source).where(TestCase::IsEven));
     }
 
     @Test
     public void PredicateTrueFirstThirdSixth() {
         int[] source = {20, 7, 18, 9, 7, 10, 21};
         int[] expected = {20, 18, 10};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).where(TestCase::IsEven));
+        assertEquals(Linq.of(expected), Linq.of(source).where(TestCase::IsEven));
     }
 
     @Test
     public void RunOnce() {
         int[] source = {20, 7, 18, 9, 7, 10, 21};
         int[] expected = {20, 18, 10};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().where(TestCase::IsEven));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().where(TestCase::IsEven));
     }
 
     @Test
     public void SourceAllNullsPredicateTrue() {
         Integer[] source = {null, null, null, null};
-        assertEquals(Linq.asEnumerable(source), Linq.asEnumerable(source).where(num -> true));
+        assertEquals(Linq.of(source), Linq.of(source).where(num -> true));
     }
 
     @Test
@@ -891,56 +891,56 @@ public class WhereTest extends TestCase {
     @Test
     public void SingleElementIndexedPredicateTrue() {
         int[] source = {2};
-        assertEquals(Linq.asEnumerable(source), Linq.asEnumerable(source).where((e, i) -> e % 2 == 0));
+        assertEquals(Linq.of(source), Linq.of(source).where((e, i) -> e % 2 == 0));
     }
 
     @Test
     public void SingleElementIndexedPredicateFalse() {
         int[] source = {3};
-        assertEmpty(Linq.asEnumerable(source).where((e, i) -> e % 2 == 0));
+        assertEmpty(Linq.of(source).where((e, i) -> e % 2 == 0));
     }
 
     @Test
     public void IndexedPredicateFalseForAll() {
         int[] source = {9, 7, 15, 3, 27};
-        assertEmpty(Linq.asEnumerable(source).where((e, i) -> e % 2 == 0));
+        assertEmpty(Linq.of(source).where((e, i) -> e % 2 == 0));
     }
 
     @Test
     public void IndexedPredicateTrueFirstOnly() {
         int[] source = {10, 9, 7, 15, 3, 27};
-        assertEquals(Linq.asEnumerable(source).take(1), Linq.asEnumerable(source).where((e, i) -> e % 2 == 0));
+        assertEquals(Linq.of(source).take(1), Linq.of(source).where((e, i) -> e % 2 == 0));
     }
 
     @Test
     public void IndexedPredicateTrueLastOnly() {
         int[] source = {9, 7, 15, 3, 27, 20};
-        assertEquals(Linq.asEnumerable(source).skip(source.length - 1), Linq.asEnumerable(source).where((e, i) -> e % 2 == 0));
+        assertEquals(Linq.of(source).skip(source.length - 1), Linq.of(source).where((e, i) -> e % 2 == 0));
     }
 
     @Test
     public void IndexedPredicateTrueFirstThirdSixth() {
         int[] source = {20, 7, 18, 9, 7, 10, 21};
         int[] expected = {20, 18, 10};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).where((e, i) -> e % 2 == 0));
+        assertEquals(Linq.of(expected), Linq.of(source).where((e, i) -> e % 2 == 0));
     }
 
     @Test
     public void SourceAllNullsIndexedPredicateTrue() {
         Integer[] source = {null, null, null, null};
-        assertEquals(Linq.asEnumerable(source), Linq.asEnumerable(source).where((num, index) -> true));
+        assertEquals(Linq.of(source), Linq.of(source).where((num, index) -> true));
     }
 
     @Test
     public void PredicateSelectsFirst() {
         int[] source = {-40, 20, 100, 5, 4, 9};
-        assertEquals(Linq.asEnumerable(source).take(1), Linq.asEnumerable(source).where((e, i) -> i == 0));
+        assertEquals(Linq.of(source).take(1), Linq.of(source).where((e, i) -> i == 0));
     }
 
     @Test
     public void PredicateSelectsLast() {
         int[] source = {-40, 20, 100, 5, 4, 9};
-        assertEquals(Linq.asEnumerable(source).skip(source.length - 1), Linq.asEnumerable(source).where((e, i) -> i == source.length - 1));
+        assertEquals(Linq.of(source).skip(source.length - 1), Linq.of(source).where((e, i) -> i == source.length - 1));
     }
 
     @Test
@@ -971,7 +971,7 @@ public class WhereTest extends TestCase {
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateList() {
-        IEnumerable<Integer> iterator = Linq.asEnumerable(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).where(i -> true);
+        IEnumerable<Integer> iterator = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).where(i -> true);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
@@ -999,7 +999,7 @@ public class WhereTest extends TestCase {
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateWhereSelectList() {
-        IEnumerable<Integer> iterator = Linq.asEnumerable(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).where(i -> true).select(i -> i);
+        IEnumerable<Integer> iterator = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).where(i -> true).select(i -> i);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
@@ -1015,7 +1015,7 @@ public class WhereTest extends TestCase {
         for (IEnumerable<Integer> equivalent : Arrays.asList(source.where(s -> true), source.where(s -> true).select(s -> s))) {
             assertEquals(source, equivalent);
             assertEquals(source, equivalent.toArray());
-            assertEquals(source, Linq.asEnumerable(equivalent.toList()));
+            assertEquals(source, Linq.of(equivalent.toList()));
             assertEquals(source.count(), equivalent.count()); // Count may be optimized. The above asserts do not imply this will pass.
 
             try (IEnumerator<Integer> en = equivalent.enumerator()) {
@@ -1034,7 +1034,7 @@ public class WhereTest extends TestCase {
 
     private IEnumerable<Object[]> ToCollectionData() {
         IEnumerable<Integer> seq = this.GenerateRandomSequnce(0xdeadbeef, 10);
-        return Linq.asEnumerable(TestCase.<Integer>IdentityTransforms())
+        return Linq.of(TestCase.<Integer>IdentityTransforms())
                 .select(t -> t.apply(seq))
                 .select(seq2 -> new Object[]{seq2});
     }
@@ -1048,13 +1048,13 @@ public class WhereTest extends TestCase {
 
     @Test
     public void testWhere() {
-        List<String> names = Linq.asEnumerable(emps)
+        List<String> names = Linq.of(emps)
                 .where(employee -> employee.deptno < 15)
                 .select(a -> a.name)
                 .toList();
         assertEquals("[Fred, Eric, Janet]", names.toString());
 
-        List<String> names2 = Linq.asEnumerable(emps)
+        List<String> names2 = Linq.of(emps)
                 .where(employee -> employee.deptno < 15)
                 .where(employee -> employee.name.length() == 4)
                 .select(a -> a.name)
@@ -1067,7 +1067,7 @@ public class WhereTest extends TestCase {
         assertEquals("[2, 4, 6, 8, 10]", even.toString());
 
         Integer[] numbs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        List<Integer> even2 = Linq.asEnumerable(numbs)
+        List<Integer> even2 = Linq.of(numbs)
                 .where(n -> n % 2 == 0)
                 .toList();
         assertEquals("[2, 4, 6, 8, 10]", even2.toString());
@@ -1076,7 +1076,7 @@ public class WhereTest extends TestCase {
     @Test
     public void testWhereIndexed() {
         // Returns every other employee.
-        List<String> names = Linq.asEnumerable(emps)
+        List<String> names = Linq.of(emps)
                 .where((employee, n) -> n % 2 == 0)
                 .select(a -> a.name)
                 .toList();
@@ -1085,12 +1085,12 @@ public class WhereTest extends TestCase {
 
     @Test
     public void testSelect() {
-        List<String> names = Linq.asEnumerable(emps)
+        List<String> names = Linq.of(emps)
                 .select(emp -> emp.name)
                 .toList();
         assertEquals("[Fred, Bill, Eric, Janet]", names.toString());
 
-        List<Character> names2 = Linq.asEnumerable(emps)
+        List<Character> names2 = Linq.of(emps)
                 .select(emp -> emp.name)
                 .select(name -> name.charAt(0))
                 .toList();

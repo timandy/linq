@@ -14,7 +14,7 @@ import org.junit.Test;
  */
 public class EmptyPartitionTest extends TestCase {
     private static <T> IEnumerable<T> GetEmptyPartition() {
-        return Linq.asEnumerable((T[]) new Object[0]).take(0);
+        return Linq.of((T[]) new Object[0]).take(0);
     }
 
     @Test

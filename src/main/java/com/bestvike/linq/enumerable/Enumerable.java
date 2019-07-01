@@ -42,119 +42,119 @@ public final class Enumerable {
         return new SingletonEnumerable<>(item);
     }
 
-    public static IEnumerable<Boolean> asEnumerable(boolean[] source) {
+    public static IEnumerable<Boolean> of(boolean[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new BooleanArrayEnumerable(source);
     }
 
-    public static IEnumerable<Byte> asEnumerable(byte[] source) {
+    public static IEnumerable<Byte> of(byte[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new ByteArrayEnumerable(source);
     }
 
-    public static IEnumerable<Short> asEnumerable(short[] source) {
+    public static IEnumerable<Short> of(short[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new ShortArrayEnumerable(source);
     }
 
-    public static IEnumerable<Integer> asEnumerable(int[] source) {
+    public static IEnumerable<Integer> of(int[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new IntegerArrayEnumerable(source);
     }
 
-    public static IEnumerable<Long> asEnumerable(long[] source) {
+    public static IEnumerable<Long> of(long[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new LongArrayEnumerable(source);
     }
 
-    public static IEnumerable<Float> asEnumerable(float[] source) {
+    public static IEnumerable<Float> of(float[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new FloatArrayEnumerable(source);
     }
 
-    public static IEnumerable<Double> asEnumerable(double[] source) {
+    public static IEnumerable<Double> of(double[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new DoubleArrayEnumerable(source);
     }
 
-    public static IEnumerable<Character> asEnumerable(char[] source) {
+    public static IEnumerable<Character> of(char[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new CharacterArrayEnumerable(source);
     }
 
-    public static IEnumerable<Character> asEnumerable(CharSequence source) {
+    public static IEnumerable<Character> of(CharSequence source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new CharSequenceEnumerable(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(TSource[] source) {
+    public static <TSource> IEnumerable<TSource> of(TSource[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new GenericArrayEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(IEnumerable<TSource> source) {
+    public static <TSource> IEnumerable<TSource> of(IEnumerable<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return source;
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(List<TSource> source) {
+    public static <TSource> IEnumerable<TSource> of(List<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new ListEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(Collection<TSource> source) {
+    public static <TSource> IEnumerable<TSource> of(Collection<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new CollectionEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(Iterable<TSource> source) {
+    public static <TSource> IEnumerable<TSource> of(Iterable<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new IterableEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(Iterator<TSource> source) {
+    public static <TSource> IEnumerable<TSource> of(Iterator<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new IteratorEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> asEnumerable(Enumeration<TSource> source) {
+    public static <TSource> IEnumerable<TSource> of(Enumeration<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new EnumerationEnumerable<>(source);
     }
 
-    public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> asEnumerable(Map<TKey, TValue> source) {
+    public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> of(Map<TKey, TValue> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
@@ -166,39 +166,39 @@ public final class Enumerable {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         if (source instanceof boolean[])
-            return (IEnumerable<TSource>) asEnumerable((boolean[]) source);
+            return (IEnumerable<TSource>) of((boolean[]) source);
         if (source instanceof byte[])
-            return (IEnumerable<TSource>) asEnumerable((byte[]) source);
+            return (IEnumerable<TSource>) of((byte[]) source);
         if (source instanceof short[])
-            return (IEnumerable<TSource>) asEnumerable((short[]) source);
+            return (IEnumerable<TSource>) of((short[]) source);
         if (source instanceof int[])
-            return (IEnumerable<TSource>) asEnumerable((int[]) source);
+            return (IEnumerable<TSource>) of((int[]) source);
         if (source instanceof long[])
-            return (IEnumerable<TSource>) asEnumerable((long[]) source);
+            return (IEnumerable<TSource>) of((long[]) source);
         if (source instanceof float[])
-            return (IEnumerable<TSource>) asEnumerable((float[]) source);
+            return (IEnumerable<TSource>) of((float[]) source);
         if (source instanceof double[])
-            return (IEnumerable<TSource>) asEnumerable((double[]) source);
+            return (IEnumerable<TSource>) of((double[]) source);
         if (source instanceof char[])
-            return (IEnumerable<TSource>) asEnumerable((char[]) source);
+            return (IEnumerable<TSource>) of((char[]) source);
         if (source instanceof CharSequence)
-            return (IEnumerable<TSource>) asEnumerable((CharSequence) source);
+            return (IEnumerable<TSource>) of((CharSequence) source);
         if (source instanceof Object[])
-            return asEnumerable((TSource[]) source);
+            return of((TSource[]) source);
         if (source instanceof IEnumerable)
-            return asEnumerable((IEnumerable<TSource>) source);
+            return of((IEnumerable<TSource>) source);
         if (source instanceof List)
-            return asEnumerable((List<TSource>) source);
+            return of((List<TSource>) source);
         if (source instanceof Collection)
-            return asEnumerable((Collection<TSource>) source);
+            return of((Collection<TSource>) source);
         if (source instanceof Iterable)
-            return asEnumerable((Iterable<TSource>) source);
+            return of((Iterable<TSource>) source);
         if (source instanceof Iterator)
-            return asEnumerable((Iterator<TSource>) source);
+            return of((Iterator<TSource>) source);
         if (source instanceof Enumeration)
-            return asEnumerable((Enumeration<TSource>) source);
+            return of((Enumeration<TSource>) source);
         if (source instanceof Map)
-            return (IEnumerable<TSource>) asEnumerable((Map<?, ?>) source);
+            return (IEnumerable<TSource>) of((Map<?, ?>) source);
         ThrowHelper.throwNotSupportedException();
         return null;
     }

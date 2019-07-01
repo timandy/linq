@@ -29,8 +29,8 @@ import java.util.Set;
 public class OrderByTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Tuple2<Integer, Integer>> q = Linq.asEnumerable(new int[]{1, 6, 0, -1, 3})
-                .selectMany(x1 -> Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25}), (x1, x2) -> Tuple.create(x1, x2));
+        IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
+                .selectMany(x1 -> Linq.of(new int[]{55, 49, 9, -100, 24, 25}), (x1, x2) -> Tuple.create(x1, x2));
 
 
         assertEquals(q.orderBy(e -> e.getItem1()).thenBy(f -> f.getItem2()), q.orderBy(e -> e.getItem1()).thenBy(f -> f.getItem2()));
@@ -38,8 +38,8 @@ public class OrderByTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<Tuple2<Integer, String>> q = Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
-                .selectMany(x1 -> Linq.asEnumerable("!@#$%^", "C", "AAA", "", null, "Calling Twice", "SoS", Empty), (x1, x2) -> Tuple.create(x1, x2))
+        IEnumerable<Tuple2<Integer, String>> q = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
+                .selectMany(x1 -> Linq.of("!@#$%^", "C", "AAA", "", null, "Calling Twice", "SoS", Empty), (x1, x2) -> Tuple.create(x1, x2))
                 .where(t -> !IsNullOrEmpty(t.getItem2()));
 
         assertEquals(q.orderBy(e -> e.getItem1()), q.orderBy(e -> e.getItem1()));
@@ -48,7 +48,7 @@ public class OrderByTest extends TestCase {
     @Test
     public void SourceEmpty() {
         int[] source = {};
-        assertEmpty(Linq.asEnumerable(source).orderBy(e -> e));
+        assertEmpty(Linq.of(source).orderBy(e -> e));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class OrderByTest extends TestCase {
         int[] source = {1};
         int[] expected = {1};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e, new BadComparer2()));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e, new BadComparer2()));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class OrderByTest extends TestCase {
         Integer[] source = {null, null, null};
         Integer[] expected = {null, null, null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class OrderByTest extends TestCase {
         Integer[] source = {9, 9, 9, 9, 9, 9};
         Integer[] expected = {9, 9, 9, 9, 9, 9};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class OrderByTest extends TestCase {
                 new NameScore("Tim", 90)
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Name, null));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e.Name, null));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class OrderByTest extends TestCase {
         String[] source = {"Prakash", "Alpha", "dan", "DAN", "Prakash"};
         String[] expected = {"Alpha", "dan", "DAN", "Prakash", "Prakash"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class OrderByTest extends TestCase {
         String[] source = {"Prakash", "Alpha", "dan", "DAN", "Prakash"};
         String[] expected = {"Alpha", "dan", "DAN", "Prakash", "Prakash"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().orderBy(e -> e, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().orderBy(e -> e, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test
@@ -118,7 +118,7 @@ public class OrderByTest extends TestCase {
         int[] source = {5, 1, 3, 2, 5};
         int[] expected = {1, 2, 3, 5, 5};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e, null));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e, null));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class OrderByTest extends TestCase {
         Integer[] source = {100, 30, 9, 5, 0, -50, -75, null};
         Integer[] expected = {null, -75, -50, 0, 5, 9, 30, 100};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e, null));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e, null));
     }
 
     @Test
@@ -148,7 +148,7 @@ public class OrderByTest extends TestCase {
                 new NameScore("Albert", 90),
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Score));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e.Score));
     }
 
     @Test
@@ -170,7 +170,7 @@ public class OrderByTest extends TestCase {
                 new NameScore("Albert", 90),
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e.Score).toArray());
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e.Score).toArray());
     }
 
     @Test
@@ -197,12 +197,12 @@ public class OrderByTest extends TestCase {
                 new NameScore("Albert", 90),
         };
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(Linq.asEnumerable(source).orderBy(e -> e.Score).toList()));
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(source).orderBy(e -> e.Score).toList()));
     }
 
     @Test
     public void EmptyOrderedToList() {
-        assertEmpty(Linq.asEnumerable(Linq.<Integer>empty().orderBy(e -> e).toList()));
+        assertEmpty(Linq.of(Linq.<Integer>empty().orderBy(e -> e).toList()));
     }
 
     @Test
@@ -210,13 +210,13 @@ public class OrderByTest extends TestCase {
         int[] source = {1};
         int[] expected = {1};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).orderBy(e -> e, new BadComparer1()));
+        assertEquals(Linq.of(expected), Linq.of(source).orderBy(e -> e, new BadComparer1()));
     }
 
     @Test
     public void OrderByExtremeComparer() {
         int[] outOfOrder = new int[]{7, 1, 0, 9, 3, 5, 4, 2, 8, 6};
-        assertEquals(Linq.range(0, 10), Linq.asEnumerable(outOfOrder).orderBy(i -> i, new ExtremeComparer()));
+        assertEquals(Linq.range(0, 10), Linq.of(outOfOrder).orderBy(i -> i, new ExtremeComparer()));
     }
 
     @Test
@@ -261,10 +261,10 @@ public class OrderByTest extends TestCase {
     @Test
     public void LastOnOrderedMatchingCases() {
         Object[] boxedInts = new Object[]{0, 1, 2, 9, 1, 2, 3, 9, 4, 5, 7, 8, 9, 0, 1};
-        assertSame(boxedInts[12], Linq.asEnumerable(boxedInts).orderBy(o -> (int) o).last());
-        assertSame(boxedInts[12], Linq.asEnumerable(boxedInts).orderBy(o -> (int) o).lastOrDefault());
-        assertSame(boxedInts[12], Linq.asEnumerable(boxedInts).orderBy(o -> (int) o).last(o -> (int) o % 2 == 1));
-        assertSame(boxedInts[12], Linq.asEnumerable(boxedInts).orderBy(o -> (int) o).lastOrDefault(o -> (int) o % 2 == 1));
+        assertSame(boxedInts[12], Linq.of(boxedInts).orderBy(o -> (int) o).last());
+        assertSame(boxedInts[12], Linq.of(boxedInts).orderBy(o -> (int) o).lastOrDefault());
+        assertSame(boxedInts[12], Linq.of(boxedInts).orderBy(o -> (int) o).last(o -> (int) o % 2 == 1));
+        assertSame(boxedInts[12], Linq.of(boxedInts).orderBy(o -> (int) o).lastOrDefault(o -> (int) o % 2 == 1));
     }
 
     @Test
@@ -319,7 +319,7 @@ public class OrderByTest extends TestCase {
         IOrderedEnumerable<String> ordered = Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length());
         ordered = ordered.thenBy(i -> i);
         Array<String> expected = Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length()).thenBy(i -> i).toArray();
-        assertEquals(Linq.asEnumerable(expected), ordered);
+        assertEquals(Linq.of(expected), ordered);
     }
 
     @Test
@@ -361,21 +361,21 @@ public class OrderByTest extends TestCase {
         Random r = new Random(42);
 
         Integer[] randomized = Linq.range(0, items).select(i -> r.nextInt()).toArray(Integer.class);
-        Integer[] ordered = ForceNotCollection(Linq.asEnumerable(randomized)).orderBy(i -> i).toArray(Integer.class);
+        Integer[] ordered = ForceNotCollection(Linq.of(randomized)).orderBy(i -> i).toArray(Integer.class);
 
         Arrays.sort(randomized, Comparator.comparingInt(a -> a));
-        assertEquals(Linq.asEnumerable(randomized), Linq.asEnumerable(ordered));
+        assertEquals(Linq.of(randomized), Linq.of(ordered));
     }
 
     @Test
     public void TakeOne() {
-        this.TakeOne(Linq.asEnumerable(new int[]{1}));
-        this.TakeOne(Linq.asEnumerable(new int[]{1, 2}));
-        this.TakeOne(Linq.asEnumerable(new int[]{2, 1}));
-        this.TakeOne(Linq.asEnumerable(new int[]{1, 2, 3, 4, 5}));
-        this.TakeOne(Linq.asEnumerable(new int[]{5, 4, 3, 2, 1}));
-        this.TakeOne(Linq.asEnumerable(new int[]{4, 3, 2, 1, 5, 9, 8, 7, 6}));
-        this.TakeOne(Linq.asEnumerable(new int[]{2, 4, 6, 8, 10, 5, 3, 7, 1, 9}));
+        this.TakeOne(Linq.of(new int[]{1}));
+        this.TakeOne(Linq.of(new int[]{1, 2}));
+        this.TakeOne(Linq.of(new int[]{2, 1}));
+        this.TakeOne(Linq.of(new int[]{1, 2, 3, 4, 5}));
+        this.TakeOne(Linq.of(new int[]{5, 4, 3, 2, 1}));
+        this.TakeOne(Linq.of(new int[]{4, 3, 2, 1, 5, 9, 8, 7, 6}));
+        this.TakeOne(Linq.of(new int[]{2, 4, 6, 8, 10, 5, 3, 7, 1, 9}));
     }
 
     private void TakeOne(IEnumerable<Integer> source) {
@@ -390,14 +390,14 @@ public class OrderByTest extends TestCase {
     @Test
     public void testOrderBy() {
         //null 在前,值相等的按原始顺序
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno)
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
         assertEquals("[Gates, Fred, Eric, Janet, Bill, Cedric]", s);
 
-        String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String ss = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno)
                 .thenBy(emp -> emp.name)
                 .select(emp -> emp.name)
@@ -405,7 +405,7 @@ public class OrderByTest extends TestCase {
                 .toString();
         assertEquals("[Gates, Eric, Fred, Janet, Bill, Cedric]", ss);
 
-        String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String sss = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno)
                 .thenByDescending(emp -> emp.name)
                 .select(emp -> emp.name)
@@ -417,9 +417,9 @@ public class OrderByTest extends TestCase {
         set.add(3);
         set.add(1);
         set.add(2);
-        IEnumerable<Integer> ordered = Linq.asEnumerable(set).orderBy(a -> a);
+        IEnumerable<Integer> ordered = Linq.of(set).orderBy(a -> a);
         Integer[] orderedArr = {1, 2, 3};
-        assertTrue(ordered.sequenceEqual(Linq.asEnumerable(orderedArr)));
+        assertTrue(ordered.sequenceEqual(Linq.of(orderedArr)));
     }
 
     @Test
@@ -427,14 +427,14 @@ public class OrderByTest extends TestCase {
         //null 在后,值相等的按原始顺序
         Comparator<Object> reverse = Comparer.Default().reversed();
 
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno, reverse)
                 .select(emp -> emp.name)
                 .toList()
                 .toString();
         assertEquals("[Cedric, Bill, Fred, Eric, Janet, Gates]", s);
 
-        String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String ss = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno, reverse)
                 .thenBy(emp -> emp.name, reverse)
                 .select(emp -> emp.name)
@@ -442,7 +442,7 @@ public class OrderByTest extends TestCase {
                 .toString();
         assertEquals("[Cedric, Bill, Janet, Fred, Eric, Gates]", ss);
 
-        String sss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String sss = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno, reverse)
                 .thenByDescending(emp -> emp.name, reverse)
                 .select(emp -> emp.name)

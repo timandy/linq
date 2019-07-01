@@ -44,10 +44,10 @@ public class ToArrayTest extends TestCase {
     @Test
     public void ToArray_CreateACopyWhenNotEmpty() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5};
-        Integer[] resultArray = Linq.asEnumerable(sourceArray).toArray(Integer.class);
+        Integer[] resultArray = Linq.of(sourceArray).toArray(Integer.class);
 
         assertNotSame(sourceArray, resultArray);
-        assertEquals(Linq.asEnumerable(sourceArray), Linq.asEnumerable(resultArray));
+        assertEquals(Linq.of(sourceArray), Linq.of(resultArray));
     }
 
     @Test
@@ -61,8 +61,8 @@ public class ToArrayTest extends TestCase {
         assertSame.apply(emptySourceArray.toArray(), emptySourceArray.toArray());
 
         assertSame.apply(emptySourceArray.select(i -> i).toArray(), emptySourceArray.select(i -> i).toArray());
-        assertSame.apply(Linq.asEnumerable(emptySourceArray.toList()).select(i -> i).toArray(), Linq.asEnumerable(emptySourceArray.toList()).select(i -> i).toArray());
-        assertSame.apply(Linq.asEnumerable(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(), Linq.asEnumerable(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray());
+        assertSame.apply(Linq.of(emptySourceArray.toList()).select(i -> i).toArray(), Linq.of(emptySourceArray.toList()).select(i -> i).toArray());
+        assertSame.apply(Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(), Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray());
         assertSame.apply(emptySourceArray.orderBy(i -> i).toArray(), emptySourceArray.orderBy(i -> i).toArray());
 
         assertSame.apply(Linq.range(5, 0).toArray(), Linq.range(3, 0).toArray());
@@ -75,8 +75,8 @@ public class ToArrayTest extends TestCase {
     }
 
     private <T> void RunToArrayOnAllCollectionTypes(T[] items, Action1<Array<T>> validation) {
-        validation.apply(Linq.asEnumerable(items).toArray());
-        validation.apply(Linq.asEnumerable(Arrays.asList(items)).toArray());
+        validation.apply(Linq.of(items).toArray());
+        validation.apply(Linq.of(Arrays.asList(items)).toArray());
         validation.apply(new TestEnumerable<>(items).toArray());
         validation.apply(new TestReadOnlyCollection<>(items).toArray());
         validation.apply(new TestCollection<>(items).toArray());
@@ -95,7 +95,7 @@ public class ToArrayTest extends TestCase {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         this.RunToArrayOnAllCollectionTypes(sourceArray, resultArray -> {
             assertEquals(sourceArray.length, resultArray._getCount());
-            assertEquals(Linq.asEnumerable(sourceArray), resultArray);
+            assertEquals(Linq.of(sourceArray), resultArray);
         });
 
         String[] sourceStringArray = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
@@ -108,8 +108,8 @@ public class ToArrayTest extends TestCase {
 
     @Test
     public void RunOnce() {
-        assertEquals(Linq.asEnumerable(new int[]{1, 2, 3, 4, 5, 6, 7}), Linq.range(1, 7).runOnce().toArray());
-        assertEquals(Linq.asEnumerable("1", "2", "3", "4", "5", "6", "7", "8"),
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5, 6, 7}), Linq.range(1, 7).runOnce().toArray());
+        assertEquals(Linq.of("1", "2", "3", "4", "5", "6", "7", "8"),
                 Linq.range(1, 8).select(i -> i.toString()).runOnce().toArray());
     }
 
@@ -125,7 +125,7 @@ public class ToArrayTest extends TestCase {
     @Test
     public void ToArray_ThrowArgumentNullExceptionWhenSourceIsNull() {
         int[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).toArray());
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toArray());
     }
 
     // Generally the optimal approach. Anything that breaks this should be confirmed as not harming performance.
@@ -153,16 +153,16 @@ public class ToArrayTest extends TestCase {
     }
 
     private void ToArray_ArrayWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
-        assertEquals(Linq.asEnumerable(convertedStrings), Linq.asEnumerable(sourceIntegers).select(i -> i.toString()).toArray());
+        assertEquals(Linq.of(convertedStrings), Linq.of(sourceIntegers).select(i -> i.toString()).toArray());
 
-        assertEquals(Linq.asEnumerable(sourceIntegers), Linq.asEnumerable(sourceIntegers).where(i -> true).toArray());
-        assertEquals(Linq.empty(), Linq.asEnumerable(sourceIntegers).where(i -> false).toArray());
+        assertEquals(Linq.of(sourceIntegers), Linq.of(sourceIntegers).where(i -> true).toArray());
+        assertEquals(Linq.empty(), Linq.of(sourceIntegers).where(i -> false).toArray());
 
-        assertEquals(Linq.asEnumerable(convertedStrings), Linq.asEnumerable(sourceIntegers).where(i -> true).select(i -> i.toString()).toArray());
-        assertEquals(Linq.empty(), Linq.asEnumerable(sourceIntegers).where(i -> false).select(i -> i.toString()).toArray());
+        assertEquals(Linq.of(convertedStrings), Linq.of(sourceIntegers).where(i -> true).select(i -> i.toString()).toArray());
+        assertEquals(Linq.empty(), Linq.of(sourceIntegers).where(i -> false).select(i -> i.toString()).toArray());
 
-        assertEquals(Linq.asEnumerable(convertedStrings), Linq.asEnumerable(sourceIntegers).select(i -> i.toString()).where(s -> s != null).toArray());
-        assertEquals(Linq.empty(), Linq.asEnumerable(sourceIntegers).select(i -> i.toString()).where(s -> s == null).toArray());
+        assertEquals(Linq.of(convertedStrings), Linq.of(sourceIntegers).select(i -> i.toString()).where(s -> s != null).toArray());
+        assertEquals(Linq.empty(), Linq.of(sourceIntegers).select(i -> i.toString()).where(s -> s == null).toArray());
     }
 
     @Test
@@ -173,38 +173,38 @@ public class ToArrayTest extends TestCase {
     }
 
     private void ToArray_ListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
-        List<Integer> sourceList = Linq.asEnumerable(sourceIntegers).toList();
+        List<Integer> sourceList = Linq.of(sourceIntegers).toList();
 
-        assertEquals(Linq.asEnumerable(convertedStrings), Linq.asEnumerable(sourceList).select(i -> i.toString()).toArray());
+        assertEquals(Linq.of(convertedStrings), Linq.of(sourceList).select(i -> i.toString()).toArray());
 
-        assertEquals(Linq.asEnumerable(sourceList), Linq.asEnumerable(sourceList).where(i -> true).toArray());
-        assertEquals(Linq.empty(), Linq.asEnumerable(sourceList).where(i -> false).toArray());
+        assertEquals(Linq.of(sourceList), Linq.of(sourceList).where(i -> true).toArray());
+        assertEquals(Linq.empty(), Linq.of(sourceList).where(i -> false).toArray());
 
-        assertEquals(Linq.asEnumerable(convertedStrings), Linq.asEnumerable(sourceList).where(i -> true).select(i -> i.toString()).toArray());
-        assertEquals(Linq.empty(), Linq.asEnumerable(sourceList).where(i -> false).select(i -> i.toString()).toArray());
+        assertEquals(Linq.of(convertedStrings), Linq.of(sourceList).where(i -> true).select(i -> i.toString()).toArray());
+        assertEquals(Linq.empty(), Linq.of(sourceList).where(i -> false).select(i -> i.toString()).toArray());
 
-        assertEquals(Linq.asEnumerable(convertedStrings), Linq.asEnumerable(sourceList).select(i -> i.toString()).where(s -> s != null).toArray());
-        assertEquals(Linq.empty(), Linq.asEnumerable(sourceList).select(i -> i.toString()).where(s -> s == null).toArray());
+        assertEquals(Linq.of(convertedStrings), Linq.of(sourceList).select(i -> i.toString()).where(s -> s != null).toArray());
+        assertEquals(Linq.empty(), Linq.of(sourceList).select(i -> i.toString()).where(s -> s == null).toArray());
     }
 
     @Test
     public void SameResultsRepeatCallsFromWhereOnIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
+        IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.toArray(), q.toArray());
     }
 
     @Test
     public void SameResultsRepeatCallsFromWhereOnStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.toArray(), q.toArray());
     }
 
     @Test
     public void SameResultsButNotSameObject() {
-        IEnumerable<Integer> qInt = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
-        IEnumerable<String> qString = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
+        IEnumerable<Integer> qInt = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
+        IEnumerable<String> qString = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertNotSame(qInt.toArray(), qInt.toArray());
         assertNotSame(qString.toArray(), qString.toArray());
@@ -219,16 +219,16 @@ public class ToArrayTest extends TestCase {
         assertSame(Linq.<Integer>empty().toArray(), Linq.<Integer>empty().toArray());
 
         Integer[] array = new Integer[0];
-        assertNotSame(array, Linq.asEnumerable(array).toArray().getArray());
+        assertNotSame(array, Linq.of(array).toArray().getArray());
     }
 
     @Test
     public void SourceIsEmptyICollectionT() {
         int[] source = {};
 
-        ICollection<Integer> collection = Linq.asEnumerable(source).toArray();
+        ICollection<Integer> collection = Linq.of(source).toArray();
 
-        assertEmpty(Linq.asEnumerable(source).toArray());
+        assertEmpty(Linq.of(source).toArray());
         assertEmpty(collection.toArray());
     }
 
@@ -237,10 +237,10 @@ public class ToArrayTest extends TestCase {
         Integer[] source = {-5, null, 0, 10, 3, -1, null, 4, 9};
         Integer[] expected = {-5, null, 0, 10, 3, -1, null, 4, 9};
 
-        ICollection<Integer> collection = Linq.asEnumerable(source).toArray();
+        ICollection<Integer> collection = Linq.of(source).toArray();
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).toArray());
-        assertEquals(Linq.asEnumerable(expected), collection.toArray());
+        assertEquals(Linq.of(expected), Linq.of(source).toArray());
+        assertEquals(Linq.of(expected), collection.toArray());
     }
 
     @Test
@@ -259,7 +259,7 @@ public class ToArrayTest extends TestCase {
 
         assertNull(as(source, ICollection.class));
 
-        assertEquals(Linq.asEnumerable(expected), source.toArray());
+        assertEquals(Linq.of(expected), source.toArray());
     }
 
     @Test
@@ -269,19 +269,19 @@ public class ToArrayTest extends TestCase {
 
         assertNull(as(source, ICollection.class));
 
-        assertEquals(Linq.asEnumerable(expected), source.toArray());
+        assertEquals(Linq.of(expected), source.toArray());
     }
 
     @Test
     public void ConstantTimeCountPartitionSelectSameTypeToArray() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1).take(5);
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8, 10}), source.toArray());
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), source.toArray());
     }
 
     @Test
     public void ConstantTimeCountPartitionSelectDiffTypeToArray() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1).take(5);
-        assertEquals(Linq.asEnumerable("1", "2", "3", "4", "5"), source.toArray());
+        assertEquals(Linq.of("1", "2", "3", "4", "5"), source.toArray());
     }
 
     @Test
@@ -299,13 +299,13 @@ public class ToArrayTest extends TestCase {
     @Test
     public void NonConstantTimeCountPartitionSelectSameTypeToArray() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1).take(5);
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8, 10}), source.toArray());
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), source.toArray());
     }
 
     @Test
     public void NonConstantTimeCountPartitionSelectDiffTypeToArray() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1).take(5);
-        assertEquals(Linq.asEnumerable("1", "2", "3", "4", "5"), source.toArray());
+        assertEquals(Linq.of("1", "2", "3", "4", "5"), source.toArray());
     }
 
     @Test
@@ -344,40 +344,40 @@ public class ToArrayTest extends TestCase {
     @Test
     public void ToArray_Cast() {
         Object[] source = {Enum0.First, Enum0.Second, Enum0.Third};
-        IEnumerable<Enum0> cast = Linq.asEnumerable(source).cast(Enum0.class);
+        IEnumerable<Enum0> cast = Linq.of(source).cast(Enum0.class);
         assertIsType(CastIterator.class, cast);
         Array<Enum0> castArray = cast.toArray();
         assertIsType(Array.class, castArray);
         Enum0[] castArray2 = cast.toArray(Enum0.class);
         assertIsType(Enum0[].class, castArray2);
-        assertEquals(Linq.asEnumerable(Enum0.First, Enum0.Second, Enum0.Third), castArray);
+        assertEquals(Linq.of(Enum0.First, Enum0.Second, Enum0.Third), castArray);
     }
 
     @Test
     public void testToArray() {
         Object[] source = {1, 2, 3};
-        Object[] target = Linq.asEnumerable(source).cast(Integer.class).toArray(Integer.class);
+        Object[] target = Linq.of(source).cast(Integer.class).toArray(Integer.class);
         assertEquals(3, target.length);
-        assertTrue(Linq.asEnumerable(source).sequenceEqual(Linq.asEnumerable(target)));
+        assertTrue(Linq.of(source).sequenceEqual(Linq.of(target)));
 
         Set<Integer> source2 = new HashSet<>();
         source2.add(1);
         source2.add(2);
         source2.add(3);
-        Integer[] target2 = Linq.asEnumerable(source2).toArray(Integer.class);
+        Integer[] target2 = Linq.of(source2).toArray(Integer.class);
         assertEquals(3, target2.length);
-        assertTrue(Linq.asEnumerable(target2).sequenceEqual(Linq.asEnumerable(source2)));
+        assertTrue(Linq.of(target2).sequenceEqual(Linq.of(source2)));
 
-        Character[] lst = Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).toArray(Character.class);
+        Character[] lst = Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).toArray(Character.class);
         assertEquals(5, lst.length);
         assertEquals("o", lst[4].toString());
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
-        Character[] arr = Linq.asEnumerable(arrChar).toArray(Character.class);
+        Character[] arr = Linq.of(arrChar).toArray(Character.class);
         assertEquals(5, arr.length);
         assertEquals("o", arr[4].toString());
 
-        Character[] hello = Linq.asEnumerable("hello").toArray(Character.class);
+        Character[] hello = Linq.of("hello").toArray(Character.class);
         assertEquals(5, hello.length);
         assertEquals("o", hello[4].toString());
 
@@ -389,7 +389,7 @@ public class ToArrayTest extends TestCase {
         assertEquals(0, empty.length);
 
         String[] array = {"a", "b"};
-        Array<String> stringArray = Linq.asEnumerable(array).toArray();
+        Array<String> stringArray = Linq.of(array).toArray();
         stringArray.set(0, "c");
         assertEquals("a", array[0]);
         assertEquals("c", stringArray.get(0));

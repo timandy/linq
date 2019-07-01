@@ -66,14 +66,14 @@ public class SkipWhileTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
+        IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.skipWhile(x -> true), q.skipWhile(x -> true));
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.skipWhile(x -> true), q.skipWhile(x -> true));
     }
@@ -83,7 +83,7 @@ public class SkipWhileTest extends TestCase {
         int[] source = {8, 3, 12, 4, 6, 10};
         int[] expected = {3, 12, 4, 6, 10};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).skipWhile(e -> e % 2 == 0));
+        assertEquals(Linq.of(expected), Linq.of(source).skipWhile(e -> e % 2 == 0));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class SkipWhileTest extends TestCase {
         int[] source = {8, 3, 12, 4, 6, 10};
         int[] expected = {3, 12, 4, 6, 10};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).skipWhile((e, i) -> e % 2 == 0));
+        assertEquals(Linq.of(expected), Linq.of(source).skipWhile((e, i) -> e % 2 == 0));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class SkipWhileTest extends TestCase {
         int[] source = {3, 2, 4, 12, 6};
         int[] expected = {3, 2, 4, 12, 6};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).skipWhile(e -> e % 2 == 0));
+        assertEquals(Linq.of(expected), Linq.of(source).skipWhile(e -> e % 2 == 0));
     }
 
     @Test
@@ -107,7 +107,7 @@ public class SkipWhileTest extends TestCase {
         int[] source = {3, 2, 4, 12, 6};
         int[] expected = {3, 2, 4, 12, 6};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).skipWhile((e, i) -> e % 2 == 0));
+        assertEquals(Linq.of(expected), Linq.of(source).skipWhile((e, i) -> e % 2 == 0));
     }
 
     @Test
@@ -115,7 +115,7 @@ public class SkipWhileTest extends TestCase {
         int[] source = {6, 2, 5, 3, 8};
         int[] expected = {2, 5, 3, 8};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).skipWhile((element, index) -> index == 0));
+        assertEquals(Linq.of(expected), Linq.of(source).skipWhile((element, index) -> index == 0));
     }
 
     @Test
@@ -123,7 +123,7 @@ public class SkipWhileTest extends TestCase {
         int[] source = {6, 2, 5, 3, 8};
         int[] expected = {8};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).skipWhile((element, index) -> index < source.length - 1));
+        assertEquals(Linq.of(expected), Linq.of(source).skipWhile((element, index) -> index < source.length - 1));
     }
 
     @Test
@@ -156,13 +156,13 @@ public class SkipWhileTest extends TestCase {
 
     @Test
     public void testSkipWhile() {
-        assertEquals(2, Linq.asEnumerable(depts).skipWhile(dept -> dept.name.equals("Sales")).count());
-        assertEquals(3, Linq.asEnumerable(depts).skipWhile(dept -> !dept.name.equals("Sales")).count());
+        assertEquals(2, Linq.of(depts).skipWhile(dept -> dept.name.equals("Sales")).count());
+        assertEquals(3, Linq.of(depts).skipWhile(dept -> !dept.name.equals("Sales")).count());
     }
 
     @Test
     public void testSkipWhileIndexed() {
-        int count = Linq.asEnumerable(depts)
+        int count = Linq.of(depts)
                 .skipWhile((dept, index) -> dept.name.equals("Sales") || index == 1)
                 .count();
         assertEquals(1, count);

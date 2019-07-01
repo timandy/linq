@@ -29,14 +29,14 @@ public class ReverseTest extends TestCase {
     private <T> void Reverse(IEnumerable<T> source) {
         List<T> expectedList = source.toList();
         Collections.reverse(expectedList);
-        IEnumerable<T> expected = Linq.asEnumerable(expectedList);
+        IEnumerable<T> expected = Linq.of(expectedList);
 
         IEnumerable<T> actual = source.reverse();
 
         assertEquals(expected, actual);
         assertEquals(expected.count(), actual.count()); // Count may be optimized.
-        assertEquals(expected, Linq.asEnumerable(actual.toArray()));
-        assertEquals(expected, Linq.asEnumerable(actual.toList()));
+        assertEquals(expected, Linq.of(actual.toArray()));
+        assertEquals(expected, Linq.of(actual.toList()));
 
         assertEquals(expected.firstOrDefault(), actual.firstOrDefault());
         assertEquals(expected.lastOrDefault(), actual.lastOrDefault());
@@ -67,7 +67,7 @@ public class ReverseTest extends TestCase {
     private <T> void RunOnce(IEnumerable<T> source) {
         List<T> expectedList = source.toList();
         Collections.reverse(expectedList);
-        IEnumerable<T> expected = Linq.asEnumerable(expectedList);
+        IEnumerable<T> expected = Linq.of(expectedList);
 
         IEnumerable<T> actual = source.runOnce().reverse();
 
@@ -75,11 +75,11 @@ public class ReverseTest extends TestCase {
     }
 
     private IEnumerable<Object[]> ReverseData() {
-        IEnumerable<IEnumerable<?>> integers = Linq.asEnumerable(
-                Linq.asEnumerable(), // No elements.
-                Linq.asEnumerable(new int[]{1}), // One element.
-                Linq.asEnumerable(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}), // Distinct elements.
-                Linq.asEnumerable(new int[]{-10, 0, 5, 0, 9, 100, 9}) // Some repeating elements.
+        IEnumerable<IEnumerable<?>> integers = Linq.of(
+                Linq.of(), // No elements.
+                Linq.of(new int[]{1}), // One element.
+                Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}), // Distinct elements.
+                Linq.of(new int[]{-10, 0, 5, 0, 9, 100, 9}) // Some repeating elements.
         );
 
         return integers
@@ -98,7 +98,7 @@ public class ReverseTest extends TestCase {
     @Test
     public void testReverse() {
         //null 在前,值相等的按原始顺序
-        String s = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno)
                 .select(emp -> emp.name)
                 .toList()
@@ -106,7 +106,7 @@ public class ReverseTest extends TestCase {
         assertEquals("[Gates, Fred, Eric, Janet, Bill, Cedric]", s);
 
         //reverse 与 orderByDescending 不同.reverse 是完全反序,orderByDescending  如果相等保持原始顺序
-        String ss = Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps))
+        String ss = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno)
                 .select(emp -> emp.name)
                 .reverse()
@@ -114,16 +114,16 @@ public class ReverseTest extends TestCase {
                 .toString();
         assertEquals("[Cedric, Bill, Janet, Eric, Fred, Gates]", ss);
 
-        Character[] lst = Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).reverse().toArray(Character.class);
+        Character[] lst = Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).reverse().toArray(Character.class);
         assertEquals(5, lst.length);
         assertEquals("h", lst[4].toString());
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
-        Character[] arr = Linq.asEnumerable(arrChar).reverse().toArray(Character.class);
+        Character[] arr = Linq.of(arrChar).reverse().toArray(Character.class);
         assertEquals(5, arr.length);
         assertEquals("h", arr[4].toString());
 
-        Character[] hello = Linq.asEnumerable("hello").reverse().toArray(Character.class);
+        Character[] hello = Linq.of("hello").reverse().toArray(Character.class);
         assertEquals(5, hello.length);
         assertEquals("h", hello[4].toString());
 

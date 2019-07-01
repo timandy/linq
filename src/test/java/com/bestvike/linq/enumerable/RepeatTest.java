@@ -111,21 +111,21 @@ public class RepeatTest extends TestCase {
     public void CountOneSingleResult() {
         int[] expected = {-15};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.repeat(-15, 1));
+        assertEquals(Linq.of(expected), Linq.repeat(-15, 1));
     }
 
     @Test
     public void RepeatArbitraryCorrectResults() {
         int[] expected = {12, 12, 12, 12, 12, 12, 12, 12};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.repeat(12, 8));
+        assertEquals(Linq.of(expected), Linq.repeat(12, 8));
     }
 
     @Test
     public void RepeatNull() {
         Integer[] expected = {null, null, null, null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.repeat((Integer) null, 4));
+        assertEquals(Linq.of(expected), Linq.repeat((Integer) null, 4));
     }
 
     @Test
@@ -150,10 +150,10 @@ public class RepeatTest extends TestCase {
 
     @Test
     public void TakeCanOnlyBeOne() {
-        assertEquals(Linq.asEnumerable(new int[]{1}), Linq.repeat(1, 10).take(1));
-        assertEquals(Linq.asEnumerable(new int[]{1}), Linq.repeat(1, 10).skip(1).take(1));
-        assertEquals(Linq.asEnumerable(new int[]{1}), Linq.repeat(1, 10).take(3).skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{1}), Linq.repeat(1, 10).take(3).take(1));
+        assertEquals(Linq.of(new int[]{1}), Linq.repeat(1, 10).take(1));
+        assertEquals(Linq.of(new int[]{1}), Linq.repeat(1, 10).skip(1).take(1));
+        assertEquals(Linq.of(new int[]{1}), Linq.repeat(1, 10).take(3).skip(2));
+        assertEquals(Linq.of(new int[]{1}), Linq.repeat(1, 10).take(3).take(1));
     }
 
     @Test

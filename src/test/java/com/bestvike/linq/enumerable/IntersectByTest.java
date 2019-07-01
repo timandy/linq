@@ -16,8 +16,8 @@ public class IntersectByTest extends TestCase {
                 new Employee(150, "Theodore", 30),
                 emps[3],
         };
-        assertEquals(2, Linq.asEnumerable(emps)
-                .intersectBy(Linq.asEnumerable(emps2), emp -> emp.deptno)
+        assertEquals(2, Linq.of(emps)
+                .intersectBy(Linq.of(emps2), emp -> emp.deptno)
                 .count());
     }
 
@@ -38,8 +38,8 @@ public class IntersectByTest extends TestCase {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10)
         };
-        assertEquals(1, Linq.asEnumerable(emps)
-                .intersectBy(Linq.asEnumerable(emps2), emp -> emp.deptno, comparer)
+        assertEquals(1, Linq.of(emps)
+                .intersectBy(Linq.of(emps2), emp -> emp.deptno, comparer)
                 .count());
     }
 }

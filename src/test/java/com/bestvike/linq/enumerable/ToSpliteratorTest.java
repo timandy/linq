@@ -18,13 +18,13 @@ import java.util.stream.Stream;
 public class ToSpliteratorTest extends TestCase {
     @Test
     public void testReset() {
-        IEnumerator<Employee> enumerator = Linq.asEnumerable(emps).enumerator();
+        IEnumerator<Employee> enumerator = Linq.of(emps).enumerator();
         assertThrows(NotSupportedException.class, enumerator::reset);
     }
 
     @Test
     public void testRemove() {
-        IEnumerator<Employee> enumerator = Linq.asEnumerable(emps).enumerator();
+        IEnumerator<Employee> enumerator = Linq.of(emps).enumerator();
         enumerator.moveNext();
         assertThrows(NotSupportedException.class, enumerator::remove);
     }
@@ -32,7 +32,7 @@ public class ToSpliteratorTest extends TestCase {
     @Test
     public void testForEachRemaining() {
         List<String> ids = new ArrayList<>();
-        try (IEnumerator<Employee> enumerator = Linq.asEnumerable(emps).enumerator()) {
+        try (IEnumerator<Employee> enumerator = Linq.of(emps).enumerator()) {
             enumerator.moveNext();
             enumerator.moveNext();
             enumerator.forEachRemaining(a -> ids.add(String.valueOf(a.empno)));
@@ -45,7 +45,7 @@ public class ToSpliteratorTest extends TestCase {
     @Test
     public void testForEach() {
         List<String> ids = new ArrayList<>();
-        IEnumerable<Employee> enumerable = Linq.asEnumerable(emps);
+        IEnumerable<Employee> enumerable = Linq.of(emps);
         enumerable.forEach(a -> ids.add(String.valueOf(a.empno)));
         assertEquals(4, ids.size());
         assertEquals("100", ids.get(0));
@@ -59,37 +59,37 @@ public class ToSpliteratorTest extends TestCase {
         Stream<Integer> stream = Linq.range(0, 2048).stream();
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a >= 1024).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Integer.class), Linq.range(1024, 1024));
+        assertEquals(Linq.of(objects).cast(Integer.class), Linq.range(1024, 1024));
     }
 
     @Test
     public void testStreamInt() {
         int[] array = {2, 4, 6, 7};
-        IEnumerable<Integer> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Integer> enumerable = Linq.of(array);
         Stream<Integer> stream = enumerable.stream();
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Integer.class), Linq.asEnumerable(2, 4, 6));
+        assertEquals(Linq.of(objects).cast(Integer.class), Linq.of(2, 4, 6));
     }
 
     @Test
     public void testStreamLong() {
         long[] array = {2, 4, 6, 7};
-        IEnumerable<Long> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Long> enumerable = Linq.of(array);
         Stream<Long> stream = enumerable.stream();
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Long.class), Linq.asEnumerable(2L, 4L, 6L));
+        assertEquals(Linq.of(objects).cast(Long.class), Linq.of(2L, 4L, 6L));
     }
 
     @Test
     public void testStreamDouble() {
         double[] array = {2d, 4d, 6d, 7d};
-        IEnumerable<Double> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Double> enumerable = Linq.of(array);
         Stream<Double> stream = enumerable.stream();
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0d).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Double.class), Linq.asEnumerable(2d, 4d, 6d));
+        assertEquals(Linq.of(objects).cast(Double.class), Linq.of(2d, 4d, 6d));
     }
 
     @Test
@@ -97,57 +97,57 @@ public class ToSpliteratorTest extends TestCase {
         Stream<Integer> stream = Linq.range(0, 2048).stream(false);
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a >= 1024).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Integer.class), Linq.range(1024, 1024));
+        assertEquals(Linq.of(objects).cast(Integer.class), Linq.range(1024, 1024));
         //
         Stream<Integer> pStream = Linq.range(0, 2048).stream(true);
         assertTrue(pStream.isParallel());
         Object[] pObjects = pStream.filter(a -> a >= 1024).toArray();
-        assertEquals(Linq.asEnumerable(pObjects).cast(Integer.class), Linq.range(1024, 1024));
+        assertEquals(Linq.of(pObjects).cast(Integer.class), Linq.range(1024, 1024));
     }
 
     @Test
     public void testStreamInt2() {
         int[] array = {2, 4, 6, 7};
-        IEnumerable<Integer> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Integer> enumerable = Linq.of(array);
         Stream<Integer> stream = enumerable.stream(false);
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Integer.class), Linq.asEnumerable(2, 4, 6));
+        assertEquals(Linq.of(objects).cast(Integer.class), Linq.of(2, 4, 6));
         //
         Stream<Integer> pStream = enumerable.stream(true);
         assertTrue(pStream.isParallel());
         Object[] PObjects = pStream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(PObjects).cast(Integer.class), Linq.asEnumerable(2, 4, 6));
+        assertEquals(Linq.of(PObjects).cast(Integer.class), Linq.of(2, 4, 6));
     }
 
     @Test
     public void testStreamLong2() {
         long[] array = {2, 4, 6, 7};
-        IEnumerable<Long> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Long> enumerable = Linq.of(array);
         Stream<Long> stream = enumerable.stream(false);
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Long.class), Linq.asEnumerable(2L, 4L, 6L));
+        assertEquals(Linq.of(objects).cast(Long.class), Linq.of(2L, 4L, 6L));
         //
         Stream<Long> pStream = enumerable.stream(true);
         assertTrue(pStream.isParallel());
         Object[] pObjects = pStream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(pObjects).cast(Long.class), Linq.asEnumerable(2L, 4L, 6L));
+        assertEquals(Linq.of(pObjects).cast(Long.class), Linq.of(2L, 4L, 6L));
     }
 
     @Test
     public void testStreamDouble2() {
         double[] array = {2d, 4d, 6d, 7d};
-        IEnumerable<Double> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Double> enumerable = Linq.of(array);
         Stream<Double> stream = enumerable.stream(false);
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0d).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Double.class), Linq.asEnumerable(2d, 4d, 6d));
+        assertEquals(Linq.of(objects).cast(Double.class), Linq.of(2d, 4d, 6d));
         //
         Stream<Double> pStream = enumerable.stream(true);
         assertTrue(pStream.isParallel());
         Object[] pObjects = pStream.filter(a -> a % 2 == 0d).toArray();
-        assertEquals(Linq.asEnumerable(pObjects).cast(Double.class), Linq.asEnumerable(2d, 4d, 6d));
+        assertEquals(Linq.of(pObjects).cast(Double.class), Linq.of(2d, 4d, 6d));
     }
 
     @Test
@@ -155,36 +155,36 @@ public class ToSpliteratorTest extends TestCase {
         Stream<Integer> stream = Linq.range(0, 2048).parallelStream();
         assertTrue(stream.isParallel());
         Object[] objects = stream.filter(a -> a >= 1024).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Integer.class), Linq.range(1024, 1024));
+        assertEquals(Linq.of(objects).cast(Integer.class), Linq.range(1024, 1024));
     }
 
     @Test
     public void testStreamInt3() {
         int[] array = {2, 4, 6, 7};
-        IEnumerable<Integer> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Integer> enumerable = Linq.of(array);
         Stream<Integer> stream = enumerable.parallelStream();
         assertTrue(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Integer.class), Linq.asEnumerable(2, 4, 6));
+        assertEquals(Linq.of(objects).cast(Integer.class), Linq.of(2, 4, 6));
     }
 
     @Test
     public void testStreamLong3() {
         long[] array = {2, 4, 6, 7};
-        IEnumerable<Long> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Long> enumerable = Linq.of(array);
         Stream<Long> stream = enumerable.parallelStream();
         assertTrue(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Long.class), Linq.asEnumerable(2L, 4L, 6L));
+        assertEquals(Linq.of(objects).cast(Long.class), Linq.of(2L, 4L, 6L));
     }
 
     @Test
     public void testStreamDouble3() {
         double[] array = {2d, 4d, 6d, 7d};
-        IEnumerable<Double> enumerable = Linq.asEnumerable(array);
+        IEnumerable<Double> enumerable = Linq.of(array);
         Stream<Double> stream = enumerable.parallelStream();
         assertTrue(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0d).toArray();
-        assertEquals(Linq.asEnumerable(objects).cast(Double.class), Linq.asEnumerable(2d, 4d, 6d));
+        assertEquals(Linq.of(objects).cast(Double.class), Linq.of(2d, 4d, 6d));
     }
 }

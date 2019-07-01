@@ -19,7 +19,7 @@ import java.util.List;
 public class ConcatTest extends TestCase {
     @Test
     public void SameResultsWithQueryAndRepeatCallsInt() {
-        this.SameResultsWithQueryAndRepeatCallsInt(Linq.asEnumerable(2, 3, 2, 4, 5), Linq.asEnumerable(1, 9, 4));
+        this.SameResultsWithQueryAndRepeatCallsInt(Linq.of(2, 3, 2, 4, 5), Linq.of(1, 9, 4));
     }
 
     private void SameResultsWithQueryAndRepeatCallsInt(IEnumerable<Integer> first, IEnumerable<Integer> second) {
@@ -29,7 +29,7 @@ public class ConcatTest extends TestCase {
 
     @Test
     public void SameResultsWithQueryAndRepeatCallsString() {
-        this.SameResultsWithQueryAndRepeatCallsString(Linq.asEnumerable("AAA", "", "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice"), Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS"));
+        this.SameResultsWithQueryAndRepeatCallsString(Linq.of("AAA", "", "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice"), Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS"));
     }
 
     private void SameResultsWithQueryAndRepeatCallsString(IEnumerable<String> first, IEnumerable<String> second) {
@@ -48,8 +48,8 @@ public class ConcatTest extends TestCase {
     @Test
     public void PossiblyEmptyInputs() {
         this.PossiblyEmptyInputs(Linq.empty(), Linq.empty(), Linq.empty());
-        this.PossiblyEmptyInputs(Linq.empty(), Linq.asEnumerable(2, 6, 4, 6, 2), Linq.asEnumerable(2, 6, 4, 6, 2));
-        this.PossiblyEmptyInputs(Linq.asEnumerable(2, 3, 5, 9), Linq.asEnumerable(8, 10), Linq.asEnumerable(2, 3, 5, 9, 8, 10));
+        this.PossiblyEmptyInputs(Linq.empty(), Linq.of(2, 6, 4, 6, 2), Linq.of(2, 6, 4, 6, 2));
+        this.PossiblyEmptyInputs(Linq.of(2, 3, 5, 9), Linq.of(8, 10), Linq.of(2, 3, 5, 9, 8, 10));
     }
 
     private void PossiblyEmptyInputs(IEnumerable<Integer> first, IEnumerable<Integer> second, IEnumerable<Integer> expected) {
@@ -67,8 +67,8 @@ public class ConcatTest extends TestCase {
 
     @Test
     public void FirstNull() {
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((int[]) null).concat(Linq.range(0, 0)));
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable((int[]) null).concat(null)); // If both inputs are null, throw for "first" first
+        assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null).concat(Linq.range(0, 0)));
+        assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null).concat(null)); // If both inputs are null, throw for "first" first
     }
 
     @Test
@@ -151,7 +151,7 @@ public class ConcatTest extends TestCase {
     }
 
     private IEnumerable<Object[]> ListSourcesData() {
-        return this.GenerateSourcesData(e -> Linq.asEnumerable(e.toList()), null);
+        return this.GenerateSourcesData(e -> Linq.of(e.toList()), null);
     }
 
     private IEnumerable<Object[]> ConcatOfConcatsData() {
@@ -169,7 +169,7 @@ public class ConcatTest extends TestCase {
     }
 
     private IEnumerable<Object[]> ChainedCollectionConcatData() {
-        return this.GenerateSourcesData(null, e -> Linq.asEnumerable(e.toList()));
+        return this.GenerateSourcesData(null, e -> Linq.of(e.toList()));
     }
 
     private IEnumerable<Object[]> AppendedPrependedConcatAlternationsData() {
@@ -206,13 +206,13 @@ public class ConcatTest extends TestCase {
                     }
                 }
 
-                result.add(new Object[]{Linq.asEnumerable(expected.toArray()), actual.toArray()});
+                result.add(new Object[]{Linq.of(expected.toArray()), actual.toArray()});
 
                 actual = foundation;
                 expected.clear();
             }
         }
-        return Linq.asEnumerable(result);
+        return Linq.of(result);
     }
 
     private IEnumerable<Object[]> GenerateSourcesData(Func1<IEnumerable<Integer>, IEnumerable<Integer>> outerTransform, Func1<IEnumerable<Integer>, IEnumerable<Integer>> innerTransform) {
@@ -236,7 +236,7 @@ public class ConcatTest extends TestCase {
         result.add(new Object[]{Linq.repeat(Linq.empty(), 256), Linq.empty()});
         result.add(new Object[]{Linq.repeat(Linq.repeat(6, 1), 256), Linq.repeat(6, 256)});
         result.add(new Object[]{Linq.range(0, 500).select(i -> Linq.repeat(i, 1)).reverse(), Linq.range(0, 500).reverse()});
-        return Linq.asEnumerable(result);
+        return Linq.of(result);
     }
 
     @Test
@@ -333,7 +333,7 @@ public class ConcatTest extends TestCase {
         // ToArray needs the count as well, and the process of copying all of the collections
         // to the array should also not be recursive.
         assertEquals(Linq.empty(), concatChain.toArray());
-        assertEquals(Linq.empty(), Linq.asEnumerable(concatChain.toList())); // ToList also gets the count beforehand
+        assertEquals(Linq.empty(), Linq.of(concatChain.toList())); // ToList also gets the count beforehand
     }
 
     @Test
@@ -433,9 +433,9 @@ public class ConcatTest extends TestCase {
         // Marker at the end
         result.add(new Object[]{
                 new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
-                        Linq.asEnumerable(new int[]{1}),
-                        Linq.asEnumerable(new int[]{2}),
+                        Linq.of(new int[]{0}),
+                        Linq.of(new int[]{1}),
+                        Linq.of(new int[]{2}),
                         Linq.singleton(3)
                 }
         });
@@ -444,25 +444,25 @@ public class ConcatTest extends TestCase {
         result.add(new Object[]{
                 new IEnumerable[]{
                         Linq.singleton(0),
-                        Linq.asEnumerable(new int[]{1}),
-                        Linq.asEnumerable(new int[]{2}),
-                        Linq.asEnumerable(new int[]{3})
+                        Linq.of(new int[]{1}),
+                        Linq.of(new int[]{2}),
+                        Linq.of(new int[]{3})
                 }
         });
 
         // Marker in middle
         result.add(new Object[]{
                 new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
+                        Linq.of(new int[]{0}),
                         Linq.singleton(1),
-                        Linq.asEnumerable(new int[]{2})
+                        Linq.of(new int[]{2})
                 }});
 
         // Non-marker in middle
         result.add(new Object[]{
                 new IEnumerable[]{
                         Linq.singleton(0),
-                        Linq.asEnumerable(new int[]{1}),
+                        Linq.of(new int[]{1}),
                         Linq.singleton(2)
                 }
         });
@@ -470,9 +470,9 @@ public class ConcatTest extends TestCase {
         // Big arrays (marker in middle)
         result.add(new Object[]{
                 new IEnumerable[]{
-                        Linq.asEnumerable(Linq.range(0, 100).toArray()),
+                        Linq.of(Linq.range(0, 100).toArray()),
                         Linq.range(100, 100).toArray(),
-                        Linq.asEnumerable(Linq.range(200, 100).toArray())
+                        Linq.of(Linq.range(200, 100).toArray())
                 }
         });
 
@@ -480,7 +480,7 @@ public class ConcatTest extends TestCase {
         result.add(new Object[]{
                 new IEnumerable[]{
                         Linq.range(0, 100).toArray(),
-                        Linq.asEnumerable(Linq.range(100, 100).toArray()),
+                        Linq.of(Linq.range(100, 100).toArray()),
                         Linq.range(200, 100).toArray()
                 }
         });
@@ -489,9 +489,9 @@ public class ConcatTest extends TestCase {
         result.add(new Object[]{
                 new IEnumerable[]{
                         Linq.singleton(0),
-                        Linq.asEnumerable(new int[]{1}),
+                        Linq.of(new int[]{1}),
                         Linq.singleton(2),
-                        Linq.asEnumerable(new int[]{3}),
+                        Linq.of(new int[]{3}),
                         Linq.singleton(4)
                 }
         });
@@ -499,14 +499,14 @@ public class ConcatTest extends TestCase {
         // Interleaved (first non-marker)
         result.add(new Object[]{
                 new IEnumerable[]{
-                        Linq.asEnumerable(new int[]{0}),
+                        Linq.of(new int[]{0}),
                         Linq.singleton(1),
-                        Linq.asEnumerable(new int[]{2}),
+                        Linq.of(new int[]{2}),
                         Linq.singleton(3),
-                        Linq.asEnumerable(new int[]{4})
+                        Linq.of(new int[]{4})
                 }
         });
-        return Linq.asEnumerable(result);
+        return Linq.of(result);
     }
 
     @Test
@@ -534,6 +534,6 @@ public class ConcatTest extends TestCase {
 
     @Test
     public void testConcat() {
-        assertEquals(6, Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)).count());
+        assertEquals(6, Linq.of(emps).concat(Linq.of(badEmps)).count());
     }
 }

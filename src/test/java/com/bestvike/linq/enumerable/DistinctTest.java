@@ -21,7 +21,7 @@ import java.util.Objects;
 public class DistinctTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
+        IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.distinct(), q.distinct());
@@ -29,7 +29,7 @@ public class DistinctTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "Calling Twice", "SoS"})
+        IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "Calling Twice", "SoS"})
                 .where(x -> IsNullOrEmpty(x));
 
         assertEquals(q.distinct(), q.distinct());
@@ -38,13 +38,13 @@ public class DistinctTest extends TestCase {
     @Test
     public void EmptySource() {
         int[] source = {};
-        assertEmpty(Linq.asEnumerable(source).distinct());
+        assertEmpty(Linq.of(source).distinct());
     }
 
     @Test
     public void EmptySourceRunOnce() {
         int[] source = {};
-        assertEmpty(Linq.asEnumerable(source).runOnce().distinct());
+        assertEmpty(Linq.of(source).runOnce().distinct());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class DistinctTest extends TestCase {
         String[] source = {null};
         String[] expected = {null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct(EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(source).distinct(EqualityComparer.Default()));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class DistinctTest extends TestCase {
         String[] source = {null, null, Empty};
         String[] expected = {null, Empty};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct(EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(source).distinct(EqualityComparer.Default()));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class DistinctTest extends TestCase {
         String[] source = {null, null};
         String[] expected = {null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct(EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(source).distinct(EqualityComparer.Default()));
     }
 
     @Test
@@ -76,14 +76,14 @@ public class DistinctTest extends TestCase {
         int[] source = {5, 5, 5, 5, 5, 5};
         int[] expected = {5};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct());
+        assertEquals(Linq.of(expected), Linq.of(source).distinct());
     }
 
     @Test
     public void AllUnique() {
         int[] source = {2, -5, 0, 6, 10, 9};
 
-        assertEquals(Linq.asEnumerable(source), Linq.asEnumerable(source).distinct());
+        assertEquals(Linq.of(source), Linq.of(source).distinct());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class DistinctTest extends TestCase {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct());
+        assertEquals(Linq.of(expected), Linq.of(source).distinct());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class DistinctTest extends TestCase {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().distinct());
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().distinct());
     }
 
     @Test
@@ -107,7 +107,7 @@ public class DistinctTest extends TestCase {
         int[] source = {1, 2, 3, 4, 5, 1};
         int[] expected = {1, 2, 3, 4, 5};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct());
+        assertEquals(Linq.of(expected), Linq.of(source).distinct());
     }
 
     // Multiple elements repeat non-consecutively
@@ -116,7 +116,7 @@ public class DistinctTest extends TestCase {
         int[] source = {1, 1, 2, 2, 4, 3, 1, 3, 2};
         int[] expected = {1, 2, 4, 3};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct());
+        assertEquals(Linq.of(expected), Linq.of(source).distinct());
     }
 
     @Test
@@ -124,7 +124,7 @@ public class DistinctTest extends TestCase {
         int[] source = {1, 1, 2, 2, 4, 3, 1, 3, 2};
         int[] expected = {1, 2, 4, 3};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().distinct());
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().distinct());
     }
 
     @Test
@@ -132,7 +132,7 @@ public class DistinctTest extends TestCase {
         String[] source = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
         String[] expected = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct());
+        assertEquals(Linq.of(expected), Linq.of(source).distinct());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class DistinctTest extends TestCase {
         String[] source = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
         String[] expected = {"Bob", "Tim", "Robert"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct(new AnagramEqualityComparer()), new AnagramEqualityComparer());
+        assertEquals(Linq.of(expected), Linq.of(source).distinct(new AnagramEqualityComparer()), new AnagramEqualityComparer());
     }
 
     @Test
@@ -162,19 +162,19 @@ public class DistinctTest extends TestCase {
         String[] source = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
         String[] expected = {"Bob", "Tim", "Robert"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().distinct(new AnagramEqualityComparer()), new AnagramEqualityComparer());
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().distinct(new AnagramEqualityComparer()), new AnagramEqualityComparer());
     }
 
     private IEnumerable<Object[]> SequencesWithDuplicates() {
         List<Object[]> lst = new ArrayList<>();
         // Validate an array of different numeric data types.
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new long[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new float[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(new double[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.asEnumerable(m(1), m(1), m(1), m(2), m(3), m(5), m(5), m(6), m(6), m(10))});
+        lst.add(new Object[]{Linq.of(new int[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.of(new long[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.of(new float[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.of(new double[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
+        lst.add(new Object[]{Linq.of(m(1), m(1), m(1), m(2), m(3), m(5), m(5), m(6), m(6), m(10))});
         // Try strings
-        lst.add(new Object[]{Linq.asEnumerable("add",
+        lst.add(new Object[]{Linq.of("add",
                 "add",
                 "subtract",
                 "multiply",
@@ -190,7 +190,7 @@ public class DistinctTest extends TestCase {
                 "namespace",
                 "namespace")
         });
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
@@ -203,7 +203,7 @@ public class DistinctTest extends TestCase {
     private <T> void FindDistinctAndValidate(IEnumerable<T> original) {
         // Convert to list to avoid repeated enumerations of the enumerables.
         List<T> originalList = original.toList();
-        List<T> distinctList = Linq.asEnumerable(originalList).distinct().toList();
+        List<T> distinctList = Linq.of(originalList).distinct().toList();
 
         // Ensure the result doesn't contain duplicates.
         HashSet<T> hashSet = new HashSet<>();
@@ -228,7 +228,7 @@ public class DistinctTest extends TestCase {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).distinct().toArray());
+        assertEquals(Linq.of(expected), Linq.of(source).distinct().toArray());
     }
 
     @Test
@@ -236,20 +236,20 @@ public class DistinctTest extends TestCase {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
-        assertEquals(Linq.asEnumerable(Linq.asEnumerable(expected).toList()), Linq.asEnumerable(Linq.asEnumerable(source).distinct().toList()));
+        assertEquals(Linq.of(Linq.of(expected).toList()), Linq.of(Linq.of(source).distinct().toList()));
     }
 
     @Test
     public void Count() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
-        assertEquals(3, Linq.asEnumerable(source).distinct().count());
+        assertEquals(3, Linq.of(source).distinct().count());
     }
 
     @Test
     public void RepeatEnumerating() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).distinct();
+        IEnumerable<Integer> result = Linq.of(source).distinct();
 
         assertEquals(result, result);
     }
@@ -262,7 +262,7 @@ public class DistinctTest extends TestCase {
                 emps[0],
                 emps[3],
         };
-        assertEquals(3, Linq.asEnumerable(emps2).distinct().count());
+        assertEquals(3, Linq.of(emps2).distinct().count());
     }
 
     @Test
@@ -285,6 +285,6 @@ public class DistinctTest extends TestCase {
                 emps[1],
                 emps[3]
         };
-        assertEquals(2, Linq.asEnumerable(emps2).distinct(comparer).count());
+        assertEquals(2, Linq.of(emps2).distinct(comparer).count());
     }
 }

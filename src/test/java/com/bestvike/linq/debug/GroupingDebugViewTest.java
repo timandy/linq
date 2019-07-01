@@ -16,13 +16,13 @@ import java.util.List;
 public class GroupingDebugViewTest extends TestCase {
     private static IEnumerable<Object[]> DebuggerAttributesValid_Data() {
         List<Object[]> lst = new ArrayList<>();
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1});
+        IEnumerable<Integer> source = Linq.of(new int[]{1});
         lst.add(new Object[]{source.groupBy(i -> i).single(), "1"});
         lst.add(new Object[]{source.groupBy(i -> i.toString(), i -> i).single(), "\"1\""});
         lst.add(new Object[]{source.groupBy(i -> Duration.ofSeconds(i), i -> i).single(), "{PT1S}"});
-        lst.add(new Object[]{Linq.asEnumerable(new String[]{null}).groupBy(x -> x).single(), "null"});
-        lst.add(new Object[]{Linq.asEnumerable(new Integer[]{null}).groupBy(x -> x).single(), "null"});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new String[]{null}).groupBy(x -> x).single(), "null"});
+        lst.add(new Object[]{Linq.of(new Integer[]{null}).groupBy(x -> x).single(), "null"});
+        return Linq.of(lst);
     }
 
     @Test
@@ -39,6 +39,6 @@ public class GroupingDebugViewTest extends TestCase {
         Object debuggerTypeProxy = DebugView.getDebuggerTypeProxy(grouping);
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] values = (Object[]) debuggerTypeProxy;
-        assertEquals(grouping.toArray(), Linq.asEnumerable(values));
+        assertEquals(grouping.toArray(), Linq.of(values));
     }
 }

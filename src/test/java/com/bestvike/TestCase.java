@@ -110,9 +110,9 @@ public class TestCase {
 
         List<String> list = new ArrayList<>();
         StringBuilder temp = new StringBuilder();
-        IEnumerable<Character> separators = Linq.asEnumerable(separator);
+        IEnumerable<Character> separators = Linq.of(separator);
         if (removeEmptyEntries) {
-            for (char c : Linq.asEnumerable(value)) {
+            for (char c : Linq.of(value)) {
                 if (separators.contains(c)) {
                     if (temp.length() > 0) {
                         list.add(temp.toString());
@@ -128,7 +128,7 @@ public class TestCase {
                 temp.setLength(0);
             }
         } else {
-            for (char c : Linq.asEnumerable(value)) {
+            for (char c : Linq.of(value)) {
                 if (separators.contains(c)) {
                     list.add(temp.toString());
                     temp.setLength(0);
@@ -380,7 +380,7 @@ public class TestCase {
         List<Func1<IEnumerable<T>, IEnumerable<T>>> list = new ArrayList<>();
         list.add(e -> e);
         list.add(e -> e.toArray());
-        list.add(e -> Linq.asEnumerable(e.toList()));
+        list.add(e -> Linq.of(e.toList()));
         list.add(e -> e.select(i -> i));
         list.add(e -> e.concat(Array.empty()));
         list.add(e -> ForceNotCollection(e));
@@ -424,7 +424,7 @@ public class TestCase {
     }
 
     protected static <T> IEnumerable<T> FlipIsCollection(IEnumerable<T> source) {
-        return source instanceof ICollection ? ForceNotCollection(source) : Linq.asEnumerable(source.toList());
+        return source instanceof ICollection ? ForceNotCollection(source) : Linq.of(source.toList());
     }
 
     private static boolean equal(Object expected, Object actual) {
@@ -663,8 +663,8 @@ public class TestCase {
                 return false;
             if (x.length() != y.length())
                 return false;
-            try (IEnumerator<Character> en = Linq.asEnumerable(x).orderBy(i -> i).enumerator()) {
-                for (char c : Linq.asEnumerable(y).orderBy(i -> i)) {
+            try (IEnumerator<Character> en = Linq.of(x).orderBy(i -> i).enumerator()) {
+                for (char c : Linq.of(y).orderBy(i -> i)) {
                     en.moveNext();
                     if (c != en.current())
                         return false;
@@ -678,7 +678,7 @@ public class TestCase {
             if (obj == null)
                 return 0;
             int hash = obj.length();
-            for (char c : Linq.asEnumerable(obj))
+            for (char c : Linq.of(obj))
                 hash ^= c;
             return hash;
         }
@@ -1070,9 +1070,9 @@ public class TestCase {
 
     public static class SkipTakeData {
         public static IEnumerable<Object[]> EnumerableData() {
-            IEnumerable<Integer> sourceCounts = Linq.asEnumerable(0, 1, 2, 3, 5, 8, 13, 55, 100, 250);
+            IEnumerable<Integer> sourceCounts = Linq.of(0, 1, 2, 3, 5, 8, 13, 55, 100, 250);
 
-            IEnumerable<Integer> counts = Linq.asEnumerable(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 100, 250, 500, Integer.MAX_VALUE);
+            IEnumerable<Integer> counts = Linq.of(1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 100, 250, 500, Integer.MAX_VALUE);
             final IEnumerable<Integer> countsF = counts.concat(counts.select(c -> -c)).append(0).append(Integer.MIN_VALUE);
 
             return sourceCounts.select(sourceCount -> Tuple.create(sourceCount, Linq.range(0, sourceCount)))

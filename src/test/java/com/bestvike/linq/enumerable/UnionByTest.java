@@ -23,25 +23,25 @@ public class UnionByTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
-        IEnumerable<Integer> q2 = Linq.asEnumerable(1, 9, null, 4);
+        IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
 
         assertEquals(q1.unionBy(q2, IntKeySelector), q1.unionBy(q2, IntKeySelector));
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q1 = Linq.asEnumerable("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
-        IEnumerable<String> q2 = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
+        IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
+        IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
 
         assertEquals(q1.unionBy(q2, StringKeySelector), q1.unionBy(q2, StringKeySelector));
     }
 
     @Test
     public void SameResultsRepeatCallsMultipleUnions() {
-        IEnumerable<Integer> q1 = Linq.asEnumerable(2, 3, null, 2, null, 4, 5);
-        IEnumerable<Integer> q2 = Linq.asEnumerable(1, 9, null, 4);
-        IEnumerable<Integer> q3 = Linq.asEnumerable(null, 8, 2, 2, 3);
+        IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
+        IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
+        IEnumerable<Integer> q3 = Linq.of(null, 8, 2, 2, 3);
 
         assertEquals(q1.unionBy(q2, IntKeySelector).unionBy(q3, IntKeySelector), q1.unionBy(q2, IntKeySelector).unionBy(q3, IntKeySelector));
     }
@@ -50,7 +50,7 @@ public class UnionByTest extends TestCase {
     public void BothEmpty() {
         int[] first = {};
         int[] second = {};
-        assertEmpty(Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEmpty(Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class UnionByTest extends TestCase {
         int[] second = {};
         int[] third = {};
         int[] fourth = {};
-        assertEmpty(Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector).unionBy(Linq.asEnumerable(third), IntKeySelector).unionBy(Linq.asEnumerable(fourth), IntKeySelector));
+        assertEmpty(Linq.of(first).unionBy(Linq.of(second), IntKeySelector).unionBy(Linq.of(third), IntKeySelector).unionBy(Linq.of(fourth), IntKeySelector));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class UnionByTest extends TestCase {
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "Charlie"};
 
         AnagramEqualityComparer comparer = new AnagramEqualityComparer();
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, comparer), comparer);
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), StringKeySelector, comparer), comparer);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class UnionByTest extends TestCase {
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "Charlie"};
 
         AnagramEqualityComparer comparer = new AnagramEqualityComparer();
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).runOnce().unionBy(Linq.asEnumerable(second).runOnce(), StringKeySelector, comparer), comparer);
+        assertEquals(Linq.of(expected), Linq.of(first).runOnce().unionBy(Linq.of(second).runOnce(), StringKeySelector, comparer), comparer);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class UnionByTest extends TestCase {
         String[] first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class UnionByTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -103,7 +103,7 @@ public class UnionByTest extends TestCase {
         String[] first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class UnionByTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class UnionByTest extends TestCase {
         String[] second = new String[0];
         String[] expected = {null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), StringKeySelector, EqualityComparer.Default()));
     }
 
     @Test
@@ -129,7 +129,7 @@ public class UnionByTest extends TestCase {
         String[] second = {null, null};
         String[] expected = {null, Empty};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), StringKeySelector, EqualityComparer.Default()));
     }
 
     @Test
@@ -138,7 +138,7 @@ public class UnionByTest extends TestCase {
         String[] second = new String[0];
         String[] expected = {null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), StringKeySelector, EqualityComparer.Default()));
     }
 
     @Test
@@ -147,7 +147,7 @@ public class UnionByTest extends TestCase {
         int[] second = {2, 4, 5, 3, 2, 3, 9};
         int[] expected = {2, 4, 5, 3, 9};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class UnionByTest extends TestCase {
         int[] second = {};
         int[] expected = {2, 4, 5, 3, 9};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -165,7 +165,7 @@ public class UnionByTest extends TestCase {
         int[] second = {6, 7, 7, 7, 8, 1};
         int[] expected = {1, 2, 3, 4, 5, 6, 7, 8};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -174,7 +174,7 @@ public class UnionByTest extends TestCase {
         int[] second = {1, 1, 1, 1, 1, 1};
         int[] expected = {1};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -183,7 +183,7 @@ public class UnionByTest extends TestCase {
         int[] second = {7};
         int[] expected = {1, 2, 3, 5, 6, 7};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -192,7 +192,7 @@ public class UnionByTest extends TestCase {
         Integer[] second = {3, null, 4, 5};
         Integer[] expected = {2, 3, null, 4, 5};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -201,7 +201,7 @@ public class UnionByTest extends TestCase {
         Integer[] second = {6, 2, 3, 4, 5, 6};
         Integer[] expected = {1, 2, 3, 4, null, 5, 6};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector));
     }
 
     @Test
@@ -212,7 +212,7 @@ public class UnionByTest extends TestCase {
         Integer[] fourth = {null, 1, 7, 2, 7};
         Integer[] expected = {1, 2, 3, 4, null, 5, 6, 8, 7};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector).unionBy(Linq.asEnumerable(third), IntKeySelector).unionBy(Linq.asEnumerable(fourth), IntKeySelector));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector).unionBy(Linq.of(third), IntKeySelector).unionBy(Linq.of(fourth), IntKeySelector));
     }
 
     @Test
@@ -223,7 +223,7 @@ public class UnionByTest extends TestCase {
         Integer[] fourth = {null, 101, 207, 202, 207};
         Integer[] expected = {1, 102, 903, 204, null, 5, 6, 308, 207};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), IntKeySelector, new Modulo100EqualityComparer()).unionBy(Linq.asEnumerable(third), IntKeySelector, new Modulo100EqualityComparer()).unionBy(Linq.asEnumerable(fourth), IntKeySelector, new Modulo100EqualityComparer()));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), IntKeySelector, new Modulo100EqualityComparer()).unionBy(Linq.of(third), IntKeySelector, new Modulo100EqualityComparer()).unionBy(Linq.of(fourth), IntKeySelector, new Modulo100EqualityComparer()));
     }
 
     @Test
@@ -235,8 +235,8 @@ public class UnionByTest extends TestCase {
         String[] plainThenAnagram = {"Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "Golf", "Tango"};
         String[] anagramThenPlain = {"Alpha", "Bravo", "Charlie", "Delta", "Echo", "Foxtrot", "trotFox", "Golf", "choE", "Tango"};
 
-        assertEquals(Linq.asEnumerable(plainThenAnagram), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).unionBy(Linq.asEnumerable(third), StringKeySelector, new AnagramEqualityComparer()));
-        assertEquals(Linq.asEnumerable(anagramThenPlain), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, new AnagramEqualityComparer()).unionBy(Linq.asEnumerable(third), StringKeySelector));
+        assertEquals(Linq.of(plainThenAnagram), Linq.of(first).unionBy(Linq.of(second), StringKeySelector).unionBy(Linq.of(third), StringKeySelector, new AnagramEqualityComparer()));
+        assertEquals(Linq.of(anagramThenPlain), Linq.of(first).unionBy(Linq.of(second), StringKeySelector, new AnagramEqualityComparer()).unionBy(Linq.of(third), StringKeySelector));
     }
 
     @Test
@@ -245,7 +245,7 @@ public class UnionByTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector, null));
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), StringKeySelector, null));
     }
 
     @Test
@@ -258,7 +258,7 @@ public class UnionByTest extends TestCase {
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateMultipleUnions() {
-        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).unionBy(Linq.range(0, 3), IntKeySelector).unionBy(Linq.range(2, 4), IntKeySelector).unionBy(Linq.asEnumerable(new int[]{
+        IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).unionBy(Linq.range(0, 3), IntKeySelector).unionBy(Linq.range(2, 4), IntKeySelector).unionBy(Linq.of(new int[]{
                 9, 2, 4
         }), IntKeySelector);
         // Don't insist on this behaviour, but check it's correct if it happens
@@ -272,7 +272,7 @@ public class UnionByTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).toArray());
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), StringKeySelector).toArray());
     }
 
     @Test
@@ -282,7 +282,7 @@ public class UnionByTest extends TestCase {
         String[] third = {"Bob", "Albert", "Tim"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo", "Albert"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).unionBy(Linq.asEnumerable(third), StringKeySelector).toArray());
+        assertEquals(Linq.of(expected), Linq.of(first).unionBy(Linq.of(second), StringKeySelector).unionBy(Linq.of(third), StringKeySelector).toArray());
     }
 
     @Test
@@ -291,7 +291,7 @@ public class UnionByTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).toList()));
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(first).unionBy(Linq.of(second), StringKeySelector).toList()));
     }
 
     @Test
@@ -301,7 +301,7 @@ public class UnionByTest extends TestCase {
         String[] third = {"Bob", "Albert", "Tim"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo", "Albert"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).unionBy(Linq.asEnumerable(third), StringKeySelector).toList()));
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(first).unionBy(Linq.of(second), StringKeySelector).unionBy(Linq.of(third), StringKeySelector).toList()));
     }
 
     @Test
@@ -309,7 +309,7 @@ public class UnionByTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertEquals(8, Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).count());
+        assertEquals(8, Linq.of(first).unionBy(Linq.of(second), StringKeySelector).count());
     }
 
     @Test
@@ -318,7 +318,7 @@ public class UnionByTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Bob", "Albert", "Tim"};
 
-        assertEquals(9, Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).unionBy(Linq.asEnumerable(third), StringKeySelector).count());
+        assertEquals(9, Linq.of(first).unionBy(Linq.of(second), StringKeySelector).unionBy(Linq.of(third), StringKeySelector).count());
     }
 
     @Test
@@ -326,7 +326,7 @@ public class UnionByTest extends TestCase {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        IEnumerable<String> result = Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector);
+        IEnumerable<String> result = Linq.of(first).unionBy(Linq.of(second), StringKeySelector);
 
         assertEquals(result, result);
     }
@@ -337,7 +337,7 @@ public class UnionByTest extends TestCase {
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Matt", "Albert", "Ichabod"};
 
-        IEnumerable<String> result = Linq.asEnumerable(first).unionBy(Linq.asEnumerable(second), StringKeySelector).unionBy(Linq.asEnumerable(third), StringKeySelector);
+        IEnumerable<String> result = Linq.of(first).unionBy(Linq.of(second), StringKeySelector).unionBy(Linq.of(third), StringKeySelector);
         assertEquals(result, result);
     }
 
@@ -345,18 +345,18 @@ public class UnionByTest extends TestCase {
     public void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
         HashSet<String> set1 = new HashSet<>(StringComparer.OrdinalIgnoreCase);
         set1.add("a");
-        IEnumerable<String> input1 = Linq.asEnumerable(set1);
-        IEnumerable<String> input2 = Linq.asEnumerable(new String[]{"A"});
+        IEnumerable<String> input1 = Linq.of(set1);
+        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
 
-        assertEquals(Linq.asEnumerable("a", "A"), input1.unionBy(input2, StringKeySelector));
-        assertEquals(Linq.asEnumerable("a", "A"), input1.unionBy(input2, StringKeySelector, null));
-        assertEquals(Linq.asEnumerable("a", "A"), input1.unionBy(input2, StringKeySelector, EqualityComparer.Default()));
-        assertEquals(Linq.asEnumerable(new String[]{"a"}), input1.unionBy(input2, StringKeySelector, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("a", "A"), input1.unionBy(input2, StringKeySelector));
+        assertEquals(Linq.of("a", "A"), input1.unionBy(input2, StringKeySelector, null));
+        assertEquals(Linq.of("a", "A"), input1.unionBy(input2, StringKeySelector, EqualityComparer.Default()));
+        assertEquals(Linq.of(new String[]{"a"}), input1.unionBy(input2, StringKeySelector, StringComparer.OrdinalIgnoreCase));
 
-        assertEquals(Linq.asEnumerable("A", "a"), input2.unionBy(input1, StringKeySelector));
-        assertEquals(Linq.asEnumerable("A", "a"), input2.unionBy(input1, StringKeySelector, null));
-        assertEquals(Linq.asEnumerable("A", "a"), input2.unionBy(input1, StringKeySelector, EqualityComparer.Default()));
-        assertEquals(Linq.asEnumerable(new String[]{"A"}), input2.unionBy(input1, StringKeySelector, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("A", "a"), input2.unionBy(input1, StringKeySelector));
+        assertEquals(Linq.of("A", "a"), input2.unionBy(input1, StringKeySelector, null));
+        assertEquals(Linq.of("A", "a"), input2.unionBy(input1, StringKeySelector, EqualityComparer.Default()));
+        assertEquals(Linq.of(new String[]{"A"}), input2.unionBy(input1, StringKeySelector, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test
@@ -388,14 +388,14 @@ public class UnionByTest extends TestCase {
                 new People(6, 4, "Peter")
         };
 
-        IEnumerable<People> peoples = Linq.asEnumerable(source1).unionBy(Linq.asEnumerable(source2), x -> x.groupId).unionBy(Linq.asEnumerable(source3), x -> x.groupId);
+        IEnumerable<People> peoples = Linq.of(source1).unionBy(Linq.of(source2), x -> x.groupId).unionBy(Linq.of(source3), x -> x.groupId);
         assertSame(UnionByIterator2.class, peoples.getClass());
-        assertEquals(Linq.asEnumerable(expect), peoples);
+        assertEquals(Linq.of(expect), peoples);
 
         Func1<People, Integer> groupSelector = x -> x.groupId;
-        IEnumerable<People> peoples2 = Linq.asEnumerable(source1).unionBy(Linq.asEnumerable(source2), groupSelector).unionBy(Linq.asEnumerable(source3), groupSelector);
+        IEnumerable<People> peoples2 = Linq.of(source1).unionBy(Linq.of(source2), groupSelector).unionBy(Linq.of(source3), groupSelector);
         assertSame(UnionByIteratorN.class, peoples2.getClass());
-        assertEquals(Linq.asEnumerable(expect), peoples2);
+        assertEquals(Linq.of(expect), peoples2);
     }
 
     @Test
@@ -425,16 +425,16 @@ public class UnionByTest extends TestCase {
                 new People(2, 2, "Linda")
         };
 
-        IEnumerable<People> peoples = Linq.asEnumerable(source1).unionBy(Linq.asEnumerable(source2), x -> x.groupId).unionBy(Linq.asEnumerable(source3), x -> x.id);
+        IEnumerable<People> peoples = Linq.of(source1).unionBy(Linq.of(source2), x -> x.groupId).unionBy(Linq.of(source3), x -> x.id);
         assertSame(UnionByIterator2.class, peoples.getClass());
-        assertEquals(Linq.asEnumerable(expect), peoples);
+        assertEquals(Linq.of(expect), peoples);
     }
 
     @Test
     public void testUnionBy() {
-        IEnumerable<Employee> enumerable = Linq.asEnumerable(emps)
-                .unionBy(Linq.asEnumerable(badEmps), emp -> emp.deptno)
-                .unionBy(Linq.asEnumerable(emps), emp -> emp.deptno);
+        IEnumerable<Employee> enumerable = Linq.of(emps)
+                .unionBy(Linq.of(badEmps), emp -> emp.deptno)
+                .unionBy(Linq.of(emps), emp -> emp.deptno);
         assertEquals(4, enumerable.count());
         UnionByIterator2<Employee, Integer> unionByIterator2 = (UnionByIterator2<Employee, Integer>) enumerable;
         assertEquals(4, unionByIterator2._toArray(Employee.class).length);
@@ -445,9 +445,9 @@ public class UnionByTest extends TestCase {
 
 
         Func1<Employee, Integer> selector = emp -> emp.deptno;
-        IEnumerable<Employee> enumerable2 = Linq.asEnumerable(emps)
-                .unionBy(Linq.asEnumerable(badEmps), selector)
-                .unionBy(Linq.asEnumerable(emps), selector);
+        IEnumerable<Employee> enumerable2 = Linq.of(emps)
+                .unionBy(Linq.of(badEmps), selector)
+                .unionBy(Linq.of(emps), selector);
         assertEquals(4, enumerable2.count());
         UnionByIteratorN<Employee, Integer> unionByIterator22 = (UnionByIteratorN<Employee, Integer>) enumerable2;
         assertEquals(4, unionByIterator22._toArray(Employee.class).length);
@@ -472,9 +472,9 @@ public class UnionByTest extends TestCase {
         };
 
 
-        IEnumerable<Employee> enumerable = Linq.asEnumerable(emps)
-                .unionBy(Linq.asEnumerable(badEmps), emp -> emp.deptno, comparer)
-                .unionBy(Linq.asEnumerable(emps), emp -> emp.deptno, comparer);
+        IEnumerable<Employee> enumerable = Linq.of(emps)
+                .unionBy(Linq.of(badEmps), emp -> emp.deptno, comparer)
+                .unionBy(Linq.of(emps), emp -> emp.deptno, comparer);
         assertEquals(1, enumerable.count());
         UnionByIterator2<Employee, Integer> unionByIterator2 = (UnionByIterator2<Employee, Integer>) enumerable;
         assertEquals(1, unionByIterator2._toArray(Employee.class).length);
@@ -485,9 +485,9 @@ public class UnionByTest extends TestCase {
 
 
         Func1<Employee, Integer> selector = emp -> emp.deptno;
-        IEnumerable<Employee> enumerable2 = Linq.asEnumerable(emps)
-                .unionBy(Linq.asEnumerable(badEmps), selector, comparer)
-                .unionBy(Linq.asEnumerable(emps), selector, comparer);
+        IEnumerable<Employee> enumerable2 = Linq.of(emps)
+                .unionBy(Linq.of(badEmps), selector, comparer)
+                .unionBy(Linq.of(emps), selector, comparer);
         assertEquals(1, enumerable2.count());
         UnionByIteratorN<Employee, Integer> unionByIterator22 = (UnionByIteratorN<Employee, Integer>) enumerable2;
         assertEquals(1, unionByIterator22._toArray(Employee.class).length);

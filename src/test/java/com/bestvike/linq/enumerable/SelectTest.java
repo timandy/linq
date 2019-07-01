@@ -33,10 +33,10 @@ import java.util.concurrent.CompletableFuture;
 public class SelectTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q1 = Linq.asEnumerable(new String[]{"Alen", "Felix", null, null, "X", "Have Space", "Clinton", ""})
+        IEnumerable<String> q1 = Linq.of(new String[]{"Alen", "Felix", null, null, "X", "Have Space", "Clinton", ""})
                 .select(x1 -> x1);
 
-        IEnumerable<Integer> q2 = Linq.asEnumerable(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
+        IEnumerable<Integer> q2 = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
                 .select(x2 -> x2);
 
         IEnumerable<Tuple2<String, Integer>> q = q1.selectMany(a -> q2, (x3, x4) -> Tuple.create(x3, x4));
@@ -49,7 +49,7 @@ public class SelectTest extends TestCase {
         CustInfo[] source = new CustInfo[]{new CustInfo("Prakash", 98088)};
         String[] expected = {"Prakash"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select(e -> e.name));
+        assertEquals(Linq.of(expected), Linq.of(source).select(e -> e.name));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class SelectTest extends TestCase {
                 new CustInfo("Prakash", 39030)
         };
         String[] expected = {"Prakash", "Bob", "Chris", null, "Prakash"};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select(e -> e.name));
+        assertEquals(Linq.of(expected), Linq.of(source).select(e -> e.name));
     }
 
     @Test
@@ -75,9 +75,9 @@ public class SelectTest extends TestCase {
                 new CustInfo("Prakash", 39030)
         };
         String[] expected = {"Prakash", "Bob", "Chris", null, "Prakash"};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).runOnce().select(e -> e.name));
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).toArray().runOnce().select(e -> e.name));
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(Linq.asEnumerable(source).toList()).runOnce().select(e -> e.name));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().select(e -> e.name));
+        assertEquals(Linq.of(expected), Linq.of(source).toArray().runOnce().select(e -> e.name));
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(source).toList()).runOnce().select(e -> e.name));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class SelectTest extends TestCase {
         };
         String[] expected = {"Prakash"};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select((e, index) -> e.name));
+        assertEquals(Linq.of(expected), Linq.of(source).select((e, index) -> e.name));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class SelectTest extends TestCase {
                 new CustInfo("Prakash", 39030)
         };
         String[] expected = {"Prakash", "Bob", "Chris", null, "Prakash"};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select((e, i) -> e.name));
+        assertEquals(Linq.of(expected), Linq.of(source).select((e, i) -> e.name));
     }
 
     @Test
@@ -125,7 +125,7 @@ public class SelectTest extends TestCase {
                 new CustInfo("Chris", 39033)
         };
         String[] expected = {"Prakash", null, null};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select((e, i) -> i == 0 ? e.name : null));
+        assertEquals(Linq.of(expected), Linq.of(source).select((e, i) -> i == 0 ? e.name : null));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class SelectTest extends TestCase {
                 new CustInfo("Chuck", 39033)
         };
         String[] expected = {null, null, null, null, null, "Chuck"};
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(source).select((e, i) -> i == 5 ? e.name : null));
+        assertEquals(Linq.of(expected), Linq.of(source).select((e, i) -> i == 5 ? e.name : null));
     }
 
     @Test
@@ -193,7 +193,7 @@ public class SelectTest extends TestCase {
             return 1;
         }};
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -205,7 +205,7 @@ public class SelectTest extends TestCase {
             return 1;
         });
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -217,7 +217,7 @@ public class SelectTest extends TestCase {
             return 1;
         }));
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -229,7 +229,7 @@ public class SelectTest extends TestCase {
             return 1;
         }));
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -253,7 +253,7 @@ public class SelectTest extends TestCase {
             return 1;
         }};
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -265,7 +265,7 @@ public class SelectTest extends TestCase {
             return 1;
         });
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -277,7 +277,7 @@ public class SelectTest extends TestCase {
             return 1;
         }));
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -289,7 +289,7 @@ public class SelectTest extends TestCase {
             return 1;
         }));
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(d -> d).select(d -> d.apply());
+        IEnumerable<Integer> query = Linq.of(source).select(d -> d).select(d -> d.apply());
         assertFalse(funcCalled.value);
     }
 
@@ -310,7 +310,7 @@ public class SelectTest extends TestCase {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -327,7 +327,7 @@ public class SelectTest extends TestCase {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -344,7 +344,7 @@ public class SelectTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -361,7 +361,7 @@ public class SelectTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -396,7 +396,7 @@ public class SelectTest extends TestCase {
         int[] source = new int[]{1};
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         IEnumerator<Integer> enumerator = query.enumerator();
         while (enumerator.moveNext()) ;
@@ -409,7 +409,7 @@ public class SelectTest extends TestCase {
         List<Integer> source = Arrays.asList(1);
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         IEnumerator<Integer> enumerator = query.enumerator();
         while (enumerator.moveNext()) ;
@@ -422,7 +422,7 @@ public class SelectTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1));
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         IEnumerator<Integer> enumerator = query.enumerator();
         while (enumerator.moveNext()) ;
@@ -435,7 +435,7 @@ public class SelectTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1));
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector);
 
         IEnumerator<Integer> enumerator = query.enumerator();
         while (enumerator.moveNext()) ;
@@ -461,7 +461,7 @@ public class SelectTest extends TestCase {
         Func1<Integer, Integer> selector = i -> i + 1;
         int[] source = new int[]{1, 2, 3, 4, 5};
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -478,7 +478,7 @@ public class SelectTest extends TestCase {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -495,7 +495,7 @@ public class SelectTest extends TestCase {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -512,7 +512,7 @@ public class SelectTest extends TestCase {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(selector).select(selector);
+        IEnumerable<Integer> query = Linq.of(source).select(selector).select(selector);
 
         int index = 0;
         for (int item : query) {
@@ -568,7 +568,7 @@ public class SelectTest extends TestCase {
             throw new InvalidOperationException();
         };
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> result = Linq.of(source).select(selector);
         IEnumerator<Integer> enumerator = result.enumerator();
 
         assertThrows(InvalidOperationException.class, () -> enumerator.moveNext());
@@ -583,7 +583,7 @@ public class SelectTest extends TestCase {
             return i + 1;
         };
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> result = Linq.of(source).select(selector);
         IEnumerator<Integer> enumerator = result.enumerator();
 
         assertThrows(InvalidOperationException.class, () -> enumerator.moveNext());
@@ -671,7 +671,7 @@ public class SelectTest extends TestCase {
         List<Integer> source = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> result = Linq.of(source).select(selector);
         IEnumerator<Integer> enumerator = result.enumerator();
 
         assertTrue(enumerator.moveNext());
@@ -684,7 +684,7 @@ public class SelectTest extends TestCase {
     @Test
     public void Select_GetEnumeratorCalledTwice_DifferentInstancesReturned() {
         int[] source = new int[]{1, 2, 3, 4, 5};
-        IEnumerable<Integer> query = Linq.asEnumerable(source).select(i -> i + 1);
+        IEnumerable<Integer> query = Linq.of(source).select(i -> i + 1);
 
         IEnumerator<Integer> enumerator1 = query.enumerator();
         IEnumerator<Integer> enumerator2 = query.enumerator();
@@ -701,7 +701,7 @@ public class SelectTest extends TestCase {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Func1<Integer, Integer> selector = i -> i + 1;
 
-        IEnumerable<Integer> result = Linq.asEnumerable(source).select(selector);
+        IEnumerable<Integer> result = Linq.of(source).select(selector);
         IEnumerator<Integer> enumerator = result.enumerator();
 
         // The.NET full framework throws a NotImplementedException.
@@ -734,21 +734,21 @@ public class SelectTest extends TestCase {
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateList() {
-        IEnumerable<Integer> iterator = Linq.asEnumerable(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).select(i -> i);
+        IEnumerable<Integer> iterator = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).select(i -> i);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateIList() {
-        IEnumerable<Integer> iterator = Linq.asEnumerable(Collections.unmodifiableCollection(NumberRangeGuaranteedNotCollectionType(0, 3).toList())).select(i -> i);
+        IEnumerable<Integer> iterator = Linq.of(Collections.unmodifiableCollection(NumberRangeGuaranteedNotCollectionType(0, 3).toList())).select(i -> i);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
     public void ForcedToEnumeratorDoesntEnumerateIPartition() {
-        IEnumerable<Integer> iterator = Linq.asEnumerable(Collections.unmodifiableCollection(NumberRangeGuaranteedNotCollectionType(0, 3).toList())).select(i -> i).skip(1);
+        IEnumerable<Integer> iterator = Linq.of(Collections.unmodifiableCollection(NumberRangeGuaranteedNotCollectionType(0, 3).toList())).select(i -> i).skip(1);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
@@ -756,99 +756,99 @@ public class SelectTest extends TestCase {
     @Test
     public void Select_SourceIsArray_Count() {
         int[] source = new int[]{1, 2, 3, 4};
-        assertEquals(source.length, Linq.asEnumerable(source).select(i -> i * 2).count());
+        assertEquals(source.length, Linq.of(source).select(i -> i * 2).count());
     }
 
     @Test
     public void Select_SourceIsAList_Count() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4);
-        assertEquals(source.size(), Linq.asEnumerable(source).select(i -> i * 2).count());
+        assertEquals(source.size(), Linq.of(source).select(i -> i * 2).count());
     }
 
     @Test
     public void Select_SourceIsAnIList_Count() {
         Collection<Integer> souce = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4));
-        assertEquals(souce.size(), Linq.asEnumerable(souce).select(i -> i * 2).count());
+        assertEquals(souce.size(), Linq.of(souce).select(i -> i * 2).count());
     }
 
     @Test
     public void Select_SourceIsArray_Skip() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2);
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(2).skip(-1));
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(1).skip(1));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.skip(-1));
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(2));
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(2).skip(-1));
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(1).skip(1));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.skip(-1));
         assertEmpty(source.skip(4));
         assertEmpty(source.skip(20));
     }
 
     @Test
     public void Select_SourceIsList_Skip() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(2).skip(-1));
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(1).skip(1));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.skip(-1));
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(2));
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(2).skip(-1));
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(1).skip(1));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.skip(-1));
         assertEmpty(source.skip(4));
         assertEmpty(source.skip(20));
     }
 
     @Test
     public void Select_SourceIsIList_Skip() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(2).skip(-1));
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), source.skip(1).skip(1));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.skip(-1));
+        IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(2));
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(2).skip(-1));
+        assertEquals(Linq.of(new int[]{6, 8}), source.skip(1).skip(1));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.skip(-1));
         assertEmpty(source.skip(4));
         assertEmpty(source.skip(20));
     }
 
     @Test
     public void Select_SourceIsArray_Take() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2);
-        assertEquals(Linq.asEnumerable(new int[]{2, 4}), source.take(2));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4}), source.take(3).take(2));
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
+        assertEquals(Linq.of(new int[]{2, 4}), source.take(2));
+        assertEquals(Linq.of(new int[]{2, 4}), source.take(3).take(2));
         assertEmpty(source.take(-1));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.take(4));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.take(40));
-        assertEquals(Linq.asEnumerable(new int[]{2}), source.take(1));
-        assertEquals(Linq.asEnumerable(new int[]{4}), source.skip(1).take(1));
-        assertEquals(Linq.asEnumerable(new int[]{6}), source.take(3).skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{2}), source.take(3).take(1));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.take(4));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.take(40));
+        assertEquals(Linq.of(new int[]{2}), source.take(1));
+        assertEquals(Linq.of(new int[]{4}), source.skip(1).take(1));
+        assertEquals(Linq.of(new int[]{6}), source.take(3).skip(2));
+        assertEquals(Linq.of(new int[]{2}), source.take(3).take(1));
     }
 
     @Test
     public void Select_SourceIsList_Take() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
-        assertEquals(Linq.asEnumerable(new int[]{2, 4}), source.take(2));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4}), source.take(3).take(2));
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
+        assertEquals(Linq.of(new int[]{2, 4}), source.take(2));
+        assertEquals(Linq.of(new int[]{2, 4}), source.take(3).take(2));
         assertEmpty(source.take(-1));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.take(4));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.take(40));
-        assertEquals(Linq.asEnumerable(new int[]{2}), source.take(1));
-        assertEquals(Linq.asEnumerable(new int[]{4}), source.skip(1).take(1));
-        assertEquals(Linq.asEnumerable(new int[]{6}), source.take(3).skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{2}), source.take(3).take(1));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.take(4));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.take(40));
+        assertEquals(Linq.of(new int[]{2}), source.take(1));
+        assertEquals(Linq.of(new int[]{4}), source.skip(1).take(1));
+        assertEquals(Linq.of(new int[]{6}), source.take(3).skip(2));
+        assertEquals(Linq.of(new int[]{2}), source.take(3).take(1));
     }
 
     @Test
     public void Select_SourceIsIList_Take() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
-        assertEquals(Linq.asEnumerable(new int[]{2, 4}), source.take(2));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4}), source.take(3).take(2));
+        IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
+        assertEquals(Linq.of(new int[]{2, 4}), source.take(2));
+        assertEquals(Linq.of(new int[]{2, 4}), source.take(3).take(2));
         assertEmpty(source.take(-1));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.take(4));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), source.take(40));
-        assertEquals(Linq.asEnumerable(new int[]{2}), source.take(1));
-        assertEquals(Linq.asEnumerable(new int[]{4}), source.skip(1).take(1));
-        assertEquals(Linq.asEnumerable(new int[]{6}), source.take(3).skip(2));
-        assertEquals(Linq.asEnumerable(new int[]{2}), source.take(3).take(1));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.take(4));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), source.take(40));
+        assertEquals(Linq.of(new int[]{2}), source.take(1));
+        assertEquals(Linq.of(new int[]{4}), source.skip(1).take(1));
+        assertEquals(Linq.of(new int[]{6}), source.take(3).skip(2));
+        assertEquals(Linq.of(new int[]{2}), source.take(3).take(1));
     }
 
     @Test
     public void Select_SourceIsArray_ElementAt() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAt(i));
         assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
@@ -861,7 +861,7 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsList_ElementAt() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAt(i));
         assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
@@ -874,7 +874,7 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsIList_ElementAt() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAt(i));
         assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
@@ -887,7 +887,7 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsArray_ElementAtOrDefault() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAtOrDefault(i));
         assertEquals(null, source.elementAtOrDefault(-1));
@@ -900,7 +900,7 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsList_ElementAtOrDefault() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAtOrDefault(i));
         assertEquals(null, source.elementAtOrDefault(-1));
@@ -913,7 +913,7 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsIList_ElementAtOrDefault() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAtOrDefault(i));
         assertEquals(null, source.elementAtOrDefault(-1));
@@ -926,7 +926,7 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsArray_First() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         assertEquals(2, source.first());
         assertEquals(2, source.firstOrDefault());
 
@@ -937,14 +937,14 @@ public class SelectTest extends TestCase {
         assertEquals(null, source.skip(4).firstOrDefault());
         assertEquals(null, source.skip(14).firstOrDefault());
 
-        IEnumerable<Integer> empty = Linq.asEnumerable(new int[0]).select(i -> i * 2);
+        IEnumerable<Integer> empty = Linq.of(new int[0]).select(i -> i * 2);
         assertThrows(InvalidOperationException.class, () -> empty.first());
         assertEquals(null, empty.firstOrDefault());
     }
 
     @Test
     public void Select_SourceIsList_First() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         assertEquals(2, source.first());
         assertEquals(2, source.firstOrDefault());
 
@@ -955,14 +955,14 @@ public class SelectTest extends TestCase {
         assertEquals(null, source.skip(4).firstOrDefault());
         assertEquals(null, source.skip(14).firstOrDefault());
 
-        IEnumerable<Integer> empty = Linq.asEnumerable(new ArrayList<Integer>()).select(i -> i * 2);
+        IEnumerable<Integer> empty = Linq.of(new ArrayList<Integer>()).select(i -> i * 2);
         assertThrows(InvalidOperationException.class, () -> empty.first());
         assertEquals(null, empty.firstOrDefault());
     }
 
     @Test
     public void Select_SourceIsIList_First() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         assertEquals(2, source.first());
         assertEquals(2, source.firstOrDefault());
 
@@ -973,21 +973,21 @@ public class SelectTest extends TestCase {
         assertEquals(null, source.skip(4).firstOrDefault());
         assertEquals(null, source.skip(14).firstOrDefault());
 
-        IEnumerable<Integer> empty = Linq.asEnumerable(Collections.unmodifiableCollection(new ArrayList<Integer>())).select(i -> i * 2);
+        IEnumerable<Integer> empty = Linq.of(Collections.unmodifiableCollection(new ArrayList<Integer>())).select(i -> i * 2);
         assertThrows(InvalidOperationException.class, () -> empty.first());
         assertEquals(null, empty.firstOrDefault());
     }
 
     @Test
     public void Select_SourceIsArray_Last() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         assertEquals(8, source.last());
         assertEquals(8, source.lastOrDefault());
 
         assertEquals(6, source.take(3).last());
         assertEquals(6, source.take(3).lastOrDefault());
 
-        IEnumerable<Integer> empty = Linq.asEnumerable(new int[0]).select(i -> i * 2);
+        IEnumerable<Integer> empty = Linq.of(new int[0]).select(i -> i * 2);
         assertThrows(InvalidOperationException.class, () -> empty.last());
         assertEquals(null, empty.lastOrDefault());
         assertThrows(InvalidOperationException.class, () -> empty.skip(1).last());
@@ -996,14 +996,14 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsList_Last() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         assertEquals(8, source.last());
         assertEquals(8, source.lastOrDefault());
 
         assertEquals(6, source.take(3).last());
         assertEquals(6, source.take(3).lastOrDefault());
 
-        IEnumerable<Integer> empty = Linq.asEnumerable(new ArrayList<Integer>()).select(i -> i * 2);
+        IEnumerable<Integer> empty = Linq.of(new ArrayList<Integer>()).select(i -> i * 2);
         assertThrows(InvalidOperationException.class, () -> empty.last());
         assertEquals(null, empty.lastOrDefault());
         assertThrows(InvalidOperationException.class, () -> empty.skip(1).last());
@@ -1012,14 +1012,14 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsIList_Last() {
-        IEnumerable<Integer> source = Linq.asEnumerable(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
+        IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         assertEquals(8, source.last());
         assertEquals(8, source.lastOrDefault());
 
         assertEquals(6, source.take(3).last());
         assertEquals(6, source.take(3).lastOrDefault());
 
-        IEnumerable<Integer> empty = Linq.asEnumerable(Collections.unmodifiableCollection(new ArrayList<Integer>())).select(i -> i * 2);
+        IEnumerable<Integer> empty = Linq.of(Collections.unmodifiableCollection(new ArrayList<Integer>())).select(i -> i * 2);
         assertThrows(InvalidOperationException.class, () -> empty.last());
         assertEquals(null, empty.lastOrDefault());
         assertThrows(InvalidOperationException.class, () -> empty.skip(1).last());
@@ -1028,45 +1028,45 @@ public class SelectTest extends TestCase {
 
     @Test
     public void Select_SourceIsArray_SkipRepeatCalls() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2).skip(1);
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2).skip(1);
         assertEquals(source, source);
     }
 
     @Test
     public void Select_SourceIsArraySkipSelect() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2).skip(1).select(i -> i + 1);
-        assertEquals(Linq.asEnumerable(new int[]{5, 7, 9}), source);
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2).skip(1).select(i -> i + 1);
+        assertEquals(Linq.of(new int[]{5, 7, 9}), source);
     }
 
     @Test
     public void Select_SourceIsArrayTakeTake() {
-        IEnumerable<Integer> source = Linq.asEnumerable(new int[]{1, 2, 3, 4}).select(i -> i * 2).take(2).take(1);
-        assertEquals(Linq.asEnumerable(new int[]{2}), source);
-        assertEquals(Linq.asEnumerable(new int[]{2}), source.take(10));
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2).take(2).take(1);
+        assertEquals(Linq.of(new int[]{2}), source);
+        assertEquals(Linq.of(new int[]{2}), source.take(10));
     }
 
     @Test
     public void Select_SourceIsListSkipTakeCount() {
-        assertEquals(3, Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).count());
-        assertEquals(4, Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).count());
-        assertEquals(2, Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).count());
-        assertEquals(0, Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(8).count());
+        assertEquals(3, Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).count());
+        assertEquals(4, Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).count());
+        assertEquals(2, Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).count());
+        assertEquals(0, Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(8).count());
     }
 
     @Test
     public void Select_SourceIsListSkipTakeToArray() {
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6}), Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).toArray());
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).toArray());
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).toArray());
-        assertEmpty(Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(8).toArray());
+        assertEquals(Linq.of(new int[]{2, 4, 6}), Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).toArray());
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).toArray());
+        assertEquals(Linq.of(new int[]{6, 8}), Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).toArray());
+        assertEmpty(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(8).toArray());
     }
 
     @Test
     public void Select_SourceIsListSkipTakeToList() {
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6}), Linq.asEnumerable(Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).toList()));
-        assertEquals(Linq.asEnumerable(new int[]{2, 4, 6, 8}), Linq.asEnumerable(Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).toList()));
-        assertEquals(Linq.asEnumerable(new int[]{6, 8}), Linq.asEnumerable(Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).toList()));
-        assertEmpty(Linq.asEnumerable(Linq.asEnumerable(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(8).toList()));
+        assertEquals(Linq.of(new int[]{2, 4, 6}), Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).toList()));
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8}), Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).toList()));
+        assertEquals(Linq.of(new int[]{6, 8}), Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).toList()));
+        assertEmpty(Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(8).toList()));
     }
 
     @Test
@@ -1083,12 +1083,12 @@ public class SelectTest extends TestCase {
                 e -> e,
                 e -> ForceNotCollection(e),
                 e -> e.toArray(),
-                e -> Linq.asEnumerable(e.toList()),
-                e -> Linq.asEnumerable(new LinkedList<>(e.toList())), // IList<T> that's not a List
+                e -> Linq.of(e.toList()),
+                e -> Linq.of(new LinkedList<>(e.toList())), // IList<T> that's not a List
                 e -> e.select(i -> i) // Multiple Select() chains are optimized
         );
 
-        for (IEnumerable<Integer> equivalentSource : Linq.asEnumerable(identityTransforms).select(t -> t.apply(source))) {
+        for (IEnumerable<Integer> equivalentSource : Linq.of(identityTransforms).select(t -> t.apply(source))) {
             IEnumerable<Integer> result = equivalentSource.select(i -> i);
             try (IEnumerator<Integer> e = result.enumerator()) {
                 while (e.moveNext()) ; // Loop until we reach the end of the iterator, @ which pt it gets disposed.
@@ -1099,10 +1099,10 @@ public class SelectTest extends TestCase {
 
     private IEnumerable<Object[]> MoveNextAfterDisposeData() {
         List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.asEnumerable(new int[0])});
-        lst.add(new Object[]{Linq.asEnumerable(new int[1])});
+        lst.add(new Object[]{Linq.of(new int[0])});
+        lst.add(new Object[]{Linq.of(new int[1])});
         lst.add(new Object[]{Linq.range(1, 30)});
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
@@ -1148,13 +1148,13 @@ public class SelectTest extends TestCase {
                 e -> ForceNotCollection(e).skip(1),
                 e -> ForceNotCollection(e).where(i -> true),
                 e -> e.toArray().where(i -> true),
-                e -> Linq.asEnumerable(e.toList()).where(i -> true),
-                e -> Linq.asEnumerable(new LinkedList<>(e.toList())).where(i -> true),
+                e -> Linq.of(e.toList()).where(i -> true),
+                e -> Linq.of(new LinkedList<>(e.toList())).where(i -> true),
                 e -> e.select(i -> i),
                 e -> e.take(e.count()),
                 e -> e.toArray(),
-                e -> Linq.asEnumerable(e.toList()),
-                e -> Linq.asEnumerable(new LinkedList<>(e.toList())) // Implements IList<T>.
+                e -> Linq.of(e.toList()),
+                e -> Linq.of(new LinkedList<>(e.toList())) // Implements IList<T>.
         );
 
         Random r = new Random(0x984bf1a3);
@@ -1166,17 +1166,17 @@ public class SelectTest extends TestCase {
                 lst.add(new Object[]{transform.apply(enumerable)});
             }
         }
-        return Linq.asEnumerable(lst);
+        return Linq.of(lst);
     }
 
     @Test
     public void testSelectIndexed() {
-        List<String> names = Linq.asEnumerable(emps)
+        List<String> names = Linq.of(emps)
                 .select((emp, index) -> emp.name)
                 .toList();
         assertEquals("[Fred, Bill, Eric, Janet]", names.toString());
 
-        List<String> indexes = Linq.asEnumerable(emps)
+        List<String> indexes = Linq.of(emps)
                 .select((emp, index) -> String.format("#%d: %s", index, emp.name))
                 .toList();
         assertEquals("[#0: Fred, #1: Bill, #2: Eric, #3: Janet]", indexes.toString());

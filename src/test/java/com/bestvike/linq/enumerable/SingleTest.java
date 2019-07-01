@@ -16,21 +16,21 @@ import java.math.BigDecimal;
 public class SingleTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<BigDecimal> q = Linq.asEnumerable(new BigDecimal[]{m("999.9")}).select(x -> x);
+        IEnumerable<BigDecimal> q = Linq.of(new BigDecimal[]{m("999.9")}).select(x -> x);
 
         assertEquals(q.single(), q.single());
     }
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^"}).where(x -> !IsNullOrEmpty(x)).select(x -> x);
+        IEnumerable<String> q = Linq.of(new String[]{"!@#$%^"}).where(x -> !IsNullOrEmpty(x)).select(x -> x);
 
         assertEquals(q.single(), q.single());
     }
 
     @Test
     public void SameResultsRepeatCallsIntQueryWithZero() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0}).select(x -> x);
+        IEnumerable<Integer> q = Linq.of(new int[]{0}).select(x -> x);
 
         assertEquals(q.single(), q.single());
     }
@@ -39,7 +39,7 @@ public class SingleTest extends TestCase {
     public void EmptyIList() {
         int[] source = {};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).single());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).single());
     }
 
     @Test
@@ -47,14 +47,14 @@ public class SingleTest extends TestCase {
         int[] source = {4};
         int expected = 4;
 
-        assertEquals(expected, Linq.asEnumerable(source).single());
+        assertEquals(expected, Linq.of(source).single());
     }
 
     @Test
     public void ManyElementIList() {
         int[] source = {4, 4, 4, 4, 4};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).single());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).single());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class SingleTest extends TestCase {
     public void EmptySourceWithPredicate() {
         int[] source = {};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).single(i -> i % 2 == 0));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
@@ -91,21 +91,21 @@ public class SingleTest extends TestCase {
         int[] source = {4};
         int expected = 4;
 
-        assertEquals(expected, Linq.asEnumerable(source).single(i -> i % 2 == 0));
+        assertEquals(expected, Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
     public void SingleElementPredicateFalse() {
         int[] source = {3};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).single(i -> i % 2 == 0));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
     public void ManyElementsPredicateFalseForAll() {
         int[] source = {3, 1, 7, 9, 13, 19};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).single(i -> i % 2 == 0));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
@@ -113,14 +113,14 @@ public class SingleTest extends TestCase {
         int[] source = {3, 1, 7, 9, 13, 19, 20};
         int expected = 20;
 
-        assertEquals(expected, Linq.asEnumerable(source).single(i -> i % 2 == 0));
+        assertEquals(expected, Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
     public void ManyElementsPredicateTrueForFirstAndLast() {
         int[] source = {2, 3, 1, 7, 9, 13, 19, 10};
 
-        assertThrows(InvalidOperationException.class, () -> Linq.asEnumerable(source).single(i -> i % 2 == 0));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class SingleTest extends TestCase {
         int[] source = {};
         Predicate1<Integer> nullPredicate = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(source).single(nullPredicate));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).single(nullPredicate));
     }
 
     @Test
@@ -166,15 +166,15 @@ public class SingleTest extends TestCase {
         Integer[] number = {20};
         Integer[] numbers = {5, 10, 15, 20};
 
-        assertEquals(person[0], Linq.asEnumerable(person).single());
-        assertEquals(number[0], Linq.asEnumerable(number).single());
+        assertEquals(person[0], Linq.of(person).single());
+        assertEquals(number[0], Linq.of(number).single());
         try {
-            String s = Linq.asEnumerable(people).single();
+            String s = Linq.of(people).single();
             fail("expected exception, but got" + s);
         } catch (InvalidOperationException ignored) {
         }
         try {
-            int i = Linq.asEnumerable(numbers).single();
+            int i = Linq.of(numbers).single();
             fail("expected exception, but got" + i);
         } catch (InvalidOperationException ignored) {
         }
@@ -189,29 +189,29 @@ public class SingleTest extends TestCase {
         Integer[] numbersWithoutGT15 = {5, 10, 15};
         Integer[] numbersWithTwoGT15 = {5, 10, 15, 20, 25};
 
-        assertEquals(people[1], Linq.asEnumerable(people).single(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
-        assertEquals(numbers[3], Linq.asEnumerable(numbers).single(i -> i > 15));
+        assertEquals(people[1], Linq.of(people).single(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertEquals(numbers[3], Linq.of(numbers).single(i -> i > 15));
 
         try {
-            String ss = Linq.asEnumerable(twoPeopleWithCharS).single(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
+            String ss = Linq.of(twoPeopleWithCharS).single(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
             fail("expected exception, but got" + ss);
         } catch (InvalidOperationException ignored) {
         }
 
         try {
-            int i = Linq.asEnumerable(numbersWithTwoGT15).single(n -> n > 15);
+            int i = Linq.of(numbersWithTwoGT15).single(n -> n > 15);
             fail("expected exception, but got" + i);
         } catch (InvalidOperationException ignored) {
         }
 
         try {
-            String ss = Linq.asEnumerable(peopleWithoutCharS).single(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
+            String ss = Linq.of(peopleWithoutCharS).single(s -> s != null && s.length() > 0 && s.charAt(0) == 'S');
             fail("expected exception, but got" + ss);
         } catch (InvalidOperationException ignored) {
         }
 
         try {
-            int i = Linq.asEnumerable(numbersWithoutGT15).single(n -> n > 15);
+            int i = Linq.of(numbersWithoutGT15).single(n -> n > 15);
             fail("expected exception, but got" + i);
         } catch (InvalidOperationException ignored) {
         }

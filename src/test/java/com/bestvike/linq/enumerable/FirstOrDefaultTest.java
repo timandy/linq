@@ -25,7 +25,7 @@ public class FirstOrDefaultTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
+        IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.firstOrDefault(), q.firstOrDefault());
@@ -35,8 +35,8 @@ public class FirstOrDefaultTest extends TestCase {
         T[] source = ArrayUtils.empty(clazz);
         T expected = null;
 
-        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        assertEquals(expected, Linq.asEnumerable(source).runOnce().firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.of(source).getClass()));
+        assertEquals(expected, Linq.of(source).runOnce().firstOrDefault());
     }
 
     @Test
@@ -52,8 +52,8 @@ public class FirstOrDefaultTest extends TestCase {
         int[] source = new int[]{5};
         int expected = 5;
 
-        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.of(source).getClass()));
+        assertEquals(expected, Linq.of(source).firstOrDefault());
     }
 
     @Test
@@ -61,8 +61,8 @@ public class FirstOrDefaultTest extends TestCase {
         Integer[] source = {null, -10, 2, 4, 3, 0, 2};
         Integer expected = null;
 
-        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.of(source).getClass()));
+        assertEquals(expected, Linq.of(source).firstOrDefault());
     }
 
     @Test
@@ -70,8 +70,8 @@ public class FirstOrDefaultTest extends TestCase {
         Integer[] source = {19, null, -10, 2, 4, 3, 0, 2};
         Integer expected = 19;
 
-        assertTrue(IList.class.isAssignableFrom(Linq.asEnumerable(source).getClass()));
-        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault());
+        assertTrue(IList.class.isAssignableFrom(Linq.of(source).getClass()));
+        assertEquals(expected, Linq.of(source).firstOrDefault());
     }
 
     private <T> IEnumerable<T> EmptySourceGeneric() {
@@ -116,8 +116,8 @@ public class FirstOrDefaultTest extends TestCase {
     public void EmptySource() {
         Integer[] source = {};
 
-        assertNull(Linq.asEnumerable(source).firstOrDefault(x -> true));
-        assertNull(Linq.asEnumerable(source).firstOrDefault(x -> false));
+        assertNull(Linq.of(source).firstOrDefault(x -> true));
+        assertNull(Linq.of(source).firstOrDefault(x -> false));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class FirstOrDefaultTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
 
-        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class FirstOrDefaultTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         Integer expected = null;
 
-        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -144,7 +144,7 @@ public class FirstOrDefaultTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
 
-        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class FirstOrDefaultTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
 
-        assertEquals(expected, Linq.asEnumerable(source).firstOrDefault(predicate));
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate));
     }
 
     @Test
@@ -162,7 +162,7 @@ public class FirstOrDefaultTest extends TestCase {
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
 
-        assertEquals(expected, Linq.asEnumerable(source).runOnce().firstOrDefault(predicate));
+        assertEquals(expected, Linq.of(source).runOnce().firstOrDefault(predicate));
     }
 
     @Test
@@ -187,10 +187,10 @@ public class FirstOrDefaultTest extends TestCase {
         String[] empty = {};
         Integer[] numbers = {5, 10, 15, 20, 25};
 
-        assertEquals(people[0], Linq.asEnumerable(people).firstOrDefault());
-        assertEquals(numbers[0], Linq.asEnumerable(numbers).firstOrDefault());
+        assertEquals(people[0], Linq.of(people).firstOrDefault());
+        assertEquals(numbers[0], Linq.of(numbers).firstOrDefault());
 
-        assertNull(Linq.asEnumerable(empty).firstOrDefault());
+        assertNull(Linq.of(empty).firstOrDefault());
     }
 
     @Test
@@ -199,8 +199,8 @@ public class FirstOrDefaultTest extends TestCase {
         String[] peopleWithoutCharS = {"Brill", "Andrew", "Alice"};
         Integer[] numbers = {5, 10, 15, 20, 25};
 
-        assertEquals(people[1], Linq.asEnumerable(people).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
-        assertEquals(numbers[3], Linq.asEnumerable(numbers).firstOrDefault(i -> i > 15));
-        assertNull(Linq.asEnumerable(peopleWithoutCharS).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertEquals(people[1], Linq.of(people).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
+        assertEquals(numbers[3], Linq.of(numbers).firstOrDefault(i -> i > 15));
+        assertNull(Linq.of(peopleWithoutCharS).firstOrDefault(s -> s != null && s.length() > 0 && s.charAt(0) == 'S'));
     }
 }

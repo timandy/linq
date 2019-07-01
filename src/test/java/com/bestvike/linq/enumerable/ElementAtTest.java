@@ -16,7 +16,7 @@ import java.util.List;
 public class ElementAtTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
+        IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.elementAt(3), q.elementAt(3));
@@ -24,7 +24,7 @@ public class ElementAtTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
+        IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.elementAt(4), q.elementAt(4));
@@ -37,9 +37,9 @@ public class ElementAtTest extends TestCase {
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(9, 10), 9, 18});
         lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(-4, 10), 3, -1});
 
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{-4}), 0, -4});
-        lst.add(new Object[]{Linq.asEnumerable(new int[]{9, 8, 0, -5, 10}), 4, 10});
-        return Linq.asEnumerable(lst);
+        lst.add(new Object[]{Linq.of(new int[]{-4}), 0, -4});
+        lst.add(new Object[]{Linq.of(new int[]{9, 8, 0, -5, 10}), 4, 10});
+        return Linq.of(lst);
     }
 
     @Test
@@ -66,9 +66,9 @@ public class ElementAtTest extends TestCase {
 
     @Test
     public void InvalidIndex_ThrowsArgumentOutOfRangeException() {
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.asEnumerable(new Integer[]{9, 8}).elementAt(-1));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.asEnumerable(new int[]{1, 2, 3, 4}).elementAt(4));
-        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.asEnumerable(new int[0]).elementAt(0));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.of(new Integer[]{9, 8}).elementAt(-1));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.of(new int[]{1, 2, 3, 4}).elementAt(4));
+        assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.of(new int[0]).elementAt(0));
 
         assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(-4, 5).elementAt(-1));
         assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(5, 5).elementAt(5));
@@ -79,8 +79,8 @@ public class ElementAtTest extends TestCase {
     public void NullableArray_ValidIndex_ReturnsCorrectObject() {
         Integer[] source = {9, 8, null, -5, 10};
 
-        assertNull(Linq.asEnumerable(source).elementAt(2));
-        assertEquals(-5, Linq.asEnumerable(source).elementAt(3));
+        assertNull(Linq.of(source).elementAt(2));
+        assertEquals(-5, Linq.of(source).elementAt(3));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ElementAtTest extends TestCase {
 
     @Test
     public void testElementAt() {
-        IEnumerable<String> enumerable = Linq.asEnumerable(Arrays.asList("jimi", "mitch"));
+        IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch"));
         assertEquals("jimi", enumerable.elementAt(0));
         try {
             enumerable.elementAt(2);
@@ -104,7 +104,7 @@ public class ElementAtTest extends TestCase {
         } catch (IndexOutOfBoundsException ignored) {
         }
 
-        IEnumerable<Long> enumerable2 = Linq.asEnumerable(new CountIterable(2));
+        IEnumerable<Long> enumerable2 = Linq.of(new CountIterable(2));
         assertEquals(1L, enumerable2.elementAt(0));
         try {
             enumerable2.elementAt(2);

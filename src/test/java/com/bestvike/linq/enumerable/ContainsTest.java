@@ -20,7 +20,7 @@ import java.util.List;
 public class ContainsTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.contains(-1), q.contains(-1));
@@ -28,7 +28,7 @@ public class ContainsTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.contains("X"), q.contains("X"));
@@ -37,11 +37,11 @@ public class ContainsTest extends TestCase {
     private IEnumerable<Object[]> Int_TestData() {
         List<Object[]> results = new ArrayList<>();
 
-        results.add(new Object[]{Linq.asEnumerable(new int[0]), 6, false});
-        results.add(new Object[]{Linq.asEnumerable(new int[]{8, 10, 3, 0, -8}), 6, false});
-        results.add(new Object[]{Linq.asEnumerable(new int[]{8, 10, 3, 0, -8}), 8, true});
-        results.add(new Object[]{Linq.asEnumerable(new int[]{8, 10, 3, 0, -8}), -8, true});
-        results.add(new Object[]{Linq.asEnumerable(new int[]{8, 0, 10, 3, 0, -8, 0}), 0, true});
+        results.add(new Object[]{Linq.of(new int[0]), 6, false});
+        results.add(new Object[]{Linq.of(new int[]{8, 10, 3, 0, -8}), 6, false});
+        results.add(new Object[]{Linq.of(new int[]{8, 10, 3, 0, -8}), 8, true});
+        results.add(new Object[]{Linq.of(new int[]{8, 10, 3, 0, -8}), -8, true});
+        results.add(new Object[]{Linq.of(new int[]{8, 0, 10, 3, 0, -8, 0}), 0, true});
 
         results.add(new Object[]{NumberRangeGuaranteedNotCollectionType(0, 0), 0, false});
         results.add(new Object[]{NumberRangeGuaranteedNotCollectionType(4, 5), 3, false});
@@ -49,7 +49,7 @@ public class ContainsTest extends TestCase {
         results.add(new Object[]{NumberRangeGuaranteedNotCollectionType(3, 5), 7, true});
         results.add(new Object[]{RepeatedNumberGuaranteedNotCollectionType(10, 3), 10, true});
 
-        return Linq.asEnumerable(results);
+        return Linq.of(results);
     }
 
     @Test
@@ -77,12 +77,12 @@ public class ContainsTest extends TestCase {
     }
 
     private IEnumerable<Object[]> String_TestData() {
-        return Linq.asEnumerable(
-                new Object[]{Linq.asEnumerable(new String[]{null}), StringComparer.Ordinal, null, true},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), null, "trboeR", false},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), null, "Tim", true},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "trboeR", true},
-                new Object[]{Linq.asEnumerable("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "nevar", false}
+        return Linq.of(
+                new Object[]{Linq.of(new String[]{null}), StringComparer.Ordinal, null, true},
+                new Object[]{Linq.of("Bob", "Robert", "Tim"), null, "trboeR", false},
+                new Object[]{Linq.of("Bob", "Robert", "Tim"), null, "Tim", true},
+                new Object[]{Linq.of("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "trboeR", true},
+                new Object[]{Linq.of("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "nevar", false}
         );
     }
 
@@ -115,10 +115,10 @@ public class ContainsTest extends TestCase {
     }
 
     private IEnumerable<Object[]> NullableInt_TestData() {
-        return Linq.asEnumerable(
+        return Linq.of(
 
-                new Object[]{Linq.asEnumerable(8, 0, 10, 3, 0, -8, 0), null, false},
-                new Object[]{Linq.asEnumerable(8, 0, 10, null, 3, 0, -8, 0), null, true},
+                new Object[]{Linq.of(8, 0, 10, 3, 0, -8, 0), null, false},
+                new Object[]{Linq.of(8, 0, 10, null, 3, 0, -8, 0), null, true},
 
                 new Object[]{NullableNumberRangeGuaranteedNotCollectionType(3, 4), null, false},
                 new Object[]{RepeatedNullableNumberGuaranteedNotCollectionType(null, 5), null, true});
@@ -149,7 +149,7 @@ public class ContainsTest extends TestCase {
     public void ExplicitNullComparerDoesNotDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.of(set);
         assertFalse(source.contains("BAC", null));
     }
 
@@ -157,7 +157,7 @@ public class ContainsTest extends TestCase {
     public void ExplicitComparerDoesNotDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.of(set);
         assertTrue(source.contains("abc", StringComparer.OrdinalIgnoreCase));
     }
 
@@ -165,7 +165,7 @@ public class ContainsTest extends TestCase {
     public void ExplicitComparerDoestNotDeferToCollectionWithComparer() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.of(set);
         assertTrue(source.contains("BAC", new AnagramEqualityComparer()));
     }
 
@@ -173,7 +173,7 @@ public class ContainsTest extends TestCase {
     public void NoComparerDoesDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
-        IEnumerable<String> source = Linq.asEnumerable(set);
+        IEnumerable<String> source = Linq.of(set);
         assertTrue(source.contains("ABC"));
     }
 
@@ -184,16 +184,16 @@ public class ContainsTest extends TestCase {
         Employee employeeOther = badEmps[0];
 
         assertEquals(e, employeeClone);
-        assertTrue(Linq.asEnumerable(emps).contains(e));
-        assertTrue(Linq.asEnumerable(emps).contains(employeeClone));
-        assertFalse(Linq.asEnumerable(emps).contains(employeeOther));
+        assertTrue(Linq.of(emps).contains(e));
+        assertTrue(Linq.of(emps).contains(employeeClone));
+        assertFalse(Linq.of(emps).contains(employeeOther));
 
-        assertTrue(Linq.asEnumerable(Arrays.asList('h', 'e', 'l', 'l', 'o')).contains('h'));
+        assertTrue(Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).contains('h'));
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
-        assertTrue(Linq.asEnumerable(arrChar).contains('h'));
+        assertTrue(Linq.of(arrChar).contains('h'));
 
-        assertTrue(Linq.asEnumerable("hello").contains('h'));
+        assertTrue(Linq.of("hello").contains('h'));
 
         assertTrue(Linq.singleton('h').contains('h'));
         assertFalse(Linq.singleton('h').contains('o'));
@@ -221,8 +221,8 @@ public class ContainsTest extends TestCase {
         Employee employeeOther = badEmps[0];
 
         assertEquals(e, employeeClone);
-        assertTrue(Linq.asEnumerable(emps).contains(e, comparer));
-        assertTrue(Linq.asEnumerable(emps).contains(employeeClone, comparer));
-        assertFalse(Linq.asEnumerable(emps).contains(employeeOther, comparer));
+        assertTrue(Linq.of(emps).contains(e, comparer));
+        assertTrue(Linq.of(emps).contains(employeeClone, comparer));
+        assertFalse(Linq.of(emps).contains(employeeOther, comparer));
     }
 }

@@ -16,7 +16,7 @@ import java.util.Collections;
 public class AnyTest extends TestCase {
     @Test
     public void SameResultsRepeatCallsIntQuery() {
-        IEnumerable<Integer> q = Linq.asEnumerable(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
+        IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
         Predicate1<Integer> predicate = TestCase::IsEven;
@@ -25,7 +25,7 @@ public class AnyTest extends TestCase {
 
     @Test
     public void SameResultsRepeatCallsStringQuery() {
-        IEnumerable<String> q = Linq.asEnumerable("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
+        IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Predicate1<String> predicate = TestCase::IsNullOrEmpty;
         assertEquals(q.any(predicate), q.any(predicate));
@@ -40,8 +40,8 @@ public class AnyTest extends TestCase {
         this.Any(Linq.empty(), isEvenFunc, false);
         this.Any(Linq.singleton(4), isEvenFunc, true);
         this.Any(Linq.singleton(5), isEvenFunc, false);
-        this.Any(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, true);
-        this.Any(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, true);
+        this.Any(Linq.of(5, 9, 3, 7, 4), isEvenFunc, true);
+        this.Any(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.Any(range, i -> i > 10, false);
@@ -67,8 +67,8 @@ public class AnyTest extends TestCase {
         this.AnyRunOnce(Linq.empty(), isEvenFunc, false);
         this.AnyRunOnce(Linq.singleton(4), isEvenFunc, true);
         this.AnyRunOnce(Linq.singleton(5), isEvenFunc, false);
-        this.AnyRunOnce(Linq.asEnumerable(5, 9, 3, 7, 4), isEvenFunc, true);
-        this.AnyRunOnce(Linq.asEnumerable(5, 8, 9, 3, 7, 11), isEvenFunc, true);
+        this.AnyRunOnce(Linq.of(5, 9, 3, 7, 4), isEvenFunc, true);
+        this.AnyRunOnce(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, true);
 
         Array<Integer> range = Linq.range(1, 10).toArray();
         this.AnyRunOnce(range, i -> i > 10, false);
@@ -87,7 +87,7 @@ public class AnyTest extends TestCase {
 
     @Test
     public void NullObjectsInArray_Included() {
-        IEnumerable<Integer> source = Linq.asEnumerable(null, null, null, null);
+        IEnumerable<Integer> source = Linq.of(null, null, null, null);
         assertTrue(source.any());
     }
 
@@ -105,13 +105,13 @@ public class AnyTest extends TestCase {
 
     @Test
     public void testAny() {
-        assertFalse(Linq.asEnumerable(Collections.emptyList()).any());
-        assertTrue(Linq.asEnumerable(emps).any());
+        assertFalse(Linq.of(Collections.emptyList()).any());
+        assertTrue(Linq.of(emps).any());
     }
 
     @Test
     public void testAnyPredicate() {
-        assertFalse(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("IT")));
-        assertTrue(Linq.asEnumerable(depts).any(dept -> dept.name != null && dept.name.equals("Sales")));
+        assertFalse(Linq.of(depts).any(dept -> dept.name != null && dept.name.equals("IT")));
+        assertTrue(Linq.of(depts).any(dept -> dept.name != null && dept.name.equals("Sales")));
     }
 }

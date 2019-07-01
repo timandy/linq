@@ -35,7 +35,7 @@ public class GroupJoinTest extends TestCase {
                 new OrderRec(45321, 98022, 50),
                 new OrderRec(97865, 32103, 25)};
 
-        assertEmpty(Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEmpty(Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Bob", new Integer[]{}, new Integer[]{}),
                 new JoinRec("Robert", new Integer[]{93483}, new Integer[]{19})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(NullPointerException.class, () -> outer.groupJoin(Linq.asEnumerable(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
+        assertThrows(NullPointerException.class, () -> outer.groupJoin(Linq.of(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class GroupJoinTest extends TestCase {
                 new CustomerRec("Robert", 9895)};
         IEnumerable<AnagramRec> inner = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(inner, e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(inner, e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -86,7 +86,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), null, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(Linq.of(inner), null, e -> e.name, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.name, null, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(Linq.of(inner), e -> e.name, null, GroupJoinTest::createJoinAnagramRec, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, IEnumerable<AnagramRec>, JoinRec>) null, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(Linq.of(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, IEnumerable<AnagramRec>, JoinRec>) null, new AnagramEqualityComparer()));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(NullPointerException.class, () -> outer.groupJoin(Linq.asEnumerable(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec));
+        assertThrows(NullPointerException.class, () -> outer.groupJoin(Linq.of(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class GroupJoinTest extends TestCase {
                 new CustomerRec("Robert", 9895)};
         IEnumerable<AnagramRec> inner = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(inner, e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(inner, e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec));
     }
 
     @Test
@@ -146,7 +146,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), null, e -> e.name, GroupJoinTest::createJoinAnagramRec));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(Linq.of(inner), null, e -> e.name, GroupJoinTest::createJoinAnagramRec));
     }
 
     @Test
@@ -159,7 +159,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.name, null, GroupJoinTest::createJoinAnagramRec));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(Linq.of(inner), e -> e.name, null, GroupJoinTest::createJoinAnagramRec));
     }
 
     @Test
@@ -172,7 +172,7 @@ public class GroupJoinTest extends TestCase {
                 new AnagramRec("Robert", 93483, 19),
                 new AnagramRec("miT", 93489, 45)};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, IEnumerable<AnagramRec>, JoinRec>) null));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).groupJoin(Linq.of(inner), e -> e.name, e -> e.name, (Func2<CustomerRec, IEnumerable<AnagramRec>, JoinRec>) null));
     }
 
     @Test
@@ -181,7 +181,7 @@ public class GroupJoinTest extends TestCase {
         String[] inner = new String[]{null};
         String[] expected = new String[]{null};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e, e -> e, (x, y) -> x, EqualityComparer.Default()));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e, e -> e, (x, y) -> x, EqualityComparer.Default()));
     }
 
     @Test
@@ -194,7 +194,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Tim", new Integer[]{}, new Integer[]{}),
                 new JoinRec("Bob", new Integer[]{}, new Integer[]{})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class GroupJoinTest extends TestCase {
         OrderRec[] inner = {new OrderRec(97865, 43434, 25)};
         JoinRec[] expected = {new JoinRec("Tim", new Integer[]{97865}, new Integer[]{25})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -212,7 +212,7 @@ public class GroupJoinTest extends TestCase {
         OrderRec[] inner = {new OrderRec(97865, 49434, 25)};
         JoinRec[] expected = {new JoinRec("Tim", new Integer[]{}, new Integer[]{})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -227,7 +227,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Tim", new Integer[]{}, new Integer[]{}),
                 new JoinRec("Bob", new Integer[]{}, new Integer[]{})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Tim", new Integer[]{97865, 34390}, new Integer[]{25, 19}),
                 new JoinRec("Bob", new Integer[]{34390}, new Integer[]{19})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -259,7 +259,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Tim", new Integer[]{97865, 34390}, new Integer[]{25, 19}),
                 new JoinRec("Bob", new Integer[]{34390}, new Integer[]{19})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).runOnce().groupJoin(Linq.asEnumerable(inner).runOnce(), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).runOnce().groupJoin(Linq.of(inner).runOnce(), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -276,7 +276,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Bob", new Integer[]{34390}, new Integer[]{19}),
                 new JoinRec("Robert", new Integer[]{34390}, new Integer[]{19})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -293,7 +293,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Bob", new Integer[]{}, new Integer[]{}),
                 new JoinRec("Robert", new Integer[]{}, new Integer[]{})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.custID, e -> e.custID, GroupJoinTest::createJoinOrderRec));
     }
 
     @Test
@@ -310,7 +310,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Bob", new Integer[]{}, new Integer[]{}),
                 new JoinRec("Robert", new Integer[]{93483}, new Integer[]{19})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).groupJoin(Linq.asEnumerable(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, null));
+        assertEquals(Linq.of(expected), Linq.of(outer).groupJoin(Linq.of(inner), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, null));
     }
 
     @Test
@@ -327,7 +327,7 @@ public class GroupJoinTest extends TestCase {
                 new JoinRec("Bob", new Integer[]{}, new Integer[]{}),
                 new JoinRec("Robert", new Integer[]{93483}, new Integer[]{19})};
 
-        assertEquals(Linq.asEnumerable(expected), Linq.asEnumerable(outer).runOnce().groupJoin(Linq.asEnumerable(inner).runOnce(), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, null));
+        assertEquals(Linq.of(expected), Linq.of(outer).runOnce().groupJoin(Linq.of(inner).runOnce(), e -> e.name, e -> e.name, GroupJoinTest::createJoinAnagramRec, null));
     }
 
     @Test
@@ -342,7 +342,7 @@ public class GroupJoinTest extends TestCase {
     @Test
     public void testGroupJoin() {
         //左连接,empty dept 保留,bad Emp 被滤掉
-        String s = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts)).groupJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String s = Linq.of(depts).concat(Linq.of(badDepts)).groupJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                 dept -> dept.deptno,
                 emp -> emp.deptno,
                 (dept, emps) -> {
@@ -375,8 +375,8 @@ public class GroupJoinTest extends TestCase {
             }
         };
 
-        String s = Linq.asEnumerable(depts).concat(Linq.asEnumerable(badDepts))
-                .groupJoin(Linq.asEnumerable(emps).concat(Linq.asEnumerable(badEmps)),
+        String s = Linq.of(depts).concat(Linq.of(badDepts))
+                .groupJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                         dept -> dept.deptno,
                         emp -> emp.deptno,
                         (dept, emps) -> {
