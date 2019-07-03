@@ -2,6 +2,9 @@
 # Change Log
 
 ## v3.0.0
+`This is the first stable version available for production.
+It is highly recommended to upgrade to this version if you have used a previous version.`
+
 - Fix unsigned compare bugs.
 - Fix `Lookup.ApplyResultSelector` bugs.
 - Fix `OrderedEnumerableRangeEnumerator` not iterate maxIdx.
@@ -10,7 +13,7 @@
 - Fix not check selector param for `sum` with selector.
 - Add zip Tuple api.
 - Add support port to stream for `IEnumerable`.
-- Add api `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
+- Add api `toLinkedList`, `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
 - Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
 - Add api `findIndex`, `findLastIndex` for `IEnumerable`.
 - Add api `format` for `IEnumerable` to print values.
@@ -21,6 +24,8 @@
 - Add debug view support.
 - Add primitive functional interface.
 - Add covariant & contravariant support.
+- Add support more type cast to IEnumerable like `IEnumerable`, `Iterator` and `Enumeration`.
+- Add `Linq.as()` to generate `IEnumerable` from `Object`.
 - Remove override runOnce() for IList.
 - Not copy data when cast primitive array to IEnumerable.
 - Not create array when cast singleton to IEnumerable.
@@ -35,6 +40,7 @@
 - Translated all LINQ to Objects API of .net core 3.0.
 - Use ThrowHelper to throw Exceptions.
 - Rename package `bridge` to `adapter`.
+- Rename Linq.asEnumerable() to Linq.of().
 - Update plugin version to latest.
 - Change the year of copyright.
 
