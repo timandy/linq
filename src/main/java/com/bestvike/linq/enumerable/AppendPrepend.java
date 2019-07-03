@@ -291,7 +291,7 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
                     this.close();
                     return false;
                 }
-                this.enumerator = this.appended.enumerator(this.appendCount);
+                this.enumerator = this.appended.toArray(this.appendCount).enumerator();
                 this.state = 4;
             case 4:
                 return this.loadFromEnumerator();
@@ -436,12 +436,9 @@ final class AppendPrependNIterator<TSource> extends AppendPrependIterator<TSourc
             list.add(node.getItem());
 
         ListUtils.addRange(list, this.source);
-        if (this.appended != null) {
-            try (IEnumerator<TSource> e = this.appended.enumerator(this.appendCount)) {
-                while (e.moveNext())
-                    list.add(e.current());
-            }
-        }
+
+        if (this.appended != null)
+            ListUtils.addRange(list, this.appended.toArray(this.appendCount));
 
         return list;
     }

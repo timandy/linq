@@ -1,7 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
+import com.bestvike.collections.generic.Array;
 
 /**
  * Created by 许崇雷 on 2018-05-09.
@@ -40,10 +39,6 @@ final class SingleLinkedNode<TSource> {
         return count;
     }
 
-    public IEnumerator<TSource> enumerator(int count) {
-        return new ArrayEnumerator<>(this.toArray(count));
-    }
-
     public SingleLinkedNode<TSource> getNode(int index) {
         assert index >= 0 && index < this.getCount();
 
@@ -55,7 +50,7 @@ final class SingleLinkedNode<TSource> {
         return node;
     }
 
-    private Object[] toArray(int count) {
+    public Array<TSource> toArray(int count) {
         assert count == this.getCount();
 
         Object[] array = new Object[count];
@@ -66,6 +61,6 @@ final class SingleLinkedNode<TSource> {
         }
 
         assert index == 0;
-        return array;
+        return new Array<>(array);
     }
 }
