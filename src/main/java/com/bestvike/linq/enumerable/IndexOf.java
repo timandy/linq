@@ -59,9 +59,10 @@ public final class IndexOf {
 
         // see ReverseIterator.moveNext()
         Buffer<TSource> buffer = new Buffer<>(source);
-        TSource[] array = (TSource[]) buffer.items;
+        Object[] array = buffer.items;
         for (int i = buffer.count - 1; i >= 0; i--) {
-            if (comparer.equals(array[i], value))
+            //noinspection unchecked
+            if (comparer.equals((TSource) array[i], value))
                 return i;
         }
 

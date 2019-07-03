@@ -39,9 +39,10 @@ public final class FindIndex {
 
         // see ReverseIterator.moveNext()
         Buffer<TSource> buffer = new Buffer<>(source);
-        TSource[] array = (TSource[]) buffer.items;
+        Object[] array = buffer.items;
         for (int i = buffer.count - 1; i >= 0; i--) {
-            if (predicate.apply(array[i]))
+            //noinspection unchecked
+            if (predicate.apply((TSource) array[i]))
                 return i;
         }
 
