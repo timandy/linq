@@ -991,6 +991,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ToEnumeration.toEnumeration(this);
     }
 
+    default List<TSource> toLinkedList() {
+        return ToCollection.toLinkedList(this);
+    }
+
     default <TKey> Map<TKey, TSource> toLinkedMap(Func1<? super TSource, ? extends TKey> keySelector) {
         return ToCollection.toLinkedMap(this, (Func1<TSource, TKey>) keySelector);
     }

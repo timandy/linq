@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +60,30 @@ public final class ToCollection {
         }
 
         return EnumerableHelpers.toList(source);
+    }
+
+    public static <TSource> List<TSource> toLinkedList(IEnumerable<TSource> source) {
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            int capacity = collection._getCount();
+            if (capacity == 0)
+                return new LinkedList<>();
+
+            if (collection instanceof IArray) {
+                IArray<TSource> array = (IArray<TSource>) collection;
+                List<TSource> list = new LinkedList<>();
+                for (int i = 0; i < capacity; i++)
+                    list.add(array.get(i));
+                return list;
+            }
+        }
+
+        List<TSource> list = new LinkedList<>();
+        try (IEnumerator<TSource> enumerator = source.enumerator()) {
+            while (enumerator.moveNext())
+                list.add(enumerator.current());
+        }
+        return list;
     }
 
     public static <TSource, TKey> Map<TKey, TSource> toMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
