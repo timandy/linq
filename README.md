@@ -34,7 +34,6 @@ In general, the more complex the operation you want to perform on the data, the 
 - Tuple supported.
 - Cast IEnumerable to stream or parallel stream supported.
 - Android supported.
-- Java 8 & 11 supported.
 - More than 2000 test cases passed.
 
 ![bestvike](logo.jpg "济南百思为科信息工程有限公司")
@@ -46,6 +45,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - empty
 - singleton
 - of
+- as
 - range
 - repeat
 
@@ -113,6 +113,8 @@ In general, the more complex the operation you want to perform on the data, the 
 - takeLast
 - takeWhile
 - toArray
+- `toEnumeration`
+- `toLinkedList`
 - `toLinkedMap`
 - `toLinkedSet`
 - toList
@@ -172,7 +174,9 @@ In general, the more complex the operation you want to perform on the data, the 
 compile 'com.bestvike:linq:2.0.1'
 ```
 
-## Demos
+## Usage
+`If you use java 8 or java 9, it is recommended to replace the complex return type with lombok.var or lombok.val.
+If you use java 10 or later, it is recommended to replace the complex return type with var.`
 
 - Join not empty elements.
 ```
@@ -225,7 +229,14 @@ System.out.println(result);
 15.6
 ```
 
-`More demos to be added.`
+- Concat two integer sequence.
+```
+String result = Linq.of(1, 2).concat(Linq.of(3, 4)).format();
+
+System.out.println(result);
+----
+[1, 2, 3, 4]
+```
 
 ## *License*
 LINQ to Objects (Java) is released under the Apache License, Version 2.0.
