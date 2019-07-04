@@ -73,6 +73,9 @@ public class ElementAtTest extends TestCase {
         assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(-4, 5).elementAt(-1));
         assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(5, 5).elementAt(5));
         assertThrows(ArgumentOutOfRangeException.class, () -> NumberRangeGuaranteedNotCollectionType(0, 0).elementAt(0));
+
+        assertThrows(ArgumentOutOfRangeException.class, () -> Linq.singleton(true).elementAt(1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> Linq.singleton(true).elementAt(-1));
     }
 
     @Test
