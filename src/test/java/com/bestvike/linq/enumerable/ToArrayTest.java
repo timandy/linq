@@ -393,6 +393,30 @@ public class ToArrayTest extends TestCase {
         stringArray.set(0, "c");
         assertEquals("a", array[0]);
         assertEquals("c", stringArray.get(0));
+
+        assertEquals(Linq.of(true, false, false), Linq.of(new boolean[]{true, false, false}).toArray());
+        assertEquals(Linq.of(true, false, false), Linq.of(Linq.of(new boolean[]{true, false, false}).toArray(Boolean.class)));
+
+        assertEquals(Linq.of((byte) 1, (byte) 2, (byte) 3), Linq.of(new byte[]{1, 2, 3}).toArray());
+        assertEquals(Linq.of((byte) 1, (byte) 2, (byte) 3), Linq.of(Linq.of(new byte[]{1, 2, 3}).toArray(Byte.class)));
+
+        assertEquals(Linq.of((short) 1, (short) 2, (short) 3), Linq.of(new short[]{1, 2, 3}).toArray());
+        assertEquals(Linq.of((short) 1, (short) 2, (short) 3), Linq.of(Linq.of(new short[]{1, 2, 3}).toArray(Short.class)));
+
+        assertEquals(Linq.of(1, 2, 3), Linq.of(new int[]{1, 2, 3}).toArray());
+        assertEquals(Linq.of(1, 2, 3), Linq.of(Linq.of(new int[]{1, 2, 3}).toArray(Integer.class)));
+
+        assertEquals(Linq.of(1L, 2L, 3L), Linq.of(new long[]{1, 2, 3}).toArray());
+        assertEquals(Linq.of(1L, 2L, 3L), Linq.of(Linq.of(new long[]{1, 2, 3}).toArray(Long.class)));
+
+        assertEquals(Linq.of('a', 'b', 'c'), Linq.of(new char[]{'a', 'b', 'c'}).toArray());
+        assertEquals(Linq.of('a', 'b', 'c'), Linq.of(Linq.of(new char[]{'a', 'b', 'c'}).toArray(Character.class)));
+
+        assertEquals(Linq.of(1f, 2f, 3f), Linq.of(new float[]{1f, 2f, 3f}).toArray());
+        assertEquals(Linq.of(1f, 2f, 3f), Linq.of(Linq.of(new float[]{1f, 2f, 3f}).toArray(Float.class)));
+
+        assertEquals(Linq.of(1d, 2d, 3d), Linq.of(new double[]{1d, 2d, 3d}).toArray());
+        assertEquals(Linq.of(1d, 2d, 3d), Linq.of(Linq.of(new double[]{1d, 2d, 3d}).toArray(Double.class)));
     }
 
 

@@ -11,6 +11,8 @@ import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -535,5 +537,32 @@ public class ConcatTest extends TestCase {
     @Test
     public void testConcat() {
         assertEquals(6, Linq.of(emps).concat(Linq.of(badEmps)).count());
+
+        assertEquals(Linq.of(true, false, false), Linq.singleton(true).concat(Linq.of(new boolean[]{false, false})).toArray());
+        assertEquals(Arrays.asList(true, false, false), Linq.singleton(true).concat(Linq.of(new boolean[]{false, false})).toList());
+
+        assertEquals(Linq.of((byte) 1, (byte) 2, (byte) 3), Linq.singleton((byte) 1).concat(Linq.of(new byte[]{2, 3})).toArray());
+        assertEquals(Arrays.asList((byte) 1, (byte) 2, (byte) 3), Linq.singleton((byte) 1).concat(Linq.of(new byte[]{2, 3})).toList());
+
+        assertEquals(Linq.of((short) 1, (short) 2, (short) 3), Linq.singleton((short) 1).concat(Linq.of(new short[]{2, 3})).toArray());
+        assertEquals(Arrays.asList((short) 1, (short) 2, (short) 3), Linq.singleton((short) 1).concat(Linq.of(new short[]{2, 3})).toList());
+
+        assertEquals(Linq.of(1, 2, 3), Linq.singleton(1).concat(Linq.of(new int[]{2, 3})).toArray());
+        assertEquals(Arrays.asList(1, 2, 3), Linq.singleton(1).concat(Linq.of(new int[]{2, 3})).toList());
+
+        assertEquals(Linq.of(1L, 2L, 3L), Linq.singleton(1L).concat(Linq.of(new long[]{2, 3})).toArray());
+        assertEquals(Arrays.asList(1L, 2L, 3L), Linq.singleton(1L).concat(Linq.of(new long[]{2, 3})).toList());
+
+        assertEquals(Linq.of('a', 'b', 'c'), Linq.singleton('a').concat(Linq.of(new char[]{'b', 'c'})).toArray());
+        assertEquals(Arrays.asList('a', 'b', 'c'), Linq.singleton('a').concat(Linq.of(new char[]{'b', 'c'})).toList());
+
+        assertEquals(Linq.of(1f, 2f, 3f), Linq.singleton(1f).concat(Linq.of(new float[]{2f, 3f})).toArray());
+        assertEquals(Arrays.asList(1f, 2f, 3f), Linq.singleton(1f).concat(Linq.of(new float[]{2f, 3f})).toList());
+
+        assertEquals(Linq.of(1d, 2d, 3d), Linq.singleton(1d).concat(Linq.of(new double[]{2d, 3d})).toArray());
+        assertEquals(Arrays.asList(1d, 2d, 3d), Linq.singleton(1d).concat(Linq.of(new double[]{2d, 3d})).toList());
+
+        assertEquals(Linq.of(1, 2, 3), Linq.singleton(1).concat(Linq.of(Collections.unmodifiableCollection(Arrays.asList(2, 3)))).toArray());
+        assertEquals(Arrays.asList(1, 2, 3), Linq.singleton(1).concat(Linq.of(Collections.unmodifiableCollection(Arrays.asList(2, 3)))).toList());
     }
 }

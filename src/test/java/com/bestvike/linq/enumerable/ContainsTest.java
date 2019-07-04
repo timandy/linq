@@ -199,6 +199,33 @@ public class ContainsTest extends TestCase {
         assertFalse(Linq.singleton('h').contains('o'));
 
         assertFalse(Linq.empty().contains(1));
+
+        assertTrue(Linq.of(new boolean[]{true, true}).contains(true));
+        assertFalse(Linq.of(new boolean[]{true, true}).contains(false));
+
+        assertTrue(Linq.of(new byte[]{1, 1}).contains((byte) 1));
+        assertFalse(Linq.of(new byte[]{1, 1}).contains((byte) 2));
+
+        assertTrue(Linq.of(new short[]{1, 1}).contains((short) 1));
+        assertFalse(Linq.of(new short[]{1, 1}).contains((short) 2));
+
+        assertTrue(Linq.of(new int[]{1, 1}).contains(1));
+        assertFalse(Linq.of(new int[]{1, 1}).contains(2));
+
+        assertTrue(Linq.of(new long[]{1L, 1L}).contains(1L));
+        assertFalse(Linq.of(new long[]{1L, 1L}).contains(2L));
+
+        assertTrue(Linq.of(new char[]{'a', 'a'}).contains('a'));
+        assertFalse(Linq.of(new char[]{'a', 'a'}).contains('b'));
+
+        assertTrue(Linq.of(new float[]{1f, 1f}).contains(1f));
+        assertFalse(Linq.of(new float[]{1f, 1f}).contains(2f));
+
+        assertTrue(Linq.of(new double[]{1d, 1d}).contains(1d));
+        assertFalse(Linq.of(new double[]{1d, 1d}).contains(2d));
+
+        assertTrue(Linq.of("abc").contains('a'));
+        assertFalse(Linq.of("abc").contains('d'));
     }
 
     @Test

@@ -313,5 +313,14 @@ public class ToListTest extends TestCase {
 
         List<Character> empty = Linq.<Character>empty().toList();
         assertEquals(0, empty.size());
+
+        assertEquals(Arrays.asList(true, false, false), Linq.of(new boolean[]{true, false, false}).toList());
+        assertEquals(Arrays.asList((byte) 1, (byte) 2, (byte) 3), Linq.of(new byte[]{1, 2, 3}).toList());
+        assertEquals(Arrays.asList((short) 1, (short) 2, (short) 3), Linq.of(new short[]{1, 2, 3}).toList());
+        assertEquals(Arrays.asList(1, 2, 3), Linq.of(new int[]{1, 2, 3}).toList());
+        assertEquals(Arrays.asList(1L, 2L, 3L), Linq.of(new long[]{1, 2, 3}).toList());
+        assertEquals(Arrays.asList('a', 'b', 'c'), Linq.of(new char[]{'a', 'b', 'c'}).toList());
+        assertEquals(Arrays.asList(1f, 2f, 3f), Linq.of(new float[]{1f, 2f, 3f}).toList());
+        assertEquals(Arrays.asList(1d, 2d, 3d), Linq.of(new double[]{1d, 2d, 3d}).toList());
     }
 }
