@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.ICollection;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -69,11 +69,11 @@ public final class ToCollection {
             if (capacity == 0)
                 return new LinkedList<>();
 
-            if (collection instanceof IArray) {
-                IArray<TSource> array = (IArray<TSource>) collection;
+            if (collection instanceof IList) {
+                IList<TSource> ilist = (IList<TSource>) collection;
                 List<TSource> list = new LinkedList<>();
                 for (int i = 0; i < capacity; i++)
-                    list.add(array.get(i));
+                    list.add(ilist.get(i));
                 return list;
             }
         }
@@ -98,11 +98,11 @@ public final class ToCollection {
             if (capacity == 0)
                 return new HashMap<>();
 
-            if (collection instanceof IArray) {
-                IArray<TSource> array = (IArray<TSource>) collection;
+            if (collection instanceof IList) {
+                IList<TSource> list = (IList<TSource>) collection;
                 Map<TKey, TSource> map = new HashMap<>(capacity);
                 for (int i = 0; i < capacity; i++) {
-                    TSource element = array.get(i);
+                    TSource element = list.get(i);
                     map.put(keySelector.apply(element), element);
                 }
                 return map;
@@ -142,11 +142,11 @@ public final class ToCollection {
             if (capacity == 0)
                 return new HashMap<>();
 
-            if (collection instanceof IArray) {
-                IArray<TSource> array = (IArray<TSource>) collection;
+            if (collection instanceof IList) {
+                IList<TSource> list = (IList<TSource>) collection;
                 Map<TKey, TElement> map = new HashMap<>(capacity);
                 for (int i = 0; i < capacity; i++) {
-                    TSource element = array.get(i);
+                    TSource element = list.get(i);
                     map.put(keySelector.apply(element), elementSelector.apply(element));
                 }
                 return map;
@@ -184,11 +184,11 @@ public final class ToCollection {
             if (capacity == 0)
                 return new LinkedHashMap<>();
 
-            if (collection instanceof IArray) {
-                IArray<TSource> array = (IArray<TSource>) collection;
+            if (collection instanceof IList) {
+                IList<TSource> list = (IList<TSource>) collection;
                 Map<TKey, TSource> map = new LinkedHashMap<>(capacity);
                 for (int i = 0; i < capacity; i++) {
-                    TSource element = array.get(i);
+                    TSource element = list.get(i);
                     map.put(keySelector.apply(element), element);
                 }
                 return map;
@@ -228,11 +228,11 @@ public final class ToCollection {
             if (capacity == 0)
                 return new LinkedHashMap<>();
 
-            if (collection instanceof IArray) {
-                IArray<TSource> array = (IArray<TSource>) collection;
+            if (collection instanceof IList) {
+                IList<TSource> list = (IList<TSource>) collection;
                 Map<TKey, TElement> map = new LinkedHashMap<>(capacity);
                 for (int i = 0; i < capacity; i++) {
-                    TSource element = array.get(i);
+                    TSource element = list.get(i);
                     map.put(keySelector.apply(element), elementSelector.apply(element));
                 }
                 return map;
@@ -269,11 +269,11 @@ public final class ToCollection {
             if (capacity == 0)
                 return new HashSet<>();
 
-            if (collection instanceof IArray) {
-                IArray<TSource> array = (IArray<TSource>) collection;
+            if (collection instanceof IList) {
+                IList<TSource> list = (IList<TSource>) collection;
                 Set<TSource> set = new HashSet<>(capacity);
                 for (int i = 0; i < capacity; i++)
-                    set.add(array.get(i));
+                    set.add(list.get(i));
                 return set;
             }
 
@@ -304,11 +304,11 @@ public final class ToCollection {
             if (capacity == 0)
                 return new LinkedHashSet<>();
 
-            if (collection instanceof IArray) {
-                IArray<TSource> array = (IArray<TSource>) collection;
+            if (collection instanceof IList) {
+                IList<TSource> list = (IList<TSource>) collection;
                 Set<TSource> set = new LinkedHashSet<>(capacity);
                 for (int i = 0; i < capacity; i++)
-                    set.add(array.get(i));
+                    set.add(list.get(i));
                 return set;
             }
 
