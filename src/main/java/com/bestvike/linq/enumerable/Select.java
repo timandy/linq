@@ -278,10 +278,10 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 
     @Override
     public List<TResult> _toList() {
-        IArray<TSource> source = this.source;
-        List<TResult> results = new ArrayList<>(source._getCount());
-        for (int i = 0; i < source._getCount(); i++)
-            results.add(this.selector.apply(source.get(i)));
+        int count = this.source._getCount();
+        List<TResult> results = new ArrayList<>(count);
+        for (int i = 0; i < count; i++)
+            results.add(this.selector.apply(this.source.get(i)));
         return results;
     }
 
@@ -289,14 +289,14 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
     public int _getCount(boolean onlyIfCheap) {
         // In case someone uses Count() to force evaluation of
         // the selector, run it provided `onlyIfCheap` is false.
+        int count = this.source._getCount();
+
         if (!onlyIfCheap) {
-            try (IEnumerator<TSource> e = this.source.enumerator()) {
-                while (e.moveNext())
-                    this.selector.apply(e.current());
-            }
+            for (int i = 0; i < count; i++)
+                this.selector.apply(this.source.get(i));
         }
 
-        return this.source._getCount();
+        return count;
     }
 
     @Override
