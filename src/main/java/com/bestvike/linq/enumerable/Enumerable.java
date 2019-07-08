@@ -25,6 +25,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.RandomAccess;
 
 /**
  * Created by 许崇雷 on 2018-04-27.
@@ -123,7 +124,7 @@ public final class Enumerable {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        return new ListEnumerable<>(source);
+        return source instanceof RandomAccess ? new ListEnumerable<>(source) : new CollectionEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Collection<TSource> source) {
