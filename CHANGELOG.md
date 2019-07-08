@@ -37,6 +37,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Optimize `indexOf` and `lastIndexOf` in EqualityComparer.
 - Optimize performance by use enumerator instead of iterator.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
+- Extends `RandomAccess` for `IList`.
 - Translated all LINQ to Objects API of .net core 3.0.
 - Use ThrowHelper to throw Exceptions.
 - Rename package `bridge` to `adapter`.
