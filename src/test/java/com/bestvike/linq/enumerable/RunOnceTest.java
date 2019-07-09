@@ -1,11 +1,15 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.collections.generic.ILinkedList;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.NotSupportedException;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 /**
  * Created by 许崇雷 on 2019-05-27.
@@ -22,19 +26,44 @@ public class RunOnceTest extends TestCase {
     }
 
     @Test
-    public void testRunOnceList() {
+    public void testRunOnceLinkedList() {
+        IEnumerable<Integer> q = Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3)));
+        assertTrue(q.runOnce() instanceof RunOnceLinkedList);
+        assertTrue(RunOnce.runOnce(q) instanceof RunOnceLinkedList);
+        IEnumerable<Integer> source = q.runOnce();
+        assertEquals(0, source.firstOrDefault());
+        assertThrows(NotSupportedException.class, () -> source.firstOrDefault());
+
+        ILinkedList<Integer> q2 = (ILinkedList<Integer>) Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3)));
+        assertTrue(q2.runOnce() instanceof RunOnceLinkedList);
+        assertTrue(RunOnce.runOnce(q2) instanceof RunOnceLinkedList);
+        IEnumerable<Integer> source2 = q2.runOnce();
+        assertEquals(0, source2.firstOrDefault());
+        assertThrows(NotSupportedException.class, () -> source2.firstOrDefault());
+    }
+
+    @Test
+    public void testRunOnceArrayList() {
         IEnumerable<Integer> q = Linq.of(0, 1, 2, 3);
         assertTrue(q.runOnce() instanceof RunOnceArrayList);
         assertTrue(RunOnce.runOnce(q) instanceof RunOnceArrayList);
         IEnumerable<Integer> source = q.runOnce();
-        assertEquals(0, source.firstOrDefault());
+        assertEquals(2, source.indexOf(2));
         assertThrows(NotSupportedException.class, () -> source.firstOrDefault());
 
         IList<Integer> q2 = (IList<Integer>) Linq.of(0, 1, 2, 3);
         assertTrue(q2.runOnce() instanceof RunOnceArrayList);
         assertTrue(RunOnce.runOnce(q2) instanceof RunOnceArrayList);
         IEnumerable<Integer> source2 = q2.runOnce();
-        assertEquals(0, source2.firstOrDefault());
+        assertEquals(2, source2.indexOf(2));
         assertThrows(NotSupportedException.class, () -> source2.firstOrDefault());
+    }
+
+    @Test
+    public void testOthers() {
+        assertEquals(Linq.of(0, 1, 2, 3), Linq.of(0, 1).concat(Linq.of(2, 3).runOnce()).toArray());
+        assertEquals(Arrays.asList(0, 1, 2, 3), Linq.of(0, 1).concat(Linq.of(2, 3).runOnce()).toList());
+        assertEquals(Linq.of(0, 1, 2, 3), Linq.of(Linq.of(0, 1, 2, 3).runOnce().toArray(Integer.class)));
+        assertEquals(Arrays.asList(0, 1, 2, 3), Linq.of(0, 1, 2, 3).runOnce().toList());
     }
 }

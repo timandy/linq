@@ -270,5 +270,7 @@ public class ExceptionTest extends TestCase {
         } catch (IndexOutOfBoundsException e) {
             assertEquals(SR.Arg_IndexOutOfRangeException, e.getMessage());
         }
+
+        assertThrows(NullPointerException.class, () -> ThrowHelper.throwArgumentNullException(null));
     }
 }

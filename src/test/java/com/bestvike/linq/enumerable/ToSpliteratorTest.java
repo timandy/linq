@@ -5,6 +5,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
+import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.NotSupportedException;
 import org.junit.Test;
 
@@ -47,6 +48,7 @@ public class ToSpliteratorTest extends TestCase {
         List<String> ids = new ArrayList<>();
         IEnumerable<Employee> enumerable = Linq.of(emps);
         enumerable.forEach(a -> ids.add(String.valueOf(a.empno)));
+        assertThrows(ArgumentNullException.class, () -> enumerable.forEach(null));
         assertEquals(4, ids.size());
         assertEquals("100", ids.get(0));
         assertEquals("110", ids.get(1));
