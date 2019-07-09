@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.adapter.enumerable.ArrayListEnumerable;
 import com.bestvike.linq.adapter.enumerable.BooleanArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ByteArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.CharSequenceEnumerable;
@@ -13,7 +14,7 @@ import com.bestvike.linq.adapter.enumerable.GenericArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.IntegerArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.IterableEnumerable;
 import com.bestvike.linq.adapter.enumerable.IteratorEnumerable;
-import com.bestvike.linq.adapter.enumerable.ListEnumerable;
+import com.bestvike.linq.adapter.enumerable.LinkedListEnumerable;
 import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
@@ -124,7 +125,7 @@ public final class Enumerable {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        return source instanceof RandomAccess ? new ListEnumerable<>(source) : new CollectionEnumerable<>(source);
+        return source instanceof RandomAccess ? new ArrayListEnumerable<>(source) : new LinkedListEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Collection<TSource> source) {

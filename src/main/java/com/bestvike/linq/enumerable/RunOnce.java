@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.ILinkedList;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -22,9 +23,11 @@ public final class RunOnce {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        return source instanceof IList
-                ? new RunOnceList<>((IList<TSource>) source)
-                : new RunOnceEnumerable<>(source);
+        if (source instanceof IList)
+            return new RunOnceArrayList<>((IList<TSource>) source);
+        if (source instanceof ILinkedList)
+            return new RunOnceLinkedList<>((ILinkedList<TSource>) source);
+        return new RunOnceEnumerable<>(source);
     }
 }
 
@@ -47,11 +50,11 @@ final class RunOnceEnumerable<TSource> implements IEnumerable<TSource> {
 }
 
 
-final class RunOnceList<TSource> implements IList<TSource> {
-    private final IList<TSource> source;
-    private final Set<Integer> called = new HashSet<>();
+class RunOnceLinkedList<TSource> implements ILinkedList<TSource> {
+    protected final ILinkedList<TSource> source;
+    protected final Set<Integer> called = new HashSet<>();
 
-    RunOnceList(IList<TSource> source) {
+    RunOnceLinkedList(ILinkedList<TSource> source) {
         this.source = source;
     }
 
@@ -61,23 +64,10 @@ final class RunOnceList<TSource> implements IList<TSource> {
         this.called.add(-1);
     }
 
-    private void assertIndex(int index) {
-        if (this.called.contains(-1))
-            ThrowHelper.throwNotSupportedException();
-        if (!this.called.add(index))
-            ThrowHelper.throwNotSupportedException();
-    }
-
     @Override
     public IEnumerator<TSource> enumerator() {
         this.assertAll();
         return this.source.enumerator();
-    }
-
-    @Override
-    public TSource get(int index) {
-        this.assertIndex(index);
-        return this.source.get(index);
     }
 
     @Override
@@ -131,5 +121,25 @@ final class RunOnceList<TSource> implements IList<TSource> {
     public List<TSource> _toList() {
         this.assertAll();
         return this.source._toList();
+    }
+}
+
+
+final class RunOnceArrayList<TSource> extends RunOnceLinkedList<TSource> implements IList<TSource> {
+    RunOnceArrayList(IList<TSource> source) {
+        super(source);
+    }
+
+    private void assertIndex(int index) {
+        if (this.called.contains(-1))
+            ThrowHelper.throwNotSupportedException();
+        if (!this.called.add(index))
+            ThrowHelper.throwNotSupportedException();
+    }
+
+    @Override
+    public TSource get(int index) {
+        this.assertIndex(index);
+        return ((IList<TSource>) this.source).get(index);
     }
 }

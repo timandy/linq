@@ -24,15 +24,15 @@ public class RunOnceTest extends TestCase {
     @Test
     public void testRunOnceList() {
         IEnumerable<Integer> q = Linq.of(0, 1, 2, 3);
-        assertTrue(q.runOnce() instanceof RunOnceList);
-        assertTrue(RunOnce.runOnce(q) instanceof RunOnceList);
+        assertTrue(q.runOnce() instanceof RunOnceArrayList);
+        assertTrue(RunOnce.runOnce(q) instanceof RunOnceArrayList);
         IEnumerable<Integer> source = q.runOnce();
         assertEquals(0, source.firstOrDefault());
         assertThrows(NotSupportedException.class, () -> source.firstOrDefault());
 
         IList<Integer> q2 = (IList<Integer>) Linq.of(0, 1, 2, 3);
-        assertTrue(q2.runOnce() instanceof RunOnceList);
-        assertTrue(RunOnce.runOnce(q2) instanceof RunOnceList);
+        assertTrue(q2.runOnce() instanceof RunOnceArrayList);
+        assertTrue(RunOnce.runOnce(q2) instanceof RunOnceArrayList);
         IEnumerable<Integer> source2 = q2.runOnce();
         assertEquals(0, source2.firstOrDefault());
         assertThrows(NotSupportedException.class, () -> source2.firstOrDefault());
