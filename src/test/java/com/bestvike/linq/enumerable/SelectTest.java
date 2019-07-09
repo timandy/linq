@@ -1120,27 +1120,6 @@ public class SelectTest extends TestCase {
         assertEquals(source.count(), timesRun.value);
     }
 
-    //@Test
-    public void RunSelectorDuringPartitionCount() {
-        for (Object[] objects : this.RunSelectorDuringCountData()) {
-            this.RunSelectorDuringPartitionCount((IEnumerable<Integer>) objects[0]);
-        }
-    }
-
-    private void RunSelectorDuringPartitionCount(IEnumerable<Integer> source) {
-        ref<Integer> timesRun = ref.init(0);
-
-        IEnumerable<Integer> selected = source.select(i -> timesRun.value++);
-
-        if (source.any()) {
-            selected.skip(1).count();
-            assertEquals(source.count() - 1, timesRun.value);
-
-            selected.take(source.count() - 1).count();
-            assertEquals(source.count() * 2 - 2, timesRun.value);
-        }
-    }
-
     private IEnumerable<Object[]> RunSelectorDuringCountData() {
         List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> transforms = Arrays.asList(
                 e -> e,
