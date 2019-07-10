@@ -1,6 +1,8 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.ICollection;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
@@ -20,23 +22,59 @@ public final class Reverse {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        return new ReverseIterator<>(source);
+        if (source instanceof ReverseIterator) {
+            ReverseIterator<TSource> reverse = (ReverseIterator<TSource>) source;
+            return reverse._reverse();
+        }
+
+        if (source instanceof IList) {
+            if (source instanceof IArrayList) {
+                IArrayList<TSource> list = (IArrayList<TSource>) source;
+                return new ReverseListPartition<>(list, 0, Integer.MAX_VALUE);
+            }
+            IList<TSource> list = (IList<TSource>) source;
+            return new ReverseIListPartition<>(list, 0, Integer.MAX_VALUE);
+        }
+
+        return new ReverseEnumerableIterator<>(source);
     }
 }
 
 
-final class ReverseIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
+abstract class ReverseIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
+    public abstract IEnumerable<TSource> _reverse();
+
+    @Override
+    public abstract TSource[] _toArray(Class<TSource> clazz);
+
+    @Override
+    public abstract Object[] _toArray();
+
+    @Override
+    public abstract List<TSource> _toList();
+
+    @Override
+    public abstract int _getCount(boolean onlyIfCheap);
+}
+
+
+final class ReverseEnumerableIterator<TSource> extends ReverseIterator<TSource> {
     private final IEnumerable<TSource> source;
     private Object[] buffer;
 
-    ReverseIterator(IEnumerable<TSource> source) {
+    ReverseEnumerableIterator(IEnumerable<TSource> source) {
         assert source != null;
         this.source = source;
     }
 
     @Override
     public Iterator<TSource> clone() {
-        return new ReverseIterator<>(this.source);
+        return new ReverseEnumerableIterator<>(this.source);
+    }
+
+    @Override
+    public IEnumerable<TSource> _reverse() {
+        return this.source;
     }
 
     @Override
