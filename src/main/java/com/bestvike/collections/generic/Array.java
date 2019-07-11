@@ -1,5 +1,6 @@
 package com.bestvike.collections.generic;
 
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -51,6 +52,18 @@ public final class Array<T> implements IArray<T>, Cloneable {
     @Override
     public int _lastIndexOf(T item) {
         return ArrayUtils.lastIndexOf(this.elements, item);
+    }
+
+    @Override
+    public int _findIndex(Predicate1<T> match) {
+        //noinspection unchecked
+        return ArrayUtils.findIndex(this.elements, (Predicate1<Object>) match);
+    }
+
+    @Override
+    public int _findLastIndex(Predicate1<T> match) {
+        //noinspection unchecked
+        return ArrayUtils.findLastIndex(this.elements, (Predicate1<Object>) match);
     }
 
     public void set(int index, T item) {

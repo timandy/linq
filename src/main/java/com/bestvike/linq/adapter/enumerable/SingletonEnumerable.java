@@ -1,6 +1,7 @@
 package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IList;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.SingletonEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -43,6 +44,20 @@ public final class SingletonEnumerable<TSource> implements IList<TSource> {
     @Override
     public int _lastIndexOf(TSource item) {
         return Objects.equals(this.element, item) ? 0 : -1;
+    }
+
+    @Override
+    public int _findIndex(Predicate1<TSource> match) {
+        if (match == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.match);
+        return match.apply(this.element) ? 0 : -1;
+    }
+
+    @Override
+    public int _findLastIndex(Predicate1<TSource> match) {
+        if (match == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.match);
+        return match.apply(this.element) ? 0 : -1;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.ILinkedList;
 import com.bestvike.collections.generic.IList;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -80,6 +81,16 @@ class RunOnceLinkedList<TSource> implements ILinkedList<TSource> {
     public int _lastIndexOf(TSource item) {
         this.assertAll();
         return this.source._lastIndexOf(item);
+    }
+
+    @Override
+    public int _findIndex(Predicate1<TSource> match) {
+        return this.source._findIndex(match);
+    }
+
+    @Override
+    public int _findLastIndex(Predicate1<TSource> match) {
+        return this.source._findLastIndex(match);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IArray;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
 import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
@@ -69,6 +70,18 @@ final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IArra
     @Override
     public int _lastIndexOf(TElement item) {
         return ArrayUtils.lastIndexOf(this.elements, item, this.count - 1, this.count);
+    }
+
+    @Override
+    public int _findIndex(Predicate1<TElement> match) {
+        //noinspection unchecked
+        return ArrayUtils.findIndex(this.elements, 0, this.count, (Predicate1<Object>) match);
+    }
+
+    @Override
+    public int _findLastIndex(Predicate1<TElement> match) {
+        //noinspection unchecked
+        return ArrayUtils.findLastIndex(this.elements, this.count - 1, this.count, (Predicate1<Object>) match);
     }
 
     @Override

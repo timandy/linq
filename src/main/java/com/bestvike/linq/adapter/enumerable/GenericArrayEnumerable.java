@@ -1,6 +1,7 @@
 package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IArray;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.GenericArrayEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -41,6 +42,16 @@ public final class GenericArrayEnumerable<TElement> implements IArray<TElement> 
     @Override
     public int _lastIndexOf(TElement item) {
         return ArrayUtils.lastIndexOf(this.source, item);
+    }
+
+    @Override
+    public int _findIndex(Predicate1<TElement> match) {
+        return ArrayUtils.findIndex(this.source, match);
+    }
+
+    @Override
+    public int _findLastIndex(Predicate1<TElement> match) {
+        return ArrayUtils.findLastIndex(this.source, match);
     }
 
     @Override

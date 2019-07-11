@@ -1,8 +1,11 @@
 package com.bestvike.linq.adapter.enumerable;
 
 import com.bestvike.collections.generic.IArray;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.ByteArrayEnumerator;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -52,6 +55,28 @@ public final class ByteArrayEnumerable implements IArray<Byte> {
             return -1;
         for (int i = this.source.length - 1; i >= 0; i--) {
             if (this.source[i] == item)
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public int _findIndex(Predicate1<Byte> match) {
+        if (match == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.match);
+        for (int i = 0; i < this.source.length; i++) {
+            if (match.apply(this.source[i]))
+                return i;
+        }
+        return -1;
+    }
+
+    @Override
+    public int _findLastIndex(Predicate1<Byte> match) {
+        if (match == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.match);
+        for (int i = this.source.length - 1; i >= 0; i--) {
+            if (match.apply(this.source[i]))
                 return i;
         }
         return -1;
