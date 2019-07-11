@@ -1,6 +1,7 @@
 package com.bestvike.linq.util;
 
 import com.bestvike.collections.generic.EqualityComparer;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -59,9 +60,9 @@ public final class ArrayUtils {
     public static <T> int indexOf(T[] array, T item, int startIndex, int count) {
         if (array == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
-        if (startIndex < 0 || startIndex > array.length)
+        if (Integer.compareUnsigned(startIndex, array.length) > 0)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
-        if (count < 0 || count > array.length - startIndex)
+        if (Integer.compareUnsigned(count, array.length - startIndex) > 0)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
 
         return EqualityComparer.Default().indexOf(array, item, startIndex, count);
@@ -86,12 +87,72 @@ public final class ArrayUtils {
                 ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
             return -1;
         }
-        if (startIndex < 0 || startIndex >= array.length)
+        // Make sure we're not out of range
+        if (Integer.compareUnsigned(startIndex, array.length) >= 0)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
+        // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
         if (count < 0 || startIndex - count + 1 < 0)
             ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
 
         return EqualityComparer.Default().lastIndexOf(array, item, startIndex, count);
+    }
+
+    public static <T> int findIndex(T[] array, Predicate1<T> match) {
+        if (array == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
+
+        return findIndex(array, 0, array.length, match);
+    }
+
+    public static <T> int findIndex(T[] array, int startIndex, int count, Predicate1<T> match) {
+        if (array == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
+        if (startIndex < 0 || startIndex > array.length)
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
+        if (count < 0 || startIndex > array.length - count)
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
+        if (match == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.match);
+
+        int endIndex = startIndex + count;
+        for (int i = startIndex; i < endIndex; i++) {
+            if (match.apply(array[i]))
+                return i;
+        }
+        return -1;
+    }
+
+    public static <T> int findLastIndex(T[] array, Predicate1<T> match) {
+        if (array == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
+
+        return findLastIndex(array, array.length - 1, array.length, match);
+    }
+
+    public static <T> int findLastIndex(T[] array, int startIndex, int count, Predicate1<T> match) {
+        if (array == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
+        if (match == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.match);
+        if (array.length == 0) {
+            // Special case for 0 length List
+            if (startIndex != -1)
+                ThrowHelper.throwArgumentNullException(ExceptionArgument.startIndex);
+        } else {
+            // Make sure we're not out of range
+            if (startIndex < 0 || startIndex >= array.length)
+                ThrowHelper.throwArgumentNullException(ExceptionArgument.startIndex);
+        }
+        // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
+        if (count < 0 || startIndex - count + 1 < 0)
+            ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
+
+        int endIndex = startIndex - count;
+        for (int i = startIndex; i > endIndex; i--) {
+            if (match.apply(array[i]))
+                return i;
+        }
+        return -1;
     }
 
     public static Object[] clone(Object[] array) {
