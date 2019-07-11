@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.ILinkedList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -19,6 +20,11 @@ public final class FindIndex {
         if (predicate == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
+        if (source instanceof ILinkedList) {
+            ILinkedList<TSource> list = (ILinkedList<TSource>) source;
+            return list._findIndex(predicate);
+        }
+
         int index = 0;
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
@@ -36,6 +42,11 @@ public final class FindIndex {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (predicate == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
+
+        if (source instanceof ILinkedList) {
+            ILinkedList<TSource> list = (ILinkedList<TSource>) source;
+            return list._findLastIndex(predicate);
+        }
 
         // see ReverseIterator.moveNext()
         Buffer<TSource> buffer = new Buffer<>(source);
