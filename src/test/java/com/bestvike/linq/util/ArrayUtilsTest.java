@@ -91,4 +91,25 @@ public class ArrayUtilsTest extends TestCase {
         assertEquals(2, ArrayUtils.findLastIndex(new Integer[]{1, 2, 2}, 2, 3, a -> a == 2));
         assertEquals(-1, ArrayUtils.findLastIndex(new Integer[]{1, 2, 2}, 2, 3, a -> a == 4));
     }
+
+    @Test
+    public void testClone() {
+        assertThrows(ArgumentNullException.class, () -> ArrayUtils.clone(null));
+    }
+
+    @Test
+    public void resize() {
+        assertThrows(ArgumentNullException.class, () -> ArrayUtils.resize(null, -1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> ArrayUtils.resize(new Integer[]{}, -1));
+    }
+
+    @Test
+    public void fill() {
+        assertThrows(ArgumentNullException.class, () -> ArrayUtils.fill(null, null));
+    }
+
+    @Test
+    public void reverse() {
+        assertThrows(ArgumentNullException.class, () -> ArrayUtils.reverse(null));
+    }
 }
