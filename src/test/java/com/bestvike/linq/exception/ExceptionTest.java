@@ -157,6 +157,8 @@ public class ExceptionTest extends TestCase {
             assertEquals("index", e.getParamName());
             assertEquals(null, e.getActualValue());
         }
+
+        assertEquals(SR.Arg_ArgumentException + Environment.NewLine + String.format(SR.ArgumentOutOfRange_ActualValue, 2), new ArgumentOutOfRangeException(null, 2, null).getMessage());
     }
 
     @Test
