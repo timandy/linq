@@ -27,6 +27,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Add support more type cast to IEnumerable like `IEnumerable`, `Iterator` and `Enumeration`.
 - Add `Linq.as()` to generate `IEnumerable` from `Object`.
 - Add `ILinkedList` interface for LinkedList.
+- Add `_findIndex()` and `_findLastIndex()` method for `ILinkedList`.
 - Remove override runOnce() for IList.
 - Not copy data when cast primitive array to IEnumerable.
 - Not create array when cast singleton to IEnumerable.
