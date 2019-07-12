@@ -54,6 +54,9 @@ public final class ArrayUtils {
     }
 
     public static <T> int indexOf(T[] array, T item) {
+        if (array == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
+
         return indexOf(array, item, 0, array.length);
     }
 
@@ -69,6 +72,9 @@ public final class ArrayUtils {
     }
 
     public static <T> int lastIndexOf(T[] array, T item) {
+        if (array == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.array);
+
         return lastIndexOf(array, item, array.length - 1, array.length);
     }
 
@@ -137,11 +143,11 @@ public final class ArrayUtils {
         if (array.length == 0) {
             // Special case for 0 length List
             if (startIndex != -1)
-                ThrowHelper.throwArgumentNullException(ExceptionArgument.startIndex);
+                ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
         } else {
             // Make sure we're not out of range
             if (startIndex < 0 || startIndex >= array.length)
-                ThrowHelper.throwArgumentNullException(ExceptionArgument.startIndex);
+                ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.startIndex);
         }
         // 2nd have of this also catches when startIndex == MAXINT, so MAXINT - 0 + 1 == -1, which is < 0.
         if (count < 0 || startIndex - count + 1 < 0)
