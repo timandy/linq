@@ -85,11 +85,13 @@ class RunOnceLinkedList<TSource> implements ILinkedList<TSource> {
 
     @Override
     public int _findIndex(Predicate1<TSource> match) {
+        this.assertAll();
         return this.source._findIndex(match);
     }
 
     @Override
     public int _findLastIndex(Predicate1<TSource> match) {
+        this.assertAll();
         return this.source._findLastIndex(match);
     }
 
