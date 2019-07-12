@@ -24,6 +24,7 @@ import com.bestvike.tuple.Tuple2;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -142,6 +143,9 @@ public class FindLastIndexTest extends TestCase {
 
         assertEquals(4, Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3, 2, 1))).findLastIndex(x -> x == 1));
         assertEquals(-1, Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3, 2, 1))).findLastIndex(x -> x == 4));
+
+        assertEquals(4, Linq.of(Collections.unmodifiableList(new LinkedList<>(Arrays.asList(1, 2, 3, 2, 1)))).findLastIndex(x -> x == 1));
+        assertEquals(-1, Linq.of(Collections.unmodifiableList(new LinkedList<>(Arrays.asList(1, 2, 3, 2, 1)))).findLastIndex(x -> x == 4));
 
         assertEquals(2, Linq.of(Tuple.create(1, "1"), Tuple.create(2, "2"), Tuple.create(2, "3"), Tuple.create(2, "3")).groupBy(Tuple2::getItem1).elementAt(1).findLastIndex(a -> a.getItem2().equals("3")));
         assertEquals(-1, Linq.of(Tuple.create(1, "1"), Tuple.create(2, "2"), Tuple.create(2, "3"), Tuple.create(2, "3")).groupBy(Tuple2::getItem1).elementAt(1).findLastIndex(a -> a.getItem2().equals("4")));
