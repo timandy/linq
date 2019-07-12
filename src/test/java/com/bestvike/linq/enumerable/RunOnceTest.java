@@ -40,6 +40,9 @@ public class RunOnceTest extends TestCase {
         IEnumerable<Integer> source2 = q2.runOnce();
         assertEquals(0, source2.firstOrDefault());
         assertThrows(NotSupportedException.class, () -> source2.firstOrDefault());
+        IEnumerable<Integer> source3 = q2.runOnce();
+        assertEquals(2, source3.elementAt(2));
+        assertThrows(NotSupportedException.class, () -> source3.elementAt(2));
     }
 
     @Test
@@ -57,6 +60,9 @@ public class RunOnceTest extends TestCase {
         IEnumerable<Integer> source2 = q2.runOnce();
         assertEquals(2, source2.indexOf(2));
         assertThrows(NotSupportedException.class, () -> source2.firstOrDefault());
+        IEnumerable<Integer> source3 = q2.runOnce();
+        assertEquals(2, source3.elementAt(2));
+        assertThrows(NotSupportedException.class, () -> source3.elementAt(2));
     }
 
     @Test
