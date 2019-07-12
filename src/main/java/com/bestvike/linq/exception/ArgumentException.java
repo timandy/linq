@@ -38,10 +38,10 @@ public class ArgumentException extends RuntimeException {
     @Override
     public String getMessage() {
         String s = super.getMessage();
-        if (this.paramName != null && this.paramName.length() > 0) {
-            String resourceString = String.format(SR.Arg_ParamName_Name, this.paramName);
-            return s + Environment.NewLine + resourceString;
-        }
+        if (s == null)
+            s = SR.Arg_ArgumentException;
+        if (this.paramName != null && this.paramName.length() > 0)
+            s += Environment.NewLine + String.format(SR.Arg_ParamName_Name, this.paramName);
         return s;
     }
 }
