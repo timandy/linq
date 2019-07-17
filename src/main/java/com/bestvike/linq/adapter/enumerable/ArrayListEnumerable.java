@@ -16,11 +16,6 @@ public final class ArrayListEnumerable<TSource> extends LinkedListEnumerable<TSo
     }
 
     @Override
-    public TSource get(int index) {
-        return this.source.get(index);
-    }
-
-    @Override
     public int _findIndex(Predicate1<TSource> match) {
         if (match == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.match);

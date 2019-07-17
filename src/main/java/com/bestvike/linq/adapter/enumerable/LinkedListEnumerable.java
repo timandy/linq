@@ -30,6 +30,11 @@ public class LinkedListEnumerable<TSource> implements IList<TSource> {
     }
 
     @Override
+    public TSource get(int index) {
+        return this.source.get(index);
+    }
+
+    @Override
     public int _indexOf(TSource item) {
         return this.source.indexOf(item);
     }

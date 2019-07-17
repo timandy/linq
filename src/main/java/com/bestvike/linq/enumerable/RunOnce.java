@@ -24,10 +24,12 @@ public final class RunOnce {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        if (source instanceof IArrayList)
-            return new RunOnceArrayList<>((IArrayList<TSource>) source);
-        if (source instanceof IList)
-            return new RunOnceLinkedList<>((IList<TSource>) source);
+        if (source instanceof IList) {
+            return source instanceof IArrayList
+                    ? new RunOnceArrayList<>((IArrayList<TSource>) source)
+                    : new RunOnceLinkedList<>((IList<TSource>) source);
+        }
+
         return new RunOnceEnumerable<>(source);
     }
 }
@@ -52,8 +54,8 @@ final class RunOnceEnumerable<TSource> implements IEnumerable<TSource> {
 
 
 class RunOnceLinkedList<TSource> implements IList<TSource> {
-    protected final IList<TSource> source;
-    protected final Set<Integer> called = new HashSet<>();
+    private final IList<TSource> source;
+    private final Set<Integer> called = new HashSet<>();
 
     RunOnceLinkedList(IList<TSource> source) {
         this.source = source;
@@ -65,10 +67,23 @@ class RunOnceLinkedList<TSource> implements IList<TSource> {
         this.called.add(-1);
     }
 
+    private void assertIndex(int index) {
+        if (this.called.contains(-1))
+            ThrowHelper.throwNotSupportedException();
+        if (!this.called.add(index))
+            ThrowHelper.throwNotSupportedException();
+    }
+
     @Override
     public IEnumerator<TSource> enumerator() {
         this.assertAll();
         return this.source.enumerator();
+    }
+
+    @Override
+    public TSource get(int index) {
+        this.assertIndex(index);
+        return this.source.get(index);
     }
 
     @Override
@@ -141,18 +156,5 @@ class RunOnceLinkedList<TSource> implements IList<TSource> {
 final class RunOnceArrayList<TSource> extends RunOnceLinkedList<TSource> implements IArrayList<TSource> {
     RunOnceArrayList(IArrayList<TSource> source) {
         super(source);
-    }
-
-    private void assertIndex(int index) {
-        if (this.called.contains(-1))
-            ThrowHelper.throwNotSupportedException();
-        if (!this.called.add(index))
-            ThrowHelper.throwNotSupportedException();
-    }
-
-    @Override
-    public TSource get(int index) {
-        this.assertIndex(index);
-        return ((IArrayList<TSource>) this.source).get(index);
     }
 }
