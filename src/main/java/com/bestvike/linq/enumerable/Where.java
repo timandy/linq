@@ -41,9 +41,7 @@ public final class Where {
 
         if (source instanceof IArrayList) {
             IArrayList<TSource> list = (IArrayList<TSource>) source;
-            return list._getCount() == 0
-                    ? EmptyPartition.instance()
-                    : new WhereListIterator<>(list, predicate);
+            return new WhereListIterator<>(list, predicate);
         }
 
         return new WhereEnumerableIterator<>(source, predicate);
