@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -77,7 +77,7 @@ public class SkipTest extends TestCase {
     @Test
     public void SkipThrowsOnNullIList() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).skip(3));
-        assertThrows(NullPointerException.class, () -> ((IArrayList<Date>) null).skip(3));
+        assertThrows(NullPointerException.class, () -> ((IList<Date>) null).skip(3));
     }
 
     @Test

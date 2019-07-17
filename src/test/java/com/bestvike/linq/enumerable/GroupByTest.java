@@ -4,9 +4,10 @@ import com.bestvike.TestCase;
 import com.bestvike.ValueType;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.EqualityComparer;
-import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IArray;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
@@ -98,7 +99,7 @@ public class GroupByTest extends TestCase {
     public void Grouping_IList_IsReadOnly() {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.of(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         for (IGrouping grouping : oddsEvens) {
-            assertTrue(grouping instanceof IArrayList);
+            assertIsAssignableFrom(IArray.class, grouping);
         }
     }
 
@@ -106,7 +107,7 @@ public class GroupByTest extends TestCase {
     public void Grouping_IList_NotSupported() {
         IEnumerable<IGrouping<Boolean, Integer>> oddsEvens = Linq.of(new int[]{1, 2, 3, 4}).groupBy(i -> i % 2 == 0);
         for (IGrouping grouping : oddsEvens) {
-            assertTrue(grouping instanceof IArrayList);
+            assertIsAssignableFrom(IArray.class, grouping);
         }
     }
 
@@ -116,12 +117,12 @@ public class GroupByTest extends TestCase {
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
         assertTrue(e.moveNext());
-        IArrayList<Integer> odds = (IArrayList<Integer>) e.current();
+        IList<Integer> odds = (IList<Integer>) e.current();
         assertEquals(1, odds.get(0));
         assertEquals(3, odds.get(1));
 
         assertTrue(e.moveNext());
-        IArrayList<Integer> evens = (IArrayList<Integer>) e.current();
+        IList<Integer> evens = (IList<Integer>) e.current();
         assertEquals(2, evens.get(0));
         assertEquals(4, evens.get(1));
     }
@@ -132,7 +133,7 @@ public class GroupByTest extends TestCase {
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
         assertTrue(e.moveNext());
-        IArrayList<Integer> odds = (IArrayList<Integer>) e.current();
+        IList<Integer> odds = (IList<Integer>) e.current();
         assertThrows(ArgumentOutOfRangeException.class, () -> odds.get(-1));
         assertThrows(ArgumentOutOfRangeException.class, () -> odds.get(23));
     }
@@ -143,14 +144,14 @@ public class GroupByTest extends TestCase {
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
         assertTrue(e.moveNext());
-        ICollection<Integer> odds = (IArrayList<Integer>) e.current();
+        ICollection<Integer> odds = (IList<Integer>) e.current();
         assertTrue(odds.contains(1));
         assertTrue(odds.contains(3));
         assertFalse(odds.contains(2));
         assertFalse(odds.contains(4));
 
         assertTrue(e.moveNext());
-        ICollection<Integer> evens = (IArrayList<Integer>) e.current();
+        ICollection<Integer> evens = (IList<Integer>) e.current();
         assertTrue(evens.contains(2));
         assertTrue(evens.contains(4));
         assertFalse(evens.contains(1));
@@ -163,14 +164,14 @@ public class GroupByTest extends TestCase {
         IEnumerator<IGrouping<Boolean, Integer>> e = oddsEvens.enumerator();
 
         assertTrue(e.moveNext());
-        IArrayList<Integer> odds = (IArrayList<Integer>) e.current();
+        IList<Integer> odds = (IList<Integer>) e.current();
         assertEquals(0, odds.toList().indexOf(1));
         assertEquals(1, odds.toList().indexOf(3));
         assertEquals(-1, odds.toList().indexOf(2));
         assertEquals(-1, odds.toList().indexOf(4));
 
         assertTrue(e.moveNext());
-        IArrayList<Integer> evens = (IArrayList<Integer>) e.current();
+        IList<Integer> evens = (IList<Integer>) e.current();
         assertEquals(0, evens.toList().indexOf(2));
         assertEquals(1, evens.toList().indexOf(4));
         assertEquals(-1, evens.toList().indexOf(1));
