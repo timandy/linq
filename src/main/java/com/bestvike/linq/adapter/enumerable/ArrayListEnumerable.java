@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-07-09.
  */
-public final class ArrayListEnumerable<TSource> extends LinkedListEnumerable<TSource> implements IList<TSource> {
+public final class ArrayListEnumerable<TSource> extends LinkedListEnumerable<TSource> implements IArrayList<TSource> {
     public ArrayListEnumerable(List<TSource> source) {
         super(source);
     }

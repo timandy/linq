@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IArray;
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.function.Func1;
 import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
@@ -39,8 +39,8 @@ public final class Where {
                     : new WhereArrayIterator<>(array, predicate);
         }
 
-        if (source instanceof IList) {
-            IList<TSource> list = (IList<TSource>) source;
+        if (source instanceof IArrayList) {
+            IArrayList<TSource> list = (IArrayList<TSource>) source;
             return list._getCount() == 0
                     ? EmptyPartition.instance()
                     : new WhereListIterator<>(list, predicate);
@@ -328,11 +328,11 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
 
 
 final class WhereListIterator<TSource> extends Iterator<TSource> implements IIListProvider<TSource> {
-    private final IList<TSource> source;
+    private final IArrayList<TSource> source;
     private final Predicate1<TSource> predicate;
     private IEnumerator<TSource> enumerator;
 
-    WhereListIterator(IList<TSource> source, Predicate1<TSource> predicate) {
+    WhereListIterator(IArrayList<TSource> source, Predicate1<TSource> predicate) {
         assert source != null;
         assert predicate != null;
         this.source = source;
@@ -540,12 +540,12 @@ final class WhereSelectArrayIterator<TSource, TResult> extends Iterator<TResult>
 
 
 final class WhereSelectListIterator<TSource, TResult> extends Iterator<TResult> implements IIListProvider<TResult> {
-    private final IList<TSource> source;
+    private final IArrayList<TSource> source;
     private final Predicate1<TSource> predicate;
     private final Func1<TSource, TResult> selector;
     private IEnumerator<TSource> enumerator;
 
-    WhereSelectListIterator(IList<TSource> source, Predicate1<TSource> predicate, Func1<TSource, TResult> selector) {
+    WhereSelectListIterator(IArrayList<TSource> source, Predicate1<TSource> predicate, Func1<TSource, TResult> selector) {
         assert source != null;
         assert predicate != null;
         assert selector != null;

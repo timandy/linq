@@ -3,7 +3,7 @@ package com.bestvike.collections.generic;
 /**
  * Created by 许崇雷 on 2019-04-28.
  */
-public interface IArray<T> extends IList<T> {
+public interface IArray<T> extends IArrayList<T> {
     Object getArray();
 
     default int _getStartIndex() {

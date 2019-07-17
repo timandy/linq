@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.SingletonEnumerator;
@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-04-10.
  */
-public final class SingletonEnumerable<TSource> implements IList<TSource> {
+public final class SingletonEnumerable<TSource> implements IArrayList<TSource> {
     private final TSource element;
 
     public SingletonEnumerable(TSource element) {

@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
@@ -36,7 +36,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<T> source = Linq.of(Collections.EMPTY_LIST);
         T expected = null;
 
-        assertIsAssignableFrom(IList.class, source);
+        assertIsAssignableFrom(IArrayList.class, source);
         assertEquals(expected, source.runOnce().lastOrDefault());
     }
 
@@ -53,7 +53,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = Linq.of(new int[]{5});
         int expected = 5;
 
-        assertIsAssignableFrom(IList.class, source);
+        assertIsAssignableFrom(IArrayList.class, source);
         assertEquals(expected, source.lastOrDefault());
     }
 
@@ -62,7 +62,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = Linq.of(-10, 2, 4, 3, 0, 2, null);
         Integer expected = null;
 
-        assertIsAssignableFrom(IList.class, source);
+        assertIsAssignableFrom(IArrayList.class, source);
         assertEquals(expected, source.lastOrDefault());
     }
 
@@ -71,7 +71,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = Linq.of(-10, 2, 4, 3, 0, 2, null, 19);
         Integer expected = 19;
 
-        assertIsAssignableFrom(IList.class, source);
+        assertIsAssignableFrom(IArrayList.class, source);
         assertEquals(expected, source.lastOrDefault());
     }
 
@@ -83,7 +83,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<T> source = this.EmptySource();
         T expected = null;
 
-        assertNull(as(source, IList.class));
+        assertNull(as(source, IArrayList.class));
         assertEquals(expected, source.runOnce().lastOrDefault());
     }
 
@@ -100,7 +100,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
-        assertNull(as(source, IList.class));
+        assertNull(as(source, IArrayList.class));
         assertEquals(expected, source.lastOrDefault());
     }
 
@@ -109,7 +109,7 @@ public class LastOrDefaultTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(3, 10);
         int expected = 12;
 
-        assertNull(as(source, IList.class));
+        assertNull(as(source, IArrayList.class));
         assertEquals(expected, source.lastOrDefault());
     }
 

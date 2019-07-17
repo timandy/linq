@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.ILinkedList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -24,10 +24,10 @@ public final class RunOnce {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
+        if (source instanceof IArrayList)
+            return new RunOnceArrayList<>((IArrayList<TSource>) source);
         if (source instanceof IList)
-            return new RunOnceArrayList<>((IList<TSource>) source);
-        if (source instanceof ILinkedList)
-            return new RunOnceLinkedList<>((ILinkedList<TSource>) source);
+            return new RunOnceLinkedList<>((IList<TSource>) source);
         return new RunOnceEnumerable<>(source);
     }
 }
@@ -51,11 +51,11 @@ final class RunOnceEnumerable<TSource> implements IEnumerable<TSource> {
 }
 
 
-class RunOnceLinkedList<TSource> implements ILinkedList<TSource> {
-    protected final ILinkedList<TSource> source;
+class RunOnceLinkedList<TSource> implements IList<TSource> {
+    protected final IList<TSource> source;
     protected final Set<Integer> called = new HashSet<>();
 
-    RunOnceLinkedList(ILinkedList<TSource> source) {
+    RunOnceLinkedList(IList<TSource> source) {
         this.source = source;
     }
 
@@ -138,8 +138,8 @@ class RunOnceLinkedList<TSource> implements ILinkedList<TSource> {
 }
 
 
-final class RunOnceArrayList<TSource> extends RunOnceLinkedList<TSource> implements IList<TSource> {
-    RunOnceArrayList(IList<TSource> source) {
+final class RunOnceArrayList<TSource> extends RunOnceLinkedList<TSource> implements IArrayList<TSource> {
+    RunOnceArrayList(IArrayList<TSource> source) {
         super(source);
     }
 
@@ -153,6 +153,6 @@ final class RunOnceArrayList<TSource> extends RunOnceLinkedList<TSource> impleme
     @Override
     public TSource get(int index) {
         this.assertIndex(index);
-        return ((IList<TSource>) this.source).get(index);
+        return ((IArrayList<TSource>) this.source).get(index);
     }
 }

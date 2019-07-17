@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.collections.generic.ILinkedList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
@@ -34,7 +34,7 @@ public class RunOnceTest extends TestCase {
         assertEquals(0, source.firstOrDefault());
         assertThrows(NotSupportedException.class, () -> source.firstOrDefault());
 
-        ILinkedList<Integer> q2 = (ILinkedList<Integer>) Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3)));
+        IList<Integer> q2 = (IList<Integer>) Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3)));
         assertTrue(q2.runOnce() instanceof RunOnceLinkedList);
         assertTrue(RunOnce.runOnce(q2) instanceof RunOnceLinkedList);
         IEnumerable<Integer> source2 = q2.runOnce();
@@ -54,7 +54,7 @@ public class RunOnceTest extends TestCase {
         assertEquals(2, source.indexOf(2));
         assertThrows(NotSupportedException.class, () -> source.firstOrDefault());
 
-        IList<Integer> q2 = (IList<Integer>) Linq.of(0, 1, 2, 3);
+        IArrayList<Integer> q2 = (IArrayList<Integer>) Linq.of(0, 1, 2, 3);
         assertTrue(q2.runOnce() instanceof RunOnceArrayList);
         assertTrue(RunOnce.runOnce(q2) instanceof RunOnceArrayList);
         IEnumerable<Integer> source2 = q2.runOnce();

@@ -2,7 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.collections.generic.ILinkedList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -16,8 +16,8 @@ public final class IndexOf {
     }
 
     public static <TSource> int indexOf(IEnumerable<TSource> source, TSource value) {
-        if (source instanceof ILinkedList) {
-            ILinkedList<TSource> list = (ILinkedList<TSource>) source;
+        if (source instanceof IList) {
+            IList<TSource> list = (IList<TSource>) source;
             return list._indexOf(value);
         }
         return indexOf(source, value, null);
@@ -43,8 +43,8 @@ public final class IndexOf {
     }
 
     public static <TSource> int lastIndexOf(IEnumerable<TSource> source, TSource value) {
-        if (source instanceof ILinkedList) {
-            ILinkedList<TSource> list = (ILinkedList<TSource>) source;
+        if (source instanceof IList) {
+            IList<TSource> list = (IList<TSource>) source;
             return list._lastIndexOf(value);
         }
         return lastIndexOf(source, value, null);

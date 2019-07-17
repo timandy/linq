@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.ILinkedList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.IterableEnumerator;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-07-09.
  */
-public class LinkedListEnumerable<TSource> implements ILinkedList<TSource> {
+public class LinkedListEnumerable<TSource> implements IList<TSource> {
     protected final List<TSource> source;
 
     public LinkedListEnumerable(List<TSource> source) {

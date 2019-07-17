@@ -1,10 +1,16 @@
 package com.bestvike.collections.generic;
 
-import java.util.RandomAccess;
+import com.bestvike.function.Predicate1;
 
 /**
- * Created by 许崇雷 on 2018-04-27.
+ * Created by 许崇雷 on 2019-07-09.
  */
-public interface IList<T> extends ILinkedList<T>, RandomAccess {
-    T get(int index);
+public interface IList<T> extends ICollection<T> {
+    int _indexOf(T item);
+
+    int _lastIndexOf(T item);
+
+    int _findIndex(Predicate1<T> match);
+
+    int _findLastIndex(Predicate1<T> match);
 }

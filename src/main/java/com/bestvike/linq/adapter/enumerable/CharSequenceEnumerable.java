@@ -1,6 +1,6 @@
 package com.bestvike.linq.adapter.enumerable;
 
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerator.CharSequenceEnumerator;
@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2017-07-25.
  */
-public final class CharSequenceEnumerable implements IList<Character> {
+public final class CharSequenceEnumerable implements IArrayList<Character> {
     private final CharSequence source;
 
     public CharSequenceEnumerable(CharSequence source) {

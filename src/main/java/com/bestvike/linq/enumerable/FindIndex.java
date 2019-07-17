@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.ILinkedList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -20,8 +20,8 @@ public final class FindIndex {
         if (predicate == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
-        if (source instanceof ILinkedList) {
-            ILinkedList<TSource> list = (ILinkedList<TSource>) source;
+        if (source instanceof IList) {
+            IList<TSource> list = (IList<TSource>) source;
             return list._findIndex(predicate);
         }
 
@@ -43,8 +43,8 @@ public final class FindIndex {
         if (predicate == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.predicate);
 
-        if (source instanceof ILinkedList) {
-            ILinkedList<TSource> list = (ILinkedList<TSource>) source;
+        if (source instanceof IList) {
+            IList<TSource> list = (IList<TSource>) source;
             return list._findLastIndex(predicate);
         }
 

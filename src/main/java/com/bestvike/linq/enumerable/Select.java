@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IArray;
-import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.function.Func1;
 import com.bestvike.function.IndexFunc2;
 import com.bestvike.linq.IEnumerable;
@@ -34,14 +34,14 @@ public final class Select {
             return iterator._select(selector);
         }
 
-        if (source instanceof IList) {
+        if (source instanceof IArrayList) {
             if (source instanceof IArray) {
                 IArray<TSource> array = (IArray<TSource>) source;
                 return array._getCount() == 0
                         ? EmptyPartition.instance()
                         : new SelectArrayIterator<>(array, selector);
             }
-            IList<TSource> list = (IList<TSource>) source;
+            IArrayList<TSource> list = (IArrayList<TSource>) source;
             return list._getCount() == 0
                     ? EmptyPartition.instance()
                     : new SelectIListIterator<>(list, selector);
@@ -576,11 +576,11 @@ final class SelectRepeatIterator<TSource, TResult> extends Iterator<TResult> imp
 
 
 final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
-    private final IList<TSource> source;
+    private final IArrayList<TSource> source;
     private final Func1<TSource, TResult> selector;
     private IEnumerator<TSource> enumerator;
 
-    SelectIListIterator(IList<TSource> source, Func1<TSource, TResult> selector) {
+    SelectIListIterator(IArrayList<TSource> source, Func1<TSource, TResult> selector) {
         assert source != null;
         assert selector != null;
         this.source = source;
@@ -923,12 +923,12 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
 
 
 final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
-    private final IList<TSource> source;
+    private final IArrayList<TSource> source;
     private final Func1<TSource, TResult> selector;
     private final int minIndexInclusive;
     private final int maxIndexInclusive;
 
-    SelectListPartitionIterator(IList<TSource> source, Func1<TSource, TResult> selector, int minIndexInclusive, int maxIndexInclusive) {
+    SelectListPartitionIterator(IArrayList<TSource> source, Func1<TSource, TResult> selector, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
         assert selector != null;
         assert minIndexInclusive >= 0;
