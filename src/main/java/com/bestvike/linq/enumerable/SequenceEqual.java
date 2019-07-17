@@ -1,9 +1,9 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.EqualityComparer;
-import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -34,9 +34,9 @@ public final class SequenceEqual {
             if (firstCol._getCount() != secondCol._getCount())
                 return false;
 
-            if (firstCol instanceof IArrayList && secondCol instanceof IArrayList) {
-                IArrayList<TSource> firstList = (IArrayList<TSource>) first;
-                IArrayList<TSource> secondList = (IArrayList<TSource>) second;
+            if (firstCol instanceof IList && secondCol instanceof IList) {
+                IList<TSource> firstList = (IList<TSource>) first;
+                IList<TSource> secondList = (IList<TSource>) second;
                 int count = firstCol._getCount();
                 for (int i = 0; i < count; i++) {
                     if (!comparer.equals(firstList.get(i), secondList.get(i)))

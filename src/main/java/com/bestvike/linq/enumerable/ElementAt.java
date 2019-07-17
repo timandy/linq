@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -25,8 +25,8 @@ public final class ElementAt {
             if (foundRef.value)
                 return element;
         } else {
-            if (source instanceof IArrayList) {
-                IArrayList<TSource> list = (IArrayList<TSource>) source;
+            if (source instanceof IList) {
+                IList<TSource> list = (IList<TSource>) source;
                 return list.get(index);
             }
 
@@ -55,8 +55,8 @@ public final class ElementAt {
         }
 
         if (index >= 0) {
-            if (source instanceof IArrayList) {
-                IArrayList<TSource> list = (IArrayList<TSource>) source;
+            if (source instanceof IList) {
+                IList<TSource> list = (IList<TSource>) source;
                 if (index < list._getCount())
                     return list.get(index);
             } else {

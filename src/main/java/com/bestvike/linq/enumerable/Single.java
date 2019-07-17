@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -18,8 +18,8 @@ public final class Single {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        if (source instanceof IArrayList) {
-            IArrayList<TSource> list = (IArrayList<TSource>) source;
+        if (source instanceof IList) {
+            IList<TSource> list = (IList<TSource>) source;
             switch (list._getCount()) {
                 case 0:
                     ThrowHelper.throwNoElementsException();
@@ -68,8 +68,8 @@ public final class Single {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        if (source instanceof IArrayList) {
-            IArrayList<TSource> list = (IArrayList<TSource>) source;
+        if (source instanceof IList) {
+            IList<TSource> list = (IList<TSource>) source;
             switch (list._getCount()) {
                 case 0:
                     return null;

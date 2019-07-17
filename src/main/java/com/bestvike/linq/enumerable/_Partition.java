@@ -1,6 +1,6 @@
 package com.bestvike.linq.enumerable;
 
-import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -193,11 +193,11 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
 
 
 final class ListPartition<TSource> extends Iterator<TSource> implements IPartition<TSource> {
-    private final IArrayList<TSource> source;
+    private final IList<TSource> source;
     private final int minIndexInclusive;
     private final int maxIndexInclusive;
 
-    ListPartition(IArrayList<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
+    ListPartition(IList<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
         assert minIndexInclusive >= 0;
         assert minIndexInclusive <= maxIndexInclusive;
@@ -341,7 +341,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
 
     EnumerablePartition(IEnumerable<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
-        assert !(source instanceof IArrayList);//, $"The caller needs to check for {nameof(IList<TSource>)}.");
+        assert !(source instanceof IList);//, $"The caller needs to check for {nameof(IList<TSource>)}.");
         assert minIndexInclusive >= 0;
         assert maxIndexInclusive >= -1;
         // Note that although maxIndexInclusive can't grow, it can still be int.MaxValue.
