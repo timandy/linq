@@ -26,8 +26,9 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Add covariant & contravariant support.
 - Add support more type cast to IEnumerable like `IEnumerable`, `Iterator` and `Enumeration`.
 - Add `Linq.as()` to generate `IEnumerable` from `Object`.
-- Add `ILinkedList` interface for LinkedList.
-- Add `_findIndex()` and `_findLastIndex()` method for `ILinkedList`.
+- Add `IArrayList` interface which extends `RandomAccess` for random access list and `IList` for other.
+- Add `_indexOf` and `_lastIndexOf` method for `IList`.
+- Add `_findIndex()` and `_findLastIndex()` method for `IList`.
 - Remove override runOnce() for IList.
 - Not copy data when cast primitive array to IEnumerable.
 - Not create array when cast singleton to IEnumerable.
@@ -39,7 +40,6 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Optimize `indexOf` and `lastIndexOf` in EqualityComparer.
 - Optimize performance by use enumerator instead of iterator.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
-- Extends `RandomAccess` for `IList`.
 - Translated all LINQ to Objects API of .net core 3.0.
 - Use ThrowHelper to throw Exceptions.
 - Rename package `bridge` to `adapter`.
