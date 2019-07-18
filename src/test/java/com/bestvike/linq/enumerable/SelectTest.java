@@ -12,6 +12,7 @@ import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
@@ -1146,6 +1147,54 @@ public class SelectTest extends TestCase {
             }
         }
         return Linq.of(lst);
+    }
+
+    @Test
+    public void testSelectListIterator() {
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(55, 49, 9, -100, 24, 25, -1, 0)).select(x -> 2 * x);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0), source.toList());
+        assertEquals(8, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2, 0), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(0, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(Collections.<Integer>emptyList()).select(x -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+    }
+
+    @Test
+    public void testSelectIListIterator() {
+        IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(55, 49, 9, -100, 24, 25, -1, 0))).select(x -> 2 * x);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0), source.toList());
+        assertEquals(8, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2, 0), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(0, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new LinkedList<Integer>()).select(x -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
     }
 
     @Test
