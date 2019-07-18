@@ -1151,19 +1151,20 @@ public class SelectTest extends TestCase {
 
     @Test
     public void testSelectRepeatIterator() {
-        IEnumerable<Integer> source = Linq.repeat(3, 5);
+        IEnumerable<Integer> source = Linq.repeat(3, 5).select(x -> x * 2);
         assertEquals(source.runOnce(), source.runOnce());
-        assertEquals(Linq.of(1, 1, 1, 1, 1), source.select(x -> x / 2));
-        assertEquals(Linq.of(3, 3, 3, 3, 3), source.toArray());
-        assertEquals(Linq.of(3, 3, 3, 3, 3), Linq.of(source.toArray(Integer.class)));
-        assertEquals(Arrays.asList(3, 3, 3, 3, 3), source.toList());
+        assertEquals(Linq.of(3, 3, 3, 3, 3), source.select(x -> x / 2));
+        assertEquals(Linq.of(6, 6, 6, 6, 6), source.toArray());
+        assertEquals(Linq.of(6, 6, 6, 6, 6), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(6, 6, 6, 6, 6), source.toList());
         assertEquals(5, source.count());
-        assertEquals(Linq.of(3, 3, 3, 3), source.skip(1));
-        assertEquals(Linq.of(3), source.take(1));
-        assertEquals(3, source.elementAt(0));
+        assertEquals(Linq.of(6, 6, 6, 6), source.skip(1));
+        assertSame(Linq.empty(), source.skip(5));
+        assertEquals(Linq.of(6), source.take(1));
+        assertEquals(6, source.elementAt(0));
         assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
-        assertEquals(3, source.first());
-        assertEquals(3, source.last());
+        assertEquals(6, source.first());
+        assertEquals(6, source.last());
 
         IEnumerable<Integer> emptySource = Linq.repeat(3, 0).select(x -> 2 * x);
         assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
@@ -1243,6 +1244,16 @@ public class SelectTest extends TestCase {
         assertEquals(Collections.emptyList(), emptySource.toList());
         assertThrows(InvalidOperationException.class, () -> emptySource.first());
         assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> orderedSource = Linq.range(0, 6).orderByDescending(x -> x).select(x -> 2 * x);
+        assertEquals(Linq.of(10, 8, 6, 4, 2, 0), orderedSource.toArray());
+        assertEquals(Linq.of(10, 8, 6, 4, 2, 0), Linq.of(orderedSource.toArray(Integer.class)));
+        assertEquals(Arrays.asList(10, 8, 6, 4, 2, 0), orderedSource.toList());
+
+        IEnumerable<Integer> emptyOrderedSource = Linq.range(0, 0).orderByDescending(x -> x).select(x -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptyOrderedSource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptyOrderedSource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptyOrderedSource.toList());
     }
 
     @Test
