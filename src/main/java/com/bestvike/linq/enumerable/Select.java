@@ -543,7 +543,6 @@ final class SelectRepeatIterator<TSource, TResult> extends Iterator<TResult> imp
         return count >= this.count
                 ? EmptyPartition.instance()
                 : new SelectRepeatIterator<>(this.element, this.count - count, this.selector);
-
     }
 
     @Override
