@@ -364,7 +364,6 @@ final class SelectRangeIterator<TResult> extends Iterator<TResult> implements IP
         this.selector = selector;
     }
 
-
     @Override
     public AbstractIterator<TResult> clone() {
         return new SelectRangeIterator<>(this.start, this.end, this.selector);
