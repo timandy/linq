@@ -783,8 +783,11 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
             return ArrayUtils.empty(clazz);
 
         TResult[] results = ArrayUtils.newInstance(clazz, count);
-        for (int i = 0; i < results.length; i++)
-            results[i] = this.selector.apply(this.source.get(i));
+        int i = 0;
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                results[i++] = this.selector.apply(e.current());
+        }
 
         return results;
     }
@@ -796,18 +799,22 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
             return ArrayUtils.empty();
 
         Object[] results = new Object[count];
-        for (int i = 0; i < results.length; i++)
-            results[i] = this.selector.apply(this.source.get(i));
+        int i = 0;
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                results[i++] = this.selector.apply(e.current());
+        }
 
         return results;
     }
 
     @Override
     public List<TResult> _toList() {
-        int count = this.source._getCount();
-        ArrayList<TResult> results = new ArrayList<>(count);
-        for (int i = 0; i < count; i++)
-            results.add(this.selector.apply(this.source.get(i)));
+        ArrayList<TResult> results = new ArrayList<>(this.source._getCount());
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext())
+                results.add(this.selector.apply(e.current()));
+        }
 
         return results;
     }
@@ -819,8 +826,10 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         int count = this.source._getCount();
 
         if (!onlyIfCheap) {
-            for (int i = 0; i < count; i++)
-                this.selector.apply(this.source.get(i));
+            try (IEnumerator<TSource> e = this.source.enumerator()) {
+                while (e.moveNext())
+                    this.selector.apply(e.current());
+            }
         }
 
         return count;
