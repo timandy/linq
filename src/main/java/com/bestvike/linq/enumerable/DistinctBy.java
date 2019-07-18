@@ -94,9 +94,9 @@ final class DistinctByIterator<TSource, TKey> extends Iterator<TSource> implemen
     public TSource[] _toArray(Class<TSource> clazz) {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
         Set<TKey> set = new Set<>(this.comparer);
-        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
-            while (enumerator.moveNext()) {
-                TSource element = enumerator.current();
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
                 if (set.add(this.keySelector.apply(element)))
                     builder.add(element);
             }
@@ -109,9 +109,9 @@ final class DistinctByIterator<TSource, TKey> extends Iterator<TSource> implemen
     public Object[] _toArray() {
         LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>();
         Set<TKey> set = new Set<>(this.comparer);
-        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
-            while (enumerator.moveNext()) {
-                TSource element = enumerator.current();
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
                 if (set.add(this.keySelector.apply(element)))
                     builder.add(element);
             }
@@ -124,9 +124,9 @@ final class DistinctByIterator<TSource, TKey> extends Iterator<TSource> implemen
     public List<TSource> _toList() {
         List<TSource> list = new ArrayList<>();
         Set<TKey> set = new Set<>(this.comparer);
-        try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
-            while (enumerator.moveNext()) {
-                TSource element = enumerator.current();
+        try (IEnumerator<TSource> e = this.source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
                 if (set.add(this.keySelector.apply(element)))
                     list.add(element);
             }

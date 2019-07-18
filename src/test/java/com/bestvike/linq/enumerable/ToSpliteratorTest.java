@@ -33,10 +33,10 @@ public class ToSpliteratorTest extends TestCase {
     @Test
     public void testForEachRemaining() {
         List<String> ids = new ArrayList<>();
-        try (IEnumerator<Employee> enumerator = Linq.of(emps).enumerator()) {
-            enumerator.moveNext();
-            enumerator.moveNext();
-            enumerator.forEachRemaining(a -> ids.add(String.valueOf(a.empno)));
+        try (IEnumerator<Employee> e = Linq.of(emps).enumerator()) {
+            e.moveNext();
+            e.moveNext();
+            e.forEachRemaining(a -> ids.add(String.valueOf(a.empno)));
         }
         assertEquals(2, ids.size());
         assertEquals("120", ids.get(0));

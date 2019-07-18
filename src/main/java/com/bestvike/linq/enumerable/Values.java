@@ -1081,9 +1081,9 @@ public final class Values {
 
     private static <T> int hashCode(IEnumerable<T> obj) {
         int result = HASH_EMPTY;
-        try (IEnumerator<T> enumerator = obj.enumerator()) {
-            while (enumerator.moveNext())
-                result = HASH_PRIME * result + hashCode(enumerator.current());
+        try (IEnumerator<T> e = obj.enumerator()) {
+            while (e.moveNext())
+                result = HASH_PRIME * result + hashCode(e.current());
         }
         return result;
     }

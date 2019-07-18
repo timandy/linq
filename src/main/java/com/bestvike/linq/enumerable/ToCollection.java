@@ -79,9 +79,9 @@ public final class ToCollection {
         }
 
         List<TSource> list = new LinkedList<>();
-        try (IEnumerator<TSource> enumerator = source.enumerator()) {
-            while (enumerator.moveNext())
-                list.add(enumerator.current());
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                list.add(e.current());
         }
         return list;
     }
@@ -109,9 +109,9 @@ public final class ToCollection {
             }
 
             Map<TKey, TSource> map = new HashMap<>(capacity);
-            try (IEnumerator<TSource> enumerator = source.enumerator()) {
-                while (enumerator.moveNext()) {
-                    TSource element = enumerator.current();
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
                     map.put(keySelector.apply(element), element);
                 }
             }
@@ -119,9 +119,9 @@ public final class ToCollection {
         }
 
         Map<TKey, TSource> map = new HashMap<>();
-        try (IEnumerator<TSource> enumerator = source.enumerator()) {
-            while (enumerator.moveNext()) {
-                TSource element = enumerator.current();
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
                 map.put(keySelector.apply(element), element);
             }
         }
@@ -153,9 +153,9 @@ public final class ToCollection {
             }
 
             Map<TKey, TElement> map = new HashMap<>(capacity);
-            try (IEnumerator<TSource> enumerator = source.enumerator()) {
-                while (enumerator.moveNext()) {
-                    TSource element = enumerator.current();
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
                     map.put(keySelector.apply(element), elementSelector.apply(element));
                 }
             }
@@ -163,9 +163,9 @@ public final class ToCollection {
         }
 
         Map<TKey, TElement> map = new HashMap<>();
-        try (IEnumerator<TSource> enumerator = source.enumerator()) {
-            while (enumerator.moveNext()) {
-                TSource element = enumerator.current();
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
                 map.put(keySelector.apply(element), elementSelector.apply(element));
             }
         }
@@ -195,9 +195,9 @@ public final class ToCollection {
             }
 
             Map<TKey, TSource> map = new LinkedHashMap<>(capacity);
-            try (IEnumerator<TSource> enumerator = source.enumerator()) {
-                while (enumerator.moveNext()) {
-                    TSource element = enumerator.current();
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
                     map.put(keySelector.apply(element), element);
                 }
             }
@@ -205,9 +205,9 @@ public final class ToCollection {
         }
 
         Map<TKey, TSource> map = new LinkedHashMap<>();
-        try (IEnumerator<TSource> enumerator = source.enumerator()) {
-            while (enumerator.moveNext()) {
-                TSource element = enumerator.current();
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
                 map.put(keySelector.apply(element), element);
             }
         }
@@ -239,9 +239,9 @@ public final class ToCollection {
             }
 
             Map<TKey, TElement> map = new LinkedHashMap<>(capacity);
-            try (IEnumerator<TSource> enumerator = source.enumerator()) {
-                while (enumerator.moveNext()) {
-                    TSource element = enumerator.current();
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
                     map.put(keySelector.apply(element), elementSelector.apply(element));
                 }
             }
@@ -249,9 +249,9 @@ public final class ToCollection {
         }
 
         Map<TKey, TElement> map = new LinkedHashMap<>();
-        try (IEnumerator<TSource> enumerator = source.enumerator()) {
-            while (enumerator.moveNext()) {
-                TSource element = enumerator.current();
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
                 map.put(keySelector.apply(element), elementSelector.apply(element));
             }
         }
@@ -278,17 +278,17 @@ public final class ToCollection {
             }
 
             Set<TSource> set = new HashSet<>(capacity);
-            try (IEnumerator<TSource> enumerator = source.enumerator()) {
-                while (enumerator.moveNext())
-                    set.add(enumerator.current());
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext())
+                    set.add(e.current());
             }
             return set;
         }
 
         Set<TSource> set = new HashSet<>();
-        try (IEnumerator<TSource> enumerator = source.enumerator()) {
-            while (enumerator.moveNext())
-                set.add(enumerator.current());
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                set.add(e.current());
         }
         return set;
     }
@@ -313,17 +313,17 @@ public final class ToCollection {
             }
 
             Set<TSource> set = new LinkedHashSet<>(capacity);
-            try (IEnumerator<TSource> enumerator = source.enumerator()) {
-                while (enumerator.moveNext())
-                    set.add(enumerator.current());
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext())
+                    set.add(e.current());
             }
             return set;
         }
 
         Set<TSource> set = new LinkedHashSet<>();
-        try (IEnumerator<TSource> enumerator = source.enumerator()) {
-            while (enumerator.moveNext())
-                set.add(enumerator.current());
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                set.add(e.current());
         }
         return set;
     }

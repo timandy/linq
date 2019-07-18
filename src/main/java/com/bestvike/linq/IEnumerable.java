@@ -96,9 +96,9 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
     default void forEach(Consumer<? super TSource> action) {
         if (action == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
-        try (IEnumerator<TSource> enumerator = this.enumerator()) {
-            while (enumerator.moveNext())
-                action.accept(enumerator.current());
+        try (IEnumerator<TSource> e = this.enumerator()) {
+            while (e.moveNext())
+                action.accept(e.current());
         }
     }
 

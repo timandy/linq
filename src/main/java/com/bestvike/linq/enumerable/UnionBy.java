@@ -140,9 +140,9 @@ abstract class UnionByIterator<TSource, TKey> extends Iterator<TSource> implemen
             IEnumerable<TSource> enumerable = this.getEnumerable(index);
             if (enumerable == null)
                 return builder.toArray(clazz);
-            try (IEnumerator<TSource> enumerator = enumerable.enumerator()) {
-                while (enumerator.moveNext()) {
-                    TSource element = enumerator.current();
+            try (IEnumerator<TSource> e = enumerable.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
                     if (set.add(this.keySelector.apply(element)))
                         builder.add(element);
                 }
@@ -158,9 +158,9 @@ abstract class UnionByIterator<TSource, TKey> extends Iterator<TSource> implemen
             IEnumerable<TSource> enumerable = this.getEnumerable(index);
             if (enumerable == null)
                 return builder.toArray();
-            try (IEnumerator<TSource> enumerator = enumerable.enumerator()) {
-                while (enumerator.moveNext()) {
-                    TSource element = enumerator.current();
+            try (IEnumerator<TSource> e = enumerable.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
                     if (set.add(this.keySelector.apply(element)))
                         builder.add(element);
                 }
@@ -176,9 +176,9 @@ abstract class UnionByIterator<TSource, TKey> extends Iterator<TSource> implemen
             IEnumerable<TSource> enumerable = this.getEnumerable(index);
             if (enumerable == null)
                 return list;
-            try (IEnumerator<TSource> enumerator = enumerable.enumerator()) {
-                while (enumerator.moveNext()) {
-                    TSource element = enumerator.current();
+            try (IEnumerator<TSource> e = enumerable.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
                     if (set.add(this.keySelector.apply(element)))
                         list.add(element);
                 }

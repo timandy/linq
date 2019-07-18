@@ -199,22 +199,22 @@ final class TakeLastIterator<TSource> extends AbstractIterator<TSource> {
     public boolean moveNext() {
         switch (this.state) {
             case 1:
-                try (IEnumerator<TSource> enumerator = this.source.enumerator()) {
-                    if (!enumerator.moveNext()) {
+                try (IEnumerator<TSource> e = this.source.enumerator()) {
+                    if (!e.moveNext()) {
                         this.close();
                         return false;
                     }
                     this.queue = new ArrayDeque<>();
-                    this.queue.add(enumerator.current());
-                    while (enumerator.moveNext()) {
+                    this.queue.add(e.current());
+                    while (e.moveNext()) {
                         if (this.queue.size() < this.count) {
-                            this.queue.add(enumerator.current());
+                            this.queue.add(e.current());
                             continue;
                         }
                         do {
                             this.queue.remove();
-                            this.queue.add(enumerator.current());
-                        } while (enumerator.moveNext());
+                            this.queue.add(e.current());
+                        } while (e.moveNext());
                         break;
                     }
                 }

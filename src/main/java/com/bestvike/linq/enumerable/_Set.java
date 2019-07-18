@@ -124,9 +124,9 @@ final class Set<TElement> {
     public void unionWith(IEnumerable<TElement> other) {
         assert other != null;
 
-        try (IEnumerator<TElement> enumerator = other.enumerator()) {
-            while (enumerator.moveNext())
-                this.add(enumerator.current());
+        try (IEnumerator<TElement> e = other.enumerator()) {
+            while (e.moveNext())
+                this.add(e.current());
         }
     }
 
@@ -135,9 +135,9 @@ final class Set<TElement> {
         assert other != null;
         assert selector != null;
 
-        try (IEnumerator<TSource> enumerator = other.enumerator()) {
-            while (enumerator.moveNext())
-                this.add(selector.apply(enumerator.current()));
+        try (IEnumerator<TSource> e = other.enumerator()) {
+            while (e.moveNext())
+                this.add(selector.apply(e.current()));
         }
     }
 
