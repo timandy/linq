@@ -1222,6 +1222,30 @@ public class SelectTest extends TestCase {
     }
 
     @Test
+    public void testSelectIPartitionIterator() {
+        IEnumerable<Integer> source = Linq.range(0, 7).where(x -> x >= 0).skip(1).select(x -> 2 * x);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(1, 2, 3, 4, 5, 6), source.select(x -> x / 2));
+        assertEquals(Linq.of(2, 4, 6, 8, 10, 12), source.toArray());
+        assertEquals(Linq.of(2, 4, 6, 8, 10, 12), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(2, 4, 6, 8, 10, 12), source.toList());
+        assertEquals(6, source.count());
+        assertEquals(Linq.of(4, 6, 8, 10, 12), source.skip(1));
+        assertEquals(Linq.of(2), source.take(1));
+        assertEquals(2, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(2, source.first());
+        assertEquals(12, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.range(0, 7).where(x -> x >= 0).skip(7).select(x -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+    }
+
+    @Test
     public void testSelectIndexed() {
         List<String> names = Linq.of(emps)
                 .select((emp, index) -> emp.name)
