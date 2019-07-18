@@ -1150,6 +1150,30 @@ public class SelectTest extends TestCase {
     }
 
     @Test
+    public void testSelectRepeatIterator() {
+        IEnumerable<Integer> source = Linq.repeat(3, 5);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(1, 1, 1, 1, 1), source.select(x -> x / 2));
+        assertEquals(Linq.of(3, 3, 3, 3, 3), source.toArray());
+        assertEquals(Linq.of(3, 3, 3, 3, 3), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(3, 3, 3, 3, 3), source.toList());
+        assertEquals(5, source.count());
+        assertEquals(Linq.of(3, 3, 3, 3), source.skip(1));
+        assertEquals(Linq.of(3), source.take(1));
+        assertEquals(3, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(3, source.first());
+        assertEquals(3, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.repeat(3, 0).select(x -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+    }
+
+    @Test
     public void testSelectListIterator() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(55, 49, 9, -100, 24, 25, -1, 0)).select(x -> 2 * x);
         assertEquals(source.runOnce(), source.runOnce());
