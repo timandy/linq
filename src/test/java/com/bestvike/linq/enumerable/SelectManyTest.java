@@ -9,12 +9,16 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.exception.ArgumentOutOfRangeException;
+import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -623,5 +627,31 @@ public class SelectManyTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[Fred works in Sales, Fred works in HR, Fred works in Marketing, Fred works in Manager, Bill works in Sales, Bill works in HR, Bill works in Marketing, Bill works in Manager, Eric works in Sales, Eric works in HR, Eric works in Marketing, Eric works in Manager, Janet works in Sales, Janet works in HR, Janet works in Marketing, Janet works in Manager, Cedric works in Sales, Cedric works in HR, Cedric works in Marketing, Cedric works in Manager, Gates works in Sales, Gates works in HR, Gates works in Marketing, Gates works in Manager]", cross);
+    }
+
+    @Test
+    public void testSelectManyIndexed2() {
+        IEnumerable<Integer> source = Linq.of(Linq.of(0, 1), Linq.of(2, 3), Linq.of(4, 5))
+                .selectMany((nums, index) -> nums);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(0, 0, 1, 1, 2, 2), source.select(x -> x / 2));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), source.toArray());
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(0, 1, 2, 3, 4, 5), source.toList());
+        assertEquals(6, source.count());
+        assertEquals(Linq.of(1, 2, 3, 4, 5), source.skip(1));
+        assertEquals(Linq.of(0), source.take(1));
+        assertEquals(0, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(0, source.first());
+        assertEquals(5, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.<IEnumerable<Integer>>of()
+                .selectMany((nums, index) -> nums);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
     }
 }

@@ -385,6 +385,10 @@ public class ToArrayTest extends TestCase {
         assertEquals(1, h.length);
         assertEquals("h", h[0].toString());
 
+        Array<Character> hSingle = Linq.singleton('h').toArray();
+        assertEquals(1, hSingle._getCount());
+        assertEquals("h", hSingle.get(0).toString());
+
         Character[] empty = Linq.<Character>empty().toArray(Character.class);
         assertEquals(0, empty.length);
 
