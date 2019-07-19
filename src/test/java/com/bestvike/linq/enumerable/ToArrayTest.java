@@ -44,10 +44,10 @@ public class ToArrayTest extends TestCase {
     @Test
     public void ToArray_CreateACopyWhenNotEmpty() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5};
-        Integer[] resultArray = Linq.of(sourceArray).toArray(Integer.class);
+        Array<Integer> resultArray = Linq.of(sourceArray).toArray();
 
         assertNotSame(sourceArray, resultArray);
-        assertEquals(Linq.of(sourceArray), Linq.of(resultArray));
+        assertEquals(Linq.of(sourceArray), resultArray);
     }
 
     @Test
@@ -109,8 +109,7 @@ public class ToArrayTest extends TestCase {
     @Test
     public void RunOnce() {
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5, 6, 7}), Linq.range(1, 7).runOnce().toArray());
-        assertEquals(Linq.of("1", "2", "3", "4", "5", "6", "7", "8"),
-                Linq.range(1, 8).select(i -> i.toString()).runOnce().toArray());
+        assertEquals(Linq.of("1", "2", "3", "4", "5", "6", "7", "8"), Linq.range(1, 8).select(i -> i.toString()).runOnce().toArray());
     }
 
     @Test
@@ -348,49 +347,43 @@ public class ToArrayTest extends TestCase {
         assertIsType(CastIterator.class, cast);
         Array<Enum0> castArray = cast.toArray();
         assertIsType(Array.class, castArray);
-        Enum0[] castArray2 = cast.toArray(Enum0.class);
-        assertIsType(Enum0[].class, castArray2);
         assertEquals(Linq.of(Enum0.First, Enum0.Second, Enum0.Third), castArray);
     }
 
     @Test
     public void testToArray() {
         Object[] source = {1, 2, 3};
-        Object[] target = Linq.of(source).cast(Integer.class).toArray(Integer.class);
-        assertEquals(3, target.length);
-        assertTrue(Linq.of(source).sequenceEqual(Linq.of(target)));
+        Array<Integer> target = Linq.of(source).cast(Integer.class).toArray();
+        assertEquals(3, target._getCount());
+        assertTrue(Linq.of(source).sequenceEqual(target));
 
         Set<Integer> source2 = new HashSet<>();
         source2.add(1);
         source2.add(2);
         source2.add(3);
-        Integer[] target2 = Linq.of(source2).toArray(Integer.class);
-        assertEquals(3, target2.length);
-        assertTrue(Linq.of(target2).sequenceEqual(Linq.of(source2)));
+        Array<Integer> target2 = Linq.of(source2).toArray();
+        assertEquals(3, target2._getCount());
+        assertTrue(Linq.of(source2).sequenceEqual(target2));
 
-        Character[] lst = Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).toArray(Character.class);
-        assertEquals(5, lst.length);
-        assertEquals("o", lst[4].toString());
+        Array<Character> lst = Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).toArray();
+        assertEquals(5, lst._getCount());
+        assertEquals("o", lst.get(4).toString());
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
-        Character[] arr = Linq.of(arrChar).toArray(Character.class);
-        assertEquals(5, arr.length);
-        assertEquals("o", arr[4].toString());
+        Array<Character> arr = Linq.of(arrChar).toArray();
+        assertEquals(5, arr._getCount());
+        assertEquals("o", arr.get(4).toString());
 
-        Character[] hello = Linq.of("hello").toArray(Character.class);
-        assertEquals(5, hello.length);
-        assertEquals("o", hello[4].toString());
+        Array<Character> hello = Linq.of("hello").toArray();
+        assertEquals(5, hello._getCount());
+        assertEquals("o", hello.get(4).toString());
 
-        Character[] h = Linq.singleton('h').toArray(Character.class);
-        assertEquals(1, h.length);
-        assertEquals("h", h[0].toString());
+        Array<Character> h = Linq.singleton('h').toArray();
+        assertEquals(1, h._getCount());
+        assertEquals("h", h.get(0).toString());
 
-        Array<Character> hSingle = Linq.singleton('h').toArray();
-        assertEquals(1, hSingle._getCount());
-        assertEquals("h", hSingle.get(0).toString());
-
-        Character[] empty = Linq.<Character>empty().toArray(Character.class);
-        assertEquals(0, empty.length);
+        Array<Character> empty = Linq.<Character>empty().toArray();
+        assertEquals(0, empty._getCount());
 
         String[] array = {"a", "b"};
         Array<String> stringArray = Linq.of(array).toArray();
@@ -399,28 +392,13 @@ public class ToArrayTest extends TestCase {
         assertEquals("c", stringArray.get(0));
 
         assertEquals(Linq.of(true, false, false), Linq.of(new boolean[]{true, false, false}).toArray());
-        assertEquals(Linq.of(true, false, false), Linq.of(Linq.of(new boolean[]{true, false, false}).toArray(Boolean.class)));
-
         assertEquals(Linq.of((byte) 1, (byte) 2, (byte) 3), Linq.of(new byte[]{1, 2, 3}).toArray());
-        assertEquals(Linq.of((byte) 1, (byte) 2, (byte) 3), Linq.of(Linq.of(new byte[]{1, 2, 3}).toArray(Byte.class)));
-
         assertEquals(Linq.of((short) 1, (short) 2, (short) 3), Linq.of(new short[]{1, 2, 3}).toArray());
-        assertEquals(Linq.of((short) 1, (short) 2, (short) 3), Linq.of(Linq.of(new short[]{1, 2, 3}).toArray(Short.class)));
-
         assertEquals(Linq.of(1, 2, 3), Linq.of(new int[]{1, 2, 3}).toArray());
-        assertEquals(Linq.of(1, 2, 3), Linq.of(Linq.of(new int[]{1, 2, 3}).toArray(Integer.class)));
-
         assertEquals(Linq.of(1L, 2L, 3L), Linq.of(new long[]{1, 2, 3}).toArray());
-        assertEquals(Linq.of(1L, 2L, 3L), Linq.of(Linq.of(new long[]{1, 2, 3}).toArray(Long.class)));
-
         assertEquals(Linq.of('a', 'b', 'c'), Linq.of(new char[]{'a', 'b', 'c'}).toArray());
-        assertEquals(Linq.of('a', 'b', 'c'), Linq.of(Linq.of(new char[]{'a', 'b', 'c'}).toArray(Character.class)));
-
         assertEquals(Linq.of(1f, 2f, 3f), Linq.of(new float[]{1f, 2f, 3f}).toArray());
-        assertEquals(Linq.of(1f, 2f, 3f), Linq.of(Linq.of(new float[]{1f, 2f, 3f}).toArray(Float.class)));
-
         assertEquals(Linq.of(1d, 2d, 3d), Linq.of(new double[]{1d, 2d, 3d}).toArray());
-        assertEquals(Linq.of(1d, 2d, 3d), Linq.of(Linq.of(new double[]{1d, 2d, 3d}).toArray(Double.class)));
     }
 
 

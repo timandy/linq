@@ -519,8 +519,8 @@ public class TestCase {
 
         @Override
         public T[] _toArray(Class<T> clazz) {
-            ThrowHelper.throwNotSupportedException();
-            return null;
+            this.ToArrayTouched++;
+            return ArrayUtils.toArray(this.Items, clazz);
         }
 
         @Override
@@ -587,8 +587,7 @@ public class TestCase {
 
         @Override
         public T[] _toArray(Class<T> clazz) {
-            ThrowHelper.throwNotSupportedException();
-            return null;
+            return ArrayUtils.toArray(this.Items, clazz);
         }
 
         @Override
