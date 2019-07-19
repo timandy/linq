@@ -1,4 +1,4 @@
-<!--自述文件-->
+<!--README FILE-->
 # LINQ to Objects (Java)
 
 [![Build Status](https://travis-ci.org/timandy/linq.svg?branch=master)](https://travis-ci.org/timandy/linq)
@@ -6,6 +6,8 @@
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.bestvike/linq/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.bestvike/linq)
 [![GitHub release](https://img.shields.io/github/release/timandy/linq.svg)](https://github.com/timandy/linq/releases)
 [![License](https://img.shields.io/badge/license-Apache%202.0-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+
+[中文文档](README_CN.md)
 
 The term "LINQ to Objects" refers to the use of LINQ queries with any `IEnumerable<T>`.
 You can use LINQ to query any enumerable collections such as `Primitive Array`, `Object Array`, `List`, `Collection` or `Iterable` and so on.
@@ -15,16 +17,15 @@ In a basic sense, LINQ to Objects represents a new approach to collections.
 In the old way, you had to write complex `foreach` loops that specified how to retrieve data from a collection.
 In the LINQ approach, you write declarative code that describes what you want to retrieve.
 
-In addition, LINQ queries offer three main advantages over traditional `foreach` loops:
+In addition, LINQ queries offer two main advantages over traditional `foreach` loops:
 1. They are more concise and readable, especially when filtering multiple conditions.
 2. They provide powerful filtering, ordering, and grouping capabilities with a minimum of application code.
-3. They can be ported to other data sources with little or no modification.
 
 LINQ queries also have some advantages over stream API:
 1. Support `foreach` loops therefore you can break loop at any time.
 2. IEnumerable can be traversed repeatedly.
 3. LINQ is very easy to use, like `ToCollection`, `LeftJoin` and so on.
-4. LINQ is faster than stream API in most cases.
+4. LINQ is faster than stream API in most complicated cases.
 
 In general, the more complex the operation you want to perform on the data, the more benefit you will realize by using LINQ instead of traditional iteration techniques.
 
@@ -32,7 +33,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - Implemented all API of LINQ to Objects.
 - More API supported.
 - Tuple supported.
-- Cast IEnumerable to stream or parallel stream supported.
+- Cast IEnumerable to Stream or Parallel Stream supported.
 - Android supported.
 - More than 2000 test cases passed.
 
@@ -149,14 +150,18 @@ In general, the more complex the operation you want to perform on the data, the 
 - TupleMore
 
 ## Debug View (IntelliJ IDEA)
-1. Open setting dialog `File | Settings | Build, Execution, Deployment | Debugger | Data Views | Java Type Renderers`.
-2. Click `Add` button.
-3. Input `Renderer name`, like `IterableView`.
-4. Input `java.lang.Iterable` for `Apply renderer to objects of type (fully-qualified name):`.
-5. Select `Use following expression:` and input `DebugView.getDebuggerDisplay(this)` for `When rendering a node`. If got error, press `Alt + Enter` to import class.
-6. Select `Use list of expression:`, input `**RESULT VIEW**` in `Name` column and input `DebugView.getDebuggerTypeProxy(this)` in `Expression` column. If got error, press `Alt + Enter` to import class. Suggest check `On-demand` to enumerate sequence when needed.
-7. Check `Append default children` if you want to watch default fields value of `Iterable` instance.
-8. Save settings, enjoy!
+1. Open the settings dialog `File | Settings | Build, Execution, Deployment | Debugger | Data Views | Java Type Renderers`.
+2. Click the `Add` button.
+3. Type `IterableView` in `Renderer name`.
+4. Type `java.lang.Iterable` in `Apply renderer to objects of type (fully-qualified name):`.
+5. In the `When rendering a node` section, check `Use following expression:` and type `DebugView.getDebuggerDisplay(this)`.
+    If you get an error, press `Alt + Enter` to import the class.
+6. Check `Use list of expression:` and type `**RESULT VIEW**` in the `Name` column.
+    Type `DebugView.getDebuggerTypeProxy(this)` in the `Expression` column.
+    If you get an error, press `Alt + Enter` to import the class.
+    It is recommended to check `On-demand` to enumerate the sequence if necessary.
+7. If you want to see the default field of the `Iterable` instance, check `Append default children`.
+8. Save your settings and try it out!
 
 `Result view should be used with caution because of possible side-effects.`
 
@@ -178,7 +183,7 @@ compile 'com.bestvike:linq:2.0.1'
 `If you use java 8 or java 9, it is recommended to replace the complex return type with lombok.var or lombok.val.
 If you use java 10 or later, it is recommended to replace the complex return type with var.`
 
-- Join not empty elements.
+- Join not empty strings.
 ```
 String result = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
         .where(x -> x != null && x.length() > 0)
@@ -211,7 +216,7 @@ System.out.println(result);
 true
 ```
 
-- Append one element after tail and prepend two elements before head.
+- Append a number at the end and insert two numbers in the header.
 ```
 String result = Linq.range(3, 2).append(5).prepend(2).prepend(1).format();
 
