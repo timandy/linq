@@ -5,31 +5,36 @@
 `This is the first stable version available for production.
 It is highly recommended to upgrade to this version if you have used a previous version.`
 
+**Bugs**
 - Fix unsigned compare bugs.
 - Fix `Lookup.ApplyResultSelector` bugs.
 - Fix `OrderedEnumerableRangeEnumerator` not iterate maxIdx.
 - Fix `EnumerablePartition` error assert.
 - Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
 - Fix not check selector param for `sum` with selector.
-- Add zip Tuple api.
+
+**Features**
+- Add `zip` Tuple api.
 - Add support port to stream for `IEnumerable`.
 - Add api `toLinkedList`, `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
 - Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
 - Add api `findIndex`, `findLastIndex` for `IEnumerable`.
 - Add api `format` for `IEnumerable` to print values.
-- Add `IArray` interface to determine `IList` contains an array or not.
+- Add `_indexOf` and `_lastIndexOf` method for `IList`.
+- Add `_findIndex()` and `_findLastIndex()` method for `IList`.
+- Add `IArrayList` interface which extends `RandomAccess` for random access list and `IList` for other.
+- Add `IArray` interface to determine `IArrayList` contains an array or not.
 - Add `CultureInfo.setCurrent` to set current locale for string actions in linq.
 - Add `StringComparer` for string equals, hashCode and compare actions.
 - Add `ValueType` as super class for value type.
+- Add support more type cast to IEnumerable like `IEnumerable`, `Iterator` and `Enumeration`.
+- Add `Linq.as()` to generate `IEnumerable` from `Object`.
 - Add debug view support.
 - Add primitive functional interface.
 - Add covariant & contravariant support.
-- Add support more type cast to IEnumerable like `IEnumerable`, `Iterator` and `Enumeration`.
-- Add `Linq.as()` to generate `IEnumerable` from `Object`.
-- Add `IArrayList` interface which extends `RandomAccess` for random access list and `IList` for other.
-- Add `_indexOf` and `_lastIndexOf` method for `IList`.
-- Add `_findIndex()` and `_findLastIndex()` method for `IList`.
-- Remove override runOnce() for IList.
+
+**Optimizations** 
+- Remove override runOnce() for `IList`.
 - Not copy data when cast primitive array to IEnumerable.
 - Not create array when cast singleton to IEnumerable.
 - Optimize performance of `takeLast`.
@@ -40,10 +45,12 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Optimize `indexOf` and `lastIndexOf` in EqualityComparer.
 - Optimize performance by use enumerator instead of iterator.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
+
+**Changes**
 - Translated all LINQ to Objects API of .net core 3.0.
 - Use ThrowHelper to throw Exceptions.
 - Rename package `bridge` to `adapter`.
-- Rename Linq.asEnumerable() to Linq.of().
+- Rename `Linq.asEnumerable()` to `Linq.of()`.
 - Update plugin version to latest.
 - Change the year of copyright.
 
