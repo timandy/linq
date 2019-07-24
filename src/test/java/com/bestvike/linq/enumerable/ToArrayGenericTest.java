@@ -57,8 +57,8 @@ public class ToArrayGenericTest extends TestCase {
         // .NET Core returns the instance as an optimization.
         // see https://github.com/dotnet/corefx/pull/2401.
         Action2<Object, Object> assertSame = (objA, objB) -> {
-            assertEquals(false, objA == objB);
-            Values.equals(objA, objB);
+            assertNotSame(objA, objB);
+            assertTrue(Values.equals(objA, objB));
         };
 
         assertSame.apply(emptySourceArray.toArray(Integer.class), emptySourceArray.toArray(Integer.class));

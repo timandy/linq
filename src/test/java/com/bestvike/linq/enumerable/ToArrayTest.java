@@ -56,7 +56,7 @@ public class ToArrayTest extends TestCase {
 
         // .NET Core returns the instance as an optimization.
         // see https://github.com/dotnet/corefx/pull/2401.
-        Action2<Object, Object> assertSame = (objA, objB) -> assertEquals(true, objA == objB);
+        Action2<Object, Object> assertSame = TestCase::assertSame;
 
         assertSame.apply(emptySourceArray.toArray(), emptySourceArray.toArray());
 
