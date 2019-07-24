@@ -244,9 +244,9 @@ System.out.println(result);
 ```
 
 ## *许可证*
-LINQ to Objects (Java) 是在 Apache License 2.0 版下发布的。
+LINQ to Objects (Java) 是在 [Apache License 2.0](LICENSE) 版下发布的。
 ```
-Copyright 2019 济南百思为科信息工程有限公司
+Copyright 2017-2019 济南百思为科信息工程有限公司
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

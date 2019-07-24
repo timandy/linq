@@ -244,9 +244,9 @@ System.out.println(result);
 ```
 
 ## *License*
-LINQ to Objects (Java) is released under the Apache License, Version 2.0.
+LINQ to Objects (Java) is released under the [Apache License, Version 2.0](LICENSE).
 ```
-Copyright 2019 济南百思为科信息工程有限公司
+Copyright 2017-2019 济南百思为科信息工程有限公司
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
