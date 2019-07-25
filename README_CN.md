@@ -147,7 +147,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 - Tuple5
 - Tuple6
 - Tuple7
-- TupleMore
+- TupleN
 
 ## 调试视图 (IntelliJ IDEA)
 1. 打开设置对话框 `File | Settings | Build, Execution, Deployment | Debugger | Data Views | Java Type Renderers`。

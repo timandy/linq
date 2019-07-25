@@ -35,8 +35,8 @@ public final class Tuple {
         return new Tuple7<>(item1, item2, item3, item4, item5, item6, item7);
     }
 
-    public static <T1, T2, T3, T4, T5, T6, T7, T8> TupleMore<T1, T2, T3, T4, T5, T6, T7, Tuple1<T8>> create(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8) {
-        return new TupleMore<>(item1, item2, item3, item4, item5, item6, item7, new Tuple1<>(item8));
+    public static <T1, T2, T3, T4, T5, T6, T7, T8> TupleN<T1, T2, T3, T4, T5, T6, T7, Tuple1<T8>> create(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, T8 item8) {
+        return new TupleN<>(item1, item2, item3, item4, item5, item6, item7, new Tuple1<>(item8));
     }
 
     static int combineHashCodes(int h1, int h2) {

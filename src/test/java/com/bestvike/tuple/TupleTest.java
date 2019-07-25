@@ -184,8 +184,8 @@ public class TupleTest extends TestCase {
 
     @Test
     public void testTuple8() {
-        TupleMore<String, String, String, String, String, String, String, Tuple1<String>> source = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
-        TupleMore<String, String, String, String, String, String, String, Tuple1<String>> target = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
+        TupleN<String, String, String, String, String, String, String, Tuple1<String>> source = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
+        TupleN<String, String, String, String, String, String, String, Tuple1<String>> target = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
         assertEquals(8, source.size());
         assertNotSame(source, target);
         assertEquals(source, target);
@@ -216,13 +216,13 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTupleMore() {
-        TupleMore<String, String, String, String, String, String, String, TupleMore<String, String, String, String, String, String, String, Tuple2<String, String>>> source =
-                new TupleMore<>("1", "2", "3", "4", "5", "6", "7",
-                        new TupleMore<>("8", "9", "10", "11", "12", "13", "14", new Tuple2<>("15", "16")));
-        TupleMore<String, String, String, String, String, String, String, TupleMore<String, String, String, String, String, String, String, Tuple2<String, String>>> target =
-                new TupleMore<>("1", "2", "3", "4", "5", "6", "7",
-                        new TupleMore<>("8", "9", "10", "11", "12", "13", "14", new Tuple2<>("15", "16")));
+    public void testTupleN() {
+        TupleN<String, String, String, String, String, String, String, TupleN<String, String, String, String, String, String, String, Tuple2<String, String>>> source =
+                new TupleN<>("1", "2", "3", "4", "5", "6", "7",
+                        new TupleN<>("8", "9", "10", "11", "12", "13", "14", new Tuple2<>("15", "16")));
+        TupleN<String, String, String, String, String, String, String, TupleN<String, String, String, String, String, String, String, Tuple2<String, String>>> target =
+                new TupleN<>("1", "2", "3", "4", "5", "6", "7",
+                        new TupleN<>("8", "9", "10", "11", "12", "13", "14", new Tuple2<>("15", "16")));
         assertEquals(16, source.size());
         assertNotSame(source, target);
         assertEquals(source, target);
@@ -236,7 +236,7 @@ public class TupleTest extends TestCase {
         assertEquals("5", source.getItem5());
         assertEquals("6", source.getItem6());
         assertEquals("7", source.getItem7());
-        assertEquals(new TupleMore<>("8", "9", "10", "11", "12", "13", "14", new Tuple2<>("15", "16")), source.getRest());
+        assertEquals(new TupleN<>("8", "9", "10", "11", "12", "13", "14", new Tuple2<>("15", "16")), source.getRest());
         assertEquals("1", source.get(0));
         assertEquals("2", source.get(1));
         assertEquals("3", source.get(2));

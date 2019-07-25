@@ -147,7 +147,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - Tuple5
 - Tuple6
 - Tuple7
-- TupleMore
+- TupleN
 
 ## Debug View (IntelliJ IDEA)
 1. Open the settings dialog `File | Settings | Build, Execution, Deployment | Debugger | Data Views | Java Type Renderers`.

@@ -14,7 +14,7 @@ import java.util.Comparator;
  * Created by 许崇雷 on 2017-07-23.
  */
 @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
-public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
+public final class TupleN<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
     private final T1 item1;
     private final T2 item2;
     private final T3 item3;
@@ -24,7 +24,7 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStru
     private final T7 item7;
     private final TRest rest;
 
-    public TupleMore(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest) {
+    public TupleN(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest) {
         if (!(rest instanceof ITupleInternal))
             ThrowHelper.throwTupleLastArgumentNotATupleException();
         this.item1 = item1;
@@ -103,10 +103,10 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStru
 
     @Override
     public boolean equals(Object other, IEqualityComparer comparer) {
-        TupleMore objTuple;
+        TupleN objTuple;
         //noinspection unchecked
-        return other instanceof TupleMore
-                && comparer.equals(this.item1, (objTuple = (TupleMore) other).item1)
+        return other instanceof TupleN
+                && comparer.equals(this.item1, (objTuple = (TupleN) other).item1)
                 && comparer.equals(this.item2, objTuple.item2)
                 && comparer.equals(this.item3, objTuple.item3)
                 && comparer.equals(this.item4, objTuple.item4)
@@ -125,9 +125,9 @@ public final class TupleMore<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStru
     public int compareTo(Object other, Comparator comparer) {
         if (other == null)
             return 1;
-        if (!(other instanceof TupleMore))
+        if (!(other instanceof TupleN))
             ThrowHelper.throwTupleIncorrectTypeException(this.getClass(), ExceptionArgument.other);
-        TupleMore objTuple = (TupleMore) other;
+        TupleN objTuple = (TupleN) other;
         //noinspection unchecked
         int c = comparer.compare(this.item1, objTuple.item1);
         if (c != 0)
