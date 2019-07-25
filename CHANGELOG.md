@@ -51,6 +51,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Use ThrowHelper to throw Exceptions.
 - Rename package `bridge` to `adapter`.
 - Rename `Linq.asEnumerable()` to `Linq.of()`.
+- Rename `TupleMore` to `TupleN`.
 - Update plugin version to latest.
 - Change the year of copyright.
 
