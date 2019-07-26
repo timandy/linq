@@ -52,6 +52,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Rename package `bridge` to `adapter`.
 - Rename `Linq.asEnumerable()` to `Linq.of()`.
 - Rename `TupleMore` to `TupleN`.
+- Rename `Linq.of(CharSequence)` to `Linq.chars(CharSequence)`.
 - Update plugin version to latest.
 - Change the year of copyright.
 
