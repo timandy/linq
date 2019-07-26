@@ -331,6 +331,15 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testGenerate() {
+        IEnumerable<Integer> source = Linq.generate(() -> 99);
+        assertEquals(99, source.first());
+        assertEquals(99, source.runOnce().first());
+        assertEquals(99, source.elementAt(5));
+        assertThrows(ArithmeticException.class, () -> source.count());
+    }
+
+    @Test
     public void testRange() {
         Integer[] array = {1, 2, 3, 4, 5};
         IEnumerable<Integer> integers = Linq.range(1, 5);

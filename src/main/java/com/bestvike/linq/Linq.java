@@ -1,6 +1,8 @@
 package com.bestvike.linq;
 
+import com.bestvike.function.Func0;
 import com.bestvike.linq.enumerable.Enumerable;
+import com.bestvike.linq.enumerable.Generate;
 import com.bestvike.linq.enumerable.Range;
 import com.bestvike.linq.enumerable.Repeat;
 
@@ -108,6 +110,10 @@ public final class Linq {
 
     public static IEnumerable<String> lines(String source) {
         return Enumerable.lines(source);
+    }
+
+    public static <TSource> IEnumerable<TSource> generate(Func0<? extends TSource> func) {
+        return Generate.generate((Func0<TSource>) func);
     }
 
     public static IEnumerable<Integer> range(int start, int count) {
