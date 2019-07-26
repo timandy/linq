@@ -307,7 +307,7 @@ public class ToEnumerationTest extends TestCase {
         assertEquals("o", Linq.of(arr).elementAt(4).toString());
         assertFalse(arr.hasMoreElements());
 
-        Enumeration<Character> hello = Linq.of("hello").toEnumeration();
+        Enumeration<Character> hello = Linq.chars("hello").toEnumeration();
         assertEquals("o", Linq.of(hello).elementAt(4).toString());
         assertFalse(hello.hasMoreElements());
 

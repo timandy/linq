@@ -124,11 +124,11 @@ public class LinqTest extends TestCase {
     public void testCharSequence() {
         String str = "123";
         char[] chars = {'1', '2', '3'};
-        char c = Linq.of(str).elementAt(1);
+        char c = Linq.chars(str).elementAt(1);
         assertEquals('2', c);
-        assertEquals(3, Linq.of(str).count());
+        assertEquals(3, Linq.chars(str).count());
         assertEquals(3, Linq.of(chars).count());
-        assertTrue(Linq.of(str).sequenceEqual(Linq.of(str)));
+        assertTrue(Linq.chars(str).sequenceEqual(Linq.chars(str)));
     }
 
     @Test
@@ -220,7 +220,7 @@ public class LinqTest extends TestCase {
 
         //CharSequence
         String str = "123";
-        assertEquals(Linq.of(str), Linq.as(str));
+        assertEquals(Linq.chars(str), Linq.as(str));
 
         //Array
         String[] strings = {"1", "2", "3"};

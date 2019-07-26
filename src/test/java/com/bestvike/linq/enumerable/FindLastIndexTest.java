@@ -132,8 +132,8 @@ public class FindLastIndexTest extends TestCase {
         assertEquals(4, Linq.of(new char[]{'1', '2', '3', '2', '1'}).findLastIndex(x -> x == '1'));
         assertEquals(-1, Linq.of(new char[]{'1', '2', '3', '2', '1'}).findLastIndex(x -> x == '4'));
 
-        assertEquals(4, Linq.of("12321").findLastIndex(x -> x == '1'));
-        assertEquals(-1, Linq.of("12321").findLastIndex(x -> x == '4'));
+        assertEquals(4, Linq.chars("12321").findLastIndex(x -> x == '1'));
+        assertEquals(-1, Linq.chars("12321").findLastIndex(x -> x == '4'));
 
         assertEquals(4, Linq.of(1, 2, 3, 2, 1).findLastIndex(x -> x == 1));
         assertEquals(-1, Linq.of(1, 2, 3, 2, 1).findLastIndex(x -> x == 4));
@@ -183,8 +183,8 @@ public class FindLastIndexTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> ((CharacterArrayEnumerable) Linq.of(new char[]{'1', '2', '3', '2', '1'}))._findLastIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((CharacterArrayEnumerable) Linq.of(new char[]{'1', '2', '3', '2', '1'}))._findLastIndex(null));
 
-        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.of("12321"))._findLastIndex(null));
-        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.of("12321"))._findLastIndex(null));
+        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.chars("12321"))._findLastIndex(null));
+        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.chars("12321"))._findLastIndex(null));
 
         assertThrows(ArgumentNullException.class, () -> ((GenericArrayEnumerable<Integer>) Linq.of(1, 2, 3, 2, 1))._findLastIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((GenericArrayEnumerable<Integer>) Linq.of(1, 2, 3, 2, 1))._findLastIndex(null));

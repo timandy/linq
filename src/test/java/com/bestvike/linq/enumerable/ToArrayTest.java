@@ -374,7 +374,7 @@ public class ToArrayTest extends TestCase {
         assertEquals(5, arr._getCount());
         assertEquals("o", arr.get(4).toString());
 
-        Array<Character> hello = Linq.of("hello").toArray();
+        Array<Character> hello = Linq.chars("hello").toArray();
         assertEquals(5, hello._getCount());
         assertEquals("o", hello.get(4).toString());
 

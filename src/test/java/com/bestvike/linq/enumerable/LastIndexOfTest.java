@@ -216,9 +216,9 @@ public class LastIndexOfTest extends TestCase {
         assertEquals(-1, Linq.of(new double[]{0d, 1d, 1d, 2d}).lastIndexOf(3d));
         assertEquals(-1, Linq.of(new double[]{0d, 1d, 1d, 2d}).lastIndexOf(null));
         //
-        assertEquals(3, Linq.of("hello").lastIndexOf('l'));
-        assertEquals(-1, Linq.of("hello").lastIndexOf('z'));
-        assertEquals(-1, Linq.of("hello").lastIndexOf(null));
+        assertEquals(3, Linq.chars("hello").lastIndexOf('l'));
+        assertEquals(-1, Linq.chars("hello").lastIndexOf('z'));
+        assertEquals(-1, Linq.chars("hello").lastIndexOf(null));
         //
         assertEquals(2, Linq.of("hello", "world", "world", "bye").lastIndexOf("world"));
         assertEquals(-1, Linq.of("hello", "world", "world", "bye").lastIndexOf("thanks"));
@@ -267,7 +267,7 @@ public class LastIndexOfTest extends TestCase {
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
         assertEquals(0, Linq.of(arrChar).lastIndexOf('h'));
 
-        assertEquals(0, Linq.of("hello").lastIndexOf('h'));
+        assertEquals(0, Linq.chars("hello").lastIndexOf('h'));
 
         assertEquals(0, Linq.singleton('h').lastIndexOf('h'));
         assertEquals(-1, Linq.singleton('h').lastIndexOf('o'));

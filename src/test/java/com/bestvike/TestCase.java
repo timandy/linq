@@ -112,7 +112,7 @@ public class TestCase {
         StringBuilder temp = new StringBuilder();
         IEnumerable<Character> separators = Linq.of(separator);
         if (removeEmptyEntries) {
-            for (char c : Linq.of(value)) {
+            for (char c : Linq.chars(value)) {
                 if (separators.contains(c)) {
                     if (temp.length() > 0) {
                         list.add(temp.toString());
@@ -128,7 +128,7 @@ public class TestCase {
                 temp.setLength(0);
             }
         } else {
-            for (char c : Linq.of(value)) {
+            for (char c : Linq.chars(value)) {
                 if (separators.contains(c)) {
                     list.add(temp.toString());
                     temp.setLength(0);
@@ -662,8 +662,8 @@ public class TestCase {
                 return false;
             if (x.length() != y.length())
                 return false;
-            try (IEnumerator<Character> en = Linq.of(x).orderBy(i -> i).enumerator()) {
-                for (char c : Linq.of(y).orderBy(i -> i)) {
+            try (IEnumerator<Character> en = Linq.chars(x).orderBy(i -> i).enumerator()) {
+                for (char c : Linq.chars(y).orderBy(i -> i)) {
                     en.moveNext();
                     if (c != en.current())
                         return false;
@@ -677,7 +677,7 @@ public class TestCase {
             if (obj == null)
                 return 0;
             int hash = obj.length();
-            for (char c : Linq.of(obj))
+            for (char c : Linq.chars(obj))
                 hash ^= c;
             return hash;
         }

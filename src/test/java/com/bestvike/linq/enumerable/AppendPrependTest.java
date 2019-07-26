@@ -105,17 +105,17 @@ public class AppendPrependTest extends TestCase {
 
     @Test
     public void Combined() {
-        IEnumerable<Character> v = Linq.of("foo").append('1').append('2').prepend('3').concat(Linq.of("qq").append('Q').prepend('W'));
+        IEnumerable<Character> v = Linq.chars("foo").append('1').append('2').prepend('3').concat(Linq.chars("qq").append('Q').prepend('W'));
 
-        assertEquals(v.toArray(), Linq.of("3foo12WqqQ").toArray());
+        assertEquals(v.toArray(), Linq.chars("3foo12WqqQ").toArray());
 
-        IEnumerable<Character> v1 = Linq.of("a").append('b').append('c').append('d');
+        IEnumerable<Character> v1 = Linq.chars("a").append('b').append('c').append('d');
 
-        assertEquals(v1.toArray(), Linq.of("abcd").toArray());
+        assertEquals(v1.toArray(), Linq.chars("abcd").toArray());
 
-        IEnumerable<Character> v2 = Linq.of("a").prepend('b').prepend('c').prepend('d');
+        IEnumerable<Character> v2 = Linq.chars("a").prepend('b').prepend('c').prepend('d');
 
-        assertEquals(v2.toArray(), Linq.of("dcba").toArray());
+        assertEquals(v2.toArray(), Linq.chars("dcba").toArray());
     }
 
     @Test

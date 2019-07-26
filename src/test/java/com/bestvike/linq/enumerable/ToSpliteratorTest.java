@@ -146,7 +146,7 @@ public class ToSpliteratorTest extends TestCase {
 
     @Test
     public void testStreamCharSequence() {
-        IEnumerable<Character> enumerable = Linq.of("abcd");
+        IEnumerable<Character> enumerable = Linq.chars("abcd");
         Stream<Character> stream = enumerable.stream();
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a == 'e').toArray();

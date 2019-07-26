@@ -131,8 +131,8 @@ public class FindIndexTest extends TestCase {
         assertEquals(0, Linq.of(new char[]{'1', '2', '3', '2', '1'}).findIndex(x -> x == '1'));
         assertEquals(-1, Linq.of(new char[]{'1', '2', '3', '2', '1'}).findIndex(x -> x == '4'));
 
-        assertEquals(0, Linq.of("12321").findIndex(x -> x == '1'));
-        assertEquals(-1, Linq.of("12321").findIndex(x -> x == '4'));
+        assertEquals(0, Linq.chars("12321").findIndex(x -> x == '1'));
+        assertEquals(-1, Linq.chars("12321").findIndex(x -> x == '4'));
 
         assertEquals(0, Linq.of(1, 2, 3, 2, 1).findIndex(x -> x == 1));
         assertEquals(-1, Linq.of(1, 2, 3, 2, 1).findIndex(x -> x == 4));
@@ -179,8 +179,8 @@ public class FindIndexTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> ((CharacterArrayEnumerable) Linq.of(new char[]{'1', '2', '3', '2', '1'}))._findIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((CharacterArrayEnumerable) Linq.of(new char[]{'1', '2', '3', '2', '1'}))._findIndex(null));
 
-        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.of("12321"))._findIndex(null));
-        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.of("12321"))._findIndex(null));
+        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.chars("12321"))._findIndex(null));
+        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.chars("12321"))._findIndex(null));
 
         assertThrows(ArgumentNullException.class, () -> ((GenericArrayEnumerable<Integer>) Linq.of(1, 2, 3, 2, 1))._findIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((GenericArrayEnumerable<Integer>) Linq.of(1, 2, 3, 2, 1))._findIndex(null));

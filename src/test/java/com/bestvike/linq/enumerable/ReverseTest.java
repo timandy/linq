@@ -123,7 +123,7 @@ public class ReverseTest extends TestCase {
         assertEquals(5, arr.length);
         assertEquals("h", arr[4].toString());
 
-        Character[] hello = Linq.of("hello").reverse().toArray(Character.class);
+        Character[] hello = Linq.chars("hello").reverse().toArray(Character.class);
         assertEquals(5, hello.length);
         assertEquals("h", hello[4].toString());
 

@@ -303,7 +303,7 @@ public class ToLinkedListTest extends TestCase {
         assertEquals(5, arr.size());
         assertEquals("o", arr.get(4).toString());
 
-        List<Character> hello = Linq.of("hello").toLinkedList();
+        List<Character> hello = Linq.chars("hello").toLinkedList();
         assertEquals(5, hello.size());
         assertEquals("o", hello.get(4).toString());
 

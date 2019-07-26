@@ -193,7 +193,7 @@ public class ContainsTest extends TestCase {
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
         assertTrue(Linq.of(arrChar).contains('h'));
 
-        assertTrue(Linq.of("hello").contains('h'));
+        assertTrue(Linq.chars("hello").contains('h'));
 
         assertTrue(Linq.singleton('h').contains('h'));
         assertFalse(Linq.singleton('h').contains('o'));
@@ -224,8 +224,8 @@ public class ContainsTest extends TestCase {
         assertTrue(Linq.of(new double[]{1d, 1d}).contains(1d));
         assertFalse(Linq.of(new double[]{1d, 1d}).contains(2d));
 
-        assertTrue(Linq.of("abc").contains('a'));
-        assertFalse(Linq.of("abc").contains('d'));
+        assertTrue(Linq.chars("abc").contains('a'));
+        assertFalse(Linq.chars("abc").contains('d'));
     }
 
     @Test

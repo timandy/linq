@@ -377,7 +377,7 @@ public class ToArrayGenericTest extends TestCase {
         assertEquals(5, arr.length);
         assertEquals("o", arr[4].toString());
 
-        Character[] hello = Linq.of("hello").toArray(Character.class);
+        Character[] hello = Linq.chars("hello").toArray(Character.class);
         assertEquals(5, hello.length);
         assertEquals("o", hello[4].toString());
 

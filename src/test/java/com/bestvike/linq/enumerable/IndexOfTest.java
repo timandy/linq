@@ -216,9 +216,9 @@ public class IndexOfTest extends TestCase {
         assertEquals(-1, Linq.of(new double[]{0d, 1d, 2d}).indexOf(3d));
         assertEquals(-1, Linq.of(new double[]{0d, 1d, 2d}).indexOf(null));
         //
-        assertEquals(2, Linq.of("hello").indexOf('l'));
-        assertEquals(-1, Linq.of("hello").indexOf('z'));
-        assertEquals(-1, Linq.of("hello").indexOf(null));
+        assertEquals(2, Linq.chars("hello").indexOf('l'));
+        assertEquals(-1, Linq.chars("hello").indexOf('z'));
+        assertEquals(-1, Linq.chars("hello").indexOf(null));
         //
         assertEquals(1, Linq.of("hello", "world", "bye").indexOf("world"));
         assertEquals(-1, Linq.of("hello", "world", "bye").indexOf("thanks"));
@@ -267,7 +267,7 @@ public class IndexOfTest extends TestCase {
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
         assertEquals(0, Linq.of(arrChar).indexOf('h'));
 
-        assertEquals(0, Linq.of("hello").indexOf('h'));
+        assertEquals(0, Linq.chars("hello").indexOf('h'));
 
         assertEquals(0, Linq.singleton('h').indexOf('h'));
         assertEquals(-1, Linq.singleton('h').indexOf('o'));
