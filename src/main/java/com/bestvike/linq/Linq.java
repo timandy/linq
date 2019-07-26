@@ -94,6 +94,10 @@ public final class Linq {
         return Enumerable.as(source);
     }
 
+    public static <TSource> IEnumerable<TSource> ofNullable(TSource item) {
+        return Enumerable.ofNullable(item);
+    }
+
     public static IEnumerable<Character> chars(CharSequence source) {
         return Enumerable.chars(source);
     }

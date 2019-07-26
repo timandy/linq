@@ -195,6 +195,10 @@ public final class Enumerable {
         return null;
     }
 
+    public static <TSource> IEnumerable<TSource> ofNullable(TSource item) {
+        return item == null ? empty() : singleton(item);
+    }
+
     public static IEnumerable<Character> chars(CharSequence source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);

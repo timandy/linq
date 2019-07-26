@@ -260,6 +260,12 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testOfNullable() {
+        assertSame(Linq.empty(), Linq.ofNullable(null));
+        assertEquals(Linq.of("hello"), Linq.ofNullable("hello"));
+    }
+
+    @Test
     public void testChars() {
         String str = "123";
         char[] chars = {'1', '2', '3'};

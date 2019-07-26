@@ -134,6 +134,9 @@ public class ReverseTest extends TestCase {
         Character[] empty = Linq.<Character>empty().reverse().toArray(Character.class);
         assertEquals(0, empty.length);
 
+        assertEquals(Linq.empty(), Linq.ofNullable(null).reverse());
+        assertEquals(Linq.singleton("hello"), Linq.ofNullable("hello").reverse());
+
         assertEquals(Linq.of("world", "hello"), Linq.lines("\r\nhello\r\nworld\r\n").reverse());
     }
 }
