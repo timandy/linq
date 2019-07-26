@@ -14,6 +14,7 @@ import com.bestvike.linq.adapter.enumerable.GenericArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.IntegerArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.IterableEnumerable;
 import com.bestvike.linq.adapter.enumerable.IteratorEnumerable;
+import com.bestvike.linq.adapter.enumerable.LineEnumerable;
 import com.bestvike.linq.adapter.enumerable.LinkedListEnumerable;
 import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
@@ -199,5 +200,12 @@ public final class Enumerable {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new CharSequenceEnumerable(source);
+    }
+
+    public static IEnumerable<String> lines(String source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new LineEnumerable(source);
     }
 }

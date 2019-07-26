@@ -98,6 +98,10 @@ public final class Linq {
         return Enumerable.chars(source);
     }
 
+    public static IEnumerable<String> lines(String source) {
+        return Enumerable.lines(source);
+    }
+
     public static IEnumerable<Integer> range(int start, int count) {
         return Range.range(start, count);
     }
