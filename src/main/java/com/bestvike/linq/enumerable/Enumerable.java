@@ -100,13 +100,6 @@ public final class Enumerable {
         return new CharacterArrayEnumerable(source);
     }
 
-    public static IEnumerable<Character> of(CharSequence source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new CharSequenceEnumerable(source);
-    }
-
     public static <TSource> IEnumerable<TSource> of(TSource[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -182,8 +175,6 @@ public final class Enumerable {
             return (IEnumerable<TSource>) of((double[]) source);
         if (source instanceof char[])
             return (IEnumerable<TSource>) of((char[]) source);
-        if (source instanceof CharSequence)
-            return (IEnumerable<TSource>) of((CharSequence) source);
         if (source instanceof Object[])
             return of((TSource[]) source);
         if (source instanceof IEnumerable)
@@ -201,5 +192,12 @@ public final class Enumerable {
         if (source instanceof Map)
             return (IEnumerable<TSource>) of((Map<?, ?>) source);
         return null;
+    }
+
+    public static IEnumerable<Character> chars(CharSequence source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new CharSequenceEnumerable(source);
     }
 }

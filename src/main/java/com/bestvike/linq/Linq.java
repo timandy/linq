@@ -58,10 +58,6 @@ public final class Linq {
         return Enumerable.of(source);
     }
 
-    public static IEnumerable<Character> of(CharSequence source) {
-        return Enumerable.of(source);
-    }
-
     public static <TSource> IEnumerable<TSource> of(TSource... source) {
         return Enumerable.of(source);
     }
@@ -96,6 +92,10 @@ public final class Linq {
 
     public static <TSource> IEnumerable<TSource> as(Object source) {
         return Enumerable.as(source);
+    }
+
+    public static IEnumerable<Character> chars(CharSequence source) {
+        return Enumerable.chars(source);
     }
 
     public static IEnumerable<Integer> range(int start, int count) {
