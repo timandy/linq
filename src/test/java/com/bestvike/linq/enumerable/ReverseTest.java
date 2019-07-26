@@ -138,8 +138,10 @@ public class ReverseTest extends TestCase {
         assertEquals(Linq.singleton("hello"), Linq.ofNullable("hello").reverse());
 
         assertEquals(Linq.of("world", "hello"), Linq.words(" hello,world! ").reverse());
-
         assertEquals(Linq.of("world", "hello"), Linq.lines("\r\nhello\r\nworld\r\n").reverse());
+
+        assertThrows(OutOfMemoryError.class, () -> Linq.enumerate(0, x -> x).reverse().first());
+        assertEquals(99, Linq.enumerate(0, x -> x < 100, x -> ++x).reverse().first());
 
         assertThrows(OutOfMemoryError.class, () -> Linq.generate(() -> 0).reverse().first());
     }

@@ -27,6 +27,7 @@ public enum ExceptionArgument {
     clazz,
     collator,
     comparison,
+    condition,
     elements,
     formatter,
     iterable,
@@ -34,6 +35,7 @@ public enum ExceptionArgument {
     locale,
     match,
     newSize,
+    next,
     other,
     startIndex,
 }

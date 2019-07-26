@@ -2,6 +2,8 @@ package com.bestvike.linq;
 
 import com.bestvike.TestCase;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.exception.ArgumentOutOfRangeException;
+import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.util.ArrayUtils;
 import org.junit.Test;
@@ -328,6 +330,33 @@ public class LinqTest extends TestCase {
         assertEquals(Linq.of("hello", "world"), Linq.lines("hello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world"), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world", "  "), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n  "));
+    }
+
+    @Test
+    public void testEnumerate() {
+        IEnumerable<Integer> source = Linq.enumerate(0, x -> x + 1);
+        assertEquals(0, source.first());
+        assertEquals(0, source.runOnce().first());
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(0, source.elementAt(0));
+        assertEquals(5, source.elementAt(5));
+        assertThrows(ArithmeticException.class, () -> source.count());
+    }
+
+    @Test
+    public void testEnumerate2() {
+        IEnumerable<Integer> source = Linq.enumerate(0, x -> x < 100, x -> x + 1);
+        assertEquals(0, source.first());
+        assertEquals(0, source.runOnce().first());
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(0, source.elementAt(0));
+        assertEquals(5, source.elementAt(5));
+        assertEquals(100, source.count());
+
+        IEnumerable<Integer> source2 = Linq.enumerate(100, x -> x < 0, x -> --x);
+        assertThrows(InvalidOperationException.class, () -> source2.first());
+        assertThrows(ArgumentOutOfRangeException.class, () -> source2.elementAt(0));
+        assertEquals(0, source2.count());
     }
 
     @Test

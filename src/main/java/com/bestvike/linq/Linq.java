@@ -1,7 +1,10 @@
 package com.bestvike.linq;
 
 import com.bestvike.function.Func0;
+import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate1;
 import com.bestvike.linq.enumerable.Enumerable;
+import com.bestvike.linq.enumerable.Enumerate;
 import com.bestvike.linq.enumerable.Generate;
 import com.bestvike.linq.enumerable.Range;
 import com.bestvike.linq.enumerable.Repeat;
@@ -110,6 +113,14 @@ public final class Linq {
 
     public static IEnumerable<String> lines(String source) {
         return Enumerable.lines(source);
+    }
+
+    public static <TSource> IEnumerable<TSource> enumerate(TSource seed, Func1<? super TSource, ? extends TSource> next) {
+        return Enumerate.enumerate(seed, (Func1<TSource, TSource>) next);
+    }
+
+    public static <TSource> IEnumerable<TSource> enumerate(TSource seed, Predicate1<? super TSource> condition, Func1<? super TSource, ? extends TSource> next) {
+        return Enumerate.enumerate(seed, (Predicate1<TSource>) condition, (Func1<TSource, TSource>) next);
     }
 
     public static <TSource> IEnumerable<TSource> generate(Func0<? extends TSource> func) {
