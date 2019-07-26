@@ -4,7 +4,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.adapter.enumerable.ArrayListEnumerable;
 import com.bestvike.linq.adapter.enumerable.BooleanArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ByteArrayEnumerable;
-import com.bestvike.linq.adapter.enumerable.CharSequenceEnumerable;
+import com.bestvike.linq.adapter.enumerable.CharEnumerable;
 import com.bestvike.linq.adapter.enumerable.CharacterArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.CollectionEnumerable;
 import com.bestvike.linq.adapter.enumerable.DoubleArrayEnumerable;
@@ -203,7 +203,7 @@ public final class Enumerable {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        return new CharSequenceEnumerable(source);
+        return new CharEnumerable(source);
     }
 
     public static IEnumerable<String> lines(String source) {

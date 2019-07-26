@@ -346,17 +346,17 @@ public class UnionByTest extends TestCase {
         HashSet<String> set1 = new HashSet<>(StringComparer.OrdinalIgnoreCase);
         set1.add("a");
         IEnumerable<String> input1 = Linq.of(set1);
-        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
+        IEnumerable<String> input2 = Linq.of("A");
 
         assertEquals(Linq.of("a", "A"), input1.unionBy(input2, StringKeySelector));
         assertEquals(Linq.of("a", "A"), input1.unionBy(input2, StringKeySelector, null));
         assertEquals(Linq.of("a", "A"), input1.unionBy(input2, StringKeySelector, EqualityComparer.Default()));
-        assertEquals(Linq.of(new String[]{"a"}), input1.unionBy(input2, StringKeySelector, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("a"), input1.unionBy(input2, StringKeySelector, StringComparer.OrdinalIgnoreCase));
 
         assertEquals(Linq.of("A", "a"), input2.unionBy(input1, StringKeySelector));
         assertEquals(Linq.of("A", "a"), input2.unionBy(input1, StringKeySelector, null));
         assertEquals(Linq.of("A", "a"), input2.unionBy(input1, StringKeySelector, EqualityComparer.Default()));
-        assertEquals(Linq.of(new String[]{"A"}), input2.unionBy(input1, StringKeySelector, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("A"), input2.unionBy(input1, StringKeySelector, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test

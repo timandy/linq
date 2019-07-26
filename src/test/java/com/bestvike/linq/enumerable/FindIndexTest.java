@@ -8,7 +8,7 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.adapter.enumerable.ArrayListEnumerable;
 import com.bestvike.linq.adapter.enumerable.BooleanArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ByteArrayEnumerable;
-import com.bestvike.linq.adapter.enumerable.CharSequenceEnumerable;
+import com.bestvike.linq.adapter.enumerable.CharEnumerable;
 import com.bestvike.linq.adapter.enumerable.CharacterArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.DoubleArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.FloatArrayEnumerable;
@@ -179,8 +179,8 @@ public class FindIndexTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> ((CharacterArrayEnumerable) Linq.of(new char[]{'1', '2', '3', '2', '1'}))._findIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((CharacterArrayEnumerable) Linq.of(new char[]{'1', '2', '3', '2', '1'}))._findIndex(null));
 
-        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.chars("12321"))._findIndex(null));
-        assertThrows(ArgumentNullException.class, () -> ((CharSequenceEnumerable) Linq.chars("12321"))._findIndex(null));
+        assertThrows(ArgumentNullException.class, () -> ((CharEnumerable) Linq.chars("12321"))._findIndex(null));
+        assertThrows(ArgumentNullException.class, () -> ((CharEnumerable) Linq.chars("12321"))._findIndex(null));
 
         assertThrows(ArgumentNullException.class, () -> ((GenericArrayEnumerable<Integer>) Linq.of(1, 2, 3, 2, 1))._findIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((GenericArrayEnumerable<Integer>) Linq.of(1, 2, 3, 2, 1))._findIndex(null));

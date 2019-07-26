@@ -5,10 +5,10 @@ import com.bestvike.linq.enumerable.AbstractEnumerator;
 /**
  * Created by 许崇雷 on 2017-07-25.
  */
-public final class CharSequenceEnumerator extends AbstractEnumerator<Character> {
+public final class CharEnumerator extends AbstractEnumerator<Character> {
     private final CharSequence source;
 
-    public CharSequenceEnumerator(CharSequence source) {
+    public CharEnumerator(CharSequence source) {
         this.source = source;
     }
 

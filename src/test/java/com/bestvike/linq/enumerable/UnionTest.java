@@ -343,17 +343,17 @@ public class UnionTest extends TestCase {
         HashSet<String> set1 = new HashSet<>(StringComparer.OrdinalIgnoreCase);
         set1.add("a");
         IEnumerable<String> input1 = Linq.of(set1);
-        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
+        IEnumerable<String> input2 = Linq.of("A");
 
         assertEquals(Linq.of("a", "A"), input1.union(input2));
         assertEquals(Linq.of("a", "A"), input1.union(input2, null));
         assertEquals(Linq.of("a", "A"), input1.union(input2, EqualityComparer.Default()));
-        assertEquals(Linq.of(new String[]{"a"}), input1.union(input2, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("a"), input1.union(input2, StringComparer.OrdinalIgnoreCase));
 
         assertEquals(Linq.of("A", "a"), input2.union(input1));
         assertEquals(Linq.of("A", "a"), input2.union(input1, null));
         assertEquals(Linq.of("A", "a"), input2.union(input1, EqualityComparer.Default()));
-        assertEquals(Linq.of(new String[]{"A"}), input2.union(input1, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("A"), input2.union(input1, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test

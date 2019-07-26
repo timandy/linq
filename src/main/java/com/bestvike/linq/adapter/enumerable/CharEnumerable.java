@@ -3,7 +3,7 @@ package com.bestvike.linq.adapter.enumerable;
 import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
-import com.bestvike.linq.adapter.enumerator.CharSequenceEnumerator;
+import com.bestvike.linq.adapter.enumerator.CharEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
@@ -16,16 +16,16 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2017-07-25.
  */
-public final class CharSequenceEnumerable implements IArrayList<Character> {
+public final class CharEnumerable implements IArrayList<Character> {
     private final CharSequence source;
 
-    public CharSequenceEnumerable(CharSequence source) {
+    public CharEnumerable(CharSequence source) {
         this.source = source;
     }
 
     @Override
     public IEnumerator<Character> enumerator() {
-        return new CharSequenceEnumerator(this.source);
+        return new CharEnumerator(this.source);
     }
 
     @Override

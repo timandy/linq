@@ -65,7 +65,7 @@ public class ExceptTest extends TestCase {
 
         List<Object[]> lst = new ArrayList<>();
         lst.add(new Object[]{Linq.of(new String[1]), Linq.of(), defaultComparer, Linq.of(new String[1])});
-        lst.add(new Object[]{Linq.of(null, null, Empty), Linq.of(new String[1]), defaultComparer, Linq.of(new String[]{Empty})});
+        lst.add(new Object[]{Linq.of(null, null, Empty), Linq.of(new String[1]), defaultComparer, Linq.of(Empty)});
         lst.add(new Object[]{Linq.of(new String[2]), Linq.of(), defaultComparer, Linq.of(new String[1])});
         lst.add(new Object[]{Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), null, Linq.of("Bob", "Tim", "Robert", "Chris")});
         lst.add(new Object[]{Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), new AnagramEqualityComparer(), Linq.of("Tim", "Robert")});
@@ -144,17 +144,17 @@ public class ExceptTest extends TestCase {
 
     @Test
     public void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
-        IEnumerable<String> input1 = Linq.of(new String[]{"a"});
-        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
+        IEnumerable<String> input1 = Linq.of("a");
+        IEnumerable<String> input2 = Linq.of("A");
 
-        assertEquals(Linq.of(new String[]{"a"}), input1.except(input2));
-        assertEquals(Linq.of(new String[]{"a"}), input1.except(input2, null));
-        assertEquals(Linq.of(new String[]{"a"}), input1.except(input2, EqualityComparer.Default()));
+        assertEquals(Linq.of("a"), input1.except(input2));
+        assertEquals(Linq.of("a"), input1.except(input2, null));
+        assertEquals(Linq.of("a"), input1.except(input2, EqualityComparer.Default()));
         assertEquals(Linq.empty(), input1.except(input2, StringComparer.OrdinalIgnoreCase));
 
-        assertEquals(Linq.of(new String[]{"A"}), input2.except(input1));
-        assertEquals(Linq.of(new String[]{"A"}), input2.except(input1, null));
-        assertEquals(Linq.of(new String[]{"A"}), input2.except(input1, EqualityComparer.Default()));
+        assertEquals(Linq.of("A"), input2.except(input1));
+        assertEquals(Linq.of("A"), input2.except(input1, null));
+        assertEquals(Linq.of("A"), input2.except(input1, EqualityComparer.Default()));
         assertEquals(Enumerable.empty(), input2.except(input1, StringComparer.OrdinalIgnoreCase));
     }
 

@@ -147,17 +147,17 @@ public class IntersectTest extends TestCase {
         set.add("a");
 
         IEnumerable<String> input1 = Linq.of(set);
-        IEnumerable<String> input2 = Linq.of(new String[]{"A"});
+        IEnumerable<String> input2 = Linq.of("A");
 
         assertEquals(Linq.empty(), input1.intersect(input2));
         assertEquals(Linq.empty(), input1.intersect(input2, null));
         assertEquals(Linq.empty(), input1.intersect(input2, EqualityComparer.Default()));
-        assertEquals(Linq.of(new String[]{"a"}), input1.intersect(input2, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("a"), input1.intersect(input2, StringComparer.OrdinalIgnoreCase));
 
         assertEquals(Linq.empty(), input2.intersect(input1));
         assertEquals(Linq.empty(), input2.intersect(input1, null));
         assertEquals(Linq.empty(), input2.intersect(input1, EqualityComparer.Default()));
-        assertEquals(Linq.of(new String[]{"A"}), input2.intersect(input1, StringComparer.OrdinalIgnoreCase));
+        assertEquals(Linq.of("A"), input2.intersect(input1, StringComparer.OrdinalIgnoreCase));
     }
 
     @Test
