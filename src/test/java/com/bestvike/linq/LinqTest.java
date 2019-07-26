@@ -225,7 +225,7 @@ public class LinqTest extends TestCase {
 
         //CharSequence
         String str = "123";
-        assertEquals(Linq.chars(str), Linq.as(str));
+        assertNull(Linq.as(str));
 
         //Array
         String[] strings = {"1", "2", "3"};
