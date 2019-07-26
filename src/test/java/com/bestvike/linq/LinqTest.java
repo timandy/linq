@@ -23,6 +23,22 @@ import java.util.Vector;
  */
 public class LinqTest extends TestCase {
     @Test
+    public void testEmpty() {
+        Integer[] array = {};
+        IEnumerable<Integer> integers = Linq.empty();
+        assertEquals(0, integers.count());
+        assertTrue(Linq.of(array).sequenceEqual(integers));
+    }
+
+    @Test
+    public void testSingleton() {
+        String[] array = {"1"};
+        assertEquals(1, Linq.of(array).count());
+        assertEquals(1, Linq.singleton("1").count());
+        assertTrue(Linq.of(array).sequenceEqual(Linq.singleton("1")));
+    }
+
+    @Test
     public void testBoolean() {
         boolean[] array = {true, false, true};
         List<Boolean> list = new ArrayList<>();
@@ -118,17 +134,6 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
-    }
-
-    @Test
-    public void testCharSequence() {
-        String str = "123";
-        char[] chars = {'1', '2', '3'};
-        char c = Linq.chars(str).elementAt(1);
-        assertEquals('2', c);
-        assertEquals(3, Linq.chars(str).count());
-        assertEquals(3, Linq.of(chars).count());
-        assertTrue(Linq.chars(str).sequenceEqual(Linq.chars(str)));
     }
 
     @Test
@@ -255,6 +260,31 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testChars() {
+        String str = "123";
+        char[] chars = {'1', '2', '3'};
+        char c = Linq.chars(str).elementAt(1);
+        assertEquals('2', c);
+        assertEquals(3, Linq.chars(str).count());
+        assertEquals(3, Linq.of(chars).count());
+        assertTrue(Linq.chars(str).sequenceEqual(Linq.chars(str)));
+    }
+
+    @Test
+    public void testLines() {
+        assertThrows(ArgumentNullException.class, () -> Linq.lines(null));
+        assertEquals(Linq.empty(), Linq.lines(""));
+        assertEquals(Linq.empty(), Linq.lines("\r"));
+        assertEquals(Linq.empty(), Linq.lines("\r\n\n"));
+        assertEquals(Linq.of("hello"), Linq.lines("hello"));
+        assertEquals(Linq.of("hello", "world"), Linq.lines("hello\r\n\n\nworld"));
+        assertEquals(Linq.of("hello", "world"), Linq.lines("\r\n\n\nhello\r\n\n\nworld"));
+        assertEquals(Linq.of("hello", "world"), Linq.lines("hello\r\n\n\nworld\r\n\n\n"));
+        assertEquals(Linq.of("hello", "world"), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n"));
+        assertEquals(Linq.of("hello", "world", "  "), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n  "));
+    }
+
+    @Test
     public void testMap() {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "1");
@@ -275,14 +305,6 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testSingleton() {
-        String[] array = {"1"};
-        assertEquals(1, Linq.of(array).count());
-        assertEquals(1, Linq.singleton("1").count());
-        assertTrue(Linq.of(array).sequenceEqual(Linq.singleton("1")));
-    }
-
-    @Test
     public void testRange() {
         Integer[] array = {1, 2, 3, 4, 5};
         IEnumerable<Integer> integers = Linq.range(1, 5);
@@ -295,14 +317,6 @@ public class LinqTest extends TestCase {
         Integer[] array = {1, 1, 1, 1, 1};
         IEnumerable<Integer> integers = Linq.repeat(1, 5);
         assertEquals(5, integers.count());
-        assertTrue(Linq.of(array).sequenceEqual(integers));
-    }
-
-    @Test
-    public void testEmpty() {
-        Integer[] array = {};
-        IEnumerable<Integer> integers = Linq.empty();
-        assertEquals(0, integers.count());
         assertTrue(Linq.of(array).sequenceEqual(integers));
     }
 }
