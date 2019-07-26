@@ -289,13 +289,13 @@ public class LinqTest extends TestCase {
 
     @Test
     public void testChars() {
-        String str = "123";
-        char[] chars = {'1', '2', '3'};
-        char c = Linq.chars(str).elementAt(1);
+        assertThrows(ArgumentNullException.class, () -> Linq.chars(null));
+
+        IEnumerable<Character> source = Linq.chars("123");
+        char c = source.elementAt(1);
         assertEquals('2', c);
-        assertEquals(3, Linq.chars(str).count());
-        assertEquals(3, Linq.of(chars).count());
-        assertTrue(Linq.chars(str).sequenceEqual(Linq.chars(str)));
+        assertEquals(3, source.count());
+        assertTrue(Linq.of('1', '2', '3').sequenceEqual(source));
     }
 
     @Test
@@ -341,6 +341,8 @@ public class LinqTest extends TestCase {
         assertEquals(0, source.elementAt(0));
         assertEquals(5, source.elementAt(5));
         assertThrows(ArithmeticException.class, () -> source.count());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, null));
     }
 
     @Test
@@ -357,6 +359,10 @@ public class LinqTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> source2.first());
         assertThrows(ArgumentOutOfRangeException.class, () -> source2.elementAt(0));
         assertEquals(0, source2.count());
+
+
+        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, x -> x > 0, null));
+        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, null, x -> x));
     }
 
     @Test
@@ -366,6 +372,8 @@ public class LinqTest extends TestCase {
         assertEquals(99, source.runOnce().first());
         assertEquals(99, source.elementAt(5));
         assertThrows(ArithmeticException.class, () -> source.count());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.generate(null));
     }
 
     @Test
