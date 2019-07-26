@@ -195,6 +195,26 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testMap() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "1");
+        map.put(2, "2");
+        map.put(3, "3");
+        IEnumerable<Map.Entry<Integer, String>> enu1 = Linq.of(map);
+
+        Map<Integer, String> map2 = new HashMap<>();
+        map2.put(1, "1");
+        map2.put(2, "2");
+        map2.put(3, "3");
+        IEnumerable<Map.Entry<Integer, String>> enu2 = Linq.of(map2);
+        map2.put(4, "4");
+        map2.remove(4);
+
+        assertEquals(3, Linq.of(enu1).count());
+        assertEquals(3, Linq.of(enu2).count());
+    }
+
+    @Test
     public void testObject() {
         assertNull(Linq.as(null));
         assertNull(Linq.as(new Object()));
@@ -308,26 +328,6 @@ public class LinqTest extends TestCase {
         assertEquals(Linq.of("hello", "world"), Linq.lines("hello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world"), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world", "  "), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n  "));
-    }
-
-    @Test
-    public void testMap() {
-        Map<Integer, String> map = new HashMap<>();
-        map.put(1, "1");
-        map.put(2, "2");
-        map.put(3, "3");
-        IEnumerable<Map.Entry<Integer, String>> enu1 = Linq.of(map);
-
-        Map<Integer, String> map2 = new HashMap<>();
-        map2.put(1, "1");
-        map2.put(2, "2");
-        map2.put(3, "3");
-        IEnumerable<Map.Entry<Integer, String>> enu2 = Linq.of(map2);
-        map2.put(4, "4");
-        map2.remove(4);
-
-        assertEquals(3, Linq.of(enu1).count());
-        assertEquals(3, Linq.of(enu2).count());
     }
 
     @Test
