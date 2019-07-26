@@ -102,6 +102,10 @@ public final class Linq {
         return Enumerable.chars(source);
     }
 
+    public static IEnumerable<String> words(String source) {
+        return Enumerable.words(source);
+    }
+
     public static IEnumerable<String> lines(String source) {
         return Enumerable.lines(source);
     }

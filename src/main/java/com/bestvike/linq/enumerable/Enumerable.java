@@ -19,6 +19,7 @@ import com.bestvike.linq.adapter.enumerable.LinkedListEnumerable;
 import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
+import com.bestvike.linq.adapter.enumerable.WordEnumerable;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -204,6 +205,13 @@ public final class Enumerable {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new CharEnumerable(source);
+    }
+
+    public static IEnumerable<String> words(String source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new WordEnumerable(source);
     }
 
     public static IEnumerable<String> lines(String source) {

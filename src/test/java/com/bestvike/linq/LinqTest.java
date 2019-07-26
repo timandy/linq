@@ -277,6 +277,26 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testWords() {
+        assertThrows(ArgumentNullException.class, () -> Linq.words(null));
+        assertEquals(Linq.empty(), Linq.words(""));
+        assertEquals(Linq.empty(), Linq.words("\r"));
+        assertEquals(Linq.empty(), Linq.words("\r\n\n"));
+        assertEquals(Linq.of("hello"), Linq.words("hello"));
+        assertEquals(Linq.of("hello", "world"), Linq.words("hello\r\n\n\nworld"));
+        assertEquals(Linq.of("hello", "world"), Linq.words("\r\n\n\nhello\r\n\n\nworld"));
+        assertEquals(Linq.of("hello", "world"), Linq.words("hello\r\n\n\nworld\r\n\n\n"));
+        assertEquals(Linq.of("hello", "world"), Linq.words("\r\n\n\nhello\r\n\n\nworld\r\n\n\n"));
+        assertEquals(Linq.of("hello", "world"), Linq.words("\r\n\n\nhello\r\n\n\nworld\r\n\n\n  "));
+
+        assertEquals(Linq.of("hello", "world"), Linq.words("hello world!"));
+        assertEquals(Linq.of("hello", "world"), Linq.words(" hello world!"));
+        assertEquals(Linq.of("hello", "world"), Linq.words(" hello world! "));
+        assertEquals(Linq.of("hello", "world"), Linq.words(" hello,world! "));
+        assertEquals(Linq.of("p2", "is", "the", "second", "parameter"), Linq.words(" p2 is the second parameter. "));
+    }
+
+    @Test
     public void testLines() {
         assertThrows(ArgumentNullException.class, () -> Linq.lines(null));
         assertEquals(Linq.empty(), Linq.lines(""));

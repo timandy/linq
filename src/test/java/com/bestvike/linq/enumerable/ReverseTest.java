@@ -137,6 +137,8 @@ public class ReverseTest extends TestCase {
         assertEquals(Linq.empty(), Linq.ofNullable(null).reverse());
         assertEquals(Linq.singleton("hello"), Linq.ofNullable("hello").reverse());
 
+        assertEquals(Linq.of("world", "hello"), Linq.words(" hello,world! ").reverse());
+
         assertEquals(Linq.of("world", "hello"), Linq.lines("\r\nhello\r\nworld\r\n").reverse());
     }
 }
