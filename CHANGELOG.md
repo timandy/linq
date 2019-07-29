@@ -20,6 +20,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
 - Add api `findIndex`, `findLastIndex` for `IEnumerable`.
 - Add api `format` for `IEnumerable` to print values.
+- Add api `ofNullable`, `chars`, `words`, `lines`, `enumerate`, `generate` for `Linq`.
 - Add `_indexOf` and `_lastIndexOf` method for `IList`.
 - Add `_findIndex()` and `_findLastIndex()` method for `IList`.
 - Add `IArrayList` interface which extends `RandomAccess` for random access list and `IList` for other.
