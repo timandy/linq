@@ -29,7 +29,7 @@ public class RangeTest extends TestCase {
     @Test
     public void Range_ToArray_ProduceCorrectResult() {
         Array<Integer> array = Linq.range(1, 100).toArray();
-        assertEquals(array._getCount(), 100);
+        assertEquals(100, array._getCount());
         for (int i = 0; i < array._getCount(); i++)
             assertEquals(i + 1, array.get(i));
     }
@@ -37,7 +37,7 @@ public class RangeTest extends TestCase {
     @Test
     public void Range_ToList_ProduceCorrectResult() {
         List<Integer> list = Linq.range(1, 100).toList();
-        assertEquals(list.size(), 100);
+        assertEquals(100, list.size());
         for (int i = 0; i < list.size(); i++)
             assertEquals(i + 1, list.get(i));
     }
@@ -47,9 +47,9 @@ public class RangeTest extends TestCase {
         Array<Integer> array = Linq.range(1, 0).toArray();
         Array<Integer> array2 = Linq.range(Integer.MIN_VALUE, 0).toArray();
         Array<Integer> array3 = Linq.range(Integer.MAX_VALUE, 0).toArray();
-        assertEquals(array._getCount(), 0);
-        assertEquals(array2._getCount(), 0);
-        assertEquals(array3._getCount(), 0);
+        assertEquals(0, array._getCount());
+        assertEquals(0, array2._getCount());
+        assertEquals(0, array3._getCount());
     }
 
     @Test

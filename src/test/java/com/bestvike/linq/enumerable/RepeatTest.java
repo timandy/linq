@@ -29,7 +29,7 @@ public class RepeatTest extends TestCase {
     @Test
     public void Repeat_ToArray_ProduceCorrectResult() {
         Array<Integer> array = Linq.repeat(1, 100).toArray();
-        assertEquals(array._getCount(), 100);
+        assertEquals(100, array._getCount());
         for (int i = 0; i < array._getCount(); i++)
             assertEquals(1, array.get(i));
     }
@@ -37,7 +37,7 @@ public class RepeatTest extends TestCase {
     @Test
     public void Repeat_ToList_ProduceCorrectResult() {
         List<Integer> list = Linq.repeat(1, 100).toList();
-        assertEquals(list.size(), 100);
+        assertEquals(100, list.size());
         for (int i = 0; i < list.size(); i++)
             assertEquals(1, list.get(i));
     }
@@ -46,7 +46,7 @@ public class RepeatTest extends TestCase {
     public void Repeat_ProduceSameObject() {
         Object objectInstance = new Object();
         Array<Object> array = Linq.repeat(objectInstance, 100).toArray();
-        assertEquals(array._getCount(), 100);
+        assertEquals(100, array._getCount());
         for (int i = 0; i < array._getCount(); i++)
             assertSame(objectInstance, array.get(i));
     }
@@ -55,7 +55,7 @@ public class RepeatTest extends TestCase {
     public void Repeat_WorkWithNullElement() {
         Object objectInstance = null;
         Array<Object> array = Linq.repeat(objectInstance, 100).toArray();
-        assertEquals(array._getCount(), 100);
+        assertEquals(100, array._getCount());
         for (int i = 0; i < array._getCount(); i++)
             assertNull(array.get(i));
     }
@@ -63,7 +63,7 @@ public class RepeatTest extends TestCase {
     @Test
     public void Repeat_ZeroCountLeadToEmptySequence() {
         Array<Integer> array = Linq.repeat(1, 0).toArray();
-        assertEquals(array._getCount(), 0);
+        assertEquals(0, array._getCount());
     }
 
     @Test
