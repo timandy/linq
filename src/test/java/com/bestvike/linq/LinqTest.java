@@ -41,6 +41,12 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testOfNullable() {
+        assertSame(Linq.empty(), Linq.ofNullable(null));
+        assertEquals(Linq.of("hello"), Linq.ofNullable("hello"));
+    }
+
+    @Test
     public void testBoolean() {
         boolean[] array = {true, false, true};
         List<Boolean> list = new ArrayList<>();
@@ -279,12 +285,6 @@ public class LinqTest extends TestCase {
         IEnumerable<Map.Entry<String, Integer>> entries = Linq.as(map);
         assertEquals(2, entries.count());
         assertEquals(2, entries.where(a -> a.getKey().equals("world")).first().getValue());
-    }
-
-    @Test
-    public void testOfNullable() {
-        assertSame(Linq.empty(), Linq.ofNullable(null));
-        assertEquals(Linq.of("hello"), Linq.ofNullable("hello"));
     }
 
     @Test

@@ -31,6 +31,10 @@ public final class Linq {
         return Enumerable.singleton(item);
     }
 
+    public static <TSource> IEnumerable<TSource> ofNullable(TSource item) {
+        return Enumerable.ofNullable(item);
+    }
+
     public static IEnumerable<Boolean> of(boolean[] source) {
         return Enumerable.of(source);
     }
@@ -97,10 +101,6 @@ public final class Linq {
 
     public static <TSource> IEnumerable<TSource> as(Object source) {
         return Enumerable.as(source);
-    }
-
-    public static <TSource> IEnumerable<TSource> ofNullable(TSource item) {
-        return Enumerable.ofNullable(item);
     }
 
     public static IEnumerable<Character> chars(CharSequence source) {

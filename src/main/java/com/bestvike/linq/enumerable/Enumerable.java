@@ -46,6 +46,10 @@ public final class Enumerable {
         return new SingletonEnumerable<>(item);
     }
 
+    public static <TSource> IEnumerable<TSource> ofNullable(TSource item) {
+        return item == null ? empty() : singleton(item);
+    }
+
     public static IEnumerable<Boolean> of(boolean[] source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -194,10 +198,6 @@ public final class Enumerable {
         if (source instanceof Map)
             return (IEnumerable<TSource>) of((Map<?, ?>) source);
         return null;
-    }
-
-    public static <TSource> IEnumerable<TSource> ofNullable(TSource item) {
-        return item == null ? empty() : singleton(item);
     }
 
     public static IEnumerable<Character> chars(CharSequence source) {
