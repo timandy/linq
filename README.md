@@ -45,8 +45,14 @@ In general, the more complex the operation you want to perform on the data, the 
 ## API of Linq
 - empty
 - singleton
+- ofNullable
 - of
 - as
+- chars
+- words
+- lines
+- enumerate
+- generate
 - range
 - repeat
 

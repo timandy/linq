@@ -45,8 +45,14 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 ## Linq 的 API
 - empty
 - singleton
+- ofNullable
 - of
 - as
+- chars
+- words
+- lines
+- enumerate
+- generate
 - range
 - repeat
 
