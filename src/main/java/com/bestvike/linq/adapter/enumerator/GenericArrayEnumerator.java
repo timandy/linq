@@ -5,10 +5,10 @@ import com.bestvike.linq.enumerable.AbstractEnumerator;
 /**
  * Created by 许崇雷 on 2019-04-16.
  */
-public final class GenericArrayEnumerator<T> extends AbstractEnumerator<T> {
-    private final T[] source;
+public final class GenericArrayEnumerator<TSource> extends AbstractEnumerator<TSource> {
+    private final TSource[] source;
 
-    public GenericArrayEnumerator(T[] source) {
+    public GenericArrayEnumerator(TSource[] source) {
         this.source = source;
     }
 

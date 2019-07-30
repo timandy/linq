@@ -12,50 +12,50 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-04-12.
  */
-public final class GenericArrayEnumerable<TElement> implements IArray<TElement> {
-    private final TElement[] source;
+public final class GenericArrayEnumerable<TSource> implements IArray<TSource> {
+    private final TSource[] source;
 
-    public GenericArrayEnumerable(TElement[] source) {
+    public GenericArrayEnumerable(TSource[] source) {
         this.source = source;
     }
 
     @Override
-    public IEnumerator<TElement> enumerator() {
+    public IEnumerator<TSource> enumerator() {
         return new GenericArrayEnumerator<>(this.source);
     }
 
     @Override
-    public TElement[] getArray() {
+    public TSource[] getArray() {
         return this.source;
     }
 
     @Override
-    public TElement get(int index) {
+    public TSource get(int index) {
         return this.source[index];
     }
 
     @Override
-    public int _indexOf(TElement item) {
+    public int _indexOf(TSource item) {
         return ArrayUtils.indexOf(this.source, item);
     }
 
     @Override
-    public int _lastIndexOf(TElement item) {
+    public int _lastIndexOf(TSource item) {
         return ArrayUtils.lastIndexOf(this.source, item);
     }
 
     @Override
-    public int _findIndex(Predicate1<TElement> match) {
+    public int _findIndex(Predicate1<TSource> match) {
         return ArrayUtils.findIndex(this.source, match);
     }
 
     @Override
-    public int _findLastIndex(Predicate1<TElement> match) {
+    public int _findLastIndex(Predicate1<TSource> match) {
         return ArrayUtils.findLastIndex(this.source, match);
     }
 
     @Override
-    public Collection<TElement> getCollection() {
+    public Collection<TSource> getCollection() {
         return ArrayUtils.toCollection(this.source);
     }
 
@@ -65,7 +65,7 @@ public final class GenericArrayEnumerable<TElement> implements IArray<TElement> 
     }
 
     @Override
-    public boolean _contains(TElement item) {
+    public boolean _contains(TSource item) {
         return ArrayUtils.contains(this.source, item);
     }
 
@@ -75,7 +75,7 @@ public final class GenericArrayEnumerable<TElement> implements IArray<TElement> 
     }
 
     @Override
-    public TElement[] _toArray(Class<TElement> clazz) {
+    public TSource[] _toArray(Class<TSource> clazz) {
         return ArrayUtils.toArray(this.source, clazz);
     }
 
@@ -85,7 +85,7 @@ public final class GenericArrayEnumerable<TElement> implements IArray<TElement> 
     }
 
     @Override
-    public List<TElement> _toList() {
+    public List<TSource> _toList() {
         return ArrayUtils.toList(this.source);
     }
 }
