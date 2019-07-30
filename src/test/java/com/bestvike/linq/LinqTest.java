@@ -360,7 +360,6 @@ public class LinqTest extends TestCase {
         assertThrows(ArgumentOutOfRangeException.class, () -> source2.elementAt(0));
         assertEquals(0, source2.count());
 
-
         assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, x -> x > 0, null));
         assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, null, x -> x));
     }
