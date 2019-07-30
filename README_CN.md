@@ -31,9 +31,8 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 
 ## 特性
 - 实现了 LINQ to Objects 的所有 API。
-- 支持更多 API。
-- 支持元组。
-- 支持将 IEnumerable 转换为 Stream 或 Parallel Stream。
+- 支持更多 API 和元组。
+- 支持 IEnumerable 和 Stream 互相转换。
 - 支持 Android。
 - 超过 2000 个测试用例。
 

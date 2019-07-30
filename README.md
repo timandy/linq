@@ -31,9 +31,8 @@ In general, the more complex the operation you want to perform on the data, the 
 
 ## Features
 - Implemented all API of LINQ to Objects.
-- More API supported.
-- Tuple supported.
-- Cast IEnumerable to Stream or Parallel Stream supported.
+- More API and Tuple supported.
+- Support for converting between IEnumerable and Stream.
 - Android supported.
 - More than 2000 test cases passed.
 
