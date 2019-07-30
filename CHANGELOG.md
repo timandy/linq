@@ -1,11 +1,10 @@
 <!--变更日志-->
-# Change Log
 
-## v3.0.0
+# v3.0.0 Release notes
 `This is the first stable version available for production.
 It is highly recommended to upgrade to this version if you have used a previous version.`
 
-**Bugs**
+### Bugs
 - Fix unsigned compare bugs.
 - Fix `Lookup.ApplyResultSelector` bugs.
 - Fix `OrderedEnumerableRangeEnumerator` not iterate maxIdx.
@@ -13,7 +12,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
 - Fix not check selector param for `sum` with selector.
 
-**Features**
+### Features
 - Add `zip` Tuple api.
 - Add support compatible stream for `IEnumerable`.
 - Add api `toLinkedList`, `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
@@ -34,7 +33,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Add primitive functional interface.
 - Add covariant & contravariant support.
 
-**Optimizations** 
+### Optimizations
 - Remove override runOnce() for `IList`.
 - Not copy data when cast primitive array to IEnumerable.
 - Not create array when cast singleton to IEnumerable.
@@ -47,7 +46,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Optimize performance by use enumerator instead of iterator.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
 
-**Changes**
+### Changes
 - Translated all LINQ to Objects API of .net core 3.0.
 - Use ThrowHelper to throw Exceptions.
 - Rename package `bridge` to `adapter`.
@@ -71,25 +70,72 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Func<T1, T2, ... TResult> (T1...TN are contravariant, TResult is covariant)
 - Predicate<T1, T2, ... TN> (T1...TN are contravariant)
 
-## v2.0.1
-- Add test cases.
-- Fix bugs of `first`, `firstOrDefault`.
+# Links
+- Download [http://repo1.maven.org/maven2/com/bestvike/linq/3.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/3.0.0/)
+- Source code [https://github.com/timandy/linq/tree/v3.0.0](https://github.com/timandy/linq/tree/v3.0.0)
 
-## v2.0.0
-- Translated all LINQ to Objects API of .net core 2.0.
+---
+
+# v2.0.1 Release notes
+
+### Bugs
+- Fix `first` `firstOrDefault` bugs.
+
+### Features
+- Refactor from .net core 2.
+- Performance improvement.
+
+# Links
+- Download [http://repo1.maven.org/maven2/com/bestvike/linq/2.0.1/](http://repo1.maven.org/maven2/com/bestvike/linq/2.0.1/)
+- Source code [https://github.com/timandy/linq/tree/v2.0.1](https://github.com/timandy/linq/tree/v2.0.1)
+
+---
+
+# v2.0.0 Release notes
+
+### Bugs
 - Fix `Comparer.compare()` bugs.
+
+### Features
+- Translated all LINQ to Objects API of .net core 2.0.
 - Add class `out`, `ref`.
 - A lot of refactoring optimization has been done.
+
+### Changes
+- Performance improvement.
 - Update plugin to latest version.
 
-## v1.0.1
+# Links
+- Download [http://repo1.maven.org/maven2/com/bestvike/linq/2.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/2.0.0/)
+- Source code [https://github.com/timandy/linq/tree/v2.0.0](https://github.com/timandy/linq/tree/v2.0.0)
+
+---
+
+# v1.0.1 Release notes
+
+### Bugs
+- Fix Buffer count is zero throws NullPointerException.
+
+### Features
+- Add API `distinctBy`, `unionBy`, `intersectBy`, `exceptBy`, `minBy`, `maxBy`.
 - Support CI.
 - Update logo.
-- Add API `distinctBy`, `unionBy`, `intersectBy`, `minBy`, `maxBy`.
 
-## v1.0.0
+# Links
+- Download [http://repo1.maven.org/maven2/com/bestvike/linq/1.0.1/](http://repo1.maven.org/maven2/com/bestvike/linq/1.0.1/)
+- Source code [https://github.com/timandy/linq/tree/v1.0.1](https://github.com/timandy/linq/tree/v1.0.1)
+
+---
+
+# v1.0.0 Release notes
+
+### Features
 - Translated all LINQ to Objects API of .net framework 4.7.
 - Add unit test cases.
 - Add API `leftJoin`, `rightJoin`, `fullJoin`, `crossJoin`.
 - Support cast `CharSequence` to `IEnumerable`.
 - Add Tuple definitions.
+
+# Links
+- Download [http://repo1.maven.org/maven2/com/bestvike/linq/1.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/1.0.0/)
+- Source code [https://github.com/timandy/linq/tree/v1.0.0](https://github.com/timandy/linq/tree/v1.0.0)
