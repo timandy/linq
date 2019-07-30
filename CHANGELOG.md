@@ -15,7 +15,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 
 **Features**
 - Add `zip` Tuple api.
-- Add support port to stream for `IEnumerable`.
+- Add support compatible stream for `IEnumerable`.
 - Add api `toLinkedList`, `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
 - Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
 - Add api `findIndex`, `findLastIndex` for `IEnumerable`.
