@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -137,6 +138,10 @@ public class ReverseTest extends TestCase {
         assertEquals(Linq.empty(), Linq.ofNullable(null).reverse());
         assertEquals(Linq.singleton("hello"), Linq.ofNullable("hello").reverse());
 
+        assertEquals(Linq.of("world", "hello"), Linq.of(Pattern.compile("[,!]").splitAsStream("hello,world!")).reverse());
+        assertEquals(Linq.of("world", "hello"), Linq.of(Pattern.compile("[,!]").splitAsStream("hello,world!").spliterator()).reverse());
+
+        assertEquals(Linq.of('\n', 'o', 'l', 'l', 'e', 'h'), Linq.chars("hello\n").reverse());
         assertEquals(Linq.of("world", "hello"), Linq.words(" hello,world! ").reverse());
         assertEquals(Linq.of("world", "hello"), Linq.lines("\r\nhello\r\nworld\r\n").reverse());
 

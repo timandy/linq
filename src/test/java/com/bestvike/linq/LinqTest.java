@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Spliterator;
 import java.util.Vector;
+import java.util.stream.Stream;
 
 /**
  * Created by 许崇雷 on 2017-07-24.
@@ -203,6 +205,24 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testStream() {
+        IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3));
+        assertEquals(Linq.range(1, 3), source);
+        assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Stream<?>) null));
+    }
+
+    @Test
+    public void testSpliterator() {
+        IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3).spliterator());
+        assertEquals(Linq.range(1, 3), source);
+        assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Spliterator<?>) null));
+    }
+
+    @Test
     public void testMap() {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "1");
@@ -277,6 +297,16 @@ public class LinqTest extends TestCase {
 
         //Enumeration
         assertEquals(Linq.range(1, 3), Linq.as(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
+
+        //Stream
+        IEnumerable<Object> streamEnumerable = Linq.as(Stream.of(1, 2, 3));
+        assertEquals(Linq.of(1, 2, 3), streamEnumerable);
+        assertThrows(NotSupportedException.class, () -> streamEnumerable.enumerator());
+
+        //Spliterator
+        IEnumerable<Object> spliteratorEnumerable = Linq.as(Stream.of(1, 2, 3).spliterator());
+        assertEquals(Linq.of(1, 2, 3), spliteratorEnumerable);
+        assertThrows(NotSupportedException.class, () -> spliteratorEnumerable.enumerator());
 
         //Map
         Map<String, Integer> map = new HashMap<>();
