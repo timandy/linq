@@ -19,6 +19,8 @@ import com.bestvike.linq.adapter.enumerable.LinkedListEnumerable;
 import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
+import com.bestvike.linq.adapter.enumerable.SpliteratorEnumerable;
+import com.bestvike.linq.adapter.enumerable.StreamEnumerable;
 import com.bestvike.linq.adapter.enumerable.WordEnumerable;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
@@ -29,6 +31,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.RandomAccess;
+import java.util.Spliterator;
+import java.util.stream.Stream;
 
 /**
  * Created by 许崇雷 on 2018-04-27.
@@ -155,6 +159,20 @@ public final class Enumerable {
         return new EnumerationEnumerable<>(source);
     }
 
+    public static <TSource> IEnumerable<TSource> of(Stream<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new StreamEnumerable<>(source);
+    }
+
+    public static <TSource> IEnumerable<TSource> of(Spliterator<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new SpliteratorEnumerable<>(source);
+    }
+
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> of(Map<TKey, TValue> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -195,6 +213,10 @@ public final class Enumerable {
             return of((Iterator<TSource>) source);
         if (source instanceof Enumeration)
             return of((Enumeration<TSource>) source);
+        if (source instanceof Stream)
+            return of((Stream<TSource>) source);
+        if (source instanceof Spliterator)
+            return of((Spliterator<TSource>) source);
         if (source instanceof Map)
             return (IEnumerable<TSource>) of((Map<?, ?>) source);
         return null;

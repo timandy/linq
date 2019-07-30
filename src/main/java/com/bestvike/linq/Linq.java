@@ -14,6 +14,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Spliterator;
+import java.util.stream.Stream;
 
 /**
  * Created by 许崇雷 on 2017-07-18.
@@ -93,6 +95,14 @@ public final class Linq {
 
     public static <TSource> IEnumerable<TSource> of(Enumeration<? extends TSource> source) {
         return Enumerable.of((Enumeration<TSource>) source);
+    }
+
+    public static <TSource> IEnumerable<TSource> of(Stream<? extends TSource> source) {
+        return Enumerable.of((Stream<TSource>) source);
+    }
+
+    public static <TSource> IEnumerable<TSource> of(Spliterator<? extends TSource> source) {
+        return Enumerable.of((Spliterator<TSource>) source);
     }
 
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> of(Map<? extends TKey, ? extends TValue> source) {
