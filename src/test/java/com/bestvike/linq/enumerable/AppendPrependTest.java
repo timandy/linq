@@ -4,9 +4,12 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.entity.Employee;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -248,6 +251,13 @@ public class AppendPrependTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[Fred, Bill, Eric, Janet, Cedric]", s);
+
+        List<Employee> result = new ArrayList<>(Arrays.asList(emps));
+        result.add(badEmps[0]);
+        IEnumerable<Employee> expected = Linq.of(result);
+        assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toList()));
     }
 
     @Test
@@ -257,5 +267,23 @@ public class AppendPrependTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[Cedric, Fred, Bill, Eric, Janet]", s);
+
+        List<Employee> result = new ArrayList<>(Collections.singletonList(badEmps[0]));
+        result.addAll(Arrays.asList(emps));
+        IEnumerable<Employee> expected = Linq.of(result);
+        assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toList()));
+    }
+
+    @Test
+    public void testAppendPrepend() {
+        List<Employee> result = new ArrayList<>(Collections.singletonList(badEmps[0]));
+        result.addAll(Arrays.asList(emps));
+        result.add(badEmps[1]);
+        IEnumerable<Employee> expected = Linq.of(result);
+        assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toList()));
     }
 }
