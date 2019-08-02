@@ -171,6 +171,10 @@ public class TakeWhileTest extends TestCase {
         // 2: Marketing --> never get to it (we stop after false)
         assertEquals(1, deptList.size());
         assertEquals(depts[0], deptList.get(0));
+
+        IEnumerable<Department> source = Linq.of(depts).takeWhile(dept -> dept.name.contains("e"));
+        assertEquals(1, source.count());
+        assertEquals(1, source.count());
     }
 
     @Test
@@ -179,5 +183,9 @@ public class TakeWhileTest extends TestCase {
         assertEquals(2, deptList.size());
         assertEquals(depts[0], deptList.get(0));
         assertEquals(depts[1], deptList.get(1));
+
+        IEnumerable<Department> source = Linq.of(depts).takeWhile((dept, index) -> index < 2);
+        assertEquals(2, source.count());
+        assertEquals(2, source.count());
     }
 }

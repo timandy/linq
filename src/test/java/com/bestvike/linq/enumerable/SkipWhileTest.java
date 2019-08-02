@@ -6,6 +6,7 @@ import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.Test;
 
@@ -156,15 +157,19 @@ public class SkipWhileTest extends TestCase {
 
     @Test
     public void testSkipWhile() {
-        assertEquals(2, Linq.of(depts).skipWhile(dept -> dept.name.equals("Sales")).count());
-        assertEquals(3, Linq.of(depts).skipWhile(dept -> !dept.name.equals("Sales")).count());
+        IEnumerable<Department> source = Linq.of(depts).skipWhile(dept -> dept.name.equals("Sales"));
+        assertEquals(2, source.count());
+        assertEquals(2, source.count());
+        IEnumerable<Department> source2 = Linq.of(depts).skipWhile(dept -> !dept.name.equals("Sales"));
+        assertEquals(3, source2.count());
+        assertEquals(3, source2.count());
     }
 
     @Test
     public void testSkipWhileIndexed() {
-        int count = Linq.of(depts)
-                .skipWhile((dept, index) -> dept.name.equals("Sales") || index == 1)
-                .count();
-        assertEquals(1, count);
+        IEnumerable<Department> source = Linq.of(depts)
+                .skipWhile((dept, index) -> dept.name.equals("Sales") || index == 1);
+        assertEquals(1, source.count());
+        assertEquals(1, source.count());
     }
 }
