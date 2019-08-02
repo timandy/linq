@@ -1,5 +1,6 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -88,8 +89,8 @@ public final class Last {
             return ordered._tryGetLast(predicate, found);
         }
 
-        if (source instanceof IList) {
-            IList<TSource> list = (IList<TSource>) source;
+        if (source instanceof IArrayList) {
+            IArrayList<TSource> list = (IArrayList<TSource>) source;
             for (int i = list._getCount() - 1; i >= 0; --i) {
                 TSource result = list.get(i);
                 if (predicate.apply(result)) {
