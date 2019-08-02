@@ -29,6 +29,7 @@ public class SkipLastTest extends TestCase {
             assertEquals(expected, actual);
             assertEquals(expected.count(), actual.count());
             assertEquals(expected, actual.toArray());
+            assertEquals(expected, Linq.of(actual.toArray(Integer.class)));
             assertEquals(expected, Linq.of(actual.toList()));
 
             assertEquals(expected.firstOrDefault(), actual.firstOrDefault());

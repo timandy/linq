@@ -312,6 +312,7 @@ public class OrderedSubsettingTest extends TestCase {
     @Test
     public void EmptyToArray() {
         assertEmpty(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toArray());
+        assertTrue(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toArray(Integer.class).length == 0);
     }
 
     @Test
