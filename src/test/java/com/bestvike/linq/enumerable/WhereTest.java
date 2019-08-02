@@ -1015,6 +1015,7 @@ public class WhereTest extends TestCase {
         for (IEnumerable<Integer> equivalent : Arrays.asList(source.where(s -> true), source.where(s -> true).select(s -> s))) {
             assertEquals(source, equivalent);
             assertEquals(source, equivalent.toArray());
+            assertEquals(source, Linq.of(equivalent.toArray(Integer.class)));
             assertEquals(source, Linq.of(equivalent.toList()));
             assertEquals(source.count(), equivalent.count()); // Count may be optimized. The above asserts do not imply this will pass.
 
