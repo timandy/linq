@@ -1175,6 +1175,57 @@ public class SelectTest extends TestCase {
     }
 
     @Test
+    public void testSelectIterator() {
+        IEnumerable<Integer> source = Linq.of(new ArrayIterable<>(55, 49, 9, -100, 24, 25, -1, 0)).select((x, index) -> 2 * x);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0), source.toList());
+        assertEquals(8, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2, 0), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(0, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new ArrayIterable<Integer>()).select((x, index) -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+    }
+
+    @Test
+    public void testSelectEnumerableIterator() {
+        IEnumerable<Integer> source = Linq.of(new ArrayIterable<>(55, 49, 9, -100, 24, 25, -1, 0)).select(x -> 2 * x);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2, 0), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0), source.toList());
+        assertEquals(8, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2, 0), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(0, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new ArrayIterable<Integer>()).select(x -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+        assertEquals(Linq.singleton(10), Linq.of(emptySource.append(10).toArray(Integer.class)));
+        assertEquals(Linq.singleton(10), Linq.of(emptySource.prepend(10).toArray(Integer.class)));
+        assertEquals(Linq.of(9, 10), Linq.of(emptySource.append(10).prepend(9).toArray(Integer.class)));
+    }
+
+    @Test
     public void testSelectListIterator() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(55, 49, 9, -100, 24, 25, -1, 0)).select(x -> 2 * x);
         assertEquals(source.runOnce(), source.runOnce());
@@ -1251,6 +1302,100 @@ public class SelectTest extends TestCase {
         assertEquals(Arrays.asList(10, 8, 6, 4, 2, 0), orderedSource.toList());
 
         IEnumerable<Integer> emptyOrderedSource = Linq.range(0, 0).orderByDescending(x -> x).select(x -> 2 * x);
+        assertSame(ArrayUtils.empty(), emptyOrderedSource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptyOrderedSource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptyOrderedSource.toList());
+    }
+
+    @Test
+    public void testSelectListPartitionIterator() {
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(0, 1, 2, 3, 4, 5, 6)).select(x -> 2 * x).skip(1);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(1, 2, 3, 4, 5, 6), source.select(x -> x / 2));
+        assertEquals(Linq.of(2, 4, 6, 8, 10, 12), source.toArray());
+        assertEquals(Linq.of(2, 4, 6, 8, 10, 12), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(2, 4, 6, 8, 10, 12), source.toList());
+        assertEquals(6, source.count());
+        assertEquals(Linq.of(4, 6, 8, 10, 12), source.skip(1));
+        assertEquals(Linq.of(2), source.take(1));
+        assertEquals(2, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(2, source.first());
+        assertEquals(12, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(Arrays.asList(0, 1, 2, 3, 4, 5, 6)).select(x -> 2 * x).skip(7);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> emptySource2 = Linq.of(Collections.<Integer>emptyList()).select(x -> 2 * x).take(5).skip(3);
+        assertSame(ArrayUtils.empty(), emptySource2.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource2.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource2.toList());
+        assertEquals(0, emptySource2.count());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.last());
+        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        try (IEnumerator<Integer> e = emptySource2.enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        IEnumerable<Integer> orderedSource = Linq.of(Arrays.asList(0, 1, 2, 3, 4, 5)).select(x -> 2 * x).skip(1).orderByDescending(x -> x);
+        assertEquals(Linq.of(10, 8, 6, 4, 2), orderedSource.toArray());
+        assertEquals(Linq.of(10, 8, 6, 4, 2), Linq.of(orderedSource.toArray(Integer.class)));
+        assertEquals(Arrays.asList(10, 8, 6, 4, 2), orderedSource.toList());
+
+        IEnumerable<Integer> emptyOrderedSource = Linq.of(Arrays.asList(0, 1, 2, 3, 4, 5)).select(x -> 2 * x).skip(6).orderByDescending(x -> x);
+        assertSame(ArrayUtils.empty(), emptyOrderedSource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptyOrderedSource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptyOrderedSource.toList());
+    }
+
+    @Test
+    public void testSelectIListPartitionIterator() {
+        IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6))).select(x -> 2 * x).skip(1);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(1, 2, 3, 4, 5, 6), source.select(x -> x / 2));
+        assertEquals(Linq.of(2, 4, 6, 8, 10, 12), source.toArray());
+        assertEquals(Linq.of(2, 4, 6, 8, 10, 12), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(2, 4, 6, 8, 10, 12), source.toList());
+        assertEquals(6, source.count());
+        assertEquals(Linq.of(4, 6, 8, 10, 12), source.skip(1));
+        assertEquals(Linq.of(2), source.take(1));
+        assertEquals(2, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(2, source.first());
+        assertEquals(12, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6))).select(x -> 2 * x).skip(7);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> emptySource2 = Linq.of(new LinkedList<>(Collections.<Integer>emptyList())).select(x -> 2 * x).take(5).skip(3);
+        assertSame(ArrayUtils.empty(), emptySource2.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource2.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource2.toList());
+        assertEquals(0, emptySource2.count());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.last());
+        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        try (IEnumerator<Integer> e = emptySource2.enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        IEnumerable<Integer> orderedSource = Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3, 4, 5))).select(x -> 2 * x).skip(1).orderByDescending(x -> x);
+        assertEquals(Linq.of(10, 8, 6, 4, 2), orderedSource.toArray());
+        assertEquals(Linq.of(10, 8, 6, 4, 2), Linq.of(orderedSource.toArray(Integer.class)));
+        assertEquals(Arrays.asList(10, 8, 6, 4, 2), orderedSource.toList());
+
+        IEnumerable<Integer> emptyOrderedSource = Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3, 4, 5))).select(x -> 2 * x).skip(6).orderByDescending(x -> x);
         assertSame(ArrayUtils.empty(), emptyOrderedSource.toArray().getArray());
         assertEquals(Linq.empty(), Linq.of(emptyOrderedSource.toArray(Integer.class)));
         assertEquals(Collections.emptyList(), emptyOrderedSource.toList());
