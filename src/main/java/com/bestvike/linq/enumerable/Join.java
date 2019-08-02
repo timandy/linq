@@ -545,8 +545,6 @@ final class CrossJoinIterator<TOuter, TInner, TResult> extends Iterator<TResult>
                     return false;
             }
         } while (true);
-
-
     }
 
     @Override
