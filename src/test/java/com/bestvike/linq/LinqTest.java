@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -58,6 +59,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((boolean[]) null));
     }
 
     @Test
@@ -70,6 +73,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((byte[]) null));
     }
 
     @Test
@@ -82,6 +87,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((short[]) null));
     }
 
     @Test
@@ -94,6 +101,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null));
     }
 
     @Test
@@ -106,6 +115,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((long[]) null));
     }
 
     @Test
@@ -119,6 +130,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((float[]) null));
     }
 
     @Test
@@ -132,6 +145,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((double[]) null));
     }
 
     @Test
@@ -144,6 +159,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((char[]) null));
     }
 
     @Test
@@ -156,6 +173,8 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((List<?>) null));
     }
 
     @Test
@@ -168,6 +187,9 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(set).count());
         assertEquals(3, Linq.of(iterableDemo).count());
         assertTrue(Linq.of(set).sequenceEqual(Linq.of(iterableDemo)));
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Collection<?>) null));
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Iterable<?>) null));
     }
 
     @Test
@@ -240,6 +262,8 @@ public class LinqTest extends TestCase {
 
         assertEquals(3, Linq.of(enu1).count());
         assertEquals(3, Linq.of(enu2).count());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Map<?, ?>) null));
     }
 
     @Test
