@@ -1243,8 +1243,8 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
 final class SelectIListPartitionIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final IList<TSource> source;
     private final Func1<TSource, TResult> selector;
-    private final int minIndexInclusive;// -1 if we want everything past _minIndexInclusive.
-    private final int maxIndexInclusive;// If this is -1, it's impossible to set a limit on the count.
+    private final int minIndexInclusive;
+    private final int maxIndexInclusive;
     private IEnumerator<TSource> enumerator;
 
     //see SelectListPartitionIterator
