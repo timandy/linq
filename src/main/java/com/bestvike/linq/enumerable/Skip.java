@@ -70,6 +70,27 @@ public final class Skip {
         if (count <= 0)
             return source.skip(0);
 
+        if (source instanceof IPartition) {
+            IPartition<TSource> partition = (IPartition<TSource>) source;
+            int length = partition._getCount(true);
+            if (length >= 0)
+                return length - count > 0 ? partition.take(length - count) : EmptyPartition.instance();
+        } else if (source instanceof IList) {
+            if (source instanceof IArrayList) {
+                IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
+                int sourceCount = sourceList._getCount();
+                return sourceCount > count
+                        ? new ListPartition<>(sourceList, 0, sourceCount - count - 1)
+                        : EmptyPartition.instance();
+            }
+
+            IList<TSource> sourceList = (IList<TSource>) source;
+            int sourceCount = sourceList._getCount();
+            return sourceCount > count
+                    ? new IListPartition<>(sourceList, 0, sourceCount - count - 1)
+                    : EmptyPartition.instance();
+        }
+
         return new SkipLastIterator<>(source, count);
     }
 }
