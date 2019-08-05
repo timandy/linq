@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -30,9 +31,14 @@ public final class Take {
             return partition._take(count);
         }
 
-        if (source instanceof IArrayList) {
-            IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
-            return new ListPartition<>(sourceList, 0, count - 1);
+        if (source instanceof IList) {
+            if (source instanceof IArrayList) {
+                IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
+                return new ListPartition<>(sourceList, 0, count - 1);
+            }
+
+            IList<TSource> sourceList = (IList<TSource>) source;
+            return new IListPartition<>(sourceList, 0, count - 1);
         }
 
         return new EnumerablePartition<>(source, 0, count - 1);
@@ -68,12 +74,20 @@ public final class Take {
             int length = partition._getCount(true);
             if (length >= 0)
                 return length - count > 0 ? partition.skip(length - count) : partition;
-        } else if (source instanceof IArrayList) {
-            IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
+        } else if (source instanceof IList) {
+            if (source instanceof IArrayList) {
+                IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
+                int sourceCount = sourceList._getCount();
+                return sourceCount > count
+                        ? new ListPartition<>(sourceList, sourceCount - count, sourceCount)
+                        : new ListPartition<>(sourceList, 0, sourceCount);
+            }
+
+            IList<TSource> sourceList = (IList<TSource>) source;
             int sourceCount = sourceList._getCount();
             return sourceCount > count
-                    ? new ListPartition<>(sourceList, sourceCount - count, sourceCount)
-                    : new ListPartition<>(sourceList, 0, sourceCount);
+                    ? new IListPartition<>(sourceList, sourceCount - count, sourceCount)
+                    : new IListPartition<>(sourceList, 0, sourceCount);
         }
 
         return new TakeLastIterator<>(source, count);

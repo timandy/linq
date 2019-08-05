@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.IndexPredicate2;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -31,9 +32,14 @@ public final class Skip {
             return partition._skip(count);
         }
 
-        if (source instanceof IArrayList) {
-            IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
-            return new ListPartition<>(sourceList, count, Integer.MAX_VALUE);
+        if (source instanceof IList) {
+            if (source instanceof IArrayList) {
+                IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
+                return new ListPartition<>(sourceList, count, Integer.MAX_VALUE);
+            }
+
+            IList<TSource> sourceList = (IList<TSource>) source;
+            return new IListPartition<>(sourceList, count, Integer.MAX_VALUE);
         }
 
         return new EnumerablePartition<>(source, count, -1);

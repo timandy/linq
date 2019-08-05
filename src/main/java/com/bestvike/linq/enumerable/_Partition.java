@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IArrayList;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -332,6 +333,247 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 }
 
 
+final class IListPartition<TSource> extends Iterator<TSource> implements IPartition<TSource> {
+    private final IList<TSource> source;
+    private final int minIndexInclusive;
+    private final int maxIndexInclusive;
+    private IEnumerator<TSource> enumerator;
+
+    //see ListPartition
+    IListPartition(IList<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
+        assert source != null;
+        assert !(source instanceof IArrayList);
+        assert minIndexInclusive >= 0;
+        assert minIndexInclusive <= maxIndexInclusive;
+        this.source = source;
+        this.minIndexInclusive = minIndexInclusive;
+        this.maxIndexInclusive = maxIndexInclusive;
+    }
+
+    //see EnumerablePartition
+    private static <TSource> boolean skipBefore(int index, IEnumerator<TSource> en) {
+        return skipAndCount(index, en) == index;
+    }
+
+    //see EnumerablePartition
+    private static <TSource> int skipAndCount(int index, IEnumerator<TSource> en) {
+        assert index >= 0;
+        return (int) skipAndCount((long) index, en);
+    }
+
+    //see EnumerablePartition
+    private static <TSource> long skipAndCount(long index, IEnumerator<TSource> en) {
+        assert en != null;
+
+        for (long i = 0; i < index; i++) {
+            if (!en.moveNext())
+                return i;
+        }
+        return index;
+    }
+
+    //see EnumerablePartition
+    private int getLimit() {
+        return this.maxIndexInclusive + 1 - this.minIndexInclusive; // This is that upper bound.
+    }
+
+    //see EnumerablePartition
+    @Override
+    public Iterator<TSource> clone() {
+        return new IListPartition<>(this.source, this.minIndexInclusive, this.maxIndexInclusive);
+    }
+
+    //see EnumerablePartition
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+        }
+        super.close();
+    }
+
+    //see EnumerablePartition
+    @Override
+    public boolean moveNext() {
+        // Cases where GetEnumerator has not been called or Dispose has already
+        // been called need to be handled explicitly, due to the default: clause.
+        int taken = this.state - 3;
+        if (taken < -2) {
+            this.close();
+            return false;
+        }
+
+        switch (this.state) {
+            case 1:
+                this.enumerator = this.source.enumerator();
+                this.state = 2;
+            case 2:
+                if (!this.skipBeforeFirst(this.enumerator)) {
+                    // Reached the end before we finished skipping.
+                    break;
+                }
+                this.state = 3;
+            default:
+                if (taken < this.getLimit() && this.enumerator.moveNext()) {
+                    // If we are taking an unknown number of elements, it's important not to increment _state.
+                    // _state - 3 may eventually end up overflowing & we'll hit the Dispose branch even though
+                    // we haven't finished enumerating.
+                    this.state++;
+                    this.current = this.enumerator.current();
+                    return true;
+                }
+                break;
+        }
+
+        this.close();
+        return false;
+    }
+
+    //see ListPartition
+    @Override
+    public <TResult> IEnumerable<TResult> _select(Func1<TSource, TResult> selector) {
+        return new SelectIListPartitionIterator<>(this.source, selector, this.minIndexInclusive, this.maxIndexInclusive);
+    }
+
+    //see ListPartition
+    @Override
+    public IPartition<TSource> _skip(int count) {
+        assert count > 0;
+        int minIndex = this.minIndexInclusive + count;
+        return Integer.compareUnsigned(minIndex, this.maxIndexInclusive) > 0
+                ? EmptyPartition.instance()
+                : new IListPartition<>(this.source, minIndex, this.maxIndexInclusive);
+    }
+
+    //see ListPartition
+    @Override
+    public IPartition<TSource> _take(int count) {
+        assert count > 0;
+        int maxIndex = this.minIndexInclusive + count - 1;
+        return Integer.compareUnsigned(maxIndex, this.maxIndexInclusive) >= 0
+                ? this
+                : new IListPartition<>(this.source, this.minIndexInclusive, maxIndex);
+    }
+
+    //see ListPartition
+    @Override
+    public TSource _tryGetElementAt(int index, out<Boolean> found) {
+        if (Integer.compareUnsigned(index, this.maxIndexInclusive - this.minIndexInclusive) <= 0 && index < this.source._getCount() - this.minIndexInclusive) {
+            found.value = true;
+            return this.source.get(this.minIndexInclusive + index);
+        }
+
+        found.value = false;
+        return null;
+    }
+
+    //see ListPartition
+    @Override
+    public TSource _tryGetFirst(out<Boolean> found) {
+        if (this.source._getCount() > this.minIndexInclusive) {
+            found.value = true;
+            return this.source.get(this.minIndexInclusive);
+        }
+
+        found.value = false;
+        return null;
+    }
+
+    //see ListPartition
+    @Override
+    public TSource _tryGetLast(out<Boolean> found) {
+        int lastIndex = this.source._getCount() - 1;
+        if (lastIndex >= this.minIndexInclusive) {
+            found.value = true;
+            return this.source.get(Math.min(lastIndex, this.maxIndexInclusive));
+        }
+
+        found.value = false;
+        return null;
+    }
+
+    //see ListPartition
+    private int _getCount() {
+        int count = this.source._getCount();
+        if (count <= this.minIndexInclusive)
+            return 0;
+
+        return Math.min(count - 1, this.maxIndexInclusive) - this.minIndexInclusive + 1;
+    }
+
+    //see EnumerablePartition
+    @Override
+    public TSource[] _toArray(Class<TSource> clazz) {
+        try (IEnumerator<TSource> en = this.source.enumerator()) {
+            if (this.skipBeforeFirst(en) && en.moveNext()) {
+                int limit = this.getLimit();
+                int remaining = limit - 1; // Max number of items left, not counting the current element.
+                LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(limit);
+
+                do {
+                    remaining--;
+                    builder.add(en.current());
+                } while (remaining >= 0 && en.moveNext());
+
+                return builder.toArray(clazz);
+            }
+        }
+
+        return ArrayUtils.empty(clazz);
+    }
+
+    //see EnumerablePartition
+    @Override
+    public Object[] _toArray() {
+        try (IEnumerator<TSource> en = this.source.enumerator()) {
+            if (this.skipBeforeFirst(en) && en.moveNext()) {
+                int limit = this.getLimit();
+                int remaining = limit - 1; // Max number of items left, not counting the current element.
+                LargeArrayBuilder<TSource> builder = new LargeArrayBuilder<>(limit);
+
+                do {
+                    remaining--;
+                    builder.add(en.current());
+                } while (remaining >= 0 && en.moveNext());
+
+                return builder.toArray();
+            }
+        }
+
+        return ArrayUtils.empty();
+    }
+
+    //see EnumerablePartition
+    @Override
+    public List<TSource> _toList() {
+        List<TSource> list = new ArrayList<>();
+        try (IEnumerator<TSource> en = this.source.enumerator()) {
+            if (this.skipBeforeFirst(en) && en.moveNext()) {
+                int remaining = this.getLimit() - 1; // Max number of items left, not counting the current element.
+
+                do {
+                    remaining--;
+                    list.add(en.current());
+                } while (remaining >= 0 && en.moveNext());
+            }
+        }
+        return list;
+    }
+
+    //see ListPartition
+    @Override
+    public int _getCount(boolean onlyIfCheap) {
+        return this._getCount();
+    }
+
+    //see EnumerablePartition
+    private boolean skipBeforeFirst(IEnumerator<TSource> en) {
+        return skipBefore(this.minIndexInclusive, en);
+    }
+}
+
+
 final class EnumerablePartition<TSource> extends Iterator<TSource> implements IPartition<TSource> {
     private final IEnumerable<TSource> source;
     private final int minIndexInclusive;// -1 if we want everything past _minIndexInclusive.
@@ -340,7 +582,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
 
     EnumerablePartition(IEnumerable<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
-        assert !(source instanceof IArrayList);//, $"The caller needs to check for {nameof(IList<TSource>)}.");
+        assert !(source instanceof IList);//, $"The caller needs to check for {nameof(IList<TSource>)}.");
         assert minIndexInclusive >= 0;
         assert maxIndexInclusive >= -1;
         // Note that although maxIndexInclusive can't grow, it can still be int.MaxValue.
