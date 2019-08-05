@@ -8,12 +8,16 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ReflectionUtils;
 import com.bestvike.ref;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -483,6 +487,189 @@ public class SkipTest extends TestCase {
         assertEquals(0, Linq.of(depts).skip(3).count());
 
         try (IEnumerator<Department> e = Linq.of(depts).skip(3).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+    }
+
+    @Test
+    public void testIList_Skip() {
+        IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).skip(1);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2, 0), source.toArray());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2, 0), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(98, 18, -200, 48, 50, -2, 0), source.toList());
+        assertEquals(7, source.count());
+        assertEquals(Linq.of(18, -200, 48, 50, -2, 0), source.skip(1));
+        assertEquals(Linq.of(98), source.take(1));
+        assertEquals(98, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(98, source.first());
+        assertEquals(0, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5))).skip(5);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> emptySource2 = Linq.of(new LinkedList<>(Collections.<Integer>emptyList())).skip(1);
+        assertSame(ArrayUtils.empty(), emptySource2.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource2.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource2.toList());
+        assertEquals(0, emptySource2.count());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.last());
+        try (IEnumerator<Integer> e = emptySource2.enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+    }
+
+    @Test
+    public void testIPartition_SkipLast() {
+        IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).take(100).skipLast(1);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2), source.toList());
+        assertEquals(7, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(-2, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5))).take(100).skipLast(5);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> emptySource2 = Linq.of(new LinkedList<>(Collections.<Integer>emptyList())).take(100).skipLast(1);
+        assertSame(ArrayUtils.empty(), emptySource2.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource2.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource2.toList());
+        assertEquals(0, emptySource2.count());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.last());
+        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        try (IEnumerator<Integer> e = emptySource2.enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+    }
+
+    @Test
+    public void testIArrayList_SkipLast() {
+        IEnumerable<Integer> source = Linq.of(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0)).skipLast(1);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2), source.toList());
+        assertEquals(7, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(-2, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(Arrays.asList(1, 2, 3, 4, 5)).skipLast(5);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> emptySource2 = Linq.of(Collections.<Integer>emptyList()).skipLast(1);
+        assertSame(ArrayUtils.empty(), emptySource2.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource2.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource2.toList());
+        assertEquals(0, emptySource2.count());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.last());
+        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        try (IEnumerator<Integer> e = emptySource2.enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+    }
+
+    @Test
+    public void testIList_SkipLast() {
+        IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).skipLast(1);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2), source.toList());
+        assertEquals(7, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(-2, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5))).skipLast(5);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> emptySource2 = Linq.of(new LinkedList<>(Collections.<Integer>emptyList())).skipLast(1);
+        assertSame(ArrayUtils.empty(), emptySource2.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource2.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource2.toList());
+        assertEquals(0, emptySource2.count());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.last());
+        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        try (IEnumerator<Integer> e = emptySource2.enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+    }
+
+    @Test
+    public void testIEnumerable_SkipLast() {
+        IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).where(x -> true).skipLast(1);
+        assertEquals(source.runOnce(), source.runOnce());
+        assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), source.toArray());
+        assertEquals(Linq.of(110, 98, 18, -200, 48, 50, -2), Linq.of(source.toArray(Integer.class)));
+        assertEquals(Arrays.asList(110, 98, 18, -200, 48, 50, -2), source.toList());
+        assertEquals(7, source.count());
+        assertEquals(Linq.of(98, 18, -200, 48, 50, -2), source.skip(1));
+        assertEquals(Linq.of(110), source.take(1));
+        assertEquals(110, source.elementAt(0));
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(110, source.first());
+        assertEquals(-2, source.last());
+
+        IEnumerable<Integer> emptySource = Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5))).where(x -> true).skipLast(5);
+        assertSame(ArrayUtils.empty(), emptySource.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource.toList());
+        assertThrows(InvalidOperationException.class, () -> emptySource.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource.last());
+
+        IEnumerable<Integer> emptySource2 = Linq.of(new LinkedList<>(Collections.<Integer>emptyList())).where(x -> true).skipLast(1);
+        assertSame(ArrayUtils.empty(), emptySource2.toArray().getArray());
+        assertEquals(Linq.empty(), Linq.of(emptySource2.toArray(Integer.class)));
+        assertEquals(Collections.emptyList(), emptySource2.toList());
+        assertEquals(0, emptySource2.count());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.first());
+        assertThrows(InvalidOperationException.class, () -> emptySource2.last());
+        try (IEnumerator<Integer> e = emptySource2.enumerator()) {
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
         }
