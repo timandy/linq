@@ -43,6 +43,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Optimize `TakeLastIterator` dispose action.
 - Optimize `toMap` and `toSet` methods.
 - Optimize `indexOf` and `lastIndexOf` in EqualityComparer.
+- Optimize `skipLast` performance.
 - Optimize performance by use enumerator instead of iterator.
 - Implements `IIListProvider` for `DistinctByIterator`, `CrossJoinIterator`, `UnionByIterator`.
 
