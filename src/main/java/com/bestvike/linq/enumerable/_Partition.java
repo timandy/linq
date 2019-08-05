@@ -201,7 +201,6 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         assert source != null;
         assert minIndexInclusive >= 0;
         assert minIndexInclusive <= maxIndexInclusive;
-
         this.source = source;
         this.minIndexInclusive = minIndexInclusive;
         this.maxIndexInclusive = maxIndexInclusive;
