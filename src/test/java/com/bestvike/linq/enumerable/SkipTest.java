@@ -5,6 +5,7 @@ import com.bestvike.collections.generic.IList;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ReflectionUtils;
@@ -479,6 +480,11 @@ public class SkipTest extends TestCase {
     @Test
     public void testSkip() {
         assertEquals(2, Linq.of(depts).skip(1).count());
-        assertEquals(0, Linq.of(depts).skip(5).count());
+        assertEquals(0, Linq.of(depts).skip(3).count());
+
+        try (IEnumerator<Department> e = Linq.of(depts).skip(3).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 }

@@ -530,5 +530,10 @@ public class TakeTest extends TestCase {
 
         List<Department> enumerableDeptsResult5 = Linq.of(depts).take(5).toList();
         assertEquals(3, enumerableDeptsResult5.size());
+
+        try (IEnumerator<Department> e = Linq.of(depts).take(1).enumerator()) {
+            assertTrue(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 }
