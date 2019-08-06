@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -189,6 +190,8 @@ public class ContainsTest extends TestCase {
         assertFalse(Linq.of(emps).contains(employeeOther));
 
         assertTrue(Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).contains('h'));
+
+        assertTrue(Linq.of(new LinkedList<>(Arrays.asList('h', 'e', 'l', 'l', 'o'))).contains('h'));
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
         assertTrue(Linq.of(arrChar).contains('h'));

@@ -13,6 +13,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -368,6 +369,10 @@ public class ToArrayTest extends TestCase {
         Array<Character> lst = Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).toArray();
         assertEquals(5, lst._getCount());
         assertEquals("o", lst.get(4).toString());
+
+        Array<Character> linkedLst = Linq.of(new LinkedList<>(Arrays.asList('h', 'e', 'l', 'l', 'o'))).toArray();
+        assertEquals(5, linkedLst._getCount());
+        assertEquals("o", linkedLst.get(4).toString());
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
         Array<Character> arr = Linq.of(arrChar).toArray();

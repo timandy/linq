@@ -10,6 +10,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -258,6 +259,14 @@ public class AppendPrependTest extends TestCase {
         assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toArray()));
         assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toArray(Employee.class)));
         assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toList()));
+
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).append(badEmps[0]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).append(badEmps[0]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).append(badEmps[0]).toList()));
+
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).append(badEmps[0]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).append(badEmps[0]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).append(badEmps[0]).toList()));
     }
 
     @Test
@@ -274,6 +283,14 @@ public class AppendPrependTest extends TestCase {
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toArray()));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toArray(Employee.class)));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toList()));
+
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).prepend(badEmps[0]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).prepend(badEmps[0]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).prepend(badEmps[0]).toList()));
+
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).toList()));
     }
 
     @Test
@@ -285,5 +302,13 @@ public class AppendPrependTest extends TestCase {
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toArray()));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toArray(Employee.class)));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toList()));
+
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).prepend(badEmps[0]).append(badEmps[1]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).prepend(badEmps[0]).append(badEmps[1]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(Arrays.asList(emps)).prepend(badEmps[0]).append(badEmps[1]).toList()));
+
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).append(badEmps[1]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).append(badEmps[1]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).append(badEmps[1]).toList()));
     }
 }

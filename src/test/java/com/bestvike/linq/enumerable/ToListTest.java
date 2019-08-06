@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -297,6 +298,10 @@ public class ToListTest extends TestCase {
         List<Character> lst = Linq.of(Arrays.asList('h', 'e', 'l', 'l', 'o')).toList();
         assertEquals(5, lst.size());
         assertEquals("o", lst.get(4).toString());
+
+        List<Character> linkedLst = Linq.of(new LinkedList<>(Arrays.asList('h', 'e', 'l', 'l', 'o'))).toList();
+        assertEquals(5, linkedLst.size());
+        assertEquals("o", linkedLst.get(4).toString());
 
         Character[] arrChar = {'h', 'e', 'l', 'l', 'o'};
         List<Character> arr = Linq.of(arrChar).toList();

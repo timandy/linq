@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -227,6 +228,10 @@ public class LastIndexOfTest extends TestCase {
         assertEquals(2, Linq.of(Arrays.asList("hello", "world", "world", "bye")).lastIndexOf("world"));
         assertEquals(-1, Linq.of(Arrays.asList("hello", "world", "world", "bye")).lastIndexOf("thanks"));
         assertEquals(-1, Linq.of(Arrays.asList("hello", "world", "world", "bye")).lastIndexOf(null));
+        //
+        assertEquals(2, Linq.of(new LinkedList<>(Arrays.asList("hello", "world", "world", "bye"))).lastIndexOf("world"));
+        assertEquals(-1, Linq.of(new LinkedList<>(Arrays.asList("hello", "world", "world", "bye"))).lastIndexOf("thanks"));
+        assertEquals(-1, Linq.of(new LinkedList<>(Arrays.asList("hello", "world", "world", "bye"))).lastIndexOf(null));
         //
         assertEquals(0, Linq.singleton("Tim").lastIndexOf("Tim"));
         assertEquals(-1, Linq.singleton("Tim").lastIndexOf("Jim"));
