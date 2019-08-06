@@ -1,6 +1,7 @@
 package com.bestvike.linq;
 
 import com.bestvike.TestCase;
+import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
@@ -11,14 +12,16 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
-import java.util.Set;
 import java.util.Spliterator;
 import java.util.Vector;
 import java.util.stream.Stream;
@@ -33,6 +36,11 @@ public class LinqTest extends TestCase {
         IEnumerable<Integer> integers = Linq.empty();
         assertEquals(0, integers.count());
         assertTrue(Linq.of(array).sequenceEqual(integers));
+
+        try (IEnumerator<Integer> e = Linq.<Integer>empty().enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -41,12 +49,30 @@ public class LinqTest extends TestCase {
         assertEquals(1, Linq.of(array).count());
         assertEquals(1, Linq.singleton("1").count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.singleton("1")));
+
+        try (IEnumerator<Integer> e = Linq.singleton(1).enumerator()) {
+            assertTrue(e.moveNext());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
     public void testOfNullable() {
         assertSame(Linq.empty(), Linq.ofNullable(null));
         assertEquals(Linq.of("hello"), Linq.ofNullable("hello"));
+
+        Integer item = null;
+        try (IEnumerator<Integer> e = Linq.ofNullable(item).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        try (IEnumerator<Integer> e = Linq.ofNullable(1).enumerator()) {
+            assertTrue(e.moveNext());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -59,6 +85,11 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        try (IEnumerator<Boolean> e = Linq.of(new boolean[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((boolean[]) null));
     }
@@ -74,6 +105,11 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
 
+        try (IEnumerator<Byte> e = Linq.of(new byte[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
         assertThrows(ArgumentNullException.class, () -> Linq.of((byte[]) null));
     }
 
@@ -87,6 +123,11 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        try (IEnumerator<Short> e = Linq.of(new short[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((short[]) null));
     }
@@ -102,6 +143,11 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
 
+        try (IEnumerator<Integer> e = Linq.of(new int[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
         assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null));
     }
 
@@ -115,6 +161,11 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(array).count());
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+
+        try (IEnumerator<Long> e = Linq.of(new long[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((long[]) null));
     }
@@ -131,6 +182,11 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
 
+        try (IEnumerator<Float> e = Linq.of(new float[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
         assertThrows(ArgumentNullException.class, () -> Linq.of((float[]) null));
     }
 
@@ -146,6 +202,11 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
 
+        try (IEnumerator<Double> e = Linq.of(new double[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
         assertThrows(ArgumentNullException.class, () -> Linq.of((double[]) null));
     }
 
@@ -160,53 +221,132 @@ public class LinqTest extends TestCase {
         assertEquals(3, Linq.of(list).count());
         assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
 
+        try (IEnumerator<Character> e = Linq.of(new char[0]).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
         assertThrows(ArgumentNullException.class, () -> Linq.of((char[]) null));
     }
 
     @Test
-    public void testArrayAndList() {
-        String[] array = {"1", "2", "3"};
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        list.add("3");
+    public void testArray() {
+        Integer[] array = {1, 2, 3};
         assertEquals(3, Linq.of(array).count());
-        assertEquals(3, Linq.of(list).count());
-        assertTrue(Linq.of(array).sequenceEqual(Linq.of(list)));
+        assertEquals(Linq.of(1, 2, 3), Linq.of(array));
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((List<?>) null));
+        try (IEnumerator<Integer> e = Linq.<Integer>of().enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Integer[]) null));
     }
 
     @Test
-    public void testCollectionAndIterable() {
-        Set<Long> set = new HashSet<>();
-        set.add(1L);
-        set.add(2L);
-        set.add(3L);
-        Iterable<Long> iterableDemo = new CountIterable(3);
-        assertEquals(3, Linq.of(set).count());
-        assertEquals(3, Linq.of(iterableDemo).count());
-        assertTrue(Linq.of(set).sequenceEqual(Linq.of(iterableDemo)));
+    public void testArrayInLinq() {
+        Array<Integer> array = new Array<>(new Object[]{1, 2, 3});
+        assertEquals(3, Linq.of(array).count());
+        assertEquals(Linq.of(1, 2, 3), Linq.of(array));
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Collection<?>) null));
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Iterable<?>) null));
+        try (IEnumerator<Integer> e = Linq.of(new Array<Integer>(new Object[0])).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Array<Integer>) null));
     }
 
     @Test
     public void testEnumerable() {
-        IEnumerable<Integer> enumerable = Linq.repeat(1, 5);
+        IEnumerable<Integer> enumerable = new TestEnumerable<>(new Integer[]{1, 2, 3});
         IEnumerable<Integer> source = Linq.of(enumerable);
         assertSame(enumerable, source);
 
+        try (IEnumerator<Integer> e = Linq.of(new TestEnumerable<>(new Integer[0])).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
         assertThrows(ArgumentNullException.class, () -> Linq.of((IEnumerable<?>) null));
+    }
+
+    @Test
+    public void testArrayList() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals(3, Linq.of(list).count());
+        assertEquals(Linq.of(1, 2, 3), Linq.of(list));
+
+        try (IEnumerator<Integer> e = Linq.of(new ArrayList<Integer>()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((ArrayList<?>) null));
+    }
+
+    @Test
+    public void testLinkedList() {
+        List<Integer> list = new LinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertEquals(3, Linq.of(list).count());
+        assertEquals(Linq.of(1, 2, 3), Linq.of(list));
+
+        try (IEnumerator<Integer> e = Linq.of(new LinkedList<Integer>()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((LinkedList<?>) null));
+    }
+
+    @Test
+    public void testCollection() {
+        Collection<Integer> collection = new HashSet<>();
+        collection.add(1);
+        collection.add(2);
+        collection.add(3);
+        assertEquals(3, Linq.of(collection).count());
+        assertEquals(Linq.of(1, 2, 3), Linq.of(collection));
+
+        try (IEnumerator<Long> e = Linq.of(new HashSet<Long>()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Collection<?>) null));
+    }
+
+    @Test
+    public void testIterable() {
+        Iterable<Integer> list = new ArrayIterable<>(1, 2, 3);
+        assertEquals(3, Linq.of(list).count());
+        assertEquals(Linq.of(1, 2, 3), Linq.of(list));
+
+        try (IEnumerator<Integer> e = Linq.of(new ArrayIterable<Integer>()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Iterable<?>) null));
     }
 
     @Test
     public void testIterator() {
         Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
         IEnumerable<Integer> source = Linq.of(iterator);
-        assertEquals(Linq.range(1, 3), source);
+        assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        try (IEnumerator<Integer> e = Linq.of(Collections.<Integer>emptyIterator()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((Iterator<?>) null));
     }
@@ -215,22 +355,37 @@ public class LinqTest extends TestCase {
     public void testEnumeration() {
         Enumeration<Integer> elements = new Vector<>(Arrays.asList(1, 2, 3)).elements();
         IEnumerable<Integer> source = Linq.of(elements);
-        assertEquals(Linq.range(1, 3), source);
+        assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        try (IEnumerator<Integer> e = Linq.of(new Vector<Integer>().elements()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        try (IEnumerator<Integer> e = (IEnumerator<Integer>) Linq.of(new Vector<Integer>().elements()).toEnumeration()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((Enumeration<?>) null));
 
         //append,prepend,concat
-        IEnumerable<Integer> source2 = Linq.of(new Vector<>(Arrays.asList(1, 2, 3)).elements()).prepend(0).append(4).append(5).concat(Linq.range(6, 5));
-        assertEquals(Linq.range(0, 11), source2);
+        IEnumerable<Integer> source2 = Linq.of(new Vector<>(Arrays.asList(1, 2, 3)).elements()).prepend(0).append(4).append(5).concat(Linq.range(6, 4));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), source2);
         assertThrows(NotSupportedException.class, () -> source2.toArray());
     }
 
     @Test
     public void testStream() {
         IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3));
-        assertEquals(Linq.range(1, 3), source);
+        assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        try (IEnumerator<Integer> e = Linq.of(Stream.<Integer>empty()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((Stream<?>) null));
     }
@@ -238,8 +393,13 @@ public class LinqTest extends TestCase {
     @Test
     public void testSpliterator() {
         IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3).spliterator());
-        assertEquals(Linq.range(1, 3), source);
+        assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(NotSupportedException.class, () -> source.enumerator());
+
+        try (IEnumerator<Integer> e = Linq.of(Stream.<Integer>empty().spliterator()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((Spliterator<?>) null));
     }
@@ -262,6 +422,11 @@ public class LinqTest extends TestCase {
 
         assertEquals(3, Linq.of(enu1).count());
         assertEquals(3, Linq.of(enu2).count());
+
+        try (IEnumerator<Map.Entry<Integer, String>> e = Linq.of(new HashMap<Integer, String>()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((Map<?, ?>) null));
     }
@@ -320,7 +485,7 @@ public class LinqTest extends TestCase {
         assertEquals(Linq.of(1L, 2L, 3L), Linq.as(new CountIterator(3)));
 
         //Enumeration
-        assertEquals(Linq.range(1, 3), Linq.as(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
+        assertEquals(Linq.of(1, 2, 3), Linq.as(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
 
         //Stream
         IEnumerable<Object> streamEnumerable = Linq.as(Stream.of(1, 2, 3));
@@ -350,6 +515,11 @@ public class LinqTest extends TestCase {
         assertEquals('2', c);
         assertEquals(3, source.count());
         assertTrue(Linq.of('1', '2', '3').sequenceEqual(source));
+
+        try (IEnumerator<Character> e = Linq.chars(Empty).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -370,6 +540,11 @@ public class LinqTest extends TestCase {
         assertEquals(Linq.of("hello", "world"), Linq.words(" hello world! "));
         assertEquals(Linq.of("hello", "world"), Linq.words(" hello,world! "));
         assertEquals(Linq.of("p2", "is", "the", "second", "parameter"), Linq.words(" p2 is the second parameter. "));
+
+        try (IEnumerator<String> e = Linq.words(Empty).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -384,6 +559,11 @@ public class LinqTest extends TestCase {
         assertEquals(Linq.of("hello", "world"), Linq.lines("hello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world"), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world", "  "), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n  "));
+
+        try (IEnumerator<String> e = Linq.lines(Empty).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -414,6 +594,11 @@ public class LinqTest extends TestCase {
         assertThrows(ArgumentOutOfRangeException.class, () -> source2.elementAt(0));
         assertEquals(0, source2.count());
 
+        try (IEnumerator<Integer> e = Linq.enumerate(0, x -> x < 0, x -> x + 1).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
         assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, x -> x > 0, null));
         assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, null, x -> x));
     }
@@ -435,6 +620,11 @@ public class LinqTest extends TestCase {
         IEnumerable<Integer> integers = Linq.range(1, 5);
         assertEquals(5, integers.count());
         assertTrue(Linq.of(array).sequenceEqual(integers));
+
+        try (IEnumerator<Integer> e = Linq.range(1, 0).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -443,5 +633,20 @@ public class LinqTest extends TestCase {
         IEnumerable<Integer> integers = Linq.repeat(1, 5);
         assertEquals(5, integers.count());
         assertTrue(Linq.of(array).sequenceEqual(integers));
+
+        try (IEnumerator<Integer> e = Linq.repeat(1, 0).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+    }
+
+    @Test
+    public void testOther() {
+        try (IEnumerator<Object> e = Linq.empty().enumerator()) {
+            assertThrows(NoSuchElementException.class, e::next);
+            assertThrows(NotSupportedException.class, e::reset);
+            assertThrows(NotSupportedException.class, e::remove);
+            assertThrows(ArgumentNullException.class, () -> e.forEachRemaining(null));
+        }
     }
 }
