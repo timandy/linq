@@ -17,8 +17,8 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-07-09.
  */
-public class LinkedListEnumerable<TSource> implements IList<TSource> {
-    protected final List<TSource> source;
+public final class LinkedListEnumerable<TSource> implements IList<TSource> {
+    private final List<TSource> source;
 
     public LinkedListEnumerable(List<TSource> source) {
         this.source = source;
