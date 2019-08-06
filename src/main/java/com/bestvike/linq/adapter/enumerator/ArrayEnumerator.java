@@ -7,32 +7,31 @@ import com.bestvike.linq.enumerable.AbstractEnumerator;
  */
 public final class ArrayEnumerator<TSource> extends AbstractEnumerator<TSource> {
     private final Object[] source;
+    private final int startIndex;
     private final int endIndex;
-    private int index;
 
     public ArrayEnumerator(Object[] source) {
         this(source, 0, source.length);
     }
 
-    public ArrayEnumerator(Object[] source, int index, int count) {
+    public ArrayEnumerator(Object[] source, int startIndex, int count) {
         this.source = source;
-        this.index = index;
-        this.endIndex = Math.addExact(index, count);
+        this.startIndex = startIndex;
+        this.endIndex = startIndex + count;
     }
 
     @Override
     public boolean moveNext() {
-        switch (this.state) {
-            case 0:
-                if (this.index < this.endIndex) {
-                    //noinspection unchecked
-                    this.current = (TSource) this.source[this.index++];
-                    return true;
-                }
-                this.close();
-                return false;
-            default:
-                return false;
+        if (this.state == -1)
+            return false;
+        int index = this.state == 0 ? this.startIndex : this.state;
+        if (index < this.endIndex) {
+            //noinspection unchecked
+            this.current = (TSource) this.source[index];
+            this.state = index + 1;
+            return true;
         }
+        this.close();
+        return false;
     }
 }
