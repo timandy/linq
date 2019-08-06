@@ -559,6 +559,7 @@ public class LinqTest extends TestCase {
         assertEquals(Linq.of("hello", "world"), Linq.lines("hello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world"), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n"));
         assertEquals(Linq.of("hello", "world", "  "), Linq.lines("\r\n\n\nhello\r\n\n\nworld\r\n\n\n  "));
+        assertEquals(Linq.of("hello", "world", "  "), Linq.lines("\n\r\r\rhello\n\r\r\rworld\n\r\r\r  "));
 
         try (IEnumerator<String> e = Linq.lines(Empty).enumerator()) {
             assertFalse(e.moveNext());
