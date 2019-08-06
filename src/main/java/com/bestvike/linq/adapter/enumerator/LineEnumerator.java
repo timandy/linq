@@ -15,7 +15,7 @@ public final class LineEnumerator extends AbstractEnumerator<String> {
 
     @Override
     public boolean moveNext() {
-        if (this.state < 0)
+        if (this.state == -1)
             return false;
 
         int length = this.source.length();
