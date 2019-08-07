@@ -2,6 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.ICollection;
+import com.bestvike.function.Action2;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -326,5 +327,51 @@ public final class ToCollection {
                 set.add(e.current());
         }
         return set;
+    }
+
+    public static <TSource, TCollection> TCollection toCollection(IEnumerable<TSource> source, TCollection collection, Action2<TCollection, TSource> action) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (collection == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.collection);
+        if (action == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+
+        if (source instanceof IArrayList) {
+            IArrayList<TSource> list = (IArrayList<TSource>) source;
+            for (int i = 0, count = list._getCount(); i < count; i++)
+                action.apply(collection, list.get(i));
+            return collection;
+        }
+
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                action.apply(collection, e.current());
+        }
+        return collection;
+    }
+
+    public static <TSource, TCollection, TResult> TResult toCollection(IEnumerable<TSource> source, TCollection collection, Action2<TCollection, TSource> action, Func1<TCollection, TResult> resultSelector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (collection == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.collection);
+        if (action == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.action);
+        if (resultSelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultSelector);
+
+        if (source instanceof IArrayList) {
+            IArrayList<TSource> list = (IArrayList<TSource>) source;
+            for (int i = 0, count = list._getCount(); i < count; i++)
+                action.apply(collection, list.get(i));
+            return resultSelector.apply(collection);
+        }
+
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext())
+                action.apply(collection, e.current());
+        }
+        return resultSelector.apply(collection);
     }
 }

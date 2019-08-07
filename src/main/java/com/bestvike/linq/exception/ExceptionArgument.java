@@ -26,6 +26,7 @@ public enum ExceptionArgument {
     array,
     clazz,
     collator,
+    collection,
     comparison,
     condition,
     elements,

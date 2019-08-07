@@ -2,6 +2,7 @@ package com.bestvike.linq;
 
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.function.Action2;
 import com.bestvike.function.DecimalFunc1;
 import com.bestvike.function.DoubleFunc1;
 import com.bestvike.function.FloatFunc1;
@@ -985,6 +986,14 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default TSource[] toArray(Class<TSource> clazz) {
         return ToCollection.toArray(this, clazz);
+    }
+
+    default <TCollection> TCollection toCollection(TCollection collection, Action2<? super TCollection, ? super TSource> action) {
+        return ToCollection.toCollection(this, collection, (Action2<TCollection, TSource>) action);
+    }
+
+    default <TCollection, TResult> TResult toCollection(TCollection collection, Action2<? super TCollection, ? super TSource> action, Func1<? super TCollection, ? extends TResult> resultSelector) {
+        return ToCollection.toCollection(this, collection, (Action2<TCollection, TSource>) action, (Func1<TCollection, TResult>) resultSelector);
     }
 
     default Enumeration<TSource> toEnumeration() {
