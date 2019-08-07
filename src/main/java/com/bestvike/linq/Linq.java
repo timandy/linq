@@ -133,6 +133,10 @@ public final class Linq {
         return Enumerate.enumerate(seed, (Predicate1<TSource>) condition, (Func1<TSource, TSource>) next);
     }
 
+    public static <TSource> IEnumerable<TSource> generate(TSource item) {
+        return Generate.generate(item);
+    }
+
     public static <TSource> IEnumerable<TSource> generate(Func0<? extends TSource> func) {
         return Generate.generate((Func0<TSource>) func);
     }

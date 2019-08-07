@@ -606,6 +606,21 @@ public class LinqTest extends TestCase {
 
     @Test
     public void testGenerate() {
+        IEnumerable<Integer> source = Linq.generate(99);
+        assertEquals(99, source.first());
+        assertEquals(99, source.runOnce().first());
+        assertEquals(99, source.elementAt(5));
+        assertThrows(ArithmeticException.class, () -> source.count());
+
+        Integer item = null;
+        IEnumerable<Integer> source2 = Linq.generate(item);
+        assertNull(source2.first());
+        assertNull(source2.runOnce().first());
+        assertNull(source2.elementAt(5));
+    }
+
+    @Test
+    public void testGenerate2() {
         IEnumerable<Integer> source = Linq.generate(() -> 99);
         assertEquals(99, source.first());
         assertEquals(99, source.runOnce().first());
