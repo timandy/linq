@@ -15,10 +15,10 @@ It is highly recommended to upgrade to this version if you have used a previous 
 ### Features
 - Add `zip` Tuple api.
 - Add support compatible stream for `IEnumerable`.
-- Add api `toLinkedList`, `toLinkedMap`, `toLinkedSet` for `IEnumerable`.
+- Add api `toLinkedList`, `toLinkedMap`, `toLinkedSet`, `toCollection` for `IEnumerable`.
 - Add api `indexOf`, `lastIndexOf` for `IEnumerable`.
 - Add api `findIndex`, `findLastIndex` for `IEnumerable`.
-- Add api `format` for `IEnumerable` to print values.
+- Add api `format`, `joining` for `IEnumerable` to print values.
 - Add api `ofNullable`, `chars`, `words`, `lines`, `enumerate`, `generate` for `Linq`.
 - Add `_indexOf` and `_lastIndexOf` method for `IList`.
 - Add `_findIndex()` and `_findLastIndex()` method for `IList`.
