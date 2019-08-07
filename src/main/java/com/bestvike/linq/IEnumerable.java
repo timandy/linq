@@ -41,6 +41,7 @@ import com.bestvike.linq.enumerable.IndexOf;
 import com.bestvike.linq.enumerable.Intersect;
 import com.bestvike.linq.enumerable.IntersectBy;
 import com.bestvike.linq.enumerable.Join;
+import com.bestvike.linq.enumerable.Joining;
 import com.bestvike.linq.enumerable.Last;
 import com.bestvike.linq.enumerable.Max;
 import com.bestvike.linq.enumerable.MaxBy;
@@ -425,6 +426,18 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default <TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector, IEqualityComparer<? super TKey> comparer) {
         return Join.join(this, (IEnumerable<TInner>) inner, (Func1<TSource, TKey>) outerKeySelector, (Func1<TInner, TKey>) innerKeySelector, (Func2<TSource, TInner, TResult>) resultSelector, (IEqualityComparer<TKey>) comparer);
+    }
+
+    default String joining() {
+        return Joining.joining(this);
+    }
+
+    default String joining(CharSequence separator) {
+        return Joining.joining(this, separator);
+    }
+
+    default String joining(CharSequence separator, CharSequence prefix, CharSequence suffix) {
+        return Joining.joining(this, separator, prefix, suffix);
     }
 
     default TSource last() {
