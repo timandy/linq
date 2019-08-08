@@ -21,7 +21,7 @@ public final class StreamEnumerable<TSource> implements IEnumerable<TSource> {
     @Override
     public IEnumerator<TSource> enumerator() {
         if (this.called)
-            ThrowHelper.throwNotSupportedException();
+            ThrowHelper.throwRepeatInvokeException();
         this.called = true;
         return new StreamEnumerator<>(this.source);
     }

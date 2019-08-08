@@ -46,7 +46,7 @@ final class RunOnceEnumerable<TSource> implements IEnumerable<TSource> {
     @Override
     public IEnumerator<TSource> enumerator() {
         if (this.called)
-            ThrowHelper.throwNotSupportedException();
+            ThrowHelper.throwRepeatInvokeException();
         this.called = true;
         return this.source.enumerator();
     }
@@ -63,15 +63,15 @@ class RunOnceLinkedList<TSource> implements IList<TSource> {
 
     private void assertAll() {
         if (!this.called.isEmpty())
-            ThrowHelper.throwNotSupportedException();
+            ThrowHelper.throwRepeatInvokeException();
         this.called.add(-1);
     }
 
     private void assertIndex(int index) {
         if (this.called.contains(-1))
-            ThrowHelper.throwNotSupportedException();
+            ThrowHelper.throwRepeatInvokeException();
         if (!this.called.add(index))
-            ThrowHelper.throwNotSupportedException();
+            ThrowHelper.throwRepeatInvokeException();
     }
 
     @Override

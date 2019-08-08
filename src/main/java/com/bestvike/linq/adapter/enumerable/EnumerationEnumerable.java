@@ -21,7 +21,7 @@ public final class EnumerationEnumerable<TSource> implements IEnumerable<TSource
     @Override
     public IEnumerator<TSource> enumerator() {
         if (this.called)
-            ThrowHelper.throwNotSupportedException();
+            ThrowHelper.throwRepeatInvokeException();
         this.called = true;
         return new EnumerationEnumerator<>(this.source);
     }
