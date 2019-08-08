@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
-import com.bestvike.linq.adapter.enumeration.EnumeratorEnumeration;
+import com.bestvike.linq.adapter.enumeration.EnumerableEnumeration;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
@@ -18,6 +18,6 @@ public final class ToEnumeration {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        return new EnumeratorEnumeration<>(source.enumerator());
+        return new EnumerableEnumeration<>(source);
     }
 }
