@@ -176,9 +176,10 @@ public class ExceptionTest extends TestCase {
         }
 
         try {
-            throw new InvalidOperationException("invalid operation", new RuntimeException());
+            throw new InvalidOperationException("invalid operation", new NullPointerException());
         } catch (InvalidOperationException e) {
             assertEquals("invalid operation", e.getMessage());
+            assertIsType(NullPointerException.class, e.getCause());
         }
 
         try {
@@ -223,12 +224,41 @@ public class ExceptionTest extends TestCase {
             throw new NotSupportedException("not supported", new NullPointerException());
         } catch (NotSupportedException e) {
             assertEquals("not supported", e.getMessage());
+            assertIsType(NullPointerException.class, e.getCause());
         }
 
         try {
             ThrowHelper.throwNotSupportedException();
         } catch (NotSupportedException e) {
             assertEquals(SR.Arg_NotSupportedException, e.getMessage());
+        }
+    }
+
+    @Test
+    public void testRepeatInvokeException() {
+        try {
+            throw new RepeatInvokeException();
+        } catch (RepeatInvokeException e) {
+            assertEquals(SR.Arg_RepeatInvokeException, e.getMessage());
+        }
+
+        try {
+            throw new RepeatInvokeException("repeat invoked");
+        } catch (RepeatInvokeException e) {
+            assertEquals("repeat invoked", e.getMessage());
+        }
+
+        try {
+            throw new RepeatInvokeException("repeat invoked", new NullPointerException());
+        } catch (RepeatInvokeException e) {
+            assertEquals("repeat invoked", e.getMessage());
+            assertIsType(NullPointerException.class, e.getCause());
+        }
+
+        try {
+            ThrowHelper.throwRepeatInvokeException();
+        } catch (RepeatInvokeException e) {
+            assertEquals(SR.Arg_RepeatInvokeException, e.getMessage());
         }
     }
 

@@ -39,6 +39,10 @@ public final class ThrowHelper {
         throw new NotSupportedException();
     }
 
+    public static void throwRepeatInvokeException() {
+        throw new RepeatInvokeException();
+    }
+
     public static void throwNoSuchElementException() {
         throw new NoSuchElementException(SR.NoSuchElement);
     }
