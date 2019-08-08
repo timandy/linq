@@ -309,6 +309,15 @@ public class FormatterTest extends TestCase {
         assertEquals("com.bestvike.linq.util.FormatterTest$NoFieldBean( )", this.formatter.format(this.noFieldBean));
     }
 
+    @Test
+    public void ShouldNotUseHashCodeSortMap() {
+        String[] source = new String[]{"Aa", "BB"};
+        assertEquals(Linq.of("Aa", "BB"), Linq.of(source).orderBy(String::hashCode));
+
+        String[] source2 = new String[]{"BB", "Aa"};
+        assertEquals(Linq.of("BB", "Aa"), Linq.of(source2).orderBy(String::hashCode));
+    }
+
 
     private static class NoFieldBean {
     }
