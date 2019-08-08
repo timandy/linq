@@ -20,7 +20,6 @@ import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.enumerable.AbstractEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.InvalidOperationException;
-import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.AssertEqualityComparer;
@@ -782,7 +781,7 @@ public class TestCase {
 
         @Override
         public void reset() {
-            throw new NotSupportedException();
+            ThrowHelper.throwNotSupportedException();
         }
 
         @Override
@@ -930,17 +929,15 @@ public class TestCase {
         public DelegateIterator(Func0<IEnumerator<TSource>> enumerator, Predicate0 moveNext, Func0<TSource> current, Action0 reset, Action0 dispose) {
             this.enumerator = enumerator == null ? () -> this : enumerator;
             this.moveNext = moveNext == null ? () -> {
-                throw new NotSupportedException();
+                ThrowHelper.throwNotSupportedException();
+                return false;
             } : moveNext;
-            this.current = moveNext == null ? () -> {
-                throw new NotSupportedException();
+            this.current = current == null ? () -> {
+                ThrowHelper.throwNotSupportedException();
+                return null;
             } : current;
-            this.reset = moveNext == null ? () -> {
-                throw new NotSupportedException();
-            } : reset;
-            this.dispose = moveNext == null ? () -> {
-                throw new NotSupportedException();
-            } : dispose;
+            this.reset = reset == null ? ThrowHelper::throwNotSupportedException : reset;
+            this.dispose = dispose == null ? ThrowHelper::throwNotSupportedException : dispose;
         }
 
         @Override
