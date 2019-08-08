@@ -5,6 +5,7 @@ import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.adapter.enumeration.EnumerableEnumeration;
 import com.bestvike.linq.exception.RepeatInvokeException;
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.Vector;
 
@@ -318,5 +320,26 @@ public class ToEnumerationTest extends TestCase {
         Enumeration<Character> empty = Linq.<Character>empty().toEnumeration();
         assertEquals(0, Linq.of(empty).count());
         assertEquals(0, Linq.of(empty).count());
+    }
+
+    @Test
+    public void testRepeatInvoke() {
+        Enumeration<Integer> source = Linq.of(Collections.singletonList(1)).toEnumeration();
+        assertTrue(source.hasMoreElements());
+        assertEquals(1, source.nextElement());
+        assertFalse(source.hasMoreElements());
+        assertThrows(NoSuchElementException.class, () -> source.nextElement());
+        //noinspection RedundantCast
+        assertSame(source, ((EnumerableEnumeration<Integer>) source).asIterator());
+
+        IEnumerable<Integer> source2 = Linq.of(new Vector<>(Collections.singletonList(1)).elements());
+        assertNotNull(source2.toEnumeration());
+        assertNotNull(source2.toEnumeration());
+
+        IEnumerable<Integer> source3 = Linq.of(new Vector<>(Collections.singletonList(1)).elements());
+        Enumeration<Integer> enumerationFirst = source3.toEnumeration();
+        Enumeration<Integer> enumerationSecond = source3.toEnumeration();
+        assertTrue(enumerationFirst.hasMoreElements());
+        assertThrows(RepeatInvokeException.class, () -> enumerationSecond.hasMoreElements());
     }
 }
