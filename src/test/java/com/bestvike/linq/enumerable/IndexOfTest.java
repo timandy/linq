@@ -8,7 +8,7 @@ import com.bestvike.collections.generic.StringComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.linq.exception.RepeatInvokeException;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -243,7 +243,7 @@ public class IndexOfTest extends TestCase {
         //
         IEnumerable<String> enumerable = Linq.of(Arrays.asList("hello", "world", "bye")).runOnce();
         assertEquals(1, enumerable.indexOf("world"));
-        assertThrows(NotSupportedException.class, () -> enumerable.indexOf("world"));
+        assertThrows(RepeatInvokeException.class, () -> enumerable.indexOf("world"));
         assertEquals(-1, Linq.of(Arrays.asList("hello", "world", "bye")).runOnce().indexOf("thanks"));
         assertEquals(-1, Linq.of(Arrays.asList("hello", "world", "bye")).runOnce().indexOf(null));
         //

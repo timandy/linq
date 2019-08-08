@@ -5,7 +5,7 @@ import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.linq.exception.RepeatInvokeException;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -60,7 +60,7 @@ public class ToEnumerationTest extends TestCase {
         this.RunToEnumerationOnAllCollectionTypes(sourceStringArray, resultStringList -> {
             IEnumerable<String> enumerationEnumerable = Linq.of(resultStringList);
             assertEquals(Linq.of(sourceStringArray), enumerationEnumerable);
-            assertThrows(NotSupportedException.class, () -> enumerationEnumerable.enumerator());
+            assertThrows(RepeatInvokeException.class, () -> enumerationEnumerable.enumerator());
         });
     }
 

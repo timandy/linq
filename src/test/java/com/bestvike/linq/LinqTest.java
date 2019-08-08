@@ -6,6 +6,7 @@ import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.linq.exception.RepeatInvokeException;
 import com.bestvike.linq.util.ArrayUtils;
 import org.junit.Test;
 
@@ -341,7 +342,7 @@ public class LinqTest extends TestCase {
         Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
         IEnumerable<Integer> source = Linq.of(iterator);
         assertEquals(Linq.of(1, 2, 3), source);
-        assertThrows(NotSupportedException.class, () -> source.enumerator());
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
 
         try (IEnumerator<Integer> e = Linq.of(Collections.<Integer>emptyIterator()).enumerator()) {
             assertFalse(e.moveNext());
@@ -356,7 +357,7 @@ public class LinqTest extends TestCase {
         Enumeration<Integer> elements = new Vector<>(Arrays.asList(1, 2, 3)).elements();
         IEnumerable<Integer> source = Linq.of(elements);
         assertEquals(Linq.of(1, 2, 3), source);
-        assertThrows(NotSupportedException.class, () -> source.enumerator());
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
 
         try (IEnumerator<Integer> e = Linq.of(new Vector<Integer>().elements()).enumerator()) {
             assertFalse(e.moveNext());
@@ -373,14 +374,14 @@ public class LinqTest extends TestCase {
         //append,prepend,concat
         IEnumerable<Integer> source2 = Linq.of(new Vector<>(Arrays.asList(1, 2, 3)).elements()).prepend(0).append(4).append(5).concat(Linq.range(6, 4));
         assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), source2);
-        assertThrows(NotSupportedException.class, () -> source2.toArray());
+        assertThrows(RepeatInvokeException.class, () -> source2.toArray());
     }
 
     @Test
     public void testStream() {
         IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3));
         assertEquals(Linq.of(1, 2, 3), source);
-        assertThrows(NotSupportedException.class, () -> source.enumerator());
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
 
         try (IEnumerator<Integer> e = Linq.of(Stream.<Integer>empty()).enumerator()) {
             assertFalse(e.moveNext());
@@ -394,7 +395,7 @@ public class LinqTest extends TestCase {
     public void testSpliterator() {
         IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3).spliterator());
         assertEquals(Linq.of(1, 2, 3), source);
-        assertThrows(NotSupportedException.class, () -> source.enumerator());
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
 
         try (IEnumerator<Integer> e = Linq.of(Stream.<Integer>empty().spliterator()).enumerator()) {
             assertFalse(e.moveNext());
@@ -490,12 +491,12 @@ public class LinqTest extends TestCase {
         //Stream
         IEnumerable<Object> streamEnumerable = Linq.as(Stream.of(1, 2, 3));
         assertEquals(Linq.of(1, 2, 3), streamEnumerable);
-        assertThrows(NotSupportedException.class, () -> streamEnumerable.enumerator());
+        assertThrows(RepeatInvokeException.class, () -> streamEnumerable.enumerator());
 
         //Spliterator
         IEnumerable<Object> spliteratorEnumerable = Linq.as(Stream.of(1, 2, 3).spliterator());
         assertEquals(Linq.of(1, 2, 3), spliteratorEnumerable);
-        assertThrows(NotSupportedException.class, () -> spliteratorEnumerable.enumerator());
+        assertThrows(RepeatInvokeException.class, () -> spliteratorEnumerable.enumerator());
 
         //Map
         Map<String, Integer> map = new HashMap<>();

@@ -8,7 +8,7 @@ import com.bestvike.collections.generic.StringComparer;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
-import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.linq.exception.RepeatInvokeException;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -243,7 +243,7 @@ public class LastIndexOfTest extends TestCase {
         //
         IEnumerable<String> enumerable = Linq.of(Arrays.asList("hello", "world", "world", "bye")).runOnce();
         assertEquals(2, enumerable.lastIndexOf("world"));
-        assertThrows(NotSupportedException.class, () -> enumerable.lastIndexOf("world"));
+        assertThrows(RepeatInvokeException.class, () -> enumerable.lastIndexOf("world"));
         assertEquals(-1, Linq.of(Arrays.asList("hello", "world", "world", "bye")).runOnce().lastIndexOf("thanks"));
         assertEquals(-1, Linq.of(Arrays.asList("hello", "world", "world", "bye")).runOnce().lastIndexOf(null));
         //
