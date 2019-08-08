@@ -89,6 +89,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - intersect
 - `intersectBy`
 - join
+- `joining`
 - last
 - `lastIndexOf`
 - lastOrDefault
@@ -119,6 +120,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - takeLast
 - takeWhile
 - toArray
+- `toCollection`
 - `toEnumeration`
 - `toLinkedList`
 - `toLinkedMap`

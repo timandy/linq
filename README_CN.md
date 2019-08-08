@@ -89,6 +89,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 - intersect
 - `intersectBy`
 - join
+- `joining`
 - last
 - `lastIndexOf`
 - lastOrDefault
@@ -119,6 +120,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 - takeLast
 - takeWhile
 - toArray
+- `toCollection`
 - `toEnumeration`
 - `toLinkedList`
 - `toLinkedMap`
