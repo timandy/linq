@@ -1,7 +1,7 @@
 package com.bestvike.linq.adapter.enumerator;
 
 import com.bestvike.linq.enumerable.AbstractEnumerator;
-import com.bestvike.linq.util.Environment;
+import com.bestvike.linq.util.Chars;
 
 /**
  * Created by 许崇雷 on 2019-07-26.
@@ -21,14 +21,14 @@ public final class LineEnumerator extends AbstractEnumerator<String> {
         int length = this.source.length();
         while (this.state < length) {
             char head = this.source.charAt(this.state);
-            if (head == Environment.CR || head == Environment.LF) {
+            if (head == Chars.CR || head == Chars.LF) {
                 this.state++;
                 continue;
             }
             int beginIndex = this.state++;
             while (this.state < length) {
                 char tail = this.source.charAt(this.state);
-                if (tail == Environment.CR || tail == Environment.LF)
+                if (tail == Chars.CR || tail == Chars.LF)
                     break;
                 this.state++;
             }
