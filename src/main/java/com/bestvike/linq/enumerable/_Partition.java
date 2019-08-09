@@ -342,7 +342,7 @@ final class IListPartition<TSource> extends Iterator<TSource> implements IPartit
     //see ListPartition
     IListPartition(IList<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
-        assert !(source instanceof IArrayList);
+        assert !(source instanceof IArrayList) : String.format("The caller needs to check for %s.", IArrayList.class.getSimpleName());
         assert minIndexInclusive >= 0;
         assert minIndexInclusive <= maxIndexInclusive;
         this.source = source;
@@ -582,13 +582,13 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
 
     EnumerablePartition(IEnumerable<TSource> source, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
-        assert !(source instanceof IList);//, $"The caller needs to check for {nameof(IList<TSource>)}.");
+        assert !(source instanceof IList) : String.format("The caller needs to check for %s.", IList.class.getSimpleName());
         assert minIndexInclusive >= 0;
         assert maxIndexInclusive >= -1;
         // Note that although maxIndexInclusive can't grow, it can still be int.MaxValue.
         // We support partitioning enumerables with > 2B elements. For example, e.Skip(1).Take(int.MaxValue) should work.
         // But if it is int.MaxValue, then minIndexInclusive must != 0. Otherwise, our count may overflow.
-        assert maxIndexInclusive == -1 || maxIndexInclusive - minIndexInclusive < Integer.MAX_VALUE;//, $"{nameof(Limit)} will overflow!");
+        assert maxIndexInclusive == -1 || maxIndexInclusive - minIndexInclusive < Integer.MAX_VALUE : String.format("%s will overflow!", "getLimit");
         assert maxIndexInclusive == -1 || minIndexInclusive <= maxIndexInclusive;
 
         this.source = source;
@@ -660,7 +660,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             // At the same time, however, we are guaranteed that our max count can fit
             // in an int because if that is true, then _minIndexInclusive must > 0.
             long count = skipAndCount(this.maxIndexInclusive + 1L, en);
-            assert count != Integer.MAX_VALUE + 1L || this.minIndexInclusive > 0;// "Our return value will be incorrect.");
+            assert count != Integer.MAX_VALUE + 1L || this.minIndexInclusive > 0 : "Our return value will be incorrect.";
             return Math.max((int) count - this.minIndexInclusive, 0);
         }
     }
@@ -726,7 +726,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             return EmptyPartition.instance();
         }
 
-        assert minIndex >= 0;//$ "We should have taken care of all cases when {nameof(minIndex)} overflows.");
+        assert minIndex >= 0 : String.format("We should have taken care of all cases when %s overflows.", "minIndex");
         return new EnumerablePartition<>(this.source, minIndex, this.maxIndexInclusive);
     }
 
@@ -750,7 +750,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
             return this;
         }
 
-        assert maxIndex >= 0;//$ "We should have taken care of all cases when {nameof(maxIndex)} overflows.");
+        assert maxIndex >= 0 : String.format("We should have taken care of all cases when %s overflows.", "maxIndex");
         return new EnumerablePartition<>(this.source, this.minIndexInclusive, maxIndex);
     }
 
@@ -759,7 +759,7 @@ final class EnumerablePartition<TSource> extends Iterator<TSource> implements IP
         // If the index is negative or >= our max count, return early.
         if (index >= 0 && (!this.hasLimit() || index < this.getLimit())) {
             try (IEnumerator<TSource> en = this.source.enumerator()) {
-                assert this.minIndexInclusive + index >= 0;//$ "Adding {nameof(index)} caused {nameof(_minIndexInclusive)} to overflow.");
+                assert this.minIndexInclusive + index >= 0 : String.format("Adding %s caused %s to overflow.", "index", "minIndexInclusive");
 
                 if (skipBefore(this.minIndexInclusive + index, en) && en.moveNext()) {
                     found.value = true;

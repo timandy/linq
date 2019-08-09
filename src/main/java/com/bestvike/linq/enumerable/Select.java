@@ -1250,7 +1250,7 @@ final class SelectIListPartitionIterator<TSource, TResult> extends Iterator<TRes
     //see SelectListPartitionIterator
     SelectIListPartitionIterator(IList<TSource> source, Func1<TSource, TResult> selector, int minIndexInclusive, int maxIndexInclusive) {
         assert source != null;
-        assert !(source instanceof IArrayList);
+        assert !(source instanceof IArrayList) : String.format("The caller needs to check for %s.", IArrayList.class.getSimpleName());
         assert selector != null;
         assert minIndexInclusive >= 0;
         assert minIndexInclusive <= maxIndexInclusive;

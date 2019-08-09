@@ -244,7 +244,7 @@ final class LargeArrayBuilder<T> {//struct
         //   above step, except with current.Length * 2.
         // - Make sure we never pass maxCapacity in all of the above steps.
         assert Integer.compareUnsigned(this.maxCapacity, this.count) > 0;
-        assert this.index == this.current.length; //$"{nameof(AllocateBuffer)} was called, but there's more space."
+        assert this.index == this.current.length : String.format("%s was called, but there's more space.", "allocateBuffer");
         // If count is int.MinValue, we want to go down the other path which will raise an exception.
         if (Integer.compareUnsigned(this.count, ResizeLimit) < 0) {
             // We haven't passed ResizeLimit. Resize first, copying over the previous items.
