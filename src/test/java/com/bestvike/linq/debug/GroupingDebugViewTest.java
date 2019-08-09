@@ -40,5 +40,6 @@ public class GroupingDebugViewTest extends TestCase {
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] values = (Object[]) debuggerTypeProxy;
         assertEquals(grouping.toArray(), Linq.of(values));
+        assertSame(debuggerTypeProxy, DebugView.getDebuggerTypeProxy(grouping));
     }
 }
