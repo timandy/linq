@@ -2,6 +2,7 @@ package com.bestvike.linq.exception;
 
 import com.bestvike.TestCase;
 import com.bestvike.linq.resources.SR;
+import com.bestvike.linq.util.Assertion;
 import com.bestvike.linq.util.Environment;
 import org.junit.Test;
 
@@ -303,6 +304,16 @@ public class ExceptionTest extends TestCase {
             assertEquals(SR.Arg_IndexOutOfRangeException, e.getMessage());
         }
 
-        assertThrows(NullPointerException.class, () -> ThrowHelper.throwArgumentNullException(null));
+        if (Assertion.isEnabled()) {
+            assertThrows(AssertionError.class, () -> ThrowHelper.throwArgumentNullException(null));
+        } else {
+            try {
+                ThrowHelper.throwArgumentNullException(null);
+                fail("should cause ArgumentException");
+            } catch (Throwable e) {
+                assertIsType(ArgumentNullException.class, e);
+                assertEquals(Empty, ((ArgumentNullException) e).getParamName());
+            }
+        }
     }
 }
