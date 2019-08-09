@@ -296,7 +296,7 @@ public final class Formatter {
         }
         if (this.objectTypeStyle != null)
             this.objectTypeStyle.appendType(clazz, sb);
-        Field[] fields = ReflectionUtils.getFields(clazz);
+        Field[] fields = Reflection.getFields(clazz);
         if (fields.length <= 0) {
             sb.append(this.objectEmpty);
             return;

@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 /**
  * Created by 许崇雷 on 2019-05-28.
  */
-public class ReflectionUtilsTest extends TestCase {
+public class ReflectionTest extends TestCase {
     @Test
     public void testGetFields() {
         Bean bean = new Bean("basePri", "basePro", 123, "Tim", "Andy", 456);
@@ -28,7 +28,7 @@ public class ReflectionUtilsTest extends TestCase {
         assertEquals("Andy", bean.getPro());
         assertEquals(456, bean.getPub());
 
-        Field[] fields = ReflectionUtils.getFields(Bean.class);
+        Field[] fields = Reflection.getFields(Bean.class);
         assertEquals(6, fields.length);
         IEnumerable<String> fieldEnumerable = Linq.of(fields).select(Field::getName);
         assertEquals(2, fieldEnumerable.count("pri"::equals));
@@ -39,7 +39,7 @@ public class ReflectionUtilsTest extends TestCase {
 
     @Test
     public void testArgumentNull() {
-        assertThrows(ArgumentNullException.class, () -> ReflectionUtils.getFields(null));
+        assertThrows(ArgumentNullException.class, () -> Reflection.getFields(null));
     }
 
 

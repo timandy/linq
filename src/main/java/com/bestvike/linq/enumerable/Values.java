@@ -6,7 +6,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.Formatter;
-import com.bestvike.linq.util.ReflectionUtils;
+import com.bestvike.linq.util.Reflection;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -81,7 +81,7 @@ public final class Values {
             return x.equals(y);
         if (clazz != y.getClass())
             return false;
-        Field[] fields = ReflectionUtils.getFields(clazz);
+        Field[] fields = Reflection.getFields(clazz);
         try {
             for (Field field : fields) {
                 if (!equals(field.get(x), field.get(y)))
@@ -1004,7 +1004,7 @@ public final class Values {
         if (clazz.getName().startsWith(JDK_PREFIX))
             return obj.hashCode();
         int result = HASH_EMPTY;
-        Field[] fields = ReflectionUtils.getFields(clazz);
+        Field[] fields = Reflection.getFields(clazz);
         try {
             for (Field field : fields)
                 result = HASH_PRIME * result + hashCode(field.get(obj));

@@ -9,7 +9,7 @@ import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ArrayUtils;
-import com.bestvike.linq.util.ReflectionUtils;
+import com.bestvike.linq.util.Reflection;
 import com.bestvike.ref;
 import org.junit.Test;
 
@@ -443,7 +443,7 @@ public class SkipTest extends TestCase {
         IEnumerator<Integer> iterator = new FastInfiniteEnumerator<Integer>().skip(1).enumerator();
         iterator.moveNext(); // Make sure the underlying enumerator has been initialized.
 
-        Field state = Linq.of(ReflectionUtils.getFields(iterator.getClass())).single(a -> a.getName().equals("state"));
+        Field state = Linq.of(Reflection.getFields(iterator.getClass())).single(a -> a.getName().equals("state"));
         // On platforms that do not have this change, the optimization may not be present
         // and the iterator may not have a field named _state. In that case, nop.
         if (state != null) {

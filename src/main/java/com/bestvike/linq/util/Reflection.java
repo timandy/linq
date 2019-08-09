@@ -13,10 +13,10 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created by 许崇雷 on 2019-05-28.
  */
-public final class ReflectionUtils {
+public final class Reflection {
     private static final Map<Class<?>, Field[]> CLASS_FIELDS_MAP = new ConcurrentHashMap<>();
 
-    private ReflectionUtils() {
+    private Reflection() {
     }
 
     // get all instance fields include super class.
