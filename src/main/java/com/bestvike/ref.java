@@ -10,8 +10,6 @@ public final class ref<T> {
     }
 
     public static <T> ref<T> init(T value) {
-        assert value != null;
-
         ref<T> ref = new ref<>();
         ref.value = value;
         return ref;
