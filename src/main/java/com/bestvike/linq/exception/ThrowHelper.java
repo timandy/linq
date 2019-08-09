@@ -1,6 +1,7 @@
 package com.bestvike.linq.exception;
 
 import com.bestvike.linq.resources.SR;
+import com.bestvike.linq.util.Strings;
 
 import java.util.NoSuchElementException;
 
@@ -72,8 +73,10 @@ public final class ThrowHelper {
     }
 
     private static String getArgumentString(ExceptionArgument argument) {
-        if (argument == null)
-            throw new NullPointerException("The ExceptionArgument value is not defined.");
+        if (argument == null) {
+            assert false : "The ExceptionArgument value is not defined.";
+            return Strings.Empty;
+        }
         return argument.name();
     }
 }

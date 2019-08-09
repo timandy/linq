@@ -4,13 +4,12 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+import com.bestvike.linq.util.Strings;
 
 /**
  * Created by 许崇雷 on 2019-08-07.
  */
 public final class Joining {
-    private static final String Empty = "";
-
     private Joining() {
     }
 
@@ -20,7 +19,7 @@ public final class Joining {
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             if (!e.moveNext())
-                return Empty;
+                return Strings.Empty;
 
             String text = String.valueOf(e.current());
             if (!e.moveNext())
@@ -42,7 +41,7 @@ public final class Joining {
 
         try (IEnumerator<TSource> e = source.enumerator()) {
             if (!e.moveNext())
-                return Empty;
+                return Strings.Empty;
 
             String text = String.valueOf(e.current());
             if (!e.moveNext())
