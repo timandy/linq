@@ -55,27 +55,25 @@ public class ToArrayGenericTest extends TestCase {
     public void ToArray_UseArrayEmptyWhenEmpty() {
         IEnumerable<Integer> emptySourceArray = new Array<>(new Object[0]);
 
-        // .NET Core returns the instance as an optimization.
-        // see https://github.com/dotnet/corefx/pull/2401.
-        Action2<Object, Object> assertSame = (objA, objB) -> {
+        Action2<Object, Object> assertEquals = (objA, objB) -> {
             assertNotSame(objA, objB);
             assertTrue(Values.equals(objA, objB));
         };
 
-        assertSame.apply(emptySourceArray.toArray(Integer.class), emptySourceArray.toArray(Integer.class));
+        assertEquals.apply(emptySourceArray.toArray(Integer.class), emptySourceArray.toArray(Integer.class));
 
-        assertSame.apply(emptySourceArray.select(i -> i).toArray(Integer.class), emptySourceArray.select(i -> i).toArray(Integer.class));
-        assertSame.apply(Linq.of(emptySourceArray.toList()).select(i -> i).toArray(Integer.class), Linq.of(emptySourceArray.toList()).select(i -> i).toArray(Integer.class));
-        assertSame.apply(Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(Integer.class), Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(Integer.class));
-        assertSame.apply(emptySourceArray.orderBy(i -> i).toArray(Integer.class), emptySourceArray.orderBy(i -> i).toArray(Integer.class));
+        assertEquals.apply(emptySourceArray.select(i -> i).toArray(Integer.class), emptySourceArray.select(i -> i).toArray(Integer.class));
+        assertEquals.apply(Linq.of(emptySourceArray.toList()).select(i -> i).toArray(Integer.class), Linq.of(emptySourceArray.toList()).select(i -> i).toArray(Integer.class));
+        assertEquals.apply(Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(Integer.class), Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(Integer.class));
+        assertEquals.apply(emptySourceArray.orderBy(i -> i).toArray(Integer.class), emptySourceArray.orderBy(i -> i).toArray(Integer.class));
 
-        assertSame.apply(Linq.range(5, 0).toArray(Integer.class), Linq.range(3, 0).toArray(Integer.class));
-        assertSame.apply(Linq.range(5, 3).take(0).toArray(Integer.class), Linq.range(3, 0).toArray(Integer.class));
-        assertSame.apply(Linq.range(5, 3).skip(3).toArray(Integer.class), Linq.range(3, 0).toArray(Integer.class));
+        assertEquals.apply(Linq.range(5, 0).toArray(Integer.class), Linq.range(3, 0).toArray(Integer.class));
+        assertEquals.apply(Linq.range(5, 3).take(0).toArray(Integer.class), Linq.range(3, 0).toArray(Integer.class));
+        assertEquals.apply(Linq.range(5, 3).skip(3).toArray(Integer.class), Linq.range(3, 0).toArray(Integer.class));
 
-        assertSame.apply(Linq.repeat(42, 0).toArray(Integer.class), Linq.range(84, 0).toArray(Integer.class));
-        assertSame.apply(Linq.repeat(42, 3).take(0).toArray(Integer.class), Linq.range(84, 3).take(0).toArray(Integer.class));
-        assertSame.apply(Linq.repeat(42, 3).skip(3).toArray(Integer.class), Linq.range(84, 3).skip(3).toArray(Integer.class));
+        assertEquals.apply(Linq.repeat(42, 0).toArray(Integer.class), Linq.range(84, 0).toArray(Integer.class));
+        assertEquals.apply(Linq.repeat(42, 3).take(0).toArray(Integer.class), Linq.range(84, 3).take(0).toArray(Integer.class));
+        assertEquals.apply(Linq.repeat(42, 3).skip(3).toArray(Integer.class), Linq.range(84, 3).skip(3).toArray(Integer.class));
     }
 
     private <T> void RunToArrayOnAllCollectionTypes(Class<T> clazz, T[] items, Action1<T[]> validation) {

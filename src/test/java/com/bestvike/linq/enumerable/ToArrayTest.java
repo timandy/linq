@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action1;
-import com.bestvike.function.Action2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
@@ -55,24 +54,20 @@ public class ToArrayTest extends TestCase {
     public void ToArray_UseArrayEmptyWhenEmpty() {
         IEnumerable<Integer> emptySourceArray = new Array<>(new Object[0]);
 
-        // .NET Core returns the instance as an optimization.
-        // see https://github.com/dotnet/corefx/pull/2401.
-        Action2<Object, Object> assertSame = TestCase::assertSame;
+        assertSame(emptySourceArray.toArray(), emptySourceArray.toArray());
 
-        assertSame.apply(emptySourceArray.toArray(), emptySourceArray.toArray());
+        assertSame(emptySourceArray.select(i -> i).toArray(), emptySourceArray.select(i -> i).toArray());
+        assertSame(Linq.of(emptySourceArray.toList()).select(i -> i).toArray(), Linq.of(emptySourceArray.toList()).select(i -> i).toArray());
+        assertSame(Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(), Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray());
+        assertSame(emptySourceArray.orderBy(i -> i).toArray(), emptySourceArray.orderBy(i -> i).toArray());
 
-        assertSame.apply(emptySourceArray.select(i -> i).toArray(), emptySourceArray.select(i -> i).toArray());
-        assertSame.apply(Linq.of(emptySourceArray.toList()).select(i -> i).toArray(), Linq.of(emptySourceArray.toList()).select(i -> i).toArray());
-        assertSame.apply(Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray(), Linq.of(new ArrayList<>(emptySourceArray.toList())).select(i -> i).toArray());
-        assertSame.apply(emptySourceArray.orderBy(i -> i).toArray(), emptySourceArray.orderBy(i -> i).toArray());
+        assertSame(Linq.range(5, 0).toArray(), Linq.range(3, 0).toArray());
+        assertSame(Linq.range(5, 3).take(0).toArray(), Linq.range(3, 0).toArray());
+        assertSame(Linq.range(5, 3).skip(3).toArray(), Linq.range(3, 0).toArray());
 
-        assertSame.apply(Linq.range(5, 0).toArray(), Linq.range(3, 0).toArray());
-        assertSame.apply(Linq.range(5, 3).take(0).toArray(), Linq.range(3, 0).toArray());
-        assertSame.apply(Linq.range(5, 3).skip(3).toArray(), Linq.range(3, 0).toArray());
-
-        assertSame.apply(Linq.repeat(42, 0).toArray(), Linq.range(84, 0).toArray());
-        assertSame.apply(Linq.repeat(42, 3).take(0).toArray(), Linq.range(84, 3).take(0).toArray());
-        assertSame.apply(Linq.repeat(42, 3).skip(3).toArray(), Linq.range(84, 3).skip(3).toArray());
+        assertSame(Linq.repeat(42, 0).toArray(), Linq.range(84, 0).toArray());
+        assertSame(Linq.repeat(42, 3).take(0).toArray(), Linq.range(84, 3).take(0).toArray());
+        assertSame(Linq.repeat(42, 3).skip(3).toArray(), Linq.range(84, 3).skip(3).toArray());
     }
 
     private <T> void RunToArrayOnAllCollectionTypes(T[] items, Action1<Array<T>> validation) {

@@ -1,8 +1,6 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import com.bestvike.function.Action0;
-import com.bestvike.function.Action1;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -235,9 +233,9 @@ public class ConcatTest extends TestCase {
 
     private IEnumerable<Object[]> ManyConcatsData() {
         List<Object[]> result = new ArrayList<>();
-        result.add(new Object[]{Linq.repeat(Linq.empty(), 256), Linq.empty()});
-        result.add(new Object[]{Linq.repeat(Linq.repeat(6, 1), 256), Linq.repeat(6, 256)});
-        result.add(new Object[]{Linq.range(0, 500).select(i -> Linq.repeat(i, 1)).reverse(), Linq.range(0, 500).reverse()});
+        result.add(new Object[]{Linq.repeat(Linq.empty(), 256)});
+        result.add(new Object[]{Linq.repeat(Linq.repeat(6, 1), 256)});
+        result.add(new Object[]{Linq.range(0, 500).select(i -> Linq.repeat(i, 1)).reverse()});
         return Linq.of(result);
     }
 
@@ -245,10 +243,10 @@ public class ConcatTest extends TestCase {
     public void ManyConcats() {
         for (Object[] objects : this.ManyConcatsData())
             //noinspection unchecked
-            this.ManyConcats((IEnumerable<IEnumerable<Integer>>) objects[0], (IEnumerable<Integer>) objects[1]);
+            this.ManyConcats((IEnumerable<IEnumerable<Integer>>) objects[0]);
     }
 
-    private void ManyConcats(IEnumerable<IEnumerable<Integer>> sources, IEnumerable<Integer> expected) {
+    private void ManyConcats(IEnumerable<IEnumerable<Integer>> sources) {
         List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> identityTransforms = IdentityTransforms();
         for (Func1<IEnumerable<Integer>, IEnumerable<Integer>> transform : identityTransforms) {
             IEnumerable<Integer> concatee = Linq.empty();
@@ -265,10 +263,10 @@ public class ConcatTest extends TestCase {
     public void ManyConcatsRunOnce() {
         for (Object[] objects : this.ManyConcatsData())
             //noinspection unchecked
-            this.ManyConcatsRunOnce((IEnumerable<IEnumerable<Integer>>) objects[0], (IEnumerable<Integer>) objects[1]);
+            this.ManyConcatsRunOnce((IEnumerable<IEnumerable<Integer>>) objects[0]);
     }
 
-    private void ManyConcatsRunOnce(IEnumerable<IEnumerable<Integer>> sources, IEnumerable<Integer> expected) {
+    private void ManyConcatsRunOnce(IEnumerable<IEnumerable<Integer>> sources) {
         List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> identityTransforms = IdentityTransforms();
         for (Func1<IEnumerable<Integer>, IEnumerable<Integer>> transform : identityTransforms) {
             IEnumerable<Integer> concatee = Linq.empty();
@@ -289,22 +287,20 @@ public class ConcatTest extends TestCase {
             this.CountWorker = () -> 1;
         }};
 
-        Action1<Action0> assertThrow = (testCode) -> assertThrows(ArithmeticException.class, testCode);
-
         // We need to use checked arithmetic summing up the collections' counts.
-        assertThrow.apply(() -> supposedlyLargeCollection.concat(tinyCollection).count());
-        assertThrow.apply(() -> tinyCollection.concat(tinyCollection).concat(supposedlyLargeCollection).count());
-        assertThrow.apply(() -> tinyCollection.concat(tinyCollection).concat(tinyCollection).concat(supposedlyLargeCollection).count());
+        assertThrows(ArithmeticException.class, () -> supposedlyLargeCollection.concat(tinyCollection).count());
+        assertThrows(ArithmeticException.class, () -> tinyCollection.concat(tinyCollection).concat(supposedlyLargeCollection).count());
+        assertThrows(ArithmeticException.class, () -> tinyCollection.concat(tinyCollection).concat(tinyCollection).concat(supposedlyLargeCollection).count());
 
         // This applies to ToArray() and ToList() as well, which try to preallocate the exact size
         // needed if all inputs are ICollections.
-        assertThrow.apply(() -> supposedlyLargeCollection.concat(tinyCollection).toArray());
-        assertThrow.apply(() -> tinyCollection.concat(tinyCollection).concat(supposedlyLargeCollection).toArray());
-        assertThrow.apply(() -> tinyCollection.concat(tinyCollection).concat(tinyCollection).concat(supposedlyLargeCollection).toArray());
+        assertThrows(ArithmeticException.class, () -> supposedlyLargeCollection.concat(tinyCollection).toArray());
+        assertThrows(ArithmeticException.class, () -> tinyCollection.concat(tinyCollection).concat(supposedlyLargeCollection).toArray());
+        assertThrows(ArithmeticException.class, () -> tinyCollection.concat(tinyCollection).concat(tinyCollection).concat(supposedlyLargeCollection).toArray());
 
-        assertThrow.apply(() -> supposedlyLargeCollection.concat(tinyCollection).toList());
-        assertThrow.apply(() -> tinyCollection.concat(tinyCollection).concat(supposedlyLargeCollection).toList());
-        assertThrow.apply(() -> tinyCollection.concat(tinyCollection).concat(tinyCollection).concat(supposedlyLargeCollection).toList());
+        assertThrows(ArithmeticException.class, () -> supposedlyLargeCollection.concat(tinyCollection).toList());
+        assertThrows(ArithmeticException.class, () -> tinyCollection.concat(tinyCollection).concat(supposedlyLargeCollection).toList());
+        assertThrows(ArithmeticException.class, () -> tinyCollection.concat(tinyCollection).concat(tinyCollection).concat(supposedlyLargeCollection).toList());
     }
 
     @Test
