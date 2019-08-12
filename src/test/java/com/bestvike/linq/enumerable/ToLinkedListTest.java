@@ -5,6 +5,8 @@ import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -277,6 +279,19 @@ public class ToLinkedListTest extends TestCase {
     public void NonConstantTimeCountEmptyPartitionSelectDiffTypeToList() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toLinkedList()));
+    }
+
+    @Test
+    public void testToListGrouping() {
+        int[] element = {60, -10, 40, 100};
+        Tuple2[] source = new Tuple2[]{
+                Tuple.create("Tim", element[0]),
+                Tuple.create("Tim", element[1]),
+                Tuple.create("miT", element[2]),
+                Tuple.create("miT", element[3])
+        };
+
+        assertEquals(Arrays.asList(99, 60, -10), Linq.of(source).toLookup(Tuple2::getItem1, Tuple2::getItem2).get("Tim").prepend(99).toLinkedList());
     }
 
     @Test

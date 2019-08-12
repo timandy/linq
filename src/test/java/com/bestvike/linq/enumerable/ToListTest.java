@@ -5,6 +5,8 @@ import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -281,6 +283,19 @@ public class ToListTest extends TestCase {
     }
 
     @Test
+    public void testToListGrouping() {
+        int[] element = {60, -10, 40, 100};
+        Tuple2[] source = new Tuple2[]{
+                Tuple.create("Tim", element[0]),
+                Tuple.create("Tim", element[1]),
+                Tuple.create("miT", element[2]),
+                Tuple.create("miT", element[3])
+        };
+
+        assertEquals(Arrays.asList(99, 60, -10), Linq.of(source).toLookup(Tuple2::getItem1, Tuple2::getItem2).get("Tim").prepend(99).toList());
+    }
+
+    @Test
     public void testToList() {
         Object[] source = {1, 2, 3};
         List<Integer> target = Linq.of(source).cast(Integer.class).toList();
@@ -327,5 +342,6 @@ public class ToListTest extends TestCase {
         assertEquals(Arrays.asList('a', 'b', 'c'), Linq.of(new char[]{'a', 'b', 'c'}).toList());
         assertEquals(Arrays.asList(1f, 2f, 3f), Linq.of(new float[]{1f, 2f, 3f}).toList());
         assertEquals(Arrays.asList(1d, 2d, 3d), Linq.of(new double[]{1d, 2d, 3d}).toList());
+
     }
 }
