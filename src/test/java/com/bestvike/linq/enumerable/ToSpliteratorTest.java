@@ -7,6 +7,8 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -257,5 +259,18 @@ public class ToSpliteratorTest extends TestCase {
         assertTrue(stream.isParallel());
         Object[] objects = stream.filter(a -> a % 2 == 0d).toArray();
         assertEquals(Linq.of(objects).cast(Double.class), Linq.of(2d, 4d, 6d));
+    }
+
+    @Test
+    public void testStreamGrouping() {
+        int[] element = {60, -10, 40, 100};
+        Tuple2[] source = new Tuple2[]{
+                Tuple.create("Tim", element[0]),
+                Tuple.create("Tim", element[1]),
+                Tuple.create("miT", element[2]),
+                Tuple.create("miT", element[3])
+        };
+
+        assertEquals(Linq.of(60, -10), Linq.of(Linq.of(source).toLookup(Tuple2::getItem1, Tuple2::getItem2).get("Tim").stream().toArray()));
     }
 }
