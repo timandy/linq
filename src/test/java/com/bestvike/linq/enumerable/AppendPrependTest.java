@@ -256,6 +256,10 @@ public class AppendPrependTest extends TestCase {
         List<Employee> result = new ArrayList<>(Arrays.asList(emps));
         result.add(badEmps[0]);
         IEnumerable<Employee> expected = Linq.of(result);
+
+        IEnumerable<Employee> source = Linq.of(emps).append(badEmps[0]);
+        assertEquals(source.runOnce(), source.runOnce());
+
         assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toArray()));
         assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toArray(Employee.class)));
         assertEquals(expected, Linq.of(Linq.of(emps).append(badEmps[0]).toList()));
@@ -280,6 +284,10 @@ public class AppendPrependTest extends TestCase {
         List<Employee> result = new ArrayList<>(Collections.singletonList(badEmps[0]));
         result.addAll(Arrays.asList(emps));
         IEnumerable<Employee> expected = Linq.of(result);
+
+        IEnumerable<Employee> source = Linq.of(emps).prepend(badEmps[0]);
+        assertEquals(source.runOnce(), source.runOnce());
+
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toArray()));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toArray(Employee.class)));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).toList()));
@@ -299,6 +307,10 @@ public class AppendPrependTest extends TestCase {
         result.addAll(Arrays.asList(emps));
         result.add(badEmps[1]);
         IEnumerable<Employee> expected = Linq.of(result);
+
+        IEnumerable<Employee> source = Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]);
+        assertEquals(source.runOnce(), source.runOnce());
+
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toArray()));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toArray(Employee.class)));
         assertEquals(expected, Linq.of(Linq.of(emps).prepend(badEmps[0]).append(badEmps[1]).toList()));
@@ -310,5 +322,9 @@ public class AppendPrependTest extends TestCase {
         assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).append(badEmps[1]).toArray()));
         assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).append(badEmps[1]).toArray(Employee.class)));
         assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).prepend(badEmps[0]).append(badEmps[1]).toList()));
+
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).take(99).prepend(badEmps[0]).append(badEmps[1]).toArray()));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).take(99).prepend(badEmps[0]).append(badEmps[1]).toArray(Employee.class)));
+        assertEquals(expected, Linq.of(Linq.of(new LinkedList<>(Arrays.asList(emps))).take(99).prepend(badEmps[0]).append(badEmps[1]).toList()));
     }
 }
