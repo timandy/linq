@@ -272,8 +272,8 @@ public class SplitTest extends TestCase {
         assertEquals(Linq.of(""), Linq.split("", '\0', StringSplitOptions.None));
         assertEquals(Linq.of(""), Linq.split("", ' ', StringSplitOptions.None));
         assertEquals(Linq.of(""), Linq.split("", (String) null, StringSplitOptions.None));
-        assertEquals(Linq.of(""), Linq.split("", (String) "", StringSplitOptions.None));
-        assertEquals(Linq.of(""), Linq.split("", (String) " ", StringSplitOptions.None));
+        assertEquals(Linq.of(""), Linq.split("", "", StringSplitOptions.None));
+        assertEquals(Linq.of(""), Linq.split("", " ", StringSplitOptions.None));
         assertEquals(Linq.of(""), Linq.split("", (char[]) null, StringSplitOptions.None));
         assertEquals(Linq.of(""), Linq.split("", new char[0], StringSplitOptions.None));
         assertEquals(Linq.of(""), Linq.split("", new char[]{'\0'}, StringSplitOptions.None));
@@ -293,8 +293,8 @@ public class SplitTest extends TestCase {
         assertEquals(Linq.empty(), Linq.split("", '\0', StringSplitOptions.RemoveEmptyEntries));
         assertEquals(Linq.empty(), Linq.split("", ' ', StringSplitOptions.RemoveEmptyEntries));
         assertEquals(Linq.empty(), Linq.split("", (String) null, StringSplitOptions.RemoveEmptyEntries));
-        assertEquals(Linq.empty(), Linq.split("", (String) "", StringSplitOptions.RemoveEmptyEntries));
-        assertEquals(Linq.empty(), Linq.split("", (String) " ", StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", "", StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", " ", StringSplitOptions.RemoveEmptyEntries));
         assertEquals(Linq.empty(), Linq.split("", (char[]) null, StringSplitOptions.RemoveEmptyEntries));
         assertEquals(Linq.empty(), Linq.split("", new char[0], StringSplitOptions.RemoveEmptyEntries));
         assertEquals(Linq.empty(), Linq.split("", new char[]{'\0'}, StringSplitOptions.RemoveEmptyEntries));
@@ -324,7 +324,7 @@ public class SplitTest extends TestCase {
             }
         };
         assertTwoElements.apply(Linq.split("abc ", ' ', StringSplitOptions.None));
-        assertTwoElements.apply(Linq.split("abc ", (String) " ", StringSplitOptions.None));
+        assertTwoElements.apply(Linq.split("abc ", " ", StringSplitOptions.None));
         assertTwoElements.apply(Linq.split("abc ", new char[0], StringSplitOptions.None));
         assertTwoElements.apply(Linq.split("abc ", new char[]{' '}, StringSplitOptions.None));
         assertTwoElements.apply(Linq.split("abc ", new char[]{' ', ' '}, StringSplitOptions.None));
@@ -342,7 +342,7 @@ public class SplitTest extends TestCase {
             }
         };
         assertSingleElement.apply(Linq.split("abc ", ' ', StringSplitOptions.RemoveEmptyEntries));
-        assertSingleElement.apply(Linq.split("abc ", (String) " ", StringSplitOptions.RemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", " ", StringSplitOptions.RemoveEmptyEntries));
         assertSingleElement.apply(Linq.split("abc ", new char[0], StringSplitOptions.RemoveEmptyEntries));
         assertSingleElement.apply(Linq.split("abc ", new char[]{' '}, StringSplitOptions.RemoveEmptyEntries));
         assertSingleElement.apply(Linq.split("abc ", new char[]{' ', ' '}, StringSplitOptions.RemoveEmptyEntries));
