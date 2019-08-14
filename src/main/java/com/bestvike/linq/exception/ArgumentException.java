@@ -2,6 +2,7 @@ package com.bestvike.linq.exception;
 
 import com.bestvike.linq.resources.SR;
 import com.bestvike.linq.util.Environment;
+import com.bestvike.linq.util.Strings;
 
 /**
  * Created by 许崇雷 on 2017-07-11.
@@ -40,7 +41,7 @@ public class ArgumentException extends RuntimeException {
         String s = super.getMessage();
         if (s == null)
             s = SR.Arg_ArgumentException;
-        if (this.paramName != null && this.paramName.length() > 0)
+        if (!Strings.isNullOrEmpty(this.paramName))
             s += Environment.NewLine + String.format(SR.Arg_ParamName_Name, this.paramName);
         return s;
     }

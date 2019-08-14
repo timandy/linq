@@ -606,7 +606,7 @@ final class StringKeepEmptySplitIterator1 extends Iterator<String> {
 
     StringKeepEmptySplitIterator1(CharSequence source, CharSequence separator) {
         assert source != null;
-        assert separator != null && separator.length() > 0;
+        assert !Strings.isNullOrEmpty(separator);
         this.source = source;
         this.separator = separator;
     }
@@ -703,7 +703,7 @@ final class StringOmitEmptySplitIterator1 extends Iterator<String> {
 
     StringOmitEmptySplitIterator1(CharSequence source, CharSequence separator) {
         assert source != null;
-        assert separator != null && separator.length() > 0;
+        assert !Strings.isNullOrEmpty(separator);
         this.source = source;
         this.separator = separator;
     }
