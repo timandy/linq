@@ -50,6 +50,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 - chars
 - words
 - lines
+- split
 - enumerate
 - generate
 - range

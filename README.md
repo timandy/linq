@@ -50,6 +50,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - chars
 - words
 - lines
+- split
 - enumerate
 - generate
 - range
