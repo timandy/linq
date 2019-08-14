@@ -8,9 +8,9 @@ import com.bestvike.linq.adapter.enumerator.LineEnumerator;
  * Created by 许崇雷 on 2019-07-26.
  */
 public final class LineEnumerable implements IEnumerable<String> {
-    private final String source;
+    private final CharSequence source;
 
-    public LineEnumerable(String source) {
+    public LineEnumerable(CharSequence source) {
         this.source = source;
     }
 

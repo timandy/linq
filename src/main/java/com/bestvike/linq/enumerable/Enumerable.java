@@ -229,14 +229,14 @@ public final class Enumerable {
         return new CharEnumerable(source);
     }
 
-    public static IEnumerable<String> words(String source) {
+    public static IEnumerable<String> words(CharSequence source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new WordEnumerable(source);
     }
 
-    public static IEnumerable<String> lines(String source) {
+    public static IEnumerable<String> lines(CharSequence source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 

@@ -7,9 +7,9 @@ import com.bestvike.linq.util.Chars;
  * Created by 许崇雷 on 2019-07-26.
  */
 public final class LineEnumerator extends AbstractEnumerator<String> {
-    private final String source;
+    private final CharSequence source;
 
-    public LineEnumerator(String source) {
+    public LineEnumerator(CharSequence source) {
         this.source = source;
     }
 
@@ -32,7 +32,7 @@ public final class LineEnumerator extends AbstractEnumerator<String> {
                     break;
                 this.state++;
             }
-            this.current = this.source.substring(beginIndex, this.state);
+            this.current = this.source.subSequence(beginIndex, this.state).toString();
             return true;
         }
 

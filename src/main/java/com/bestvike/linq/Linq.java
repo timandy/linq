@@ -119,11 +119,11 @@ public final class Linq {
         return Enumerable.chars(source);
     }
 
-    public static IEnumerable<String> words(String source) {
+    public static IEnumerable<String> words(CharSequence source) {
         return Enumerable.words(source);
     }
 
-    public static IEnumerable<String> lines(String source) {
+    public static IEnumerable<String> lines(CharSequence source) {
         return Enumerable.lines(source);
     }
 

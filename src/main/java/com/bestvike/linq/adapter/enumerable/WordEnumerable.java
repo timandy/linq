@@ -8,9 +8,9 @@ import com.bestvike.linq.adapter.enumerator.WordEnumerator;
  * Created by 许崇雷 on 2019-07-26.
  */
 public final class WordEnumerable implements IEnumerable<String> {
-    private final String source;
+    private final CharSequence source;
 
-    public WordEnumerable(String source) {
+    public WordEnumerable(CharSequence source) {
         this.source = source;
     }
 

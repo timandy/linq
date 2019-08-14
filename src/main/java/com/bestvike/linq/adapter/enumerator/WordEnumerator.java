@@ -6,9 +6,9 @@ import com.bestvike.linq.enumerable.AbstractEnumerator;
  * Created by 许崇雷 on 2019-07-26.
  */
 public final class WordEnumerator extends AbstractEnumerator<String> {
-    private final String source;
+    private final CharSequence source;
 
-    public WordEnumerator(String source) {
+    public WordEnumerator(CharSequence source) {
         this.source = source;
     }
 
@@ -31,7 +31,7 @@ public final class WordEnumerator extends AbstractEnumerator<String> {
                     break;
                 this.state++;
             }
-            this.current = this.source.substring(beginIndex, this.state);
+            this.current = this.source.subSequence(beginIndex, this.state).toString();
             return true;
         }
 
