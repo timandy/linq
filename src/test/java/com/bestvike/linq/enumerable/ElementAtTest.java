@@ -129,5 +129,8 @@ public class ElementAtTest extends TestCase {
             fail("expect error,but got " + num);
         } catch (ArgumentOutOfRangeException ignored) {
         }
+
+        IEnumerable<Integer> generate = Linq.generate(0);
+        assertEquals(0, generate.elementAt(10));
     }
 }
