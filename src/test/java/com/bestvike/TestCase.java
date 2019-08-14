@@ -300,11 +300,11 @@ public class TestCase {
         throw new AssertionError(message);
     }
 
-    protected static Boolean IsEven(int num) {
+    protected static boolean IsEven(int num) {
         return num % 2 == 0;
     }
 
-    protected static Boolean IsNullOrEmpty(String value) {
+    protected static boolean IsNullOrEmpty(String value) {
         return value == null || value.length() == 0;
     }
 
