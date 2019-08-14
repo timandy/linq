@@ -18,6 +18,7 @@ import com.bestvike.linq.adapter.enumerator.GenericArrayEnumerator;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.enumerable.AbstractEnumerator;
+import com.bestvike.linq.enumerable.Values;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.ThrowHelper;
@@ -157,13 +158,13 @@ public class TestCase {
     protected static void assertEquals(Object expected, Object actual) {
         if (equal(expected, actual))
             return;
-        fail(String.format("should be %s, but %s", expected, actual));
+        fail(String.format("should be %s, but %s", Values.toString(expected), Values.toString(actual)));
     }
 
     protected static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
         if (sequenceEqual(expected, actual, comparer))
             return;
-        fail(format(null, expected, actual));
+        fail(String.format("should be %s, but %s with comparer %s", Values.toString(expected), Values.toString(actual), comparer));
     }
 
     protected static void assertNotEquals(Object expected, Object actual) {
