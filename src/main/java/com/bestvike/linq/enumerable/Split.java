@@ -855,6 +855,9 @@ final class ProbabilisticMap {
 
 
 final class SplitUtils {
+    private SplitUtils() {
+    }
+
     public static boolean contains(char[] chars, char value) {
         for (char c : chars) {
             if (c == value)
