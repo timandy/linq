@@ -17,21 +17,23 @@ public final class WordEnumerator extends AbstractEnumerator<String> {
         if (this.state == -1)
             return false;
 
+        int index = this.state;
         int length = this.source.length();
-        while (this.state < length) {
-            char head = this.source.charAt(this.state);
+        while (index < length) {
+            char head = this.source.charAt(index);
             if (!Character.isLetterOrDigit(head)) {
-                this.state++;
+                index++;
                 continue;
             }
-            int beginIndex = this.state++;
-            while (this.state < length) {
-                char tail = this.source.charAt(this.state);
+            int beginIndex = index++;
+            while (index < length) {
+                char tail = this.source.charAt(index);
                 if (!Character.isLetterOrDigit(tail))
                     break;
-                this.state++;
+                index++;
             }
-            this.current = this.source.subSequence(beginIndex, this.state).toString();
+            this.current = this.source.subSequence(beginIndex, index).toString();
+            this.state = index;
             return true;
         }
 
