@@ -8,4 +8,8 @@ public final class Strings {
 
     private Strings() {
     }
+
+    public static boolean isNullOrEmpty(CharSequence value) {
+        return value == null || value.length() == 0;
+    }
 }

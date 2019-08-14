@@ -37,6 +37,7 @@ public enum ExceptionArgument {
     match,
     newSize,
     next,
+    options,
     other,
     startIndex,
 }

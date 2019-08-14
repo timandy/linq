@@ -8,6 +8,8 @@ import com.bestvike.linq.enumerable.Enumerate;
 import com.bestvike.linq.enumerable.Generate;
 import com.bestvike.linq.enumerable.Range;
 import com.bestvike.linq.enumerable.Repeat;
+import com.bestvike.linq.enumerable.Split;
+import com.bestvike.linq.util.StringSplitOptions;
 
 import java.util.Collection;
 import java.util.Enumeration;
@@ -123,6 +125,38 @@ public final class Linq {
 
     public static IEnumerable<String> lines(String source) {
         return Enumerable.lines(source);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, char separator) {
+        return Split.split(source, separator);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, char separator, StringSplitOptions options) {
+        return Split.split(source, separator, options);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, char... separator) {
+        return Split.split(source, separator);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, char[] separator, StringSplitOptions options) {
+        return Split.split(source, separator, options);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, CharSequence separator) {
+        return Split.split(source, separator);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, CharSequence separator, StringSplitOptions options) {
+        return Split.split(source, separator, options);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, CharSequence[] separator) {
+        return Split.split(source, separator);
+    }
+
+    public static IEnumerable<String> split(CharSequence source, CharSequence[] separator, StringSplitOptions options) {
+        return Split.split(source, separator, options);
     }
 
     public static <TSource> IEnumerable<TSource> enumerate(TSource seed, Func1<? super TSource, ? extends TSource> next) {
