@@ -7,6 +7,7 @@ import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -26,20 +27,20 @@ public final class ListUtils {
         return list;
     }
 
-    public static <T> void addRange(List<T> list, IEnumerable<T> enumerable) {
-        if (list == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.list);
+    public static <T> void addRange(Collection<T> collection, IEnumerable<T> enumerable) {
+        if (collection == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.collection);
         if (enumerable == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.enumerable);
 
         if (enumerable instanceof ICollection) {
-            ICollection<T> collection = (ICollection<T>) enumerable;
-            list.addAll(collection.getCollection());
+            ICollection<T> ic = (ICollection<T>) enumerable;
+            collection.addAll(ic.getCollection());
             return;
         }
         try (IEnumerator<T> e = enumerable.enumerator()) {
             while (e.moveNext())
-                list.add(e.current());
+                collection.add(e.current());
         }
     }
 }

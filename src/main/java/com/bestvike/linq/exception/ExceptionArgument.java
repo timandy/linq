@@ -32,7 +32,6 @@ public enum ExceptionArgument {
     elements,
     formatter,
     iterable,
-    list,
     locale,
     match,
     newSize,
