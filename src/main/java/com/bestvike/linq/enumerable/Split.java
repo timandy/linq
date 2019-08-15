@@ -628,7 +628,7 @@ final class StringKeepEmptySplitIterator1 extends Iterator<String> {
         int beginIndex = index;
         while (index < length) {
             char current = this.source.charAt(index);
-            if (current == firstSepChar && currentSepLength <= length - index && (currentSepLength == 1 || SplitUtils.sequenceEqual(this.source, index + 1, this.separator, 1, currentSepLength - 1))) {
+            if (current == firstSepChar && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, this.separator, 1, currentSepLength - 1))) {
                 this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
                 this.state = index + currentSepLength + 1;
                 return true;
@@ -677,7 +677,7 @@ final class StringKeepEmptySplitIteratorN extends Iterator<String> {
                 if (Strings.isNullOrEmpty(separator))
                     continue;
                 int currentSepLength = separator.length();
-                if (current == separator.charAt(0) && currentSepLength <= length - index && (currentSepLength == 1 || SplitUtils.sequenceEqual(this.source, index + 1, separator, 1, currentSepLength - 1))) {
+                if (current == separator.charAt(0) && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, separator, 1, currentSepLength - 1))) {
                     this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
                     this.state = index + currentSepLength + 1;
                     return true;
@@ -724,14 +724,14 @@ final class StringOmitEmptySplitIterator1 extends Iterator<String> {
         int currentSepLength = this.separator.length();
         while (index < length) {
             char head = this.source.charAt(index);
-            if (head == firstSepChar && currentSepLength <= length - index && (currentSepLength == 1 || SplitUtils.sequenceEqual(this.source, index + 1, this.separator, 1, currentSepLength - 1))) {
+            if (head == firstSepChar && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, this.separator, 1, currentSepLength - 1))) {
                 index += currentSepLength;
                 continue;
             }
             int beginIndex = index++;
             while (index < length) {
                 char tail = this.source.charAt(index);
-                if (tail == firstSepChar && currentSepLength <= length - index && (currentSepLength == 1 || SplitUtils.sequenceEqual(this.source, index + 1, this.separator, 1, currentSepLength - 1)))
+                if (tail == firstSepChar && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, this.separator, 1, currentSepLength - 1)))
                     break;
                 index++;
             }
@@ -776,7 +776,7 @@ final class StringOmitEmptySplitIteratorN extends Iterator<String> {
                 if (Strings.isNullOrEmpty(separator))
                     continue;
                 int currentSepLength = separator.length();
-                if (head == separator.charAt(0) && currentSepLength <= length - index && (currentSepLength == 1 || SplitUtils.sequenceEqual(this.source, index + 1, separator, 1, currentSepLength - 1))) {
+                if (head == separator.charAt(0) && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, separator, 1, currentSepLength - 1))) {
                     index += currentSepLength;
                     continue HEAD;
                 }
@@ -789,7 +789,7 @@ final class StringOmitEmptySplitIteratorN extends Iterator<String> {
                     if (Strings.isNullOrEmpty(separator))
                         continue;
                     int currentSepLength = separator.length();
-                    if (tail == separator.charAt(0) && currentSepLength <= length - index && (currentSepLength == 1 || SplitUtils.sequenceEqual(this.source, index + 1, separator, 1, currentSepLength - 1)))
+                    if (tail == separator.charAt(0) && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, separator, 1, currentSepLength - 1)))
                         break TAIL;
                 }
                 index++;
@@ -849,13 +849,13 @@ final class ProbabilisticMap {
     public boolean contains(char value) {
         return isCharBitSet(this.charMap, (byte) value)
                 && isCharBitSet(this.charMap, (byte) (value >> 8))
-                && SplitUtils.contains(this.chars, value);
+                && SplitInternal.contains(this.chars, value);
     }
 }
 
 
-final class SplitUtils {
-    private SplitUtils() {
+final class SplitInternal {
+    private SplitInternal() {
     }
 
     public static boolean contains(char[] chars, char value) {
