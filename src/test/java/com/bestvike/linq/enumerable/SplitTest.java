@@ -6,6 +6,8 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.exception.ExceptionArgument;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.StringSplitOptions;
 import com.bestvike.linq.util.Strings;
 import com.bestvike.tuple.Tuple;
@@ -313,6 +315,29 @@ public class SplitTest extends TestCase {
     }
 
     @Test
+    public void testSplitOverflow() {
+        CharSequence source = new RepeatCharWithTailString('a', 'z', Integer.MAX_VALUE);
+
+        assertEquals(2L, Linq.split(source, 'z', StringSplitOptions.None).longCount());
+        assertEquals(2L, Linq.split(source, "z", StringSplitOptions.None).longCount());
+        assertEquals(1L, Linq.split(source, new char[0], StringSplitOptions.None).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z'}, StringSplitOptions.None).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z', ' '}, StringSplitOptions.None).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z', ' ', ' '}, StringSplitOptions.None).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z', ' ', ' ', ' ', ' '}, StringSplitOptions.None).longCount());
+        assertEquals(2L, Linq.split(source, new String[]{"z"}, StringSplitOptions.None).longCount());
+
+        assertEquals(1L, Linq.split(source, 'z', StringSplitOptions.RemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, "z", StringSplitOptions.RemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[0], StringSplitOptions.RemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z'}, StringSplitOptions.RemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z', ' '}, StringSplitOptions.RemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z', ' ', ' ', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new String[]{"z"}, StringSplitOptions.RemoveEmptyEntries).longCount());
+    }
+
+    @Test
     public void testSplit() {
         Action1<IEnumerable<String>> assertTwoElements = source -> {
             assertEquals(source.runOnce(), source.runOnce());
@@ -352,5 +377,47 @@ public class SplitTest extends TestCase {
 
         assertEquals(Linq.of("thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", "", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.None));
         assertEquals(Linq.of("thi", "i", "tring", "with", "ome", "p", "ce", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.RemoveEmptyEntries));
+    }
+
+
+    static final class RepeatCharWithTailString implements CharSequence {
+        private final char value;
+        private final char tail;
+        private final int count;
+
+        RepeatCharWithTailString(char value, char tail, int count) {
+            if (count < 0)
+                ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
+            this.value = value;
+            this.tail = tail;
+            this.count = count;
+        }
+
+        private static void checkBoundsBeginEnd(int begin, int end, int length) {
+            if (begin < 0 || begin > end || end > length)
+                throw new StringIndexOutOfBoundsException("begin " + begin + ", end " + end + ", length " + length);
+        }
+
+        @Override
+        public int length() {
+            return this.count;
+        }
+
+        @Override
+        public char charAt(int index) {
+            if (index < 0 || index >= this.count)
+                throw new StringIndexOutOfBoundsException(index);
+            return index == this.count - 1 ? this.tail : this.value;
+        }
+
+        @Override
+        public CharSequence subSequence(int beginIndex, int endIndex) {
+            int length = this.length();
+            checkBoundsBeginEnd(beginIndex, endIndex, length);
+            int subLen = endIndex - beginIndex;
+            if (beginIndex == 0 && beginIndex == length)
+                return this;
+            return "sub sequence with length: " + subLen;
+        }
     }
 }
