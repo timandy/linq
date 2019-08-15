@@ -139,6 +139,11 @@ final class CharKeepEmptySplitIterator0 extends Iterator<String> {
             return false;
 
         int index = this.state - 1;
+        if (index < 0) {
+            this.close();
+            return false;
+        }
+
         int length = this.source.length();
         int beginIndex = index;
         while (index < length) {
@@ -183,6 +188,11 @@ final class CharKeepEmptySplitIterator1 extends Iterator<String> {
             return false;
 
         int index = this.state - 1;
+        if (index < 0) {
+            this.close();
+            return false;
+        }
+
         int length = this.source.length();
         int beginIndex = index;
         while (index < length) {
@@ -229,6 +239,11 @@ final class CharKeepEmptySplitIterator2 extends Iterator<String> {
             return false;
 
         int index = this.state - 1;
+        if (index < 0) {
+            this.close();
+            return false;
+        }
+
         int length = this.source.length();
         int beginIndex = index;
         while (index < length) {
@@ -277,6 +292,11 @@ final class CharKeepEmptySplitIterator3 extends Iterator<String> {
             return false;
 
         int index = this.state - 1;
+        if (index < 0) {
+            this.close();
+            return false;
+        }
+
         int length = this.source.length();
         int beginIndex = index;
         while (index < length) {
@@ -326,6 +346,11 @@ final class CharKeepEmptySplitIteratorN extends Iterator<String> {
             this.charMap = new ProbabilisticMap(this.separators);
 
         int index = this.state - 1;
+        if (index < 0) {
+            this.close();
+            return false;
+        }
+
         int length = this.source.length();
         int beginIndex = index;
         while (index < length) {
@@ -622,6 +647,11 @@ final class StringKeepEmptySplitIterator1 extends Iterator<String> {
             return false;
 
         int index = this.state - 1;
+        if (index < 0) {
+            this.close();
+            return false;
+        }
+
         int length = this.source.length();
         char firstSepChar = this.separator.charAt(0);
         int currentSepLength = this.separator.length();
@@ -669,6 +699,11 @@ final class StringKeepEmptySplitIteratorN extends Iterator<String> {
             return false;
 
         int index = this.state - 1;
+        if (index < 0) {
+            this.close();
+            return false;
+        }
+
         int length = this.source.length();
         int beginIndex = index;
         while (index < length) {
