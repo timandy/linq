@@ -2,6 +2,7 @@ package com.bestvike.linq;
 
 import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
+import com.bestvike.linq.enumerable.Iterator;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
@@ -10,6 +11,11 @@ import com.bestvike.linq.exception.RepeatInvokeException;
 import com.bestvike.linq.util.ArrayUtils;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,12 +23,12 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.Spliterator;
 import java.util.Vector;
 import java.util.stream.Stream;
@@ -339,7 +345,7 @@ public class LinqTest extends TestCase {
 
     @Test
     public void testIterator() {
-        Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
+        java.util.Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
         IEnumerable<Integer> source = Linq.of(iterator);
         assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(RepeatInvokeException.class, () -> source.enumerator());
@@ -349,7 +355,7 @@ public class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Iterator<?>) null));
+        assertThrows(ArgumentNullException.class, () -> Linq.of((java.util.Iterator<?>) null));
     }
 
     @Test
@@ -658,12 +664,90 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testReadInputStreamByLine() {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream("hello\r\nworld".getBytes(StandardCharsets.UTF_8));
+        InputStreamLineEnumerable enumerable = new InputStreamLineEnumerable(inputStream, StandardCharsets.UTF_8);
+        try (IEnumerator<String> e = enumerable.enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals("hello", e.current());
+            assertTrue(e.moveNext());
+            assertEquals("world", e.current());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+        assertEquals(-1, inputStream.read());
+
+        enumerable.reset();
+
+        assertEquals(2, enumerable.count());
+        assertEquals(-1, inputStream.read());
+    }
+
+    @Test
     public void testOther() {
         try (IEnumerator<Object> e = Linq.empty().enumerator()) {
             assertThrows(NoSuchElementException.class, e::next);
             assertThrows(NotSupportedException.class, e::reset);
             assertThrows(NotSupportedException.class, e::remove);
             assertThrows(ArgumentNullException.class, () -> e.forEachRemaining(null));
+        }
+    }
+
+
+    static final class InputStreamLineEnumerable extends Iterator<String> {
+        private final InputStream inputStream;
+        private final Charset charset;
+        private Scanner scanner;
+
+        InputStreamLineEnumerable(InputStream inputStream, Charset charset) {
+            if (inputStream == null)
+                throw new ArgumentNullException("inputStream");
+            if (charset == null)
+                throw new ArgumentNullException("charset");
+
+            this.inputStream = inputStream;
+            this.charset = charset;
+        }
+
+        @Override
+        public Iterator<String> clone() {
+            return new InputStreamLineEnumerable(this.inputStream, this.charset);
+        }
+
+        @Override
+        public boolean moveNext() {
+            switch (this.state) {
+                case 1:
+                    this.scanner = new Scanner(this.inputStream, this.charset.name());
+                    this.state = 2;
+                case 2:
+                    if (this.scanner.hasNext()) {
+                        this.current = this.scanner.next();
+                        return true;
+                    }
+                    this.close();
+                    return false;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void reset() {
+            try {
+                this.inputStream.reset();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public void close() {
+            if (this.scanner != null) {
+                this.scanner.close();
+                this.scanner = null;
+            }
+            super.close();
         }
     }
 }
