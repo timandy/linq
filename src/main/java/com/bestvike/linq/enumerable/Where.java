@@ -123,7 +123,7 @@ final class WhereEnumerableIterator<TSource> extends Iterator<TSource> implement
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new WhereEnumerableIterator<>(this.source, this.predicate);
     }
 
@@ -239,7 +239,7 @@ final class WhereArrayIterator<TSource> extends Iterator<TSource> implements IIL
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new WhereArrayIterator<>(this.source, this.predicate);
     }
 

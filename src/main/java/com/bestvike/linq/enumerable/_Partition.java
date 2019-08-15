@@ -52,7 +52,7 @@ final class EmptyPartition<TElement> extends Iterator<TElement> implements IPart
     }
 
     @Override
-    public AbstractIterator<TElement> clone() {
+    public Iterator<TElement> clone() {
         return this;
     }
 

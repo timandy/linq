@@ -33,7 +33,7 @@ final class GenerateIterator<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new GenerateIterator<>(this.item);
     }
 
@@ -53,7 +53,7 @@ final class GenerateIterator2<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new GenerateIterator2<>(this.func);
     }
 

@@ -41,7 +41,7 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
     }
 
     @Override
-    public AbstractIterator<Integer> clone() {
+    public Iterator<Integer> clone() {
         return new RangeIterator(this.start, this.end - this.start);
     }
 

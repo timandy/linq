@@ -46,7 +46,7 @@ final class DistinctByIterator<TSource, TKey> extends Iterator<TSource> implemen
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new DistinctByIterator<>(this.source, this.keySelector, this.comparer);
     }
 

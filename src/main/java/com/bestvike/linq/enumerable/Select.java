@@ -365,7 +365,7 @@ final class SelectRangeIterator<TResult> extends Iterator<TResult> implements IP
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new SelectRangeIterator<>(this.start, this.end, this.selector);
     }
 
@@ -481,7 +481,7 @@ final class SelectRepeatIterator<TSource, TResult> extends Iterator<TResult> imp
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new SelectRepeatIterator<>(this.element, this.count, this.selector);
     }
 

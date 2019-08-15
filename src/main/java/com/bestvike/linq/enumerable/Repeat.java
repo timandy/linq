@@ -39,7 +39,7 @@ final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartit
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new RepeatIterator<>(this.current, this.count);
     }
 

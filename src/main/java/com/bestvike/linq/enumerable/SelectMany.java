@@ -76,7 +76,7 @@ final class SelectManyIterator<TSource, TResult> extends Iterator<TResult> imple
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new SelectManyIterator<>(this.source, this.selector);
     }
 
@@ -213,7 +213,7 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new SelectManyIterator2<>(this.source, this.selector);
     }
 
@@ -365,7 +365,7 @@ final class SelectManyResultIterator<TSource, TCollection, TResult> extends Iter
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new SelectManyResultIterator<>(this.source, this.collectionSelector, this.resultSelector);
     }
 
@@ -438,7 +438,7 @@ final class SelectManyResultIterator2<TSource, TCollection, TResult> extends Ite
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new SelectManyResultIterator2<>(this.source, this.collectionSelector, this.resultSelector);
     }
 

@@ -512,7 +512,7 @@ final class CrossJoinIterator<TOuter, TInner, TResult> extends Iterator<TResult>
     }
 
     @Override
-    public AbstractIterator<TResult> clone() {
+    public Iterator<TResult> clone() {
         return new CrossJoinIterator<>(this.outer, this.inner, this.resultSelector);
     }
 

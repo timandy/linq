@@ -41,7 +41,7 @@ final class EnumerateIterator<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new EnumerateIterator<>(this.seed, this.next);
     }
 
@@ -74,7 +74,7 @@ final class EnumerateIterator2<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new EnumerateIterator2<>(this.seed, this.condition, this.next);
     }
 

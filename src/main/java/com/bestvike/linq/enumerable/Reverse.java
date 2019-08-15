@@ -35,7 +35,7 @@ final class ReverseIterator<TSource> extends Iterator<TSource> implements IIList
     }
 
     @Override
-    public AbstractIterator<TSource> clone() {
+    public Iterator<TSource> clone() {
         return new ReverseIterator<>(this.source);
     }
 
