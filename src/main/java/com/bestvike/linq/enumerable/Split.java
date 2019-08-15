@@ -359,7 +359,7 @@ final class CharOmitEmptySplitIterator0 extends Iterator<String> {
     private final CharSequence source;
 
     CharOmitEmptySplitIterator0(CharSequence source) {
-        assert source != null;
+        assert !Strings.isNullOrEmpty(source);
         this.source = source;
     }
 
@@ -404,7 +404,7 @@ final class CharOmitEmptySplitIterator1 extends Iterator<String> {
     private final char separator;
 
     CharOmitEmptySplitIterator1(CharSequence source, char separator) {
-        assert source != null;
+        assert !Strings.isNullOrEmpty(source);
         this.source = source;
         this.separator = separator;
     }
@@ -451,7 +451,7 @@ final class CharOmitEmptySplitIterator2 extends Iterator<String> {
     private final char separator1;
 
     CharOmitEmptySplitIterator2(CharSequence source, char separator0, char separator1) {
-        assert source != null;
+        assert !Strings.isNullOrEmpty(source);
         this.source = source;
         this.separator0 = separator0;
         this.separator1 = separator1;
@@ -500,7 +500,7 @@ final class CharOmitEmptySplitIterator3 extends Iterator<String> {
     private final char separator2;
 
     CharOmitEmptySplitIterator3(CharSequence source, char separator0, char separator1, char separator2) {
-        assert source != null;
+        assert !Strings.isNullOrEmpty(source);
         this.source = source;
         this.separator0 = separator0;
         this.separator1 = separator1;
@@ -549,7 +549,7 @@ final class CharOmitEmptySplitIteratorN extends Iterator<String> {
     private ProbabilisticMap charMap;
 
     CharOmitEmptySplitIteratorN(CharSequence source, char[] separators) {
-        assert source != null;
+        assert !Strings.isNullOrEmpty(source);
         assert separators != null && separators.length > 3;
         this.source = source;
         this.separators = separators;
@@ -702,7 +702,7 @@ final class StringOmitEmptySplitIterator1 extends Iterator<String> {
     private final CharSequence separator;
 
     StringOmitEmptySplitIterator1(CharSequence source, CharSequence separator) {
-        assert source != null;
+        assert !Strings.isNullOrEmpty(source);
         assert !Strings.isNullOrEmpty(separator);
         this.source = source;
         this.separator = separator;
@@ -751,7 +751,7 @@ final class StringOmitEmptySplitIteratorN extends Iterator<String> {
     private final CharSequence[] separators;
 
     StringOmitEmptySplitIteratorN(CharSequence source, CharSequence[] separators) {
-        assert source != null;
+        assert !Strings.isNullOrEmpty(source);
         assert separators != null && separators.length > 0;
         this.source = source;
         this.separators = separators;
