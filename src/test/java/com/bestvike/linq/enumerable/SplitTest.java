@@ -350,7 +350,7 @@ public class SplitTest extends TestCase {
         assertSingleElement.apply(Linq.split("abc ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries));
         assertSingleElement.apply(Linq.split("abc ", new String[]{" "}, StringSplitOptions.RemoveEmptyEntries));
 
-        assertEquals(Linq.of("thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", "", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a',}, StringSplitOptions.None));
+        assertEquals(Linq.of("thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", "", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.None));
         assertEquals(Linq.of("thi", "i", "tring", "with", "ome", "p", "ce", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.RemoveEmptyEntries));
     }
 }
