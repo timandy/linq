@@ -105,13 +105,13 @@ public final class Split {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.options);
 
         boolean omitEmptyEntries = (options == StringSplitOptions.RemoveEmptyEntries);
+        if (omitEmptyEntries && source.length() == 0)
+            return Array.empty();
+
         if (separator == null || separator.length == 0)
             return omitEmptyEntries
                     ? new CharOmitEmptySplitIterator0(source)
                     : new CharKeepEmptySplitIterator0(source);
-
-        if (omitEmptyEntries && source.length() == 0)
-            return Array.empty();
 
         return omitEmptyEntries
                 ? new StringOmitEmptySplitIteratorN(source, separator)
