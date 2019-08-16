@@ -8,11 +8,11 @@ import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.exception.RepeatInvokeException;
+import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -666,7 +666,7 @@ public class LinqTest extends TestCase {
     @Test
     public void testReadInputStreamByLine() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream("hello\r\nworld".getBytes(StandardCharsets.UTF_8));
-        InputStreamLineEnumerable enumerable = new InputStreamLineEnumerable(inputStream, StandardCharsets.UTF_8);
+        IEnumerable<String> enumerable = new InputStreamLineEnumerable(inputStream, StandardCharsets.UTF_8);
         try (IEnumerator<String> e = enumerable.enumerator()) {
             assertTrue(e.moveNext());
             assertEquals("hello", e.current());
@@ -674,10 +674,13 @@ public class LinqTest extends TestCase {
             assertEquals("world", e.current());
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
+
+            e.reset();
+
+            assertTrue(e.moveNext());
+            assertEquals("hello", e.current());
         }
         assertEquals(-1, inputStream.read());
-
-        enumerable.reset();
 
         assertEquals(2, enumerable.count());
         assertEquals(-1, inputStream.read());
@@ -711,6 +714,11 @@ public class LinqTest extends TestCase {
 
         @Override
         public Iterator<String> clone() {
+            try {
+                this.inputStream.reset();
+            } catch (Exception e) {
+                ThrowHelper.throwRepeatInvokeException();
+            }
             return new InputStreamLineEnumerable(this.inputStream, this.charset);
         }
 
@@ -736,8 +744,9 @@ public class LinqTest extends TestCase {
         public void reset() {
             try {
                 this.inputStream.reset();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                this.state = 1;
+            } catch (Exception e) {
+                ThrowHelper.throwNotSupportedException();
             }
         }
 
