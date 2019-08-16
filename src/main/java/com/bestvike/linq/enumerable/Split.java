@@ -120,7 +120,7 @@ public final class Split {
 }
 
 
-final class CharKeepEmptySplitIterator0 extends Iterator<String> {
+final class CharKeepEmptySplitIterator0 extends AbstractIterator<String> {
     private final CharSequence source;
 
     CharKeepEmptySplitIterator0(CharSequence source) {
@@ -129,7 +129,7 @@ final class CharKeepEmptySplitIterator0 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharKeepEmptySplitIterator0(this.source);
     }
 
@@ -167,7 +167,7 @@ final class CharKeepEmptySplitIterator0 extends Iterator<String> {
 }
 
 
-final class CharKeepEmptySplitIterator1 extends Iterator<String> {
+final class CharKeepEmptySplitIterator1 extends AbstractIterator<String> {
     private final CharSequence source;
     private final char separator;
 
@@ -178,7 +178,7 @@ final class CharKeepEmptySplitIterator1 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharKeepEmptySplitIterator1(this.source, this.separator);
     }
 
@@ -216,7 +216,7 @@ final class CharKeepEmptySplitIterator1 extends Iterator<String> {
 }
 
 
-final class CharKeepEmptySplitIterator2 extends Iterator<String> {
+final class CharKeepEmptySplitIterator2 extends AbstractIterator<String> {
     private final CharSequence source;
     private final char separator0;
     private final char separator1;
@@ -229,7 +229,7 @@ final class CharKeepEmptySplitIterator2 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharKeepEmptySplitIterator2(this.source, this.separator0, this.separator1);
     }
 
@@ -267,7 +267,7 @@ final class CharKeepEmptySplitIterator2 extends Iterator<String> {
 }
 
 
-final class CharKeepEmptySplitIterator3 extends Iterator<String> {
+final class CharKeepEmptySplitIterator3 extends AbstractIterator<String> {
     private final CharSequence source;
     private final char separator0;
     private final char separator1;
@@ -282,7 +282,7 @@ final class CharKeepEmptySplitIterator3 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharKeepEmptySplitIterator3(this.source, this.separator0, this.separator1, this.separator2);
     }
 
@@ -320,7 +320,7 @@ final class CharKeepEmptySplitIterator3 extends Iterator<String> {
 }
 
 
-final class CharKeepEmptySplitIteratorN extends Iterator<String> {
+final class CharKeepEmptySplitIteratorN extends AbstractIterator<String> {
     private final CharSequence source;
     private final char[] separators;
     private ProbabilisticMap charMap;
@@ -333,7 +333,7 @@ final class CharKeepEmptySplitIteratorN extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharKeepEmptySplitIteratorN(this.source, this.separators);
     }
 
@@ -380,7 +380,7 @@ final class CharKeepEmptySplitIteratorN extends Iterator<String> {
 }
 
 
-final class CharOmitEmptySplitIterator0 extends Iterator<String> {
+final class CharOmitEmptySplitIterator0 extends AbstractIterator<String> {
     private final CharSequence source;
 
     CharOmitEmptySplitIterator0(CharSequence source) {
@@ -389,7 +389,7 @@ final class CharOmitEmptySplitIterator0 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharOmitEmptySplitIterator0(this.source);
     }
 
@@ -424,7 +424,7 @@ final class CharOmitEmptySplitIterator0 extends Iterator<String> {
 }
 
 
-final class CharOmitEmptySplitIterator1 extends Iterator<String> {
+final class CharOmitEmptySplitIterator1 extends AbstractIterator<String> {
     private final CharSequence source;
     private final char separator;
 
@@ -435,7 +435,7 @@ final class CharOmitEmptySplitIterator1 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharOmitEmptySplitIterator1(this.source, this.separator);
     }
 
@@ -470,7 +470,7 @@ final class CharOmitEmptySplitIterator1 extends Iterator<String> {
 }
 
 
-final class CharOmitEmptySplitIterator2 extends Iterator<String> {
+final class CharOmitEmptySplitIterator2 extends AbstractIterator<String> {
     private final CharSequence source;
     private final char separator0;
     private final char separator1;
@@ -483,7 +483,7 @@ final class CharOmitEmptySplitIterator2 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharOmitEmptySplitIterator2(this.source, this.separator0, this.separator1);
     }
 
@@ -518,7 +518,7 @@ final class CharOmitEmptySplitIterator2 extends Iterator<String> {
 }
 
 
-final class CharOmitEmptySplitIterator3 extends Iterator<String> {
+final class CharOmitEmptySplitIterator3 extends AbstractIterator<String> {
     private final CharSequence source;
     private final char separator0;
     private final char separator1;
@@ -533,7 +533,7 @@ final class CharOmitEmptySplitIterator3 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharOmitEmptySplitIterator3(this.source, this.separator0, this.separator1, this.separator2);
     }
 
@@ -568,7 +568,7 @@ final class CharOmitEmptySplitIterator3 extends Iterator<String> {
 }
 
 
-final class CharOmitEmptySplitIteratorN extends Iterator<String> {
+final class CharOmitEmptySplitIteratorN extends AbstractIterator<String> {
     private final CharSequence source;
     private final char[] separators;
     private ProbabilisticMap charMap;
@@ -581,7 +581,7 @@ final class CharOmitEmptySplitIteratorN extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new CharOmitEmptySplitIteratorN(this.source, this.separators);
     }
 
@@ -625,7 +625,7 @@ final class CharOmitEmptySplitIteratorN extends Iterator<String> {
 }
 
 
-final class StringKeepEmptySplitIterator1 extends Iterator<String> {
+final class StringKeepEmptySplitIterator1 extends AbstractIterator<String> {
     private final CharSequence source;
     private final CharSequence separator;
 
@@ -637,7 +637,7 @@ final class StringKeepEmptySplitIterator1 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new StringKeepEmptySplitIterator1(this.source, this.separator);
     }
 
@@ -677,7 +677,7 @@ final class StringKeepEmptySplitIterator1 extends Iterator<String> {
 }
 
 
-final class StringKeepEmptySplitIteratorN extends Iterator<String> {
+final class StringKeepEmptySplitIteratorN extends AbstractIterator<String> {
     private final CharSequence source;
     private final CharSequence[] separators;
 
@@ -689,7 +689,7 @@ final class StringKeepEmptySplitIteratorN extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new StringKeepEmptySplitIteratorN(this.source, this.separators);
     }
 
@@ -732,7 +732,7 @@ final class StringKeepEmptySplitIteratorN extends Iterator<String> {
 }
 
 
-final class StringOmitEmptySplitIterator1 extends Iterator<String> {
+final class StringOmitEmptySplitIterator1 extends AbstractIterator<String> {
     private final CharSequence source;
     private final CharSequence separator;
 
@@ -744,7 +744,7 @@ final class StringOmitEmptySplitIterator1 extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new StringOmitEmptySplitIterator1(this.source, this.separator);
     }
 
@@ -781,7 +781,7 @@ final class StringOmitEmptySplitIterator1 extends Iterator<String> {
 }
 
 
-final class StringOmitEmptySplitIteratorN extends Iterator<String> {
+final class StringOmitEmptySplitIteratorN extends AbstractIterator<String> {
     private final CharSequence source;
     private final CharSequence[] separators;
 
@@ -793,7 +793,7 @@ final class StringOmitEmptySplitIteratorN extends Iterator<String> {
     }
 
     @Override
-    public Iterator<String> clone() {
+    public AbstractIterator<String> clone() {
         return new StringOmitEmptySplitIteratorN(this.source, this.separators);
     }
 

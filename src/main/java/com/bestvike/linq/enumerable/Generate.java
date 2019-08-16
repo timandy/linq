@@ -25,7 +25,7 @@ public final class Generate {
 }
 
 
-final class GenerateIterator<TSource> extends Iterator<TSource> {
+final class GenerateIterator<TSource> extends AbstractIterator<TSource> {
     private final TSource item;
 
     GenerateIterator(TSource item) {
@@ -33,7 +33,7 @@ final class GenerateIterator<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public Iterator<TSource> clone() {
+    public AbstractIterator<TSource> clone() {
         return new GenerateIterator<>(this.item);
     }
 
@@ -45,7 +45,7 @@ final class GenerateIterator<TSource> extends Iterator<TSource> {
 }
 
 
-final class GenerateIterator2<TSource> extends Iterator<TSource> {
+final class GenerateIterator2<TSource> extends AbstractIterator<TSource> {
     private final Func0<TSource> func;
 
     GenerateIterator2(Func0<TSource> func) {
@@ -53,7 +53,7 @@ final class GenerateIterator2<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public Iterator<TSource> clone() {
+    public AbstractIterator<TSource> clone() {
         return new GenerateIterator2<>(this.func);
     }
 

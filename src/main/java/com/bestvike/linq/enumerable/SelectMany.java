@@ -346,7 +346,7 @@ final class SelectManyIterator2<TSource, TResult> extends Iterator<TResult> impl
 }
 
 
-final class SelectManyResultIterator<TSource, TCollection, TResult> extends Iterator<TResult> {
+final class SelectManyResultIterator<TSource, TCollection, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TSource> source;
     private final Func1<TSource, IEnumerable<TCollection>> collectionSelector;
     private final Func2<TSource, TCollection, TResult> resultSelector;
@@ -365,7 +365,7 @@ final class SelectManyResultIterator<TSource, TCollection, TResult> extends Iter
     }
 
     @Override
-    public Iterator<TResult> clone() {
+    public AbstractIterator<TResult> clone() {
         return new SelectManyResultIterator<>(this.source, this.collectionSelector, this.resultSelector);
     }
 
@@ -417,7 +417,7 @@ final class SelectManyResultIterator<TSource, TCollection, TResult> extends Iter
 }
 
 
-final class SelectManyResultIterator2<TSource, TCollection, TResult> extends Iterator<TResult> {
+final class SelectManyResultIterator2<TSource, TCollection, TResult> extends AbstractIterator<TResult> {
     private final IEnumerable<TSource> source;
     private final IndexFunc2<TSource, IEnumerable<TCollection>> collectionSelector;
     private final Func2<TSource, TCollection, TResult> resultSelector;
@@ -438,7 +438,7 @@ final class SelectManyResultIterator2<TSource, TCollection, TResult> extends Ite
     }
 
     @Override
-    public Iterator<TResult> clone() {
+    public AbstractIterator<TResult> clone() {
         return new SelectManyResultIterator2<>(this.source, this.collectionSelector, this.resultSelector);
     }
 

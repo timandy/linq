@@ -31,7 +31,7 @@ public final class Enumerate {
 }
 
 
-final class EnumerateIterator<TSource> extends Iterator<TSource> {
+final class EnumerateIterator<TSource> extends AbstractIterator<TSource> {
     private final TSource seed;
     private final Func1<TSource, TSource> next;
 
@@ -41,7 +41,7 @@ final class EnumerateIterator<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public Iterator<TSource> clone() {
+    public AbstractIterator<TSource> clone() {
         return new EnumerateIterator<>(this.seed, this.next);
     }
 
@@ -62,7 +62,7 @@ final class EnumerateIterator<TSource> extends Iterator<TSource> {
 }
 
 
-final class EnumerateIterator2<TSource> extends Iterator<TSource> {
+final class EnumerateIterator2<TSource> extends AbstractIterator<TSource> {
     private final TSource seed;
     private final Predicate1<TSource> condition;
     private final Func1<TSource, TSource> next;
@@ -74,7 +74,7 @@ final class EnumerateIterator2<TSource> extends Iterator<TSource> {
     }
 
     @Override
-    public Iterator<TSource> clone() {
+    public AbstractIterator<TSource> clone() {
         return new EnumerateIterator2<>(this.seed, this.condition, this.next);
     }
 
