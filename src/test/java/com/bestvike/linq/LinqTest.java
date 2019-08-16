@@ -2,7 +2,7 @@ package com.bestvike.linq;
 
 import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
-import com.bestvike.linq.enumerable.Iterator;
+import com.bestvike.linq.enumerable.AbstractIterator;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
@@ -697,7 +697,7 @@ public class LinqTest extends TestCase {
     }
 
 
-    static final class InputStreamLineEnumerable extends Iterator<String> {
+    static final class InputStreamLineEnumerable extends AbstractIterator<String> {
         private final InputStream inputStream;
         private final Charset charset;
         private Scanner scanner;
@@ -713,7 +713,7 @@ public class LinqTest extends TestCase {
         }
 
         @Override
-        public Iterator<String> clone() {
+        public AbstractIterator<String> clone() {
             try {
                 this.inputStream.reset();
             } catch (Exception e) {
