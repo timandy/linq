@@ -240,7 +240,7 @@ final class ConcatNIterator<TSource> extends ConcatIterator<TSource> {
         if (this.headIndex == Integer.MAX_VALUE - 2) {
             // In the unlikely case of this many concatenations, if we produced a ConcatNIterator
             // with int.MaxValue then state would overflow before it matched its index.
-            // So we use the naïve approach of just having a left and right sequence.
+            // So we use the naive approach of just having a left and right sequence.
             return new Concat2Iterator<>(this, next);
         }
 

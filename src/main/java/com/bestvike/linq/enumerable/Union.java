@@ -213,7 +213,7 @@ final class UnionIteratorN<TSource> extends UnionIterator<TSource> {
         if (this.headIndex == Integer.MAX_VALUE - 2) {
             // In the unlikely case of this many unions, if we produced a UnionIteratorN
             // with int.MaxValue then state would overflow before it matched it's index.
-            // So we use the naïve approach of just having a left and right sequence.
+            // So we use the naive approach of just having a left and right sequence.
             return new UnionIterator2<>(this, next, this.comparer);
         }
 

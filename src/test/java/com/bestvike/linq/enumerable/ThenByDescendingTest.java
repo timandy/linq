@@ -89,7 +89,7 @@ public class ThenByDescendingTest extends TestCase {
 
     @Test
     public void OrderIsStable() {
-        String[] source = split("Because I could not stop for Death —\nHe kindly stopped for me —\nThe Carriage held but just Ourselves —\nAnd Immortality.", new char[]{' ', '\n', '\r', '—'}, true);
+        String[] source = split("Because I could not stop for Death -\nHe kindly stopped for me -\nThe Carriage held but just Ourselves -\nAnd Immortality.", new char[]{' ', '\n', '\r', '-'}, true);
         String[] expected = new String[]{
                 "stopped", "kindly", "could", "stop", "held", "just", "not", "for", "for", "but", "me",
                 "Immortality.", "Ourselves", "Carriage", "Because", "Death", "The", "And", "He", "I"
@@ -100,7 +100,7 @@ public class ThenByDescendingTest extends TestCase {
 
     @Test
     public void OrderIsStableCustomComparer() {
-        String[] source = split("Because I could not stop for Death —\nHe kindly stopped for me —\nThe Carriage held but just Ourselves —\nAnd Immortality.", new char[]{' ', '\n', '\r', '—'}, true);
+        String[] source = split("Because I could not stop for Death -\nHe kindly stopped for me -\nThe Carriage held but just Ourselves -\nAnd Immortality.", new char[]{' ', '\n', '\r', '-'}, true);
         String[] expected = new String[]{
                 "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
                 "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
@@ -111,7 +111,7 @@ public class ThenByDescendingTest extends TestCase {
 
     @Test
     public void RunOnce() {
-        String[] source = split("Because I could not stop for Death —\nHe kindly stopped for me —\nThe Carriage held but just Ourselves —\nAnd Immortality.", new char[]{' ', '\n', '\r', '—'}, true);
+        String[] source = split("Because I could not stop for Death -\nHe kindly stopped for me -\nThe Carriage held but just Ourselves -\nAnd Immortality.", new char[]{' ', '\n', '\r', '-'}, true);
         String[] expected = new String[]{
                 "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
                 "I", "He", "The", "And", "Death", "Because", "Carriage", "Ourselves", "Immortality."
