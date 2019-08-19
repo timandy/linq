@@ -4,8 +4,8 @@ import com.bestvike.function.Func0;
 import com.bestvike.function.Func1;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.enumerable.Enumerable;
-import com.bestvike.linq.enumerable.Enumerate;
 import com.bestvike.linq.enumerable.Generate;
+import com.bestvike.linq.enumerable.Loop;
 import com.bestvike.linq.enumerable.Range;
 import com.bestvike.linq.enumerable.Repeat;
 import com.bestvike.linq.enumerable.Split;
@@ -163,20 +163,20 @@ public final class Linq {
         return Split.split(source, separator, options);
     }
 
-    public static <TSource> IEnumerable<TSource> enumerate(TSource seed, Func1<? super TSource, ? extends TSource> next) {
-        return Enumerate.enumerate(seed, (Func1<TSource, TSource>) next);
-    }
-
-    public static <TSource> IEnumerable<TSource> enumerate(TSource seed, Predicate1<? super TSource> condition, Func1<? super TSource, ? extends TSource> next) {
-        return Enumerate.enumerate(seed, (Predicate1<TSource>) condition, (Func1<TSource, TSource>) next);
-    }
-
     public static <TSource> IEnumerable<TSource> generate(TSource item) {
         return Generate.generate(item);
     }
 
     public static <TSource> IEnumerable<TSource> generate(Func0<? extends TSource> func) {
         return Generate.generate((Func0<TSource>) func);
+    }
+
+    public static <TSource> IEnumerable<TSource> loop(TSource seed, Func1<? super TSource, ? extends TSource> next) {
+        return Loop.loop(seed, (Func1<TSource, TSource>) next);
+    }
+
+    public static <TSource> IEnumerable<TSource> loop(TSource seed, Predicate1<? super TSource> condition, Func1<? super TSource, ? extends TSource> next) {
+        return Loop.loop(seed, (Predicate1<TSource>) condition, (Func1<TSource, TSource>) next);
     }
 
     public static IEnumerable<Integer> range(int start, int count) {

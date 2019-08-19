@@ -9,40 +9,40 @@ import com.bestvike.linq.exception.ThrowHelper;
 /**
  * Created by 许崇雷 on 2019-07-26.
  */
-public final class Enumerate {
-    private Enumerate() {
+public final class Loop {
+    private Loop() {
     }
 
-    public static <TSource> IEnumerable<TSource> enumerate(TSource seed, Func1<TSource, TSource> next) {
+    public static <TSource> IEnumerable<TSource> loop(TSource seed, Func1<TSource, TSource> next) {
         if (next == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.next);
 
-        return new EnumerateIterator<>(seed, next);
+        return new LoopIterator<>(seed, next);
     }
 
-    public static <TSource> IEnumerable<TSource> enumerate(TSource seed, Predicate1<TSource> condition, Func1<TSource, TSource> next) {
+    public static <TSource> IEnumerable<TSource> loop(TSource seed, Predicate1<TSource> condition, Func1<TSource, TSource> next) {
         if (condition == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.condition);
         if (next == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.next);
 
-        return new EnumerateIterator2<>(seed, condition, next);
+        return new LoopIterator2<>(seed, condition, next);
     }
 }
 
 
-final class EnumerateIterator<TSource> extends AbstractIterator<TSource> {
+final class LoopIterator<TSource> extends AbstractIterator<TSource> {
     private final TSource seed;
     private final Func1<TSource, TSource> next;
 
-    EnumerateIterator(TSource seed, Func1<TSource, TSource> next) {
+    LoopIterator(TSource seed, Func1<TSource, TSource> next) {
         this.seed = seed;
         this.next = next;
     }
 
     @Override
     public AbstractIterator<TSource> clone() {
-        return new EnumerateIterator<>(this.seed, this.next);
+        return new LoopIterator<>(this.seed, this.next);
     }
 
     @Override
@@ -62,12 +62,12 @@ final class EnumerateIterator<TSource> extends AbstractIterator<TSource> {
 }
 
 
-final class EnumerateIterator2<TSource> extends AbstractIterator<TSource> {
+final class LoopIterator2<TSource> extends AbstractIterator<TSource> {
     private final TSource seed;
     private final Predicate1<TSource> condition;
     private final Func1<TSource, TSource> next;
 
-    EnumerateIterator2(TSource seed, Predicate1<TSource> condition, Func1<TSource, TSource> next) {
+    LoopIterator2(TSource seed, Predicate1<TSource> condition, Func1<TSource, TSource> next) {
         this.seed = seed;
         this.condition = condition;
         this.next = next;
@@ -75,7 +75,7 @@ final class EnumerateIterator2<TSource> extends AbstractIterator<TSource> {
 
     @Override
     public AbstractIterator<TSource> clone() {
-        return new EnumerateIterator2<>(this.seed, this.condition, this.next);
+        return new LoopIterator2<>(this.seed, this.condition, this.next);
     }
 
     @Override

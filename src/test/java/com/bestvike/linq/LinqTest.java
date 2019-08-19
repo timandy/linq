@@ -589,43 +589,6 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testEnumerate() {
-        IEnumerable<Integer> source = Linq.enumerate(0, x -> x + 1);
-        assertEquals(0, source.first());
-        assertEquals(0, source.runOnce().first());
-        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
-        assertEquals(0, source.elementAt(0));
-        assertEquals(5, source.elementAt(5));
-        assertThrows(ArithmeticException.class, () -> source.count());
-
-        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, null));
-    }
-
-    @Test
-    public void testEnumerate2() {
-        IEnumerable<Integer> source = Linq.enumerate(0, x -> x < 100, x -> x + 1);
-        assertEquals(0, source.first());
-        assertEquals(0, source.runOnce().first());
-        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
-        assertEquals(0, source.elementAt(0));
-        assertEquals(5, source.elementAt(5));
-        assertEquals(100, source.count());
-
-        IEnumerable<Integer> source2 = Linq.enumerate(100, x -> x < 0, x -> --x);
-        assertThrows(InvalidOperationException.class, () -> source2.first());
-        assertThrows(ArgumentOutOfRangeException.class, () -> source2.elementAt(0));
-        assertEquals(0, source2.count());
-
-        try (IEnumerator<Integer> e = Linq.enumerate(0, x -> x < 0, x -> x + 1).enumerator()) {
-            assertFalse(e.moveNext());
-            assertFalse(e.moveNext());
-        }
-
-        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, x -> x > 0, null));
-        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(0, null, x -> x));
-    }
-
-    @Test
     public void testGenerate() {
         IEnumerable<Integer> source = Linq.generate(99);
         assertEquals(99, source.first());
@@ -649,6 +612,43 @@ public class LinqTest extends TestCase {
         assertThrows(ArithmeticException.class, () -> source.count());
 
         assertThrows(ArgumentNullException.class, () -> Linq.generate(null));
+    }
+
+    @Test
+    public void testLoop() {
+        IEnumerable<Integer> source = Linq.loop(0, x -> x + 1);
+        assertEquals(0, source.first());
+        assertEquals(0, source.runOnce().first());
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(0, source.elementAt(0));
+        assertEquals(5, source.elementAt(5));
+        assertThrows(ArithmeticException.class, () -> source.count());
+
+        assertThrows(ArgumentNullException.class, () -> Linq.loop(0, null));
+    }
+
+    @Test
+    public void testLoop2() {
+        IEnumerable<Integer> source = Linq.loop(0, x -> x < 100, x -> x + 1);
+        assertEquals(0, source.first());
+        assertEquals(0, source.runOnce().first());
+        assertThrows(ArgumentOutOfRangeException.class, () -> source.elementAt(-1));
+        assertEquals(0, source.elementAt(0));
+        assertEquals(5, source.elementAt(5));
+        assertEquals(100, source.count());
+
+        IEnumerable<Integer> source2 = Linq.loop(100, x -> x < 0, x -> --x);
+        assertThrows(InvalidOperationException.class, () -> source2.first());
+        assertThrows(ArgumentOutOfRangeException.class, () -> source2.elementAt(0));
+        assertEquals(0, source2.count());
+
+        try (IEnumerator<Integer> e = Linq.loop(0, x -> x < 0, x -> x + 1).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.loop(0, x -> x > 0, null));
+        assertThrows(ArgumentNullException.class, () -> Linq.loop(0, null, x -> x));
     }
 
     @Test
