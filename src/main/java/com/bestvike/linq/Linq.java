@@ -2,9 +2,12 @@ package com.bestvike.linq;
 
 import com.bestvike.function.Func0;
 import com.bestvike.function.Func1;
+import com.bestvike.function.Predicate0;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.enumerable.Enumerable;
+import com.bestvike.linq.enumerable.Enumerate;
 import com.bestvike.linq.enumerable.Generate;
+import com.bestvike.linq.enumerable.Iterate;
 import com.bestvike.linq.enumerable.Loop;
 import com.bestvike.linq.enumerable.Range;
 import com.bestvike.linq.enumerable.Repeat;
@@ -177,6 +180,14 @@ public final class Linq {
 
     public static <TSource> IEnumerable<TSource> loop(TSource seed, Predicate1<? super TSource> condition, Func1<? super TSource, ? extends TSource> next) {
         return Loop.loop(seed, (Predicate1<TSource>) condition, (Func1<TSource, TSource>) next);
+    }
+
+    public static <TSource> IEnumerable<TSource> enumerate(Predicate0 moveNext, Func0<? extends TSource> current) {
+        return Enumerate.enumerate(moveNext, (Func0<TSource>) current);
+    }
+
+    public static <TSource> IEnumerable<TSource> iterate(Predicate0 hasNext, Func0<? extends TSource> next) {
+        return Iterate.iterate(hasNext, (Func0<TSource>) next);
     }
 
     public static IEnumerable<Integer> range(int start, int count) {
