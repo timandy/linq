@@ -51,8 +51,10 @@ In general, the more complex the operation you want to perform on the data, the 
 - words
 - lines
 - split
+- infinite
+- loop
 - enumerate
-- generate
+- iterate
 - range
 - repeat
 
