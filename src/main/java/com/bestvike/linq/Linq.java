@@ -6,7 +6,7 @@ import com.bestvike.function.Predicate0;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.enumerable.Enumerable;
 import com.bestvike.linq.enumerable.Enumerate;
-import com.bestvike.linq.enumerable.Generate;
+import com.bestvike.linq.enumerable.Infinite;
 import com.bestvike.linq.enumerable.Iterate;
 import com.bestvike.linq.enumerable.Loop;
 import com.bestvike.linq.enumerable.Range;
@@ -166,12 +166,12 @@ public final class Linq {
         return Split.split(source, separator, options);
     }
 
-    public static <TSource> IEnumerable<TSource> generate(TSource item) {
-        return Generate.generate(item);
+    public static <TSource> IEnumerable<TSource> infinite(TSource item) {
+        return Infinite.infinite(item);
     }
 
-    public static <TSource> IEnumerable<TSource> generate(Func0<? extends TSource> func) {
-        return Generate.generate((Func0<TSource>) func);
+    public static <TSource> IEnumerable<TSource> infinite(Func0<? extends TSource> next) {
+        return Infinite.infinite((Func0<TSource>) next);
     }
 
     public static <TSource> IEnumerable<TSource> loop(TSource seed, Func1<? super TSource, ? extends TSource> next) {

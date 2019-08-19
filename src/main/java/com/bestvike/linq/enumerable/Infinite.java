@@ -8,33 +8,33 @@ import com.bestvike.linq.exception.ThrowHelper;
 /**
  * Created by 许崇雷 on 2019-07-26.
  */
-public final class Generate {
-    private Generate() {
+public final class Infinite {
+    private Infinite() {
     }
 
-    public static <TSource> IEnumerable<TSource> generate(TSource item) {
-        return new GenerateIterator<>(item);
+    public static <TSource> IEnumerable<TSource> infinite(TSource item) {
+        return new InfiniteIterator<>(item);
     }
 
-    public static <TSource> IEnumerable<TSource> generate(Func0<TSource> func) {
+    public static <TSource> IEnumerable<TSource> infinite(Func0<TSource> func) {
         if (func == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.func);
 
-        return new GenerateIterator2<>(func);
+        return new InfiniteIterator2<>(func);
     }
 }
 
 
-final class GenerateIterator<TSource> extends AbstractIterator<TSource> {
+final class InfiniteIterator<TSource> extends AbstractIterator<TSource> {
     private final TSource item;
 
-    GenerateIterator(TSource item) {
+    InfiniteIterator(TSource item) {
         this.item = item;
     }
 
     @Override
     public AbstractIterator<TSource> clone() {
-        return new GenerateIterator<>(this.item);
+        return new InfiniteIterator<>(this.item);
     }
 
     @Override
@@ -45,16 +45,16 @@ final class GenerateIterator<TSource> extends AbstractIterator<TSource> {
 }
 
 
-final class GenerateIterator2<TSource> extends AbstractIterator<TSource> {
+final class InfiniteIterator2<TSource> extends AbstractIterator<TSource> {
     private final Func0<TSource> func;
 
-    GenerateIterator2(Func0<TSource> func) {
+    InfiniteIterator2(Func0<TSource> func) {
         this.func = func;
     }
 
     @Override
     public AbstractIterator<TSource> clone() {
-        return new GenerateIterator2<>(this.func);
+        return new InfiniteIterator2<>(this.func);
     }
 
     @Override

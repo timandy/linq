@@ -130,7 +130,7 @@ public class ElementAtTest extends TestCase {
         } catch (ArgumentOutOfRangeException ignored) {
         }
 
-        IEnumerable<Integer> generate = Linq.generate(0);
-        assertEquals(0, generate.elementAt(10));
+        IEnumerable<Integer> enumerable3 = Linq.infinite(0);
+        assertEquals(0, enumerable3.elementAt(10));
     }
 }
