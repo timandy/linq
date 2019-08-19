@@ -87,6 +87,10 @@ public final class Linq {
         return Enumerable.of((IEnumerable<TSource>) source);
     }
 
+    public static <TSource> IEnumerable<TSource> of(IEnumerator<? extends TSource> source) {
+        return Enumerable.of((IEnumerator<TSource>) source);
+    }
+
     public static <TSource> IEnumerable<TSource> of(Iterable<? extends TSource> source) {
         return Enumerable.of((Iterable<TSource>) source);
     }

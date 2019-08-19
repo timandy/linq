@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.adapter.enumerable.ArrayListEnumerable;
 import com.bestvike.linq.adapter.enumerable.BooleanArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ByteArrayEnumerable;
@@ -9,6 +10,7 @@ import com.bestvike.linq.adapter.enumerable.CharacterArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.CollectionEnumerable;
 import com.bestvike.linq.adapter.enumerable.DoubleArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.EnumerationEnumerable;
+import com.bestvike.linq.adapter.enumerable.EnumeratorEnumerable;
 import com.bestvike.linq.adapter.enumerable.FloatArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.GenericArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.IntegerArrayEnumerable;
@@ -136,6 +138,13 @@ public final class Enumerable {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return source;
+    }
+
+    public static <TSource> IEnumerable<TSource> of(IEnumerator<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new EnumeratorEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Iterable<TSource> source) {
