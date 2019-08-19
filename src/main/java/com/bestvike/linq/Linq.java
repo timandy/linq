@@ -75,16 +75,16 @@ public final class Linq {
         return Enumerable.of(source);
     }
 
-    public static <TSource> IEnumerable<TSource> of(IEnumerable<? extends TSource> source) {
-        return Enumerable.of((IEnumerable<TSource>) source);
-    }
-
     public static <TSource> IEnumerable<TSource> of(List<? extends TSource> source) {
         return Enumerable.of((List<TSource>) source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Collection<? extends TSource> source) {
         return Enumerable.of((Collection<TSource>) source);
+    }
+
+    public static <TSource> IEnumerable<TSource> of(IEnumerable<? extends TSource> source) {
+        return Enumerable.of((IEnumerable<TSource>) source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Iterable<? extends TSource> source) {
@@ -95,16 +95,16 @@ public final class Linq {
         return Enumerable.of((Iterator<TSource>) source);
     }
 
-    public static <TSource> IEnumerable<TSource> of(Enumeration<? extends TSource> source) {
-        return Enumerable.of((Enumeration<TSource>) source);
-    }
-
     public static <TSource> IEnumerable<TSource> of(Stream<? extends TSource> source) {
         return Enumerable.of((Stream<TSource>) source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Spliterator<? extends TSource> source) {
         return Enumerable.of((Spliterator<TSource>) source);
+    }
+
+    public static <TSource> IEnumerable<TSource> of(Enumeration<? extends TSource> source) {
+        return Enumerable.of((Enumeration<TSource>) source);
     }
 
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> of(Map<? extends TKey, ? extends TValue> source) {

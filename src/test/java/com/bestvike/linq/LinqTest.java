@@ -265,20 +265,6 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testEnumerable() {
-        IEnumerable<Integer> enumerable = new TestEnumerable<>(new Integer[]{1, 2, 3});
-        IEnumerable<Integer> source = Linq.of(enumerable);
-        assertSame(enumerable, source);
-
-        try (IEnumerator<Integer> e = Linq.of(new TestEnumerable<>(new Integer[0])).enumerator()) {
-            assertFalse(e.moveNext());
-            assertFalse(e.moveNext());
-        }
-
-        assertThrows(ArgumentNullException.class, () -> Linq.of((IEnumerable<?>) null));
-    }
-
-    @Test
     public void testArrayList() {
         List<Integer> list = new ArrayList<>();
         list.add(1);
@@ -330,6 +316,20 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testEnumerable() {
+        IEnumerable<Integer> enumerable = new TestEnumerable<>(new Integer[]{1, 2, 3});
+        IEnumerable<Integer> source = Linq.of(enumerable);
+        assertSame(enumerable, source);
+
+        try (IEnumerator<Integer> e = Linq.of(new TestEnumerable<>(new Integer[0])).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((IEnumerable<?>) null));
+    }
+
+    @Test
     public void testIterable() {
         Iterable<Integer> list = new ArrayIterable<>(1, 2, 3);
         assertEquals(3, Linq.of(list).count());
@@ -359,31 +359,6 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testEnumeration() {
-        Enumeration<Integer> elements = new Vector<>(Arrays.asList(1, 2, 3)).elements();
-        IEnumerable<Integer> source = Linq.of(elements);
-        assertEquals(Linq.of(1, 2, 3), source);
-        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
-
-        try (IEnumerator<Integer> e = Linq.of(new Vector<Integer>().elements()).enumerator()) {
-            assertFalse(e.moveNext());
-            assertFalse(e.moveNext());
-        }
-
-        try (IEnumerator<Integer> e = (IEnumerator<Integer>) Linq.of(new Vector<Integer>().elements()).toEnumeration()) {
-            assertFalse(e.moveNext());
-            assertFalse(e.moveNext());
-        }
-
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Enumeration<?>) null));
-
-        //append,prepend,concat
-        IEnumerable<Integer> source2 = Linq.of(new Vector<>(Arrays.asList(1, 2, 3)).elements()).prepend(0).append(4).append(5).concat(Linq.range(6, 4));
-        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), source2);
-        assertThrows(RepeatInvokeException.class, () -> source2.toArray());
-    }
-
-    @Test
     public void testStream() {
         IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3));
         assertEquals(Linq.of(1, 2, 3), source);
@@ -409,6 +384,31 @@ public class LinqTest extends TestCase {
         }
 
         assertThrows(ArgumentNullException.class, () -> Linq.of((Spliterator<?>) null));
+    }
+
+    @Test
+    public void testEnumeration() {
+        Enumeration<Integer> elements = new Vector<>(Arrays.asList(1, 2, 3)).elements();
+        IEnumerable<Integer> source = Linq.of(elements);
+        assertEquals(Linq.of(1, 2, 3), source);
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
+
+        try (IEnumerator<Integer> e = Linq.of(new Vector<Integer>().elements()).enumerator()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        try (IEnumerator<Integer> e = (IEnumerator<Integer>) Linq.of(new Vector<Integer>().elements()).toEnumeration()) {
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Enumeration<?>) null));
+
+        //append,prepend,concat
+        IEnumerable<Integer> source2 = Linq.of(new Vector<>(Arrays.asList(1, 2, 3)).elements()).prepend(0).append(4).append(5).concat(Linq.range(6, 4));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), source2);
+        assertThrows(RepeatInvokeException.class, () -> source2.toArray());
     }
 
     @Test

@@ -117,13 +117,6 @@ public final class Enumerable {
         return new GenericArrayEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> of(IEnumerable<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return source;
-    }
-
     public static <TSource> IEnumerable<TSource> of(List<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -136,6 +129,13 @@ public final class Enumerable {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new CollectionEnumerable<>(source);
+    }
+
+    public static <TSource> IEnumerable<TSource> of(IEnumerable<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return source;
     }
 
     public static <TSource> IEnumerable<TSource> of(Iterable<TSource> source) {
@@ -152,13 +152,6 @@ public final class Enumerable {
         return new IteratorEnumerable<>(source);
     }
 
-    public static <TSource> IEnumerable<TSource> of(Enumeration<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new EnumerationEnumerable<>(source);
-    }
-
     public static <TSource> IEnumerable<TSource> of(Stream<TSource> source) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -171,6 +164,13 @@ public final class Enumerable {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         return new SpliteratorEnumerable<>(source);
+    }
+
+    public static <TSource> IEnumerable<TSource> of(Enumeration<TSource> source) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        return new EnumerationEnumerable<>(source);
     }
 
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> of(Map<TKey, TValue> source) {
