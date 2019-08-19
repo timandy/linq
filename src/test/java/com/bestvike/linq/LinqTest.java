@@ -330,6 +330,16 @@ public class LinqTest extends TestCase {
     }
 
     @Test
+    public void testEnumerator() {
+        IEnumerator<Integer> enumerator = new TestEnumerable<>(new Integer[]{1, 2, 3}).enumerator();
+        IEnumerable<Integer> source = Linq.of(enumerator);
+        assertSame(enumerator, source.enumerator());
+
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
+        assertThrows(ArgumentNullException.class, () -> Linq.of((IEnumerator<?>) null));
+    }
+
+    @Test
     public void testIterable() {
         Iterable<Integer> list = new ArrayIterable<>(1, 2, 3);
         assertEquals(3, Linq.of(list).count());
@@ -475,34 +485,38 @@ public class LinqTest extends TestCase {
         String[] strings = {"1", "2", "3"};
         assertEquals(Linq.of(strings), Linq.as(strings));
 
-        //IEnumerable
-        IEnumerable<String> enumerable = Linq.of(strings);
-        assertSame(enumerable, Linq.as(enumerable));
-
         //List
         assertEquals(Linq.of(strings), Linq.as(Arrays.asList(strings)));
 
         //Collection
         assertEquals(Linq.of(strings), Linq.as(ArrayUtils.toCollection(strings)));
 
+        //IEnumerable
+        IEnumerable<String> enumerable = Linq.of(strings);
+        assertSame(enumerable, Linq.as(enumerable));
+
         //Iterable
         assertEquals(Linq.of(1L, 2L, 3L), Linq.as(new CountIterable(3)));
-
-        //Iterator
-        assertEquals(Linq.of(1L, 2L, 3L), Linq.as(new CountIterator(3)));
-
-        //Enumeration
-        assertEquals(Linq.of(1, 2, 3), Linq.as(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
 
         //Stream
         IEnumerable<Object> streamEnumerable = Linq.as(Stream.of(1, 2, 3));
         assertEquals(Linq.of(1, 2, 3), streamEnumerable);
         assertThrows(RepeatInvokeException.class, () -> streamEnumerable.enumerator());
 
+        //IEnumerator
+        IEnumerator<String> enumerator = Linq.of(strings).enumerator();
+        assertSame(enumerator, Linq.as(enumerator).enumerator());
+
+        //Iterator
+        assertEquals(Linq.of(1L, 2L, 3L), Linq.as(new CountIterator(3)));
+
         //Spliterator
         IEnumerable<Object> spliteratorEnumerable = Linq.as(Stream.of(1, 2, 3).spliterator());
         assertEquals(Linq.of(1, 2, 3), spliteratorEnumerable);
         assertThrows(RepeatInvokeException.class, () -> spliteratorEnumerable.enumerator());
+
+        //Enumeration
+        assertEquals(Linq.of(1, 2, 3), Linq.as(new Vector<>(Arrays.asList(1, 2, 3)).elements()));
 
         //Map
         Map<String, Integer> map = new HashMap<>();
