@@ -210,22 +210,24 @@ public final class Enumerable {
             return (IEnumerable<TSource>) of((char[]) source);
         if (source instanceof Object[])
             return of((TSource[]) source);
-        if (source instanceof IEnumerable)
-            return of((IEnumerable<TSource>) source);
         if (source instanceof List)
             return of((List<TSource>) source);
         if (source instanceof Collection)
             return of((Collection<TSource>) source);
+        if (source instanceof IEnumerable)
+            return of((IEnumerable<TSource>) source);
         if (source instanceof Iterable)
             return of((Iterable<TSource>) source);
-        if (source instanceof Iterator)
-            return of((Iterator<TSource>) source);
-        if (source instanceof Enumeration)
-            return of((Enumeration<TSource>) source);
         if (source instanceof Stream)
             return of((Stream<TSource>) source);
+        if (source instanceof IEnumerator)
+            return of((IEnumerator<TSource>) source);
+        if (source instanceof Iterator)
+            return of((Iterator<TSource>) source);
         if (source instanceof Spliterator)
             return of((Spliterator<TSource>) source);
+        if (source instanceof Enumeration)
+            return of((Enumeration<TSource>) source);
         if (source instanceof Map)
             return (IEnumerable<TSource>) of((Map<?, ?>) source);
         return null;
