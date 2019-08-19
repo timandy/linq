@@ -10,6 +10,7 @@ import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.linq.exception.RepeatInvokeException;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
+import com.bestvike.linq.util.Strings;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -23,6 +24,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -355,7 +357,7 @@ public class LinqTest extends TestCase {
 
     @Test
     public void testIterator() {
-        java.util.Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
+        Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
         IEnumerable<Integer> source = Linq.of(iterator);
         assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(RepeatInvokeException.class, () -> source.enumerator());
@@ -365,7 +367,7 @@ public class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((java.util.Iterator<?>) null));
+        assertThrows(ArgumentNullException.class, () -> Linq.of((Iterator<?>) null));
     }
 
     @Test
@@ -649,6 +651,61 @@ public class LinqTest extends TestCase {
 
         assertThrows(ArgumentNullException.class, () -> Linq.loop(0, x -> x > 0, null));
         assertThrows(ArgumentNullException.class, () -> Linq.loop(0, null, x -> x));
+    }
+
+    @Test
+    public void testEnumerate() {
+        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(null, () -> 1));
+        assertThrows(ArgumentNullException.class, () -> Linq.enumerate(() -> true, null));
+
+        IEnumerator<Integer> enumerator = new TestEnumerable<>(new Integer[]{1, 2}).enumerator();
+        IEnumerable<Integer> source = Linq.enumerate(enumerator::moveNext, enumerator::current);
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals(1, e.current());
+            assertTrue(e.moveNext());
+            assertEquals(2, e.current());
+            assertEquals(2, e.current());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
+    }
+
+    @Test
+    public void testIterate() {
+        assertThrows(ArgumentNullException.class, () -> Linq.iterate(null, () -> 1));
+        assertThrows(ArgumentNullException.class, () -> Linq.iterate(() -> true, null));
+
+        Iterator<Integer> iterator = new ArrayIterable<>(new Integer[]{1, 2}).iterator();
+        IEnumerable<Integer> source = Linq.iterate(iterator::hasNext, iterator::next);
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals(1, e.current());
+            assertTrue(e.moveNext());
+            assertEquals(2, e.current());
+            assertEquals(2, e.current());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        assertThrows(RepeatInvokeException.class, () -> source.enumerator());
+
+        //read stream by line
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(" hello \r\n world \r\n bye ".getBytes(StandardCharsets.UTF_8));
+        try (Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8.name());
+             IEnumerator<String> e = Linq.iterate(scanner::hasNextLine, scanner::nextLine).select(x -> x == null ? Strings.Empty : x.trim()).enumerator()) {
+            e.moveNext();
+            assertEquals("hello", e.current());
+            e.moveNext();
+            assertEquals("world", e.current());
+            e.moveNext();
+            assertEquals("bye", e.current());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+        assertEquals(-1, inputStream.read());
     }
 
     @Test
