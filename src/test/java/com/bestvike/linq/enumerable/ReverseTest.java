@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -145,9 +146,15 @@ public class ReverseTest extends TestCase {
         assertEquals(Linq.of("world", "hello"), Linq.words(" hello,world! ").reverse());
         assertEquals(Linq.of("world", "hello"), Linq.lines("\r\nhello\r\nworld\r\n").reverse());
 
+        assertThrows(OutOfMemoryError.class, () -> Linq.generate(() -> 0).reverse().first());
+
         assertThrows(OutOfMemoryError.class, () -> Linq.loop(0, x -> x).reverse().first());
         assertEquals(99, Linq.loop(0, x -> x < 100, x -> ++x).reverse().first());
 
-        assertThrows(OutOfMemoryError.class, () -> Linq.generate(() -> 0).reverse().first());
+        IEnumerator<Integer> enumerator = new TestEnumerable<>(new Integer[]{1, 2}).enumerator();
+        assertEquals(2, Linq.enumerate(enumerator::moveNext, enumerator::current).reverse().first());
+
+        Iterator<Integer> iterator = new ArrayIterable<>(new Integer[]{1, 2}).iterator();
+        assertEquals(2, Linq.iterate(iterator::hasNext, iterator::next).reverse().first());
     }
 }
