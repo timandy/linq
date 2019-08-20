@@ -98,6 +98,17 @@ public class ReverseTest extends TestCase {
     }
 
     @Test
+    public void testReverseCount() {
+        assertTrue(Linq.of(1, 2, 3).reverse().any());
+        assertTrue(Linq.of(1, 2, 3).select(x -> x).reverse().any());
+        assertTrue(new TestEnumerable<>(new Integer[]{1, 2, 3}).reverse().any());
+
+        assertFalse(Linq.of().reverse().any());
+        assertFalse(Linq.of().select(x -> x).reverse().any());
+        assertFalse(new TestEnumerable<>(new Integer[0]).reverse().any());
+    }
+
+    @Test
     public void testReverse() {
         //null 在前,值相等的按原始顺序
         String s = Linq.of(emps).concat(Linq.of(badEmps))
