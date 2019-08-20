@@ -202,7 +202,7 @@ public final class TupleN<T1, T2, T3, T4, T5, T6, T7, TRest> implements IStructu
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
+        sb.append('(');
         return this.toString(sb);
     }
 

@@ -112,7 +112,7 @@ public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructur
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
+        sb.append('(');
         return this.toString(sb);
     }
 
@@ -123,7 +123,7 @@ public final class Tuple3<T1, T2, T3> implements IStructuralEquatable, IStructur
         sb.append(this.item2);
         sb.append(", ");
         sb.append(this.item3);
-        sb.append(")");
+        sb.append(')');
         return sb.toString();
     }
 }

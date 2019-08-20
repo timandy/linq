@@ -154,7 +154,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> implements IStructuralEquatabl
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
+        sb.append('(');
         return this.toString(sb);
     }
 
@@ -171,7 +171,7 @@ public final class Tuple6<T1, T2, T3, T4, T5, T6> implements IStructuralEquatabl
         sb.append(this.item5);
         sb.append(", ");
         sb.append(this.item6);
-        sb.append(")");
+        sb.append(')');
         return sb.toString();
     }
 }

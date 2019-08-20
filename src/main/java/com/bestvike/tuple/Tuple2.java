@@ -97,7 +97,7 @@ public final class Tuple2<T1, T2> implements IStructuralEquatable, IStructuralCo
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
+        sb.append('(');
         return this.toString(sb);
     }
 
@@ -106,7 +106,7 @@ public final class Tuple2<T1, T2> implements IStructuralEquatable, IStructuralCo
         sb.append(this.item1);
         sb.append(", ");
         sb.append(this.item2);
-        sb.append(")");
+        sb.append(')');
         return sb.toString();
     }
 }
