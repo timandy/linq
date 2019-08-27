@@ -48,7 +48,7 @@ public final class Joining {
                 return text;
 
             StringBuilder sb = new StringBuilder(text);
-            if (separator == null) {
+            if (Strings.isNullOrEmpty(separator)) {
                 do {
                     sb.append(e.current());
                 }
@@ -70,10 +70,10 @@ public final class Joining {
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
         StringBuilder sb = new StringBuilder();
-        if (prefix != null)
+        if (!Strings.isNullOrEmpty(prefix))
             sb.append(prefix);
 
-        if (separator == null) {
+        if (Strings.isNullOrEmpty(separator)) {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext())
                     sb.append(e.current());
@@ -90,7 +90,7 @@ public final class Joining {
             }
         }
 
-        if (suffix != null)
+        if (!Strings.isNullOrEmpty(suffix))
             sb.append(suffix);
 
         return sb.toString();
