@@ -102,7 +102,7 @@ public class TestCase {
         return builder.toString();
     }
 
-    public static String[] split(String value, char[] separator, boolean removeEmptyEntries) {
+    protected static String[] split(String value, char[] separator, boolean removeEmptyEntries) {
         if (value == null)
             throw new NullPointerException("value is null");
         if (separator == null)
