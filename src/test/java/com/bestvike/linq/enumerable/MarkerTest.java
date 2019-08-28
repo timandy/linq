@@ -1,13 +1,12 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by 许崇雷 on 2019-08-02.
  */
-public class MarkerTest {
+public class MarkerTest extends TestCase {
     @Test
     public void testEquals() {
         Marker expected = new Marker(1, 2);

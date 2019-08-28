@@ -1,13 +1,12 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.TestCase;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by 许崇雷 on 2019-08-02.
  */
-public class CopyPositionTest {
+public class CopyPositionTest extends TestCase {
     @Test
     public void testEquals() {
         CopyPosition expected = new CopyPosition(1, 2);
