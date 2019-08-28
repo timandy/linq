@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -35,8 +34,7 @@ public class FormatterTest extends TestCase {
     private MoreFieldBean moreFieldBean;
     private MoreFieldBean moreFieldBeanExpected;
 
-    @Before
-    public void init() {
+    {
         this.formatter = new Formatter();
         this.formatter.setNullString("NULL");
         this.formatter.setStringQuotes("\"");

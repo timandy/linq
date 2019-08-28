@@ -7,7 +7,6 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.FormatTypeStyle;
 import com.bestvike.linq.util.Formatter;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -23,8 +22,7 @@ import java.util.TimeZone;
 public class FormatTest extends TestCase {
     private Formatter formatter;
 
-    @Before
-    public void init() {
+    {
         TimeZone.setDefault(TIME_ZONE);
         this.formatter = new Formatter();
         this.formatter.setNullString("NULL");

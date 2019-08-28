@@ -3,7 +3,6 @@ package com.bestvike;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -32,8 +31,7 @@ public class ValueTypeTest extends TestCase {
     private MoreFieldBean moreFieldBean;
     private MoreFieldBean moreFieldBeanExpected;
 
-    @Before
-    public void init() {
+    {
         this.noFieldBean = new NoFieldBean();
         this.noFieldBeanExpected = new NoFieldBean();
         this.oneFieldBean = new OneFieldBean("Robert");

@@ -3,7 +3,6 @@ package com.bestvike.collections.generic;
 import com.bestvike.CultureInfo;
 import com.bestvike.TestCase;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.text.Collator;
@@ -13,8 +12,7 @@ import java.util.Locale;
  * Created by 许崇雷 on 2019-04-30.
  */
 public class StringComparerTest extends TestCase {
-    @Before
-    public void before() {
+    {
         CultureInfo.setCurrent(Locale.CHINA);
         assertSame(Locale.CHINA, CultureInfo.getCurrent());
         assertEquals(Locale.ROOT, CultureInfo.getInvariant());
