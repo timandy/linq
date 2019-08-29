@@ -4,7 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.resources.SR;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by 许崇雷 on 2019-06-19.

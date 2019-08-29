@@ -4,7 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by 许崇雷 on 2019-05-27.

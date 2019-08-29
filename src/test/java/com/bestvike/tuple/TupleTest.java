@@ -2,7 +2,7 @@ package com.bestvike.tuple;
 
 import com.bestvike.TestCase;
 import com.bestvike.linq.exception.ArgumentException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by 许崇雷 on 2017-07-23.

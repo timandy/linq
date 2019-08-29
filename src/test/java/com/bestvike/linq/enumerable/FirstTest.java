@@ -10,7 +10,7 @@ import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ArrayUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 

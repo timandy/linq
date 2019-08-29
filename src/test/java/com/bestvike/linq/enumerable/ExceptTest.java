@@ -9,7 +9,7 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

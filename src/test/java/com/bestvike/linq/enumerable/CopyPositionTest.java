@@ -1,7 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by 许崇雷 on 2019-08-02.

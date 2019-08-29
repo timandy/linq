@@ -3,7 +3,7 @@ package com.bestvike.linq.util;
 import com.bestvike.TestCase;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by 许崇雷 on 2019-07-12.

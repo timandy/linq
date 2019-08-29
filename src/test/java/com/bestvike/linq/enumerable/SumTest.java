@@ -15,7 +15,7 @@ import com.bestvike.function.NullableLongFunc1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 

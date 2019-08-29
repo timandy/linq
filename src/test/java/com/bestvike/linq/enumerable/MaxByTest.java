@@ -4,7 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.Linq;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple1;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 

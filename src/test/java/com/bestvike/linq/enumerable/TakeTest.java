@@ -9,7 +9,7 @@ import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.ref;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;

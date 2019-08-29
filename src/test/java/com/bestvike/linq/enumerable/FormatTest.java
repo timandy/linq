@@ -7,7 +7,7 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.FormatTypeStyle;
 import com.bestvike.linq.util.Formatter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

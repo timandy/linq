@@ -11,7 +11,7 @@ import com.bestvike.linq.exception.RepeatInvokeException;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.Strings;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

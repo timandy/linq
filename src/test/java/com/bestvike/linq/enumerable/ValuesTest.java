@@ -4,7 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

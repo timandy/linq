@@ -12,7 +12,7 @@ import com.bestvike.linq.util.StringSplitOptions;
 import com.bestvike.linq.util.Strings;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple4;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;

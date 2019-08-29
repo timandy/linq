@@ -3,7 +3,7 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

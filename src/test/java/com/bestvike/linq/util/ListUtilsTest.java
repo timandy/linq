@@ -2,7 +2,7 @@ package com.bestvike.linq.util;
 
 import com.bestvike.TestCase;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 

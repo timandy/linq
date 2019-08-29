@@ -6,7 +6,7 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.ref;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by 许崇雷 on 2018-05-17.

@@ -3,7 +3,7 @@ package com.bestvike.collections.generic;
 import com.bestvike.CultureInfo;
 import com.bestvike.TestCase;
 import com.bestvike.linq.exception.ArgumentNullException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.Collator;
 import java.util.Locale;

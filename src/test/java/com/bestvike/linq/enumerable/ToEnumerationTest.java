@@ -7,7 +7,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.adapter.enumeration.EnumerableEnumeration;
 import com.bestvike.linq.exception.RepeatInvokeException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;

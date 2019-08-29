@@ -2,7 +2,7 @@ package com.bestvike.collections.generic;
 
 import com.bestvike.TestCase;
 import com.bestvike.function.Predicate2;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by 许崇雷 on 2019-04-30.

@@ -4,7 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.resources.SR;
 import com.bestvike.linq.util.Assertion;
 import com.bestvike.linq.util.Environment;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 

@@ -11,7 +11,7 @@ import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.Reflection;
 import com.bestvike.ref;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

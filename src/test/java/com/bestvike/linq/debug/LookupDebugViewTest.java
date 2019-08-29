@@ -5,7 +5,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.ILookup;
 import com.bestvike.linq.Linq;
 import com.bestvike.tuple.Tuple;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;

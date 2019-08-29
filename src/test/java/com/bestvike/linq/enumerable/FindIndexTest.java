@@ -21,7 +21,7 @@ import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.LinkedList;

@@ -20,7 +20,7 @@ import com.bestvike.linq.util.Dictionary;
 import com.bestvike.out;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;

@@ -14,7 +14,7 @@ import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
