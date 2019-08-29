@@ -17,9 +17,9 @@ import java.util.Date;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class FirstTest extends TestCase {
+class FirstTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -27,7 +27,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -42,7 +42,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void EmptyIListT() {
+    void EmptyIListT() {
         this.TestEmptyIList(Integer.class);
         this.TestEmptyIList(String.class);
         this.TestEmptyIList(Date.class);
@@ -50,7 +50,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void IListTOneElement() {
+    void IListTOneElement() {
         int[] source = {5};
         int expected = 5;
 
@@ -59,7 +59,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void IListTManyElementsFirstIsDefault() {
+    void IListTManyElementsFirstIsDefault() {
         Integer[] source = {null, -10, 2, 4, 3, 0, 2};
         Integer expected = null;
 
@@ -68,7 +68,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void IListTManyElementsFirstIsNotDefault() {
+    void IListTManyElementsFirstIsNotDefault() {
         Integer[] source = {19, null, -10, 2, 4, 3, 0, 2};
         Integer expected = 19;
 
@@ -88,7 +88,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void EmptyNotIListT() {
+    void EmptyNotIListT() {
         this.<Integer>TestEmptyNotIList();
         this.<String>TestEmptyNotIList();
         this.<Date>TestEmptyNotIList();
@@ -96,7 +96,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void OneElementNotIListT() {
+    void OneElementNotIListT() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
@@ -105,7 +105,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsNotIListT() {
+    void ManyElementsNotIListT() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(3, 10);
         int expected = 3;
 
@@ -114,7 +114,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void EmptySource() {
+    void EmptySource() {
         int[] source = {};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).first(x -> true));
@@ -122,7 +122,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void OneElementTruePredicate() {
+    void OneElementTruePredicate() {
         int[] source = {4};
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
@@ -131,7 +131,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsPredicateFalseForAll() {
+    void ManyElementsPredicateFalseForAll() {
         int[] source = {9, 5, 1, 3, 17, 21};
         Predicate1<Integer> predicate = TestCase::IsEven;
 
@@ -139,7 +139,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void PredicateTrueOnlyForLast() {
+    void PredicateTrueOnlyForLast() {
         int[] source = {9, 5, 1, 3, 17, 21, 50};
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
@@ -148,7 +148,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void PredicateTrueForSome() {
+    void PredicateTrueForSome() {
         int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
@@ -157,7 +157,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void PredicateTrueForSomeRunOnce() {
+    void PredicateTrueForSomeRunOnce() {
         int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
@@ -166,23 +166,23 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).first());
     }
 
     @Test
-    public void NullSourcePredicateUsed() {
+    void NullSourcePredicateUsed() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).first(i -> i != 2));
     }
 
     @Test
-    public void NullPredicate() {
+    void NullPredicate() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).first(predicate));
     }
 
     @Test
-    public void testFirst() {
+    void testFirst() {
         Employee e = emps[0];
         assertEquals(e, emps[0]);
         assertEquals(e, Linq.of(emps).first());
@@ -210,7 +210,7 @@ public class FirstTest extends TestCase {
     }
 
     @Test
-    public void testFirstPredicate() {
+    void testFirstPredicate() {
         String[] people = {"Brill", "Smith", "Simpsom"};
         String[] peopleWithoutCharS = {"Brill", "Andrew", "Alice"};
         Integer[] numbers = {5, 10, 15, 20, 25};

@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-05-30.
  */
-public class RangeTest extends TestCase {
+class RangeTest extends TestCase {
     @Test
-    public void Range_ProduceCorrectSequence() {
+    void Range_ProduceCorrectSequence() {
         IEnumerable<Integer> rangeSequence = Linq.range(1, 100);
         int expected = 0;
         for (int val : rangeSequence) {
@@ -27,7 +27,7 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Range_ToArray_ProduceCorrectResult() {
+    void Range_ToArray_ProduceCorrectResult() {
         Array<Integer> array = Linq.range(1, 100).toArray();
         assertEquals(100, array._getCount());
         for (int i = 0; i < array._getCount(); i++)
@@ -35,7 +35,7 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Range_ToList_ProduceCorrectResult() {
+    void Range_ToList_ProduceCorrectResult() {
         List<Integer> list = Linq.range(1, 100).toList();
         assertEquals(100, list.size());
         for (int i = 0; i < list.size(); i++)
@@ -43,7 +43,7 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Range_ZeroCountLeadToEmptySequence() {
+    void Range_ZeroCountLeadToEmptySequence() {
         Array<Integer> array = Linq.range(1, 0).toArray();
         Array<Integer> array2 = Linq.range(Integer.MIN_VALUE, 0).toArray();
         Array<Integer> array3 = Linq.range(Integer.MAX_VALUE, 0).toArray();
@@ -53,20 +53,20 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Range_ThrowExceptionOnNegativeCount() {
+    void Range_ThrowExceptionOnNegativeCount() {
         assertThrows(ArgumentOutOfRangeException.class, () -> Linq.range(1, -1));
         assertThrows(ArgumentOutOfRangeException.class, () -> Linq.range(1, Integer.MIN_VALUE));
     }
 
     @Test
-    public void Range_ThrowExceptionOnOverflow() {
+    void Range_ThrowExceptionOnOverflow() {
         assertThrows(ArgumentOutOfRangeException.class, () -> Linq.range(1000, Integer.MAX_VALUE));
         assertThrows(ArgumentOutOfRangeException.class, () -> Linq.range(Integer.MAX_VALUE, 1000));
         assertThrows(ArgumentOutOfRangeException.class, () -> Linq.range(Integer.MAX_VALUE - 10, 20));
     }
 
     @Test
-    public void Range_NotEnumerateAfterEnd() {
+    void Range_NotEnumerateAfterEnd() {
         try (IEnumerator<Integer> rangeEnum = Linq.range(1, 1).enumerator()) {
             assertTrue(rangeEnum.moveNext());
             assertFalse(rangeEnum.moveNext());
@@ -75,7 +75,7 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Range_EnumerableAndEnumeratorAreSame() {
+    void Range_EnumerableAndEnumeratorAreSame() {
         IEnumerable<Integer> rangeEnumerable = Linq.range(1, 1);
         try (IEnumerator<Integer> rangeEnumerator = rangeEnumerable.enumerator()) {
             assertSame(rangeEnumerable, rangeEnumerator);
@@ -83,7 +83,7 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Range_GetEnumeratorReturnUniqueInstances() {
+    void Range_GetEnumeratorReturnUniqueInstances() {
         IEnumerable<Integer> rangeEnumerable = Linq.range(1, 1);
         try (IEnumerator<Integer> enum1 = rangeEnumerable.enumerator();
              IEnumerator<Integer> enum2 = rangeEnumerable.enumerator()) {
@@ -92,7 +92,7 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Range_ToInt32MaxValue() {
+    void Range_ToInt32MaxValue() {
         int from = Integer.MAX_VALUE - 3;
         int count = 4;
         IEnumerable<Integer> rangeEnumerable = Linq.range(from, count);
@@ -104,13 +104,13 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void RepeatedCallsSameResults() {
+    void RepeatedCallsSameResults() {
         assertEquals(Linq.range(-1, 2), Linq.range(-1, 2));
         assertEquals(Linq.range(0, 0), Linq.range(0, 0));
     }
 
     @Test
-    public void NegativeStart() {
+    void NegativeStart() {
         int start = -5;
         int count = 1;
         int[] expected = {-5};
@@ -119,7 +119,7 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void ArbitraryStart() {
+    void ArbitraryStart() {
         int start = 12;
         int count = 6;
         int[] expected = {12, 13, 14, 15, 16, 17};
@@ -128,27 +128,27 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void Take() {
+    void Take() {
         assertEquals(Linq.range(0, 10), Linq.range(0, 20).take(10));
     }
 
     @Test
-    public void TakeExcessive() {
+    void TakeExcessive() {
         assertEquals(Linq.range(0, 10), Linq.range(0, 10).take(Integer.MAX_VALUE));
     }
 
     @Test
-    public void Skip() {
+    void Skip() {
         assertEquals(Linq.range(10, 10), Linq.range(0, 20).skip(10));
     }
 
     @Test
-    public void SkipExcessive() {
+    void SkipExcessive() {
         assertEmpty(Linq.range(10, 10).skip(20));
     }
 
     @Test
-    public void SkipTakeCanOnlyBeOne() {
+    void SkipTakeCanOnlyBeOne() {
         assertEquals(Linq.of(new int[]{1}), Linq.range(1, 10).take(1));
         assertEquals(Linq.of(new int[]{2}), Linq.range(1, 10).skip(1).take(1));
         assertEquals(Linq.of(new int[]{3}), Linq.range(1, 10).take(3).skip(2));
@@ -156,42 +156,42 @@ public class RangeTest extends TestCase {
     }
 
     @Test
-    public void ElementAt() {
+    void ElementAt() {
         assertEquals(4, Linq.range(0, 10).elementAt(4));
     }
 
     @Test
-    public void ElementAtExcessiveThrows() {
+    void ElementAtExcessiveThrows() {
         assertThrows(ArgumentOutOfRangeException.class, () -> Linq.range(0, 10).elementAt(100));
     }
 
     @Test
-    public void ElementAtOrDefault() {
+    void ElementAtOrDefault() {
         assertEquals(4, Linq.range(0, 10).elementAtOrDefault(4));
     }
 
     @Test
-    public void ElementAtOrDefaultExcessiveIsDefault() {
+    void ElementAtOrDefaultExcessiveIsDefault() {
         assertEquals(null, Linq.range(52, 10).elementAtOrDefault(100));
     }
 
     @Test
-    public void First() {
+    void First() {
         assertEquals(57, Linq.range(57, 1000000000).first());
     }
 
     @Test
-    public void FirstOrDefault() {
+    void FirstOrDefault() {
         assertEquals(-100, Linq.range(-100, Integer.MAX_VALUE).firstOrDefault());
     }
 
     @Test
-    public void Last() {
+    void Last() {
         assertEquals(1000000056, Linq.range(57, 1000000000).last());
     }
 
     @Test
-    public void LastOrDefault() {
+    void LastOrDefault() {
         assertEquals(Integer.MAX_VALUE - 101, Linq.range(-100, Integer.MAX_VALUE).lastOrDefault());
     }
 }

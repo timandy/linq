@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class MaxByTest extends TestCase {
+class MaxByTest extends TestCase {
     @Test
-    public void testMaxByInt() {
+    void testMaxByInt() {
         Tuple1[] tuple1s = {Tuple.create(0), Tuple.create(2), Tuple.create(3)};
         assertEquals(Tuple.create(3), Linq.of(tuple1s).maxByInt(tuple -> (Integer) tuple.getItem1()));
 
@@ -22,7 +22,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByIntNull() {
+    void testMaxByIntNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
         assertEquals(Tuple.create(3), Linq.of(tuple1s).maxByIntNull(tuple -> (Integer) tuple.getItem1()));
 
@@ -31,7 +31,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByLong() {
+    void testMaxByLong() {
         Tuple1[] tuple1s = {Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
         assertEquals(Tuple.create(3L), Linq.of(tuple1s).maxByLong(tuple -> (Long) tuple.getItem1()));
 
@@ -40,7 +40,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByLongNull() {
+    void testMaxByLongNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
         assertEquals(Tuple.create(3L), Linq.of(tuple1s).maxByLongNull(tuple -> (Long) tuple.getItem1()));
 
@@ -49,7 +49,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByFloat() {
+    void testMaxByFloat() {
         Tuple1[] tuple1s = {Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(2f), Linq.of(tuple1s).maxByFloat(tuple -> (Float) tuple.getItem1()));
 
@@ -61,7 +61,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByFloatNull() {
+    void testMaxByFloatNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(2f), Linq.of(tuple1s).maxByFloatNull(tuple -> (Float) tuple.getItem1()));
 
@@ -73,7 +73,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByDouble() {
+    void testMaxByDouble() {
         Tuple1[] tuple1s = {Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
         assertEquals(Tuple.create(2d), Linq.of(tuple1s).maxByDouble(tuple -> (Double) tuple.getItem1()));
 
@@ -85,7 +85,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByDoubleNull() {
+    void testMaxByDoubleNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
         assertEquals(Tuple.create(2d), Linq.of(tuple1s).maxByDoubleNull(tuple -> (Double) tuple.getItem1()));
 
@@ -97,7 +97,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByDecimal() {
+    void testMaxByDecimal() {
         Tuple1[] tuple1s = {Tuple.create(m("0")), Tuple.create(m("2")), Tuple.create(m("3"))};
         assertEquals(Tuple.create(m("3")), Linq.of(tuple1s).maxByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
 
@@ -106,7 +106,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByDecimalNull() {
+    void testMaxByDecimalNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(m("0")), Tuple.create(m("2")), Tuple.create(m("3"))};
         assertEquals(Tuple.create(m("3")), Linq.of(tuple1s).maxByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
 
@@ -115,7 +115,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxBy() {
+    void testMaxBy() {
         Tuple1[] tuple1s = {Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(Float.NaN), Linq.of(tuple1s).maxBy(tuple -> (Float) tuple.getItem1()));
 
@@ -124,7 +124,7 @@ public class MaxByTest extends TestCase {
     }
 
     @Test
-    public void testMaxByNull() {
+    void testMaxByNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(Float.NaN), Linq.of(tuple1s).maxByNull(tuple -> (Float) tuple.getItem1()));
 

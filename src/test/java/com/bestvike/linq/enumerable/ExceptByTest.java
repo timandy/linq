@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ExceptByTest extends TestCase {
+class ExceptByTest extends TestCase {
     @Test
-    public void testExceptBy() {
+    void testExceptBy() {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
@@ -28,7 +28,7 @@ public class ExceptByTest extends TestCase {
     }
 
     @Test
-    public void testExceptByWithComparer() {
+    void testExceptByWithComparer() {
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
             public boolean equals(Integer x, Integer y) {

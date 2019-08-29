@@ -23,7 +23,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ToLookupTest extends TestCase {
+class ToLookupTest extends TestCase {
     private static <K, T> void AssertMatches(IEnumerable<K> keys, IEnumerable<T> elements, ILookup<K, T> lookup) {
         assertNotNull(lookup);
         assertNotNull(keys);
@@ -47,7 +47,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCall() {
+    void SameResultsRepeatCall() {
         IEnumerable<String> q1 = Linq.of("Alen", "Felix", null, null, "X", "Have Space", "Clinton", "");
         IEnumerable<Integer> q2 = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0});
         IEnumerable<Tuple2<String, Integer>> q = q1.selectMany(a -> q2, (x3, x4) -> Tuple.create(x3, x4));
@@ -57,7 +57,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void NullKeyIncluded() {
+    void NullKeyIncluded() {
         String[] key = {"Chris", "Bob", null, "Tim"};
         int[] element = {50, 95, 55, 90};
         IEnumerable<NameScore> source = Linq.of(key).zip(Linq.of(element), (k, e) -> new NameScore(k, e));
@@ -66,7 +66,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void OneElementCustomComparer() {
+    void OneElementCustomComparer() {
         String[] key = {"Chris"};
         int[] element = {50};
         NameScore[] source = new NameScore[]{new NameScore("risCh", 50)};
@@ -75,7 +75,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void UniqueElementsElementSelector() {
+    void UniqueElementsElementSelector() {
         String[] key = {"Chris", "Prakash", "Tim", "Robert", "Brian"};
         int[] element = {50, 100, 95, 60, 80};
         NameScore[] source = new NameScore[]{
@@ -90,7 +90,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void DuplicateKeys() {
+    void DuplicateKeys() {
         String[] key = {"Chris", "Prakash", "Robert"};
         int[] element = {50, 80, 100, 95, 99, 56};
         NameScore[] source = new NameScore[]{
@@ -106,7 +106,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         String[] key = {"Chris", "Prakash", "Robert"};
         int[] element = {50, 80, 100, 95, 99, 56};
         NameScore[] source = new NameScore[]{
@@ -122,7 +122,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void Count() {
+    void Count() {
         String[] key = {"Chris", "Prakash", "Robert"};
         int[] element = {50, 80, 100, 95, 99, 56};
         NameScore[] source = new NameScore[]{
@@ -138,7 +138,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void EmptySource() {
+    void EmptySource() {
         String[] key = {};
         int[] element = {};
         IEnumerable<NameScore> source = Linq.of(key).zip(Linq.of(element), (k, e) -> new NameScore(k, e));
@@ -147,7 +147,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void SingleNullKeyAndElement() {
+    void SingleNullKeyAndElement() {
         String[] key = {null};
         String[] element = {null};
         String[] source = new String[]{null};
@@ -156,67 +156,67 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toLookup(i -> i / 10));
     }
 
     @Test
-    public void NullSourceExplicitComparer() {
+    void NullSourceExplicitComparer() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toLookup(i -> i / 10, EqualityComparer.Default()));
     }
 
     @Test
-    public void NullSourceElementSelector() {
+    void NullSourceElementSelector() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toLookup(i -> i / 10, i -> i + 2));
     }
 
     @Test
-    public void NullSourceElementSelectorExplicitComparer() {
+    void NullSourceElementSelectorExplicitComparer() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toLookup(i -> i / 10, i -> i + 2, EqualityComparer.Default()));
     }
 
     @Test
-    public void NullKeySelector() {
+    void NullKeySelector() {
         Func1<Integer, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 1000).toLookup(keySelector));
     }
 
     @Test
-    public void NullKeySelectorExplicitComparer() {
+    void NullKeySelectorExplicitComparer() {
         Func1<Integer, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 1000).toLookup(keySelector, EqualityComparer.Default()));
     }
 
     @Test
-    public void NullKeySelectorElementSelector() {
+    void NullKeySelectorElementSelector() {
         Func1<Integer, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 1000).toLookup(keySelector, i -> i + 2));
     }
 
     @Test
-    public void NullKeySelectorElementSelectorExplicitComparer() {
+    void NullKeySelectorElementSelectorExplicitComparer() {
         Func1<Integer, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 1000).toLookup(keySelector, i -> i + 2, EqualityComparer.Default()));
     }
 
     @Test
-    public void NullElementSelector() {
+    void NullElementSelector() {
         Func1<Integer, Integer> elementSelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 1000).toLookup(i -> i / 10, elementSelector));
     }
 
     @Test
-    public void NullElementSelectorExplicitComparer() {
+    void NullElementSelectorExplicitComparer() {
         Func1<Integer, Integer> elementSelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 1000).toLookup(i -> i / 10, elementSelector, EqualityComparer.Default()));
     }
 
     @Test
-    public void ApplyResultSelectorForGroup() {
+    void ApplyResultSelectorForGroup() {
         this.ApplyResultSelectorForGroup(1);
         this.ApplyResultSelectorForGroup(2);
         this.ApplyResultSelectorForGroup(3);
@@ -266,7 +266,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void testToLookup() {
+    void testToLookup() {
         ILookup<Integer, Employee> lookup = Linq.of(emps).toLookup(emp -> emp.deptno);
         assertTrue(lookup.containsKey(10));
         assertEquals(3, lookup.get(10).count());
@@ -288,7 +288,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void testToLookupComparer() {
+    void testToLookupComparer() {
         IEqualityComparer<String> comparer = new IEqualityComparer<String>() {
             @Override
             public boolean equals(String x, String y) {
@@ -347,7 +347,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void testToLookupSelector() {
+    void testToLookupSelector() {
         ILookup<Integer, String> lookup = Linq.of(emps).toLookup(emp -> emp.deptno, emp -> emp.name);
         assertTrue(lookup.containsKey(10));
         assertEquals(3, lookup.get(10).count());
@@ -375,7 +375,7 @@ public class ToLookupTest extends TestCase {
     }
 
     @Test
-    public void testToLookupSelectorComparer() {
+    void testToLookupSelectorComparer() {
         IEqualityComparer<String> comparer = new IEqualityComparer<String>() {
             @Override
             public boolean equals(String x, String y) {
@@ -447,8 +447,8 @@ public class ToLookupTest extends TestCase {
 
 
     private static class NameScore extends ValueType {
-        final String Name;
-        final int Score;
+        private final String Name;
+        private final int Score;
 
         private NameScore(String name, int score) {
             this.Name = name;
@@ -457,11 +457,11 @@ public class ToLookupTest extends TestCase {
     }
 
     private static class Membership extends ValueType {
-        final int Id;
-        final Role Role;
-        final boolean CountMe;
+        private final int Id;
+        private final Role Role;
+        private final boolean CountMe;
 
-        Membership(int id, Role role, boolean countMe) {
+        private Membership(int id, Role role, boolean countMe) {
             this.Id = id;
             this.Role = role;
             this.CountMe = countMe;
@@ -469,19 +469,19 @@ public class ToLookupTest extends TestCase {
     }
 
     private static class Role extends ValueType {
-        final int Id;
+        private final int Id;
 
-        Role(int id) {
+        private Role(int id) {
             this.Id = id;
         }
     }
 
-    public static class RoleMetadata extends ValueType {
-        final Role Role;
-        final int CountA;
-        final int CountrB;
+    private static class RoleMetadata extends ValueType {
+        private final Role Role;
+        private final int CountA;
+        private final int CountrB;
 
-        RoleMetadata(Role role, int countA, int countrB) {
+        private RoleMetadata(Role role, int countA, int countrB) {
             this.Role = role;
             this.CountA = countA;
             this.CountrB = countrB;

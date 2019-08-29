@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class DefaultIfEmptyTest extends TestCase {
+class DefaultIfEmptyTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsNonEmptyQuery() {
+    void SameResultsRepeatCallsNonEmptyQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(a -> a > Integer.MIN_VALUE);
 
@@ -23,7 +23,7 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsEmptyQuery() {
+    void SameResultsRepeatCallsEmptyQuery() {
         IEnumerable<Integer> q = NumberRangeGuaranteedNotCollectionType(0, 0).select(a -> a);
 
         assertEquals(q.defaultIfEmpty(88), q.defaultIfEmpty(88));
@@ -44,7 +44,7 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void DefaultIfEmpty() {
+    void DefaultIfEmpty() {
         for (Object[] objects : this.TestData())
             //noinspection unchecked
             this.DefaultIfEmpty((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer[]) objects[2]);
@@ -69,7 +69,7 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void DefaultIfEmptyRunOnce() {
+    void DefaultIfEmptyRunOnce() {
         for (Object[] objects : this.TestData())
             //noinspection unchecked
             this.DefaultIfEmptyRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer[]) objects[2]);
@@ -84,13 +84,13 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void NullableArray_Empty_WithoutDefaultValue() {
+    void NullableArray_Empty_WithoutDefaultValue() {
         Integer[] source = new Integer[0];
         assertEquals(Linq.of(new Integer[]{null}), Linq.of(source).defaultIfEmpty());
     }
 
     @Test
-    public void NullableArray_Empty_WithDefaultValue() {
+    void NullableArray_Empty_WithDefaultValue() {
         Integer[] source = new Integer[0];
         Integer defaultValue = 9;
         //noinspection RedundantArrayCreation
@@ -98,7 +98,7 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).defaultIfEmpty());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).defaultIfEmpty(42));
         assertThrows(ArgumentNullException.class, () -> Linq.of((Integer[]) null).defaultIfEmpty());
@@ -106,7 +106,7 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).defaultIfEmpty();
         // Don't insist on this behaviour, but check it's correct if it happens
         //noinspection unchecked
@@ -115,7 +115,7 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void testDefaultIfEmpty() {
+    void testDefaultIfEmpty() {
         List<String> experience = Arrays.asList("jimi", "mitch", "noel");
         IEnumerable<String> notEmptyEnumerable = Linq.of(experience).defaultIfEmpty();
         IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();
@@ -134,7 +134,7 @@ public class DefaultIfEmptyTest extends TestCase {
     }
 
     @Test
-    public void testDefaultIfEmptyWithDefaultValue() {
+    void testDefaultIfEmptyWithDefaultValue() {
         List<String> experience = Arrays.asList("jimi", "mitch", "noel");
         IEnumerable<String> notEmptyEnumerable = Linq.of(experience).defaultIfEmpty("dummy");
         IEnumerator<String> notEmptyEnumerator = notEmptyEnumerable.enumerator();

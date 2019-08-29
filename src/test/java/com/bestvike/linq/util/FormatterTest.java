@@ -19,7 +19,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-06-20.
  */
-public class FormatterTest extends TestCase {
+class FormatterTest extends TestCase {
     private Formatter formatter;
     private NoFieldBean noFieldBean;
     private NoFieldBean noFieldBeanExpected;
@@ -160,7 +160,7 @@ public class FormatterTest extends TestCase {
     }
 
     @Test
-    public void AssertGetters() {
+    void AssertGetters() {
         assertEquals("NULL", this.formatter.getNullString());
         assertEquals("\"", this.formatter.getStringQuotes());
         assertEquals(false, this.formatter.isDecimalWithScale());
@@ -186,7 +186,7 @@ public class FormatterTest extends TestCase {
     }
 
     @Test
-    public void DefaultToString() {
+    void DefaultToString() {
         assertEquals("null", Formatter.DEFAULT.format(null));
 
         assertEquals(Formatter.DEFAULT.format(this.noFieldBeanExpected), Formatter.DEFAULT.format(this.noFieldBean));
@@ -207,18 +207,18 @@ public class FormatterTest extends TestCase {
     }
 
     @Test
-    public void DefaultToStringString() {
+    void DefaultToStringString() {
         assertEquals("'abc'", Formatter.DEFAULT.format("abc"));
     }
 
     @Test
-    public void DefaultToStringDecimal() {
+    void DefaultToStringDecimal() {
         assertEquals(Formatter.DEFAULT.format(m("1.0")), Formatter.DEFAULT.format(m("1.00000")));
         assertEquals(Formatter.DEFAULT.format(m("-1.0")), Formatter.DEFAULT.format(m("-1.00000")));
     }
 
     @Test
-    public void DefaultToStringAll() {
+    void DefaultToStringAll() {
         assertEquals("[true, false, true]", Formatter.DEFAULT.format(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
         assertEquals("[-128, 0, 127]", Formatter.DEFAULT.format(new byte[]{Byte.MIN_VALUE, 0, Byte.MAX_VALUE}));
         assertEquals("[-32768, 0, 32767]", Formatter.DEFAULT.format(new short[]{Short.MIN_VALUE, 0, Short.MAX_VALUE}));
@@ -247,7 +247,7 @@ public class FormatterTest extends TestCase {
     }
 
     @Test
-    public void CustomToString() {
+    void CustomToString() {
         assertEquals("NULL", this.formatter.format(null));
 
         assertEquals(this.formatter.format(this.noFieldBeanExpected), this.formatter.format(this.noFieldBean));
@@ -268,18 +268,18 @@ public class FormatterTest extends TestCase {
     }
 
     @Test
-    public void CustomToStringString() {
+    void CustomToStringString() {
         assertEquals("\"abc\"", this.formatter.format("abc"));
     }
 
     @Test
-    public void CustomToStringDecimal() {
+    void CustomToStringDecimal() {
         assertEquals("1.00000", this.formatter.format(m("1.00000")));
         assertEquals("-1.00000", this.formatter.format(m("-1.00000")));
     }
 
     @Test
-    public void CustomToStringAll() {
+    void CustomToStringAll() {
         assertEquals("boolean[][ true,false,true ]", this.formatter.format(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
         assertEquals("byte[][ -128,0,127 ]", this.formatter.format(new byte[]{Byte.MIN_VALUE, 0, Byte.MAX_VALUE}));
         assertEquals("short[][ -32768,0,32767 ]", this.formatter.format(new short[]{Short.MIN_VALUE, 0, Short.MAX_VALUE}));
@@ -308,7 +308,7 @@ public class FormatterTest extends TestCase {
     }
 
     @Test
-    public void ShouldNotUseHashCodeSortMap() {
+    void ShouldNotUseHashCodeSortMap() {
         String[] source = new String[]{"Aa", "BB"};
         assertEquals(Linq.of("Aa", "BB"), Linq.of(source).orderBy(String::hashCode));
 
@@ -321,7 +321,7 @@ public class FormatterTest extends TestCase {
     }
 
     private static class OneFieldBean {
-        final String Name;
+        private final String Name;
 
         private OneFieldBean(String name) {
             this.Name = name;
@@ -329,8 +329,8 @@ public class FormatterTest extends TestCase {
     }
 
     private static class TwoFieldBean {
-        final String Name;
-        final int Score;
+        private final String Name;
+        private final int Score;
 
         private TwoFieldBean(String name, int score) {
             this.Name = name;

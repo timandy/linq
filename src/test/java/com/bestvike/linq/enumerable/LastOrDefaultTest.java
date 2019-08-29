@@ -15,9 +15,9 @@ import java.util.Date;
 /**
  * Created by 许崇雷 on 2019-05-17.
  */
-public class LastOrDefaultTest extends TestCase {
+class LastOrDefaultTest extends TestCase {
     @Test
-    public void SameResultsrepeatCallsIntQuery() {
+    void SameResultsrepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -25,7 +25,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void SameResultsrepeatCallsStringQuery() {
+    void SameResultsrepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -41,7 +41,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void EmptyIListT() {
+    void EmptyIListT() {
         this.<Integer>TestEmptyIList();
         this.<String>TestEmptyIList();
         this.<Date>TestEmptyIList();
@@ -49,7 +49,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void IListTOneElement() {
+    void IListTOneElement() {
         IEnumerable<Integer> source = Linq.of(new int[]{5});
         int expected = 5;
 
@@ -58,7 +58,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void IListTManyElementsLastIsDefault() {
+    void IListTManyElementsLastIsDefault() {
         IEnumerable<Integer> source = Linq.of(-10, 2, 4, 3, 0, 2, null);
         Integer expected = null;
 
@@ -67,7 +67,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void IListTManyElementsLastIsNotDefault() {
+    void IListTManyElementsLastIsNotDefault() {
         IEnumerable<Integer> source = Linq.of(-10, 2, 4, 3, 0, 2, null, 19);
         Integer expected = 19;
 
@@ -88,7 +88,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void EmptyNotIListT() {
+    void EmptyNotIListT() {
         this.<Integer>TestEmptyNotIList();
         this.<String>TestEmptyNotIList();
         this.<Date>TestEmptyNotIList();
@@ -96,7 +96,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void OneElementNotIListT() {
+    void OneElementNotIListT() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
@@ -105,7 +105,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsNotIListT() {
+    void ManyElementsNotIListT() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(3, 10);
         int expected = 12;
 
@@ -114,7 +114,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void EmptyIListSource() {
+    void EmptyIListSource() {
         IEnumerable<Integer> source = Linq.empty();
 
         assertNull(source.lastOrDefault(x -> true));
@@ -122,7 +122,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void OneElementIListTruePredicate() {
+    void OneElementIListTruePredicate() {
         IEnumerable<Integer> source = Linq.of(new int[]{4});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
@@ -131,7 +131,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsIListPredicateFalseForAll() {
+    void ManyElementsIListPredicateFalseForAll() {
         IEnumerable<Integer> source = Linq.of(new int[]{9, 5, 1, 3, 17, 21});
         Predicate1<Integer> predicate = TestCase::IsEven;
         Integer expected = null;
@@ -140,7 +140,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void IListPredicateTrueOnlyForLast() {
+    void IListPredicateTrueOnlyForLast() {
         IEnumerable<Integer> source = Linq.of(new int[]{9, 5, 1, 3, 17, 21, 50});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
@@ -149,7 +149,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void IListPredicateTrueForSome() {
+    void IListPredicateTrueForSome() {
         IEnumerable<Integer> source = Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
@@ -158,7 +158,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void IListPredicateTrueForSomeRunOnce() {
+    void IListPredicateTrueForSomeRunOnce() {
         IEnumerable<Integer> source = Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9});
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
@@ -167,7 +167,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void EmptyNotIListSource() {
+    void EmptyNotIListSource() {
         IEnumerable<Integer> source = Linq.repeat(4, 0);
 
         assertNull(source.lastOrDefault(x -> true));
@@ -175,7 +175,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void OneElementNotIListTruePredicate() {
+    void OneElementNotIListTruePredicate() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{4}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 4;
@@ -184,7 +184,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsNotIListPredicateFalseForAll() {
+    void ManyElementsNotIListPredicateFalseForAll() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{9, 5, 1, 3, 17, 21}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         Integer expected = null;
@@ -193,7 +193,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void NotIListPredicateTrueOnlyForLast() {
+    void NotIListPredicateTrueOnlyForLast() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{9, 5, 1, 3, 17, 21, 50}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 50;
@@ -202,7 +202,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void NotIListPredicateTrueForSome() {
+    void NotIListPredicateTrueForSome() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
@@ -211,7 +211,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void NotIListPredicateTrueForSomeRunOnce() {
+    void NotIListPredicateTrueForSomeRunOnce() {
         IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{3, 7, 10, 7, 9, 2, 11, 18, 13, 9}));
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 18;
@@ -220,23 +220,23 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).lastOrDefault());
     }
 
     @Test
-    public void NullSourcePredicateUsed() {
+    void NullSourcePredicateUsed() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).lastOrDefault(i -> i != 2));
     }
 
     @Test
-    public void NullPredicate() {
+    void NullPredicate() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).lastOrDefault(predicate));
     }
 
     @Test
-    public void testLastOrDefault() {
+    void testLastOrDefault() {
         IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch"));
         assertEquals("mitch", enumerable.lastOrDefault());
 
@@ -245,7 +245,7 @@ public class LastOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void testLastOrDefaultWithPredicate() {
+    void testLastOrDefaultWithPredicate() {
         IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch", "ming"));
         assertEquals("mitch", enumerable.lastOrDefault(x -> x.startsWith("mit")));
         assertNull(enumerable.lastOrDefault(x -> false));

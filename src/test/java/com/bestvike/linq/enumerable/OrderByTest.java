@@ -26,9 +26,9 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class OrderByTest extends TestCase {
+class OrderByTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
                 .selectMany(x1 -> Linq.of(new int[]{55, 49, 9, -100, 24, 25}), (x1, x2) -> Tuple.create(x1, x2));
 
@@ -37,7 +37,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<Tuple2<Integer, String>> q = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
                 .selectMany(x1 -> Linq.of("!@#$%^", "C", "AAA", "", null, "Calling Twice", "SoS", Empty), (x1, x2) -> Tuple.create(x1, x2))
                 .where(t -> !IsNullOrEmpty(t.getItem2()));
@@ -46,19 +46,19 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void SourceEmpty() {
+    void SourceEmpty() {
         int[] source = {};
         assertEmpty(Linq.of(source).orderBy(e -> e));
     }
 
     @Test
-    public void OrderedCount() {
+    void OrderedCount() {
         IEnumerable<Integer> source = Linq.range(0, 20).shuffle();
         assertEquals(20, source.orderBy(i -> i).count());
     }
 
     @Test
-    public void SurviveBadComparerAlwaysReturnsNegative() {
+    void SurviveBadComparerAlwaysReturnsNegative() {
         int[] source = {1};
         int[] expected = {1};
 
@@ -66,7 +66,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void KeySelectorReturnsNull() {
+    void KeySelectorReturnsNull() {
         Integer[] source = {null, null, null};
         Integer[] expected = {null, null, null};
 
@@ -74,7 +74,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void ElementsAllSameKey() {
+    void ElementsAllSameKey() {
         Integer[] source = {9, 9, 9, 9, 9, 9};
         Integer[] expected = {9, 9, 9, 9, 9, 9};
 
@@ -82,7 +82,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void KeySelectorCalled() {
+    void KeySelectorCalled() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Tim", 90),
                 new NameScore("Robert", 45),
@@ -98,7 +98,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void FirstAndLastAreDuplicatesCustomComparer() {
+    void FirstAndLastAreDuplicatesCustomComparer() {
         String[] source = {"Prakash", "Alpha", "dan", "DAN", "Prakash"};
         String[] expected = {"Alpha", "dan", "DAN", "Prakash", "Prakash"};
 
@@ -106,7 +106,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         String[] source = {"Prakash", "Alpha", "dan", "DAN", "Prakash"};
         String[] expected = {"Alpha", "dan", "DAN", "Prakash", "Prakash"};
 
@@ -114,7 +114,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void FirstAndLastAreDuplicatesNullPassedAsComparer() {
+    void FirstAndLastAreDuplicatesNullPassedAsComparer() {
         int[] source = {5, 1, 3, 2, 5};
         int[] expected = {1, 2, 3, 5, 5};
 
@@ -122,7 +122,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void SourceReverseOfResultNullPassedAsComparer() {
+    void SourceReverseOfResultNullPassedAsComparer() {
         Integer[] source = {100, 30, 9, 5, 0, -50, -75, null};
         Integer[] expected = {null, -75, -50, 0, 5, 9, 30, 100};
 
@@ -130,7 +130,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void SameKeysVerifySortStable() {
+    void SameKeysVerifySortStable() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Tim", 90),
                 new NameScore("Robert", 90),
@@ -152,7 +152,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void OrderedToArray() {
+    void OrderedToArray() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Tim", 90),
                 new NameScore("Robert", 90),
@@ -174,12 +174,12 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void EmptyOrderedToArray() {
+    void EmptyOrderedToArray() {
         assertEmpty(Linq.<Integer>empty().orderBy(e -> e).toArray());
     }
 
     @Test
-    public void OrderedToList() {
+    void OrderedToList() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Tim", 90),
                 new NameScore("Robert", 90),
@@ -201,12 +201,12 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void EmptyOrderedToList() {
+    void EmptyOrderedToList() {
         assertEmpty(Linq.of(Linq.<Integer>empty().orderBy(e -> e).toList()));
     }
 
     @Test
-    public void SurviveBadComparerAlwaysReturnsPositive() {
+    void SurviveBadComparerAlwaysReturnsPositive() {
         int[] source = {1};
         int[] expected = {1};
 
@@ -214,37 +214,37 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void OrderByExtremeComparer() {
+    void OrderByExtremeComparer() {
         int[] outOfOrder = new int[]{7, 1, 0, 9, 3, 5, 4, 2, 8, 6};
         assertEquals(Linq.range(0, 10), Linq.of(outOfOrder).orderBy(i -> i, new ExtremeComparer()));
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.orderBy(i -> i));
     }
 
     @Test
-    public void NullKeySelector() {
+    void NullKeySelector() {
         Func1<Date, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().orderBy(keySelector));
     }
 
     @Test
-    public void FirstOnOrdered() {
+    void FirstOnOrdered() {
         assertEquals(0, Linq.range(0, 10).shuffle().orderBy(i -> i).first());
         assertEquals(9, Linq.range(0, 10).shuffle().orderByDescending(i -> i).first());
         assertEquals(10, Linq.range(0, 100).shuffle().orderByDescending(i -> i.toString().length()).thenBy(i -> i).first());
     }
 
     @Test
-    public void FirstOnEmptyOrderedThrows() {
+    void FirstOnEmptyOrderedThrows() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().orderBy(i -> i).first());
     }
 
     @Test
-    public void FirstOrDefaultOnOrdered() {
+    void FirstOrDefaultOnOrdered() {
         assertEquals(0, Linq.range(0, 10).shuffle().orderBy(i -> i).firstOrDefault());
         assertEquals(9, Linq.range(0, 10).shuffle().orderByDescending(i -> i).firstOrDefault());
         assertEquals(10, Linq.range(0, 100).shuffle().orderByDescending(i -> i.toString().length()).thenBy(i -> i).firstOrDefault());
@@ -252,14 +252,14 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void LastOnOrdered() {
+    void LastOnOrdered() {
         assertEquals(9, Linq.range(0, 10).shuffle().orderBy(i -> i).last());
         assertEquals(0, Linq.range(0, 10).shuffle().orderByDescending(i -> i).last());
         assertEquals(10, Linq.range(0, 100).shuffle().orderBy(i -> i.toString().length()).thenByDescending(i -> i).last());
     }
 
     @Test
-    public void LastOnOrderedMatchingCases() {
+    void LastOnOrderedMatchingCases() {
         Object[] boxedInts = new Object[]{0, 1, 2, 9, 1, 2, 3, 9, 4, 5, 7, 8, 9, 0, 1};
         assertSame(boxedInts[12], Linq.of(boxedInts).orderBy(o -> (int) o).last());
         assertSame(boxedInts[12], Linq.of(boxedInts).orderBy(o -> (int) o).lastOrDefault());
@@ -268,12 +268,12 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void LastOnEmptyOrderedThrows() {
+    void LastOnEmptyOrderedThrows() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().orderBy(i -> i).last());
     }
 
     @Test
-    public void LastOrDefaultOnOrdered() {
+    void LastOrDefaultOnOrdered() {
         assertEquals(9, Linq.range(0, 10).shuffle().orderBy(i -> i).lastOrDefault());
         assertEquals(0, Linq.range(0, 10).shuffle().orderByDescending(i -> i).lastOrDefault());
         assertEquals(10, Linq.range(0, 100).shuffle().orderBy(i -> i.toString().length()).thenByDescending(i -> i).lastOrDefault());
@@ -281,7 +281,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void EnumeratorDoesntContinue() {
+    void EnumeratorDoesntContinue() {
         IEnumerator<Integer> enumerator = NumberRangeGuaranteedNotCollectionType(0, 3).shuffle().orderBy(i -> i).enumerator();
         while (enumerator.moveNext()) {
         }
@@ -289,7 +289,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void OrderByIsCovariantTestWithCast() {
+    void OrderByIsCovariantTestWithCast() {
         IOrderedEnumerable<String> ordered = Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length());
         IOrderedEnumerable<Comparable> covariantOrdered = (IOrderedEnumerable) ordered;
         covariantOrdered = covariantOrdered.thenBy(i -> i);
@@ -298,7 +298,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void OrderByIsCovariantTestWithAssignToArgument() {
+    void OrderByIsCovariantTestWithAssignToArgument() {
         IOrderedEnumerable<String> ordered = Linq.range(0, 100).select(i -> i.toString()).orderBy(i -> i.length());
         IOrderedEnumerable<Comparable> covariantOrdered = (IOrderedEnumerable) ordered.thenByDescending(i -> i);
         Array<String> expected = Linq.range(0, 100)
@@ -310,7 +310,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void CanObtainFromCovariantIOrderedQueryable() {
+    void CanObtainFromCovariantIOrderedQueryable() {
         // If an ordered queryable is cast covariantly and then has ThenBy() called on it,
         // it depends on IOrderedEnumerable<TElement> also being covariant to allow for
         // that ThenBy() to be processed within Linq-to-objects, as otherwise there is no
@@ -323,7 +323,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void SortsLargeAscendingEnumerableCorrectly() {
+    void SortsLargeAscendingEnumerableCorrectly() {
         final int Items = 1_000_000;
         IEnumerable<Integer> expected = NumberRangeGuaranteedNotCollectionType(0, Items);
 
@@ -334,7 +334,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void SortsLargeDescendingEnumerableCorrectly() {
+    void SortsLargeDescendingEnumerableCorrectly() {
         final int Items = 1_000_000;
         IEnumerable<Integer> expected = NumberRangeGuaranteedNotCollectionType(0, Items);
 
@@ -345,7 +345,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void SortsRandomizedEnumerableCorrectly() {
+    void SortsRandomizedEnumerableCorrectly() {
         this.SortsRandomizedEnumerableCorrectly(0);
         this.SortsRandomizedEnumerableCorrectly(1);
         this.SortsRandomizedEnumerableCorrectly(2);
@@ -368,7 +368,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void TakeOne() {
+    void TakeOne() {
         this.TakeOne(Linq.of(new int[]{1}));
         this.TakeOne(Linq.of(new int[]{1, 2}));
         this.TakeOne(Linq.of(new int[]{2, 1}));
@@ -388,7 +388,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void testOrderBy() {
+    void testOrderBy() {
         //null 在前,值相等的按原始顺序
         String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno)
@@ -423,7 +423,7 @@ public class OrderByTest extends TestCase {
     }
 
     @Test
-    public void testOrderByWithComparer() {
+    void testOrderByWithComparer() {
         //null 在后,值相等的按原始顺序
         Comparator<Object> reverse = Comparer.Default().reversed();
 
@@ -453,10 +453,10 @@ public class OrderByTest extends TestCase {
 
 
     private static class NameScore extends ValueType {
-        final String Name;
-        final int Score;
+        private final String Name;
+        private final int Score;
 
-        NameScore(String name, int score) {
+        private NameScore(String name, int score) {
             this.Name = name;
             this.Score = score;
         }

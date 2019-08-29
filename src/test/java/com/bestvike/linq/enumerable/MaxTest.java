@@ -27,9 +27,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class MaxTest extends TestCase {
+class MaxTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -37,7 +37,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -45,13 +45,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Int_NullSource_ThrowsArgumentNullException() {
+    void Max_Int_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).maxInt());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).maxInt(i -> i));
     }
 
     @Test
-    public void Max_Int_EmptySource_ThrowsInvalidOpertionException() {
+    void Max_Int_EmptySource_ThrowsInvalidOpertionException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().maxInt());
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().maxInt(x -> x));
     }
@@ -73,7 +73,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Int() {
+    void Max_Int() {
         for (Object[] objects : this.Max_Int_TestData()) {
             this.Max_Int((IEnumerable<Integer>) objects[0], (int) objects[1]);
         }
@@ -101,7 +101,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Long() {
+    void Max_Long() {
         for (Object[] objects : this.Max_Long_TestData()) {
             this.Max_Long((IEnumerable<Long>) objects[0], (long) objects[1]);
         }
@@ -113,13 +113,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Long_NullSource_ThrowsArgumentNullException() {
+    void Max_Long_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).maxLong());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).maxLong(i -> i));
     }
 
     @Test
-    public void Max_Long_EmptySource_ThrowsInvalidOpertionException() {
+    void Max_Long_EmptySource_ThrowsInvalidOpertionException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Long>empty().maxLong());
         assertThrows(InvalidOperationException.class, () -> Linq.<Long>empty().maxLong(x -> x));
     }
@@ -156,7 +156,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Float() {
+    void Max_Float() {
         for (Object[] objects : this.Max_Float_TestData()) {
             this.Max_Float((IEnumerable<Float>) objects[0], (float) objects[1]);
         }
@@ -168,30 +168,30 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Float_NullSource_ThrowsArgumentNullException() {
+    void Max_Float_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).maxFloat());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).maxFloat(i -> i));
     }
 
     @Test
-    public void Max_Float_EmptySource_ThrowsInvalidOperationException() {
+    void Max_Float_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Float>empty().maxFloat());
         assertThrows(InvalidOperationException.class, () -> Linq.<Float>empty().maxFloat(x -> x));
     }
 
     @Test
-    public void Max_Float_SeveralNaNWithSelector() {
+    void Max_Float_SeveralNaNWithSelector() {
         assertTrue(Float.isNaN(Linq.repeat(Float.NaN, 5).maxFloat(i -> i)));
     }
 
     @Test
-    public void Max_NullableFloat_SeveralNaNOrNullWithSelector() {
+    void Max_NullableFloat_SeveralNaNOrNullWithSelector() {
         Float[] source = new Float[]{Float.NaN, null, Float.NaN, null};
         assertTrue(Float.isNaN(Linq.of(source).maxFloatNull(i -> i)));
     }
 
     @Test
-    public void Max_Float_NaNAtStartWithSelector() {
+    void Max_Float_NaNAtStartWithSelector() {
         float[] source = {Float.NaN, 6.8f, 9.4f, 10f, 0, -5.6f};
         assertEquals(10f, Linq.of(source).maxFloat(i -> i));
     }
@@ -227,7 +227,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Double() {
+    void Max_Double() {
         for (Object[] objects : this.Max_Double_TestData()) {
             this.Max_Double((IEnumerable<Double>) objects[0], (double) objects[1]);
         }
@@ -239,30 +239,30 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Double_NullSource_ThrowsArgumentNullException() {
+    void Max_Double_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).maxDouble());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).maxDouble(i -> i));
     }
 
     @Test
-    public void Max_Double_EmptySource_ThrowsInvalidOperationException() {
+    void Max_Double_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Double>empty().maxDouble());
         assertThrows(InvalidOperationException.class, () -> Linq.<Double>empty().maxDouble(x -> x));
     }
 
     @Test
-    public void Max_Double_AllNaNWithSelector() {
+    void Max_Double_AllNaNWithSelector() {
         assertTrue(Double.isNaN(Linq.repeat(Double.NaN, 5).maxDouble(i -> i)));
     }
 
     @Test
-    public void Max_Double_SeveralNaNOrNullWithSelector() {
+    void Max_Double_SeveralNaNOrNullWithSelector() {
         Double[] source = new Double[]{Double.NaN, null, Double.NaN, null};
         assertTrue(Double.isNaN(Linq.of(source).maxDoubleNull(i -> i)));
     }
 
     @Test
-    public void Max_Double_NaNThenNegativeInfinityWithSelector() {
+    void Max_Double_NaNThenNegativeInfinityWithSelector() {
         double[] source = {Double.NaN, Double.NEGATIVE_INFINITY};
         assertEquals(Linq.of(source).maxDouble(i -> i), Double.NEGATIVE_INFINITY);
     }
@@ -284,7 +284,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Decimal() {
+    void Max_Decimal() {
         for (Object[] objects : this.Max_Decimal_TestData()) {
             this.Max_Decimal((IEnumerable<BigDecimal>) objects[0], (BigDecimal) objects[1]);
         }
@@ -296,13 +296,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Decimal_NullSource_ThrowsArgumentNullException() {
+    void Max_Decimal_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).maxDecimal());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).maxDecimal(i -> i));
     }
 
     @Test
-    public void Max_Decimal_EmptySource_ThrowsInvalidOperationException() {
+    void Max_Decimal_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<BigDecimal>empty().maxDecimal());
         assertThrows(InvalidOperationException.class, () -> Linq.<BigDecimal>empty().maxDecimal(x -> x));
     }
@@ -326,7 +326,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableInt() {
+    void Max_NullableInt() {
         for (Object[] objects : this.Max_NullableInt_TestData()) {
             this.Max_NullableInt((IEnumerable<Integer>) objects[0], (Integer) objects[1]);
         }
@@ -338,7 +338,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableIntRunOnce() {
+    void Max_NullableIntRunOnce() {
         for (Object[] objects : this.Max_NullableInt_TestData()) {
             this.Max_NullableIntRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1]);
         }
@@ -350,7 +350,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableInt_NullSource_ThrowsArgumentNullException() {
+    void Max_NullableInt_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).maxIntNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).maxIntNull(i -> i));
     }
@@ -374,7 +374,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableLong() {
+    void Max_NullableLong() {
         for (Object[] objects : this.Max_NullableLong_TestData()) {
             this.Max_NullableLong((IEnumerable<Long>) objects[0], (Long) objects[1]);
         }
@@ -386,7 +386,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableLong_NullSource_ThrowsArgumentNullException() {
+    void Max_NullableLong_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).maxLongNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).maxLongNull(i -> i));
     }
@@ -419,7 +419,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableFloat() {
+    void Max_NullableFloat() {
         for (Object[] objects : this.Max_NullableFloat_TestData()) {
             this.Max_NullableFloat((IEnumerable<Float>) objects[0], (Float) objects[1]);
         }
@@ -431,7 +431,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableFloat_NullSource_ThrowsArgumentNullException() {
+    void Max_NullableFloat_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).maxFloatNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).maxFloatNull(i -> i));
     }
@@ -464,7 +464,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableDouble() {
+    void Max_NullableDouble() {
         for (Object[] objects : this.Max_NullableDouble_TestData()) {
             this.Max_NullableDouble((IEnumerable<Double>) objects[0], (Double) objects[1]);
         }
@@ -476,7 +476,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableDouble_NullSource_ThrowsArgumentNullException() {
+    void Max_NullableDouble_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).maxDoubleNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).maxDoubleNull(i -> i));
     }
@@ -500,7 +500,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableDecimal() {
+    void Max_NullableDecimal() {
         for (Object[] objects : this.Max_NullableDecimal_TestData()) {
             this.Max_NullableDecimal((IEnumerable<BigDecimal>) objects[0], (BigDecimal) objects[1]);
         }
@@ -512,7 +512,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableDecimal_NullSource_ThrowsArgumentNullException() {
+    void Max_NullableDecimal_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).maxDecimalNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).maxDecimalNull(i -> i));
     }
@@ -534,7 +534,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_DateTime() {
+    void Max_DateTime() {
         for (Object[] objects : this.Max_DateTime_TestData()) {
             this.Max_DateTime((IEnumerable<Date>) objects[0], (Date) objects[1]);
         }
@@ -546,13 +546,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_DateTime_NullSource_ThrowsArgumentNullException() {
+    void Max_DateTime_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).max());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).max(i -> i));
     }
 
     @Test
-    public void Max_DateTime_EmptySource_ThrowsInvalidOperationException() {
+    void Max_DateTime_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Date>empty().max());
         assertThrows(InvalidOperationException.class, () -> Linq.<Date>empty().max(i -> i));
     }
@@ -574,7 +574,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_String() {
+    void Max_String() {
         for (Object[] objects : this.Max_String_TestData()) {
             this.Max_String((IEnumerable<String>) objects[0], (String) objects[1]);
         }
@@ -586,7 +586,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_StringRunOnce() {
+    void Max_StringRunOnce() {
         for (Object[] objects : this.Max_String_TestData()) {
             this.Max_StringRunOnce((IEnumerable<String>) objects[0], (String) objects[1]);
         }
@@ -598,19 +598,19 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_String_NullSource_ThrowsArgumentNullException() {
+    void Max_String_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).maxNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).maxNull(i -> i));
     }
 
     @Test
-    public void Max_Int_NullSelector_ThrowsArgumentNullException() {
+    void Max_Int_NullSelector_ThrowsArgumentNullException() {
         IntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().maxInt(selector));
     }
 
     @Test
-    public void Max_Int_WithSelectorAccessingProperty() {
+    void Max_Int_WithSelectorAccessingProperty() {
         NameNum<Integer>[] source = new NameNum[]{
                 new NameNum<>("Tim", 10),
                 new NameNum<>("John", -105),
@@ -621,13 +621,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Long_NullSelector_ThrowsArgumentNullException() {
+    void Max_Long_NullSelector_ThrowsArgumentNullException() {
         LongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().maxLong(selector));
     }
 
     @Test
-    public void Max_Long_WithSelectorAccessingProperty() {
+    void Max_Long_WithSelectorAccessingProperty() {
         NameNum<Long>[] source = new NameNum[]{
                 new NameNum<>("Tim", 10L),
                 new NameNum<>("John", -105L),
@@ -637,7 +637,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Float_WithSelectorAccessingProperty() {
+    void Max_Float_WithSelectorAccessingProperty() {
         NameNum<Float>[] source = new NameNum[]{
                 new NameNum<>("Tim", 40.5f),
                 new NameNum<>("John", -10.25f),
@@ -648,19 +648,19 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Float_NullSelector_ThrowsArgumentNullException() {
+    void Max_Float_NullSelector_ThrowsArgumentNullException() {
         FloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().maxFloat(selector));
     }
 
     @Test
-    public void Max_Double_NullSelector_ThrowsArgumentNullException() {
+    void Max_Double_NullSelector_ThrowsArgumentNullException() {
         DoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().maxDouble(selector));
     }
 
     @Test
-    public void Max_Double_WithSelectorAccessingField() {
+    void Max_Double_WithSelectorAccessingField() {
         NameNum<Double>[] source = new NameNum[]{
                 new NameNum<>("Tim", 40.5d),
                 new NameNum<>("John", -10.25d),
@@ -670,13 +670,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Decimal_NullSelector_ThrowsArgumentNullException() {
+    void Max_Decimal_NullSelector_ThrowsArgumentNullException() {
         DecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().maxDecimal(selector));
     }
 
     @Test
-    public void Max_Decimal_WithSelectorAccessingProperty() {
+    void Max_Decimal_WithSelectorAccessingProperty() {
         NameNum<BigDecimal>[] source = new NameNum[]{
                 new NameNum<>("Tim", m("420.5")),
                 new NameNum<>("John", m("900.25")),
@@ -686,13 +686,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableInt_NullSelector_ThrowsArgumentNullException() {
+    void Max_NullableInt_NullSelector_ThrowsArgumentNullException() {
         NullableIntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().maxIntNull(selector));
     }
 
     @Test
-    public void Max_NullableInt_WithSelectorAccessingField() {
+    void Max_NullableInt_WithSelectorAccessingField() {
         NameNum<Integer>[] source = new NameNum[]{
                 new NameNum<>("Tim", 10),
                 new NameNum<>("John", -105),
@@ -703,13 +703,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableLong_NullSelector_ThrowsArgumentNullException() {
+    void Max_NullableLong_NullSelector_ThrowsArgumentNullException() {
         NullableLongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().maxLongNull(selector));
     }
 
     @Test
-    public void Max_NullableLong_WithSelectorAccessingField() {
+    void Max_NullableLong_WithSelectorAccessingField() {
         NameNum<Long>[] source = new NameNum[]{
                 new NameNum<>("Tim", null),
                 new NameNum<>("John", -105L),
@@ -719,13 +719,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableFloat_NullSelector_ThrowsArgumentNullException() {
+    void Max_NullableFloat_NullSelector_ThrowsArgumentNullException() {
         NullableFloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().maxFloatNull(selector));
     }
 
     @Test
-    public void Max_NullableFloat_WithSelectorAccessingProperty() {
+    void Max_NullableFloat_WithSelectorAccessingProperty() {
         NameNum<Float>[] source = new NameNum[]{
                 new NameNum<>("Tim", 40.5f),
                 new NameNum<>("John", null),
@@ -735,13 +735,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableDouble_NullSelector_ThrowsArgumentNullException() {
+    void Max_NullableDouble_NullSelector_ThrowsArgumentNullException() {
         NullableDoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().maxDoubleNull(selector));
     }
 
     @Test
-    public void Max_NullableDouble_WithSelectorAccessingProperty() {
+    void Max_NullableDouble_WithSelectorAccessingProperty() {
         NameNum<Double>[] source = new NameNum[]{
                 new NameNum<>("Tim", 40.5),
                 new NameNum<>("John", null),
@@ -751,13 +751,13 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableDecimal_NullSelector_ThrowsArgumentNullException() {
+    void Max_NullableDecimal_NullSelector_ThrowsArgumentNullException() {
         NullableDecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().maxDecimalNull(selector));
     }
 
     @Test
-    public void Max_NullableDecimal_WithSelectorAccessingProperty() {
+    void Max_NullableDecimal_WithSelectorAccessingProperty() {
         NameNum<BigDecimal>[] source = new NameNum[]{
                 new NameNum<>("Tim", m("420.5")),
                 new NameNum<>("John", null),
@@ -767,24 +767,24 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_NullableDateTime_EmptySourceWithSelector() {
+    void Max_NullableDateTime_EmptySourceWithSelector() {
         assertNull(Linq.<Date>empty().maxNull(x -> x));
     }
 
     @Test
-    public void Max_NullableDateTime_NullSelector_ThrowsArgumentNullException() {
+    void Max_NullableDateTime_NullSelector_ThrowsArgumentNullException() {
         Func1<Date, Date> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().maxNull(selector));
     }
 
     @Test
-    public void Max_String_NullSelector_ThrowsArgumentNullException() {
+    void Max_String_NullSelector_ThrowsArgumentNullException() {
         Func1<String, String> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<String>empty().maxNull(selector));
     }
 
     @Test
-    public void Max_String_WithSelectorAccessingProperty() {
+    void Max_String_WithSelectorAccessingProperty() {
         NameNum<BigDecimal>[] source = new NameNum[]{
                 new NameNum<>("Tim", m("420.5")),
                 new NameNum<>("John", m("900.25")),
@@ -794,12 +794,12 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void Max_Boolean_EmptySource_ThrowsInvalidOperationException() {
+    void Max_Boolean_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Boolean>empty().max());
     }
 
     @Test
-    public void testMaxInt() {
+    void testMaxInt() {
         Integer[] numbers = {0, 2, 3};
         assertEquals(3, Linq.of(numbers).maxInt());
 
@@ -808,7 +808,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxIntNull() {
+    void testMaxIntNull() {
         Integer[] numbers = {null, 0, 2, 3};
         assertEquals(3, Linq.of(numbers).maxIntNull());
 
@@ -817,7 +817,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxLong() {
+    void testMaxLong() {
         Long[] numbers = {0L, 2L, 3L};
         assertEquals(3L, Linq.of(numbers).maxLong());
 
@@ -826,7 +826,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxLongNull() {
+    void testMaxLongNull() {
         Long[] numbers = {null, 0L, 2L, 3L};
         assertEquals(3L, Linq.of(numbers).maxLongNull());
 
@@ -835,7 +835,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxFloat() {
+    void testMaxFloat() {
         Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(2f, Linq.of(numbers).maxFloat());
 
@@ -844,7 +844,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxFloatNull() {
+    void testMaxFloatNull() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         assertEquals(2f, Linq.of(numbers).maxFloatNull());
 
@@ -853,7 +853,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDouble() {
+    void testMaxDouble() {
         Double[] numbers = {2d, Double.NaN};
         assertEquals(2d, Linq.of(numbers).maxDouble());
 
@@ -862,7 +862,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDoubleNull() {
+    void testMaxDoubleNull() {
         Double[] numbers = {null, 2d, Double.NaN};
         assertEquals(2d, Linq.of(numbers).maxDoubleNull());
 
@@ -871,7 +871,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDecimal() {
+    void testMaxDecimal() {
         BigDecimal[] numbers = {m("0"), m("2"), m("3")};
         assertEquals(m("3"), Linq.of(numbers).maxDecimal());
 
@@ -880,7 +880,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDecimalNull() {
+    void testMaxDecimalNull() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
         assertEquals(m("3"), Linq.of(numbers).maxDecimalNull());
 
@@ -889,7 +889,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMax() {
+    void testMax() {
         Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.of(numbers).max());
 
@@ -898,7 +898,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxNull() {
+    void testMaxNull() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.of(numbers).maxNull());
 
@@ -907,7 +907,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxIntWithSelector() {
+    void testMaxIntWithSelector() {
         Integer[] numbers = {0, 2, 3};
         assertEquals(3, Linq.of(numbers).maxInt(n -> n));
 
@@ -916,7 +916,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxIntNullWithSelector() {
+    void testMaxIntNullWithSelector() {
         Integer[] numbers = {null, 0, 2, 3};
         assertEquals(3, Linq.of(numbers).maxIntNull(n -> n));
 
@@ -925,7 +925,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxLongWithSelector() {
+    void testMaxLongWithSelector() {
         Long[] numbers = {0L, 2L, 3L};
         assertEquals(3L, Linq.of(numbers).maxLong(n -> n));
 
@@ -934,7 +934,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxLongNullWithSelector() {
+    void testMaxLongNullWithSelector() {
         Long[] numbers = {null, 0L, 2L, 3L};
         assertEquals(3L, Linq.of(numbers).maxLongNull(n -> n));
 
@@ -943,7 +943,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxFloatWithSelector() {
+    void testMaxFloatWithSelector() {
         Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(2f, Linq.of(numbers).maxFloat(n -> n));
 
@@ -952,7 +952,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxFloatNullWithSelector() {
+    void testMaxFloatNullWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         assertEquals(2f, Linq.of(numbers).maxFloatNull(n -> n));
 
@@ -961,7 +961,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDoubleWithSelector() {
+    void testMaxDoubleWithSelector() {
         Double[] numbers = {2d, Double.NaN};
         assertEquals(2d, Linq.of(numbers).maxDouble(n -> n));
 
@@ -970,7 +970,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDoubleNullWithSelector() {
+    void testMaxDoubleNullWithSelector() {
         Double[] numbers = {null, 2d, Double.NaN};
         assertEquals(2d, Linq.of(numbers).maxDoubleNull(n -> n));
 
@@ -979,7 +979,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDecimalWithSelector() {
+    void testMaxDecimalWithSelector() {
         BigDecimal[] numbers = {m("0"), m("2"), m("3")};
         assertEquals(m("3"), Linq.of(numbers).maxDecimal(n -> n));
 
@@ -988,7 +988,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxDecimalNullWithSelector() {
+    void testMaxDecimalNullWithSelector() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
         assertEquals(m("3"), Linq.of(numbers).maxDecimalNull(n -> n));
 
@@ -997,7 +997,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxWithSelector() {
+    void testMaxWithSelector() {
         Float[] numbers = {0f, 2f, Float.NaN};
         Float f = Linq.of(numbers).max(n -> n);
         assertEquals(Float.NaN, f);
@@ -1007,7 +1007,7 @@ public class MaxTest extends TestCase {
     }
 
     @Test
-    public void testMaxNullWithSelector() {
+    void testMaxNullWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         Float f = Linq.of(numbers).maxNull(n -> n);
         assertEquals(Float.NaN, f);
@@ -1018,10 +1018,10 @@ public class MaxTest extends TestCase {
     }
 
     private static class NameNum<T> extends ValueType {
-        final String name;
-        final T num;
+        private final String name;
+        private final T num;
 
-        NameNum(String name, T num) {
+        private NameNum(String name, T num) {
             this.name = name;
             this.num = num;
         }

@@ -18,7 +18,7 @@ import java.util.Collections;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class JoinTest extends TestCase {
+class JoinTest extends TestCase {
     private static JoinRec createJoinRec(CustomerRec cr, OrderRec or) {
         return new JoinRec(cr.name, or.orderID, or.total);
     }
@@ -28,7 +28,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void OuterEmptyInnerNonEmpty() {
+    void OuterEmptyInnerNonEmpty() {
         CustomerRec[] outer = {};
         OrderRec[] inner = {
                 new OrderRec(45321, 98022, 50),
@@ -38,7 +38,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void FirstOuterMatchesLastInnerLastOuterMatchesFirstInnerSameNumberElements() {
+    void FirstOuterMatchesLastInnerLastOuterMatchesFirstInnerSameNumberElements() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -55,7 +55,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void NullComparer() {
+    void NullComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -69,7 +69,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void CustomComparer() {
+    void CustomComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -85,7 +85,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void OuterNull() {
+    void OuterNull() {
         IEnumerable<CustomerRec> outer = null;
         AnagramRec[] inner = {
                 new AnagramRec("miT", 43455, 10),
@@ -95,7 +95,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void InnerNull() {
+    void InnerNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -106,7 +106,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void OuterKeySelectorNull() {
+    void OuterKeySelectorNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -119,7 +119,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void InnerKeySelectorNull() {
+    void InnerKeySelectorNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -132,7 +132,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void ResultSelectorNull() {
+    void ResultSelectorNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -145,7 +145,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void OuterNullNoComparer() {
+    void OuterNullNoComparer() {
         IEnumerable<CustomerRec> outer = null;
         AnagramRec[] inner = {
                 new AnagramRec("miT", 43455, 10),
@@ -155,7 +155,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void InnerNullNoComparer() {
+    void InnerNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -166,7 +166,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void OuterKeySelectorNullNoComparer() {
+    void OuterKeySelectorNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -179,7 +179,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void InnerKeySelectorNullNoComparer() {
+    void InnerKeySelectorNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -192,7 +192,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void ResultSelectorNullNoComparer() {
+    void ResultSelectorNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -205,7 +205,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void SkipsNullElements() {
+    void SkipsNullElements() {
         String[] outer = {null, Empty};
         String[] inner = {null, Empty};
         String[] expected = {Empty};
@@ -214,7 +214,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void OuterNonEmptyInnerEmpty() {
+    void OuterNonEmptyInnerEmpty() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 43434),
                 new CustomerRec("Bob", 34093)};
@@ -223,7 +223,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void SingleElementEachAndMatches() {
+    void SingleElementEachAndMatches() {
         CustomerRec[] outer = {new CustomerRec("Prakash", 98022)};
         OrderRec[] inner = {new OrderRec(45321, 98022, 50)};
         JoinRec[] expected = {new JoinRec("Prakash", 45321, 50)};
@@ -232,21 +232,21 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void SingleElementEachAndDoesntMatch() {
+    void SingleElementEachAndDoesntMatch() {
         CustomerRec[] outer = {new CustomerRec("Prakash", 98922)};
         OrderRec[] inner = {new OrderRec(45321, 98022, 50)};
         assertEmpty(Linq.of(outer).join(Linq.of(inner), e -> e.custID, e -> e.custID, JoinTest::createJoinRec));
     }
 
     @Test
-    public void SelectorsReturnNull() {
+    void SelectorsReturnNull() {
         Integer[] inner = {null, null, null};
         Integer[] outer = {null, null};
         assertEmpty(Linq.of(outer).join(Linq.of(inner), e -> e, e -> e, (x, y) -> x));
     }
 
     @Test
-    public void InnerSameKeyMoreThanOneElementAndMatches() {
+    void InnerSameKeyMoreThanOneElementAndMatches() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Tim", 99021),
@@ -268,7 +268,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void OuterSameKeyMoreThanOneElementAndMatches() {
+    void OuterSameKeyMoreThanOneElementAndMatches() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Bob", 99022),
@@ -288,7 +288,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void NoMatches() {
+    void NoMatches() {
         CustomerRec[] outer = {
                 new CustomerRec("Prakash", 98022),
                 new CustomerRec("Bob", 99022),
@@ -302,7 +302,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).join(Linq.<Integer>empty(), i -> i, i -> i, (o, i) -> i);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -310,7 +310,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testJoin() {
+    void testJoin() {
         //null key 被排除
         String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .join(Linq.of(depts).concat(Linq.of(badDepts)),
@@ -332,7 +332,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testJoinWithComparer() {
+    void testJoinWithComparer() {
         //null key 被排除
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
@@ -368,7 +368,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testLeftJoin() {
+    void testLeftJoin() {
         //包含左侧数据,另外 null key 不能用来关联
         String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .leftJoin(Linq.of(depts).concat(Linq.of(badDepts)),
@@ -390,7 +390,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testLeftJoinWithDefaultValue() {
+    void testLeftJoinWithDefaultValue() {
         //包含左侧数据,另外 null key 不能用来关联,使用指定默认值
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
         String s = Linq.of(emps).concat(Linq.of(badEmps))
@@ -416,7 +416,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testLeftJoinWithComparer() {
+    void testLeftJoinWithComparer() {
         //包含左侧数据,另外 null key 不能用来关联,使用指定关联规则
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
@@ -452,7 +452,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testLeftJoinWithDefaultValueAndComparer() {
+    void testLeftJoinWithDefaultValueAndComparer() {
         //包含左侧数据,另外 null key 不能用来关联,使用指定默认值和关联规则
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
@@ -492,7 +492,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testRightJoin() {
+    void testRightJoin() {
         //包含右侧数据,另外 null key 不能用来关联
         String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .rightJoin(Linq.of(depts).concat(Linq.of(badDepts)),
@@ -514,7 +514,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testRightJoinWithDefaultValue() {
+    void testRightJoinWithDefaultValue() {
         //包含右侧数据,另外 null key 不能用来关联,使用指定默认值
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
         String s = Linq.of(emps).concat(Linq.of(badEmps))
@@ -540,7 +540,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testRightJoinWithComparer() {
+    void testRightJoinWithComparer() {
         //包含右侧数据,另外 null key 不能用来关联,使用指定关联规则
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
@@ -576,7 +576,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testRightJoinWithDefaultValueAndComparer() {
+    void testRightJoinWithDefaultValueAndComparer() {
         //包含右侧数据,另外 null key 不能用来关联,使用指定默认值和关联规则
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
@@ -616,7 +616,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testFullJoin() {
+    void testFullJoin() {
         //包含两侧数据,另外 null key 不能用来关联
         String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .fullJoin(Linq.of(depts).concat(Linq.of(badDepts)),
@@ -638,7 +638,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testFullJoinWithDefaultValue() {
+    void testFullJoinWithDefaultValue() {
         //包含两侧数据,另外 null key 不能用来关联,使用指定默认值
         Employee defaultEmp = new Employee(0, "defaultEmp", null);
         Department defaultDept = new Department("defaultDept", null, Collections.emptyList());
@@ -666,7 +666,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testFullJoinWithComparer() {
+    void testFullJoinWithComparer() {
         //包含两侧数据,另外 null key 不能用来关联,使用指定关联规则
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
@@ -702,7 +702,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testFullJoinWithDefaultValueAndComparer() {
+    void testFullJoinWithDefaultValueAndComparer() {
         //包含两侧数据,另外 null key 不能用来关联,使用指定默认值和关联规则
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
@@ -744,7 +744,7 @@ public class JoinTest extends TestCase {
     }
 
     @Test
-    public void testCrossJoin() {
+    void testCrossJoin() {
         //交叉关联,不理会 key 是否为 null
         IEnumerable<String> enumerable = Linq.of(emps).concat(Linq.of(badEmps))
                 .crossJoin(Linq.of(depts).concat(Linq.of(badDepts)),

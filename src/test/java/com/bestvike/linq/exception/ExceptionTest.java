@@ -11,9 +11,9 @@ import java.util.NoSuchElementException;
 /**
  * Created by 许崇雷 on 2017-08-04.
  */
-public class ExceptionTest extends TestCase {
+class ExceptionTest extends TestCase {
     @Test
-    public void testArgument() {
+    void testArgument() {
         try {
             throw new ArgumentException();
         } catch (ArgumentException e) {
@@ -72,7 +72,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testArgumentNullException() {
+    void testArgumentNullException() {
         try {
             throw new ArgumentNullException();
         } catch (ArgumentNullException e) {
@@ -110,7 +110,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testArgumentOutOfRangeException() {
+    void testArgumentOutOfRangeException() {
         try {
             throw new ArgumentOutOfRangeException();
         } catch (ArgumentOutOfRangeException e) {
@@ -163,7 +163,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testInvalidOperationException() {
+    void testInvalidOperationException() {
         try {
             throw new InvalidOperationException();
         } catch (InvalidOperationException e) {
@@ -208,7 +208,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testNotSupportedException() {
+    void testNotSupportedException() {
         try {
             throw new NotSupportedException();
         } catch (NotSupportedException e) {
@@ -236,7 +236,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testRepeatInvokeException() {
+    void testRepeatInvokeException() {
         try {
             throw new RepeatInvokeException();
         } catch (RepeatInvokeException e) {
@@ -264,7 +264,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testRuntimeException() {
+    void testRuntimeException() {
         try {
             ThrowHelper.throwRuntimeException(null);
             fail("should not be here");
@@ -281,7 +281,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testNullPointerException() {
+    void testNullPointerException() {
         try {
             ThrowHelper.throwNullPointerException();
             fail("should not be here");
@@ -291,7 +291,7 @@ public class ExceptionTest extends TestCase {
     }
 
     @Test
-    public void testOther() {
+    void testOther() {
         try {
             ThrowHelper.throwNoSuchElementException();
         } catch (NoSuchElementException e) {

@@ -18,22 +18,22 @@ import java.util.stream.Stream;
 /**
  * Created by 许崇雷 on 2019-04-25.
  */
-public class ToSpliteratorTest extends TestCase {
+class ToSpliteratorTest extends TestCase {
     @Test
-    public void testReset() {
+    void testReset() {
         IEnumerator<Employee> enumerator = Linq.of(emps).enumerator();
         assertThrows(NotSupportedException.class, enumerator::reset);
     }
 
     @Test
-    public void testRemove() {
+    void testRemove() {
         IEnumerator<Employee> enumerator = Linq.of(emps).enumerator();
         enumerator.moveNext();
         assertThrows(NotSupportedException.class, enumerator::remove);
     }
 
     @Test
-    public void testForEachRemaining() {
+    void testForEachRemaining() {
         List<String> ids = new ArrayList<>();
         try (IEnumerator<Employee> e = Linq.of(emps).enumerator()) {
             e.moveNext();
@@ -46,7 +46,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testForEach() {
+    void testForEach() {
         List<String> ids = new ArrayList<>();
         IEnumerable<Employee> enumerable = Linq.of(emps);
         enumerable.forEach(a -> ids.add(String.valueOf(a.empno)));
@@ -59,7 +59,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStream() {
+    void testStream() {
         Stream<Integer> stream = Linq.range(0, 2048).stream();
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a >= 1024).toArray();
@@ -67,7 +67,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamBoolean() {
+    void testStreamBoolean() {
         boolean[] array = {false, false, false, false};
         IEnumerable<Boolean> enumerable = Linq.of(array);
         Stream<Boolean> stream = enumerable.stream();
@@ -77,7 +77,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamByte() {
+    void testStreamByte() {
         byte[] array = {1, 2, 3, 4};
         IEnumerable<Byte> enumerable = Linq.of(array);
         Stream<Byte> stream = enumerable.stream();
@@ -87,7 +87,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamShort() {
+    void testStreamShort() {
         short[] array = {1, 2, 3, 4};
         IEnumerable<Short> enumerable = Linq.of(array);
         Stream<Short> stream = enumerable.stream();
@@ -97,7 +97,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamInt() {
+    void testStreamInt() {
         int[] array = {2, 4, 6, 7};
         IEnumerable<Integer> enumerable = Linq.of(array);
         Stream<Integer> stream = enumerable.stream();
@@ -107,7 +107,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamLong() {
+    void testStreamLong() {
         long[] array = {2, 4, 6, 7};
         IEnumerable<Long> enumerable = Linq.of(array);
         Stream<Long> stream = enumerable.stream();
@@ -117,7 +117,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamChar() {
+    void testStreamChar() {
         char[] array = {'a', 'b', 'c', 'd'};
         IEnumerable<Character> enumerable = Linq.of(array);
         Stream<Character> stream = enumerable.stream();
@@ -127,7 +127,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamFloat() {
+    void testStreamFloat() {
         float[] array = {2f, 4f, 6f, 7f};
         IEnumerable<Float> enumerable = Linq.of(array);
         Stream<Float> stream = enumerable.stream();
@@ -137,7 +137,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamDouble() {
+    void testStreamDouble() {
         double[] array = {2d, 4d, 6d, 7d};
         IEnumerable<Double> enumerable = Linq.of(array);
         Stream<Double> stream = enumerable.stream();
@@ -147,7 +147,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamCharSequence() {
+    void testStreamCharSequence() {
         IEnumerable<Character> enumerable = Linq.chars("abcd");
         Stream<Character> stream = enumerable.stream();
         assertFalse(stream.isParallel());
@@ -156,7 +156,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamGenericArray() {
+    void testStreamGenericArray() {
         Integer[] array = {2, 4, 6, 7};
         IEnumerable<Integer> enumerable = Linq.of(array);
         Stream<Integer> stream = enumerable.stream();
@@ -166,7 +166,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStream2() {
+    void testStream2() {
         Stream<Integer> stream = Linq.range(0, 2048).stream(false);
         assertFalse(stream.isParallel());
         Object[] objects = stream.filter(a -> a >= 1024).toArray();
@@ -179,7 +179,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamInt2() {
+    void testStreamInt2() {
         int[] array = {2, 4, 6, 7};
         IEnumerable<Integer> enumerable = Linq.of(array);
         Stream<Integer> stream = enumerable.stream(false);
@@ -194,7 +194,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamLong2() {
+    void testStreamLong2() {
         long[] array = {2, 4, 6, 7};
         IEnumerable<Long> enumerable = Linq.of(array);
         Stream<Long> stream = enumerable.stream(false);
@@ -209,7 +209,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamDouble2() {
+    void testStreamDouble2() {
         double[] array = {2d, 4d, 6d, 7d};
         IEnumerable<Double> enumerable = Linq.of(array);
         Stream<Double> stream = enumerable.stream(false);
@@ -224,7 +224,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStream3() {
+    void testStream3() {
         Stream<Integer> stream = Linq.range(0, 2048).parallelStream();
         assertTrue(stream.isParallel());
         Object[] objects = stream.filter(a -> a >= 1024).toArray();
@@ -232,7 +232,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamInt3() {
+    void testStreamInt3() {
         int[] array = {2, 4, 6, 7};
         IEnumerable<Integer> enumerable = Linq.of(array);
         Stream<Integer> stream = enumerable.parallelStream();
@@ -242,7 +242,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamLong3() {
+    void testStreamLong3() {
         long[] array = {2, 4, 6, 7};
         IEnumerable<Long> enumerable = Linq.of(array);
         Stream<Long> stream = enumerable.parallelStream();
@@ -252,7 +252,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamDouble3() {
+    void testStreamDouble3() {
         double[] array = {2d, 4d, 6d, 7d};
         IEnumerable<Double> enumerable = Linq.of(array);
         Stream<Double> stream = enumerable.parallelStream();
@@ -262,7 +262,7 @@ public class ToSpliteratorTest extends TestCase {
     }
 
     @Test
-    public void testStreamGrouping() {
+    void testStreamGrouping() {
         int[] element = {60, -10, 40, 100};
         Tuple2[] source = new Tuple2[]{
                 Tuple.create("Tim", element[0]),

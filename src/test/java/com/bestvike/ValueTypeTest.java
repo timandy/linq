@@ -17,7 +17,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-05-28.
  */
-public class ValueTypeTest extends TestCase {
+class ValueTypeTest extends TestCase {
     private NoFieldBean noFieldBean;
     private NoFieldBean noFieldBeanExpected;
     private OneFieldBean oneFieldBean;
@@ -133,7 +133,7 @@ public class ValueTypeTest extends TestCase {
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
         assertFalse(this.noFieldBean.equals(null));
 
         assertNotSame(this.noFieldBeanExpected, this.noFieldBean);
@@ -154,7 +154,7 @@ public class ValueTypeTest extends TestCase {
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         assertEquals(this.noFieldBeanExpected.hashCode(), this.noFieldBean.hashCode());
         assertEquals(this.oneFieldBeanExpected.hashCode(), this.oneFieldBean.hashCode());
         assertEquals(this.twoFieldBeanExpected.hashCode(), this.twoFieldBean.hashCode());
@@ -164,7 +164,7 @@ public class ValueTypeTest extends TestCase {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         assertEquals(this.noFieldBeanExpected.toString(), this.noFieldBean.toString());
         assertEquals("NoFieldBean{}", this.noFieldBean.toString());
 
@@ -187,7 +187,7 @@ public class ValueTypeTest extends TestCase {
     }
 
     private static class OneFieldBean extends ValueType {
-        final String Name;
+        private final String Name;
 
         private OneFieldBean(String name) {
             this.Name = name;
@@ -195,8 +195,8 @@ public class ValueTypeTest extends TestCase {
     }
 
     private static class TwoFieldBean extends ValueType {
-        final String Name;
-        final int Score;
+        private final String Name;
+        private final int Score;
 
         private TwoFieldBean(String name, int score) {
             this.Name = name;

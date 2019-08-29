@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SequenceEqualTest extends TestCase {
+class SequenceEqualTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q1 = Linq.of(new Integer[]{2, 3, null, 2, null, 4, 5}).select(x1 -> x1);
         IEnumerable<Integer> q2 = Linq.of(new Integer[]{1, 9, null, 4}).select(x2 -> x2);
 
@@ -24,7 +24,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice").select(x1 -> x1);
         IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS").select(x2 -> x2);
 
@@ -32,7 +32,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void BothEmpty() {
+    void BothEmpty() {
         int[] first = {};
         int[] second = {};
 
@@ -43,7 +43,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void MismatchInMiddle() {
+    void MismatchInMiddle() {
         Integer[] first = {1, 2, 3, 4};
         Integer[] second = {1, 2, 6, 4};
 
@@ -54,7 +54,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void NullComparer() {
+    void NullComparer() {
         String[] first = {"Bob", "Tim", "Chris"};
         String[] second = {"Bbo", "mTi", "rishC"};
 
@@ -65,7 +65,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void CustomComparer() {
+    void CustomComparer() {
         String[] first = {"Bob", "Tim", "Chris"};
         String[] second = {"Bbo", "mTi", "rishC"};
 
@@ -76,7 +76,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         String[] first = {"Bob", "Tim", "Chris"};
         String[] second = {"Bbo", "mTi", "rishC"};
 
@@ -84,7 +84,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void BothSingleNullExplicitComparer() {
+    void BothSingleNullExplicitComparer() {
         String[] first = {null};
         String[] second = {null};
 
@@ -95,7 +95,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void BothMatchIncludingNullElements() {
+    void BothMatchIncludingNullElements() {
         Integer[] first = {-6, null, 0, -4, 9, 10, 20};
         Integer[] second = {-6, null, 0, -4, 9, 10, 20};
 
@@ -106,7 +106,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void EmptyWithNonEmpty() {
+    void EmptyWithNonEmpty() {
         Integer[] first = {};
         Integer[] second = {2, 3, 4};
 
@@ -117,7 +117,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void NonEmptyWithEmpty() {
+    void NonEmptyWithEmpty() {
         Integer[] first = {2, 3, 4};
         Integer[] second = {};
 
@@ -128,7 +128,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void MismatchingSingletons() {
+    void MismatchingSingletons() {
         Integer[] first = {2};
         Integer[] second = {4};
 
@@ -139,7 +139,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void MismatchOnFirst() {
+    void MismatchOnFirst() {
         Integer[] first = {1, 2, 3, 4, 5};
         Integer[] second = {2, 2, 3, 4, 5};
 
@@ -150,7 +150,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void MismatchOnLast() {
+    void MismatchOnLast() {
         Integer[] first = {1, 2, 3, 4, 4};
         Integer[] second = {1, 2, 3, 4, 5};
 
@@ -161,7 +161,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void SecondLargerThanFirst() {
+    void SecondLargerThanFirst() {
         Integer[] first = {1, 2, 3, 4};
         Integer[] second = {1, 2, 3, 4, 4};
 
@@ -172,7 +172,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void FirstLargerThanSecond() {
+    void FirstLargerThanSecond() {
         Integer[] first = {1, 2, 3, 4, 4};
         Integer[] second = {1, 2, 3, 4};
 
@@ -183,7 +183,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void FirstSourceNull() {
+    void FirstSourceNull() {
         IEnumerable<Integer> first = null;
         IEnumerable<Integer> second = Linq.empty();
 
@@ -191,7 +191,7 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void SecondSourceNull() {
+    void SecondSourceNull() {
         IEnumerable<Integer> first = Linq.empty();
         IEnumerable<Integer> second = null;
 
@@ -199,14 +199,14 @@ public class SequenceEqualTest extends TestCase {
     }
 
     @Test
-    public void testSequenceEqual() {
+    void testSequenceEqual() {
         List<Employee> list = Linq.of(emps).toList();
 
         assertTrue(Linq.of(list).sequenceEqual(Linq.of(emps)));
     }
 
     @Test
-    public void testSequenceEqualWithComparer() {
+    void testSequenceEqualWithComparer() {
         int[] array1 = {1, 2, 3};
         int[] array2 = {11, 12, 13};
 

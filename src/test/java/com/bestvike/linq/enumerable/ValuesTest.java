@@ -18,7 +18,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2019-05-29.
  */
-public class ValuesTest extends TestCase {
+class ValuesTest extends TestCase {
     private NoFieldBean noFieldBean;
     private NoFieldBean noFieldBeanExpected;
     private OneFieldBean oneFieldBean;
@@ -134,7 +134,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
         assertTrue(Values.equals(null, null));
         assertFalse(Values.equals(null, this.noFieldBean));
         assertFalse(Values.equals(this.noFieldBean, null));
@@ -157,27 +157,27 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsRefEq() {
+    void testEqualsRefEq() {
         Object obj = new Object();
         assertTrue(Values.equals(null, null));
         assertTrue(Values.equals(obj, obj));
     }
 
     @Test
-    public void testEqualsNull() {
+    void testEqualsNull() {
         Object obj = new Object();
         assertFalse(Values.equals(obj, null));
         assertFalse(Values.equals(null, obj));
     }
 
     @Test
-    public void testEqualsDecimal() {
+    void testEqualsDecimal() {
         assertTrue(Values.equals(m("1.1"), m("1.1000")));
         assertFalse(Values.equals(m("1.1"), m("9.1000")));
     }
 
     @Test
-    public void testEqualsBooleanArray() {
+    void testEqualsBooleanArray() {
         assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -225,7 +225,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsByteArray() {
+    void testEqualsByteArray() {
         final byte BYTE_ZERO = 0;
         final byte BYTE_ONE = 1;
         assertFalse(Values.equals(new byte[]{Byte.MIN_VALUE, BYTE_ZERO, Byte.MAX_VALUE}, new byte[]{Byte.MIN_VALUE, BYTE_ZERO}));
@@ -275,7 +275,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsShortArray() {
+    void testEqualsShortArray() {
         final short SHORT_ZERO = 0;
         final short SHORT_ONE = 1;
         assertFalse(Values.equals(new short[]{Short.MIN_VALUE, SHORT_ZERO, Short.MAX_VALUE}, new short[]{Short.MIN_VALUE, SHORT_ZERO}));
@@ -325,7 +325,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsIntArray() {
+    void testEqualsIntArray() {
         final int INT_ZERO = 0;
         final int INT_ONE = 1;
         assertFalse(Values.equals(new int[]{Integer.MIN_VALUE, INT_ZERO, Integer.MAX_VALUE}, new int[]{Integer.MIN_VALUE, INT_ZERO}));
@@ -375,7 +375,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsLongArray() {
+    void testEqualsLongArray() {
         final long LONG_ZERO = 0;
         final long LONG_ONE = 1;
         assertFalse(Values.equals(new long[]{Long.MIN_VALUE, LONG_ZERO, Long.MAX_VALUE}, new long[]{Long.MIN_VALUE, LONG_ZERO}));
@@ -425,7 +425,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsCharArray() {
+    void testEqualsCharArray() {
         final char CHAR_ZERO = 0;
         final char CHAR_ONE = 1;
         assertFalse(Values.equals(new char[]{Character.MIN_VALUE, CHAR_ZERO, Character.MAX_VALUE}, new char[]{Character.MIN_VALUE, CHAR_ZERO}));
@@ -475,7 +475,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsFloatArray() {
+    void testEqualsFloatArray() {
         final float FLOAT_ZERO = 0;
         final float FLOAT_ONE = 1;
         assertFalse(Values.equals(new float[]{Float.MIN_VALUE, FLOAT_ZERO, Float.MAX_VALUE}, new float[]{Float.MIN_VALUE, FLOAT_ZERO}));
@@ -525,7 +525,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsDoubleArray() {
+    void testEqualsDoubleArray() {
         final double DOUBLE_ZERO = 0;
         final double DOUBLE_ONE = 1;
         assertFalse(Values.equals(new double[]{Double.MIN_VALUE, DOUBLE_ZERO, Double.MAX_VALUE}, new double[]{Double.MIN_VALUE, DOUBLE_ZERO}));
@@ -575,7 +575,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsObjectArray() {
+    void testEqualsObjectArray() {
         assertFalse(Values.equals(new Object[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(new Object[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(new Object[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}, new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -665,7 +665,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsICollection() {
+    void testEqualsICollection() {
         assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -755,7 +755,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsIIListProviderLength() {
+    void testEqualsIIListProviderLength() {
         assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).select(a -> a), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -845,7 +845,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsIIListProviderNoLength() {
+    void testEqualsIIListProviderNoLength() {
         assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(Linq.of(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE).where(a -> true), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -935,7 +935,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsIEnumerable() {
+    void testEqualsIEnumerable() {
         assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(Linq.of(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE)), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -1025,7 +1025,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsCollection() {
+    void testEqualsCollection() {
         assertFalse(Values.equals(Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(Arrays.asList(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -1115,7 +1115,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsIterable() {
+    void testEqualsIterable() {
         assertFalse(Values.equals(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE}));
         assertFalse(Values.equals(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.TRUE, Boolean.TRUE}));
         assertTrue(Values.equals(new ArrayIterable<>(Boolean.TRUE, Boolean.FALSE, Boolean.TRUE), new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
@@ -1205,7 +1205,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testEqualsMap() {
+    void testEqualsMap() {
         assertFalse(Values.equals(new HashMap<>(), null));
         assertTrue(Values.equals(new HashMap<>(), new LinkedHashMap<>()));
 
@@ -1236,7 +1236,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testJDKObject() {
+    void testJDKObject() {
         assertTrue(Values.equals("123", "123"));
         assertFalse(Values.equals("123", "abc"));
         assertFalse(Values.equals("123", 123));
@@ -1244,7 +1244,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testUserObject() {
+    void testUserObject() {
         assertFalse(Values.equals(new TwoFieldBean("abc", 123), null));
         assertFalse(Values.equals(new TwoFieldBean("abc", 123), new OneFieldBean("abc")));
         assertTrue(Values.equals(new TwoFieldBean("abc", 123), new TwoFieldBean("abc", 123)));
@@ -1253,7 +1253,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         assertEquals(0, Values.hashCode(null));
         assertEquals(1, Values.hashCode(new int[0]));
 
@@ -1266,13 +1266,13 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testHashCodeDecimal() {
+    void testHashCodeDecimal() {
         assertEquals(Values.hashCode(m("1.0")), Values.hashCode(m("1.00000")));
         assertEquals(Values.hashCode(m("-1.0")), Values.hashCode(m("-1.00000")));
     }
 
     @Test
-    public void testHashCodeAll() {
+    void testHashCodeAll() {
         assertEquals(Values.hashCode(new Boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}), Values.hashCode(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
         assertEquals(Values.hashCode(new Byte[]{Byte.MIN_VALUE, 0, Byte.MAX_VALUE}), Values.hashCode(new byte[]{Byte.MIN_VALUE, 0, Byte.MAX_VALUE}));
         assertEquals(Values.hashCode(new Short[]{Short.MIN_VALUE, 0, Short.MAX_VALUE}), Values.hashCode(new short[]{Short.MIN_VALUE, 0, Short.MAX_VALUE}));
@@ -1300,7 +1300,7 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         assertEquals("null", Values.toString(null));
 
         assertEquals(Values.toString(this.noFieldBeanExpected), Values.toString(this.noFieldBean));
@@ -1321,18 +1321,18 @@ public class ValuesTest extends TestCase {
     }
 
     @Test
-    public void testToStringString() {
+    void testToStringString() {
         assertEquals("'abc'", Values.toString("abc"));
     }
 
     @Test
-    public void testToStringDecimal() {
+    void testToStringDecimal() {
         assertEquals(Values.toString(m("1.0")), Values.toString(m("1.00000")));
         assertEquals(Values.toString(m("-1.0")), Values.toString(m("-1.00000")));
     }
 
     @Test
-    public void testToStringAll() {
+    void testToStringAll() {
         assertEquals("[true, false, true]", Values.toString(new boolean[]{Boolean.TRUE, Boolean.FALSE, Boolean.TRUE}));
         assertEquals("[-128, 0, 127]", Values.toString(new byte[]{Byte.MIN_VALUE, 0, Byte.MAX_VALUE}));
         assertEquals("[-32768, 0, 32767]", Values.toString(new short[]{Short.MIN_VALUE, 0, Short.MAX_VALUE}));
@@ -1365,7 +1365,7 @@ public class ValuesTest extends TestCase {
     }
 
     private static class OneFieldBean {
-        final String Name;
+        private final String Name;
 
         private OneFieldBean(String name) {
             this.Name = name;
@@ -1373,8 +1373,8 @@ public class ValuesTest extends TestCase {
     }
 
     private static class TwoFieldBean {
-        final String Name;
-        final int Score;
+        private final String Name;
+        private final int Score;
 
         private TwoFieldBean(String name, int score) {
             this.Name = name;

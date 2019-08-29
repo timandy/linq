@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-05-08.
  */
-public class EmptyEnumerableTest extends TestCase {
+class EmptyEnumerableTest extends TestCase {
     private <T> void TestEmptyCached() {
         IEnumerable<T> enumerable1 = Linq.empty();
         IEnumerable<T> enumerable2 = Linq.empty();
@@ -17,7 +17,7 @@ public class EmptyEnumerableTest extends TestCase {
     }
 
     @Test
-    public void EmptyEnumerableCachedTest() {
+    void EmptyEnumerableCachedTest() {
         this.<Integer>TestEmptyCached();
         this.<String>TestEmptyCached();
         this.TestEmptyCached();
@@ -31,7 +31,7 @@ public class EmptyEnumerableTest extends TestCase {
     }
 
     @Test
-    public void EmptyEnumerableIsIndeedEmpty() {
+    void EmptyEnumerableIsIndeedEmpty() {
         this.<Integer>TestEmptyEmpty();
         this.<String>TestEmptyEmpty();
         this.TestEmptyEmpty();

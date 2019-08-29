@@ -6,23 +6,23 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-08-02.
  */
-public class CopyPositionTest extends TestCase {
+class CopyPositionTest extends TestCase {
     @Test
-    public void testEquals() {
+    void testEquals() {
         CopyPosition expected = new CopyPosition(1, 2);
         CopyPosition copyPosition = new CopyPosition(1, 2);
         assertEquals(expected, copyPosition);
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         CopyPosition expected = new CopyPosition(1, 2);
         CopyPosition copyPosition = new CopyPosition(1, 2);
         assertEquals(expected.hashCode(), copyPosition.hashCode());
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         CopyPosition expected = new CopyPosition(1, 2);
         CopyPosition copyPosition = new CopyPosition(1, 2);
         assertEquals(expected.toString(), copyPosition.toString());

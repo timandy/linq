@@ -15,45 +15,45 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-06-06.
  */
-public class TakeWhileTest extends TestCase {
+class TakeWhileTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.takeWhile(x -> true), q.takeWhile(x -> true));
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.takeWhile(x -> true), q.takeWhile(x -> true));
     }
 
     @Test
-    public void SourceEmpty() {
+    void SourceEmpty() {
         assertEmpty(Linq.<Integer>empty().takeWhile(e -> true));
     }
 
     @Test
-    public void SourceEmptyIndexed() {
+    void SourceEmptyIndexed() {
         assertEmpty(Linq.<Integer>empty().takeWhile((e, i) -> true));
     }
 
     @Test
-    public void SourceNonEmptyPredicateFalseForAll() {
+    void SourceNonEmptyPredicateFalseForAll() {
         int[] source = {9, 7, 15, 3, 11};
         assertEmpty(Linq.of(source).takeWhile(x -> x % 2 == 0));
     }
 
     @Test
-    public void SourceNonEmptyPredicateFalseForAllWithIndex() {
+    void SourceNonEmptyPredicateFalseForAllWithIndex() {
         int[] source = {9, 7, 15, 3, 11};
         assertEmpty(Linq.of(source).takeWhile((x, i) -> x % 2 == 0));
     }
 
     @Test
-    public void SourceNonEmptyPredicateTrueSomeFalseSecond() {
+    void SourceNonEmptyPredicateTrueSomeFalseSecond() {
         int[] source = {8, 3, 12, 4, 6, 10};
         int[] expected = {8};
 
@@ -61,7 +61,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void SourceNonEmptyPredicateTrueSomeFalseSecondWithIndex() {
+    void SourceNonEmptyPredicateTrueSomeFalseSecondWithIndex() {
         int[] source = {8, 3, 12, 4, 6, 10};
         int[] expected = {8};
 
@@ -69,19 +69,19 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void SourceNonEmptyPredicateTrueSomeFalseFirst() {
+    void SourceNonEmptyPredicateTrueSomeFalseFirst() {
         int[] source = {3, 2, 4, 12, 6};
         assertEmpty(Linq.of(source).takeWhile(x -> x % 2 == 0));
     }
 
     @Test
-    public void SourceNonEmptyPredicateTrueSomeFalseFirstWithIndex() {
+    void SourceNonEmptyPredicateTrueSomeFalseFirstWithIndex() {
         int[] source = {3, 2, 4, 12, 6};
         assertEmpty(Linq.of(source).takeWhile((x, i) -> x % 2 == 0));
     }
 
     @Test
-    public void FirstTakenByIndex() {
+    void FirstTakenByIndex() {
         int[] source = {6, 2, 5, 3, 8};
         int[] expected = {6};
 
@@ -89,7 +89,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void AllButLastTakenByIndex() {
+    void AllButLastTakenByIndex() {
         int[] source = {6, 2, 5, 3, 8};
         int[] expected = {6, 2, 5, 3};
 
@@ -97,7 +97,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         int[] source = {8, 3, 12, 4, 6, 10};
         int[] expected = {8};
         assertEquals(Linq.of(expected), Linq.of(source).runOnce().takeWhile(x -> x % 2 == 0));
@@ -107,7 +107,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void IndexTakeWhileOverflowBeyondIntMaxValueElements() {
+    void IndexTakeWhileOverflowBeyondIntMaxValueElements() {
         IEnumerable<Integer> taken = new FastInfiniteEnumerator<Integer>().takeWhile((e, i) -> true);
 
         try (IEnumerator<Integer> en = taken.enumerator()) {
@@ -119,13 +119,13 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnNullSource() {
+    void ThrowsOnNullSource() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.takeWhile(x -> true));
     }
 
     @Test
-    public void ThrowsOnNullPredicate() {
+    void ThrowsOnNullPredicate() {
         int[] source = {1, 2, 3};
         Predicate1<Integer> nullPredicate = null;
 
@@ -133,13 +133,13 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnNullSourceIndexed() {
+    void ThrowsOnNullSourceIndexed() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.takeWhile((x, i) -> true));
     }
 
     @Test
-    public void ThrowsOnNullPredicateIndexed() {
+    void ThrowsOnNullPredicateIndexed() {
         int[] source = {1, 2, 3};
         IndexPredicate2<Integer> nullPredicate = null;
 
@@ -147,7 +147,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).takeWhile(e -> true);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -155,7 +155,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIndexed() {
+    void ForcedToEnumeratorDoesntEnumerateIndexed() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).takeWhile((e, i) -> true);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -163,7 +163,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void testTakeWhile() {
+    void testTakeWhile() {
         List<Department> deptList = Linq.of(depts).takeWhile(dept -> dept.name.contains("e")).toList();
         // Only one department:
         // 0: Sales --> true
@@ -178,7 +178,7 @@ public class TakeWhileTest extends TestCase {
     }
 
     @Test
-    public void testTakeWhileIndexed() {
+    void testTakeWhileIndexed() {
         List<Department> deptList = Linq.of(depts).takeWhile((dept, index) -> index < 2).toList();
         assertEquals(2, deptList.size());
         assertEquals(depts[0], deptList.get(0));

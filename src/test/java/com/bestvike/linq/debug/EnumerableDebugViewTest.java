@@ -10,22 +10,22 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-06-19.
  */
-public class EnumerableDebugViewTest extends TestCase {
+class EnumerableDebugViewTest extends TestCase {
     @Test
-    public void GenericEnumerableDebugView_ThrowsForNullSource() {
+    void GenericEnumerableDebugView_ThrowsForNullSource() {
         assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerDisplay(null));
         assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerTypeProxy(null));
     }
 
     @Test
-    public void GenericEnumerableDebugView_ThrowsForEmptySource() {
+    void GenericEnumerableDebugView_ThrowsForEmptySource() {
         IEnumerable<Integer> source = Linq.range(10, 0);
         assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
         assertEquals(SR.EmptyEnumerable, DebugView.getDebuggerTypeProxy(source));
     }
 
     @Test
-    public void GenericEnumerableDebugView_NonEmptySource() {
+    void GenericEnumerableDebugView_NonEmptySource() {
         IEnumerable<Integer> source = Linq.range(10, 5);
         assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
         //

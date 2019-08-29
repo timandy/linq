@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-06-19.
  */
-public class GroupingDebugViewTest extends TestCase {
+class GroupingDebugViewTest extends TestCase {
     private static IEnumerable<Object[]> DebuggerAttributesValid_Data() {
         List<Object[]> lst = new ArrayList<>();
         IEnumerable<Integer> source = Linq.of(new int[]{1});
@@ -26,7 +26,7 @@ public class GroupingDebugViewTest extends TestCase {
     }
 
     @Test
-    public void DebuggerAttributesValid() {
+    void DebuggerAttributesValid() {
         for (Object[] objects : DebuggerAttributesValid_Data()) {
             this.DebuggerAttributesValid((IGrouping<?, ?>) objects[0], (String) objects[1]);
         }

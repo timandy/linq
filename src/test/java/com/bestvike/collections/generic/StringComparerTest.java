@@ -11,7 +11,7 @@ import java.util.Locale;
 /**
  * Created by 许崇雷 on 2019-04-30.
  */
-public class StringComparerTest extends TestCase {
+class StringComparerTest extends TestCase {
     {
         CultureInfo.setCurrent(Locale.CHINA);
         assertSame(Locale.CHINA, CultureInfo.getCurrent());
@@ -19,7 +19,7 @@ public class StringComparerTest extends TestCase {
     }
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         StringComparer caseSensitiveLocalComparer = StringComparer.create(Collator.getInstance(Locale.ROOT), false);
         assertTrue(caseSensitiveLocalComparer.equals(null, null));
         assertFalse(caseSensitiveLocalComparer.equals(null, "a"));
@@ -48,7 +48,7 @@ public class StringComparerTest extends TestCase {
     }
 
     @Test
-    public void testOrdinal() {
+    void testOrdinal() {
         StringComparer caseSensitiveLocalComparer = StringComparer.Ordinal;
         assertTrue(caseSensitiveLocalComparer.equals(null, null));
         assertFalse(caseSensitiveLocalComparer.equals(null, "a"));
@@ -75,7 +75,7 @@ public class StringComparerTest extends TestCase {
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
         String a = "abc123你好";
         String b = "AbC123你好";
         assertFalse(StringComparer.CurrentCulture.equals(a, b));
@@ -87,7 +87,7 @@ public class StringComparerTest extends TestCase {
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         String a = "abc123你好";
         String b = "AbC123你好";
         assertNotEquals(StringComparer.CurrentCulture.hashCode(a), StringComparer.CurrentCulture.hashCode(b));
@@ -99,7 +99,7 @@ public class StringComparerTest extends TestCase {
     }
 
     @Test
-    public void testCompare() {
+    void testCompare() {
         String a = "abc123你好";
         String b = "AbC123你好";
         assertTrue(StringComparer.CurrentCulture.compare(a, b) < 0);

@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by 许崇雷 on 2019-06-06.
  */
-public class ToLinkedMapTest extends TestCase {
+class ToLinkedMapTest extends TestCase {
     private static <K, E> void AssertMatches(IEnumerable<K> keys, IEnumerable<E> values, Map<K, E> dict) {
         assertNotNull(dict);
         assertNotNull(keys);
@@ -39,7 +39,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_AlwaysCreateACopy() {
+    void ToDictionary_AlwaysCreateACopy() {
         Map<Integer, Integer> source = new LinkedHashMap<>();
         source.put(1, 1);
         source.put(2, 2);
@@ -65,7 +65,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_WorkWithEmptyCollection() {
+    void ToDictionary_WorkWithEmptyCollection() {
         this.RunToDictionaryOnAllCollectionTypes(new Integer[0], resultDictionary -> {
             assertNotNull(resultDictionary);
             assertEquals(0, resultDictionary.size());
@@ -73,7 +73,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_ProduceCorrectDictionary() {
+    void ToDictionary_ProduceCorrectDictionary() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         this.RunToDictionaryOnAllCollectionTypes(sourceArray, resultDictionary -> {
             assertEquals(sourceArray.length, resultDictionary.size());
@@ -90,7 +90,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         Map<Integer, String> expect = new LinkedHashMap<>();
         expect.put(1, "0");
         expect.put(2, "1");
@@ -102,7 +102,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_PassCustomComparer() {
+    void ToDictionary_PassCustomComparer() {
         TestCollection<Integer> collection = new TestCollection<>(new Integer[]{1, 2, 3, 4, 5, 6});
         Map<Integer, Integer> result1 = collection.toLinkedMap(key -> key);
         Map<Integer, Integer> result2 = collection.toLinkedMap(key -> key, val -> val);
@@ -112,7 +112,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_KeyValueSelectorsWork() {
+    void ToDictionary_KeyValueSelectorsWork() {
         TestCollection<Integer> collection = new TestCollection<>(new Integer[]{1, 2, 3, 4, 5, 6});
 
         Map<Integer, Integer> result = collection.toLinkedMap(key -> key + 10, val -> val + 100);
@@ -122,20 +122,20 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_ThrowArgumentNullExceptionWhenSourceIsNull() {
+    void ToDictionary_ThrowArgumentNullExceptionWhenSourceIsNull() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toLinkedMap(key -> key));
     }
 
     @Test
-    public void ToDictionary_ThrowArgumentNullExceptionWhenKeySelectorIsNull() {
+    void ToDictionary_ThrowArgumentNullExceptionWhenKeySelectorIsNull() {
         int[] source = new int[0];
         Func1<Integer, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(keySelector));
     }
 
     @Test
-    public void ToDictionary_ThrowArgumentNullExceptionWhenValueSelectorIsNull() {
+    void ToDictionary_ThrowArgumentNullExceptionWhenValueSelectorIsNull() {
         int[] source = new int[0];
         Func1<Integer, Integer> keySelector = key -> key;
         Func1<Integer, Integer> valueSelector = null;
@@ -143,20 +143,20 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_ThrowArgumentNullExceptionWhenSourceIsNullElementSelector() {
+    void ToDictionary_ThrowArgumentNullExceptionWhenSourceIsNullElementSelector() {
         int[] source = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(key -> key, e -> e));
     }
 
     @Test
-    public void ToDictionary_ThrowArgumentNullExceptionWhenKeySelectorIsNullElementSelector() {
+    void ToDictionary_ThrowArgumentNullExceptionWhenKeySelectorIsNullElementSelector() {
         int[] source = new int[0];
         Func1<Integer, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(keySelector, e -> e));
     }
 
     @Test
-    public void ToDictionary_KeySelectorThrowException() {
+    void ToDictionary_KeySelectorThrowException() {
         int[] source = new int[]{1, 2, 3};
         Func1<Integer, Integer> keySelector = key -> {
             if (key == 1)
@@ -168,7 +168,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_ThrowWhenKeySelectorReturnNull() {
+    void ToDictionary_ThrowWhenKeySelectorReturnNull() {
         int[] source = new int[]{1, 2, 3};
         Func1<Integer, String> keySelector = key -> null;
 
@@ -177,7 +177,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_ThrowWhenKeySelectorReturnSameValueTwice() {
+    void ToDictionary_ThrowWhenKeySelectorReturnSameValueTwice() {
         int[] source = new int[]{1, 2, 3};
         Func1<Integer, Integer> keySelector = key -> 1;
 
@@ -186,7 +186,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ToDictionary_ValueSelectorThrowException() {
+    void ToDictionary_ValueSelectorThrowException() {
         int[] source = new int[]{1, 2, 3};
         Func1<Integer, Integer> keySelector = key -> key;
         Func1<Integer, Integer> valueSelector = value -> {
@@ -199,7 +199,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnNullKey() {
+    void ThrowsOnNullKey() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Chris", 50),
                 new NameScore("Bob", 95),
@@ -218,7 +218,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnNullKeyValueSelector() {
+    void ThrowsOnNullKeyValueSelector() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Chris", 50),
                 new NameScore("Bob", 95),
@@ -237,7 +237,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnDuplicateKeys() {
+    void ThrowsOnDuplicateKeys() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Chris", 50),
                 new NameScore("Bob", 95),
@@ -249,7 +249,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void EmtpySource() {
+    void EmtpySource() {
         int[] elements = new int[]{};
         String[] keys = new String[]{};
         IEnumerable<NameScore> source = Linq.of(keys).zip(Linq.of(elements), (k, e) -> new NameScore(k, e));
@@ -258,7 +258,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void OneElementNullComparer() {
+    void OneElementNullComparer() {
         int[] elements = new int[]{5};
         String[] keys = new String[]{"Bob"};
         NameScore[] source = new NameScore[]{new NameScore(keys[0], elements[0])};
@@ -267,7 +267,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void SeveralElementsCustomComparerer() {
+    void SeveralElementsCustomComparerer() {
         String[] keys = new String[]{"Bob", "Zen", "Prakash", "Chris", "Sachin"};
         NameScore[] source = new NameScore[]{
                 new NameScore(keys[0], 95),
@@ -281,7 +281,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void NullCoalescedKeySelector() {
+    void NullCoalescedKeySelector() {
         String[] elements = new String[]{null};
         String[] keys = new String[]{Empty};
         String[] source = new String[]{null};
@@ -290,7 +290,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void testToMap() {
+    void testToMap() {
         Map<Integer, Employee> map = Linq.of(emps).toLinkedMap(emp -> emp.empno);
         assertTrue(map.get(110).name.equals("Bill"));
         assertEquals(4, map.size());
@@ -303,7 +303,7 @@ public class ToLinkedMapTest extends TestCase {
     }
 
     @Test
-    public void testToMapWithSelector() {
+    void testToMapWithSelector() {
         Map<Integer, String> map = Linq.of(emps).toLinkedMap(emp -> emp.empno, emp -> emp.name);
         assertTrue(map.get(110).equals("Bill"));
         assertEquals(4, map.size());
@@ -317,8 +317,8 @@ public class ToLinkedMapTest extends TestCase {
 
 
     private static class NameScore extends ValueType {
-        final String Name;
-        final int Score;
+        private final String Name;
+        private final int Score;
 
         private NameScore(String name, int score) {
             this.Name = name;

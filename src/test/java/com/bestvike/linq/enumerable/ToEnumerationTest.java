@@ -22,9 +22,9 @@ import java.util.Vector;
 /**
  * Created by 许崇雷 on 2019-07-01.
  */
-public class ToEnumerationTest extends TestCase {
+class ToEnumerationTest extends TestCase {
     @Test
-    public void ToEnumeration_AlwaysCreateACopy() {
+    void ToEnumeration_AlwaysCreateACopy() {
         Enumeration<Integer> sourceList = new Vector<>(Arrays.asList(1, 2, 3, 4, 5)).elements();
         Enumeration<Integer> resultList = Linq.of(sourceList).toEnumeration();
 
@@ -43,7 +43,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void ToEnumeration_WorkWithEmptyCollection() {
+    void ToEnumeration_WorkWithEmptyCollection() {
         this.RunToEnumerationOnAllCollectionTypes(new Integer[0], resultList -> {
             assertNotNull(resultList);
             assertFalse(resultList.hasMoreElements());
@@ -51,7 +51,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void ToEnumeration_ProduceCorrectList() {
+    void ToEnumeration_ProduceCorrectList() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         this.RunToEnumerationOnAllCollectionTypes(sourceArray, resultList -> {
             assertEquals(Linq.of(sourceArray), Linq.of(resultList));
@@ -67,12 +67,12 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         assertEquals(Linq.range(3, 9), Linq.of(Linq.range(3, 9).runOnce().toEnumeration()));
     }
 
     @Test
-    public void ToEnumeration_TouchCountWithICollection() {
+    void ToEnumeration_TouchCountWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         Enumeration<Integer> resultList = source.toEnumeration();
 
@@ -81,14 +81,14 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void ToEnumeration_ThrowArgumentNullExceptionWhenSourceIsNull() {
+    void ToEnumeration_ThrowArgumentNullExceptionWhenSourceIsNull() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toEnumeration());
     }
 
     // Generally the optimal approach. Anything that breaks this should be confirmed as not harming performance.
     @Test
-    public void ToEnumeration_UseCopyToWithICollection() {
+    void ToEnumeration_UseCopyToWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         Enumeration<Integer> resultList = source.toEnumeration();
 
@@ -99,7 +99,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void ToEnumeration_ArrayWhereSelect() {
+    void ToEnumeration_ArrayWhereSelect() {
         this.ToEnumeration_ArrayWhereSelect(new int[]{}, new String[]{});
         this.ToEnumeration_ArrayWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToEnumeration_ArrayWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -125,7 +125,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void ToEnumeration_ListWhereSelect() {
+    void ToEnumeration_ListWhereSelect() {
         this.ToEnumeration_ListWhereSelect(new int[]{}, new String[]{});
         this.ToEnumeration_ListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToEnumeration_ListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -152,7 +152,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void ToEnumeration_IListWhereSelect() {
+    void ToEnumeration_IListWhereSelect() {
         this.ToEnumeration_IListWhereSelect(new int[]{}, new String[]{});
         this.ToEnumeration_IListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToEnumeration_IListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -178,21 +178,21 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnIntQuery() {
+    void SameResultsRepeatCallsFromWhereOnIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(Linq.of(q.toEnumeration()), Linq.of(q.toEnumeration()));
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnStringQuery() {
+    void SameResultsRepeatCallsFromWhereOnStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(Linq.of(q.toEnumeration()), Linq.of(q.toEnumeration()));
     }
 
     @Test
-    public void SourceIsEmptyICollectionT() {
+    void SourceIsEmptyICollectionT() {
         int[] source = {};
 
         ICollection<Integer> collection = Linq.of(source).toArray();
@@ -202,7 +202,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void SourceIsICollectionTWithFewElements() {
+    void SourceIsICollectionTWithFewElements() {
         Integer[] source = {-5, null, 0, 10, 3, -1, null, 4, 9};
         Integer[] expected = {-5, null, 0, 10, 3, -1, null, 4, 9};
 
@@ -213,13 +213,13 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndIsEmpty() {
+    void SourceNotICollectionAndIsEmpty() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 0);
         assertEmpty(Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void SourceNotICollectionAndHasElements() {
+    void SourceNotICollectionAndHasElements() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 10);
         int[] expected = {-4, -3, -2, -1, 0, 1, 2, 3, 4, 5};
 
@@ -229,7 +229,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndAllNull() {
+    void SourceNotICollectionAndAllNull() {
         IEnumerable<Integer> source = RepeatedNullableNumberGuaranteedNotCollectionType(null, 5);
         Integer[] expected = {null, null, null, null, null};
 
@@ -239,55 +239,55 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectSameTypeToEnumeration() {
+    void ConstantTimeCountPartitionSelectSameTypeToEnumeration() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectDiffTypeToEnumeration() {
+    void ConstantTimeCountPartitionSelectDiffTypeToEnumeration() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectSameTypeToEnumeration() {
+    void ConstantTimeCountEmptyPartitionSelectSameTypeToEnumeration() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectDiffTypeToEnumeration() {
+    void ConstantTimeCountEmptyPartitionSelectDiffTypeToEnumeration() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectSameTypeToEnumeration() {
+    void NonConstantTimeCountPartitionSelectSameTypeToEnumeration() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectDiffTypeToEnumeration() {
+    void NonConstantTimeCountPartitionSelectDiffTypeToEnumeration() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectSameTypeToEnumeration() {
+    void NonConstantTimeCountEmptyPartitionSelectSameTypeToEnumeration() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectDiffTypeToEnumeration() {
+    void NonConstantTimeCountEmptyPartitionSelectDiffTypeToEnumeration() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toEnumeration()));
     }
 
     @Test
-    public void testToEnumeration() {
+    void testToEnumeration() {
         Object[] source = {1, 2, 3};
         Enumeration<Integer> target = Linq.of(source).cast(Integer.class).toEnumeration();
         assertTrue(Linq.of(source).cast(Integer.class).sequenceEqual(Linq.of(target)));
@@ -323,7 +323,7 @@ public class ToEnumerationTest extends TestCase {
     }
 
     @Test
-    public void testRepeatInvoke() {
+    void testRepeatInvoke() {
         Enumeration<Integer> source = Linq.of(Collections.singletonList(1)).toEnumeration();
         assertTrue(source.hasMoreElements());
         assertEquals(1, source.nextElement());

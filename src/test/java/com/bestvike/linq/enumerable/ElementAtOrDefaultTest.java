@@ -12,9 +12,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-05-07.
  */
-public class ElementAtOrDefaultTest extends TestCase {
+class ElementAtOrDefaultTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -22,7 +22,7 @@ public class ElementAtOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -48,7 +48,7 @@ public class ElementAtOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ElementAtOrDefault() {
+    void ElementAtOrDefault() {
         for (Object[] objects : this.TestData()) {
             this.ElementAtOrDefault((IEnumerable<Integer>) objects[0], (int) objects[1], (Integer) objects[2]);
         }
@@ -59,7 +59,7 @@ public class ElementAtOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ElementAtOrDefaultRunOnce() {
+    void ElementAtOrDefaultRunOnce() {
         for (Object[] objects : this.TestData()) {
             this.ElementAtOrDefaultRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer) objects[2]);
         }
@@ -70,13 +70,13 @@ public class ElementAtOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void NullableArray_NegativeIndex_ReturnsNull() {
+    void NullableArray_NegativeIndex_ReturnsNull() {
         Integer[] source = {9, 8};
         assertNull(Linq.of(source).elementAtOrDefault(-1));
     }
 
     @Test
-    public void NullableArray_ValidIndex_ReturnsCorrectObject() {
+    void NullableArray_ValidIndex_ReturnsCorrectObject() {
         Integer[] source = {9, 8, null, -5, 10};
 
         assertNull(Linq.of(source).elementAtOrDefault(2));
@@ -84,12 +84,12 @@ public class ElementAtOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).elementAtOrDefault(2));
     }
 
     @Test
-    public void testElementAtOrDefault() {
+    void testElementAtOrDefault() {
         IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch"));
         assertEquals("jimi", enumerable.elementAtOrDefault(0));
         assertNull(enumerable.elementAtOrDefault(2));

@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-08-07.
  */
-public class JoiningTest extends TestCase {
+class JoiningTest extends TestCase {
     @Test
-    public void testJoining() {
+    void testJoining() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).joining());
         assertEquals(Empty, Linq.empty().joining());
         assertEquals("0", Linq.of(0).joining());
@@ -19,7 +19,7 @@ public class JoiningTest extends TestCase {
     }
 
     @Test
-    public void testJoiningWithSeparator() {
+    void testJoiningWithSeparator() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).joining(null));
         assertEquals(Empty, Linq.empty().joining(null));
         assertEquals("0", Linq.of(0).joining(null));
@@ -34,7 +34,7 @@ public class JoiningTest extends TestCase {
     }
 
     @Test
-    public void testJoiningWithSeparatorAndPrefixAndSuffix_NoneValidArg() {
+    void testJoiningWithSeparatorAndPrefixAndSuffix_NoneValidArg() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).joining(null, null, null));
         assertEquals(Empty, Linq.empty().joining(null, null, null));
         assertEquals("0", Linq.of(0).joining(null, null, null));
@@ -43,7 +43,7 @@ public class JoiningTest extends TestCase {
     }
 
     @Test
-    public void testJoiningWithSeparatorAndPrefixAndSuffix_OneValidNull() {
+    void testJoiningWithSeparatorAndPrefixAndSuffix_OneValidNull() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).joining(", ", null, null));
         assertEquals(Empty, Linq.empty().joining(", ", null, null));
         assertEquals("0", Linq.of(0).joining(", ", null, null));
@@ -64,7 +64,7 @@ public class JoiningTest extends TestCase {
     }
 
     @Test
-    public void testJoiningWithSeparatorAndPrefixAndSuffix_TwoValidNull() {
+    void testJoiningWithSeparatorAndPrefixAndSuffix_TwoValidNull() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).joining(", ", "[", null));
         assertEquals("[", Linq.empty().joining(", ", "[", null));
         assertEquals("[0", Linq.of(0).joining(", ", "[", null));
@@ -85,7 +85,7 @@ public class JoiningTest extends TestCase {
     }
 
     @Test
-    public void testJoiningWithSeparatorAndPrefixAndSuffix_AllValidNull() {
+    void testJoiningWithSeparatorAndPrefixAndSuffix_AllValidNull() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).joining(", ", "[", "]"));
         assertEquals("[]", Linq.empty().joining(", ", "[", "]"));
         assertEquals("[0]", Linq.of(0).joining(", ", "[", "]"));

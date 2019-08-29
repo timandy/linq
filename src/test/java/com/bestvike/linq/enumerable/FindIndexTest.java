@@ -29,9 +29,9 @@ import java.util.LinkedList;
 /**
  * Created by 许崇雷 on 2019-06-17.
  */
-public class FindIndexTest extends TestCase {
+class FindIndexTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -40,7 +40,7 @@ public class FindIndexTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Predicate1<String> predicate = TestCase::IsNullOrEmpty;
@@ -48,7 +48,7 @@ public class FindIndexTest extends TestCase {
     }
 
     @Test
-    public void FindIndex() {
+    void FindIndex() {
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.FindIndex(Linq.empty(), isEvenFunc, -1);
         this.FindIndex(Linq.singleton(4), isEvenFunc, 0);
@@ -69,7 +69,7 @@ public class FindIndexTest extends TestCase {
     }
 
     @Test
-    public void FindIndexRunOnce() {
+    void FindIndexRunOnce() {
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.FindIndexRunOnce(Linq.empty(), isEvenFunc, -1);
         this.FindIndexRunOnce(Linq.singleton(4), isEvenFunc, 0);
@@ -90,18 +90,18 @@ public class FindIndexTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException2() {
+    void NullSource_ThrowsArgumentNullException2() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).findIndex(i -> i != 0));
     }
 
     @Test
-    public void NullPredicate_ThrowsArgumentNullException() {
+    void NullPredicate_ThrowsArgumentNullException() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).findIndex(predicate));
     }
 
     @Test
-    public void testFindIndex() {
+    void testFindIndex() {
         assertEquals(-1, Linq.<Integer>empty().findIndex(x -> x == 0));
 
         assertEquals(0, Linq.singleton(1).findIndex(x -> x == 1));
@@ -151,7 +151,7 @@ public class FindIndexTest extends TestCase {
     }
 
     @Test
-    public void testFindIndexNullPredicate() {
+    void testFindIndexNullPredicate() {
         assertThrows(ArgumentNullException.class, () -> ((SingletonEnumerable<Integer>) Linq.singleton(1))._findIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((SingletonEnumerable<Integer>) Linq.singleton(1))._findIndex(null));
 
@@ -196,7 +196,7 @@ public class FindIndexTest extends TestCase {
     }
 
     @Test
-    public void testFindIndexPredicate() {
+    void testFindIndexPredicate() {
         assertEquals(-1, Linq.of(depts).findIndex(dept -> dept.name != null && dept.name.equals("IT")));
         assertEquals(0, Linq.of(depts).findIndex(dept -> dept.name != null && dept.name.equals("Sales")));
     }

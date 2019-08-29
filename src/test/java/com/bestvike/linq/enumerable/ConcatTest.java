@@ -16,9 +16,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ConcatTest extends TestCase {
+class ConcatTest extends TestCase {
     @Test
-    public void SameResultsWithQueryAndRepeatCallsInt() {
+    void SameResultsWithQueryAndRepeatCallsInt() {
         this.SameResultsWithQueryAndRepeatCallsInt(Linq.of(2, 3, 2, 4, 5), Linq.of(1, 9, 4));
     }
 
@@ -28,7 +28,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void SameResultsWithQueryAndRepeatCallsString() {
+    void SameResultsWithQueryAndRepeatCallsString() {
         this.SameResultsWithQueryAndRepeatCallsString(Linq.of("AAA", "", "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice"), Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS"));
     }
 
@@ -46,7 +46,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void PossiblyEmptyInputs() {
+    void PossiblyEmptyInputs() {
         this.PossiblyEmptyInputs(Linq.empty(), Linq.empty(), Linq.empty());
         this.PossiblyEmptyInputs(Linq.empty(), Linq.of(2, 6, 4, 6, 2), Linq.of(2, 6, 4, 6, 2));
         this.PossiblyEmptyInputs(Linq.of(2, 3, 5, 9), Linq.of(8, 10), Linq.of(2, 3, 5, 9, 8, 10));
@@ -58,7 +58,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).concat(Linq.range(0, 3));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = (IEnumerator) iterator;
@@ -66,18 +66,18 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void FirstNull() {
+    void FirstNull() {
         assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null).concat(Linq.range(0, 0)));
         assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null).concat(null)); // If both inputs are null, throw for "first" first
     }
 
     @Test
-    public void SecondNull() {
+    void SecondNull() {
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 0).concat(null));
     }
 
     @Test
-    public void VerifyEquals() {
+    void VerifyEquals() {
         for (Object[] objects : this.ArraySourcesData())
             //noinspection unchecked
             this.VerifyEquals((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1]);
@@ -240,7 +240,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void ManyConcats() {
+    void ManyConcats() {
         for (Object[] objects : this.ManyConcatsData())
             //noinspection unchecked
             this.ManyConcats((IEnumerable<IEnumerable<Integer>>) objects[0]);
@@ -260,7 +260,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void ManyConcatsRunOnce() {
+    void ManyConcatsRunOnce() {
         for (Object[] objects : this.ManyConcatsData())
             //noinspection unchecked
             this.ManyConcatsRunOnce((IEnumerable<IEnumerable<Integer>>) objects[0]);
@@ -279,7 +279,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void CountOfConcatIteratorShouldThrowExceptionOnIntegerOverflow() {
+    void CountOfConcatIteratorShouldThrowExceptionOnIntegerOverflow() {
         DelegateBasedCollection<Integer> supposedlyLargeCollection = new DelegateBasedCollection<Integer>() {{
             this.CountWorker = () -> Integer.MAX_VALUE;
         }};
@@ -304,7 +304,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void CountOfConcatCollectionChainShouldBeResilientToStackOverflow() {
+    void CountOfConcatCollectionChainShouldBeResilientToStackOverflow() {
         // Currently, .Concat chains of 3+ ICollections are represented as a
         // singly-linked list of iterators, each holding 1 collection. When
         // we call Count() on the last iterator, it needs to sum up the count
@@ -335,7 +335,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void CountOfConcatEnumerableChainShouldBeResilientToStackOverflow() {
+    void CountOfConcatEnumerableChainShouldBeResilientToStackOverflow() {
         // Concat chains where one or more of the inputs is not an ICollection
         // (so we cannot figure out the total count w/o iterating through some
         // of the enumerables) are represented much the same, as singly-linked lists.
@@ -367,7 +367,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void GettingFirstEnumerableShouldBeResilientToStackOverflow() {
+    void GettingFirstEnumerableShouldBeResilientToStackOverflow() {
         // When MoveNext() is first called on a chain of 3+ Concats, we have to
         // walk all the way to the tail of the linked list to reach the first
         // concatee. Likewise as before, make sure this isn't accomplished with
@@ -391,7 +391,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void GetEnumerableOfConcatCollectionChainFollowedByEnumerableNodeShouldBeResilientToStackOverflow() {
+    void GetEnumerableOfConcatCollectionChainFollowedByEnumerableNodeShouldBeResilientToStackOverflow() {
         // Since concatenating even 1 lazy enumerable ruins the ability for ToArray/ToList
         // optimizations, if one is Concat'd to a collection-based iterator then we will
         // fall back to treating all subsequent concatenations as lazy.
@@ -508,7 +508,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void CollectionInterleavedWithLazyEnumerables_ToArray() {
+    void CollectionInterleavedWithLazyEnumerables_ToArray() {
         for (Object[] objects : this.GetToArrayDataSources())
             //noinspection unchecked
             this.CollectionInterleavedWithLazyEnumerables_ToArray((IEnumerable<Integer>[]) objects[0]);
@@ -531,7 +531,7 @@ public class ConcatTest extends TestCase {
     }
 
     @Test
-    public void testConcat() {
+    void testConcat() {
         assertEquals(6, Linq.of(emps).concat(Linq.of(badEmps)).count());
 
         assertEquals(Linq.of(true, false, false), Linq.singleton(true).concat(Linq.of(new boolean[]{false, false})).toArray());

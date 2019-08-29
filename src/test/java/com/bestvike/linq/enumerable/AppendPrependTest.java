@@ -16,9 +16,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class AppendPrependTest extends TestCase {
+class AppendPrependTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQueryAppend() {
+    void SameResultsRepeatCallsIntQueryAppend() {
         IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
 
         assertEquals(q1.append(42), q1.append(42));
@@ -26,7 +26,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQueryPrepend() {
+    void SameResultsRepeatCallsIntQueryPrepend() {
         IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
 
         assertEquals(q1.prepend(42), q1.prepend(42));
@@ -34,7 +34,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQueryAppend() {
+    void SameResultsRepeatCallsStringQueryAppend() {
         IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
 
         assertEquals(q1.append("hi"), q1.append("hi"));
@@ -42,7 +42,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQueryPrepend() {
+    void SameResultsRepeatCallsStringQueryPrepend() {
         IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
 
         assertEquals(q1.prepend("hi"), q1.prepend("hi"));
@@ -50,7 +50,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void RepeatIteration() {
+    void RepeatIteration() {
         IEnumerable<Integer> q = Linq.range(3, 4).append(12);
         assertEquals(q, q);
         q = q.append(14);
@@ -58,19 +58,19 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void EmptyAppend() {
+    void EmptyAppend() {
         IEnumerable<Integer> first = Linq.empty();
         assertEquals(first.append(42), Linq.singleton(42));
     }
 
     @Test
-    public void EmptyPrepend() {
+    void EmptyPrepend() {
         IEnumerable<String> first = Linq.empty();
         assertEquals(first.prepend("aa"), Linq.singleton("aa"));
     }
 
     @Test
-    public void PrependNoIteratingSourceBeforeFirstItem() {
+    void PrependNoIteratingSourceBeforeFirstItem() {
         List<Integer> ie = new ArrayList<>();
         IEnumerable<Integer> prepended = Linq.of(ie).prepend(4);
         ie.add(42);
@@ -78,7 +78,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumeratePrepend() {
+    void ForcedToEnumeratorDoesntEnumeratePrepend() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).prepend(4);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
@@ -86,7 +86,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateAppend() {
+    void ForcedToEnumeratorDoesntEnumerateAppend() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).append(4);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
@@ -94,7 +94,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateMultipleAppendsAndPrepends() {
+    void ForcedToEnumeratorDoesntEnumerateMultipleAppendsAndPrepends() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).append(4).append(5).prepend(-1).prepend(-2);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
@@ -102,13 +102,13 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void SourceNull() {
+    void SourceNull() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).append(1));
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).prepend(1));
     }
 
     @Test
-    public void Combined() {
+    void Combined() {
         IEnumerable<Character> v = Linq.chars("foo").append('1').append('2').prepend('3').concat(Linq.chars("qq").append('Q').prepend('W'));
 
         assertEquals(v.toArray(), Linq.chars("3foo12WqqQ").toArray());
@@ -123,7 +123,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void AppendCombinations() {
+    void AppendCombinations() {
         IEnumerable<Integer> source = Linq.range(0, 3).append(3).append(4);
         IEnumerable<Integer> app0a = source.append(5);
         IEnumerable<Integer> app0b = source.append(6);
@@ -141,7 +141,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void PrependCombinations() {
+    void PrependCombinations() {
         IEnumerable<Integer> source = Linq.range(2, 2).prepend(1).prepend(0);
         IEnumerable<Integer> pre0a = source.prepend(5);
         IEnumerable<Integer> pre0b = source.prepend(6);
@@ -159,7 +159,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void Append1ToArrayToList() {
+    void Append1ToArrayToList() {
         IEnumerable<Integer> source = Linq.range(0, 2).append(2);
         assertEquals(Linq.range(0, 3), source.toArray());
         assertEquals(Linq.range(0, 3), source.toArray());
@@ -174,7 +174,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void Prepend1ToArrayToList() {
+    void Prepend1ToArrayToList() {
         IEnumerable<Integer> source = Linq.range(1, 2).prepend(0);
         assertEquals(Linq.range(0, 3), source.toArray());
         assertEquals(Linq.range(0, 3), source.toArray());
@@ -189,7 +189,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void AppendNToArrayToList() {
+    void AppendNToArrayToList() {
         IEnumerable<Integer> source = Linq.range(0, 2).append(2).append(3);
         assertEquals(Linq.range(0, 4), source.toArray());
         assertEquals(Linq.range(0, 4), source.toArray());
@@ -204,7 +204,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void PrependNToArrayToList() {
+    void PrependNToArrayToList() {
         IEnumerable<Integer> source = Linq.range(2, 2).prepend(1).prepend(0);
         assertEquals(Linq.range(0, 4), source.toArray());
         assertEquals(Linq.range(0, 4), source.toArray());
@@ -219,7 +219,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void AppendPrependToArrayToList() {
+    void AppendPrependToArrayToList() {
         IEnumerable<Integer> source = Linq.range(2, 2).prepend(1).append(4).prepend(0).append(5);
         assertEquals(Linq.range(0, 6), source.toArray());
         assertEquals(Linq.range(0, 6), source.toArray());
@@ -238,7 +238,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void AppendPrependRunOnce() {
+    void AppendPrependRunOnce() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(2, 2).runOnce().prepend(1).runOnce().prepend(0).runOnce().append(4).runOnce().append(5).runOnce();
         assertEquals(Linq.range(0, 6), source.toArray());
         source = NumberRangeGuaranteedNotCollectionType(2, 2).prepend(1).prepend(0).append(4).append(5).runOnce();
@@ -246,7 +246,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void testAppend() {
+    void testAppend() {
         String s = Linq.of(emps).append(badEmps[0])
                 .select(emp -> emp.name)
                 .toList()
@@ -274,7 +274,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void testPrepend() {
+    void testPrepend() {
         String s = Linq.of(emps).prepend(badEmps[0])
                 .select(emp -> emp.name)
                 .toList()
@@ -302,7 +302,7 @@ public class AppendPrependTest extends TestCase {
     }
 
     @Test
-    public void testAppendPrepend() {
+    void testAppendPrepend() {
         List<Employee> result = new ArrayList<>(Collections.singletonList(badEmps[0]));
         result.addAll(Arrays.asList(emps));
         result.add(badEmps[1]);

@@ -13,16 +13,16 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-26.
  */
-public class OfTypeTest extends TestCase {
+class OfTypeTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.ofType(Integer.class), q.ofType(Integer.class));
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(TestCase::IsNullOrEmpty);
 
@@ -30,25 +30,25 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void EmptySource() {
+    void EmptySource() {
         IEnumerable<Object> source = Linq.empty();
         assertEquals(0, source.ofType(Integer.class).count());
     }
 
     @Test
-    public void LongSequenceFromIntSource() {
+    void LongSequenceFromIntSource() {
         IEnumerable<Integer> source = Linq.of(new int[]{99, 45, 81});
         assertEquals(0, source.ofType(Long.class).count());
     }
 
     @Test
-    public void HeterogenousSourceNoAppropriateElements() {
+    void HeterogenousSourceNoAppropriateElements() {
         IEnumerable<Object> source = Linq.of("Hello", 3.5, "Test");
         assertEquals(0, source.ofType(Integer.class).count());
     }
 
     @Test
-    public void HeterogenousSourceOnlyFirstOfType() {
+    void HeterogenousSourceOnlyFirstOfType() {
         IEnumerable<Object> source = Linq.of(10, "Hello", 3.5, "Test");
         IEnumerable<Integer> expected = Linq.of(new int[]{10});
 
@@ -56,7 +56,7 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void AllElementsOfNullableTypeNullsSkipped() {
+    void AllElementsOfNullableTypeNullsSkipped() {
         IEnumerable<Object> source = Linq.of(10, -4, null, null, 4, 9);
         IEnumerable<Integer> expected = Linq.of(10, -4, 4, 9);
 
@@ -64,7 +64,7 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void HeterogenousSourceSomeOfType() {
+    void HeterogenousSourceSomeOfType() {
         IEnumerable<Object> source = Linq.of(m("3.5"), -4, "Test", "Check", 4, 8.0, 10.5, 9);
         IEnumerable<Integer> expected = Linq.of(new int[]{-4, 4, 9});
 
@@ -72,7 +72,7 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         IEnumerable<Object> source = Linq.of(m("3.5"), -4, "Test", "Check", 4, 8.0, 10.5, 9);
         IEnumerable<Integer> expected = Linq.of(new int[]{-4, 4, 9});
 
@@ -80,7 +80,7 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void IntFromNullableInt() {
+    void IntFromNullableInt() {
         IEnumerable<Integer> source = Linq.of(new int[]{-4, 4, 9});
         IEnumerable<Integer> expected = Linq.of(-4, 4, 9);
 
@@ -88,7 +88,7 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void IntFromNullableIntWithNulls() {
+    void IntFromNullableIntWithNulls() {
         IEnumerable<Integer> source = Linq.of(null, -4, 4, null, 9);
         IEnumerable<Integer> expected = Linq.of(new int[]{-4, 4, 9});
 
@@ -96,24 +96,24 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void NullableDecimalFromString() {
+    void NullableDecimalFromString() {
         IEnumerable<String> source = Linq.of("Test1", "Test2", "Test9");
         assertEquals(0, source.ofType(BigDecimal.class).count());
     }
 
     @Test
-    public void LongFromDouble() {
+    void LongFromDouble() {
         IEnumerable<Long> source = Linq.of(new long[]{99L, 45L, 81L});
         assertEquals(0, source.ofType(Double.class).count());
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).ofType(String.class));
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).ofType(Integer.class);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
@@ -121,7 +121,7 @@ public class OfTypeTest extends TestCase {
     }
 
     @Test
-    public void testOfType() {
+    void testOfType() {
         List<Number> numbers = Arrays.asList(2, null, 3.14, 5);
         IEnumerator<Integer> enumerator = Linq.of(numbers)
                 .ofType(Integer.class)

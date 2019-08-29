@@ -18,9 +18,9 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class DistinctTest extends TestCase {
+class DistinctTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -28,7 +28,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "Calling Twice", "SoS"})
                 .where(x -> IsNullOrEmpty(x));
 
@@ -36,19 +36,19 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void EmptySource() {
+    void EmptySource() {
         int[] source = {};
         assertEmpty(Linq.of(source).distinct());
     }
 
     @Test
-    public void EmptySourceRunOnce() {
+    void EmptySourceRunOnce() {
         int[] source = {};
         assertEmpty(Linq.of(source).runOnce().distinct());
     }
 
     @Test
-    public void SingleNullElementExplicitlyUseDefaultComparer() {
+    void SingleNullElementExplicitlyUseDefaultComparer() {
         String[] source = {null};
         String[] expected = {null};
 
@@ -56,7 +56,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void EmptyStringDistinctFromNull() {
+    void EmptyStringDistinctFromNull() {
         String[] source = {null, null, Empty};
         String[] expected = {null, Empty};
 
@@ -64,7 +64,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void CollapsDuplicateNulls() {
+    void CollapsDuplicateNulls() {
         String[] source = {null, null};
         String[] expected = {null};
 
@@ -72,7 +72,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void SourceAllDuplicates() {
+    void SourceAllDuplicates() {
         int[] source = {5, 5, 5, 5, 5, 5};
         int[] expected = {5};
 
@@ -80,14 +80,14 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void AllUnique() {
+    void AllUnique() {
         int[] source = {2, -5, 0, 6, 10, 9};
 
         assertEquals(Linq.of(source), Linq.of(source).distinct());
     }
 
     @Test
-    public void SomeDuplicatesIncludingNulls() {
+    void SomeDuplicatesIncludingNulls() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
@@ -95,7 +95,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void SomeDuplicatesIncludingNullsRunOnce() {
+    void SomeDuplicatesIncludingNullsRunOnce() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
@@ -103,7 +103,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void LastSameAsFirst() {
+    void LastSameAsFirst() {
         int[] source = {1, 2, 3, 4, 5, 1};
         int[] expected = {1, 2, 3, 4, 5};
 
@@ -112,7 +112,7 @@ public class DistinctTest extends TestCase {
 
     // Multiple elements repeat non-consecutively
     @Test
-    public void RepeatsNonConsecutive() {
+    void RepeatsNonConsecutive() {
         int[] source = {1, 1, 2, 2, 4, 3, 1, 3, 2};
         int[] expected = {1, 2, 4, 3};
 
@@ -120,7 +120,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void RepeatsNonConsecutiveRunOnce() {
+    void RepeatsNonConsecutiveRunOnce() {
         int[] source = {1, 1, 2, 2, 4, 3, 1, 3, 2};
         int[] expected = {1, 2, 4, 3};
 
@@ -128,7 +128,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void NullComparer() {
+    void NullComparer() {
         String[] source = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
         String[] expected = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
 
@@ -136,21 +136,21 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         IEnumerable<String> source = null;
 
         assertThrows(NullPointerException.class, () -> source.distinct());
     }
 
     @Test
-    public void NullSourceCustomComparer() {
+    void NullSourceCustomComparer() {
         IEnumerable<String> source = null;
 
         assertThrows(NullPointerException.class, () -> source.distinct(StringComparer.Ordinal));
     }
 
     @Test
-    public void CustomEqualityComparer() {
+    void CustomEqualityComparer() {
         String[] source = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
         String[] expected = {"Bob", "Tim", "Robert"};
 
@@ -158,7 +158,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void CustomEqualityComparerRunOnce() {
+    void CustomEqualityComparerRunOnce() {
         String[] source = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
         String[] expected = {"Bob", "Tim", "Robert"};
 
@@ -194,7 +194,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void FindDistinctAndValidate() {
+    void FindDistinctAndValidate() {
         for (Object[] objects : this.SequencesWithDuplicates()) {
             this.FindDistinctAndValidate((IEnumerable<?>) objects[0]);
         }
@@ -216,7 +216,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).distinct();
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -224,7 +224,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void toArray() {
+    void toArray() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
@@ -232,7 +232,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void toList() {
+    void toList() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         Integer[] expected = {1, 2, null};
 
@@ -240,13 +240,13 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void Count() {
+    void Count() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
         assertEquals(3, Linq.of(source).distinct().count());
     }
 
     @Test
-    public void RepeatEnumerating() {
+    void RepeatEnumerating() {
         Integer[] source = {1, 1, 1, 2, 2, 2, null, null};
 
         IEnumerable<Integer> result = Linq.of(source).distinct();
@@ -255,7 +255,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void testDistinct() {
+    void testDistinct() {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
@@ -266,7 +266,7 @@ public class DistinctTest extends TestCase {
     }
 
     @Test
-    public void testDistinctWithEqualityComparer() {
+    void testDistinctWithEqualityComparer() {
         IEqualityComparer<Employee> comparer = new IEqualityComparer<Employee>() {
             @Override
             public boolean equals(Employee x, Employee y) {

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-17.
  */
-public class TakeLastTest extends TestCase {
+class TakeLastTest extends TestCase {
     @Test
-    public void TakeLast() {
+    void TakeLast() {
         for (Object[] objects : SkipTakeData.EnumerableData()) {
             this.TakeLast((IEnumerable<Integer>) objects[0], (int) objects[1]);
         }
@@ -45,7 +45,7 @@ public class TakeLastTest extends TestCase {
     }
 
     @Test
-    public void EvaluationBehavior() {
+    void EvaluationBehavior() {
         for (Object[] objects : SkipTakeData.EvaluationBehaviorData()) {
             this.EvaluationBehavior((int) objects[0]);
         }
@@ -83,7 +83,7 @@ public class TakeLastTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         for (Object[] objects : SkipTakeData.EnumerableData()) {
             this.RunOnce((IEnumerable<Integer>) objects[0], (int) objects[1]);
         }
@@ -95,13 +95,13 @@ public class TakeLastTest extends TestCase {
     }
 
     @Test
-    public void testTakeLast() {
+    void testTakeLast() {
         assertEquals(1, Linq.of(depts).takeLast(1).count());
         assertEquals(3, Linq.of(depts).takeLast(5).count());
     }
 
     @Test
-    public void runOnce() {
+    void runOnce() {
         IEnumerable<Department> expected = Linq.of(depts).skip(2);
         assertEquals(expected, Linq.of(depts).takeLast(1).runOnce());
     }

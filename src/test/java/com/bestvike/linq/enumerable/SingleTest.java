@@ -13,37 +13,37 @@ import java.math.BigDecimal;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SingleTest extends TestCase {
+class SingleTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<BigDecimal> q = Linq.of(new BigDecimal[]{m("999.9")}).select(x -> x);
 
         assertEquals(q.single(), q.single());
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{"!@#$%^"}).where(x -> !IsNullOrEmpty(x)).select(x -> x);
 
         assertEquals(q.single(), q.single());
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQueryWithZero() {
+    void SameResultsRepeatCallsIntQueryWithZero() {
         IEnumerable<Integer> q = Linq.of(new int[]{0}).select(x -> x);
 
         assertEquals(q.single(), q.single());
     }
 
     @Test
-    public void EmptyIList() {
+    void EmptyIList() {
         int[] source = {};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).single());
     }
 
     @Test
-    public void SingleElementIList() {
+    void SingleElementIList() {
         int[] source = {4};
         int expected = 4;
 
@@ -51,21 +51,21 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void ManyElementIList() {
+    void ManyElementIList() {
         int[] source = {4, 4, 4, 4, 4};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).single());
     }
 
     @Test
-    public void EmptyNotIList() {
+    void EmptyNotIList() {
         IEnumerable<Integer> source = RepeatedNumberGuaranteedNotCollectionType(0, 0);
 
         assertThrows(InvalidOperationException.class, () -> source.single());
     }
 
     @Test
-    public void SingleElementNotIList() {
+    void SingleElementNotIList() {
         IEnumerable<Integer> source = RepeatedNumberGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
@@ -73,21 +73,21 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void ManyElementNotIList() {
+    void ManyElementNotIList() {
         IEnumerable<Integer> source = RepeatedNumberGuaranteedNotCollectionType(3, 5);
 
         assertThrows(InvalidOperationException.class, () -> source.single());
     }
 
     @Test
-    public void EmptySourceWithPredicate() {
+    void EmptySourceWithPredicate() {
         int[] source = {};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
-    public void SingleElementPredicateTrue() {
+    void SingleElementPredicateTrue() {
         int[] source = {4};
         int expected = 4;
 
@@ -95,21 +95,21 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void SingleElementPredicateFalse() {
+    void SingleElementPredicateFalse() {
         int[] source = {3};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
-    public void ManyElementsPredicateFalseForAll() {
+    void ManyElementsPredicateFalseForAll() {
         int[] source = {3, 1, 7, 9, 13, 19};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
-    public void ManyElementsPredicateTrueForLast() {
+    void ManyElementsPredicateTrueForLast() {
         int[] source = {3, 1, 7, 9, 13, 19, 20};
         int expected = 20;
 
@@ -117,14 +117,14 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsPredicateTrueForFirstAndLast() {
+    void ManyElementsPredicateTrueForFirstAndLast() {
         int[] source = {2, 3, 1, 7, 9, 13, 19, 10};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
     @Test
-    public void FindSingleMatch() {
+    void FindSingleMatch() {
         this.FindSingleMatch(1, 100);
         this.FindSingleMatch(42, 100);
     }
@@ -134,7 +134,7 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         this.RunOnce(1, 100);
         this.RunOnce(42, 100);
     }
@@ -144,7 +144,7 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnNullSource() {
+    void ThrowsOnNullSource() {
         IEnumerable<Integer> source = null;
 
         assertThrows(NullPointerException.class, () -> source.single());
@@ -152,7 +152,7 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnNullPredicate() {
+    void ThrowsOnNullPredicate() {
         int[] source = {};
         Predicate1<Integer> nullPredicate = null;
 
@@ -160,7 +160,7 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void testSingle() {
+    void testSingle() {
         String[] person = {"Smith"};
         String[] people = {"Brill", "Smith", "Simpson"};
         Integer[] number = {20};
@@ -181,7 +181,7 @@ public class SingleTest extends TestCase {
     }
 
     @Test
-    public void testSinglePredicate() {
+    void testSinglePredicate() {
         String[] people = {"Brill", "Smith"};
         String[] twoPeopleWithCharS = {"Brill", "Smith", "Simpson"};
         String[] peopleWithoutCharS = {"Brill", "Andrew", "Alice"};

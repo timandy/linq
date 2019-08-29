@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * Created by 许崇雷 on 2019-06-20.
  */
-public class ComparerTest extends TestCase {
+class ComparerTest extends TestCase {
     {
         CultureInfo.setCurrent(Locale.CHINA);
         assertSame(Locale.CHINA, CultureInfo.getCurrent());
@@ -22,19 +22,19 @@ public class ComparerTest extends TestCase {
     }
 
     @Test
-    public void testInvariant() {
+    void testInvariant() {
         Comparator<String> stringComparator = Comparer.DefaultInvariant();
         assertTrue(stringComparator.compare("编辑", "测试") > 0);
     }
 
     @Test
-    public void testDefault() {
+    void testDefault() {
         Comparator<String> stringComparator = Comparer.Default();
         assertTrue(stringComparator.compare("编辑", "测试") < 0);
     }
 
     @Test
-    public void testCreateWithCollator() {
+    void testCreateWithCollator() {
         assertThrows(ArgumentNullException.class, () -> Comparer.create((Collator) null));
 
         Comparator<String> stringComparator = Comparer.create(Collator.getInstance(Locale.CHINA));
@@ -42,7 +42,7 @@ public class ComparerTest extends TestCase {
     }
 
     @Test
-    public void testCreateWithIComparison() {
+    void testCreateWithIComparison() {
         assertThrows(ArgumentNullException.class, () -> Comparer.create((IComparison) null));
 
         Comparator<Object> objectComparator = Comparer.create((x, y) -> -1);
@@ -51,7 +51,7 @@ public class ComparerTest extends TestCase {
     }
 
     @Test
-    public void testNotImplementComparable() {
+    void testNotImplementComparable() {
         assertThrows(ArgumentException.class, () -> Comparer.Default().compare(depts[0], depts[1]));
     }
 }

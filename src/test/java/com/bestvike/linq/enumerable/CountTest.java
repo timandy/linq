@@ -14,9 +14,9 @@ import java.util.Stack;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class CountTest extends TestCase {
+class CountTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(a -> a > Integer.MIN_VALUE);
 
@@ -24,7 +24,7 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(a -> !IsNullOrEmpty(a));
 
@@ -50,7 +50,7 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void Int() {
+    void Int() {
         for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.Int((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (int) objects[2]);
@@ -65,7 +65,7 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void IntRunOnce() {
+    void IntRunOnce() {
         for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.IntRunOnce((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (int) objects[2]);
@@ -80,7 +80,7 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void NullableIntArray_IncludesNullObjects() {
+    void NullableIntArray_IncludesNullObjects() {
         Integer[] data = {-10, 4, 9, null, 11};
         assertEquals(5, Linq.of(data).count());
     }
@@ -114,7 +114,7 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void CountMatchesTally() {
+    void CountMatchesTally() {
         for (Object[] objects : this.CountsAndTallies())
             //noinspection unchecked
             this.CountMatchesTally((int) objects[0], (IEnumerable) objects[1]);
@@ -125,7 +125,7 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         for (Object[] objects : this.CountsAndTallies())
             //noinspection unchecked
             this.RunOnce((int) objects[0], (IEnumerable) objects[1]);
@@ -136,7 +136,7 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Character>) null).count());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Character>) null).count(i -> i != 0));
         assertThrows(ArgumentNullException.class, () -> Linq.of((Character[]) null).count());
@@ -144,19 +144,19 @@ public class CountTest extends TestCase {
     }
 
     @Test
-    public void NullPredicate_ThrowsArgumentNullException() {
+    void NullPredicate_ThrowsArgumentNullException() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).count(predicate));
     }
 
     @Test
-    public void testCount() {
+    void testCount() {
         int count = Linq.of(depts).count();
         assertEquals(3, count);
     }
 
     @Test
-    public void testCountPredicate() {
+    void testCountPredicate() {
         int count = Linq.of(depts).count(dept -> dept.employees.size() > 0);
         assertEquals(2, count);
     }

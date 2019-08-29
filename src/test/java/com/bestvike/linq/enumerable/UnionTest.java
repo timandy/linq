@@ -17,9 +17,9 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class UnionTest extends TestCase {
+class UnionTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
         IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
 
@@ -27,7 +27,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
         IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
 
@@ -35,7 +35,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsMultipleUnions() {
+    void SameResultsRepeatCallsMultipleUnions() {
         IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
         IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
         IEnumerable<Integer> q3 = Linq.of(null, 8, 2, 2, 3);
@@ -44,14 +44,14 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void BothEmpty() {
+    void BothEmpty() {
         int[] first = {};
         int[] second = {};
         assertEmpty(Linq.of(first).union(Linq.of(second)));
     }
 
     @Test
-    public void ManyEmpty() {
+    void ManyEmpty() {
         int[] first = {};
         int[] second = {};
         int[] third = {};
@@ -60,7 +60,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void CustomComparer() {
+    void CustomComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "Charlie"};
@@ -70,7 +70,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "Charlie"};
@@ -80,7 +80,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void FirstNullCustomComparer() {
+    void FirstNullCustomComparer() {
         String[] first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
@@ -88,7 +88,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void SecondNullCustomComparer() {
+    void SecondNullCustomComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = null;
 
@@ -96,7 +96,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void FirstNullNoComparer() {
+    void FirstNullNoComparer() {
         String[] first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
@@ -104,7 +104,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void SecondNullNoComparer() {
+    void SecondNullNoComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = null;
 
@@ -112,7 +112,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void SingleNullWithEmpty() {
+    void SingleNullWithEmpty() {
         String[] first = {null};
         String[] second = new String[0];
         String[] expected = {null};
@@ -121,7 +121,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void NullEmptyStringMix() {
+    void NullEmptyStringMix() {
         String[] first = {null, null, Empty};
         String[] second = {null, null};
         String[] expected = {null, Empty};
@@ -130,7 +130,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void DoubleNullWithEmpty() {
+    void DoubleNullWithEmpty() {
         String[] first = {null, null};
         String[] second = new String[0];
         String[] expected = {null};
@@ -139,7 +139,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void EmptyWithNonEmpty() {
+    void EmptyWithNonEmpty() {
         int[] first = {};
         int[] second = {2, 4, 5, 3, 2, 3, 9};
         int[] expected = {2, 4, 5, 3, 9};
@@ -148,7 +148,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void NonEmptyWithEmpty() {
+    void NonEmptyWithEmpty() {
         int[] first = {2, 4, 5, 3, 2, 3, 9};
         int[] second = {};
         int[] expected = {2, 4, 5, 3, 9};
@@ -157,7 +157,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void CommonElementsShared() {
+    void CommonElementsShared() {
         int[] first = {1, 2, 3, 4, 5, 6};
         int[] second = {6, 7, 7, 7, 8, 1};
         int[] expected = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -166,7 +166,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void SameElementRepeated() {
+    void SameElementRepeated() {
         int[] first = {1, 1, 1, 1, 1, 1};
         int[] second = {1, 1, 1, 1, 1, 1};
         int[] expected = {1};
@@ -175,7 +175,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void RepeatedElementsWithSingleElement() {
+    void RepeatedElementsWithSingleElement() {
         int[] first = {1, 2, 3, 5, 3, 6};
         int[] second = {7};
         int[] expected = {1, 2, 3, 5, 6, 7};
@@ -184,7 +184,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void SingleWithAllUnique() {
+    void SingleWithAllUnique() {
         Integer[] first = {2};
         Integer[] second = {3, null, 4, 5};
         Integer[] expected = {2, 3, null, 4, 5};
@@ -193,7 +193,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void EachHasRepeatsBetweenAndAmongstThemselves() {
+    void EachHasRepeatsBetweenAndAmongstThemselves() {
         Integer[] first = {1, 2, 3, 4, null, 5, 1};
         Integer[] second = {6, 2, 3, 4, 5, 6};
         Integer[] expected = {1, 2, 3, 4, null, 5, 6};
@@ -202,7 +202,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void EachHasRepeatsBetweenAndAmongstThemselvesMultipleUnions() {
+    void EachHasRepeatsBetweenAndAmongstThemselvesMultipleUnions() {
         Integer[] first = {1, 2, 3, 4, null, 5, 1};
         Integer[] second = {6, 2, 3, 4, 5, 6};
         Integer[] third = {2, 8, 2, 3, 2, 8};
@@ -213,7 +213,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void MultipleUnionsCustomComparer() {
+    void MultipleUnionsCustomComparer() {
         Integer[] first = {1, 102, 903, 204, null, 5, 601};
         Integer[] second = {6, 202, 903, 204, 5, 106};
         Integer[] third = {2, 308, 2, 103, 802, 308};
@@ -224,7 +224,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void MultipleUnionsDifferentComparers() {
+    void MultipleUnionsDifferentComparers() {
         String[] first = {"Alpha", "Bravo", "Charlie", "Bravo", "Delta", "atleD", "ovarB"};
         String[] second = {"Charlie", "Delta", "Echo", "Foxtrot", "Foxtrot", "choE"};
         String[] third = {"trotFox", "Golf", "Alpha", "choE", "Tango"};
@@ -237,7 +237,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void NullEqualityComparer() {
+    void NullEqualityComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
@@ -246,7 +246,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).union(Linq.range(0, 3));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -254,7 +254,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateMultipleUnions() {
+    void ForcedToEnumeratorDoesntEnumerateMultipleUnions() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).union(Linq.range(0, 3)).union(Linq.range(2, 4)).union(Linq.of(new int[]{
                 9, 2, 4
         }));
@@ -264,7 +264,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void ToArray() {
+    void ToArray() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
@@ -273,7 +273,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void ToArrayMultipleUnion() {
+    void ToArrayMultipleUnion() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Bob", "Albert", "Tim"};
@@ -283,7 +283,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void ToList() {
+    void ToList() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
@@ -292,7 +292,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void ToListMultipleUnion() {
+    void ToListMultipleUnion() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Bob", "Albert", "Tim"};
@@ -302,7 +302,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void Count() {
+    void Count() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
@@ -310,7 +310,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void CountMultipleUnion() {
+    void CountMultipleUnion() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Bob", "Albert", "Tim"};
@@ -319,7 +319,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void RepeatEnumerating() {
+    void RepeatEnumerating() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
@@ -329,7 +329,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void RepeatEnumeratingMultipleUnions() {
+    void RepeatEnumeratingMultipleUnions() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
         String[] second = {"ttaM", "Charlie", "Bbo"};
         String[] third = {"Matt", "Albert", "Ichabod"};
@@ -339,7 +339,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
+    void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
         HashSet<String> set1 = new HashSet<>(StringComparer.OrdinalIgnoreCase);
         set1.add("a");
         IEnumerable<String> input1 = Linq.of(set1);
@@ -357,7 +357,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void testUnion() {
+    void testUnion() {
         assertEquals(6, Linq.of(emps)
                 .union(Linq.of(badEmps))
                 .union(Linq.of(emps))
@@ -365,7 +365,7 @@ public class UnionTest extends TestCase {
     }
 
     @Test
-    public void testUnionWithComparer() {
+    void testUnionWithComparer() {
         IEqualityComparer<Employee> comparer = new IEqualityComparer<Employee>() {
             @Override
             public boolean equals(Employee x, Employee y) {

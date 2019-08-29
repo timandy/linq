@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2017-07-23.
  */
-public class TupleTest extends TestCase {
+class TupleTest extends TestCase {
     @Test
-    public void testTuple1() {
+    void testTuple1() {
         Tuple1<String> source = Tuple.create("1");
         Tuple1<String> expected = Tuple.create("1");
         assertEquals(1, source.size());
@@ -26,7 +26,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTuple2() {
+    void testTuple2() {
         Tuple2<String, String> source = Tuple.create("1", "2");
         Tuple2<String, String> expected = Tuple.create("1", "2");
         assertEquals(2, source.size());
@@ -46,7 +46,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTuple3() {
+    void testTuple3() {
         Tuple3<String, String, String> source = Tuple.create("1", "2", "3");
         Tuple3<String, String, String> expected = Tuple.create("1", "2", "3");
         assertEquals(3, source.size());
@@ -69,7 +69,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTuple4() {
+    void testTuple4() {
         Tuple4<String, String, String, String> source = Tuple.create("1", "2", "3", "4");
         Tuple4<String, String, String, String> expected = Tuple.create("1", "2", "3", "4");
         assertEquals(4, source.size());
@@ -95,7 +95,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTuple5() {
+    void testTuple5() {
         Tuple5<String, String, String, String, String> source = Tuple.create("1", "2", "3", "4", "5");
         Tuple5<String, String, String, String, String> expected = Tuple.create("1", "2", "3", "4", "5");
         assertEquals(5, source.size());
@@ -124,7 +124,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTuple6() {
+    void testTuple6() {
         Tuple6<String, String, String, String, String, String> source = Tuple.create("1", "2", "3", "4", "5", "6");
         Tuple6<String, String, String, String, String, String> expected = Tuple.create("1", "2", "3", "4", "5", "6");
         assertEquals(6, source.size());
@@ -156,7 +156,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTuple7() {
+    void testTuple7() {
         Tuple7<String, String, String, String, String, String, String> source = Tuple.create("1", "2", "3", "4", "5", "6", "7");
         Tuple7<String, String, String, String, String, String, String> expected = Tuple.create("1", "2", "3", "4", "5", "6", "7");
         assertEquals(7, source.size());
@@ -191,7 +191,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTuple8() {
+    void testTuple8() {
         TupleN<String, String, String, String, String, String, String, Tuple1<String>> source = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
         TupleN<String, String, String, String, String, String, String, Tuple1<String>> expected = Tuple.create("1", "2", "3", "4", "5", "6", "7", "8");
         assertEquals(8, source.size());
@@ -229,7 +229,7 @@ public class TupleTest extends TestCase {
     }
 
     @Test
-    public void testTupleN() {
+    void testTupleN() {
         assertThrows(ArgumentException.class, () -> new TupleN<>("1", "2", "3", "4", "5", "6", "7", "8"));
 
         TupleN<String, String, String, String, String, String, String, TupleN<String, String, String, String, String, String, String, Tuple2<String, String>>> source =

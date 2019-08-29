@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ElementAtTest extends TestCase {
+class ElementAtTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -23,7 +23,7 @@ public class ElementAtTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty})
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -43,7 +43,7 @@ public class ElementAtTest extends TestCase {
     }
 
     @Test
-    public void ElementAt() {
+    void ElementAt() {
         for (Object[] objects : this.TestData()) {
             this.ElementAt((IEnumerable<Integer>) objects[0], (int) objects[1], (Integer) objects[2]);
         }
@@ -54,7 +54,7 @@ public class ElementAtTest extends TestCase {
     }
 
     @Test
-    public void ElementAtRunOnce() {
+    void ElementAtRunOnce() {
         for (Object[] objects : this.TestData()) {
             this.ElementAtRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer) objects[2]);
         }
@@ -65,7 +65,7 @@ public class ElementAtTest extends TestCase {
     }
 
     @Test
-    public void InvalidIndex_ThrowsArgumentOutOfRangeException() {
+    void InvalidIndex_ThrowsArgumentOutOfRangeException() {
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.of(new Integer[]{9, 8}).elementAt(-1));
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.of(new int[]{1, 2, 3, 4}).elementAt(4));
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> Linq.of(new int[0]).elementAt(0));
@@ -79,7 +79,7 @@ public class ElementAtTest extends TestCase {
     }
 
     @Test
-    public void NullableArray_ValidIndex_ReturnsCorrectObject() {
+    void NullableArray_ValidIndex_ReturnsCorrectObject() {
         Integer[] source = {9, 8, null, -5, 10};
 
         assertNull(Linq.of(source).elementAt(2));
@@ -87,12 +87,12 @@ public class ElementAtTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).elementAt(2));
     }
 
     @Test
-    public void testElementAt() {
+    void testElementAt() {
         IEnumerable<String> enumerable = Linq.of(Arrays.asList("jimi", "mitch"));
         assertEquals("jimi", enumerable.elementAt(0));
         try {

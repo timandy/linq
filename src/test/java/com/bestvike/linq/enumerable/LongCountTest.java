@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-05-20.
  */
-public class LongCountTest extends TestCase {
+class LongCountTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -23,7 +23,7 @@ public class LongCountTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -44,7 +44,7 @@ public class LongCountTest extends TestCase {
     }
 
     @Test
-    public void LongCount() {
+    void LongCount() {
         for (Object[] objects : this.LongCount_TestData()) {
             this.LongCount((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (long) objects[2]);
         }
@@ -59,7 +59,7 @@ public class LongCountTest extends TestCase {
     }
 
     @Test
-    public void LongCountRunOnce() {
+    void LongCountRunOnce() {
         for (Object[] objects : this.LongCount_TestData()) {
             this.LongCountRunOnce((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (long) objects[2]);
         }
@@ -74,25 +74,25 @@ public class LongCountTest extends TestCase {
     }
 
     @Test
-    public void NullableArray_IncludesNullValues() {
+    void NullableArray_IncludesNullValues() {
         Integer[] data = {-10, 4, 9, null, 11};
         assertEquals(5, Linq.of(data).longCount());
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).longCount());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).longCount(i -> i != 0));
     }
 
     @Test
-    public void NullPredicate_ThrowsArgumentNullException() {
+    void NullPredicate_ThrowsArgumentNullException() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).longCount(predicate));
     }
 
     @Test
-    public void testLongCount() {
+    void testLongCount() {
         long count = Linq.of(depts).longCount();
         assertEquals(3, count);
 
@@ -101,7 +101,7 @@ public class LongCountTest extends TestCase {
     }
 
     @Test
-    public void testLongCountPredicate() {
+    void testLongCountPredicate() {
         long count = Linq.of(depts).longCount(dept -> dept.employees.size() > 0);
         assertEquals(2, count);
 

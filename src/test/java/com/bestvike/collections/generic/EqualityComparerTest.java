@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-04-30.
  */
-public class EqualityComparerTest extends TestCase {
+class EqualityComparerTest extends TestCase {
     @Test
-    public void testDefault() {
+    void testDefault() {
         assertSame(EqualityComparer.Default(), EqualityComparer.Default());
         Predicate2<String, String> predicate = EqualityComparer.<String>Default()::equals;
         assertTrue(predicate.apply("hello", "hello"));
@@ -17,7 +17,7 @@ public class EqualityComparerTest extends TestCase {
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
         String a = "abc";
         //noinspection StringOperationCanBeSimplified
         String b = new String("abc");
@@ -27,7 +27,7 @@ public class EqualityComparerTest extends TestCase {
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         String a = "abc";
         //noinspection StringOperationCanBeSimplified
         String b = new String("abc");
@@ -37,7 +37,7 @@ public class EqualityComparerTest extends TestCase {
     }
 
     @Test
-    public void testIndexOf() {
+    void testIndexOf() {
         String[] array = new String[]{"Hello", " ", "tim", null, "Bye", "Bye", null};
         assertEquals(2, EqualityComparer.Default().indexOf(array, "tim", 0, array.length));
         assertEquals(2, EqualityComparer.Default().indexOf(array, "tim", 2, array.length - 2));
@@ -47,7 +47,7 @@ public class EqualityComparerTest extends TestCase {
     }
 
     @Test
-    public void testLastIndexOf() {
+    void testLastIndexOf() {
         String[] array = new String[]{"Hello", " ", "tim", null, "Bye", "Bye", null};
         assertEquals(2, EqualityComparer.Default().lastIndexOf(array, "tim", 6, 7));
         assertEquals(2, EqualityComparer.Default().lastIndexOf(array, "tim", 2, 3));

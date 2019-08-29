@@ -13,9 +13,9 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class CastTest extends TestCase {
+class CastTest extends TestCase {
     @Test
-    public void CastIntToLongThrows() {
+    void CastIntToLongThrows() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         IEnumerable<Long> rst = q.cast(long.class);
@@ -25,7 +25,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void CastByteToUShortThrows() {
+    void CastByteToUShortThrows() {
         IEnumerable<Byte> q = Linq.of(new byte[]{0, (byte) 255, 127, (byte) 128, 1, 33, 99});
 
         IEnumerable<Short> rst = q.cast(short.class);
@@ -35,13 +35,13 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void EmptySource() {
+    void EmptySource() {
         IEnumerable<Object> source = Linq.empty();
         assertEquals(0, source.cast(int.class).count());
     }
 
     @Test
-    public void NullableIntFromAppropriateObjects() {
+    void NullableIntFromAppropriateObjects() {
         Integer i = 10;
         IEnumerable<Object> source = Linq.of(-4, 1, 2, 3, 9, i);
         IEnumerable<Integer> expected = Linq.of(-4, 1, 2, 3, 9, i);
@@ -50,7 +50,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void NullableIntFromAppropriateObjectsRunOnce() {
+    void NullableIntFromAppropriateObjectsRunOnce() {
         Integer i = 10;
         IEnumerable<Object> source = Linq.of(-4, 1, 2, 3, 9, i);
         IEnumerable<Integer> expected = Linq.of(-4, 1, 2, 3, 9, i);
@@ -59,7 +59,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void LongFromNullableIntInObjectsThrows() {
+    void LongFromNullableIntInObjectsThrows() {
         Integer i = 10;
         IEnumerable<Object> source = Linq.of(-4, 1, 2, 3, 9, i);
 
@@ -68,7 +68,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void LongFromNullableIntInObjectsIncludingNullThrows() {
+    void LongFromNullableIntInObjectsIncludingNullThrows() {
         Integer i = 10;
         IEnumerable<Object> source = Linq.of(-4, 1, 2, 3, 9, null, i);
 
@@ -77,7 +77,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void NullableIntFromAppropriateObjectsIncludingNull() {
+    void NullableIntFromAppropriateObjectsIncludingNull() {
         Integer i = 10;
         IEnumerable<Object> source = Linq.of(-4, 1, 2, 3, 9, null, i);
         IEnumerable<Integer> expected = Linq.of(-4, 1, 2, 3, 9, null, i);
@@ -86,7 +86,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ThrowOnUncastableItem() {
+    void ThrowOnUncastableItem() {
         IEnumerable<Object> source = Linq.of(-4, 1, 2, 3, 9, "45");
         IEnumerable<Integer> expectedBeginning = Linq.of(new int[]{-4, 1, 2, 3, 9});
 
@@ -97,7 +97,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ThrowCastingIntToDouble() {
+    void ThrowCastingIntToDouble() {
         IEnumerable<Integer> source = Linq.of(new int[]{-4, 1, 2, 9});
 
         IEnumerable<Double> cast = source.cast(double.class);
@@ -113,13 +113,13 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ThrowOnHeterogenousSource() {
+    void ThrowOnHeterogenousSource() {
         this.TestCastThrow(null, Long.class);
         this.TestCastThrow(9L, Long.class);
     }
 
     @Test
-    public void CastToString() {
+    void CastToString() {
         IEnumerable<Object> source = Linq.of("Test1", "4.5", null, "Test2");
         IEnumerable<String> expected = Linq.of("Test1", "4.5", null, "Test2");
 
@@ -127,7 +127,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void CastToStringRunOnce() {
+    void CastToStringRunOnce() {
         IEnumerable<Object> source = Linq.of("Test1", "4.5", null, "Test2");
         IEnumerable<String> expected = Linq.of("Test1", "4.5", null, "Test2");
 
@@ -135,12 +135,12 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ArrayConversionThrows() {
+    void ArrayConversionThrows() {
         assertThrows(ClassCastException.class, () -> Linq.of(new int[]{-4}).cast(Long.class).toList());
     }
 
     @Test
-    public void FirstElementInvalidForCast() {
+    void FirstElementInvalidForCast() {
         IEnumerable<Object> source = Linq.of("Test", 3, 5, 10);
 
         IEnumerable<Integer> cast = source.cast(Integer.class);
@@ -148,7 +148,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void LastElementInvalidForCast() {
+    void LastElementInvalidForCast() {
         IEnumerable<Object> source = Linq.of(-5, 9, 0, 5, 9, "Test");
 
         IEnumerable<Integer> cast = source.cast(Integer.class);
@@ -156,7 +156,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void NullableIntFromNullsAndInts() {
+    void NullableIntFromNullsAndInts() {
         IEnumerable<Object> source = Linq.of(3, null, 5, -4, 0, null, 9);
         IEnumerable<Integer> expected = Linq.of(3, null, 5, -4, 0, null, 9);
 
@@ -164,7 +164,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ThrowCastingIntToLong() {
+    void ThrowCastingIntToLong() {
         IEnumerable<Integer> source = Linq.of(new int[]{-4, 1, 2, 3, 9});
 
         IEnumerable<Long> cast = source.cast(long.class);
@@ -172,7 +172,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ThrowCastingIntToNullableLong() {
+    void ThrowCastingIntToNullableLong() {
         IEnumerable<Integer> source = Linq.of(new int[]{-4, 1, 2, 3, 9});
 
         IEnumerable<Long> cast = source.cast(Long.class);
@@ -180,7 +180,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ThrowCastingNullableIntToLong() {
+    void ThrowCastingNullableIntToLong() {
         IEnumerable<Integer> source = Linq.of(-4, 1, 2, 3, 9);
 
         IEnumerable<Long> cast = source.cast(long.class);
@@ -188,7 +188,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void ThrowCastingNullableIntToNullableLong() {
+    void ThrowCastingNullableIntToNullableLong() {
         IEnumerable<Integer> source = Linq.of(-4, 1, 2, 3, 9, null);
 
         IEnumerable<Long> cast = source.cast(Long.class);
@@ -196,7 +196,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void CastingNullToNonnullableIsNullReferenceException() {
+    void CastingNullToNonnullableIsNullReferenceException() {
         IEnumerable<Integer> source = Linq.of(-4, 1, null, 3);
 
         IEnumerable<Integer> cast = source.cast(int.class);
@@ -204,12 +204,12 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).cast(String.class));
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<String> iterator = Linq.empty().where(Objects::nonNull).cast(String.class);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator en = as(iterator, IEnumerator.class);
@@ -217,7 +217,7 @@ public class CastTest extends TestCase {
     }
 
     @Test
-    public void testCast() {
+    void testCast() {
         List<Number> numbers = Arrays.asList(2, null, 3.14, 5);
         IEnumerator<Integer> enumerator = Linq.of(numbers)
                 .cast(Integer.class)

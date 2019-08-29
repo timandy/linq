@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-06-06.
  */
-public class ShortCircuitingTest extends TestCase {
+class ShortCircuitingTest extends TestCase {
     @Test
-    public void ListLastDoesntCheckAll() {
+    void ListLastDoesntCheckAll() {
         List<Integer> source = Linq.range(0, 10).toList();
         CountedFunction<Integer> pred = new CountedFunction<>(i -> i < 7);
         assertEquals(6, Linq.of(source).last(pred.getFunc()));
@@ -26,7 +26,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinDoubleDoesntCheckAll() {
+    void MinDoubleDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 5 ? Double.NaN : (double) i);
         assertTrue(Double.isNaN(source.minDouble()));
@@ -37,7 +37,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinNullableDoubleDoesntCheckAll() {
+    void MinNullableDoubleDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 5 ? Double.NaN : (double) i);
         assertTrue(Double.isNaN(source.minDoubleNull()));
@@ -48,7 +48,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinSingleDoesntCheckAll() {
+    void MinSingleDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 5 ? Float.NaN : (float) i);
         assertTrue(Float.isNaN(source.minFloat()));
@@ -59,7 +59,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinNullableSingleDoesntCheckAll() {
+    void MinNullableSingleDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 5 ? Float.NaN : (float) i);
         assertTrue(Float.isNaN(source.minFloatNull()));
@@ -70,7 +70,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinDoubleDoesntCheckAllStartLeadingWithNaN() {
+    void MinDoubleDoesntCheckAllStartLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
 
@@ -79,7 +79,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinNullableDoubleDoesntCheckAllLeadingWithNaN() {
+    void MinNullableDoubleDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
 
@@ -88,7 +88,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinSingleDoesntCheckAllLeadingWithNaN() {
+    void MinSingleDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
 
@@ -97,7 +97,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinNullableSingleDoesntCheckAllLeadingWithNaN() {
+    void MinNullableSingleDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
 
@@ -106,7 +106,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinDoubleSelectorDoesntCheckAllStartLeadingWithNaN() {
+    void MinDoubleSelectorDoesntCheckAllStartLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
 
@@ -115,7 +115,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinNullableDoubleSelectorDoesntCheckAllLeadingWithNaN() {
+    void MinNullableDoubleSelectorDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Double> source = tracker.select(i -> i == 1 ? Double.NaN : (double) i);
 
@@ -124,7 +124,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinSingleSelectorDoesntCheckAllLeadingWithNaN() {
+    void MinSingleSelectorDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
 
@@ -133,7 +133,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void MinNullableSingleSelectorDoesntCheckAllLeadingWithNaN() {
+    void MinNullableSingleSelectorDoesntCheckAllLeadingWithNaN() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         IEnumerable<Float> source = tracker.select(i -> i == 1 ? Float.NaN : (float) i);
 
@@ -142,7 +142,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void SingleWithPredicateDoesntCheckAll() {
+    void SingleWithPredicateDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         CountedFunction<Integer> pred = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker.single(pred.getFunc()));
@@ -154,7 +154,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void SingleOrDefaultWithPredicateDoesntCheckAll() {
+    void SingleOrDefaultWithPredicateDoesntCheckAll() {
         TrackingEnumerable tracker = new TrackingEnumerable(10);
         CountedFunction<Integer> pred = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker.singleOrDefault(pred.getFunc()));
@@ -166,7 +166,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void SingleWithPredicateWorksLikeWhereFollowedBySingle() {
+    void SingleWithPredicateWorksLikeWhereFollowedBySingle() {
         TrackingEnumerable tracker0 = new TrackingEnumerable(10);
         CountedFunction<Integer> pred0 = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker0.single(pred0.getFunc()));
@@ -181,7 +181,7 @@ public class ShortCircuitingTest extends TestCase {
     }
 
     @Test
-    public void SingleOrDefaultWithPredicateWorksLikeWhereFollowedBySingleOrDefault() {
+    void SingleOrDefaultWithPredicateWorksLikeWhereFollowedBySingleOrDefault() {
         TrackingEnumerable tracker0 = new TrackingEnumerable(10);
         CountedFunction<Integer> pred0 = new CountedFunction<>(i -> i > 2);
         assertThrows(InvalidOperationException.class, () -> tracker0.singleOrDefault(pred0.getFunc()));
@@ -199,7 +199,7 @@ public class ShortCircuitingTest extends TestCase {
     private static class TrackingEnumerable implements IEnumerable<Integer> {
         // Skipping tests of double calls on GetEnumerable. Just don't do them here!
         private final int count;
-        int Moves;
+        private int Moves;
 
         TrackingEnumerable(int count) {
             this.count = count;
@@ -225,13 +225,13 @@ public class ShortCircuitingTest extends TestCase {
 
     private static class CountedFunction<T> {
         private final Predicate1<T> basefunc;
-        int Calls;
+        private int Calls;
 
-        CountedFunction(Predicate1<T> baseFunc) {
+        private CountedFunction(Predicate1<T> baseFunc) {
             this.basefunc = baseFunc;
         }
 
-        Predicate1<T> getFunc() {
+        private Predicate1<T> getFunc() {
             return x -> {
                 ++this.Calls;
                 return this.basefunc.apply(x);

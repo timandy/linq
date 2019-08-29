@@ -20,9 +20,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-06-14.
  */
-public class LastIndexOfTest extends TestCase {
+class LastIndexOfTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -30,7 +30,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -56,7 +56,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void Int() {
+    void Int() {
         for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.Int((IEnumerable<Integer>) objects[0], (int) objects[1], (int) objects[2]);
@@ -68,7 +68,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void IntRunOnce() {
+    void IntRunOnce() {
         for (Object[] objects : this.Int_TestData())
             //noinspection unchecked
             this.IntRunOnce((IEnumerable<Integer>) objects[0], (int) objects[1], (int) objects[2]);
@@ -90,13 +90,13 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void String() {
+    void String() {
         for (Object[] objects : this.String_TestData())
             //noinspection unchecked
             this.String((IEnumerable<String>) objects[0], (IEqualityComparer<String>) objects[1], (String) objects[2], (int) objects[3]);
     }
 
-    public void String(IEnumerable<String> source, IEqualityComparer<String> comparer, String value, int expected) {
+    void String(IEnumerable<String> source, IEqualityComparer<String> comparer, String value, int expected) {
         if (comparer == null) {
             assertEquals(expected, source.lastIndexOf(value));
         }
@@ -104,7 +104,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void StringRunOnce() {
+    void StringRunOnce() {
         for (Object[] objects : this.String_TestData())
             //noinspection unchecked
             this.StringRunOnce((IEnumerable<String>) objects[0], (IEqualityComparer<String>) objects[1], (String) objects[2], (int) objects[3]);
@@ -127,7 +127,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void NullableInt() {
+    void NullableInt() {
         for (Object[] objects : this.NullableInt_TestData())
             //noinspection unchecked
             this.NullableInt((IEnumerable<Integer>) objects[0], (Integer) objects[1], (int) objects[2]);
@@ -139,7 +139,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         IEnumerable<Integer> source = null;
         //noinspection ConstantConditions
         assertThrows(NullPointerException.class, () -> source.lastIndexOf(42));
@@ -148,7 +148,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void ExplicitNullComparerDoesNotDeferToCollection() {
+    void ExplicitNullComparerDoesNotDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.of(set);
@@ -156,7 +156,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void ExplicitComparerDoesNotDeferToCollection() {
+    void ExplicitComparerDoesNotDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.of(set);
@@ -164,7 +164,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void ExplicitComparerDoestNotDeferToCollectionWithComparer() {
+    void ExplicitComparerDoestNotDeferToCollectionWithComparer() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.of(set);
@@ -172,7 +172,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void NoComparerDoesDeferToCollection() {
+    void NoComparerDoesDeferToCollection() {
         HashSet<String> set = new HashSet<>();
         set.add("ABC");
         IEnumerable<String> source = Linq.of(set);
@@ -180,7 +180,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void testIList() {
+    void testIList() {
         assertEquals(2, new Array<String>(new String[]{"a", "b", "b", "c"}).lastIndexOf("b"));
         assertEquals(-1, new Array<String>(new String[]{"a", "b", "b", "c"}).lastIndexOf("d"));
         assertEquals(-1, new Array<String>(new String[]{"a", "b", "b", "c"}).lastIndexOf(null));
@@ -257,7 +257,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void testLastIndexOf() {
+    void testLastIndexOf() {
         Employee e = emps[1];
         Employee employeeClone = new Employee(e.empno, e.name, e.deptno);
         Employee employeeOther = badEmps[0];
@@ -281,7 +281,7 @@ public class LastIndexOfTest extends TestCase {
     }
 
     @Test
-    public void testLastIndexOfWithEqualityComparer() {
+    void testLastIndexOfWithEqualityComparer() {
         IEqualityComparer<Employee> comparer = new IEqualityComparer<Employee>() {
             @Override
             public boolean equals(Employee x, Employee y) {

@@ -31,9 +31,9 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SelectTest extends TestCase {
+class SelectTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q1 = Linq.of(new String[]{"Alen", "Felix", null, null, "X", "Have Space", "Clinton", ""})
                 .select(x1 -> x1);
 
@@ -46,7 +46,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SingleElement() {
+    void SingleElement() {
         CustInfo[] source = new CustInfo[]{new CustInfo("Prakash", 98088)};
         String[] expected = {"Prakash"};
 
@@ -54,7 +54,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectProperty() {
+    void SelectProperty() {
         CustInfo[] source = new CustInfo[]{
                 new CustInfo("Prakash", 98088),
                 new CustInfo("Bob", 29099),
@@ -67,7 +67,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         CustInfo[] source = new CustInfo[]{
                 new CustInfo("Prakash", 98088),
                 new CustInfo("Bob", 29099),
@@ -82,12 +82,12 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void EmptyWithIndexedSelector() {
+    void EmptyWithIndexedSelector() {
         assertEquals(Linq.<Integer>empty(), Linq.<String>empty().select((s, i) -> s.length() + i));
     }
 
     @Test
-    public void EnumerateFromDifferentThread() {
+    void EnumerateFromDifferentThread() {
         IEnumerable<String> selected = Linq.range(0, 100).where(i -> i > 3).select(i -> i.toString());
         CompletableFuture[] tasks = new CompletableFuture[4];
         for (int i = 0; i != 4; ++i)
@@ -96,7 +96,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SingleElementIndexedSelector() {
+    void SingleElementIndexedSelector() {
         CustInfo[] source = new CustInfo[]{
                 new CustInfo("Prakash", 98088)
         };
@@ -106,7 +106,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectPropertyPassingIndex() {
+    void SelectPropertyPassingIndex() {
         CustInfo[] source = new CustInfo[]{
                 new CustInfo("Prakash", 98088),
                 new CustInfo("Bob", 29099),
@@ -119,7 +119,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectPropertyUsingIndex() {
+    void SelectPropertyUsingIndex() {
         CustInfo[] source = new CustInfo[]{
                 new CustInfo("Prakash", 98088),
                 new CustInfo("Bob", 29099),
@@ -130,7 +130,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectPropertyPassingIndexOnLast() {
+    void SelectPropertyPassingIndexOnLast() {
         CustInfo[] source = new CustInfo[]{
                 new CustInfo("Prakash", 98088),
                 new CustInfo("Bob", 29099),
@@ -144,7 +144,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Overflow() {
+    void Overflow() {
         IEnumerable<Integer> selected = new FastInfiniteEnumerator<Integer>().select((e, i) -> e);
         try (IEnumerator<Integer> en = selected.enumerator()) {
             assertThrows(ArithmeticException.class, () -> {
@@ -155,7 +155,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsNull_ArgumentNullExceptionThrown() {
+    void Select_SourceIsNull_ArgumentNullExceptionThrown() {
         IEnumerable<Integer> source = null;
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -163,7 +163,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SelectorIsNull_ArgumentNullExceptionThrown_Indexed() {
+    void Select_SelectorIsNull_ArgumentNullExceptionThrown_Indexed() {
         IEnumerable<Integer> source = Linq.range(1, 10);
         IndexFunc2<Integer, Integer> selector = null;
 
@@ -171,7 +171,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsNull_ArgumentNullExceptionThrown_Indexed() {
+    void Select_SourceIsNull_ArgumentNullExceptionThrown_Indexed() {
         IEnumerable<Integer> source = null;
         IndexFunc2<Integer, Integer> selector = (e, i) -> i + 1;
 
@@ -179,7 +179,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SelectorIsNull_ArgumentNullExceptionThrown() {
+    void Select_SelectorIsNull_ArgumentNullExceptionThrown() {
         IEnumerable<Integer> source = Linq.range(1, 10);
         Func1<Integer, Integer> selector = null;
 
@@ -187,7 +187,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsAnArray_ExecutionIsDeferred() {
+    void Select_SourceIsAnArray_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         Func0<Integer>[] source = new Func0[]{() -> {
             funcCalled.value = true;
@@ -199,7 +199,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsAList_ExecutionIsDeferred() {
+    void Select_SourceIsAList_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         List<Func0<Integer>> source = Arrays.asList(() -> {
             funcCalled.value = true;
@@ -211,7 +211,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIReadOnlyCollection_ExecutionIsDeferred() {
+    void Select_SourceIsIReadOnlyCollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         Collection<Func0<Integer>> source = Collections.unmodifiableCollection(Arrays.asList(() -> {
             funcCalled.value = true;
@@ -223,7 +223,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsICollection_ExecutionIsDeferred() {
+    void Select_SourceIsICollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         Collection<Func0<Integer>> source = new LinkedList<>(Arrays.asList(() -> {
             funcCalled.value = true;
@@ -235,7 +235,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIEnumerable_ExecutionIsDeferred() {
+    void Select_SourceIsIEnumerable_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         IEnumerable<Func0<Integer>> source = Linq.repeat(() -> {
             funcCalled.value = true;
@@ -247,7 +247,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsAnArray_ExecutionIsDeferred() {
+    void SelectSelect_SourceIsAnArray_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         Func0<Integer>[] source = new Func0[]{() -> {
             funcCalled.value = true;
@@ -259,7 +259,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsAList_ExecutionIsDeferred() {
+    void SelectSelect_SourceIsAList_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         List<Func0<Integer>> source = Arrays.asList(() -> {
             funcCalled.value = true;
@@ -271,7 +271,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsIReadOnlyCollection_ExecutionIsDeferred() {
+    void SelectSelect_SourceIsIReadOnlyCollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         Collection<Func0<Integer>> source = Collections.unmodifiableCollection(Arrays.asList(() -> {
             funcCalled.value = true;
@@ -283,7 +283,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsICollection_ExecutionIsDeferred() {
+    void SelectSelect_SourceIsICollection_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         Collection<Func0<Integer>> source = new LinkedList<>(Arrays.asList(() -> {
             funcCalled.value = true;
@@ -295,7 +295,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsIEnumerable_ExecutionIsDeferred() {
+    void SelectSelect_SourceIsIEnumerable_ExecutionIsDeferred() {
         ref<Boolean> funcCalled = ref.init(false);
         IEnumerable<Func0<Integer>> source = Linq.repeat(() -> {
             funcCalled.value = true;
@@ -307,7 +307,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsAnArray_ReturnsExpectedValues() {
+    void Select_SourceIsAnArray_ReturnsExpectedValues() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -324,7 +324,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsAList_ReturnsExpectedValues() {
+    void Select_SourceIsAList_ReturnsExpectedValues() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -341,7 +341,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIReadOnlyCollection_ReturnsExpectedValues() {
+    void Select_SourceIsIReadOnlyCollection_ReturnsExpectedValues() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -358,7 +358,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsICollection_ReturnsExpectedValues() {
+    void Select_SourceIsICollection_ReturnsExpectedValues() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -375,7 +375,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIEnumerable_ReturnsExpectedValues() {
+    void Select_SourceIsIEnumerable_ReturnsExpectedValues() {
         int nbOfItems = 5;
         IEnumerable<Integer> source = Linq.range(1, nbOfItems);
         Func1<Integer, Integer> selector = i -> i + 1;
@@ -393,7 +393,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsAnArray_CurrentIsDefaultOfTAfterEnumeration() {
+    void Select_SourceIsAnArray_CurrentIsDefaultOfTAfterEnumeration() {
         int[] source = new int[]{1};
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -406,7 +406,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsAList_CurrentIsDefaultOfTAfterEnumeration() {
+    void Select_SourceIsAList_CurrentIsDefaultOfTAfterEnumeration() {
         List<Integer> source = Arrays.asList(1);
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -419,7 +419,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIReadOnlyCollection_CurrentIsDefaultOfTAfterEnumeration() {
+    void Select_SourceIsIReadOnlyCollection_CurrentIsDefaultOfTAfterEnumeration() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1));
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -432,7 +432,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsICollection_CurrentIsDefaultOfTAfterEnumeration() {
+    void Select_SourceIsICollection_CurrentIsDefaultOfTAfterEnumeration() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1));
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -445,7 +445,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIEnumerable_CurrentIsDefaultOfTAfterEnumeration() {
+    void Select_SourceIsIEnumerable_CurrentIsDefaultOfTAfterEnumeration() {
         IEnumerable<Integer> source = Linq.repeat(1, 1);
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -458,7 +458,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsAnArray_ReturnsExpectedValues() {
+    void SelectSelect_SourceIsAnArray_ReturnsExpectedValues() {
         Func1<Integer, Integer> selector = i -> i + 1;
         int[] source = new int[]{1, 2, 3, 4, 5};
 
@@ -475,7 +475,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsAList_ReturnsExpectedValues() {
+    void SelectSelect_SourceIsAList_ReturnsExpectedValues() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4, 5);
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -492,7 +492,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsIReadOnlyCollection_ReturnsExpectedValues() {
+    void SelectSelect_SourceIsIReadOnlyCollection_ReturnsExpectedValues() {
         Collection<Integer> source = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -509,7 +509,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsICollection_ReturnsExpectedValues() {
+    void SelectSelect_SourceIsICollection_ReturnsExpectedValues() {
         Collection<Integer> source = new LinkedList<>(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -526,7 +526,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void SelectSelect_SourceIsIEnumerable_ReturnsExpectedValues() {
+    void SelectSelect_SourceIsIEnumerable_ReturnsExpectedValues() {
         int nbOfItems = 5;
         IEnumerable<Integer> source = Linq.range(1, 5);
         Func1<Integer, Integer> selector = i -> i + 1;
@@ -544,7 +544,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsEmptyEnumerable_ReturnedCollectionHasNoElements() {
+    void Select_SourceIsEmptyEnumerable_ReturnedCollectionHasNoElements() {
         IEnumerable<Integer> source = Linq.empty();
         ref<Boolean> wasSelectorCalled = ref.init(false);
 
@@ -563,7 +563,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromSelector_ExceptionPropagatedToTheCaller() {
+    void Select_ExceptionThrownFromSelector_ExceptionPropagatedToTheCaller() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Func1<Integer, Integer> selector = i -> {
             throw new InvalidOperationException();
@@ -576,7 +576,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromSelector_IteratorCanBeUsedAfterExceptionIsCaught() {
+    void Select_ExceptionThrownFromSelector_IteratorCanBeUsedAfterExceptionIsCaught() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Func1<Integer, Integer> selector = i -> {
             if (i == 1)
@@ -593,7 +593,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromCurrentOfSourceIterator_ExceptionPropagatedToTheCaller() {
+    void Select_ExceptionThrownFromCurrentOfSourceIterator_ExceptionPropagatedToTheCaller() {
         IEnumerable<Integer> source = new ThrowsOnCurrent();
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -604,7 +604,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromCurrentOfSourceIterator_IteratorCanBeUsedAfterExceptionIsCaught() {
+    void Select_ExceptionThrownFromCurrentOfSourceIterator_IteratorCanBeUsedAfterExceptionIsCaught() {
         IEnumerable<Integer> source = new ThrowsOnCurrent();
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -617,7 +617,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromMoveNextOfSourceIterator_ExceptionPropagatedToTheCaller() {
+    void Select_ExceptionThrownFromMoveNextOfSourceIterator_ExceptionPropagatedToTheCaller() {
         IEnumerable<Integer> source = new ThrowsOnMoveNext();
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -628,7 +628,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromMoveNextOfSourceIterator_IteratorCanBeUsedAfterExceptionIsCaught() {
+    void Select_ExceptionThrownFromMoveNextOfSourceIterator_IteratorCanBeUsedAfterExceptionIsCaught() {
         IEnumerable<Integer> source = new ThrowsOnMoveNext();
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -641,7 +641,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromGetEnumeratorOnSource_ExceptionPropagatedToTheCaller() {
+    void Select_ExceptionThrownFromGetEnumeratorOnSource_ExceptionPropagatedToTheCaller() {
         IEnumerable<Integer> source = new ThrowsOnGetEnumerator();
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -652,7 +652,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ExceptionThrownFromGetEnumeratorOnSource_CurrentIsSetToDefaultOfItemTypeAndIteratorCanBeUsedAfterExceptionIsCaught() {
+    void Select_ExceptionThrownFromGetEnumeratorOnSource_CurrentIsSetToDefaultOfItemTypeAndIteratorCanBeUsedAfterExceptionIsCaught() {
         IEnumerable<Integer> source = new ThrowsOnGetEnumerator();
         Func1<Integer, String> selector = i -> i.toString();
 
@@ -668,7 +668,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceListGetsModifiedDuringIteration_ExceptionIsPropagated() {
+    void Select_SourceListGetsModifiedDuringIteration_ExceptionIsPropagated() {
         List<Integer> source = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -683,7 +683,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_GetEnumeratorCalledTwice_DifferentInstancesReturned() {
+    void Select_GetEnumeratorCalledTwice_DifferentInstancesReturned() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         IEnumerable<Integer> query = Linq.of(source).select(i -> i + 1);
 
@@ -698,7 +698,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_ResetCalledOnEnumerator_ThrowsException() {
+    void Select_ResetCalledOnEnumerator_ThrowsException() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         Func1<Integer, Integer> selector = i -> i + 1;
 
@@ -711,7 +711,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).select(i -> i);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -719,7 +719,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIndexed() {
+    void ForcedToEnumeratorDoesntEnumerateIndexed() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).select((e, i) -> i);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -727,53 +727,53 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateArray() {
+    void ForcedToEnumeratorDoesntEnumerateArray() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).toArray().select(i -> i);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateList() {
+    void ForcedToEnumeratorDoesntEnumerateList() {
         IEnumerable<Integer> iterator = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).select(i -> i);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIList() {
+    void ForcedToEnumeratorDoesntEnumerateIList() {
         IEnumerable<Integer> iterator = Linq.of(Collections.unmodifiableCollection(NumberRangeGuaranteedNotCollectionType(0, 3).toList())).select(i -> i);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIPartition() {
+    void ForcedToEnumeratorDoesntEnumerateIPartition() {
         IEnumerable<Integer> iterator = Linq.of(Collections.unmodifiableCollection(NumberRangeGuaranteedNotCollectionType(0, 3).toList())).select(i -> i).skip(1);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
-    public void Select_SourceIsArray_Count() {
+    void Select_SourceIsArray_Count() {
         int[] source = new int[]{1, 2, 3, 4};
         assertEquals(source.length, Linq.of(source).select(i -> i * 2).count());
     }
 
     @Test
-    public void Select_SourceIsAList_Count() {
+    void Select_SourceIsAList_Count() {
         List<Integer> source = Arrays.asList(1, 2, 3, 4);
         assertEquals(source.size(), Linq.of(source).select(i -> i * 2).count());
     }
 
     @Test
-    public void Select_SourceIsAnIList_Count() {
+    void Select_SourceIsAnIList_Count() {
         Collection<Integer> souce = Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4));
         assertEquals(souce.size(), Linq.of(souce).select(i -> i * 2).count());
     }
 
     @Test
-    public void Select_SourceIsArray_Skip() {
+    void Select_SourceIsArray_Skip() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{6, 8}), source.skip(2));
         assertEquals(Linq.of(new int[]{6, 8}), source.skip(2).skip(-1));
@@ -784,7 +784,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsList_Skip() {
+    void Select_SourceIsList_Skip() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{6, 8}), source.skip(2));
         assertEquals(Linq.of(new int[]{6, 8}), source.skip(2).skip(-1));
@@ -795,7 +795,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIList_Skip() {
+    void Select_SourceIsIList_Skip() {
         IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{6, 8}), source.skip(2));
         assertEquals(Linq.of(new int[]{6, 8}), source.skip(2).skip(-1));
@@ -806,7 +806,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsArray_Take() {
+    void Select_SourceIsArray_Take() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{2, 4}), source.take(2));
         assertEquals(Linq.of(new int[]{2, 4}), source.take(3).take(2));
@@ -820,7 +820,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsList_Take() {
+    void Select_SourceIsList_Take() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{2, 4}), source.take(2));
         assertEquals(Linq.of(new int[]{2, 4}), source.take(3).take(2));
@@ -834,7 +834,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIList_Take() {
+    void Select_SourceIsIList_Take() {
         IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{2, 4}), source.take(2));
         assertEquals(Linq.of(new int[]{2, 4}), source.take(3).take(2));
@@ -848,7 +848,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsArray_ElementAt() {
+    void Select_SourceIsArray_ElementAt() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAt(i));
@@ -861,7 +861,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsList_ElementAt() {
+    void Select_SourceIsList_ElementAt() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAt(i));
@@ -874,7 +874,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIList_ElementAt() {
+    void Select_SourceIsIList_ElementAt() {
         IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAt(i));
@@ -887,7 +887,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsArray_ElementAtOrDefault() {
+    void Select_SourceIsArray_ElementAtOrDefault() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAtOrDefault(i));
@@ -900,7 +900,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsList_ElementAtOrDefault() {
+    void Select_SourceIsList_ElementAtOrDefault() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAtOrDefault(i));
@@ -913,7 +913,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIList_ElementAtOrDefault() {
+    void Select_SourceIsIList_ElementAtOrDefault() {
         IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         for (int i = 0; i != 4; ++i)
             assertEquals(i * 2 + 2, source.elementAtOrDefault(i));
@@ -926,7 +926,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsArray_First() {
+    void Select_SourceIsArray_First() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         assertEquals(2, source.first());
         assertEquals(2, source.firstOrDefault());
@@ -944,7 +944,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsList_First() {
+    void Select_SourceIsList_First() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         assertEquals(2, source.first());
         assertEquals(2, source.firstOrDefault());
@@ -962,7 +962,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIList_First() {
+    void Select_SourceIsIList_First() {
         IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         assertEquals(2, source.first());
         assertEquals(2, source.firstOrDefault());
@@ -980,7 +980,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsArray_Last() {
+    void Select_SourceIsArray_Last() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2);
         assertEquals(8, source.last());
         assertEquals(8, source.lastOrDefault());
@@ -996,7 +996,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsList_Last() {
+    void Select_SourceIsList_Last() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2);
         assertEquals(8, source.last());
         assertEquals(8, source.lastOrDefault());
@@ -1012,7 +1012,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsIList_Last() {
+    void Select_SourceIsIList_Last() {
         IEnumerable<Integer> source = Linq.of(Collections.unmodifiableCollection(Arrays.asList(1, 2, 3, 4))).select(i -> i * 2);
         assertEquals(8, source.last());
         assertEquals(8, source.lastOrDefault());
@@ -1028,26 +1028,26 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsArray_SkipRepeatCalls() {
+    void Select_SourceIsArray_SkipRepeatCalls() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2).skip(1);
         assertEquals(source, source);
     }
 
     @Test
-    public void Select_SourceIsArraySkipSelect() {
+    void Select_SourceIsArraySkipSelect() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2).skip(1).select(i -> i + 1);
         assertEquals(Linq.of(new int[]{5, 7, 9}), source);
     }
 
     @Test
-    public void Select_SourceIsArrayTakeTake() {
+    void Select_SourceIsArrayTakeTake() {
         IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4}).select(i -> i * 2).take(2).take(1);
         assertEquals(Linq.of(new int[]{2}), source);
         assertEquals(Linq.of(new int[]{2}), source.take(10));
     }
 
     @Test
-    public void Select_SourceIsListSkipTakeCount() {
+    void Select_SourceIsListSkipTakeCount() {
         assertEquals(3, Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).count());
         assertEquals(4, Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).count());
         assertEquals(2, Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).count());
@@ -1055,7 +1055,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsListSkipTakeToArray() {
+    void Select_SourceIsListSkipTakeToArray() {
         assertEquals(Linq.of(new int[]{2, 4, 6}), Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).toArray());
         assertEquals(Linq.of(new int[]{2, 4, 6, 8}), Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).toArray());
         assertEquals(Linq.of(new int[]{6, 8}), Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).toArray());
@@ -1063,7 +1063,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void Select_SourceIsListSkipTakeToList() {
+    void Select_SourceIsListSkipTakeToList() {
         assertEquals(Linq.of(new int[]{2, 4, 6}), Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(3).toList()));
         assertEquals(Linq.of(new int[]{2, 4, 6, 8}), Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).take(9).toList()));
         assertEquals(Linq.of(new int[]{6, 8}), Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(2).toList()));
@@ -1071,7 +1071,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void MoveNextAfterDispose() {
+    void MoveNextAfterDispose() {
         for (Object[] objects : this.MoveNextAfterDisposeData()) {
             this.MoveNextAfterDispose((IEnumerable<Integer>) objects[0]);
         }
@@ -1107,7 +1107,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void RunSelectorDuringCount() {
+    void RunSelectorDuringCount() {
         for (Object[] objects : this.RunSelectorDuringCountData()) {
             this.RunSelectorDuringCount((IEnumerable<Integer>) objects[0]);
         }
@@ -1150,7 +1150,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectRepeatIterator() {
+    void testSelectRepeatIterator() {
         IEnumerable<Integer> source = Linq.repeat(3, 5).select(x -> x * 2);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(3, 3, 3, 3, 3), source.select(x -> x / 2));
@@ -1175,7 +1175,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectIterator() {
+    void testSelectIterator() {
         IEnumerable<Integer> source = Linq.of(new ArrayIterable<>(55, 49, 9, -100, 24, 25, -1, 0)).select((x, index) -> 2 * x);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
@@ -1199,7 +1199,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectEnumerableIterator() {
+    void testSelectEnumerableIterator() {
         IEnumerable<Integer> source = Linq.of(new ArrayIterable<>(55, 49, 9, -100, 24, 25, -1, 0)).select(x -> 2 * x);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
@@ -1226,7 +1226,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectListIterator() {
+    void testSelectListIterator() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(55, 49, 9, -100, 24, 25, -1, 0)).select(x -> 2 * x);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
@@ -1250,7 +1250,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectIListIterator() {
+    void testSelectIListIterator() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(55, 49, 9, -100, 24, 25, -1, 0))).select(x -> 2 * x);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
@@ -1274,7 +1274,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectIPartitionIterator() {
+    void testSelectIPartitionIterator() {
         IEnumerable<Integer> source = Linq.range(0, 7).where(x -> x >= 0).skip(1).select(x -> 2 * x);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(1, 2, 3, 4, 5, 6), source.select(x -> x / 2));
@@ -1308,7 +1308,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectListPartitionIterator() {
+    void testSelectListPartitionIterator() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(0, 1, 2, 3, 4, 5, 6)).select(x -> 2 * x).skip(1);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(1, 2, 3, 4, 5, 6), source.select(x -> x / 2));
@@ -1355,7 +1355,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectIListPartitionIterator() {
+    void testSelectIListPartitionIterator() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6))).select(x -> 2 * x).skip(1);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(1, 2, 3, 4, 5, 6), source.select(x -> x / 2));
@@ -1402,7 +1402,7 @@ public class SelectTest extends TestCase {
     }
 
     @Test
-    public void testSelectIndexed() {
+    void testSelectIndexed() {
         List<String> names = Linq.of(emps)
                 .select((emp, index) -> emp.name)
                 .toList();
@@ -1431,7 +1431,7 @@ public class SelectTest extends TestCase {
         private final String name;
         private final int custId;
 
-        CustInfo(String name, int custId) {
+        private CustInfo(String name, int custId) {
             this.name = name;
             this.custId = custId;
         }

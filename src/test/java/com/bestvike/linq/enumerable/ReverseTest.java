@@ -15,14 +15,14 @@ import java.util.regex.Pattern;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ReverseTest extends TestCase {
+class ReverseTest extends TestCase {
     @Test
-    public void InvalidArguments() {
+    void InvalidArguments() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).reverse());
     }
 
     @Test
-    public void Reverse() {
+    void Reverse() {
         for (Object[] objects : this.ReverseData()) {
             this.Reverse((IEnumerable<?>) objects[0]);
         }
@@ -60,7 +60,7 @@ public class ReverseTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         for (Object[] objects : this.ReverseData()) {
             this.RunOnce((IEnumerable<?>) objects[0]);
         }
@@ -90,7 +90,7 @@ public class ReverseTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).reverse();
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -98,7 +98,7 @@ public class ReverseTest extends TestCase {
     }
 
     @Test
-    public void testReverseCount() {
+    void testReverseCount() {
         assertTrue(Linq.of(1, 2, 3).reverse().any());
         assertTrue(Linq.of(1, 2, 3).select(x -> x).reverse().any());
         assertTrue(new TestEnumerable<>(new Integer[]{1, 2, 3}).reverse().any());
@@ -109,7 +109,7 @@ public class ReverseTest extends TestCase {
     }
 
     @Test
-    public void testReverse() {
+    void testReverse() {
         //null 在前,值相等的按原始顺序
         String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderBy(emp -> emp.deptno)

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-06-19.
  */
-public class LookupDebugViewTest extends TestCase {
+class LookupDebugViewTest extends TestCase {
     private static IEnumerable<Object[]> DebuggerAttributesValid_Data() {
         List<Object[]> lst = new ArrayList<>();
         IEnumerable<Integer> source = Linq.of(new int[]{1});
@@ -27,7 +27,7 @@ public class LookupDebugViewTest extends TestCase {
     }
 
     @Test
-    public void DebuggerAttributesValid() {
+    void DebuggerAttributesValid() {
         for (Object[] objects : DebuggerAttributesValid_Data()) {
             this.DebuggerAttributesValid((ILookup<?, ?>) objects[0]);
         }

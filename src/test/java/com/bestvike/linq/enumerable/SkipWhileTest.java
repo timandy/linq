@@ -16,21 +16,21 @@ import java.math.MathContext;
 /**
  * Created by 许崇雷 on 2019-06-06.
  */
-public class SkipWhileTest extends TestCase {
+class SkipWhileTest extends TestCase {
     @Test
-    public void SkipWhileAllTrue() {
+    void SkipWhileAllTrue() {
         assertEquals(Linq.<Integer>empty(), Linq.range(0, 20).skipWhile(i -> i < 40));
         assertEquals(Linq.<Integer>empty(), Linq.range(0, 20).skipWhile((i, idx) -> i == idx));
     }
 
     @Test
-    public void SkipWhileAllFalse() {
+    void SkipWhileAllFalse() {
         assertEquals(Linq.range(0, 20), Linq.range(0, 20).skipWhile(i -> i != 0));
         assertEquals(Linq.range(0, 20), Linq.range(0, 20).skipWhile((i, idx) -> i != idx));
     }
 
     @Test
-    public void SkipWhileThrowsOnNull() {
+    void SkipWhileThrowsOnNull() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).skipWhile(i -> i < 40));
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).skipWhile((i, idx) -> i == idx));
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 20).skipWhile((IndexPredicate2<Integer>) null));
@@ -38,7 +38,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void SkipWhilePassesPredicateExceptionWhenEnumerated() {
+    void SkipWhilePassesPredicateExceptionWhenEnumerated() {
         IEnumerable<Integer> source = Linq.range(-2, 5).skipWhile(i -> 1 / i <= 0);
         try (IEnumerator<Integer> en = source.enumerator()) {
             assertThrows(ArithmeticException.class, () -> en.moveNext());
@@ -46,19 +46,19 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void SkipWhileHalf() {
+    void SkipWhileHalf() {
         assertEquals(Linq.range(10, 10), Linq.range(0, 20).skipWhile(i -> i < 10));
         assertEquals(Linq.range(10, 10), Linq.range(0, 20).skipWhile((i, idx) -> idx < 10));
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         assertEquals(Linq.range(10, 10), Linq.range(0, 20).runOnce().skipWhile(i -> i < 10));
         assertEquals(Linq.range(10, 10), Linq.range(0, 20).runOnce().skipWhile((i, idx) -> idx < 10));
     }
 
     @Test
-    public void SkipErrorWhenSourceErrors() {
+    void SkipErrorWhenSourceErrors() {
         IEnumerable<BigDecimal> source = NumberRangeGuaranteedNotCollectionType(-2, 5).select(i -> m(i.toString())).select(m -> m("1").divide(m, MathContext.DECIMAL128)).skip(4);
         try (IEnumerator<BigDecimal> en = source.enumerator()) {
             assertThrows(ArithmeticException.class, () -> en.moveNext());
@@ -66,21 +66,21 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.skipWhile(x -> true), q.skipWhile(x -> true));
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.skipWhile(x -> true), q.skipWhile(x -> true));
     }
 
     @Test
-    public void PredicateManyFalseOnSecond() {
+    void PredicateManyFalseOnSecond() {
         int[] source = {8, 3, 12, 4, 6, 10};
         int[] expected = {3, 12, 4, 6, 10};
 
@@ -88,7 +88,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void PredicateManyFalseOnSecondIndex() {
+    void PredicateManyFalseOnSecondIndex() {
         int[] source = {8, 3, 12, 4, 6, 10};
         int[] expected = {3, 12, 4, 6, 10};
 
@@ -96,7 +96,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void PredicateTrueOnSecondFalseOnFirstAndOthers() {
+    void PredicateTrueOnSecondFalseOnFirstAndOthers() {
         int[] source = {3, 2, 4, 12, 6};
         int[] expected = {3, 2, 4, 12, 6};
 
@@ -104,7 +104,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void PredicateTrueOnSecondFalseOnFirstAndOthersIndex() {
+    void PredicateTrueOnSecondFalseOnFirstAndOthersIndex() {
         int[] source = {3, 2, 4, 12, 6};
         int[] expected = {3, 2, 4, 12, 6};
 
@@ -112,7 +112,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void FirstExcludedByIndex() {
+    void FirstExcludedByIndex() {
         int[] source = {6, 2, 5, 3, 8};
         int[] expected = {2, 5, 3, 8};
 
@@ -120,7 +120,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void AllButLastExcludedByIndex() {
+    void AllButLastExcludedByIndex() {
         int[] source = {6, 2, 5, 3, 8};
         int[] expected = {8};
 
@@ -128,7 +128,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void IndexSkipWhileOverflowBeyondIntMaxValueElements() {
+    void IndexSkipWhileOverflowBeyondIntMaxValueElements() {
         IEnumerable<Integer> skipped = new FastInfiniteEnumerator<Integer>().skipWhile((e, i) -> true);
 
         try (IEnumerator<Integer> en = skipped.enumerator()) {
@@ -140,7 +140,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).skipWhile(e -> true);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -148,7 +148,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIndexed() {
+    void ForcedToEnumeratorDoesntEnumerateIndexed() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).skipWhile((e, i) -> true);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -156,7 +156,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void testSkipWhile() {
+    void testSkipWhile() {
         IEnumerable<Department> source = Linq.of(depts).skipWhile(dept -> dept.name.equals("Sales"));
         assertEquals(2, source.count());
         assertEquals(2, source.count());
@@ -166,7 +166,7 @@ public class SkipWhileTest extends TestCase {
     }
 
     @Test
-    public void testSkipWhileIndexed() {
+    void testSkipWhileIndexed() {
         IEnumerable<Department> source = Linq.of(depts)
                 .skipWhile((dept, index) -> dept.name.equals("Sales") || index == 1);
         assertEquals(1, source.count());

@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class MinByTest extends TestCase {
+class MinByTest extends TestCase {
     @Test
-    public void testMinByInt() {
+    void testMinByInt() {
         Tuple1[] tuple1s = {Tuple.create(0), Tuple.create(2), Tuple.create(3)};
         assertEquals(Tuple.create(0), Linq.of(tuple1s).minByInt(tuple -> (Integer) tuple.getItem1()));
 
@@ -22,7 +22,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByIntNull() {
+    void testMinByIntNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0), Tuple.create(2), Tuple.create(3)};
         assertEquals(Tuple.create(0), Linq.of(tuple1s).minByIntNull(tuple -> (Integer) tuple.getItem1()));
 
@@ -31,7 +31,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByLong() {
+    void testMinByLong() {
         Tuple1[] tuple1s = {Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
         assertEquals(Tuple.create(0L), Linq.of(tuple1s).minByLong(tuple -> (Long) tuple.getItem1()));
 
@@ -40,7 +40,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByLongNull() {
+    void testMinByLongNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0L), Tuple.create(2L), Tuple.create(3L)};
         assertEquals(Tuple.create(0L), Linq.of(tuple1s).minByLongNull(tuple -> (Long) tuple.getItem1()));
 
@@ -49,7 +49,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByFloat() {
+    void testMinByFloat() {
         Tuple1[] tuple1s = {Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(Float.NaN), Linq.of(tuple1s).minByFloat(tuple -> (Float) tuple.getItem1()));
 
@@ -61,7 +61,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByFloatNull() {
+    void testMinByFloatNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(Float.NaN), Linq.of(tuple1s).minByFloatNull(tuple -> (Float) tuple.getItem1()));
 
@@ -73,7 +73,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByDouble() {
+    void testMinByDouble() {
         Tuple1[] tuple1s = {Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
         assertEquals(Tuple.create(Double.NaN), Linq.of(tuple1s).minByDouble(tuple -> (Double) tuple.getItem1()));
 
@@ -85,7 +85,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByDoubleNull() {
+    void testMinByDoubleNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0d), Tuple.create(2d), Tuple.create(Double.NaN)};
         assertEquals(Tuple.create(Double.NaN), Linq.of(tuple1s).minByDoubleNull(tuple -> (Double) tuple.getItem1()));
 
@@ -97,7 +97,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByDecimal() {
+    void testMinByDecimal() {
         Tuple1[] tuple1s = {Tuple.create(m("0")), Tuple.create(m("2")), Tuple.create(m("3"))};
         assertEquals(Tuple.create(m("0")), Linq.of(tuple1s).minByDecimal(tuple -> (BigDecimal) tuple.getItem1()));
 
@@ -106,7 +106,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByDecimalNull() {
+    void testMinByDecimalNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(m("0")), Tuple.create(m("2")), Tuple.create(m("3"))};
         assertEquals(Tuple.create(m("0")), Linq.of(tuple1s).minByDecimalNull(tuple -> (BigDecimal) tuple.getItem1()));
 
@@ -115,7 +115,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinBy() {
+    void testMinBy() {
         Tuple1[] tuple1s = {Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(0f), Linq.of(tuple1s).minBy(tuple -> (Float) tuple.getItem1()));
 
@@ -124,7 +124,7 @@ public class MinByTest extends TestCase {
     }
 
     @Test
-    public void testMinByNull() {
+    void testMinByNull() {
         Tuple1[] tuple1s = {Tuple.create(null), Tuple.create(0f), Tuple.create(2f), Tuple.create(Float.NaN)};
         assertEquals(Tuple.create(0f), Linq.of(tuple1s).minByNull(tuple -> (Float) tuple.getItem1()));
 

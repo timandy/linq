@@ -18,9 +18,9 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ExceptTest extends TestCase {
+class ExceptTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
         IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
 
@@ -28,7 +28,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
         IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
 
@@ -47,7 +47,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void Init() {
+    void Init() {
         for (Object[] objects : this.Int_TestData()) {
             this.Int((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEqualityComparer<Integer>) objects[2], (IEnumerable<Integer>) objects[3]);
         }
@@ -73,13 +73,13 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void String() {
+    void String() {
         for (Object[] objects : this.String_TestData()) {
             this.String((IEnumerable<String>) objects[0], (IEnumerable<String>) objects[1], (IEqualityComparer<String>) objects[2], (IEnumerable<String>) objects[3]);
         }
     }
 
-    public void String(IEnumerable<String> first, IEnumerable<String> second, IEqualityComparer<String> comparer, IEnumerable<String> expected) {
+    void String(IEnumerable<String> first, IEnumerable<String> second, IEqualityComparer<String> comparer, IEnumerable<String> expected) {
         if (comparer == null) {
             assertEquals(expected, first.except(second));
         }
@@ -95,7 +95,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void NullableInt() {
+    void NullableInt() {
         for (Object[] objects : this.NullableInt_TestData()) {
             this.NullableInt((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEnumerable<Integer>) objects[2]);
         }
@@ -106,7 +106,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void NullableIntRunOnce() {
+    void NullableIntRunOnce() {
         for (Object[] objects : this.NullableInt_TestData()) {
             this.NullableIntRunOnce((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEnumerable<Integer>) objects[2]);
         }
@@ -117,7 +117,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void FirstNull_ThrowsArgumentNullException() {
+    void FirstNull_ThrowsArgumentNullException() {
         IEnumerable<String> first = null;
         IEnumerable<String> second = Linq.of("bBo", "shriC");
 
@@ -126,7 +126,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void SecondNull_ThrowsArgumentNullException() {
+    void SecondNull_ThrowsArgumentNullException() {
         IEnumerable<String> first = Linq.of("Bob", "Tim", "Robert", "Chris");
         IEnumerable<String> second = null;
 
@@ -135,7 +135,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).except(Linq.range(0, 3));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -143,7 +143,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
+    void HashSetWithBuiltInComparer_HashSetContainsNotUsed() {
         IEnumerable<String> input1 = Linq.of("a");
         IEnumerable<String> input2 = Linq.of("A");
 
@@ -159,7 +159,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void testExcept() {
+    void testExcept() {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
@@ -175,7 +175,7 @@ public class ExceptTest extends TestCase {
     }
 
     @Test
-    public void testExceptWithComparer() {
+    void testExceptWithComparer() {
         IEqualityComparer<Employee> comparer = new IEqualityComparer<Employee>() {
             @Override
             public boolean equals(Employee x, Employee y) {

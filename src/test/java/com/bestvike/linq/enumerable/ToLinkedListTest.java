@@ -19,9 +19,9 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2019-07-03.
  */
-public class ToLinkedListTest extends TestCase {
+class ToLinkedListTest extends TestCase {
     @Test
-    public void ToList_AlwaysCreateACopy() {
+    void ToList_AlwaysCreateACopy() {
         List<Integer> sourceList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         List<Integer> resultList = Linq.of(sourceList).toLinkedList();
 
@@ -38,7 +38,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void ToList_WorkWithEmptyCollection() {
+    void ToList_WorkWithEmptyCollection() {
         this.RunToListOnAllCollectionTypes(new Integer[0], resultList -> {
             assertNotNull(resultList);
             assertEquals(0, resultList.size());
@@ -46,7 +46,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void ToList_ProduceCorrectList() {
+    void ToList_ProduceCorrectList() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         this.RunToListOnAllCollectionTypes(sourceArray, resultList -> {
             assertEquals(sourceArray.length, resultList.size());
@@ -62,12 +62,12 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         assertEquals(Linq.range(3, 9), Linq.of(Linq.range(3, 9).runOnce().toLinkedList()));
     }
 
     @Test
-    public void ToList_TouchCountWithICollection() {
+    void ToList_TouchCountWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         List<Integer> resultList = source.toLinkedList();
 
@@ -76,14 +76,14 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void ToList_ThrowArgumentNullExceptionWhenSourceIsNull() {
+    void ToList_ThrowArgumentNullExceptionWhenSourceIsNull() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toLinkedList());
     }
 
     // Generally the optimal approach. Anything that breaks this should be confirmed as not harming performance.
     @Test
-    public void ToList_UseCopyToWithICollection() {
+    void ToList_UseCopyToWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         List<Integer> resultList = source.toLinkedList();
 
@@ -94,7 +94,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void ToList_ArrayWhereSelect() {
+    void ToList_ArrayWhereSelect() {
         this.ToList_ArrayWhereSelect(new int[]{}, new String[]{});
         this.ToList_ArrayWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToList_ArrayWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -120,7 +120,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void ToList_ListWhereSelect() {
+    void ToList_ListWhereSelect() {
         this.ToList_ListWhereSelect(new int[]{}, new String[]{});
         this.ToList_ListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToList_ListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -147,7 +147,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void ToList_IListWhereSelect() {
+    void ToList_IListWhereSelect() {
         this.ToList_IListWhereSelect(new int[]{}, new String[]{});
         this.ToList_IListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToList_IListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -173,21 +173,21 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnIntQuery() {
+    void SameResultsRepeatCallsFromWhereOnIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.toLinkedList(), q.toLinkedList());
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnStringQuery() {
+    void SameResultsRepeatCallsFromWhereOnStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.toLinkedList(), q.toLinkedList());
     }
 
     @Test
-    public void SourceIsEmptyICollectionT() {
+    void SourceIsEmptyICollectionT() {
         int[] source = {};
 
         ICollection<Integer> collection = Linq.of(source).toArray();
@@ -197,7 +197,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void SourceIsICollectionTWithFewElements() {
+    void SourceIsICollectionTWithFewElements() {
         Integer[] source = {-5, null, 0, 10, 3, -1, null, 4, 9};
         Integer[] expected = {-5, null, 0, 10, 3, -1, null, 4, 9};
 
@@ -208,13 +208,13 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndIsEmpty() {
+    void SourceNotICollectionAndIsEmpty() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 0);
         assertEmpty(Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void SourceNotICollectionAndHasElements() {
+    void SourceNotICollectionAndHasElements() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 10);
         int[] expected = {-4, -3, -2, -1, 0, 1, 2, 3, 4, 5};
 
@@ -224,7 +224,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndAllNull() {
+    void SourceNotICollectionAndAllNull() {
         IEnumerable<Integer> source = RepeatedNullableNumberGuaranteedNotCollectionType(null, 5);
         Integer[] expected = {null, null, null, null, null};
 
@@ -234,55 +234,55 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectSameTypeToList() {
+    void ConstantTimeCountPartitionSelectSameTypeToList() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectDiffTypeToList() {
+    void ConstantTimeCountPartitionSelectDiffTypeToList() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectSameTypeToList() {
+    void ConstantTimeCountEmptyPartitionSelectSameTypeToList() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectDiffTypeToList() {
+    void ConstantTimeCountEmptyPartitionSelectDiffTypeToList() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectSameTypeToList() {
+    void NonConstantTimeCountPartitionSelectSameTypeToList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectDiffTypeToList() {
+    void NonConstantTimeCountPartitionSelectDiffTypeToList() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectSameTypeToList() {
+    void NonConstantTimeCountEmptyPartitionSelectSameTypeToList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectDiffTypeToList() {
+    void NonConstantTimeCountEmptyPartitionSelectDiffTypeToList() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toLinkedList()));
     }
 
     @Test
-    public void testToListGrouping() {
+    void testToListGrouping() {
         int[] element = {60, -10, 40, 100};
         Tuple2[] source = new Tuple2[]{
                 Tuple.create("Tim", element[0]),
@@ -295,7 +295,7 @@ public class ToLinkedListTest extends TestCase {
     }
 
     @Test
-    public void testToList() {
+    void testToList() {
         Object[] source = {1, 2, 3};
         List<Integer> target = Linq.of(source).cast(Integer.class).toLinkedList();
         assertEquals(3, target.size());

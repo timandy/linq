@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-11.
  */
-public class AsEnumerableTest extends TestCase {
+class AsEnumerableTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -18,7 +18,7 @@ public class AsEnumerableTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -26,7 +26,7 @@ public class AsEnumerableTest extends TestCase {
     }
 
     @Test
-    public void NullSourceAllowed() {
+    void NullSourceAllowed() {
         IEnumerable<Integer> source = null;
 
         //not same to C#
@@ -34,28 +34,28 @@ public class AsEnumerableTest extends TestCase {
     }
 
     @Test
-    public void OneElement() {
+    void OneElement() {
         IEnumerable<Integer> source = Linq.singleton(2);
 
         assertEquals(source, source.asEnumerable());
     }
 
     @Test
-    public void SomeElements() {
+    void SomeElements() {
         IEnumerable<Integer> source = Linq.of(-5, 0, 1, -4, 3, null, 10);
 
         assertEquals(source, source.asEnumerable());
     }
 
     @Test
-    public void SomeElementsRunOnce() {
+    void SomeElementsRunOnce() {
         IEnumerable<Integer> source = Linq.of(-5, 0, 1, -4, 3, null, 10);
 
         assertEquals(source, source.runOnce().asEnumerable());
     }
 
     @Test
-    public void testAsEnumerable() {
+    void testAsEnumerable() {
         IEnumerable<String> as = Linq.as(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty});
         IEnumerable<String> q = as.where(x -> !IsNullOrEmpty(x));
 

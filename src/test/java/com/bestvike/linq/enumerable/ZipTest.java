@@ -15,9 +15,9 @@ import java.util.Arrays;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class ZipTest extends TestCase {
+class ZipTest extends TestCase {
     @Test
-    public void ImplicitTypeParameters() {
+    void ImplicitTypeParameters() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 5, 9});
         IEnumerable<Integer> expected = Linq.of(new int[]{3, 7, 12});
@@ -26,7 +26,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void ExplicitTypeParameters() {
+    void ExplicitTypeParameters() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 5, 9});
         IEnumerable<Integer> expected = Linq.of(new int[]{3, 7, 12});
@@ -35,7 +35,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstIsNull() {
+    void FirstIsNull() {
         IEnumerable<Integer> first = null;
         IEnumerable<Integer> second = Linq.of(new int[]{2, 5, 9});
 
@@ -43,7 +43,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondIsNull() {
+    void SecondIsNull() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = null;
 
@@ -51,7 +51,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FuncIsNull() {
+    void FuncIsNull() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6});
         Func2<Integer, Integer, Integer> func = null;
@@ -60,7 +60,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void ExceptionThrownFromFirstsEnumerator() {
+    void ExceptionThrownFromFirstsEnumerator() {
         ThrowsOnMatchEnumerable<Integer> first = new ThrowsOnMatchEnumerable<>(Linq.of(new int[]{1, 3, 3}), 2);
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -76,7 +76,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void ExceptionThrownFromSecondsEnumerator() {
+    void ExceptionThrownFromSecondsEnumerator() {
         ThrowsOnMatchEnumerable<Integer> second = new ThrowsOnMatchEnumerable<>(Linq.of(new int[]{1, 3, 3}), 2);
         IEnumerable<Integer> first = Linq.of(new int[]{2, 4, 6});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -92,7 +92,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstAndSecondEmpty() {
+    void FirstAndSecondEmpty() {
         IEnumerable<Integer> first = Linq.of(new int[]{});
         IEnumerable<Integer> second = Linq.of(new int[]{});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -102,7 +102,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstEmptySecondSingle() {
+    void FirstEmptySecondSingle() {
         IEnumerable<Integer> first = Linq.of(new int[]{});
         IEnumerable<Integer> second = Linq.of(new int[]{2});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -112,7 +112,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstEmptySecondMany() {
+    void FirstEmptySecondMany() {
         IEnumerable<Integer> first = Linq.of(new int[]{});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -122,7 +122,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondEmptyFirstSingle() {
+    void SecondEmptyFirstSingle() {
         IEnumerable<Integer> first = Linq.of(new int[]{1});
         IEnumerable<Integer> second = Linq.of(new int[]{});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -132,7 +132,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondEmptyFirstMany() {
+    void SecondEmptyFirstMany() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -142,7 +142,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstAndSecondSingle() {
+    void FirstAndSecondSingle() {
         IEnumerable<Integer> first = Linq.of(new int[]{1});
         IEnumerable<Integer> second = Linq.of(new int[]{2});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -152,7 +152,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstAndSecondEqualSize() {
+    void FirstAndSecondEqualSize() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 3, 4});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -162,7 +162,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondOneMoreThanFirst() {
+    void SecondOneMoreThanFirst() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -172,7 +172,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondManyMoreThanFirst() {
+    void SecondManyMoreThanFirst() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8, 16});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -182,7 +182,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstOneMoreThanSecond() {
+    void FirstOneMoreThanSecond() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -192,7 +192,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstManyMoreThanSecond() {
+    void FirstManyMoreThanSecond() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -202,7 +202,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void DelegateFuncChanged() {
+    void DelegateFuncChanged() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x + y;
@@ -217,7 +217,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void LambdaFuncChanged() {
+    void LambdaFuncChanged() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8});
         IEnumerable<Integer> expected = Linq.of(new int[]{3, 6, 11});
@@ -230,7 +230,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstHasFirstElementNull() {
+    void FirstHasFirstElementNull() {
         IEnumerable<Integer> first = Linq.of(null, 2, 3, 4);
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -240,7 +240,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstHasLastElementNull() {
+    void FirstHasLastElementNull() {
         IEnumerable<Integer> first = Linq.of(1, 2, null);
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -250,7 +250,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstHasMiddleNullValue() {
+    void FirstHasMiddleNullValue() {
         IEnumerable<Integer> first = Linq.of(1, null, 3);
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -260,7 +260,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstAllElementsNull() {
+    void FirstAllElementsNull() {
         IEnumerable<Integer> first = Linq.of(new Integer[]{null, null, null});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -270,7 +270,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondHasFirstElementNull() {
+    void SecondHasFirstElementNull() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(null, 4, 6);
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -280,7 +280,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondHasLastElementNull() {
+    void SecondHasLastElementNull() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(2, 4, null);
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -290,7 +290,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondHasMiddleElementNull() {
+    void SecondHasMiddleElementNull() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(2, null, 6);
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -300,7 +300,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondHasAllElementsNull() {
+    void SecondHasAllElementsNull() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(new Integer[]{null, null, null});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -310,7 +310,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void SecondLargerFirstAllNull() {
+    void SecondLargerFirstAllNull() {
         IEnumerable<Integer> first = Linq.of(new Integer[]{null, null, null, null});
         IEnumerable<Integer> second = Linq.of(new Integer[]{null, null, null});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -320,7 +320,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstSameSizeSecondAllNull() {
+    void FirstSameSizeSecondAllNull() {
         IEnumerable<Integer> first = Linq.of(new Integer[]{null, null, null});
         IEnumerable<Integer> second = Linq.of(new Integer[]{null, null, null});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -330,7 +330,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void FirstSmallerSecondAllNull() {
+    void FirstSmallerSecondAllNull() {
         IEnumerable<Integer> first = Linq.of(new Integer[]{null, null, null});
         IEnumerable<Integer> second = Linq.of(new Integer[]{null, null, null, null});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -340,7 +340,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).zip(Linq.range(0, 3), (x, y) -> x + y);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -348,7 +348,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         IEnumerable<Integer> first = Linq.of(1, null, 3);
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6, 8});
         Func2<Integer, Integer, Integer> func = (x, y) -> x == null || y == null ? null : x + y;
@@ -358,7 +358,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_ImplicitTypeParameters() {
+    void Zip2_ImplicitTypeParameters() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 5, 9});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(2, 5), Tuple.create(3, 9));
@@ -367,7 +367,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_ExplicitTypeParameters() {
+    void Zip2_ExplicitTypeParameters() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 5, 9});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(2, 5), Tuple.create(3, 9));
@@ -376,7 +376,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstIsNull() {
+    void Zip2_FirstIsNull() {
         IEnumerable<Integer> first = null;
         IEnumerable<Integer> second = Linq.of(new int[]{2, 5, 9});
 
@@ -384,7 +384,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_SecondIsNull() {
+    void Zip2_SecondIsNull() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = null;
 
@@ -392,7 +392,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_ExceptionThrownFromFirstsEnumerator() {
+    void Zip2_ExceptionThrownFromFirstsEnumerator() {
         ThrowsOnMatchEnumerable<Integer> first = new ThrowsOnMatchEnumerable<>(Linq.of(new int[]{1, 3, 3}), 2);
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(3, 4), Tuple.create(3, 6));
@@ -407,7 +407,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_ExceptionThrownFromSecondsEnumerator() {
+    void Zip2_ExceptionThrownFromSecondsEnumerator() {
         ThrowsOnMatchEnumerable<Integer> second = new ThrowsOnMatchEnumerable<>(Linq.of(new int[]{1, 3, 3}), 2);
         IEnumerable<Integer> first = Linq.of(new int[]{2, 4, 6});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(2, 1), Tuple.create(4, 3), Tuple.create(6, 3));
@@ -422,7 +422,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstAndSecondEmpty() {
+    void Zip2_FirstAndSecondEmpty() {
         IEnumerable<Integer> first = Linq.of(new int[]{});
         IEnumerable<Integer> second = Linq.of(new int[]{});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.empty();
@@ -431,7 +431,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstEmptySecondSingle() {
+    void Zip2_FirstEmptySecondSingle() {
         IEnumerable<Integer> first = Linq.of(new int[]{});
         IEnumerable<Integer> second = Linq.of(new int[]{2});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.empty();
@@ -440,7 +440,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstEmptySecondMany() {
+    void Zip2_FirstEmptySecondMany() {
         IEnumerable<Integer> first = Linq.of(new int[]{});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.empty();
@@ -449,7 +449,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_SecondEmptyFirstSingle() {
+    void Zip2_SecondEmptyFirstSingle() {
         IEnumerable<Integer> first = Linq.of(new int[]{1});
         IEnumerable<Integer> second = Linq.of(new int[]{});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.empty();
@@ -458,7 +458,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_SecondEmptyFirstMany() {
+    void Zip2_SecondEmptyFirstMany() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.empty();
@@ -467,7 +467,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstAndSecondSingle() {
+    void Zip2_FirstAndSecondSingle() {
         IEnumerable<Integer> first = Linq.of(new int[]{1});
         IEnumerable<Integer> second = Linq.of(new int[]{2});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2));
@@ -476,7 +476,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstAndSecondEqualSize() {
+    void Zip2_FirstAndSecondEqualSize() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 3, 4});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(2, 3), Tuple.create(3, 4));
@@ -485,7 +485,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_SecondOneMoreThanFirst() {
+    void Zip2_SecondOneMoreThanFirst() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(2, 4));
@@ -494,7 +494,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_SecondManyMoreThanFirst() {
+    void Zip2_SecondManyMoreThanFirst() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 8, 16});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(2, 4));
@@ -503,7 +503,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstOneMoreThanSecond() {
+    void Zip2_FirstOneMoreThanSecond() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(2, 4));
@@ -512,7 +512,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_FirstManyMoreThanSecond() {
+    void Zip2_FirstManyMoreThanSecond() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3, 4});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(2, 4));
@@ -521,7 +521,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_RunOnce() {
+    void Zip2_RunOnce() {
         IEnumerable<Integer> first = Linq.of(1, null, 3);
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6, 8});
         IEnumerable<Tuple2<Integer, Integer>> expected = Linq.of(Tuple.create(1, 2), Tuple.create(null, 4), Tuple.create(3, 6));
@@ -530,7 +530,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_NestedTuple() {
+    void Zip2_NestedTuple() {
         IEnumerable<Integer> first = Linq.of(new int[]{1, 3, 5});
         IEnumerable<Integer> second = Linq.of(new int[]{2, 4, 6});
         IEnumerable<Tuple2<Integer, Integer>> third = Linq.of(Tuple.create(1, 2), Tuple.create(3, 4), Tuple.create(5, 6));
@@ -544,14 +544,14 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void Zip2_TupleNames() {
+    void Zip2_TupleNames() {
         Tuple2<Integer, Integer> t = Linq.of(new int[]{1, 2, 3}).zip(Linq.of(new int[]{2, 4, 6})).first();
         assertEquals(1, t.getItem1());
         assertEquals(2, t.getItem2());
     }
 
     @Test
-    public void testZip() {
+    void testZip() {
         IEnumerable<String> e1 = Linq.of(Arrays.asList("a", "b", "c"));
         IEnumerable<String> e2 = Linq.of(Arrays.asList("1", "2", "3"));
 
@@ -569,7 +569,7 @@ public class ZipTest extends TestCase {
     }
 
     @Test
-    public void testZipLengthNotMatch() {
+    void testZipLengthNotMatch() {
         IEnumerable<String> e1 = Linq.of(Arrays.asList("a", "b"));
         IEnumerable<String> e2 = Linq.of(Arrays.asList("1", "2", "3"));
 

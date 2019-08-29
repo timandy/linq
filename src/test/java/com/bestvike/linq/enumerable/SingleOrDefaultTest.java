@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-06-06.
  */
-public class SingleOrDefaultTest extends TestCase {
+class SingleOrDefaultTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Float> q = Linq.of(new float[]{0.12335f}).select(x -> x);
 
         assertEquals(q.singleOrDefault(), q.singleOrDefault());
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{""}).select(x -> x);
 
         assertEquals(q.singleOrDefault(TestCase::IsNullOrEmpty), q.singleOrDefault(TestCase::IsNullOrEmpty));
     }
 
     @Test
-    public void EmptyIList() {
+    void EmptyIList() {
         Integer[] source = {};
         Integer expected = null;
 
@@ -35,7 +35,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void SingleElementIList() {
+    void SingleElementIList() {
         int[] source = {4};
         int expected = 4;
 
@@ -43,14 +43,14 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementIList() {
+    void ManyElementIList() {
         int[] source = {4, 4, 4, 4, 4};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault());
     }
 
     @Test
-    public void EmptyNotIList() {
+    void EmptyNotIList() {
         IEnumerable<Integer> source = RepeatedNumberGuaranteedNotCollectionType(0, 0);
         Integer expected = null;
 
@@ -58,7 +58,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void SingleElementNotIList() {
+    void SingleElementNotIList() {
         IEnumerable<Integer> source = RepeatedNumberGuaranteedNotCollectionType(-5, 1);
         int expected = -5;
 
@@ -66,14 +66,14 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementNotIList() {
+    void ManyElementNotIList() {
         IEnumerable<Integer> source = RepeatedNumberGuaranteedNotCollectionType(3, 5);
 
         assertThrows(InvalidOperationException.class, () -> source.singleOrDefault());
     }
 
     @Test
-    public void EmptySourceWithPredicate() {
+    void EmptySourceWithPredicate() {
         int[] source = {};
         Integer expected = null;
 
@@ -81,7 +81,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void SingleElementPredicateTrue() {
+    void SingleElementPredicateTrue() {
         int[] source = {4};
         int expected = 4;
 
@@ -89,7 +89,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void SingleElementPredicateFalse() {
+    void SingleElementPredicateFalse() {
         int[] source = {3};
         Integer expected = null;
 
@@ -97,7 +97,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsPredicateFalseForAll() {
+    void ManyElementsPredicateFalseForAll() {
         int[] source = {3, 1, 7, 9, 13, 19};
         Integer expected = null;
 
@@ -105,7 +105,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsPredicateTrueForLast() {
+    void ManyElementsPredicateTrueForLast() {
         int[] source = {3, 1, 7, 9, 13, 19, 20};
         int expected = 20;
 
@@ -113,14 +113,14 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ManyElementsPredicateTrueForFirstAndFifth() {
+    void ManyElementsPredicateTrueForFirstAndFifth() {
         int[] source = {2, 3, 1, 7, 10, 13, 19, 9};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
-    public void FindSingleMatch() {
+    void FindSingleMatch() {
         this.FindSingleMatch(1, 100);
         this.FindSingleMatch(42, 100);
     }
@@ -130,7 +130,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         this.RunOnce(1, 100);
         this.RunOnce(42, 100);
     }
@@ -140,21 +140,21 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void ThrowsOnNullSource() {
+    void ThrowsOnNullSource() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.singleOrDefault());
         assertThrows(NullPointerException.class, () -> source.singleOrDefault(i -> i % 2 == 0));
     }
 
     @Test
-    public void ThrowsOnNullPredicate() {
+    void ThrowsOnNullPredicate() {
         IEnumerable<Integer> source = Linq.empty();
         Predicate1<Integer> nullPredicate = null;
         assertThrows(ArgumentNullException.class, () -> source.singleOrDefault(nullPredicate));
     }
 
     @Test
-    public void testSingleOrDefault() {
+    void testSingleOrDefault() {
         String[] person = {"Smith"};
         String[] people = {"Brill", "Smith", "Simpson"};
         Integer[] number = {20};
@@ -175,7 +175,7 @@ public class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
-    public void testSingleOrDefaultPredicate() {
+    void testSingleOrDefaultPredicate() {
         String[] people = {"Brill", "Smith"};
         String[] twoPeopleWithCharS = {"Brill", "Smith", "Simpson"};
         String[] peopleWithoutCharS = {"Brill", "Andrew", "Alice"};

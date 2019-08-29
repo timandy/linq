@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-11.
  */
-public class AllTest extends TestCase {
+class AllTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -22,7 +22,7 @@ public class AllTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Predicate1<String> predicate = TestCase::IsNullOrEmpty;
@@ -30,7 +30,7 @@ public class AllTest extends TestCase {
     }
 
     @Test
-    public void All() {
+    void All() {
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.All(Linq.singleton(0), isEvenFunc, true);
         this.All(Linq.singleton(3), isEvenFunc, false);
@@ -54,7 +54,7 @@ public class AllTest extends TestCase {
     }
 
     @Test
-    public void AllRunOnce() {
+    void AllRunOnce() {
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.AllRunOnce(Linq.singleton(0), isEvenFunc, true);
         this.AllRunOnce(Linq.singleton(3), isEvenFunc, false);
@@ -78,18 +78,18 @@ public class AllTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).all(i -> i != 0));
     }
 
     @Test
-    public void NullPredicate_ThrowsArgumentNullException() {
+    void NullPredicate_ThrowsArgumentNullException() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).all(predicate));
     }
 
     @Test
-    public void testAllPredicate() {
+    void testAllPredicate() {
         assertTrue(Linq.of(emps).all(emp -> emp.empno >= 100));
         assertFalse(Linq.of(emps).all(emp -> emp.empno > 100));
     }

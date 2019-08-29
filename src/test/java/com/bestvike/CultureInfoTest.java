@@ -8,9 +8,9 @@ import java.util.Locale;
 /**
  * Created by 许崇雷 on 2019-06-20.
  */
-public class CultureInfoTest extends TestCase {
+class CultureInfoTest extends TestCase {
     @Test
-    public void testSetCurrent() {
+    void testSetCurrent() {
         CultureInfo.setCurrent(Locale.CHINA);
         assertSame(Locale.CHINA, CultureInfo.getCurrent());
 

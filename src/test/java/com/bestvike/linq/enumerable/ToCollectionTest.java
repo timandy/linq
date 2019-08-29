@@ -19,9 +19,9 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2019-08-07.
  */
-public class ToCollectionTest extends TestCase {
+class ToCollectionTest extends TestCase {
     @Test
-    public void ToCollection_AlwaysCreateACopy() {
+    void ToCollection_AlwaysCreateACopy() {
         List<Integer> sourceList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         List<Integer> resultList = Linq.of(sourceList).toCollection(new ArrayList<>(), List::add);
 
@@ -38,7 +38,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ToCollection_WorkWithEmptyCollection() {
+    void ToCollection_WorkWithEmptyCollection() {
         this.RunToCollectionOnAllCollectionTypes(new Integer[0], resultList -> {
             assertNotNull(resultList);
             assertEquals(0, resultList.size());
@@ -46,7 +46,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ToCollection_ProduceCorrectList() {
+    void ToCollection_ProduceCorrectList() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         this.RunToCollectionOnAllCollectionTypes(sourceArray, resultList -> {
             assertEquals(sourceArray.length, resultList.size());
@@ -62,7 +62,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         assertEquals(Linq.range(3, 9), Linq.of(Linq.range(3, 9).runOnce().aggregate(new ArrayList<>(), (x, y) -> {
             x.add(y);
             return x;
@@ -70,7 +70,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ToCollection_TouchCountWithICollection() {
+    void ToCollection_TouchCountWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         List<Integer> resultList = source.toCollection(new ArrayList<>(), List::add);
 
@@ -79,14 +79,14 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ToCollection_ThrowArgumentNullExceptionWhenSourceIsNull() {
+    void ToCollection_ThrowArgumentNullExceptionWhenSourceIsNull() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.toCollection(new ArrayList<>(), List::add));
     }
 
     // Generally the optimal approach. Anything that breaks this should be confirmed as not harming performance.
     @Test
-    public void ToCollection_UseCopyToWithICollection() {
+    void ToCollection_UseCopyToWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         List<Integer> resultList = source.toCollection(new ArrayList<>(), List::add);
 
@@ -97,7 +97,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ToCollection_ArrayWhereSelect() {
+    void ToCollection_ArrayWhereSelect() {
         this.ToCollection_ArrayWhereSelect(new int[]{}, new String[]{});
         this.ToCollection_ArrayWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToCollection_ArrayWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -123,7 +123,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ToCollection_ListWhereSelect() {
+    void ToCollection_ListWhereSelect() {
         this.ToCollection_ListWhereSelect(new int[]{}, new String[]{});
         this.ToCollection_ListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToCollection_ListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -150,7 +150,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ToCollection_IListWhereSelect() {
+    void ToCollection_IListWhereSelect() {
         this.ToCollection_IListWhereSelect(new int[]{}, new String[]{});
         this.ToCollection_IListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToCollection_IListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -176,21 +176,21 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnIntQuery() {
+    void SameResultsRepeatCallsFromWhereOnIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.toCollection(new ArrayList<>(), List::add), q.toCollection(new ArrayList<>(), List::add));
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnStringQuery() {
+    void SameResultsRepeatCallsFromWhereOnStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.toCollection(new ArrayList<>(), List::add), q.toCollection(new ArrayList<>(), List::add));
     }
 
     @Test
-    public void SourceIsEmptyICollectionT() {
+    void SourceIsEmptyICollectionT() {
         int[] source = {};
 
         ICollection<Integer> collection = Linq.of(source).toArray();
@@ -200,7 +200,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void SourceIsICollectionTWithFewElements() {
+    void SourceIsICollectionTWithFewElements() {
         Integer[] source = {-5, null, 0, 10, 3, -1, null, 4, 9};
         Integer[] expected = {-5, null, 0, 10, 3, -1, null, 4, 9};
 
@@ -211,13 +211,13 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndIsEmpty() {
+    void SourceNotICollectionAndIsEmpty() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 0);
         assertEmpty(Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void SourceNotICollectionAndHasElements() {
+    void SourceNotICollectionAndHasElements() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 10);
         int[] expected = {-4, -3, -2, -1, 0, 1, 2, 3, 4, 5};
 
@@ -227,7 +227,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndAllNull() {
+    void SourceNotICollectionAndAllNull() {
         IEnumerable<Integer> source = RepeatedNullableNumberGuaranteedNotCollectionType(null, 5);
         Integer[] expected = {null, null, null, null, null};
 
@@ -237,55 +237,55 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectSameTypeToCollection() {
+    void ConstantTimeCountPartitionSelectSameTypeToCollection() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectDiffTypeToCollection() {
+    void ConstantTimeCountPartitionSelectDiffTypeToCollection() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectSameTypeToCollection() {
+    void ConstantTimeCountEmptyPartitionSelectSameTypeToCollection() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectDiffTypeToCollection() {
+    void ConstantTimeCountEmptyPartitionSelectDiffTypeToCollection() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectSameTypeToCollection() {
+    void NonConstantTimeCountPartitionSelectSameTypeToCollection() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectDiffTypeToCollection() {
+    void NonConstantTimeCountPartitionSelectDiffTypeToCollection() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectSameTypeToCollection() {
+    void NonConstantTimeCountEmptyPartitionSelectSameTypeToCollection() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectDiffTypeToCollection() {
+    void NonConstantTimeCountEmptyPartitionSelectDiffTypeToCollection() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toCollection(new ArrayList<>(), List::add)));
     }
 
     @Test
-    public void testToCollection() {
+    void testToCollection() {
         Object[] source = {1, 2, 3};
         List<Integer> target = Linq.of(source).cast(Integer.class).toCollection(new ArrayList<>(), List::add);
         assertEquals(3, target.size());
@@ -334,7 +334,7 @@ public class ToCollectionTest extends TestCase {
     }
 
     @Test
-    public void testArgumentNull() {
+    void testArgumentNull() {
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().toCollection((List<Integer>) null, List::add));
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().toCollection(new ArrayList<>(), null));
     }

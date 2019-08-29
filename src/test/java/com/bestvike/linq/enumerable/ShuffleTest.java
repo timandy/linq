@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-05-27.
  */
-public class ShuffleTest extends TestCase {
+class ShuffleTest extends TestCase {
     @Test
-    public void testShuffle() {
+    void testShuffle() {
         IEnumerable<Integer> source = Linq.range(0, 100);
         Array<Integer> sourceArray = source.toArray();
         assertNotEquals(sourceArray, source.shuffle());

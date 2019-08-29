@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-17.
  */
-public class SkipLastTest extends TestCase {
+class SkipLastTest extends TestCase {
     @Test
-    public void SkipLast() {
+    void SkipLast() {
         for (Object[] objects : SkipTakeData.EnumerableData()) {
             this.SkipLast((IEnumerable<Integer>) objects[0], (int) objects[1]);
         }
@@ -45,7 +45,7 @@ public class SkipLastTest extends TestCase {
     }
 
     @Test
-    public void EvaluationBehavior() {
+    void EvaluationBehavior() {
         for (Object[] objects : SkipTakeData.EvaluationBehaviorData()) {
             this.EvaluationBehavior((int) objects[0]);
         }
@@ -77,7 +77,7 @@ public class SkipLastTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         for (Object[] objects : SkipTakeData.EnumerableData()) {
             this.RunOnce((IEnumerable<Integer>) objects[0], (int) objects[1]);
         }
@@ -89,13 +89,13 @@ public class SkipLastTest extends TestCase {
     }
 
     @Test
-    public void testSkipLast() {
+    void testSkipLast() {
         assertEquals(2, Linq.of(depts).skipLast(1).count());
         assertEquals(0, Linq.of(depts).skipLast(5).count());
     }
 
     @Test
-    public void runOnce() {
+    void runOnce() {
         IEnumerable<Department> expected = Linq.of(depts).take(2);
         assertEquals(expected, Linq.of(depts).skipLast(1).runOnce());
     }

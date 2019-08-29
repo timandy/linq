@@ -12,84 +12,84 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-05-24.
  */
-public class OrderedSubsettingTest extends TestCase {
+class OrderedSubsettingTest extends TestCase {
     @Test
-    public void FirstMultipleTruePredicateResult() {
+    void FirstMultipleTruePredicateResult() {
         assertEquals(10, Linq.range(1, 99).orderBy(i -> i).first(x -> x % 10 == 0));
         assertEquals(100, Linq.range(1, 999).concat(Linq.range(1001, 3)).orderByDescending(i -> i.toString().length()).thenBy(i -> i).first(x -> x % 10 == 0));
     }
 
     @Test
-    public void FirstOrDefaultMultipleTruePredicateResult() {
+    void FirstOrDefaultMultipleTruePredicateResult() {
         assertEquals(10, Linq.range(1, 99).orderBy(i -> i).firstOrDefault(x -> x % 10 == 0));
         assertEquals(100, Linq.range(1, 999).concat(Linq.range(1001, 3)).orderByDescending(i -> i.toString().length()).thenBy(i -> i).firstOrDefault(x -> x % 10 == 0));
     }
 
     @Test
-    public void FirstNoTruePredicateResult() {
+    void FirstNoTruePredicateResult() {
         assertThrows(InvalidOperationException.class, () -> Linq.range(1, 99).orderBy(i -> i).first(x -> x > 1000));
     }
 
     @Test
-    public void FirstEmptyOrderedEnumerable() {
+    void FirstEmptyOrderedEnumerable() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().orderBy(i -> i).first());
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().orderBy(i -> i).first(x -> true));
     }
 
     @Test
-    public void FirstOrDefaultNoTruePredicateResult() {
+    void FirstOrDefaultNoTruePredicateResult() {
         assertEquals(null, Linq.range(1, 99).orderBy(i -> i).firstOrDefault(x -> x > 1000));
     }
 
     @Test
-    public void FirstOrDefaultEmptyOrderedEnumerable() {
+    void FirstOrDefaultEmptyOrderedEnumerable() {
         assertEquals(null, Linq.<Integer>empty().orderBy(i -> i).firstOrDefault());
         assertEquals(null, Linq.<Integer>empty().orderBy(i -> i).firstOrDefault(x -> true));
     }
 
     @Test
-    public void Last() {
+    void Last() {
         assertEquals(10, Linq.range(1, 99).reverse().orderByDescending(i -> i).last(x -> x % 10 == 0));
         assertEquals(100, Linq.range(1, 999).concat(Linq.range(1001, 3)).reverse().orderBy(i -> i.toString().length()).thenByDescending(i -> i).last(x -> x % 10 == 0));
         assertEquals(10, Linq.range(1, 10).orderBy(i -> 1).last());
     }
 
     @Test
-    public void LastMultipleTruePredicateResult() {
+    void LastMultipleTruePredicateResult() {
         assertEquals(90, Linq.range(1, 99).orderBy(i -> i).last(x -> x % 10 == 0));
         assertEquals(90, Linq.range(1, 999).concat(Linq.range(1001, 3)).orderByDescending(i -> i.toString().length()).thenBy(i -> i).last(x -> x % 10 == 0));
     }
 
     @Test
-    public void LastOrDefaultMultipleTruePredicateResult() {
+    void LastOrDefaultMultipleTruePredicateResult() {
         assertEquals(90, Linq.range(1, 99).orderBy(i -> i).lastOrDefault(x -> x % 10 == 0));
         assertEquals(90, Linq.range(1, 999).concat(Linq.range(1001, 3)).orderByDescending(i -> i.toString().length()).thenBy(i -> i).lastOrDefault(x -> x % 10 == 0));
     }
 
     @Test
-    public void LastNoTruePredicateResult() {
+    void LastNoTruePredicateResult() {
         assertThrows(InvalidOperationException.class, () -> Linq.range(1, 99).orderBy(i -> i).last(x -> x > 1000));
     }
 
     @Test
-    public void LastEmptyOrderedEnumerable() {
+    void LastEmptyOrderedEnumerable() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().orderBy(i -> i).last());
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().orderBy(i -> i).last(x -> true));
     }
 
     @Test
-    public void LastOrDefaultNoTruePredicateResult() {
+    void LastOrDefaultNoTruePredicateResult() {
         assertEquals(null, Linq.range(1, 99).orderBy(i -> i).lastOrDefault(x -> x > 1000));
     }
 
     @Test
-    public void LastOrDefaultEmptyOrderedEnumerable() {
+    void LastOrDefaultEmptyOrderedEnumerable() {
         assertEquals(null, Linq.<Integer>empty().orderBy(i -> i).lastOrDefault());
         assertEquals(null, Linq.<Integer>empty().orderBy(i -> i).lastOrDefault(x -> true));
     }
 
     @Test
-    public void Take() {
+    void Take() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(Linq.range(0, 20), ordered.take(20));
@@ -106,7 +106,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void TakeThenFirst() {
+    void TakeThenFirst() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(0, ordered.take(20).first());
@@ -114,7 +114,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void TakeThenLast() {
+    void TakeThenLast() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(19, ordered.take(20).last());
@@ -122,7 +122,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void Skip() {
+    void Skip() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(Linq.range(20, 80), ordered.skip(20));
@@ -141,7 +141,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SkipThenFirst() {
+    void SkipThenFirst() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(20, ordered.skip(20).first());
@@ -149,22 +149,22 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SkipExcessiveThenFirstThrows() {
+    void SkipExcessiveThenFirstThrows() {
         assertThrows(InvalidOperationException.class, () -> Linq.range(2, 10).shuffle().orderBy(i -> i).skip(20).first());
     }
 
     @Test
-    public void SkipExcessiveThenFirstOrDefault() {
+    void SkipExcessiveThenFirstOrDefault() {
         assertEquals(null, Linq.range(2, 10).shuffle().orderBy(i -> i).skip(20).firstOrDefault());
     }
 
     @Test
-    public void SkipExcessiveEmpty() {
+    void SkipExcessiveEmpty() {
         assertEmpty(Linq.range(0, 10).shuffle().orderBy(i -> i).skip(42));
     }
 
     @Test
-    public void SkipThenLast() {
+    void SkipThenLast() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(99, ordered.skip(20).last());
@@ -172,17 +172,17 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SkipExcessiveThenLastThrows() {
+    void SkipExcessiveThenLastThrows() {
         assertThrows(InvalidOperationException.class, () -> Linq.range(2, 10).shuffle().orderBy(i -> i).skip(20).last());
     }
 
     @Test
-    public void SkipExcessiveThenLastOrDefault() {
+    void SkipExcessiveThenLastOrDefault() {
         assertEquals(null, Linq.range(2, 10).shuffle().orderBy(i -> i).skip(20).lastOrDefault());
     }
 
     @Test
-    public void SkipAndTake() {
+    void SkipAndTake() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(Linq.range(20, 60), ordered.skip(20).take(60));
@@ -194,7 +194,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void TakeAndSkip() {
+    void TakeAndSkip() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEmpty(ordered.skip(100).take(20));
@@ -203,26 +203,26 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void TakeAndSkip_DoesntIterateRangeUnlessNecessary() {
+    void TakeAndSkip_DoesntIterateRangeUnlessNecessary() {
         assertEmpty(Linq.range(0, Integer.MAX_VALUE).take(Integer.MAX_VALUE).orderBy(i -> i).skip(Integer.MAX_VALUE - 4).skip(15));
     }
 
     @Test
-    public void TakeThenTakeExcessive() {
+    void TakeThenTakeExcessive() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(ordered.take(20), ordered.take(20).take(100));
     }
 
     @Test
-    public void TakeThenSkipAll() {
+    void TakeThenSkipAll() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEmpty(ordered.take(20).skip(30));
     }
 
     @Test
-    public void SkipAndTakeThenFirst() {
+    void SkipAndTakeThenFirst() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(20, ordered.skip(20).take(60).first());
@@ -230,7 +230,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SkipAndTakeThenLast() {
+    void SkipAndTakeThenLast() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(79, ordered.skip(20).take(60).last());
@@ -238,7 +238,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void ElementAt() {
+    void ElementAt() {
         Array<Integer> source = Linq.range(0, 100).shuffle().toArray();
         IEnumerable<Integer> ordered = source.orderBy(i -> i);
         assertEquals(42, ordered.elementAt(42));
@@ -286,23 +286,23 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void ToArray() {
+    void ToArray() {
         assertEquals(Linq.range(10, 20), Linq.range(0, 100).shuffle().orderBy(i -> i).skip(10).take(20).toArray());
     }
 
     @Test
-    public void ToList() {
+    void ToList() {
         assertEquals(Linq.range(10, 20), Linq.of(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(10).take(20).toList()));
     }
 
     @Test
-    public void Count() {
+    void Count() {
         assertEquals(20, Linq.range(0, 100).shuffle().orderBy(i -> i).skip(10).take(20).count());
         assertEquals(1, Linq.range(0, 100).shuffle().orderBy(i -> i).take(2).skip(1).count());
     }
 
     @Test
-    public void SkipTakesOnlyOne() {
+    void SkipTakesOnlyOne() {
         assertEquals(Linq.of(new int[]{1}), Linq.range(1, 10).shuffle().orderBy(i -> i).take(1));
         assertEquals(Linq.of(new int[]{2}), Linq.range(1, 10).shuffle().orderBy(i -> i).skip(1).take(1));
         assertEquals(Linq.of(new int[]{3}), Linq.range(1, 10).shuffle().orderBy(i -> i).take(3).skip(2));
@@ -310,54 +310,54 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void EmptyToArray() {
+    void EmptyToArray() {
         assertEmpty(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toArray());
         assertTrue(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toArray(Integer.class).length == 0);
     }
 
     @Test
-    public void EmptyToList() {
+    void EmptyToList() {
         assertEmpty(Linq.of(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toList()));
     }
 
     @Test
-    public void EmptyCount() {
+    void EmptyCount() {
         assertEquals(0, Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).count());
         assertEquals(0, Linq.range(0, 100).shuffle().orderBy(i -> i).take(0).count());
     }
 
     @Test
-    public void AttemptedMoreArray() {
+    void AttemptedMoreArray() {
         assertEquals(Linq.range(0, 20), Linq.range(0, 20).shuffle().orderBy(i -> i).take(30).toArray());
     }
 
     @Test
-    public void AttemptedMoreList() {
+    void AttemptedMoreList() {
         assertEquals(Linq.range(0, 20), Linq.of(Linq.range(0, 20).shuffle().orderBy(i -> i).take(30).toList()));
     }
 
     @Test
-    public void AttemptedMoreCount() {
+    void AttemptedMoreCount() {
         assertEquals(20, Linq.range(0, 20).shuffle().orderBy(i -> i).take(30).count());
     }
 
     @Test
-    public void SingleElementToArray() {
+    void SingleElementToArray() {
         assertEquals(Linq.repeat(10, 1), Linq.range(0, 20).shuffle().orderBy(i -> i).skip(10).take(1).toArray());
     }
 
     @Test
-    public void SingleElementToList() {
+    void SingleElementToList() {
         assertEquals(Linq.repeat(10, 1), Linq.of(Linq.range(0, 20).shuffle().orderBy(i -> i).skip(10).take(1).toList()));
     }
 
     @Test
-    public void SingleElementCount() {
+    void SingleElementCount() {
         assertEquals(1, Linq.range(0, 20).shuffle().orderBy(i -> i).skip(10).take(1).count());
     }
 
     @Test
-    public void EnumeratorDoesntContinue() {
+    void EnumeratorDoesntContinue() {
         IEnumerator<Integer> enumerator = NumberRangeGuaranteedNotCollectionType(0, 3).shuffle().orderBy(i -> i).skip(1).enumerator();
         while (enumerator.moveNext()) {
         }
@@ -365,12 +365,12 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void Select() {
+    void Select() {
         assertEquals(Linq.of(new int[]{0, 2, 4, 6, 8}), Linq.range(-1, 8).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2));
     }
 
     @Test
-    public void SelectForcedToEnumeratorDoesntEnumerate() {
+    void SelectForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = Linq.range(-1, 8).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -378,7 +378,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SelectElementAt() {
+    void SelectElementAt() {
         IEnumerable<Integer> source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         assertEquals(6, source.elementAt(2));
         assertEquals(8, source.elementAtOrDefault(3));
@@ -387,7 +387,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SelectFirst() {
+    void SelectFirst() {
         IEnumerable<Integer> source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         assertEquals(2, source.first());
         assertEquals(2, source.firstOrDefault());
@@ -397,7 +397,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SelectLast() {
+    void SelectLast() {
         IEnumerable<Integer> source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         assertEquals(10, source.last());
         assertEquals(10, source.lastOrDefault());
@@ -407,19 +407,19 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void SelectArray() {
+    void SelectArray() {
         IEnumerable<Integer> source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), source.toArray());
     }
 
     @Test
-    public void SelectList() {
+    void SelectList() {
         IEnumerable<Integer> source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toList()));
     }
 
     @Test
-    public void SelectCount() {
+    void SelectCount() {
         IEnumerable<Integer> source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         assertEquals(5, source.count());
         source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(1000).select(i -> i * 2);
@@ -427,7 +427,7 @@ public class OrderedSubsettingTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         IEnumerable<Integer> source = Linq.range(0, 100).shuffle().toArray();
         assertEquals(Linq.range(30, 20), source.runOnce().orderBy(i -> i).skip(20).skip(10).take(50).take(20));
         assertEmpty(source.runOnce().orderBy(i -> i).skip(10).take(9).take(0));

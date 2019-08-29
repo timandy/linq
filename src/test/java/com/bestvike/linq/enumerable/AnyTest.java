@@ -17,9 +17,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class AnyTest extends TestCase {
+class AnyTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -28,7 +28,7 @@ public class AnyTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Predicate1<String> predicate = TestCase::IsNullOrEmpty;
@@ -60,7 +60,7 @@ public class AnyTest extends TestCase {
     }
 
     @Test
-    public void Any() {
+    void Any() {
         for (Object[] data : this.TestData()) {
             this.Any((IEnumerable<Integer>) data[0], (boolean) data[1]);
         }
@@ -92,7 +92,7 @@ public class AnyTest extends TestCase {
     }
 
     @Test
-    public void Any2() {
+    void Any2() {
         for (Object[] data : this.TestDataWithPredicate()) {
             this.Any2((IEnumerable<Integer>) data[0], (Predicate1<Integer>) data[1], (boolean) data[2]);
         }
@@ -106,7 +106,7 @@ public class AnyTest extends TestCase {
     }
 
     @Test
-    public void AnyRunOnce() {
+    void AnyRunOnce() {
         for (Object[] data : this.TestDataWithPredicate()) {
             this.AnyRunOnce((IEnumerable<Integer>) data[0], (Predicate1<Integer>) data[1], (boolean) data[2]);
         }
@@ -120,31 +120,31 @@ public class AnyTest extends TestCase {
     }
 
     @Test
-    public void NullObjectsInArray_Included() {
+    void NullObjectsInArray_Included() {
         IEnumerable<Integer> source = Linq.of(null, null, null, null);
         assertTrue(source.any());
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException() {
+    void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).any());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).any(i -> i != 0));
     }
 
     @Test
-    public void NullPredicate_ThrowsArgumentNullException() {
+    void NullPredicate_ThrowsArgumentNullException() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).any(predicate));
     }
 
     @Test
-    public void testAny() {
+    void testAny() {
         assertFalse(Linq.of(Collections.emptyList()).any());
         assertTrue(Linq.of(emps).any());
     }
 
     @Test
-    public void testAnyPredicate() {
+    void testAnyPredicate() {
         assertFalse(Linq.of(depts).any(dept -> dept.name != null && dept.name.equals("IT")));
         assertTrue(Linq.of(depts).any(dept -> dept.name != null && dept.name.equals("Sales")));
     }

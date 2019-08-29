@@ -19,7 +19,7 @@ import java.util.TimeZone;
 /**
  * Created by 许崇雷 on 2019-06-20.
  */
-public class FormatTest extends TestCase {
+class FormatTest extends TestCase {
     private Formatter formatter;
 
     {
@@ -50,7 +50,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -58,7 +58,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -83,7 +83,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Int() {
+    void Format_Int() {
         for (Object[] objects : this.Format_Int_TestData()) {
             this.Format_Int((IEnumerable<Integer>) objects[0], (String) objects[1]);
         }
@@ -95,13 +95,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Int_NullSource_ThrowsArgumentNullException() {
+    void Format_Int_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).format(Formatter.DEFAULT));
     }
 
     @Test
-    public void Format_Int_EmptySource_ThrowsInvalidOperationException() {
+    void Format_Int_EmptySource_ThrowsInvalidOperationException() {
         assertEquals("[]", Linq.<Integer>empty().format());
         assertEquals("[]", Linq.<Integer>empty().format(Formatter.DEFAULT));
     }
@@ -123,7 +123,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Long() {
+    void Format_Long() {
         for (Object[] objects : this.Format_Long_TestData()) {
             this.Format_Long((IEnumerable<Long>) objects[0], (String) objects[1]);
         }
@@ -135,13 +135,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Long_NullSource_ThrowsArgumentNullException() {
+    void Format_Long_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).format(Formatter.DEFAULT));
     }
 
     @Test
-    public void Format_Long_EmptySource_ThrowsInvalidOperationException() {
+    void Format_Long_EmptySource_ThrowsInvalidOperationException() {
         assertEquals("[]", Linq.<Long>empty().format());
         assertEquals("[]", Linq.<Long>empty().format(Formatter.DEFAULT));
     }
@@ -174,7 +174,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Float() {
+    void Format_Float() {
         for (Object[] objects : this.Format_Float_TestData()) {
             this.Format_Float((IEnumerable<Float>) objects[0], (String) objects[1]);
         }
@@ -186,13 +186,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Float_NullSource_ThrowsArgumentNullException() {
+    void Format_Float_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).format(Formatter.DEFAULT));
     }
 
     @Test
-    public void Format_Float_EmptySource_ThrowsInvalidOperationException() {
+    void Format_Float_EmptySource_ThrowsInvalidOperationException() {
         assertEquals("[]", Linq.<Float>empty().format());
         assertEquals("[]", Linq.<Float>empty().format(Formatter.DEFAULT));
     }
@@ -224,7 +224,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Double() {
+    void Format_Double() {
         for (Object[] objects : this.Format_Double_TestData()) {
             this.Format_Double((IEnumerable<Double>) objects[0], (String) objects[1]);
         }
@@ -236,13 +236,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Double_NullSource_ThrowsArgumentNullException() {
+    void Format_Double_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).format(Formatter.DEFAULT));
     }
 
     @Test
-    public void Format_Double_EmptySource_ThrowsInvalidOperationException() {
+    void Format_Double_EmptySource_ThrowsInvalidOperationException() {
         assertEquals("[]", Linq.<Double>empty().format());
         assertEquals("[]", Linq.<Double>empty().format(Formatter.DEFAULT));
     }
@@ -264,7 +264,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Decimal() {
+    void Format_Decimal() {
         for (Object[] objects : this.Format_Decimal_TestData()) {
             this.Format_Decimal((IEnumerable<BigDecimal>) objects[0], (String) objects[1]);
         }
@@ -276,13 +276,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Decimal_EmptySource_ThrowsInvalidOperationException() {
+    void Format_Decimal_EmptySource_ThrowsInvalidOperationException() {
         assertEquals("[]", Linq.<BigDecimal>empty().format());
         assertEquals("[]", Linq.<BigDecimal>empty().format(Formatter.DEFAULT));
     }
 
     @Test
-    public void Format_Decimal_NullSource_ThrowsArgumentNullException() {
+    void Format_Decimal_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).format(Formatter.DEFAULT));
     }
@@ -306,7 +306,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableInt() {
+    void Format_NullableInt() {
         for (Object[] objects : this.Format_NullableInt_TestData()) {
             this.Format_NullableInt((IEnumerable<Integer>) objects[0], (String) objects[1]);
         }
@@ -317,7 +317,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableIntRunOnce() {
+    void Format_NullableIntRunOnce() {
         for (Object[] objects : this.Format_NullableInt_TestData()) {
             this.Format_NullableIntRunOnce((IEnumerable<Integer>) objects[0], (String) objects[1]);
         }
@@ -328,7 +328,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableInt_NullSource_ThrowsArgumentNullException() {
+    void Format_NullableInt_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).format(Formatter.DEFAULT));
     }
@@ -352,7 +352,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableLong() {
+    void Format_NullableLong() {
         for (Object[] objects : this.Format_NullableLong_TestData()) {
             this.Format_NullableLong((IEnumerable<Long>) objects[0], (String) objects[1]);
         }
@@ -363,7 +363,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableLong_NullSource_ThrowsArgumentNullException() {
+    void Format_NullableLong_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).format(Formatter.DEFAULT));
     }
@@ -397,7 +397,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableFloat() {
+    void Format_NullableFloat() {
         for (Object[] objects : this.Format_NullableFloat_TestData()) {
             this.Format_NullableFloat((IEnumerable<Float>) objects[0], (String) objects[1]);
         }
@@ -409,7 +409,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableFloat_NullSource_ThrowsArgumentNullException() {
+    void Format_NullableFloat_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).format(Formatter.DEFAULT));
     }
@@ -443,7 +443,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableDouble() {
+    void Format_NullableDouble() {
         for (Object[] objects : this.Format_NullableDouble_TestData()) {
             this.Format_NullableDouble((IEnumerable<Double>) objects[0], (String) objects[1]);
         }
@@ -455,7 +455,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableDouble_NullSource_ThrowsArgumentNullException() {
+    void Format_NullableDouble_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).format());
     }
 
@@ -478,7 +478,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableDecimal() {
+    void Format_NullableDecimal() {
         for (Object[] objects : this.Format_NullableDecimal_TestData()) {
             this.Format_NullableDecimal((IEnumerable<BigDecimal>) objects[0], (String) objects[1]);
         }
@@ -490,7 +490,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableDecimal_NullSource_ThrowsArgumentNullException() {
+    void Format_NullableDecimal_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).format(Formatter.DEFAULT));
     }
@@ -512,7 +512,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_DateTime() {
+    void Format_DateTime() {
         for (Object[] objects : this.Format_DateTime_TestData()) {
             this.Format_DateTime((IEnumerable<Date>) objects[0], (String) objects[1]);
         }
@@ -524,13 +524,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_DateTime_NullSource_ThrowsArgumentNullException() {
+    void Format_DateTime_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).format(Formatter.DEFAULT));
     }
 
     @Test
-    public void Format_DateTime_EmptySource_ThrowsInvalidOperationException() {
+    void Format_DateTime_EmptySource_ThrowsInvalidOperationException() {
         assertEquals("[]", Linq.<Date>empty().format());
         assertEquals("[]", Linq.<Date>empty().format(Formatter.DEFAULT));
     }
@@ -552,7 +552,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_String() {
+    void Format_String() {
         for (Object[] objects : this.Format_String_TestData()) {
             this.Format_String((IEnumerable<String>) objects[0], (String) objects[1]);
         }
@@ -564,7 +564,7 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_StringRunOnce() {
+    void Format_StringRunOnce() {
         for (Object[] objects : this.Format_String_TestData()) {
             this.Format_StringRunOnce((IEnumerable<String>) objects[0], (String) objects[1]);
         }
@@ -576,13 +576,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_String_NullSource_ThrowsArgumentNullException() {
+    void Format_String_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).format());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).format(Formatter.DEFAULT));
     }
 
     @Test
-    public void Format_Int_WithFormatterAccessingProperty() {
+    void Format_Int_WithFormatterAccessingProperty() {
         NameNum<Integer>[] source = new NameNum[]{
                 new NameNum("Tim", 10),
                 new NameNum("John", -105),
@@ -592,13 +592,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Int_NullFormatter_ThrowsArgumentNullException() {
+    void Format_Int_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().format(formatter));
     }
 
     @Test
-    public void Format_Long_WithFormatterAccessingProperty() {
+    void Format_Long_WithFormatterAccessingProperty() {
         NameNum<Long>[] source = new NameNum[]{
                 new NameNum("Tim", 10L),
                 new NameNum("John", Long.MIN_VALUE),
@@ -609,13 +609,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Long_NullFormatter_ThrowsArgumentNullException() {
+    void Format_Long_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().format(formatter));
     }
 
     @Test
-    public void Format_Float_WithFormatterAccessingProperty() {
+    void Format_Float_WithFormatterAccessingProperty() {
         NameNum<Float>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5f),
                 new NameNum("John", -132.5f),
@@ -625,13 +625,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Float_NullFormatter_ThrowsArgumentNullException() {
+    void Format_Float_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().format(formatter));
     }
 
     @Test
-    public void Format_Double_WithFormatterAccessingProperty() {
+    void Format_Double_WithFormatterAccessingProperty() {
         NameNum<Double>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5),
                 new NameNum("John", -132.5),
@@ -641,13 +641,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Double_NullFormatter_ThrowsArgumentNullException() {
+    void Format_Double_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().format(formatter));
     }
 
     @Test
-    public void Format_Decimal_WithFormatterAccessingProperty() {
+    void Format_Decimal_WithFormatterAccessingProperty() {
         NameNum<BigDecimal>[] source = new NameNum[]{
                 new NameNum("Tim", m("100.45")),
                 new NameNum("John", m("10.5")),
@@ -657,13 +657,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_Decimal_NullFormatter_ThrowsArgumentNullException() {
+    void Format_Decimal_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().format(formatter));
     }
 
     @Test
-    public void Format_NullableInt_WithFormatterAccessingProperty() {
+    void Format_NullableInt_WithFormatterAccessingProperty() {
         NameNum<Integer>[] source = new NameNum[]{
                 new NameNum("Tim", 10),
                 new NameNum("John", null),
@@ -673,13 +673,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableInt_NullFormatter_ThrowsArgumentNullException() {
+    void Format_NullableInt_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().format(formatter));
     }
 
     @Test
-    public void Format_NullableLong_WithFormatterAccessingProperty() {
+    void Format_NullableLong_WithFormatterAccessingProperty() {
         NameNum<Long>[] source = new NameNum[]{
                 new NameNum("Tim", null),
                 new NameNum("John", Long.MIN_VALUE),
@@ -689,13 +689,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableLong_NullFormatter_ThrowsArgumentNullException() {
+    void Format_NullableLong_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().format(formatter));
     }
 
     @Test
-    public void Format_NullableFloat_WithFormatterAccessingProperty() {
+    void Format_NullableFloat_WithFormatterAccessingProperty() {
         NameNum<Float>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5f),
                 new NameNum("John", -132.5f),
@@ -706,13 +706,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableFloat_NullFormatter_ThrowsArgumentNullException() {
+    void Format_NullableFloat_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().format(formatter));
     }
 
     @Test
-    public void Format_NullableDouble_WithFormatterAccessingProperty() {
+    void Format_NullableDouble_WithFormatterAccessingProperty() {
         NameNum<Double>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5d),
                 new NameNum("John", -132.5d),
@@ -722,13 +722,13 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableDouble_NullFormatter_ThrowsArgumentNullException() {
+    void Format_NullableDouble_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().format(formatter));
     }
 
     @Test
-    public void Format_NullableDecimal_WithFormatterAccessingProperty() {
+    void Format_NullableDecimal_WithFormatterAccessingProperty() {
         NameNum<BigDecimal>[] source = new NameNum[]{
                 new NameNum("Tim", m("100.45")),
                 new NameNum("John", m("10.5")),
@@ -738,19 +738,19 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_NullableDecimal_NullFormatter_ThrowsArgumentNullException() {
+    void Format_NullableDecimal_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().format(formatter));
     }
 
     @Test
-    public void Format_DateTime_NullFormatter_ThrowsArgumentNullException() {
+    void Format_DateTime_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().format(formatter));
     }
 
     @Test
-    public void Format_String_WithFormatterAccessingProperty() {
+    void Format_String_WithFormatterAccessingProperty() {
         NameNum<String>[] source = new NameNum[]{
                 new NameNum("Tim", m("100.45")),
                 new NameNum("John", m("10.5")),
@@ -760,27 +760,27 @@ public class FormatTest extends TestCase {
     }
 
     @Test
-    public void Format_String_NullFormatter_ThrowsArgumentNullException() {
+    void Format_String_NullFormatter_ThrowsArgumentNullException() {
         Formatter formatter = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<String>empty().format(formatter));
     }
 
     @Test
-    public void Format_Bool_EmptySource_ThrowsInvalodOperationException() {
+    void Format_Bool_EmptySource_ThrowsInvalodOperationException() {
         assertEquals("[]", Linq.<Boolean>empty().format());
     }
 
     @Test
-    public void Overflow() {
+    void Overflow() {
         assertThrows(OutOfMemoryError.class, () -> Linq.repeat(Float.NaN, Integer.MAX_VALUE).format());
     }
 
 
     private static class NameNum<T> extends ValueType {
-        final String name;
-        final T num;
+        private final String name;
+        private final T num;
 
-        NameNum(String name, T num) {
+        private NameNum(String name, T num) {
             this.name = name;
             this.num = num;
         }

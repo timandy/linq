@@ -24,29 +24,29 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SelectManyTest extends TestCase {
+class SelectManyTest extends TestCase {
     @Test
-    public void EmptySource() {
+    void EmptySource() {
         assertEmpty(Linq.<StringWithIntArray>empty().selectMany(e -> Linq.of(Linq.of(e.total))));
     }
 
     @Test
-    public void EmptySourceIndexedSelector() {
+    void EmptySourceIndexedSelector() {
         assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.of(e.total)));
     }
 
     @Test
-    public void EmptySourceResultSelector() {
+    void EmptySourceResultSelector() {
         assertEmpty(Linq.<StringWithIntArray>empty().selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
-    public void EmptySourceResultSelectorIndexedSelector() {
+    void EmptySourceResultSelectorIndexedSelector() {
         assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
-    public void SingleElement() {
+    void SingleElement() {
         Integer[] expected = {90, 55, null, 43, 89};
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", expected)
@@ -55,7 +55,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void NonEmptySelectingEmpty() {
+    void NonEmptySelectingEmpty() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[0]),
                 new StringWithIntArray("Bob", new Integer[0]),
@@ -68,7 +68,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void NonEmptySelectingEmptyIndexedSelector() {
+    void NonEmptySelectingEmptyIndexedSelector() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[0]),
                 new StringWithIntArray("Bob", new Integer[0]),
@@ -81,7 +81,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void NonEmptySelectingEmptyWithResultSelector() {
+    void NonEmptySelectingEmptyWithResultSelector() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[0]),
                 new StringWithIntArray("Bob", new Integer[0]),
@@ -94,7 +94,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void NonEmptySelectingEmptyIndexedSelectorWithResultSelector() {
+    void NonEmptySelectingEmptyIndexedSelectorWithResultSelector() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[0]),
                 new StringWithIntArray("Bob", new Integer[0]),
@@ -107,7 +107,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void ResultsSelected() {
+    void ResultsSelected() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -120,7 +120,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -133,12 +133,12 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void SourceEmptyIndexUsed() {
+    void SourceEmptyIndexUsed() {
         assertEmpty(Linq.<StringWithIntArray>empty().selectMany((e, index) -> Linq.of(e.total)));
     }
 
     @Test
-    public void SingleElementIndexUsed() {
+    void SingleElementIndexUsed() {
         Integer[] expected = {90, 55, null, 43, 89};
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", expected)
@@ -147,7 +147,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void NonEmptySelectingEmptyIndexUsed() {
+    void NonEmptySelectingEmptyIndexUsed() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[0]),
                 new StringWithIntArray("Bob", new Integer[0]),
@@ -159,7 +159,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void ResultsSelectedIndexUsed() {
+    void ResultsSelectedIndexUsed() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -172,7 +172,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void IndexCausingFirstToBeSelected() {
+    void IndexCausingFirstToBeSelected() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -185,7 +185,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void IndexCausingLastToBeSelected() {
+    void IndexCausingLastToBeSelected() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -198,7 +198,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void IndexOverflow() {
+    void IndexOverflow() {
         IEnumerable<?> selected = new FastInfiniteEnumerator<Integer>().selectMany((e, i) -> Linq.<Integer>empty());
         try (IEnumerator<?> en = selected.enumerator()) {
             assertThrows(ArithmeticException.class, () -> {
@@ -209,7 +209,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void ResultSelector() {
+    void ResultSelector() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -223,67 +223,67 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void NullResultSelector() {
+    void NullResultSelector() {
         Func2<StringWithIntArray, Integer, String> resultSelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany(e -> Linq.of(e.total), resultSelector));
     }
 
     @Test
-    public void NullResultSelectorIndexedSelector() {
+    void NullResultSelectorIndexedSelector() {
         Func2<StringWithIntArray, Integer, String> resultSelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany((e, i) -> Linq.of(e.total), resultSelector));
     }
 
     @Test
-    public void NullSourceWithResultSelector() {
+    void NullSourceWithResultSelector() {
         StringWithIntArray[] source = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
-    public void NullCollectionSelector() {
+    void NullCollectionSelector() {
         Func1<StringWithIntArray, IEnumerable<Integer>> collectionSelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany(collectionSelector, (e, f) -> f.toString()));
     }
 
     @Test
-    public void NullIndexedCollectionSelector() {
+    void NullIndexedCollectionSelector() {
         IndexFunc2<StringWithIntArray, IEnumerable<Integer>> collectionSelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<StringWithIntArray>empty().selectMany(collectionSelector, (e, f) -> f.toString()));
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         StringWithIntArray[] source = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany(e -> Linq.of(e.total)));
     }
 
     @Test
-    public void NullSourceIndexedSelector() {
+    void NullSourceIndexedSelector() {
         StringWithIntArray[] source = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany((e, i) -> Linq.of(e.total)));
     }
 
     @Test
-    public void NullSourceIndexedSelectorWithResultSelector() {
+    void NullSourceIndexedSelectorWithResultSelector() {
         StringWithIntArray[] source = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany((e, i) -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
-    public void NullSelector() {
+    void NullSelector() {
         Func1<StringWithIntArray, IEnumerable<Integer>> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(new StringWithIntArray[0]).selectMany(selector));
     }
 
     @Test
-    public void NullIndexedSelector() {
+    void NullIndexedSelector() {
         IndexFunc2<StringWithIntArray, IEnumerable<Integer>> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(new StringWithIntArray[0]).selectMany(selector));
     }
 
     @Test
-    public void IndexCausingFirstToBeSelectedWithResultSelector() {
+    void IndexCausingFirstToBeSelectedWithResultSelector() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -296,7 +296,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void IndexCausingLastToBeSelectedWithResultSelector() {
+    void IndexCausingLastToBeSelectedWithResultSelector() {
         StringWithIntArray[] source = {
                 new StringWithIntArray("Prakash", new Integer[]{1, 2, 3, 4}),
                 new StringWithIntArray("Bob", new Integer[]{5, 6}),
@@ -310,7 +310,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany(i -> Linq.of(new int[0]));
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -318,28 +318,28 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIndexed() {
+    void ForcedToEnumeratorDoesntEnumerateIndexed() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany((e, i) -> Linq.of(new int[0]));
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateResultSel() {
+    void ForcedToEnumeratorDoesntEnumerateResultSel() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany(i -> Linq.of(new int[0]), (e, i) -> e);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIndexedResultSel() {
+    void ForcedToEnumeratorDoesntEnumerateIndexedResultSel() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).selectMany((e, i) -> Linq.of(new int[0]), (e, i) -> e);
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
         assertFalse(en != null && en.moveNext());
     }
 
     @Test
-    public void ParameterizedTests() {
+    void ParameterizedTests() {
         for (Object[] objects : this.ParameterizedTestsData()) {
             this.ParameterizedTests((IEnumerable<Integer>) objects[0], (Func1<Integer, IEnumerable<Integer>>) objects[1]);
         }
@@ -367,7 +367,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void DisposeAfterEnumeration() {
+    void DisposeAfterEnumeration() {
         for (Object[] objects : this.DisposeAfterEnumerationData()) {
             this.DisposeAfterEnumeration((int) objects[0], (int) objects[1]);
         }
@@ -437,7 +437,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void ThrowOverflowExceptionOnConstituentLargeCounts() {
+    void ThrowOverflowExceptionOnConstituentLargeCounts() {
         this.ThrowOverflowExceptionOnConstituentLargeCounts(new int[]{Integer.MAX_VALUE, 1});
         this.ThrowOverflowExceptionOnConstituentLargeCounts(new int[]{2, Integer.MAX_VALUE - 1});
         this.ThrowOverflowExceptionOnConstituentLargeCounts(new int[]{123, 456, Integer.MAX_VALUE - 100000, 123456});
@@ -449,7 +449,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void CollectionInterleavedWithLazyEnumerables_ToArray() {
+    void CollectionInterleavedWithLazyEnumerables_ToArray() {
         for (Object[] objects : this.GetToArrayDataSources()) {
             this.CollectionInterleavedWithLazyEnumerables_ToArray((IEnumerable<Integer>[]) objects[0]);
         }
@@ -548,7 +548,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void EvaluateSelectorOncePerItem() {
+    void EvaluateSelectorOncePerItem() {
         this.EvaluateSelectorOncePerItem(10);
     }
 
@@ -587,7 +587,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void testSelectMany() {
+    void testSelectMany() {
         List<String> nameSeqs = Linq.of(depts)
                 .selectMany(dept -> Linq.of(dept.employees))
                 .select((emp, index) -> String.format("#%d: %s", index, emp.name))
@@ -596,7 +596,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void testSelectManyIndexed() {
+    void testSelectManyIndexed() {
         List<String> nameSeqs = Linq.of(depts)
                 .selectMany((dept, index) -> Linq.of(dept.employees).select(emp -> String.format("#%d: %s", index, emp.name)))
                 .toList();
@@ -604,7 +604,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void testSelectManySelect() {
+    void testSelectManySelect() {
         List<String> nameSeqs = Linq.of(depts)
                 .selectMany(dept -> Linq.of(dept.employees), (dept, emp) -> String.format("#%s: %s", dept.name, emp.name))
                 .toList();
@@ -612,7 +612,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void testSelectManyIndexedSelect() {
+    void testSelectManyIndexedSelect() {
         List<String> nameSeqs = Linq.of(depts)
                 .selectMany((dept, index) -> Linq.of(dept.employees).select(emp -> Tuple.create(index, emp)), (dept, empInfo) -> String.format("#%s: %s: %s", empInfo.getItem1(), dept.name, empInfo.getItem2().name))
                 .toList();
@@ -620,7 +620,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void testSelectManyCrossJoin() {
+    void testSelectManyCrossJoin() {
         //selectMany 实现简单的 cross join
         String cross = Linq.of(emps).concat(Linq.of(badEmps))
                 .selectMany(emp -> Linq.of(depts).concat(Linq.of(badDepts)).select(dept -> String.format("%s works in %s", emp.name, dept.name)))
@@ -630,7 +630,7 @@ public class SelectManyTest extends TestCase {
     }
 
     @Test
-    public void testSelectManyIndexed2() {
+    void testSelectManyIndexed2() {
         IEnumerable<Integer> source = Linq.of(Linq.of(0, 1), Linq.of(2, 3), Linq.of(4, 5))
                 .selectMany((nums, index) -> nums);
         assertEquals(source.runOnce(), source.runOnce());

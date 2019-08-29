@@ -21,9 +21,9 @@ import java.util.Random;
 /**
  * Created by 许崇雷 on 2019-05-24.
  */
-public class OrderByDescendingTest extends TestCase {
+class OrderByDescendingTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
                 .selectMany(x1 -> Linq.of(new int[]{55, 49, 9, -100, 24, 25}), (x1, x2) -> Tuple.create(x1, x2));
 
@@ -31,7 +31,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<Tuple2<Integer, String>> q = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
                 .selectMany(x1 -> Linq.of("!@#$%^", "C", "AAA", "", null, "Calling Twice", "SoS", Empty), (x1, x2) -> Tuple.create(x1, x2))
                 .where(t -> !IsNullOrEmpty(t.getItem2()));
@@ -40,13 +40,13 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void SourceEmpty() {
+    void SourceEmpty() {
         int[] source = {};
         assertEmpty(Linq.of(source).orderByDescending(e -> e));
     }
 
     @Test
-    public void KeySelectorReturnsNull() {
+    void KeySelectorReturnsNull() {
         Integer[] source = {null, null, null};
         Integer[] expected = {null, null, null};
 
@@ -54,7 +54,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void ElementsAllSameKey() {
+    void ElementsAllSameKey() {
         Integer[] source = {9, 9, 9, 9, 9, 9};
         Integer[] expected = {9, 9, 9, 9, 9, 9};
 
@@ -62,7 +62,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void KeySelectorCalled() {
+    void KeySelectorCalled() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Alpha", 90),
                 new NameScore("Robert", 45),
@@ -80,7 +80,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void FirstAndLastAreDuplicatesCustomComparer() {
+    void FirstAndLastAreDuplicatesCustomComparer() {
         String[] source = {"Prakash", "Alpha", "DAN", "dan", "Prakash"};
         String[] expected = {"Prakash", "Prakash", "DAN", "dan", "Alpha"};
 
@@ -88,7 +88,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         String[] source = {"Prakash", "Alpha", "DAN", "dan", "Prakash"};
         String[] expected = {"Prakash", "Prakash", "DAN", "dan", "Alpha"};
 
@@ -96,7 +96,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void FirstAndLastAreDuplicatesNullPassedAsComparer() {
+    void FirstAndLastAreDuplicatesNullPassedAsComparer() {
         int[] source = {5, 1, 3, 2, 5};
         int[] expected = {5, 5, 3, 2, 1};
 
@@ -104,7 +104,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void SourceReverseOfResultNullPassedAsComparer() {
+    void SourceReverseOfResultNullPassedAsComparer() {
         int[] source = {-75, -50, 0, 5, 9, 30, 100};
         int[] expected = {100, 30, 9, 5, 0, -50, -75};
 
@@ -112,7 +112,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void SameKeysVerifySortStable() {
+    void SameKeysVerifySortStable() {
         NameScore[] source = new NameScore[]{
                 new NameScore("Alpha", 90),
                 new NameScore("Robert", 45),
@@ -136,7 +136,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void OrderByExtremeComparer() {
+    void OrderByExtremeComparer() {
         int[] outOfOrder = new int[]{7, 1, 0, 9, 3, 5, 4, 2, 8, 6};
 
         // The full .NET Framework has a bug where the input is incorrectly ordered if the comparer
@@ -146,19 +146,19 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.orderByDescending(i -> i));
     }
 
     @Test
-    public void NullKeySelector() {
+    void NullKeySelector() {
         Func1<Date, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().orderByDescending(keySelector));
     }
 
     @Test
-    public void SortsLargeAscendingEnumerableCorrectly() {
+    void SortsLargeAscendingEnumerableCorrectly() {
         final int Items = 1_000_000;
         IEnumerable<Integer> expected = NumberRangeGuaranteedNotCollectionType(0, Items);
 
@@ -169,7 +169,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void SortsLargeDescendingEnumerableCorrectly() {
+    void SortsLargeDescendingEnumerableCorrectly() {
         final int Items = 1_000_000;
         IEnumerable<Integer> expected = NumberRangeGuaranteedNotCollectionType(0, Items);
 
@@ -180,7 +180,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void SortsRandomizedEnumerableCorrectly() {
+    void SortsRandomizedEnumerableCorrectly() {
         this.SortsRandomizedEnumerableCorrectly(0);
         this.SortsRandomizedEnumerableCorrectly(1);
         this.SortsRandomizedEnumerableCorrectly(2);
@@ -202,7 +202,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void testOrderByDesc() {
+    void testOrderByDesc() {
         //null 在后,值相等的按原始顺序,同 testOrderByWithComparer()
         String s = Linq.of(emps).concat(Linq.of(badEmps))
                 .orderByDescending(emp -> emp.deptno)
@@ -229,7 +229,7 @@ public class OrderByDescendingTest extends TestCase {
     }
 
     @Test
-    public void testOrderByDescWithComparer() {
+    void testOrderByDescWithComparer() {
         //null 在后,值相等的按原始顺序
         Comparator<Object> reverse = Comparer.Default().reversed();
 
@@ -259,10 +259,10 @@ public class OrderByDescendingTest extends TestCase {
 
 
     private static class NameScore extends ValueType {
-        final String Name;
-        final int Score;
+        private final String Name;
+        private final int Score;
 
-        NameScore(String name, int score) {
+        private NameScore(String name, int score) {
             this.Name = name;
             this.Score = score;
         }

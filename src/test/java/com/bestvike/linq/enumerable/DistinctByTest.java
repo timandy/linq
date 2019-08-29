@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class DistinctByTest extends TestCase {
+class DistinctByTest extends TestCase {
     @Test
-    public void testDistinctBy() {
+    void testDistinctBy() {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 10),
                 emps[3],
@@ -30,7 +30,7 @@ public class DistinctByTest extends TestCase {
     }
 
     @Test
-    public void testDistinctByWithEqualityComparer() {
+    void testDistinctByWithEqualityComparer() {
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
             public boolean equals(Integer x, Integer y) {

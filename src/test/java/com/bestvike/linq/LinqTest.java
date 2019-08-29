@@ -38,9 +38,9 @@ import java.util.stream.Stream;
 /**
  * Created by 许崇雷 on 2017-07-24.
  */
-public class LinqTest extends TestCase {
+class LinqTest extends TestCase {
     @Test
-    public void testEmpty() {
+    void testEmpty() {
         Integer[] array = {};
         IEnumerable<Integer> integers = Linq.empty();
         assertEquals(0, integers.count());
@@ -53,7 +53,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testSingleton() {
+    void testSingleton() {
         String[] array = {"1"};
         assertEquals(1, Linq.of(array).count());
         assertEquals(1, Linq.singleton("1").count());
@@ -67,7 +67,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testOfNullable() {
+    void testOfNullable() {
         assertSame(Linq.empty(), Linq.ofNullable(null));
         assertEquals(Linq.of("hello"), Linq.ofNullable("hello"));
 
@@ -85,7 +85,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testBoolean() {
+    void testBoolean() {
         boolean[] array = {true, false, true};
         List<Boolean> list = new ArrayList<>();
         list.add(true);
@@ -104,7 +104,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testByte() {
+    void testByte() {
         byte[] array = {0x01, 0x02, 0x03};
         List<Byte> list = new ArrayList<>();
         list.add(Byte.valueOf("01"));
@@ -123,7 +123,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testShort() {
+    void testShort() {
         short[] array = {0x01, 0x02, 0x03};
         List<Short> list = new ArrayList<>();
         list.add(Short.valueOf("01"));
@@ -142,7 +142,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testInt() {
+    void testInt() {
         int[] array = {0x01, 0x02, 0x03};
         List<Integer> list = new ArrayList<>();
         list.add(1);
@@ -161,7 +161,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testLong() {
+    void testLong() {
         long[] array = {0x01, 0x02, 0x03};
         List<Long> list = new ArrayList<>();
         list.add(1L);
@@ -180,7 +180,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testFloat() {
+    void testFloat() {
         float[] array = {1f, 2f, Float.NaN};
         List<Float> list = new ArrayList<>();
         list.add(1f);
@@ -200,7 +200,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testDouble() {
+    void testDouble() {
         double[] array = {1d, 2d, Double.NaN};
         List<Double> list = new ArrayList<>();
         list.add(1d);
@@ -220,7 +220,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testChar() {
+    void testChar() {
         char[] array = {'a', 'b', 'c'};
         List<Character> list = new ArrayList<>();
         list.add('a');
@@ -239,7 +239,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testArray() {
+    void testArray() {
         Integer[] array = {1, 2, 3};
         assertEquals(3, Linq.of(array).count());
         assertEquals(Linq.of(1, 2, 3), Linq.of(array));
@@ -253,7 +253,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testArrayInLinq() {
+    void testArrayInLinq() {
         Array<Integer> array = new Array<>(new Object[]{1, 2, 3});
         assertEquals(3, Linq.of(array).count());
         assertEquals(Linq.of(1, 2, 3), Linq.of(array));
@@ -267,7 +267,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testArrayList() {
+    void testArrayList() {
         List<Integer> list = new ArrayList<>();
         list.add(1);
         list.add(2);
@@ -284,7 +284,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testLinkedList() {
+    void testLinkedList() {
         List<Integer> list = new LinkedList<>();
         list.add(1);
         list.add(2);
@@ -301,7 +301,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testCollection() {
+    void testCollection() {
         Collection<Integer> collection = new HashSet<>();
         collection.add(1);
         collection.add(2);
@@ -318,7 +318,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testEnumerable() {
+    void testEnumerable() {
         IEnumerable<Integer> enumerable = new TestEnumerable<>(new Integer[]{1, 2, 3});
         IEnumerable<Integer> source = Linq.of(enumerable);
         assertSame(enumerable, source);
@@ -332,7 +332,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testEnumerator() {
+    void testEnumerator() {
         IEnumerator<Integer> enumerator = new TestEnumerable<>(new Integer[]{1, 2, 3}).enumerator();
         IEnumerable<Integer> source = Linq.of(enumerator);
         assertSame(enumerator, source.enumerator());
@@ -342,7 +342,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testIterable() {
+    void testIterable() {
         Iterable<Integer> list = new ArrayIterable<>(1, 2, 3);
         assertEquals(3, Linq.of(list).count());
         assertEquals(Linq.of(1, 2, 3), Linq.of(list));
@@ -356,7 +356,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testIterator() {
+    void testIterator() {
         Iterator<Integer> iterator = Arrays.asList(1, 2, 3).iterator();
         IEnumerable<Integer> source = Linq.of(iterator);
         assertEquals(Linq.of(1, 2, 3), source);
@@ -371,7 +371,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testStream() {
+    void testStream() {
         IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3));
         assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(RepeatInvokeException.class, () -> source.enumerator());
@@ -385,7 +385,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testSpliterator() {
+    void testSpliterator() {
         IEnumerable<Integer> source = Linq.of(Stream.of(1, 2, 3).spliterator());
         assertEquals(Linq.of(1, 2, 3), source);
         assertThrows(RepeatInvokeException.class, () -> source.enumerator());
@@ -399,7 +399,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testEnumeration() {
+    void testEnumeration() {
         Enumeration<Integer> elements = new Vector<>(Arrays.asList(1, 2, 3)).elements();
         IEnumerable<Integer> source = Linq.of(elements);
         assertEquals(Linq.of(1, 2, 3), source);
@@ -424,7 +424,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testMap() {
+    void testMap() {
         Map<Integer, String> map = new HashMap<>();
         map.put(1, "1");
         map.put(2, "2");
@@ -451,7 +451,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testObject() {
+    void testObject() {
         assertNull(Linq.as(null));
         assertNull(Linq.as(new Object()));
 
@@ -530,7 +530,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testChars() {
+    void testChars() {
         assertThrows(ArgumentNullException.class, () -> Linq.chars(null));
 
         IEnumerable<Character> source = Linq.chars("123");
@@ -546,7 +546,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testWords() {
+    void testWords() {
         assertThrows(ArgumentNullException.class, () -> Linq.words(null));
         assertEquals(Linq.empty(), Linq.words(""));
         assertEquals(Linq.empty(), Linq.words("\r"));
@@ -571,7 +571,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testLines() {
+    void testLines() {
         assertThrows(ArgumentNullException.class, () -> Linq.lines(null));
         assertEquals(Linq.empty(), Linq.lines(""));
         assertEquals(Linq.empty(), Linq.lines("\r"));
@@ -591,7 +591,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testInfinite() {
+    void testInfinite() {
         IEnumerable<Integer> source = Linq.infinite(99);
         assertEquals(99, source.first());
         assertEquals(99, source.runOnce().first());
@@ -606,7 +606,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testInfinite2() {
+    void testInfinite2() {
         IEnumerable<Integer> source = Linq.infinite(() -> 99);
         assertEquals(99, source.first());
         assertEquals(99, source.runOnce().first());
@@ -617,7 +617,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testLoop() {
+    void testLoop() {
         IEnumerable<Integer> source = Linq.loop(0, x -> x + 1);
         assertEquals(0, source.first());
         assertEquals(0, source.runOnce().first());
@@ -630,7 +630,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testLoop2() {
+    void testLoop2() {
         IEnumerable<Integer> source = Linq.loop(0, x -> x < 100, x -> x + 1);
         assertEquals(0, source.first());
         assertEquals(0, source.runOnce().first());
@@ -654,7 +654,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testEnumerate() {
+    void testEnumerate() {
         assertThrows(ArgumentNullException.class, () -> Linq.enumerate(null, () -> 1));
         assertThrows(ArgumentNullException.class, () -> Linq.enumerate(() -> true, null));
 
@@ -674,7 +674,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testIterate() {
+    void testIterate() {
         assertThrows(ArgumentNullException.class, () -> Linq.iterate(null, () -> 1));
         assertThrows(ArgumentNullException.class, () -> Linq.iterate(() -> true, null));
 
@@ -709,7 +709,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testRange() {
+    void testRange() {
         Integer[] array = {1, 2, 3, 4, 5};
         IEnumerable<Integer> integers = Linq.range(1, 5);
         assertEquals(5, integers.count());
@@ -722,7 +722,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testRepeat() {
+    void testRepeat() {
         Integer[] array = {1, 1, 1, 1, 1};
         IEnumerable<Integer> integers = Linq.repeat(1, 5);
         assertEquals(5, integers.count());
@@ -735,7 +735,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testReadInputStreamByLine() {
+    void testReadInputStreamByLine() {
         ByteArrayInputStream inputStream = new ByteArrayInputStream("hello\r\nworld".getBytes(StandardCharsets.UTF_8));
         IEnumerable<String> enumerable = new InputStreamLineEnumerable(inputStream, StandardCharsets.UTF_8);
         try (IEnumerator<String> e = enumerable.enumerator()) {
@@ -758,7 +758,7 @@ public class LinqTest extends TestCase {
     }
 
     @Test
-    public void testOther() {
+    void testOther() {
         try (IEnumerator<Object> e = Linq.empty().enumerator()) {
             assertThrows(NoSuchElementException.class, e::next);
             assertThrows(NotSupportedException.class, e::reset);

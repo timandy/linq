@@ -20,7 +20,7 @@ import java.util.Set;
 /**
  * Created by 许崇雷 on 2019-07-19.
  */
-public class ToArrayGenericTest extends TestCase {
+class ToArrayGenericTest extends TestCase {
     private static IEnumerable<Object[]> JustBelowPowersOfTwoLengths() {
         return SmallPowersOfTwo().select(p -> new Object[]{p - 1});
     }
@@ -43,7 +43,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_CreateACopyWhenNotEmpty() {
+    void ToArray_CreateACopyWhenNotEmpty() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5};
         Integer[] resultArray = Linq.of(sourceArray).toArray(Integer.class);
 
@@ -52,7 +52,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_UseArrayEmptyWhenEmpty() {
+    void ToArray_UseArrayEmptyWhenEmpty() {
         IEnumerable<Integer> emptySourceArray = new Array<>(new Object[0]);
 
         Action2<Object, Object> assertEquals = (objA, objB) -> {
@@ -85,7 +85,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_WorkWithEmptyCollection() {
+    void ToArray_WorkWithEmptyCollection() {
         this.RunToArrayOnAllCollectionTypes(Integer.class, new Integer[0], resultArray -> {
             assertNotNull(resultArray);
             assertEquals(0, resultArray.length);
@@ -93,7 +93,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_ProduceCorrectArray() {
+    void ToArray_ProduceCorrectArray() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
         this.RunToArrayOnAllCollectionTypes(Integer.class, sourceArray, resultArray -> {
             assertEquals(sourceArray.length, resultArray.length);
@@ -109,13 +109,13 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5, 6, 7}), Linq.of(Linq.range(1, 7).runOnce().toArray(Integer.class)));
         assertEquals(Linq.of("1", "2", "3", "4", "5", "6", "7", "8"), Linq.of(Linq.range(1, 8).select(i -> i.toString()).runOnce().toArray(String.class)));
     }
 
     @Test
-    public void ToArray_TouchCountWithICollection() {
+    void ToArray_TouchCountWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         Integer[] resultArray = source.toArray(Integer.class);
 
@@ -124,14 +124,14 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_ThrowArgumentNullExceptionWhenSourceIsNull() {
+    void ToArray_ThrowArgumentNullExceptionWhenSourceIsNull() {
         int[] source = null;
         assertThrows(ArgumentNullException.class, () -> Linq.of(source).toArray(Integer.class));
     }
 
     // Generally the optimal approach. Anything that breaks this should be confirmed as not harming performance.
     @Test
-    public void ToArray_UseCopyToWithICollection() {
+    void ToArray_UseCopyToWithICollection() {
         TestCollection<Integer> source = new TestCollection<>(new Integer[]{1, 2, 3, 4});
         Integer[] resultArray = source.toArray(Integer.class);
 
@@ -141,13 +141,13 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_FailOnExtremelyLargeCollection() {
+    void ToArray_FailOnExtremelyLargeCollection() {
         IEnumerable<Byte> largeSeq = new FastInfiniteEnumerator<>();
         assertThrows(OutOfMemoryError.class, () -> largeSeq.toArray(Byte.class));
     }
 
     @Test
-    public void ToArray_ArrayWhereSelect() {
+    void ToArray_ArrayWhereSelect() {
         this.ToArray_ArrayWhereSelect(new int[]{}, new String[]{});
         this.ToArray_ArrayWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToArray_ArrayWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -167,7 +167,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_ListWhereSelect() {
+    void ToArray_ListWhereSelect() {
         this.ToArray_ListWhereSelect(new int[]{}, new String[]{});
         this.ToArray_ListWhereSelect(new int[]{1}, new String[]{"1"});
         this.ToArray_ListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
@@ -189,21 +189,21 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnIntQuery() {
+    void SameResultsRepeatCallsFromWhereOnIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(Linq.of(q.toArray(Integer.class)), Linq.of(q.toArray(Integer.class)));
     }
 
     @Test
-    public void SameResultsRepeatCallsFromWhereOnStringQuery() {
+    void SameResultsRepeatCallsFromWhereOnStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(Linq.of(q.toArray(String.class)), Linq.of(q.toArray(String.class)));
     }
 
     @Test
-    public void SameResultsButNotSameObject() {
+    void SameResultsButNotSameObject() {
         IEnumerable<Integer> qInt = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
         IEnumerable<String> qString = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty).where(x -> !IsNullOrEmpty(x));
 
@@ -214,7 +214,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void EmptyArraysSameObject() {
+    void EmptyArraysSameObject() {
         // .NET Core returns the instance as an optimization.
         // see https://github.com/dotnet/corefx/pull/2401.
         assertNotSame(Linq.<Integer>empty().toArray(Integer.class), Linq.<Integer>empty().toArray(Integer.class));
@@ -224,7 +224,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void SourceIsEmptyICollectionT() {
+    void SourceIsEmptyICollectionT() {
         int[] source = {};
 
         ICollection<Integer> collection = Linq.of(source).toArray();
@@ -234,7 +234,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void SourceIsICollectionTWithFewElements() {
+    void SourceIsICollectionTWithFewElements() {
         Integer[] source = {-5, null, 0, 10, 3, -1, null, 4, 9};
         Integer[] expected = {-5, null, 0, 10, 3, -1, null, 4, 9};
 
@@ -245,7 +245,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndIsEmpty() {
+    void SourceNotICollectionAndIsEmpty() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 0);
 
         assertNull(as(source, ICollection.class));
@@ -254,7 +254,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndHasElements() {
+    void SourceNotICollectionAndHasElements() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(-4, 10);
         int[] expected = {-4, -3, -2, -1, 0, 1, 2, 3, 4, 5};
 
@@ -264,7 +264,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void SourceNotICollectionAndAllNull() {
+    void SourceNotICollectionAndAllNull() {
         IEnumerable<Integer> source = RepeatedNullableNumberGuaranteedNotCollectionType(null, 5);
         Integer[] expected = {null, null, null, null, null};
 
@@ -274,55 +274,55 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectSameTypeToArray() {
+    void ConstantTimeCountPartitionSelectSameTypeToArray() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toArray(Integer.class)));
     }
 
     @Test
-    public void ConstantTimeCountPartitionSelectDiffTypeToArray() {
+    void ConstantTimeCountPartitionSelectDiffTypeToArray() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toArray(String.class)));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectSameTypeToArray() {
+    void ConstantTimeCountEmptyPartitionSelectSameTypeToArray() {
         IEnumerable<Integer> source = Linq.range(0, 100).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toArray(Integer.class)));
     }
 
     @Test
-    public void ConstantTimeCountEmptyPartitionSelectDiffTypeToArray() {
+    void ConstantTimeCountEmptyPartitionSelectDiffTypeToArray() {
         IEnumerable<String> source = Linq.range(0, 100).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toArray(String.class)));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectSameTypeToArray() {
+    void NonConstantTimeCountPartitionSelectSameTypeToArray() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1).take(5);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toArray(Integer.class)));
     }
 
     @Test
-    public void NonConstantTimeCountPartitionSelectDiffTypeToArray() {
+    void NonConstantTimeCountPartitionSelectDiffTypeToArray() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1).take(5);
         assertEquals(Linq.of("1", "2", "3", "4", "5"), Linq.of(source.toArray(String.class)));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectSameTypeToArray() {
+    void NonConstantTimeCountEmptyPartitionSelectSameTypeToArray() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i * 2).skip(1000);
         assertEmpty(Linq.of(source.toArray(Integer.class)));
     }
 
     @Test
-    public void NonConstantTimeCountEmptyPartitionSelectDiffTypeToArray() {
+    void NonConstantTimeCountEmptyPartitionSelectDiffTypeToArray() {
         IEnumerable<String> source = NumberRangeGuaranteedNotCollectionType(0, 100).orderBy(i -> i).select(i -> i.toString()).skip(1000);
         assertEmpty(Linq.of(source.toArray(String.class)));
     }
 
     @Test
-    public void ToArrayShouldWorkWithSpecialLengthLazyEnumerables() {
+    void ToArrayShouldWorkWithSpecialLengthLazyEnumerables() {
         for (Object[] objects : JustBelowPowersOfTwoLengths()) {
             this.ToArrayShouldWorkWithSpecialLengthLazyEnumerables((int) objects[0]);
         }
@@ -343,7 +343,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void ToArray_Cast() {
+    void ToArray_Cast() {
         Object[] source = {Enum0.First, Enum0.Second, Enum0.Third};
         IEnumerable<Enum0> cast = Linq.of(source).cast(Enum0.class);
         assertIsType(CastIterator.class, cast);
@@ -353,7 +353,7 @@ public class ToArrayGenericTest extends TestCase {
     }
 
     @Test
-    public void testToArray() {
+    void testToArray() {
         Object[] source = {1, 2, 3};
         Object[] target = Linq.of(source).cast(Integer.class).toArray(Integer.class);
         assertEquals(3, target.length);

@@ -23,77 +23,77 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class SkipTest extends TestCase {
+class SkipTest extends TestCase {
     private static <T> IEnumerable<T> GuaranteeNotIList(IEnumerable<T> source) {
         return source.select(x -> x);
     }
 
     @Test
-    public void SkipSome() {
+    void SkipSome() {
         assertEquals(Linq.range(10, 10), NumberRangeGuaranteedNotCollectionType(0, 20).skip(10));
     }
 
     @Test
-    public void SkipSomeIList() {
+    void SkipSomeIList() {
         assertEquals(Linq.range(10, 10), Linq.of(NumberRangeGuaranteedNotCollectionType(0, 20).toList()).skip(10));
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         assertEquals(Linq.range(10, 10), Linq.range(0, 20).runOnce().skip(10));
         assertEquals(Linq.range(10, 10), Linq.of(Linq.range(0, 20).toList()).runOnce().skip(10));
     }
 
     @Test
-    public void SkipNone() {
+    void SkipNone() {
         assertEquals(Linq.range(0, 20), NumberRangeGuaranteedNotCollectionType(0, 20).skip(0));
     }
 
     @Test
-    public void SkipNoneIList() {
+    void SkipNoneIList() {
         assertEquals(Linq.range(0, 20), Linq.of(NumberRangeGuaranteedNotCollectionType(0, 20).toList()).skip(0));
     }
 
     @Test
-    public void SkipExcessive() {
+    void SkipExcessive() {
         assertEquals(Linq.<Integer>empty(), NumberRangeGuaranteedNotCollectionType(0, 20).skip(42));
     }
 
     @Test
-    public void SkipExcessiveIList() {
+    void SkipExcessiveIList() {
         assertEquals(Linq.<Integer>empty(), Linq.of(NumberRangeGuaranteedNotCollectionType(0, 20).toList()).skip(42));
     }
 
     @Test
-    public void SkipAllExactly() {
+    void SkipAllExactly() {
         assertFalse(NumberRangeGuaranteedNotCollectionType(0, 20).skip(20).any());
     }
 
     @Test
-    public void SkipAllExactlyIList() {
+    void SkipAllExactlyIList() {
         assertFalse(Linq.of(NumberRangeGuaranteedNotCollectionType(0, 20).skip(20).toList()).any());
     }
 
     @Test
-    public void SkipThrowsOnNull() {
+    void SkipThrowsOnNull() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).skip(3));
     }
 
     @Test
-    public void SkipThrowsOnNullIList() {
+    void SkipThrowsOnNullIList() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).skip(3));
         assertThrows(NullPointerException.class, () -> ((IList<Date>) null).skip(3));
     }
 
     @Test
-    public void SkipOnEmpty() {
+    void SkipOnEmpty() {
         assertEquals(Linq.<Integer>empty(), GuaranteeNotIList(Linq.<Integer>empty()).skip(0));
         assertEquals(Linq.<String>empty(), GuaranteeNotIList(Linq.<String>empty()).skip(-1));
         assertEquals(Linq.<Double>empty(), GuaranteeNotIList(Linq.<Double>empty()).skip(1));
     }
 
     @Test
-    public void SkipOnEmptyIList() {
+    void SkipOnEmptyIList() {
         // Enumerable.Empty does return an IList, but not guaranteed as such
         // by the spec.
         assertEquals(Linq.<Integer>empty(), Linq.of(Linq.<Integer>empty().toList()).skip(0));
@@ -102,45 +102,45 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void SkipNegative() {
+    void SkipNegative() {
         assertEquals(Linq.range(0, 20), NumberRangeGuaranteedNotCollectionType(0, 20).skip(-42));
     }
 
     @Test
-    public void SkipNegativeIList() {
+    void SkipNegativeIList() {
         assertEquals(Linq.range(0, 20), Linq.of(NumberRangeGuaranteedNotCollectionType(0, 20).toList()).skip(-42));
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = GuaranteeNotIList(Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE));
 
         assertEquals(q.skip(0), q.skip(0));
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQueryIList() {
+    void SameResultsRepeatCallsIntQueryIList() {
         List<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE).toList();
 
         assertEquals(Linq.of(q).skip(0), Linq.of(q).skip(0));
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = GuaranteeNotIList(Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty}).where(x -> !IsNullOrEmpty(x)));
 
         assertEquals(q.skip(0), q.skip(0));
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQueryIList() {
+    void SameResultsRepeatCallsStringQueryIList() {
         List<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty}).where(x -> !IsNullOrEmpty(x)).toList();
 
         assertEquals(Linq.of(q).skip(0), Linq.of(q).skip(0));
     }
 
     @Test
-    public void SkipOne() {
+    void SkipOne() {
         Integer[] source = {3, 100, 4, null, 10};
         Integer[] expected = {100, 4, null, 10};
 
@@ -148,7 +148,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void SkipOneNotIList() {
+    void SkipOneNotIList() {
         Integer[] source = {3, 100, 4, null, 10};
         Integer[] expected = {100, 4, null, 10};
 
@@ -156,7 +156,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void SkipAllButOne() {
+    void SkipAllButOne() {
         Integer[] source = {3, 100, null, 4, 10};
         Integer[] expected = {10};
 
@@ -164,7 +164,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void SkipAllButOneNotIList() {
+    void SkipAllButOneNotIList() {
         Integer[] source = {3, 100, null, 4, 10};
         Integer[] expected = {10};
 
@@ -172,19 +172,19 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void SkipOneMoreThanAll() {
+    void SkipOneMoreThanAll() {
         int[] source = {3, 100, 4, 10};
         assertEmpty(Linq.of(source).skip(source.length + 1));
     }
 
     @Test
-    public void SkipOneMoreThanAllNotIList() {
+    void SkipOneMoreThanAllNotIList() {
         int[] source = {3, 100, 4, 10};
         assertEmpty(GuaranteeNotIList(Linq.of(source)).skip(source.length + 1));
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).skip(2);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -192,7 +192,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIList() {
+    void ForcedToEnumeratorDoesntEnumerateIList() {
         IEnumerable<Integer> iterator = Linq.of(new int[]{0, 1, 2}).skip(2);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -200,55 +200,55 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void Count() {
+    void Count() {
         assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).skip(1).count());
         assertEquals(2, Linq.of(new int[]{1, 2, 3}).skip(1).count());
     }
 
     @Test
-    public void FollowWithTake() {
+    void FollowWithTake() {
         int[] source = new int[]{5, 6, 7, 8};
         int[] expected = new int[]{6, 7};
         assertEquals(Linq.of(expected), Linq.of(source).skip(1).take(2));
     }
 
     @Test
-    public void FollowWithTakeNotIList() {
+    void FollowWithTakeNotIList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(5, 4);
         int[] expected = new int[]{6, 7};
         assertEquals(Linq.of(expected), source.skip(1).take(2));
     }
 
     @Test
-    public void FollowWithTakeThenMassiveTake() {
+    void FollowWithTakeThenMassiveTake() {
         int[] source = new int[]{5, 6, 7, 8};
         int[] expected = new int[]{7};
         assertEquals(Linq.of(expected), Linq.of(source).skip(2).take(1).take(Integer.MAX_VALUE));
     }
 
     @Test
-    public void FollowWithTakeThenMassiveTakeNotIList() {
+    void FollowWithTakeThenMassiveTakeNotIList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(5, 4);
         int[] expected = new int[]{7};
         assertEquals(Linq.of(expected), source.skip(2).take(1).take(Integer.MAX_VALUE));
     }
 
     @Test
-    public void FollowWithSkip() {
+    void FollowWithSkip() {
         int[] source = new int[]{1, 2, 3, 4, 5, 6};
         int[] expected = new int[]{4, 5, 6};
         assertEquals(Linq.of(expected), Linq.of(source).skip(1).skip(2).skip(-4));
     }
 
     @Test
-    public void FollowWithSkipNotIList() {
+    void FollowWithSkipNotIList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(1, 6);
         int[] expected = new int[]{4, 5, 6};
         assertEquals(Linq.of(expected), source.skip(1).skip(2).skip(-4));
     }
 
     @Test
-    public void ElementAt() {
+    void ElementAt() {
         int[] source = new int[]{1, 2, 3, 4, 5, 6};
         IEnumerable<Integer> remaining = Linq.of(source).skip(2);
         assertEquals(3, remaining.elementAt(0));
@@ -259,7 +259,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ElementAtNotIList() {
+    void ElementAtNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5, 6}));
         IEnumerable<Integer> remaining = source.skip(2);
         assertEquals(3, remaining.elementAt(0));
@@ -270,7 +270,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ElementAtOrDefault() {
+    void ElementAtOrDefault() {
         int[] source = new int[]{1, 2, 3, 4, 5, 6};
         IEnumerable<Integer> remaining = Linq.of(source).skip(2);
         assertEquals(3, remaining.elementAtOrDefault(0));
@@ -281,7 +281,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ElementAtOrDefaultNotIList() {
+    void ElementAtOrDefaultNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5, 6}));
         IEnumerable<Integer> remaining = source.skip(2);
         assertEquals(3, remaining.elementAtOrDefault(0));
@@ -292,7 +292,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void First() {
+    void First() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(1, Linq.of(source).skip(0).first());
         assertEquals(3, Linq.of(source).skip(2).first());
@@ -301,7 +301,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void FirstNotIList() {
+    void FirstNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(1, source.skip(0).first());
         assertEquals(3, source.skip(2).first());
@@ -310,7 +310,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void FirstOrDefault() {
+    void FirstOrDefault() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(1, Linq.of(source).skip(0).firstOrDefault());
         assertEquals(3, Linq.of(source).skip(2).firstOrDefault());
@@ -319,7 +319,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void FirstOrDefaultNotIList() {
+    void FirstOrDefaultNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(1, source.skip(0).firstOrDefault());
         assertEquals(3, source.skip(2).firstOrDefault());
@@ -328,7 +328,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void Last() {
+    void Last() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(5, Linq.of(source).skip(0).last());
         assertEquals(5, Linq.of(source).skip(1).last());
@@ -337,7 +337,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void LastNotList() {
+    void LastNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(5, source.skip(0).last());
         assertEquals(5, source.skip(1).last());
@@ -346,7 +346,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void LastOrDefault() {
+    void LastOrDefault() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(5, Linq.of(source).skip(0).lastOrDefault());
         assertEquals(5, Linq.of(source).skip(1).lastOrDefault());
@@ -355,7 +355,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void LastOrDefaultNotList() {
+    void LastOrDefaultNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(5, source.skip(0).lastOrDefault());
         assertEquals(5, source.skip(1).lastOrDefault());
@@ -364,7 +364,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ToArray() {
+    void ToArray() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).skip(0).toArray());
         assertEquals(Linq.of(new int[]{2, 3, 4, 5}), Linq.of(source).skip(1).toArray());
@@ -374,7 +374,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ToArrayNotList() {
+    void ToArrayNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.skip(0).toArray());
         assertEquals(Linq.of(new int[]{2, 3, 4, 5}), source.skip(1).toArray());
@@ -384,7 +384,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ToList() {
+    void ToList() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).skip(0).toList()));
         assertEquals(Linq.of(new int[]{2, 3, 4, 5}), Linq.of(Linq.of(source).skip(1).toList()));
@@ -394,7 +394,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void ToListNotList() {
+    void ToListNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.skip(0).toList()));
         assertEquals(Linq.of(new int[]{2, 3, 4, 5}), Linq.of(source.skip(1).toList()));
@@ -404,21 +404,21 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void RepeatEnumerating() {
+    void RepeatEnumerating() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         IEnumerable<Integer> remaining = Linq.of(source).skip(1);
         assertEquals(remaining, remaining);
     }
 
     @Test
-    public void RepeatEnumeratingNotList() {
+    void RepeatEnumeratingNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         IEnumerable<Integer> remaining = source.skip(1);
         assertEquals(remaining, remaining);
     }
 
     @Test
-    public void LazySkipMoreThan32Bits() {
+    void LazySkipMoreThan32Bits() {
         IEnumerable<Integer> range = NumberRangeGuaranteedNotCollectionType(1, 100);
         IEnumerable<Integer> skipped = range.skip(50).skip(Integer.MAX_VALUE); // Could cause an integer overflow.
         assertEmpty(skipped);
@@ -428,7 +428,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void IteratorStateShouldNotChangeIfNumberOfElementsIsUnbounded() throws IllegalAccessException {
+    void IteratorStateShouldNotChangeIfNumberOfElementsIsUnbounded() throws IllegalAccessException {
         // With https://github.com/dotnet/corefx/pull/13628, Skip and Take return
         // the same type of iterator. For Take, there is a limit, or upper bound,
         // on how many items can be returned from the iterator. An integer field,
@@ -456,7 +456,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void DisposeSource() {
+    void DisposeSource() {
         this.DisposeSource(0, -1);
         this.DisposeSource(0, 0);
         this.DisposeSource(1, 0);
@@ -482,7 +482,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void testSkip() {
+    void testSkip() {
         assertEquals(2, Linq.of(depts).skip(1).count());
         assertEquals(0, Linq.of(depts).skip(3).count());
 
@@ -493,7 +493,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void testIList_Skip() {
+    void testIList_Skip() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).skip(1);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));
@@ -529,7 +529,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void testIPartition_SkipLast() {
+    void testIPartition_SkipLast() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).take(100).skipLast(1);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
@@ -566,7 +566,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void testIArrayList_SkipLast() {
+    void testIArrayList_SkipLast() {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0)).skipLast(1);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
@@ -603,7 +603,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void testIList_SkipLast() {
+    void testIList_SkipLast() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).skipLast(1);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
@@ -640,7 +640,7 @@ public class SkipTest extends TestCase {
     }
 
     @Test
-    public void testIEnumerable_SkipLast() {
+    void testIEnumerable_SkipLast() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).where(x -> true).skipLast(1);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));

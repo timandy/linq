@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-08-02.
  */
-public class ArrayBuilderTest extends TestCase {
+class ArrayBuilderTest extends TestCase {
     @Test
-    public void test() {
+    void test() {
         ArrayBuilder<Integer> arrayBuilder = new ArrayBuilder<>(1);
         arrayBuilder.add(1);
         arrayBuilder.add(2);
@@ -19,7 +19,7 @@ public class ArrayBuilderTest extends TestCase {
     }
 
     @Test
-    public void testEmpty() {
+    void testEmpty() {
         ArrayBuilder<Integer> arrayBuilder = new ArrayBuilder<>(0);
         assertEquals(Linq.empty(), Linq.of(arrayBuilder.toArray()));
         assertEquals(Linq.empty(), Linq.of(arrayBuilder.toArray(Integer.class)));

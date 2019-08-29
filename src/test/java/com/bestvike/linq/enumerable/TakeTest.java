@@ -19,77 +19,77 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class TakeTest extends TestCase {
+class TakeTest extends TestCase {
     private static <T> IEnumerable<T> GuaranteeNotIList(IEnumerable<T> source) {
         return source.select(x -> x);
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE);
 
         assertEquals(q.take(9), q.take(9));
     }
 
     @Test
-    public void SameResultsRepeatCallsIntQueryIList() {
+    void SameResultsRepeatCallsIntQueryIList() {
         List<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}).where(x -> x > Integer.MIN_VALUE).toList();
 
         assertEquals(Linq.of(q).take(9), Linq.of(q).take(9));
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty}).where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.take(7), q.take(7));
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQueryIList() {
+    void SameResultsRepeatCallsStringQueryIList() {
         List<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty}).where(x -> !IsNullOrEmpty(x)).toList();
 
         assertEquals(Linq.of(q).take(7), Linq.of(q).take(7));
     }
 
     @Test
-    public void SourceEmptyCountPositive() {
+    void SourceEmptyCountPositive() {
         int[] source = {};
         assertEmpty(Linq.of(source).take(5));
     }
 
     @Test
-    public void SourceEmptyCountPositiveNotIList() {
+    void SourceEmptyCountPositiveNotIList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 0);
         assertEmpty(source.take(5));
     }
 
     @Test
-    public void SourceNonEmptyCountNegative() {
+    void SourceNonEmptyCountNegative() {
         int[] source = {2, 5, 9, 1};
         assertEmpty(Linq.of(source).take(-5));
     }
 
     @Test
-    public void SourceNonEmptyCountNegativeNotIList() {
+    void SourceNonEmptyCountNegativeNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{2, 5, 9, 1}));
         assertEmpty(source.take(-5));
     }
 
     @Test
-    public void SourceNonEmptyCountZero() {
+    void SourceNonEmptyCountZero() {
         int[] source = {2, 5, 9, 1};
         assertEmpty(Linq.of(source).take(0));
     }
 
     @Test
-    public void SourceNonEmptyCountZeroNotIList() {
+    void SourceNonEmptyCountZeroNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{2, 5, 9, 1}));
         assertEmpty(source.take(0));
     }
 
     @Test
-    public void SourceNonEmptyCountOne() {
+    void SourceNonEmptyCountOne() {
         int[] source = {2, 5, 9, 1};
         int[] expected = {2};
 
@@ -97,7 +97,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void SourceNonEmptyCountOneNotIList() {
+    void SourceNonEmptyCountOneNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{2, 5, 9, 1}));
         int[] expected = {2};
 
@@ -105,21 +105,21 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void SourceNonEmptyTakeAllExactly() {
+    void SourceNonEmptyTakeAllExactly() {
         int[] source = {2, 5, 9, 1};
 
         assertEquals(Linq.of(source), Linq.of(source).take(source.length));
     }
 
     @Test
-    public void SourceNonEmptyTakeAllExactlyNotIList() {
+    void SourceNonEmptyTakeAllExactlyNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{2, 5, 9, 1}));
 
         assertEquals(source, source.take(source.count()));
     }
 
     @Test
-    public void SourceNonEmptyTakeAllButOne() {
+    void SourceNonEmptyTakeAllButOne() {
         int[] source = {2, 5, 9, 1};
         int[] expected = {2, 5, 9};
 
@@ -127,7 +127,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         int[] source = {2, 5, 9, 1};
         int[] expected = {2, 5, 9};
 
@@ -135,7 +135,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void SourceNonEmptyTakeAllButOneNotIList() {
+    void SourceNonEmptyTakeAllButOneNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{2, 5, 9, 1}));
         int[] expected = {2, 5, 9};
 
@@ -143,27 +143,27 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void SourceNonEmptyTakeExcessive() {
+    void SourceNonEmptyTakeExcessive() {
         Integer[] source = {2, 5, null, 9, 1};
 
         assertEquals(Linq.of(source), Linq.of(source).take(source.length + 1));
     }
 
     @Test
-    public void SourceNonEmptyTakeExcessiveNotIList() {
+    void SourceNonEmptyTakeExcessiveNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(2, 5, null, 9, 1));
 
         assertEquals(source, source.take(source.count() + 1));
     }
 
     @Test
-    public void ThrowsOnNullSource() {
+    void ThrowsOnNullSource() {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.take(5));
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).take(2);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -171,14 +171,14 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void Count() {
+    void Count() {
         assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(2).count());
         assertEquals(2, Linq.of(new int[]{1, 2, 3}).take(2).count());
         assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(0).count());
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerateIList() {
+    void ForcedToEnumeratorDoesntEnumerateIList() {
         IEnumerable<Integer> iterator = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).take(2);
         // Don't insist on this behaviour, but check it's correct if it happens
         IEnumerator<Integer> en = (IEnumerator<Integer>) iterator;
@@ -186,35 +186,35 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void FollowWithTake() {
+    void FollowWithTake() {
         int[] source = new int[]{5, 6, 7, 8};
         int[] expected = new int[]{5, 6};
         assertEquals(Linq.of(expected), Linq.of(source).take(5).take(3).take(2).take(40));
     }
 
     @Test
-    public void FollowWithTakeNotIList() {
+    void FollowWithTakeNotIList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(5, 4);
         int[] expected = new int[]{5, 6};
         assertEquals(Linq.of(expected), source.take(5).take(3).take(2));
     }
 
     @Test
-    public void FollowWithSkip() {
+    void FollowWithSkip() {
         int[] source = new int[]{1, 2, 3, 4, 5, 6};
         int[] expected = new int[]{3, 4, 5};
         assertEquals(Linq.of(expected), Linq.of(source).take(5).skip(2).skip(-4));
     }
 
     @Test
-    public void FollowWithSkipNotIList() {
+    void FollowWithSkipNotIList() {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(1, 6);
         int[] expected = new int[]{3, 4, 5};
         assertEquals(Linq.of(expected), source.take(5).skip(2).skip(-4));
     }
 
     @Test
-    public void ElementAt() {
+    void ElementAt() {
         int[] source = new int[]{1, 2, 3, 4, 5, 6};
         IEnumerable<Integer> taken = Linq.of(source).take(3);
         assertEquals(1, taken.elementAt(0));
@@ -224,7 +224,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ElementAtNotIList() {
+    void ElementAtNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5, 6}));
         IEnumerable<Integer> taken = source.take(3);
         assertEquals(1, taken.elementAt(0));
@@ -234,7 +234,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ElementAtOrDefault() {
+    void ElementAtOrDefault() {
         int[] source = new int[]{1, 2, 3, 4, 5, 6};
         IEnumerable<Integer> taken = Linq.of(source).take(3);
         assertEquals(1, taken.elementAtOrDefault(0));
@@ -244,7 +244,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ElementAtOrDefaultNotIList() {
+    void ElementAtOrDefaultNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5, 6}));
         IEnumerable<Integer> taken = source.take(3);
         assertEquals(1, taken.elementAtOrDefault(0));
@@ -254,7 +254,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void First() {
+    void First() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(1, Linq.of(source).take(1).first());
         assertEquals(1, Linq.of(source).take(4).first());
@@ -264,7 +264,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void FirstNotIList() {
+    void FirstNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(1, source.take(1).first());
         assertEquals(1, source.take(4).first());
@@ -274,7 +274,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void FirstOrDefault() {
+    void FirstOrDefault() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(1, Linq.of(source).take(1).firstOrDefault());
         assertEquals(1, Linq.of(source).take(4).firstOrDefault());
@@ -284,7 +284,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void FirstOrDefaultNotIList() {
+    void FirstOrDefaultNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(1, source.take(1).firstOrDefault());
         assertEquals(1, source.take(4).firstOrDefault());
@@ -294,7 +294,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void Last() {
+    void Last() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(1, Linq.of(source).take(1).last());
         assertEquals(5, Linq.of(source).take(5).last());
@@ -304,7 +304,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void LastNotIList() {
+    void LastNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(1, source.take(1).last());
         assertEquals(5, source.take(5).last());
@@ -314,7 +314,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void LastOrDefault() {
+    void LastOrDefault() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(1, Linq.of(source).take(1).lastOrDefault());
         assertEquals(5, Linq.of(source).take(5).lastOrDefault());
@@ -324,7 +324,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void LastOrDefaultNotIList() {
+    void LastOrDefaultNotIList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(1, source.take(1).lastOrDefault());
         assertEquals(5, source.take(5).lastOrDefault());
@@ -334,7 +334,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ToArray() {
+    void ToArray() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(5).toArray());
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(6).toArray());
@@ -346,7 +346,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ToArrayNotList() {
+    void ToArrayNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(5).toArray());
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(6).toArray());
@@ -358,7 +358,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ToList() {
+    void ToList() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(5).toList()));
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(6).toList()));
@@ -370,7 +370,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ToListNotList() {
+    void ToListNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(5).toList()));
         assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(6).toList()));
@@ -382,7 +382,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void TakeCanOnlyBeOneList() {
+    void TakeCanOnlyBeOneList() {
         int[] source = new int[]{2, 4, 6, 8, 10};
         assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(1));
         assertEquals(Linq.of(new int[]{4}), Linq.of(source).skip(1).take(1));
@@ -391,7 +391,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void TakeCanOnlyBeOneNotList() {
+    void TakeCanOnlyBeOneNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{2, 4, 6, 8, 10}));
         assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(1));
         assertEquals(Linq.of(new int[]{4}), Linq.of(source).skip(1).take(1));
@@ -400,21 +400,21 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void RepeatEnumerating() {
+    void RepeatEnumerating() {
         int[] source = new int[]{1, 2, 3, 4, 5};
         IEnumerable<Integer> taken = Linq.of(source).take(3);
         assertEquals(taken, taken);
     }
 
     @Test
-    public void RepeatEnumeratingNotList() {
+    void RepeatEnumeratingNotList() {
         IEnumerable<Integer> source = GuaranteeNotIList(Linq.of(new int[]{1, 2, 3, 4, 5}));
         IEnumerable<Integer> taken = source.take(3);
         assertEquals(taken, taken);
     }
 
     @Test
-    public void LazySkipAllTakenForLargeNumbers() {
+    void LazySkipAllTakenForLargeNumbers() {
         this.LazySkipAllTakenForLargeNumbers(1000);
         this.LazySkipAllTakenForLargeNumbers(1000000);
         this.LazySkipAllTakenForLargeNumbers(Integer.MAX_VALUE);
@@ -427,7 +427,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void LazyOverflowRegression() {
+    void LazyOverflowRegression() {
         IEnumerable<Integer> range = NumberRangeGuaranteedNotCollectionType(1, 100);
         IEnumerable<Integer> skipped = range.skip(42); // Min index is 42.
         IEnumerable<Integer> taken = skipped.take(Integer.MAX_VALUE); // May try to calculate max index as 42 + Integer.MAX_VALUE, leading to integer overflow.
@@ -438,7 +438,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void CountOfLazySkipTakeChain() {
+    void CountOfLazySkipTakeChain() {
         this.CountOfLazySkipTakeChain(0, 0, 0);
         this.CountOfLazySkipTakeChain(1, 1, 1);
         this.CountOfLazySkipTakeChain(0, Integer.MAX_VALUE, 100);
@@ -459,7 +459,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void FirstAndLastOfLazySkipTakeChain() {
+    void FirstAndLastOfLazySkipTakeChain() {
         this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 4}), 1, 3, 2, 4);
         this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1}), 0, 1, 1, 1);
         this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 5, 8, 13}), 1, Integer.MAX_VALUE, 2, 13); // Regression test: The max index is precisely Integer.MAX_VALUE.
@@ -478,7 +478,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void ElementAtOfLazySkipTakeChain() {
+    void ElementAtOfLazySkipTakeChain() {
         this.ElementAtOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 4, 5}), 1, 3, new int[]{-1, 0, 1, 2}, new Integer[]{null, 2, 3, 4});
         this.ElementAtOfLazySkipTakeChain(Linq.of(new int[]{0xfefe, 7000, 123}), 0, 3, new int[]{-1, 0, 1, 2}, new Integer[]{null, 0xfefe, 7000, 123});
         this.ElementAtOfLazySkipTakeChain(Linq.of(new int[]{0xfefe}), 100, 100, new int[]{-1, 0, 1, 2}, new Integer[]{null, null, null, null});
@@ -495,7 +495,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void DisposeSource() {
+    void DisposeSource() {
         this.DisposeSource(0, -1);
         this.DisposeSource(0, 0);
         this.DisposeSource(1, 0);
@@ -526,7 +526,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void testTake() {
+    void testTake() {
         List<Department> enumerableDeptsResult = Linq.of(depts).take(2).toList();
         assertEquals(2, enumerableDeptsResult.size());
         assertEquals(depts[0], enumerableDeptsResult.get(0));
@@ -542,7 +542,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void testIList_Take() {
+    void testIList_Take() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).take(7);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(55, 49, 9, -100, 24, 25, -1), source.select(x -> x / 2));
@@ -579,7 +579,7 @@ public class TakeTest extends TestCase {
     }
 
     @Test
-    public void testIList_TakeLast() {
+    void testIList_TakeLast() {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(110, 98, 18, -200, 48, 50, -2, 0))).takeLast(7);
         assertEquals(source.runOnce(), source.runOnce());
         assertEquals(Linq.of(49, 9, -100, 24, 25, -1, 0), source.select(x -> x / 2));

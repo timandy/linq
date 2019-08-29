@@ -14,9 +14,9 @@ import java.util.LinkedList;
 /**
  * Created by 许崇雷 on 2019-05-27.
  */
-public class RunOnceTest extends TestCase {
+class RunOnceTest extends TestCase {
     @Test
-    public void testRunOnceEnumerable() {
+    void testRunOnceEnumerable() {
         IEnumerable<Integer> q = Linq.range(0, 10);
         assertTrue(q.runOnce() instanceof RunOnceEnumerable);
         assertTrue(RunOnce.runOnce(q) instanceof RunOnceEnumerable);
@@ -26,7 +26,7 @@ public class RunOnceTest extends TestCase {
     }
 
     @Test
-    public void testRunOnceLinkedList() {
+    void testRunOnceLinkedList() {
         IEnumerable<Integer> q = Linq.of(new LinkedList<>(Arrays.asList(0, 1, 2, 3)));
         assertTrue(q.runOnce() instanceof RunOnceLinkedList);
         assertTrue(RunOnce.runOnce(q) instanceof RunOnceLinkedList);
@@ -46,7 +46,7 @@ public class RunOnceTest extends TestCase {
     }
 
     @Test
-    public void testRunOnceArrayList() {
+    void testRunOnceArrayList() {
         IEnumerable<Integer> q = Linq.of(0, 1, 2, 3);
         assertTrue(q.runOnce() instanceof RunOnceArrayList);
         assertTrue(RunOnce.runOnce(q) instanceof RunOnceArrayList);
@@ -66,7 +66,7 @@ public class RunOnceTest extends TestCase {
     }
 
     @Test
-    public void testOthers() {
+    void testOthers() {
         assertEquals(Linq.of(0, 1, 2, 3), Linq.of(0, 1).concat(Linq.of(2, 3).runOnce()).toArray());
         assertEquals(Arrays.asList(0, 1, 2, 3), Linq.of(0, 1).concat(Linq.of(2, 3).runOnce()).toList());
         assertEquals(Linq.of(0, 1, 2, 3), Linq.of(Linq.of(0, 1, 2, 3).runOnce().toArray(Integer.class)));

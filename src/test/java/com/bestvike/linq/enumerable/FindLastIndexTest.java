@@ -30,9 +30,9 @@ import java.util.LinkedList;
 /**
  * Created by 许崇雷 on 2019-06-17.
  */
-public class FindLastIndexTest extends TestCase {
+class FindLastIndexTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -41,7 +41,7 @@ public class FindLastIndexTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty);
 
         Predicate1<String> predicate = TestCase::IsNullOrEmpty;
@@ -49,7 +49,7 @@ public class FindLastIndexTest extends TestCase {
     }
 
     @Test
-    public void FindLastIndex() {
+    void FindLastIndex() {
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.FindLastIndex(Linq.empty(), isEvenFunc, -1);
         this.FindLastIndex(Linq.singleton(4), isEvenFunc, 0);
@@ -70,7 +70,7 @@ public class FindLastIndexTest extends TestCase {
     }
 
     @Test
-    public void FindLastIndexRunOnce() {
+    void FindLastIndexRunOnce() {
         Predicate1<Integer> isEvenFunc = TestCase::IsEven;
         this.FindLastIndexRunOnce(Linq.empty(), isEvenFunc, -1);
         this.FindLastIndexRunOnce(Linq.singleton(4), isEvenFunc, 0);
@@ -91,18 +91,18 @@ public class FindLastIndexTest extends TestCase {
     }
 
     @Test
-    public void NullSource_ThrowsArgumentNullException2() {
+    void NullSource_ThrowsArgumentNullException2() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).findLastIndex(i -> i != 0));
     }
 
     @Test
-    public void NullPredicate_ThrowsArgumentNullException() {
+    void NullPredicate_ThrowsArgumentNullException() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).findLastIndex(predicate));
     }
 
     @Test
-    public void testFindLastIndex() {
+    void testFindLastIndex() {
         assertEquals(-1, Linq.<Integer>empty().findLastIndex(x -> x == 0));
 
         assertEquals(0, Linq.singleton(1).findLastIndex(x -> x == 1));
@@ -155,7 +155,7 @@ public class FindLastIndexTest extends TestCase {
     }
 
     @Test
-    public void testFindLastIndexNullPredicate() {
+    void testFindLastIndexNullPredicate() {
         assertThrows(ArgumentNullException.class, () -> ((SingletonEnumerable<Integer>) Linq.singleton(1))._findLastIndex(null));
         assertThrows(ArgumentNullException.class, () -> ((SingletonEnumerable<Integer>) Linq.singleton(1))._findLastIndex(null));
 
@@ -200,7 +200,7 @@ public class FindLastIndexTest extends TestCase {
     }
 
     @Test
-    public void testFindLastIndexPredicate() {
+    void testFindLastIndexPredicate() {
         assertEquals(-1, Linq.of(depts).findLastIndex(dept -> dept.name != null && dept.name.equals("IT")));
         assertEquals(0, Linq.of(depts).findLastIndex(dept -> dept.name != null && dept.name.equals("Sales")));
     }

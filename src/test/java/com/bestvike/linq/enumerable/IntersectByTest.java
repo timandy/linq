@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class IntersectByTest extends TestCase {
+class IntersectByTest extends TestCase {
     @Test
-    public void testIntersectBy() {
+    void testIntersectBy() {
         Employee[] emps2 = {
                 new Employee(150, "Theodore", 30),
                 emps[3],
@@ -22,7 +22,7 @@ public class IntersectByTest extends TestCase {
     }
 
     @Test
-    public void testIntersectByWithComparer() {
+    void testIntersectByWithComparer() {
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override
             public boolean equals(Integer x, Integer y) {

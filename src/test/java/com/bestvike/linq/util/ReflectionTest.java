@@ -12,9 +12,9 @@ import java.lang.reflect.Field;
 /**
  * Created by 许崇雷 on 2019-05-28.
  */
-public class ReflectionTest extends TestCase {
+class ReflectionTest extends TestCase {
     @Test
-    public void testGetFields() {
+    void testGetFields() {
         Bean bean = new Bean("basePri", "basePro", 123, "Tim", "Andy", 456);
 
         assertEquals(Integer.MAX_VALUE, Base.STA);
@@ -38,7 +38,7 @@ public class ReflectionTest extends TestCase {
     }
 
     @Test
-    public void testArgumentNull() {
+    void testArgumentNull() {
         assertThrows(ArgumentNullException.class, () -> Reflection.getFields(null));
     }
 
@@ -49,7 +49,7 @@ public class ReflectionTest extends TestCase {
         protected final String pro;
         private final String pri;
 
-        public Base(String pri, String pro, int score) {
+        private Base(String pri, String pro, int score) {
             this.pri = pri;
             this.pro = pro;
             this.score = score;
@@ -74,7 +74,7 @@ public class ReflectionTest extends TestCase {
         protected String pro;
         private String pri;
 
-        public Bean(String pri, String pro, int score, String pri1, String pro1, int pub) {
+        private Bean(String pri, String pro, int score, String pri1, String pro1, int pub) {
             super(pri, pro, score);
             this.pri = pri1;
             this.pro = pro1;

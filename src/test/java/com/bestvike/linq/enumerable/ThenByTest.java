@@ -19,9 +19,9 @@ import java.util.Random;
 /**
  * Created by 许崇雷 on 2019-06-06.
  */
-public class ThenByTest extends TestCase {
+class ThenByTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
                 .selectMany(x -> Linq.of(new int[]{55, 49, 9, -100, 24, 25}), (x1, x2) -> Tuple.create(x1, x2));
 
@@ -30,7 +30,7 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<Tuple2<Integer, String>> q = Linq.of(new int[]{55, 49, 9, -100, 24, 25, -1, 0})
                 .selectMany(x -> Linq.of("!@#$%^", "C", "AAA", "", null, "Calling Twice", "SoS", Empty).where(a -> !IsNullOrEmpty(a)), (x1, x2) -> Tuple.create(x1, x2));
 
@@ -39,14 +39,14 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void SourceEmpty() {
+    void SourceEmpty() {
         int[] source = {};
 
         assertEmpty(Linq.of(source).orderBy(e -> e).thenBy(e -> e));
     }
 
     @Test
-    public void SecondaryKeysAreUnique() {
+    void SecondaryKeysAreUnique() {
         UserAddress[] source = new UserAddress[]{
                 new UserAddress("Jim", "Minneapolis", "USA"),
                 new UserAddress("Tim", "Seattle", "USA"),
@@ -66,7 +66,7 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void OrderByAndThenByOnSameField() {
+    void OrderByAndThenByOnSameField() {
         UserAddress[] source = new UserAddress[]{
                 new UserAddress("Jim", "Minneapolis", "USA"),
                 new UserAddress("Prakash", "Chennai", "India"),
@@ -82,7 +82,7 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void SecondKeyRepeatAcrossDifferentPrimary() {
+    void SecondKeyRepeatAcrossDifferentPrimary() {
         UserAddress[] source = new UserAddress[]{
                 new UserAddress("Jim", "Minneapolis", "USA"),
                 new UserAddress("Tim", "Seattle", "USA"),
@@ -102,7 +102,7 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void OrderIsStable() {
+    void OrderIsStable() {
         String[] source = split("Because I could not stop for Death -\nHe kindly stopped for me -\nThe Carriage held but just Ourselves -\nAnd Immortality.", new char[]{' ', '\n', '\r', '-'}, true);
         String[] expected = new String[]{
                 "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
@@ -113,7 +113,7 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void RunOnce() {
+    void RunOnce() {
         String[] source = split("Because I could not stop for Death -\nHe kindly stopped for me -\nThe Carriage held but just Ourselves -\nAnd Immortality.", new char[]{' ', '\n', '\r', '-'}, true);
         String[] expected = new String[]{
                 "me", "not", "for", "for", "but", "stop", "held", "just", "could", "kindly", "stopped",
@@ -124,31 +124,31 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void NullSource() {
+    void NullSource() {
         IOrderedEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.thenBy(i -> i));
     }
 
     @Test
-    public void NullKeySelector() {
+    void NullKeySelector() {
         Func1<Date, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().orderBy(e -> e).thenBy(keySelector));
     }
 
     @Test
-    public void NullSourceComparer() {
+    void NullSourceComparer() {
         IOrderedEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.thenBy(i -> i, null));
     }
 
     @Test
-    public void NullKeySelectorComparer() {
+    void NullKeySelectorComparer() {
         Func1<Date, Integer> keySelector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().orderBy(e -> e).thenBy(keySelector, null));
     }
 
     @Test
-    public void SortsLargeAscendingEnumerableCorrectly() {
+    void SortsLargeAscendingEnumerableCorrectly() {
         this.SortsLargeAscendingEnumerableCorrectly(1);
         this.SortsLargeAscendingEnumerableCorrectly(2);
         this.SortsLargeAscendingEnumerableCorrectly(3);
@@ -176,7 +176,7 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void SortsLargeDescendingEnumerableCorrectly() {
+    void SortsLargeDescendingEnumerableCorrectly() {
         this.SortsLargeDescendingEnumerableCorrectly(1);
         this.SortsLargeDescendingEnumerableCorrectly(2);
         this.SortsLargeDescendingEnumerableCorrectly(3);
@@ -204,7 +204,7 @@ public class ThenByTest extends TestCase {
     }
 
     @Test
-    public void SortsLargeRandomizedEnumerableCorrectly() {
+    void SortsLargeRandomizedEnumerableCorrectly() {
         this.SortsLargeRandomizedEnumerableCorrectly(1);
         this.SortsLargeRandomizedEnumerableCorrectly(2);
         this.SortsLargeRandomizedEnumerableCorrectly(3);
@@ -236,9 +236,9 @@ public class ThenByTest extends TestCase {
 
 
     private static class UserAddress extends ValueType {
-        final String Name;
-        final String City;
-        final String Country;
+        private final String Name;
+        private final String City;
+        private final String Country;
 
         private UserAddress(String name, String city, String country) {
             this.Name = name;

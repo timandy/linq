@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class GroupJoinTest extends TestCase {
+class GroupJoinTest extends TestCase {
     private static JoinRec createJoinOrderRec(CustomerRec cr, IEnumerable<OrderRec> orIE) {
         return new JoinRec(cr.name,
                 orIE.select(o -> o.orderID).toArray(Integer.class),
@@ -29,7 +29,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterEmptyInnerNonEmpty() {
+    void OuterEmptyInnerNonEmpty() {
         CustomerRec[] outer = {};
         OrderRec[] inner = {
                 new OrderRec(45321, 98022, 50),
@@ -39,7 +39,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void CustomComparer() {
+    void CustomComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -56,7 +56,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterNull() {
+    void OuterNull() {
         IEnumerable<CustomerRec> outer = null;
         AnagramRec[] inner = {
                 new AnagramRec("Robert", 93483, 19),
@@ -66,7 +66,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void InnerNull() {
+    void InnerNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -77,7 +77,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterKeySelectorNull() {
+    void OuterKeySelectorNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -90,7 +90,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void InnerKeySelectorNull() {
+    void InnerKeySelectorNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -103,7 +103,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void ResultSelectorNull() {
+    void ResultSelectorNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -116,7 +116,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterNullNoComparer() {
+    void OuterNullNoComparer() {
         IEnumerable<CustomerRec> outer = null;
         AnagramRec[] inner = {
                 new AnagramRec("Robert", 93483, 19),
@@ -126,7 +126,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void InnerNullNoComparer() {
+    void InnerNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -137,7 +137,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterKeySelectorNullNoComparer() {
+    void OuterKeySelectorNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -150,7 +150,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void InnerKeySelectorNullNoComparer() {
+    void InnerKeySelectorNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -163,7 +163,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void ResultSelectorNullNoComparer() {
+    void ResultSelectorNullNoComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -176,7 +176,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterInnerBothSingleNullElement() {
+    void OuterInnerBothSingleNullElement() {
         String[] outer = new String[]{null};
         String[] inner = new String[]{null};
         String[] expected = new String[]{null};
@@ -185,7 +185,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterNonEmptyInnerEmpty() {
+    void OuterNonEmptyInnerEmpty() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 43434),
                 new CustomerRec("Bob", 34093)};
@@ -198,7 +198,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void SingleElementEachAndMatches() {
+    void SingleElementEachAndMatches() {
         CustomerRec[] outer = {new CustomerRec("Tim", 43434)};
         OrderRec[] inner = {new OrderRec(97865, 43434, 25)};
         JoinRec[] expected = {new JoinRec("Tim", new Integer[]{97865}, new Integer[]{25})};
@@ -207,7 +207,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void SingleElementEachAndDoesntMatch() {
+    void SingleElementEachAndDoesntMatch() {
         CustomerRec[] outer = {new CustomerRec("Tim", 43434)};
         OrderRec[] inner = {new OrderRec(97865, 49434, 25)};
         JoinRec[] expected = {new JoinRec("Tim", new Integer[]{}, new Integer[]{})};
@@ -216,7 +216,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void SelectorsReturnNull() {
+    void SelectorsReturnNull() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", null),
                 new CustomerRec("Bob", null)};
@@ -231,7 +231,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void InnerSameKeyMoreThanOneElementAndMatches() {
+    void InnerSameKeyMoreThanOneElementAndMatches() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865)};
@@ -247,7 +247,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void InnerSameKeyMoreThanOneElementAndMatchesRunOnce() {
+    void InnerSameKeyMoreThanOneElementAndMatchesRunOnce() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865)};
@@ -263,7 +263,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void OuterSameKeyMoreThanOneElementAndMatches() {
+    void OuterSameKeyMoreThanOneElementAndMatches() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -280,7 +280,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void NoMatches() {
+    void NoMatches() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -297,7 +297,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void NullComparer() {
+    void NullComparer() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -314,7 +314,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void NullComparerRunOnce() {
+    void NullComparerRunOnce() {
         CustomerRec[] outer = {
                 new CustomerRec("Tim", 1234),
                 new CustomerRec("Bob", 9865),
@@ -331,7 +331,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void ForcedToEnumeratorDoesntEnumerate() {
+    void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<IEnumerable<Integer>> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).groupJoin(Linq.<Integer>empty(), i -> i, i -> i, (o, i) -> i);
 
         // Don't insist on this behaviour, but check it's correct if it happens
@@ -340,7 +340,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void testGroupJoin() {
+    void testGroupJoin() {
         //左连接,empty dept 保留,bad Emp 被滤掉
         String s = Linq.of(depts).concat(Linq.of(badDepts)).groupJoin(Linq.of(emps).concat(Linq.of(badEmps)),
                 dept -> dept.deptno,
@@ -361,7 +361,7 @@ public class GroupJoinTest extends TestCase {
     }
 
     @Test
-    public void testGroupJoinWithComparer() {
+    void testGroupJoinWithComparer() {
         //交叉连接,但 null key 不参与交叉
         IEqualityComparer<Integer> comparer = new IEqualityComparer<Integer>() {
             @Override

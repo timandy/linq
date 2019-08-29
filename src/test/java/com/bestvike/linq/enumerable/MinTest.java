@@ -27,9 +27,9 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
-public class MinTest extends TestCase {
+class MinTest extends TestCase {
     @Test
-    public void SameResultsRepeatCallsIntQuery() {
+    void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
                 .where(x -> x > Integer.MIN_VALUE);
 
@@ -37,7 +37,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void SameResultsRepeatCallsStringQuery() {
+    void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS", Empty)
                 .where(x -> !IsNullOrEmpty(x));
 
@@ -62,7 +62,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Int() {
+    void Min_Int() {
         for (Object[] objects : this.Min_Int_TestData()) {
             this.Min_Int((IEnumerable<Integer>) objects[0], (int) objects[1]);
         }
@@ -74,13 +74,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Int_NullSource_ThrowsArgumentNullException() {
+    void Min_Int_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).minInt());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).minInt(x -> x));
     }
 
     @Test
-    public void Min_Int_EmptySource_ThrowsInvalidOperationException() {
+    void Min_Int_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().minInt());
         assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().minInt(x -> x));
     }
@@ -102,7 +102,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Long() {
+    void Min_Long() {
         for (Object[] objects : this.Min_Long_TestData()) {
             this.Min_Long((IEnumerable<Long>) objects[0], (long) objects[1]);
         }
@@ -114,13 +114,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Long_NullSource_ThrowsArgumentNullException() {
+    void Min_Long_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).minLong());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).minLong(x -> x));
     }
 
     @Test
-    public void Min_Long_EmptySource_ThrowsInvalidOperationException() {
+    void Min_Long_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Long>empty().minLong());
         assertThrows(InvalidOperationException.class, () -> Linq.<Long>empty().minLong(x -> x));
     }
@@ -164,7 +164,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Float() {
+    void Min_Float() {
         for (Object[] objects : this.Min_Float_TestData()) {
             this.Min_Float((IEnumerable<Float>) objects[0], (float) objects[1]);
         }
@@ -176,13 +176,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Float_NullSource_ThrowsArgumentNullException() {
+    void Min_Float_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).minFloat());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).minFloat(x -> x));
     }
 
     @Test
-    public void Min_Float_EmptySource_ThrowsInvalidOperationException() {
+    void Min_Float_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Float>empty().minFloat());
         assertThrows(InvalidOperationException.class, () -> Linq.<Float>empty().minFloat(x -> x));
     }
@@ -225,7 +225,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Double() {
+    void Min_Double() {
         for (Object[] objects : this.Min_Double_TestData()) {
             this.Min_Double((IEnumerable<Double>) objects[0], (double) objects[1]);
         }
@@ -237,13 +237,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Double_NullSource_ThrowsArgumentNullException() {
+    void Min_Double_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).minDouble());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).minDouble(x -> x));
     }
 
     @Test
-    public void Min_Double_EmptySource_ThrowsInvalidOperationException() {
+    void Min_Double_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Double>empty().minDouble());
         assertThrows(InvalidOperationException.class, () -> Linq.<Double>empty().minDouble(x -> x));
     }
@@ -265,7 +265,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Decimal() {
+    void Min_Decimal() {
         for (Object[] objects : this.Min_Decimal_TestData()) {
             this.Min_Decimal((IEnumerable<BigDecimal>) objects[0], (BigDecimal) objects[1]);
         }
@@ -277,13 +277,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Decimal_EmptySource_ThrowsInvalidOperationException() {
+    void Min_Decimal_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<BigDecimal>empty().minDecimal());
         assertThrows(InvalidOperationException.class, () -> Linq.<BigDecimal>empty().minDecimal(x -> x));
     }
 
     @Test
-    public void Min_Decimal_NullSource_ThrowsArgumentNullException() {
+    void Min_Decimal_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).minDecimal());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).minDecimal(x -> x));
     }
@@ -307,7 +307,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableInt() {
+    void Min_NullableInt() {
         for (Object[] objects : this.Min_NullableInt_TestData()) {
             this.Min_NullableInt((IEnumerable<Integer>) objects[0], (Integer) objects[1]);
         }
@@ -318,7 +318,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableIntRunOnce() {
+    void Min_NullableIntRunOnce() {
         for (Object[] objects : this.Min_NullableInt_TestData()) {
             this.Min_NullableIntRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1]);
         }
@@ -329,7 +329,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableInt_NullSource_ThrowsArgumentNullException() {
+    void Min_NullableInt_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).minIntNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).minIntNull(x -> x));
     }
@@ -353,7 +353,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableLong() {
+    void Min_NullableLong() {
         for (Object[] objects : this.Min_NullableLong_TestData()) {
             this.Min_NullableLong((IEnumerable<Long>) objects[0], (Long) objects[1]);
         }
@@ -364,7 +364,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableLong_NullSource_ThrowsArgumentNullException() {
+    void Min_NullableLong_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).minLongNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Long>) null).minLongNull(x -> x));
     }
@@ -403,7 +403,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableFloat() {
+    void Min_NullableFloat() {
         for (Object[] objects : this.Min_NullableFloat_TestData()) {
             this.Min_NullableFloat((IEnumerable<Float>) objects[0], (Float) objects[1]);
         }
@@ -415,7 +415,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableFloat_NullSource_ThrowsArgumentNullException() {
+    void Min_NullableFloat_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).minFloatNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Float>) null).minFloatNull(x -> x));
     }
@@ -454,7 +454,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableDouble() {
+    void Min_NullableDouble() {
         for (Object[] objects : this.Min_NullableDouble_TestData()) {
             this.Min_NullableDouble((IEnumerable<Double>) objects[0], (Double) objects[1]);
         }
@@ -466,7 +466,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableDouble_NullSource_ThrowsArgumentNullException() {
+    void Min_NullableDouble_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Double>) null).minDoubleNull());
     }
 
@@ -489,7 +489,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableDecimal() {
+    void Min_NullableDecimal() {
         for (Object[] objects : this.Min_NullableDecimal_TestData()) {
             this.Min_NullableDecimal((IEnumerable<BigDecimal>) objects[0], (BigDecimal) objects[1]);
         }
@@ -501,7 +501,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableDecimal_NullSource_ThrowsArgumentNullException() {
+    void Min_NullableDecimal_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).minDecimalNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<BigDecimal>) null).minDecimalNull(x -> x));
     }
@@ -523,7 +523,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_DateTime() {
+    void Min_DateTime() {
         for (Object[] objects : this.Min_DateTime_TestData()) {
             this.Min_DateTime((IEnumerable<Date>) objects[0], (Date) objects[1]);
         }
@@ -535,13 +535,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_DateTime_NullSource_ThrowsArgumentNullException() {
+    void Min_DateTime_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).min());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Date>) null).min(x -> x));
     }
 
     @Test
-    public void Min_DateTime_EmptySource_ThrowsInvalidOperationException() {
+    void Min_DateTime_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Date>empty().min());
         assertThrows(InvalidOperationException.class, () -> Linq.<Date>empty().min(x -> x));
     }
@@ -563,7 +563,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_String() {
+    void Min_String() {
         for (Object[] objects : this.Min_String_TestData()) {
             this.Min_String((IEnumerable<String>) objects[0], (String) objects[1]);
         }
@@ -575,7 +575,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_StringRunOnce() {
+    void Min_StringRunOnce() {
         for (Object[] objects : this.Min_String_TestData()) {
             this.Min_StringRunOnce((IEnumerable<String>) objects[0], (String) objects[1]);
         }
@@ -587,13 +587,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_String_NullSource_ThrowsArgumentNullException() {
+    void Min_String_NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).minNull());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).minNull(x -> x));
     }
 
     @Test
-    public void Min_Int_WithSelectorAccessingProperty() {
+    void Min_Int_WithSelectorAccessingProperty() {
         NameNum<Integer>[] source = new NameNum[]{
                 new NameNum("Tim", 10),
                 new NameNum("John", -105),
@@ -603,13 +603,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Int_NullSelector_ThrowsArgumentNullException() {
+    void Min_Int_NullSelector_ThrowsArgumentNullException() {
         IntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().minInt(selector));
     }
 
     @Test
-    public void Min_Long_WithSelectorAccessingProperty() {
+    void Min_Long_WithSelectorAccessingProperty() {
         NameNum<Long>[] source = new NameNum[]{
                 new NameNum("Tim", 10L),
                 new NameNum("John", Long.MIN_VALUE),
@@ -620,13 +620,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Long_NullSelector_ThrowsArgumentNullException() {
+    void Min_Long_NullSelector_ThrowsArgumentNullException() {
         LongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().minLong(selector));
     }
 
     @Test
-    public void Min_Float_WithSelectorAccessingProperty() {
+    void Min_Float_WithSelectorAccessingProperty() {
         NameNum<Float>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5f),
                 new NameNum("John", -132.5f),
@@ -636,13 +636,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Float_NullSelector_ThrowsArgumentNullException() {
+    void Min_Float_NullSelector_ThrowsArgumentNullException() {
         FloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().minFloat(selector));
     }
 
     @Test
-    public void Min_Double_WithSelectorAccessingProperty() {
+    void Min_Double_WithSelectorAccessingProperty() {
         NameNum<Double>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5),
                 new NameNum("John", -132.5),
@@ -652,13 +652,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Double_NullSelector_ThrowsArgumentNullException() {
+    void Min_Double_NullSelector_ThrowsArgumentNullException() {
         DoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().minDouble(selector));
     }
 
     @Test
-    public void Min_Decimal_WithSelectorAccessingProperty() {
+    void Min_Decimal_WithSelectorAccessingProperty() {
         NameNum<BigDecimal>[] source = new NameNum[]{
                 new NameNum("Tim", m("100.45")),
                 new NameNum("John", m("10.5")),
@@ -668,13 +668,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_Decimal_NullSelector_ThrowsArgumentNullException() {
+    void Min_Decimal_NullSelector_ThrowsArgumentNullException() {
         DecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().minDecimal(selector));
     }
 
     @Test
-    public void Min_NullableInt_WithSelectorAccessingProperty() {
+    void Min_NullableInt_WithSelectorAccessingProperty() {
         NameNum<Integer>[] source = new NameNum[]{
                 new NameNum("Tim", 10),
                 new NameNum("John", null),
@@ -684,13 +684,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableInt_NullSelector_ThrowsArgumentNullException() {
+    void Min_NullableInt_NullSelector_ThrowsArgumentNullException() {
         NullableIntFunc1<Integer> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().minIntNull(selector));
     }
 
     @Test
-    public void Min_NullableLong_WithSelectorAccessingProperty() {
+    void Min_NullableLong_WithSelectorAccessingProperty() {
         NameNum<Long>[] source = new NameNum[]{
                 new NameNum("Tim", null),
                 new NameNum("John", Long.MIN_VALUE),
@@ -700,13 +700,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableLong_NullSelector_ThrowsArgumentNullException() {
+    void Min_NullableLong_NullSelector_ThrowsArgumentNullException() {
         NullableLongFunc1<Long> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().minLongNull(selector));
     }
 
     @Test
-    public void Min_NullableFloat_WithSelectorAccessingProperty() {
+    void Min_NullableFloat_WithSelectorAccessingProperty() {
         NameNum<Float>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5f),
                 new NameNum("John", -132.5f),
@@ -717,13 +717,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableFloat_NullSelector_ThrowsArgumentNullException() {
+    void Min_NullableFloat_NullSelector_ThrowsArgumentNullException() {
         NullableFloatFunc1<Float> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().minFloatNull(selector));
     }
 
     @Test
-    public void Min_NullableDouble_WithSelectorAccessingProperty() {
+    void Min_NullableDouble_WithSelectorAccessingProperty() {
         NameNum<Double>[] source = new NameNum[]{
                 new NameNum("Tim", -45.5d),
                 new NameNum("John", -132.5d),
@@ -733,13 +733,13 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableDouble_NullSelector_ThrowsArgumentNullException() {
+    void Min_NullableDouble_NullSelector_ThrowsArgumentNullException() {
         NullableDoubleFunc1<Double> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().minDoubleNull(selector));
     }
 
     @Test
-    public void Min_NullableDecimal_WithSelectorAccessingProperty() {
+    void Min_NullableDecimal_WithSelectorAccessingProperty() {
         NameNum<BigDecimal>[] source = new NameNum[]{
                 new NameNum("Tim", m("100.45")),
                 new NameNum("John", m("10.5")),
@@ -749,19 +749,19 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_NullableDecimal_NullSelector_ThrowsArgumentNullException() {
+    void Min_NullableDecimal_NullSelector_ThrowsArgumentNullException() {
         NullableDecimalFunc1<BigDecimal> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().minDecimalNull(selector));
     }
 
     @Test
-    public void Min_DateTime_NullSelector_ThrowsArgumentNullException() {
+    void Min_DateTime_NullSelector_ThrowsArgumentNullException() {
         Func1<Date, Date> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().min(selector));
     }
 
     @Test
-    public void Min_String_WithSelectorAccessingProperty() {
+    void Min_String_WithSelectorAccessingProperty() {
         NameNum<String>[] source = new NameNum[]{
                 new NameNum("Tim", m("100.45")),
                 new NameNum("John", m("10.5")),
@@ -771,18 +771,18 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void Min_String_NullSelector_ThrowsArgumentNullException() {
+    void Min_String_NullSelector_ThrowsArgumentNullException() {
         Func1<String, String> selector = null;
         assertThrows(ArgumentNullException.class, () -> Linq.<String>empty().minNull(selector));
     }
 
     @Test
-    public void Min_Bool_EmptySource_ThrowsInvalodOperationException() {
+    void Min_Bool_EmptySource_ThrowsInvalodOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Boolean>empty().min());
     }
 
     @Test
-    public void testMinInt() {
+    void testMinInt() {
         Integer[] numbers = {0, 2, 3};
         assertEquals(0, Linq.of(numbers).minInt());
 
@@ -791,7 +791,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinIntNull() {
+    void testMinIntNull() {
         Integer[] numbers = {null, 0, 2, 3};
         assertEquals(0, Linq.of(numbers).minIntNull());
 
@@ -800,7 +800,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinLong() {
+    void testMinLong() {
         Long[] numbers = {0L, 2L, 3L};
         assertEquals(0L, Linq.of(numbers).minLong());
 
@@ -809,7 +809,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinLongNull() {
+    void testMinLongNull() {
         Long[] numbers = {null, 0L, 2L, 3L};
         assertEquals(0L, Linq.of(numbers).minLongNull());
 
@@ -818,7 +818,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinFloat() {
+    void testMinFloat() {
         Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.of(numbers).minFloat());
 
@@ -827,7 +827,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinFloatNull() {
+    void testMinFloatNull() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.of(numbers).minFloatNull());
 
@@ -836,7 +836,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDouble() {
+    void testMinDouble() {
         Double[] numbers = {0d, 2d, Double.NaN};
         assertEquals(Double.NaN, Linq.of(numbers).minDouble());
 
@@ -845,7 +845,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDoubleNull() {
+    void testMinDoubleNull() {
         Double[] numbers = {null, 0d, 2d, Double.NaN};
         assertEquals(Double.NaN, Linq.of(numbers).minDoubleNull());
 
@@ -854,7 +854,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDecimal() {
+    void testMinDecimal() {
         BigDecimal[] numbers = {m("0"), m("2"), m("3")};
         assertEquals(m("0"), Linq.of(numbers).minDecimal());
 
@@ -863,7 +863,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDecimalNull() {
+    void testMinDecimalNull() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
         assertEquals(m("0"), Linq.of(numbers).minDecimalNull());
 
@@ -872,7 +872,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMin() {
+    void testMin() {
         Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(0f, Linq.of(numbers).min());
 
@@ -881,7 +881,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinNull() {
+    void testMinNull() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         assertEquals(0f, Linq.of(numbers).minNull());
 
@@ -890,7 +890,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinIntWithSelector() {
+    void testMinIntWithSelector() {
         Integer[] numbers = {0, 2, 3};
         assertEquals(0, Linq.of(numbers).minInt(n -> n));
 
@@ -899,7 +899,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinIntNullWithSelector() {
+    void testMinIntNullWithSelector() {
         Integer[] numbers = {null, 0, 2, 3};
         assertEquals(0, Linq.of(numbers).minIntNull(n -> n));
 
@@ -908,7 +908,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinLongWithSelector() {
+    void testMinLongWithSelector() {
         Long[] numbers = {0L, 2L, 3L};
         assertEquals(0L, Linq.of(numbers).minLong(n -> n));
 
@@ -917,7 +917,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinLongNullWithSelector() {
+    void testMinLongNullWithSelector() {
         Long[] numbers = {null, 0L, 2L, 3L};
         assertEquals(0L, Linq.of(numbers).minLongNull(n -> n));
 
@@ -926,7 +926,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinFloatWithSelector() {
+    void testMinFloatWithSelector() {
         Float[] numbers = {0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.of(numbers).minFloat(n -> n));
 
@@ -935,7 +935,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinFloatNullWithSelector() {
+    void testMinFloatNullWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         assertEquals(Float.NaN, Linq.of(numbers).minFloatNull(n -> n));
 
@@ -944,7 +944,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDoubleWithSelector() {
+    void testMinDoubleWithSelector() {
         Double[] numbers = {0d, 2d, Double.NaN};
         assertEquals(Double.NaN, Linq.of(numbers).minDouble(n -> n));
 
@@ -953,7 +953,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDoubleNullWithSelector() {
+    void testMinDoubleNullWithSelector() {
         Double[] numbers = {null, 0d, 2d, Double.NaN};
         assertEquals(Double.NaN, Linq.of(numbers).minDoubleNull(n -> n));
 
@@ -962,7 +962,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDecimalWithSelector() {
+    void testMinDecimalWithSelector() {
         BigDecimal[] numbers = {m("0"), m("2"), m("3")};
         assertEquals(m("0"), Linq.of(numbers).minDecimal(n -> n));
 
@@ -971,7 +971,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinDecimalNullWithSelector() {
+    void testMinDecimalNullWithSelector() {
         BigDecimal[] numbers = {null, m("0"), m("2"), m("3")};
         assertEquals(m("0"), Linq.of(numbers).minDecimalNull(n -> n));
 
@@ -980,7 +980,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinWithSelector() {
+    void testMinWithSelector() {
         Float[] numbers = {0f, 2f, Float.NaN};
         Float f = Linq.of(numbers).min(n -> n);
         assertEquals(0f, f);
@@ -990,7 +990,7 @@ public class MinTest extends TestCase {
     }
 
     @Test
-    public void testMinNullWithSelector() {
+    void testMinNullWithSelector() {
         Float[] numbers = {null, 0f, 2f, Float.NaN};
         Float f = Linq.of(numbers).minNull(n -> n);
         assertEquals(0f, f);
@@ -1001,10 +1001,10 @@ public class MinTest extends TestCase {
     }
 
     private static class NameNum<T> extends ValueType {
-        final String name;
-        final T num;
+        private final String name;
+        private final T num;
 
-        NameNum(String name, T num) {
+        private NameNum(String name, T num) {
             this.name = name;
             this.num = num;
         }

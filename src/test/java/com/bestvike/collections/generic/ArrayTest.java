@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 /**
  * Created by 许崇雷 on 2019-06-20.
  */
-public class ArrayTest extends TestCase {
+class ArrayTest extends TestCase {
     @Test
-    public void testNotCopy() {
+    void testNotCopy() {
         String[] objects = {"hello", "world"};
         Array<String> source = new Array<>(objects);
 
@@ -18,12 +18,12 @@ public class ArrayTest extends TestCase {
     }
 
     @Test
-    public void testNullElementsToCreate() {
+    void testNullElementsToCreate() {
         assertThrows(ArgumentNullException.class, () -> new Array<>(null));
     }
 
     @Test
-    public void testContains() {
+    void testContains() {
         Array<String> source = new Array<>(new String[]{"hello", "world"});
 
         assertTrue(source._contains("hello"));
@@ -31,7 +31,7 @@ public class ArrayTest extends TestCase {
     }
 
     @Test
-    public void testToArray() {
+    void testToArray() {
         String[] objects = {"hello", "world"};
         Array<String> source = new Array<>(objects);
         String[] result = source._toArray(String.class);
@@ -41,7 +41,7 @@ public class ArrayTest extends TestCase {
     }
 
     @Test
-    public void testClone() {
+    void testClone() {
         String[] objects = {"hello", "world"};
         Array<String> source = new Array<>(objects);
         Array<String> result = source.clone();

@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-08-13.
  */
-public class SplitTest extends TestCase {
+class SplitTest extends TestCase {
     private static String[] ToStringArray(char[] source) {
         if (source == null)
             return null;
@@ -33,7 +33,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitInvalidSource() {
+    void SplitInvalidSource() {
         assertThrows(ArgumentNullException.class, () -> Linq.split(null, ','));
         assertThrows(ArgumentNullException.class, () -> Linq.split(null, ',', StringSplitOptions.None));
         assertThrows(ArgumentNullException.class, () -> Linq.split(null, new char[]{','}));
@@ -45,7 +45,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitInvalidOptions() {
+    void SplitInvalidOptions() {
         final String value = "a,b";
 
         assertThrows(ArgumentNullException.class, () -> Linq.split(value, ',', null));
@@ -55,7 +55,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitEmptyValueWithRemoveEmptyEntriesOptionEmptyResult() {
+    void SplitEmptyValueWithRemoveEmptyEntriesOptionEmptyResult() {
         String value = Strings.Empty;
         final StringSplitOptions options = StringSplitOptions.RemoveEmptyEntries;
 
@@ -66,7 +66,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitNoMatchSingleResult() {
+    void SplitNoMatchSingleResult() {
         final String value = "a b";
         final StringSplitOptions options = StringSplitOptions.None;
 
@@ -153,7 +153,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitCharSeparator() {
+    void SplitCharSeparator() {
         for (Tuple4<String, Character, StringSplitOptions, String[]> data : this.SplitCharSeparatorData()) {
             this.SplitCharSeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
         }
@@ -182,14 +182,14 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitStringSeparator() {
+    void SplitStringSeparator() {
         for (Tuple4<String, String, StringSplitOptions, String[]> data : this.SplitStringSeparatorData()) {
             this.SplitStringSeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
         }
     }
 
     @Test
-    public void SplitNullCharArraySeparator_BindsToCharArrayOverload() {
+    void SplitNullCharArraySeparator_BindsToCharArrayOverload() {
         String value = "a b c";
         String[] expected = new String[]{"a", "b", "c"};
         // Ensure Split(null) compiles successfully as a call to Split(char[])
@@ -225,7 +225,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitCharArraySeparator() {
+    void SplitCharArraySeparator() {
         for (Tuple4<String, char[], StringSplitOptions, String[]> data : this.SplitCharArraySeparatorData()) {
             this.SplitCharArraySeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
         }
@@ -263,14 +263,14 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void SplitStringArraySeparator() {
+    void SplitStringArraySeparator() {
         for (Tuple4<String, String[], StringSplitOptions, String[]> data : this.SplitStringArraySeparatorData()) {
             this.SplitStringArraySeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
         }
     }
 
     @Test
-    public void testSplitEmptySource() {
+    void testSplitEmptySource() {
         assertEquals(Linq.of(""), Linq.split("", '\0', StringSplitOptions.None));
         assertEquals(Linq.of(""), Linq.split("", ' ', StringSplitOptions.None));
         assertEquals(Linq.of(""), Linq.split("", (String) null, StringSplitOptions.None));
@@ -315,7 +315,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void testSplitOverflow() {
+    void testSplitOverflow() {
         CharSequence source = new RepeatCharWithTailString('a', 'z', Integer.MAX_VALUE);
 
         assertEquals(2L, Linq.split(source, 'z', StringSplitOptions.None).longCount());
@@ -338,7 +338,7 @@ public class SplitTest extends TestCase {
     }
 
     @Test
-    public void testSplit() {
+    void testSplit() {
         Action1<IEnumerable<String>> assertTwoElements = source -> {
             assertEquals(source.runOnce(), source.runOnce());
             try (IEnumerator<String> e = source.enumerator()) {
