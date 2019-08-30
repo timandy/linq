@@ -9,9 +9,12 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IOrderedEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -22,6 +25,20 @@ import java.util.Random;
  * Created by 许崇雷 on 2019-05-24.
  */
 class OrderByDescendingTest extends TestCase {
+    private static IEnumerable<Object[]> SortsRandomizedEnumerableCorrectly_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(0);
+        argsList.add(1);
+        argsList.add(2);
+        argsList.add(3);
+        argsList.add(8);
+        argsList.add(16);
+        argsList.add(1024);
+        argsList.add(4096);
+        argsList.add(1_000_000);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
@@ -179,20 +196,9 @@ class OrderByDescendingTest extends TestCase {
         assertEquals(expected, ordered);
     }
 
-    @Test
-    void SortsRandomizedEnumerableCorrectly() {
-        this.SortsRandomizedEnumerableCorrectly(0);
-        this.SortsRandomizedEnumerableCorrectly(1);
-        this.SortsRandomizedEnumerableCorrectly(2);
-        this.SortsRandomizedEnumerableCorrectly(3);
-        this.SortsRandomizedEnumerableCorrectly(8);
-        this.SortsRandomizedEnumerableCorrectly(16);
-        this.SortsRandomizedEnumerableCorrectly(1024);
-        this.SortsRandomizedEnumerableCorrectly(4096);
-        this.SortsRandomizedEnumerableCorrectly(1_000_000);
-    }
-
-    private void SortsRandomizedEnumerableCorrectly(int items) {
+    @ParameterizedTest
+    @MethodSource("SortsRandomizedEnumerableCorrectly_TestData")
+    void SortsRandomizedEnumerableCorrectly(int items) {
         Random r = new Random(42);
         Integer[] randomized = Linq.range(0, items).select(i -> r.nextInt()).toArray(Integer.class);
         Integer[] ordered = ForceNotCollection(Linq.of(randomized)).orderByDescending(i -> -i).toArray(Integer.class);

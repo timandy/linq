@@ -768,12 +768,12 @@ class LinqTest extends TestCase {
     }
 
 
-    static final class InputStreamLineEnumerable extends AbstractIterator<String> {
+    private static final class InputStreamLineEnumerable extends AbstractIterator<String> {
         private final InputStream inputStream;
         private final Charset charset;
         private Scanner scanner;
 
-        InputStreamLineEnumerable(InputStream inputStream, Charset charset) {
+        private InputStreamLineEnumerable(InputStream inputStream, Charset charset) {
             if (inputStream == null)
                 throw new ArgumentNullException("inputStream");
             if (charset == null)

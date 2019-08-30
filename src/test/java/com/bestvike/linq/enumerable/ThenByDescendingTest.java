@@ -9,9 +9,12 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IOrderedEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -21,6 +24,30 @@ import java.util.Random;
  * Created by 许崇雷 on 2019-06-06.
  */
 class ThenByDescendingTest extends TestCase {
+    private static IEnumerable<Object[]> SortsLargeAscendingEnumerableCorrectly_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(1);
+        argsList.add(2);
+        argsList.add(3);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> SortsLargeDescendingEnumerableCorrectly_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(1);
+        argsList.add(2);
+        argsList.add(3);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> SortsLargeRandomizedEnumerableCorrectly_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(1);
+        argsList.add(2);
+        argsList.add(3);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
@@ -144,14 +171,9 @@ class ThenByDescendingTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> Linq.<Date>empty().orderBy(e -> e).thenByDescending(keySelector, null));
     }
 
-    @Test
-    void SortsLargeAscendingEnumerableCorrectly() {
-        this.SortsLargeAscendingEnumerableCorrectly(1);
-        this.SortsLargeAscendingEnumerableCorrectly(2);
-        this.SortsLargeAscendingEnumerableCorrectly(3);
-    }
-
-    private void SortsLargeAscendingEnumerableCorrectly(int thenBys) {
+    @ParameterizedTest
+    @MethodSource("SortsLargeAscendingEnumerableCorrectly_TestData")
+    void SortsLargeAscendingEnumerableCorrectly(int thenBys) {
         final int Items = 100_000;
         IEnumerable<Integer> expected = NumberRangeGuaranteedNotCollectionType(0, Items);
 
@@ -172,14 +194,9 @@ class ThenByDescendingTest extends TestCase {
         assertEquals(expected, ordered);
     }
 
-    @Test
-    void SortsLargeDescendingEnumerableCorrectly() {
-        this.SortsLargeDescendingEnumerableCorrectly(1);
-        this.SortsLargeDescendingEnumerableCorrectly(2);
-        this.SortsLargeDescendingEnumerableCorrectly(3);
-    }
-
-    private void SortsLargeDescendingEnumerableCorrectly(int thenBys) {
+    @ParameterizedTest
+    @MethodSource("SortsLargeDescendingEnumerableCorrectly_TestData")
+    void SortsLargeDescendingEnumerableCorrectly(int thenBys) {
         final int Items = 100_000;
         IEnumerable<Integer> expected = NumberRangeGuaranteedNotCollectionType(0, Items);
 
@@ -200,14 +217,9 @@ class ThenByDescendingTest extends TestCase {
         assertEquals(expected, ordered);
     }
 
-    @Test
-    void SortsLargeRandomizedEnumerableCorrectly() {
-        this.SortsLargeRandomizedEnumerableCorrectly(1);
-        this.SortsLargeRandomizedEnumerableCorrectly(2);
-        this.SortsLargeRandomizedEnumerableCorrectly(3);
-    }
-
-    private void SortsLargeRandomizedEnumerableCorrectly(int thenBys) {
+    @ParameterizedTest
+    @MethodSource("SortsLargeRandomizedEnumerableCorrectly_TestData")
+    void SortsLargeRandomizedEnumerableCorrectly(int thenBys) {
         final int Items = 100_000;
         Random r = new Random(42);
 

@@ -6,7 +6,10 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 
@@ -14,6 +17,13 @@ import java.math.BigDecimal;
  * Created by 许崇雷 on 2018-05-10.
  */
 class SingleTest extends TestCase {
+    private static IEnumerable<Object[]> FindSingleMatch_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(1, 100);
+        argsList.add(42, 100);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<BigDecimal> q = Linq.of(new BigDecimal[]{m("999.9")}).select(x -> x);
@@ -123,23 +133,15 @@ class SingleTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).single(i -> i % 2 == 0));
     }
 
-    @Test
-    void FindSingleMatch() {
-        this.FindSingleMatch(1, 100);
-        this.FindSingleMatch(42, 100);
-    }
-
-    private void FindSingleMatch(int target, int range) {
+    @ParameterizedTest
+    @MethodSource("FindSingleMatch_TestData")
+    void FindSingleMatch(int target, int range) {
         assertEquals(target, Linq.range(0, range).single(i -> i == target));
     }
 
-    @Test
-    void RunOnce() {
-        this.RunOnce(1, 100);
-        this.RunOnce(42, 100);
-    }
-
-    private void RunOnce(int target, int range) {
+    @ParameterizedTest
+    @MethodSource("FindSingleMatch_TestData")
+    void RunOnce(int target, int range) {
         assertEquals(target, Linq.range(0, range).runOnce().single(i -> i == target));
     }
 

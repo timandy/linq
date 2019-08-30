@@ -6,18 +6,64 @@ import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
 class AnyTest extends TestCase {
+    private static IEnumerable<Object[]> TestData() {
+        ArgsList argsList = new ArgsList();
+        for (int count : new int[]{0, 1, 2}) {
+            boolean expected = count > 0;
+
+            Integer[] arr = new Integer[count];
+            IEnumerable<Integer>[] collectionTypes = new IEnumerable[]{
+                    Linq.of(arr),
+                    Linq.of(Arrays.asList(arr)),
+                    Linq.of(new LinkedList<>(Arrays.asList(arr))),
+                    new TestCollection<>(arr),
+                    NumberRangeGuaranteedNotCollectionType(0, count),
+            };
+
+            for (IEnumerable<Integer> source : collectionTypes) {
+                argsList.add(source, expected);
+                argsList.add(source.select(i -> i), expected);
+                argsList.add(source.where(i -> true), expected);
+                argsList.add(source.where(i -> false), false);
+            }
+        }
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> TestDataWithPredicate() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.empty(), null, false);
+        argsList.add(Linq.singleton(3), null, true);
+
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
+        argsList.add(Linq.empty(), isEvenFunc, false);
+        argsList.add(Linq.singleton(4), isEvenFunc, true);
+        argsList.add(Linq.singleton(5), isEvenFunc, false);
+        argsList.add(Linq.of(5, 9, 3, 7, 4), isEvenFunc, true);
+        argsList.add(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, true);
+
+        Array<Integer> range = Linq.range(1, 10).toArray();
+        argsList.add(range, (Predicate1<Integer>) i -> i > 10, false);
+        for (int j = 0; j <= 9; j++) {
+            int k = j; // Local copy for iterator
+            argsList.add(range, (Predicate1<Integer>) i -> i > k, true);
+        }
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -35,84 +81,24 @@ class AnyTest extends TestCase {
         assertEquals(q.any(predicate), q.any(predicate));
     }
 
-    private IEnumerable<Object[]> TestData() {
-        List<Object[]> result = new ArrayList<>();
-        for (int count : new int[]{0, 1, 2}) {
-            boolean expected = count > 0;
-
-            Integer[] arr = new Integer[count];
-            IEnumerable<Integer>[] collectionTypes = new IEnumerable[]{
-                    Linq.of(arr),
-                    Linq.of(Arrays.asList(arr)),
-                    Linq.of(new LinkedList<>(Arrays.asList(arr))),
-                    new TestCollection<Integer>(arr),
-                    NumberRangeGuaranteedNotCollectionType(0, count),
-            };
-
-            for (IEnumerable<Integer> source : collectionTypes) {
-                result.add(new Object[]{source, expected});
-                result.add(new Object[]{source.select(i -> i), expected});
-                result.add(new Object[]{source.where(i -> true), expected});
-                result.add(new Object[]{source.where(i -> false), false});
-            }
-        }
-        return Linq.of(result);
-    }
-
-    @Test
-    void Any() {
-        for (Object[] data : this.TestData()) {
-            this.Any((IEnumerable<Integer>) data[0], (boolean) data[1]);
-        }
-    }
-
-    private void Any(IEnumerable<Integer> source, boolean expected) {
+    @ParameterizedTest
+    @MethodSource("TestData")
+    void Any(IEnumerable<Integer> source, boolean expected) {
         assertEquals(expected, source.any());
     }
 
-    private IEnumerable<Object[]> TestDataWithPredicate() {
-        List<Object[]> result = new ArrayList<>();
-        result.add(new Object[]{Linq.empty(), null, false});
-        result.add(new Object[]{Linq.singleton(3), null, true});
-
-        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-        result.add(new Object[]{Linq.empty(), isEvenFunc, false});
-        result.add(new Object[]{Linq.singleton(4), isEvenFunc, true});
-        result.add(new Object[]{Linq.singleton(5), isEvenFunc, false});
-        result.add(new Object[]{Linq.of(5, 9, 3, 7, 4), isEvenFunc, true});
-        result.add(new Object[]{Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, true});
-
-        Array<Integer> range = Linq.range(1, 10).toArray();
-        result.add(new Object[]{range, (Predicate1<Integer>) i -> i > 10, false});
-        for (int j = 0; j <= 9; j++) {
-            int k = j; // Local copy for iterator
-            result.add(new Object[]{range, (Predicate1<Integer>) i -> i > k, true});
-        }
-        return Linq.of(result);
-    }
-
-    @Test
-    void Any2() {
-        for (Object[] data : this.TestDataWithPredicate()) {
-            this.Any2((IEnumerable<Integer>) data[0], (Predicate1<Integer>) data[1], (boolean) data[2]);
-        }
-    }
-
-    private void Any2(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
+    @ParameterizedTest
+    @MethodSource("TestDataWithPredicate")
+    void Any(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
         if (predicate == null)
             assertEquals(expected, source.any());
         else
             assertEquals(expected, source.any(predicate));
     }
 
-    @Test
-    void AnyRunOnce() {
-        for (Object[] data : this.TestDataWithPredicate()) {
-            this.AnyRunOnce((IEnumerable<Integer>) data[0], (Predicate1<Integer>) data[1], (boolean) data[2]);
-        }
-    }
-
-    private void AnyRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
+    @ParameterizedTest
+    @MethodSource("TestDataWithPredicate")
+    void AnyRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
         if (predicate == null)
             assertEquals(expected, source.runOnce().any());
         else

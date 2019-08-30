@@ -19,9 +19,12 @@ import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -30,6 +33,24 @@ import java.util.LinkedList;
  * Created by 许崇雷 on 2019-06-17.
  */
 class FindIndexTest extends TestCase {
+    private static IEnumerable<Object[]> FindIndex_TestData() {
+        ArgsList argsList = new ArgsList();
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
+        argsList.add(Linq.empty(), isEvenFunc, -1);
+        argsList.add(Linq.singleton(4), isEvenFunc, 0);
+        argsList.add(Linq.singleton(5), isEvenFunc, -1);
+        argsList.add(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
+        argsList.add(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
+
+        Array<Integer> range = Linq.range(1, 10).toArray();
+        argsList.add(range, (Predicate1<Integer>) i -> i > 10, -1);
+        for (int j = 0; j <= 9; j++) {
+            int k = j; // Local copy for iterator
+            argsList.add(range, (Predicate1<Integer>) i -> i > k, j);
+        }
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -47,45 +68,15 @@ class FindIndexTest extends TestCase {
         assertEquals(q.findIndex(predicate), q.findIndex(predicate));
     }
 
-    @Test
-    void FindIndex() {
-        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-        this.FindIndex(Linq.empty(), isEvenFunc, -1);
-        this.FindIndex(Linq.singleton(4), isEvenFunc, 0);
-        this.FindIndex(Linq.singleton(5), isEvenFunc, -1);
-        this.FindIndex(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.FindIndex(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
-
-        Array<Integer> range = Linq.range(1, 10).toArray();
-        this.FindIndex(range, i -> i > 10, -1);
-        for (int j = 0; j <= 9; j++) {
-            int k = j; // Local copy for iterator
-            this.FindIndex(range, i -> i > k, j);
-        }
-    }
-
-    private void FindIndex(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
+    @ParameterizedTest
+    @MethodSource("FindIndex_TestData")
+    void FindIndex(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         assertEquals(expected, source.findIndex(predicate));
     }
 
-    @Test
-    void FindIndexRunOnce() {
-        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-        this.FindIndexRunOnce(Linq.empty(), isEvenFunc, -1);
-        this.FindIndexRunOnce(Linq.singleton(4), isEvenFunc, 0);
-        this.FindIndexRunOnce(Linq.singleton(5), isEvenFunc, -1);
-        this.FindIndexRunOnce(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.FindIndexRunOnce(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
-
-        Array<Integer> range = Linq.range(1, 10).toArray();
-        this.FindIndexRunOnce(range, i -> i > 10, -1);
-        for (int j = 0; j <= 9; j++) {
-            int k = j; // Local copy for iterator
-            this.FindIndexRunOnce(range, i -> i > k, j);
-        }
-    }
-
-    private void FindIndexRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
+    @ParameterizedTest
+    @MethodSource("FindIndex_TestData")
+    void FindIndexRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         assertEquals(expected, source.runOnce().findIndex(predicate));
     }
 

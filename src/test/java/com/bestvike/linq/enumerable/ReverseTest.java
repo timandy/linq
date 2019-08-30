@@ -5,6 +5,8 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,19 +18,27 @@ import java.util.regex.Pattern;
  * Created by 许崇雷 on 2018-05-10.
  */
 class ReverseTest extends TestCase {
+    private static IEnumerable<Object[]> ReverseData() {
+        IEnumerable<IEnumerable<?>> integers = Linq.of(
+                Linq.of(), // No elements.
+                Linq.of(new int[]{1}), // One element.
+                Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}), // Distinct elements.
+                Linq.of(new int[]{-10, 0, 5, 0, 9, 100, 9}) // Some repeating elements.
+        );
+
+        return integers
+                .select(collection -> new Object[]{collection})
+                .concat(integers.select(c -> new Object[]{c.select(Object::toString)}));
+    }
+
     @Test
     void InvalidArguments() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<String>) null).reverse());
     }
 
-    @Test
-    void Reverse() {
-        for (Object[] objects : this.ReverseData()) {
-            this.Reverse((IEnumerable<?>) objects[0]);
-        }
-    }
-
-    private <T> void Reverse(IEnumerable<T> source) {
+    @ParameterizedTest
+    @MethodSource("ReverseData")
+    <T> void Reverse(IEnumerable<T> source) {
         List<T> expectedList = source.toList();
         Collections.reverse(expectedList);
         IEnumerable<T> expected = Linq.of(expectedList);
@@ -59,14 +69,9 @@ class ReverseTest extends TestCase {
         assertEquals(actual, actual); // Repeat the enumeration against itself.
     }
 
-    @Test
-    void RunOnce() {
-        for (Object[] objects : this.ReverseData()) {
-            this.RunOnce((IEnumerable<?>) objects[0]);
-        }
-    }
-
-    private <T> void RunOnce(IEnumerable<T> source) {
+    @ParameterizedTest
+    @MethodSource("ReverseData")
+    <T> void RunOnce(IEnumerable<T> source) {
         List<T> expectedList = source.toList();
         Collections.reverse(expectedList);
         IEnumerable<T> expected = Linq.of(expectedList);
@@ -74,19 +79,6 @@ class ReverseTest extends TestCase {
         IEnumerable<T> actual = source.runOnce().reverse();
 
         assertEquals(expected, actual);
-    }
-
-    private IEnumerable<Object[]> ReverseData() {
-        IEnumerable<IEnumerable<?>> integers = Linq.of(
-                Linq.of(), // No elements.
-                Linq.of(new int[]{1}), // One element.
-                Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345}), // Distinct elements.
-                Linq.of(new int[]{-10, 0, 5, 0, 9, 100, 9}) // Some repeating elements.
-        );
-
-        return integers
-                .select(collection -> new Object[]{collection})
-                .concat(integers.select(c -> new Object[]{c.select(Object::toString)}));
     }
 
     @Test

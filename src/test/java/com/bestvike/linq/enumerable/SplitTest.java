@@ -8,14 +8,12 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.linq.util.StringSplitOptions;
 import com.bestvike.linq.util.Strings;
-import com.bestvike.tuple.Tuple;
-import com.bestvike.tuple.Tuple4;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Created by 许崇雷 on 2019-08-13.
@@ -30,6 +28,126 @@ class SplitTest extends TestCase {
             result[i] = String.valueOf(source[i]);
         }
         return result;
+    }
+
+    private static IEnumerable<Object[]> SplitCharSeparatorData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add("", ',', StringSplitOptions.None, new String[]{""});
+        argsList.add("", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]);
+        argsList.add(",", ',', StringSplitOptions.None, new String[]{"", ""});
+        argsList.add(",", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]);
+        argsList.add(",,", ',', StringSplitOptions.None, new String[]{"", "", ""});
+        argsList.add(",,", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]);
+        argsList.add("ab", ',', StringSplitOptions.None, new String[]{"ab"});
+        argsList.add("ab", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"ab"});
+        argsList.add("a,b", ',', StringSplitOptions.None, new String[]{"a", "b"});
+        argsList.add("a,b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"});
+        argsList.add("a,", ',', StringSplitOptions.None, new String[]{"a", ""});
+        argsList.add("a,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a"});
+        argsList.add(",b", ',', StringSplitOptions.None, new String[]{"", "b"});
+        argsList.add(",b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"b"});
+        argsList.add(",a,b", ',', StringSplitOptions.None, new String[]{"", "a", "b"});
+        argsList.add(",a,b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"});
+        argsList.add("a,b,", ',', StringSplitOptions.None, new String[]{"a", "b", ""});
+        argsList.add("a,b,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"});
+        argsList.add("a,b,c", ',', StringSplitOptions.None, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a,,c", ',', StringSplitOptions.None, new String[]{"a", "", "c"});
+        argsList.add("a,,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "c"});
+        argsList.add(",a,b,c", ',', StringSplitOptions.None, new String[]{"", "a", "b", "c"});
+        argsList.add(",a,b,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c,", ',', StringSplitOptions.None, new String[]{"a", "b", "c", ""});
+        argsList.add("a,b,c,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add(",a,b,c,", ',', StringSplitOptions.None, new String[]{"", "a", "b", "c", ""});
+        argsList.add(",a,b,c,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("first,second", ',', StringSplitOptions.None, new String[]{"first", "second"});
+        argsList.add("first,second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"});
+        argsList.add("first,", ',', StringSplitOptions.None, new String[]{"first", ""});
+        argsList.add("first,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first"});
+        argsList.add(",second", ',', StringSplitOptions.None, new String[]{"", "second"});
+        argsList.add(",second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"second"});
+        argsList.add(",first,second", ',', StringSplitOptions.None, new String[]{"", "first", "second"});
+        argsList.add(",first,second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"});
+        argsList.add("first,second,", ',', StringSplitOptions.None, new String[]{"first", "second", ""});
+        argsList.add("first,second,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"});
+        argsList.add("first,second,third", ',', StringSplitOptions.None, new String[]{"first", "second", "third"});
+        argsList.add("first,second,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add("first,,third", ',', StringSplitOptions.None, new String[]{"first", "", "third"});
+        argsList.add("first,,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "third"});
+        argsList.add(",first,second,third", ',', StringSplitOptions.None, new String[]{"", "first", "second", "third"});
+        argsList.add(",first,second,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add("first,second,third,", ',', StringSplitOptions.None, new String[]{"first", "second", "third", ""});
+        argsList.add("first,second,third,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add(",first,second,third,", ',', StringSplitOptions.None, new String[]{"", "first", "second", "third", ""});
+        argsList.add(",first,second,third,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add("first,second,third", ' ', StringSplitOptions.None, new String[]{"first,second,third"});
+        argsList.add("first,second,third", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"first,second,third"});
+        argsList.add("Foo Bar Baz", ' ', StringSplitOptions.None, new String[]{"Foo", "Bar", "Baz"});
+        argsList.add("Foo Bar Baz", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"Foo", "Bar", "Baz"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> SplitStringSeparatorData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("a,b,c", "", StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("aaabaaabaaa", "aa", StringSplitOptions.None, new String[]{"", "ab", "ab", "a"});
+        argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with some spaces"});
+        argsList.add("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", "", StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("aaabaaabaaa", "aa", StringSplitOptions.RemoveEmptyEntries, new String[]{"ab", "ab", "a"});
+        argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with some spaces"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> SplitCharArraySeparatorData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add("a b c", null, StringSplitOptions.None, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new char[0], StringSplitOptions.None, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new char[0], StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
+        argsList.add("a b c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new char[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new char[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> SplitStringArraySeparatorData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add("a b c", null, StringSplitOptions.None, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new String[0], StringSplitOptions.None, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[0], StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{null}, StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{""}, StringSplitOptions.None, new String[]{"a,b,c"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
+        argsList.add("a b c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new String[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{null}, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{""}, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+        return argsList;
     }
 
     @Test
@@ -82,64 +200,9 @@ class SplitTest extends TestCase {
         assertEquals(expected, Linq.split(value, new String[]{","}, options));
     }
 
-    private List<Tuple4<String, Character, StringSplitOptions, String[]>> SplitCharSeparatorData() {
-        List<Tuple4<String, Character, StringSplitOptions, String[]>> list = new ArrayList<>();
-        list.add(Tuple.create("", ',', StringSplitOptions.None, new String[]{""}));
-        list.add(Tuple.create("", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]));
-        list.add(Tuple.create(",", ',', StringSplitOptions.None, new String[]{"", ""}));
-        list.add(Tuple.create(",", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]));
-        list.add(Tuple.create(",,", ',', StringSplitOptions.None, new String[]{"", "", ""}));
-        list.add(Tuple.create(",,", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]));
-        list.add(Tuple.create("ab", ',', StringSplitOptions.None, new String[]{"ab"}));
-        list.add(Tuple.create("ab", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"ab"}));
-        list.add(Tuple.create("a,b", ',', StringSplitOptions.None, new String[]{"a", "b"}));
-        list.add(Tuple.create("a,b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"}));
-        list.add(Tuple.create("a,", ',', StringSplitOptions.None, new String[]{"a", ""}));
-        list.add(Tuple.create("a,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a"}));
-        list.add(Tuple.create(",b", ',', StringSplitOptions.None, new String[]{"", "b"}));
-        list.add(Tuple.create(",b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"b"}));
-        list.add(Tuple.create(",a,b", ',', StringSplitOptions.None, new String[]{"", "a", "b"}));
-        list.add(Tuple.create(",a,b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"}));
-        list.add(Tuple.create("a,b,", ',', StringSplitOptions.None, new String[]{"a", "b", ""}));
-        list.add(Tuple.create("a,b,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"}));
-        list.add(Tuple.create("a,b,c", ',', StringSplitOptions.None, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a,b,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a,,c", ',', StringSplitOptions.None, new String[]{"a", "", "c"}));
-        list.add(Tuple.create("a,,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "c"}));
-        list.add(Tuple.create(",a,b,c", ',', StringSplitOptions.None, new String[]{"", "a", "b", "c"}));
-        list.add(Tuple.create(",a,b,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a,b,c,", ',', StringSplitOptions.None, new String[]{"a", "b", "c", ""}));
-        list.add(Tuple.create("a,b,c,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create(",a,b,c,", ',', StringSplitOptions.None, new String[]{"", "a", "b", "c", ""}));
-        list.add(Tuple.create(",a,b,c,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("first,second", ',', StringSplitOptions.None, new String[]{"first", "second"}));
-        list.add(Tuple.create("first,second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"}));
-        list.add(Tuple.create("first,", ',', StringSplitOptions.None, new String[]{"first", ""}));
-        list.add(Tuple.create("first,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first"}));
-        list.add(Tuple.create(",second", ',', StringSplitOptions.None, new String[]{"", "second"}));
-        list.add(Tuple.create(",second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"second"}));
-        list.add(Tuple.create(",first,second", ',', StringSplitOptions.None, new String[]{"", "first", "second"}));
-        list.add(Tuple.create(",first,second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"}));
-        list.add(Tuple.create("first,second,", ',', StringSplitOptions.None, new String[]{"first", "second", ""}));
-        list.add(Tuple.create("first,second,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"}));
-        list.add(Tuple.create("first,second,third", ',', StringSplitOptions.None, new String[]{"first", "second", "third"}));
-        list.add(Tuple.create("first,second,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"}));
-        list.add(Tuple.create("first,,third", ',', StringSplitOptions.None, new String[]{"first", "", "third"}));
-        list.add(Tuple.create("first,,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "third"}));
-        list.add(Tuple.create(",first,second,third", ',', StringSplitOptions.None, new String[]{"", "first", "second", "third"}));
-        list.add(Tuple.create(",first,second,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"}));
-        list.add(Tuple.create("first,second,third,", ',', StringSplitOptions.None, new String[]{"first", "second", "third", ""}));
-        list.add(Tuple.create("first,second,third,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"}));
-        list.add(Tuple.create(",first,second,third,", ',', StringSplitOptions.None, new String[]{"", "first", "second", "third", ""}));
-        list.add(Tuple.create(",first,second,third,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"}));
-        list.add(Tuple.create("first,second,third", ' ', StringSplitOptions.None, new String[]{"first,second,third"}));
-        list.add(Tuple.create("first,second,third", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"first,second,third"}));
-        list.add(Tuple.create("Foo Bar Baz", ' ', StringSplitOptions.None, new String[]{"Foo", "Bar", "Baz"}));
-        list.add(Tuple.create("Foo Bar Baz", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"Foo", "Bar", "Baz"}));
-        return list;
-    }
-
-    private void SplitCharSeparator(String value, char separator, StringSplitOptions options, String[] expected) {
+    @ParameterizedTest
+    @MethodSource("SplitCharSeparatorData")
+    void SplitCharSeparator(String value, char separator, StringSplitOptions options, String[] expected) {
         assertEquals(Linq.of(expected), Linq.split(value, separator, options));
         assertEquals(Linq.of(expected), Linq.split(value, new char[]{separator}, options));
         assertEquals(Linq.of(expected), Linq.split(value, String.valueOf(separator), options));
@@ -152,39 +215,14 @@ class SplitTest extends TestCase {
         }
     }
 
-    @Test
-    void SplitCharSeparator() {
-        for (Tuple4<String, Character, StringSplitOptions, String[]> data : this.SplitCharSeparatorData()) {
-            this.SplitCharSeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
-        }
-    }
-
-    private List<Tuple4<String, String, StringSplitOptions, String[]>> SplitStringSeparatorData() {
-        List<Tuple4<String, String, StringSplitOptions, String[]>> list = new ArrayList<>();
-        list.add(Tuple.create("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", "", StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("aaabaaabaaa", "aa", StringSplitOptions.None, new String[]{"", "ab", "ab", "a"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", ", ", StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with some spaces"}));
-        list.add(Tuple.create("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", "", StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("aaabaaabaaa", "aa", StringSplitOptions.RemoveEmptyEntries, new String[]{"ab", "ab", "a"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", ", ", StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with some spaces"}));
-        return list;
-    }
-
-    private void SplitStringSeparator(String value, String separator, StringSplitOptions options, String[] expected) {
+    @ParameterizedTest
+    @MethodSource("SplitStringSeparatorData")
+    void SplitStringSeparator(String value, String separator, StringSplitOptions options, String[] expected) {
         assertEquals(Linq.of(expected), Linq.split(value, separator, options));
         assertEquals(Linq.of(expected), Linq.split(value, new String[]{separator}, options));
         if (options == StringSplitOptions.None) {
             assertEquals(Linq.of(expected), Linq.split(value, separator));
             assertEquals(Linq.of(expected), Linq.split(value, new String[]{separator}));
-        }
-    }
-
-    @Test
-    void SplitStringSeparator() {
-        for (Tuple4<String, String, StringSplitOptions, String[]> data : this.SplitStringSeparatorData()) {
-            this.SplitStringSeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
         }
     }
 
@@ -196,77 +234,17 @@ class SplitTest extends TestCase {
         assertEquals(Linq.of(expected), Linq.split(value, (char[]) null));
     }
 
-    private List<Tuple4<String, char[], StringSplitOptions, String[]>> SplitCharArraySeparatorData() {
-        List<Tuple4<String, char[], StringSplitOptions, String[]>> list = new ArrayList<>();
-        list.add(Tuple.create("a b c", null, StringSplitOptions.None, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a b c", new char[0], StringSplitOptions.None, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new char[0], StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""}));
-        list.add(Tuple.create("a b c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a b c", new char[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new char[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"}));
-        return list;
-    }
-
-    private void SplitCharArraySeparator(String value, char[] separators, StringSplitOptions options, String[] expected) {
+    @ParameterizedTest
+    @MethodSource("SplitCharArraySeparatorData")
+    void SplitCharArraySeparator(String value, char[] separators, StringSplitOptions options, String[] expected) {
         assertEquals(Linq.of(expected), Linq.split(value, separators, options));
         assertEquals(Linq.of(expected), Linq.split(value, ToStringArray(separators), options));
     }
 
-    @Test
-    void SplitCharArraySeparator() {
-        for (Tuple4<String, char[], StringSplitOptions, String[]> data : this.SplitCharArraySeparatorData()) {
-            this.SplitCharArraySeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
-        }
-    }
-
-    private List<Tuple4<String, String[], StringSplitOptions, String[]>> SplitStringArraySeparatorData() {
-        List<Tuple4<String, String[], StringSplitOptions, String[]>> list = new ArrayList<>();
-        list.add(Tuple.create("a b c", null, StringSplitOptions.None, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a b c", new String[0], StringSplitOptions.None, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new String[0], StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new String[]{null}, StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new String[]{""}, StringSplitOptions.None, new String[]{"a,b,c"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""}));
-        list.add(Tuple.create("a b c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a b c", new String[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"}));
-        list.add(Tuple.create("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new String[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new String[]{null}, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("a,b,c", new String[]{""}, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"}));
-        list.add(Tuple.create("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"}));
-        return list;
-    }
-
-    private void SplitStringArraySeparator(String value, String[] separators, StringSplitOptions options, String[] expected) {
+    @ParameterizedTest
+    @MethodSource("SplitStringArraySeparatorData")
+    void SplitStringArraySeparator(String value, String[] separators, StringSplitOptions options, String[] expected) {
         assertEquals(Linq.of(expected), Linq.split(value, separators, options));
-    }
-
-    @Test
-    void SplitStringArraySeparator() {
-        for (Tuple4<String, String[], StringSplitOptions, String[]> data : this.SplitStringArraySeparatorData()) {
-            this.SplitStringArraySeparator(data.getItem1(), data.getItem2(), data.getItem3(), data.getItem4());
-        }
     }
 
     @Test
@@ -380,12 +358,12 @@ class SplitTest extends TestCase {
     }
 
 
-    static final class RepeatCharWithTailString implements CharSequence {
+    private static final class RepeatCharWithTailString implements CharSequence {
         private final char value;
         private final char tail;
         private final int count;
 
-        RepeatCharWithTailString(char value, char tail, int count) {
+        private RepeatCharWithTailString(char value, char tail, int count) {
             if (count < 0)
                 ThrowHelper.throwArgumentOutOfRangeException(ExceptionArgument.count);
             this.value = value;

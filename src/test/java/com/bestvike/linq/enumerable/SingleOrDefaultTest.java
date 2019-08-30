@@ -6,12 +6,22 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Created by 许崇雷 on 2019-06-06.
  */
 class SingleOrDefaultTest extends TestCase {
+    private static IEnumerable<Object[]> FindSingleMatch_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(1, 100);
+        argsList.add(42, 100);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Float> q = Linq.of(new float[]{0.12335f}).select(x -> x);
@@ -119,23 +129,15 @@ class SingleOrDefaultTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault(i -> i % 2 == 0));
     }
 
-    @Test
-    void FindSingleMatch() {
-        this.FindSingleMatch(1, 100);
-        this.FindSingleMatch(42, 100);
-    }
-
-    private void FindSingleMatch(int target, int range) {
+    @ParameterizedTest
+    @MethodSource("FindSingleMatch_TestData")
+    void FindSingleMatch(int target, int range) {
         assertEquals(target, Linq.range(0, range).singleOrDefault(i -> i == target));
     }
 
-    @Test
-    void RunOnce() {
-        this.RunOnce(1, 100);
-        this.RunOnce(42, 100);
-    }
-
-    private void RunOnce(int target, int range) {
+    @ParameterizedTest
+    @MethodSource("FindSingleMatch_TestData")
+    void RunOnce(int target, int range) {
         assertEquals(target, Linq.range(0, range).runOnce().singleOrDefault(i -> i == target));
     }
 

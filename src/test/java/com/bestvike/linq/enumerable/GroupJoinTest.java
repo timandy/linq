@@ -435,11 +435,11 @@ class GroupJoinTest extends TestCase {
 
     //struct
     private static final class JoinRec extends ValueType {
-        final String name;
-        final Integer[] orderID;
-        final Integer[] total;
+        private final String name;
+        private final Integer[] orderID;
+        private final Integer[] total;
 
-        JoinRec(String name, Integer[] orderID, Integer[] total) {
+        private JoinRec(String name, Integer[] orderID, Integer[] total) {
             this.name = name;
             this.orderID = orderID;
             this.total = total;

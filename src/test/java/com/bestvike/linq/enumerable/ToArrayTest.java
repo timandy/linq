@@ -7,7 +7,10 @@ import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +23,30 @@ import java.util.Set;
  * Created by 许崇雷 on 2019-06-06.
  */
 class ToArrayTest extends TestCase {
+    private static <T> void RunToArrayOnAllCollectionTypes(T[] items, Action1<Array<T>> validation) {
+        validation.apply(Linq.of(items).toArray());
+        validation.apply(Linq.of(Arrays.asList(items)).toArray());
+        validation.apply(new TestEnumerable<>(items).toArray());
+        validation.apply(new TestReadOnlyCollection<>(items).toArray());
+        validation.apply(new TestCollection<>(items).toArray());
+    }
+
+    private static IEnumerable<Object[]> ToArray_ArrayWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> ToArray_ListWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
     private static IEnumerable<Object[]> JustBelowPowersOfTwoLengths() {
         return SmallPowersOfTwo().select(p -> new Object[]{p - 1});
     }
@@ -70,17 +97,9 @@ class ToArrayTest extends TestCase {
         assertSame(Linq.repeat(42, 3).skip(3).toArray(), Linq.range(84, 3).skip(3).toArray());
     }
 
-    private <T> void RunToArrayOnAllCollectionTypes(T[] items, Action1<Array<T>> validation) {
-        validation.apply(Linq.of(items).toArray());
-        validation.apply(Linq.of(Arrays.asList(items)).toArray());
-        validation.apply(new TestEnumerable<>(items).toArray());
-        validation.apply(new TestReadOnlyCollection<>(items).toArray());
-        validation.apply(new TestCollection<>(items).toArray());
-    }
-
     @Test
     void ToArray_WorkWithEmptyCollection() {
-        this.RunToArrayOnAllCollectionTypes(new Integer[0], resultArray -> {
+        RunToArrayOnAllCollectionTypes(new Integer[0], resultArray -> {
             assertNotNull(resultArray);
             assertEquals(0, resultArray._getCount());
         });
@@ -89,13 +108,13 @@ class ToArrayTest extends TestCase {
     @Test
     void ToArray_ProduceCorrectArray() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
-        this.RunToArrayOnAllCollectionTypes(sourceArray, resultArray -> {
+        RunToArrayOnAllCollectionTypes(sourceArray, resultArray -> {
             assertEquals(sourceArray.length, resultArray._getCount());
             assertEquals(Linq.of(sourceArray), resultArray);
         });
 
         String[] sourceStringArray = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
-        this.RunToArrayOnAllCollectionTypes(sourceStringArray, resultStringArray -> {
+        RunToArrayOnAllCollectionTypes(sourceStringArray, resultStringArray -> {
             assertEquals(sourceStringArray.length, resultStringArray._getCount());
             for (int i = 0; i < sourceStringArray.length; i++)
                 assertSame(sourceStringArray[i], resultStringArray.get(i));
@@ -140,14 +159,9 @@ class ToArrayTest extends TestCase {
         assertThrows(OutOfMemoryError.class, () -> largeSeq.toArray());
     }
 
-    @Test
-    void ToArray_ArrayWhereSelect() {
-        this.ToArray_ArrayWhereSelect(new int[]{}, new String[]{});
-        this.ToArray_ArrayWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToArray_ArrayWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-    }
-
-    private void ToArray_ArrayWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToArray_ArrayWhereSelect_TestData")
+    void ToArray_ArrayWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         assertEquals(Linq.of(convertedStrings), Linq.of(sourceIntegers).select(i -> i.toString()).toArray());
 
         assertEquals(Linq.of(sourceIntegers), Linq.of(sourceIntegers).where(i -> true).toArray());
@@ -160,14 +174,9 @@ class ToArrayTest extends TestCase {
         assertEquals(Linq.empty(), Linq.of(sourceIntegers).select(i -> i.toString()).where(s -> s == null).toArray());
     }
 
-    @Test
-    void ToArray_ListWhereSelect() {
-        this.ToArray_ListWhereSelect(new int[]{}, new String[]{});
-        this.ToArray_ListWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToArray_ListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-    }
-
-    private void ToArray_ListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToArray_ListWhereSelect_TestData")
+    void ToArray_ListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         List<Integer> sourceList = Linq.of(sourceIntegers).toList();
 
         assertEquals(Linq.of(convertedStrings), Linq.of(sourceList).select(i -> i.toString()).toArray());
@@ -315,20 +324,11 @@ class ToArrayTest extends TestCase {
         assertEmpty(source.toArray());
     }
 
-    @Test
-    void ToArrayShouldWorkWithSpecialLengthLazyEnumerables() {
-        for (Object[] objects : JustBelowPowersOfTwoLengths()) {
-            this.ToArrayShouldWorkWithSpecialLengthLazyEnumerables((int) objects[0]);
-        }
-        for (Object[] objects : PowersOfTwoLengths()) {
-            this.ToArrayShouldWorkWithSpecialLengthLazyEnumerables((int) objects[0]);
-        }
-        for (Object[] objects : JustAbovePowersOfTwoLengths()) {
-            this.ToArrayShouldWorkWithSpecialLengthLazyEnumerables((int) objects[0]);
-        }
-    }
-
-    private void ToArrayShouldWorkWithSpecialLengthLazyEnumerables(int length) {
+    @ParameterizedTest
+    @MethodSource({"JustBelowPowersOfTwoLengths",
+            "PowersOfTwoLengths",
+            "JustAbovePowersOfTwoLengths"})
+    void ToArrayShouldWorkWithSpecialLengthLazyEnumerables(int length) {
         assertTrue(length >= 0);
 
         IEnumerable<Integer> range = Linq.range(0, length);

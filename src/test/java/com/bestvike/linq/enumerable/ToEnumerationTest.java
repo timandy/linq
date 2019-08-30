@@ -7,7 +7,10 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.adapter.enumeration.EnumerableEnumeration;
 import com.bestvike.linq.exception.RepeatInvokeException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +26,38 @@ import java.util.Vector;
  * Created by 许崇雷 on 2019-07-01.
  */
 class ToEnumerationTest extends TestCase {
+    private static <T> void RunToEnumerationOnAllCollectionTypes(T[] items, Action1<Enumeration<T>> validation) {
+        validation.apply(Linq.of(items).toEnumeration());
+        validation.apply(Linq.of(Arrays.asList(items)).toEnumeration());
+        validation.apply(new TestEnumerable<>(items).toEnumeration());
+        validation.apply(new TestReadOnlyCollection<>(items).toEnumeration());
+        validation.apply(new TestCollection<>(items).toEnumeration());
+    }
+
+    private static IEnumerable<Object[]> ToEnumeration_ArrayWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> ToEnumeration_ListWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> ToEnumeration_IListWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
     @Test
     void ToEnumeration_AlwaysCreateACopy() {
         Enumeration<Integer> sourceList = new Vector<>(Arrays.asList(1, 2, 3, 4, 5)).elements();
@@ -34,17 +69,9 @@ class ToEnumerationTest extends TestCase {
         assertFalse(resultList.hasMoreElements());
     }
 
-    private <T> void RunToEnumerationOnAllCollectionTypes(T[] items, Action1<Enumeration<T>> validation) {
-        validation.apply(Linq.of(items).toEnumeration());
-        validation.apply(Linq.of(Arrays.asList(items)).toEnumeration());
-        validation.apply(new TestEnumerable<>(items).toEnumeration());
-        validation.apply(new TestReadOnlyCollection<>(items).toEnumeration());
-        validation.apply(new TestCollection<>(items).toEnumeration());
-    }
-
     @Test
     void ToEnumeration_WorkWithEmptyCollection() {
-        this.RunToEnumerationOnAllCollectionTypes(new Integer[0], resultList -> {
+        RunToEnumerationOnAllCollectionTypes(new Integer[0], resultList -> {
             assertNotNull(resultList);
             assertFalse(resultList.hasMoreElements());
         });
@@ -53,13 +80,13 @@ class ToEnumerationTest extends TestCase {
     @Test
     void ToEnumeration_ProduceCorrectList() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
-        this.RunToEnumerationOnAllCollectionTypes(sourceArray, resultList -> {
+        RunToEnumerationOnAllCollectionTypes(sourceArray, resultList -> {
             assertEquals(Linq.of(sourceArray), Linq.of(resultList));
             assertFalse(resultList.hasMoreElements());
         });
 
         String[] sourceStringArray = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
-        this.RunToEnumerationOnAllCollectionTypes(sourceStringArray, resultStringList -> {
+        RunToEnumerationOnAllCollectionTypes(sourceStringArray, resultStringList -> {
             IEnumerable<String> enumerationEnumerable = Linq.of(resultStringList);
             assertEquals(Linq.of(sourceStringArray), enumerationEnumerable);
             assertThrows(RepeatInvokeException.class, () -> enumerationEnumerable.enumerator());
@@ -98,14 +125,9 @@ class ToEnumerationTest extends TestCase {
         assertEquals(0, source.ToListTouched);
     }
 
-    @Test
-    void ToEnumeration_ArrayWhereSelect() {
-        this.ToEnumeration_ArrayWhereSelect(new int[]{}, new String[]{});
-        this.ToEnumeration_ArrayWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToEnumeration_ArrayWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-    }
-
-    private void ToEnumeration_ArrayWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToEnumeration_ArrayWhereSelect_TestData")
+    void ToEnumeration_ArrayWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         IEnumerable<Integer> sourceList = Linq.of(sourceIntegers);
         IEnumerable<String> convertedList = Linq.of(convertedStrings);
 
@@ -124,15 +146,9 @@ class ToEnumerationTest extends TestCase {
         assertEquals(emptyStringsList, Linq.of(Linq.of(sourceIntegers).select(i -> i.toString()).where(s -> s == null).toEnumeration()));
     }
 
-    @Test
-    void ToEnumeration_ListWhereSelect() {
-        this.ToEnumeration_ListWhereSelect(new int[]{}, new String[]{});
-        this.ToEnumeration_ListWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToEnumeration_ListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-
-    }
-
-    private void ToEnumeration_ListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToEnumeration_ListWhereSelect_TestData")
+    void ToEnumeration_ListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         List<Integer> sourceList = new ArrayList<>(Linq.of(sourceIntegers).toList());
         List<String> convertedList = new ArrayList<>(Linq.of(convertedStrings).toList());
 
@@ -151,14 +167,9 @@ class ToEnumerationTest extends TestCase {
         assertEquals(Linq.of(emptyStringsList), Linq.of(Linq.of(sourceList).select(i -> i.toString()).where(s -> s == null).toEnumeration()));
     }
 
-    @Test
-    void ToEnumeration_IListWhereSelect() {
-        this.ToEnumeration_IListWhereSelect(new int[]{}, new String[]{});
-        this.ToEnumeration_IListWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToEnumeration_IListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-    }
-
-    private void ToEnumeration_IListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToEnumeration_IListWhereSelect_TestData")
+    void ToEnumeration_IListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         List<Integer> sourceList = Collections.unmodifiableList(Linq.of(sourceIntegers).toList());
         List<String> convertedList = Collections.unmodifiableList(Linq.of(convertedStrings).toList());
 

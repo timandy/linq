@@ -13,6 +13,8 @@ import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.NotSupportedException;
 import com.bestvike.ref;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +29,20 @@ import java.util.Random;
  * Created by 许崇雷 on 2018-05-10.
  */
 class WhereTest extends TestCase {
+    private static IEnumerable<Integer> GenerateRandomSequnce(int seed, int count) {
+        Random random = new Random(seed);
+
+        //note: C# Random same seed generate same sequence, java does not. so call toArray().
+        return Linq.range(0, count).select(i -> random.nextInt()).toArray();
+    }
+
+    private static IEnumerable<Object[]> ToCollectionData() {
+        IEnumerable<Integer> seq = GenerateRandomSequnce(0xdeadbeef, 10);
+        return Linq.of(TestCase.<Integer>IdentityTransforms())
+                .select(t -> t.apply(seq))
+                .select(seq2 -> new Object[]{seq2});
+    }
+
     @Test
     void Where_SourceIsNull_ArgumentNullExceptionThrown() {
         IEnumerable<Integer> source = null;
@@ -1004,14 +1020,9 @@ class WhereTest extends TestCase {
         assertFalse(en != null && en.moveNext());
     }
 
-    @Test
-    void ToCollection() {
-        for (Object[] objects : this.ToCollectionData()) {
-            this.ToCollection((IEnumerable<Integer>) objects[0]);
-        }
-    }
-
-    private void ToCollection(IEnumerable<Integer> source) {
+    @ParameterizedTest
+    @MethodSource("ToCollectionData")
+    void ToCollection(IEnumerable<Integer> source) {
         for (IEnumerable<Integer> equivalent : Arrays.asList(source.where(s -> true), source.where(s -> true).select(s -> s))) {
             assertEquals(source, equivalent);
             assertEquals(source, equivalent.toArray());
@@ -1031,20 +1042,6 @@ class WhereTest extends TestCase {
                 assertEquals(null, en.current());
             }
         }
-    }
-
-    private IEnumerable<Object[]> ToCollectionData() {
-        IEnumerable<Integer> seq = this.GenerateRandomSequnce(0xdeadbeef, 10);
-        return Linq.of(TestCase.<Integer>IdentityTransforms())
-                .select(t -> t.apply(seq))
-                .select(seq2 -> new Object[]{seq2});
-    }
-
-    private IEnumerable<Integer> GenerateRandomSequnce(int seed, int count) {
-        Random random = new Random(seed);
-
-        //note: C# Random same seed generate same sequence, java does not. so call toArray().
-        return Linq.range(0, count).select(i -> random.nextInt()).toArray();
     }
 
     @Test

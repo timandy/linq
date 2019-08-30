@@ -15,6 +15,26 @@ import java.util.Date;
  * Created by 许崇雷 on 2019-05-09.
  */
 class FirstOrDefaultTest extends TestCase {
+    private static <T> void TestEmptyIList(Class<T> clazz) {
+        T[] source = ArrayUtils.empty(clazz);
+        T expected = null;
+
+        assertIsAssignableFrom(IList.class, Linq.of(source));
+        assertEquals(expected, Linq.of(source).runOnce().firstOrDefault());
+    }
+
+    private static <T> IEnumerable<T> EmptySourceGeneric() {
+        return Linq.empty();
+    }
+
+    private static <T> void TestEmptyNotIList() {
+        IEnumerable<T> source = EmptySourceGeneric();
+        T expected = null;
+
+        assertNull(as(source, IList.class));
+        assertEquals(expected, source.runOnce().firstOrDefault());
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> ieInt = Linq.range(0, 0);
@@ -31,20 +51,12 @@ class FirstOrDefaultTest extends TestCase {
         assertEquals(q.firstOrDefault(), q.firstOrDefault());
     }
 
-    private <T> void TestEmptyIList(Class<T> clazz) {
-        T[] source = ArrayUtils.empty(clazz);
-        T expected = null;
-
-        assertIsAssignableFrom(IList.class, Linq.of(source));
-        assertEquals(expected, Linq.of(source).runOnce().firstOrDefault());
-    }
-
     @Test
     void EmptyIListT() {
-        this.TestEmptyIList(Integer.class);
-        this.TestEmptyIList(String.class);
-        this.TestEmptyIList(Date.class);
-        this.TestEmptyIList(FirstOrDefaultTest.class);
+        TestEmptyIList(Integer.class);
+        TestEmptyIList(String.class);
+        TestEmptyIList(Date.class);
+        TestEmptyIList(FirstOrDefaultTest.class);
     }
 
     @Test
@@ -74,24 +86,12 @@ class FirstOrDefaultTest extends TestCase {
         assertEquals(expected, Linq.of(source).firstOrDefault());
     }
 
-    private <T> IEnumerable<T> EmptySourceGeneric() {
-        return Linq.empty();
-    }
-
-    private <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = this.EmptySourceGeneric();
-        T expected = null;
-
-        assertNull(as(source, IList.class));
-        assertEquals(expected, source.runOnce().firstOrDefault());
-    }
-
     @Test
     void EmptyNotIListT() {
-        this.<Integer>TestEmptyNotIList();
-        this.<String>TestEmptyNotIList();
-        this.<Date>TestEmptyNotIList();
-        this.<FirstOrDefaultTest>TestEmptyNotIList();
+        FirstOrDefaultTest.<Integer>TestEmptyNotIList();
+        FirstOrDefaultTest.<String>TestEmptyNotIList();
+        FirstOrDefaultTest.<Date>TestEmptyNotIList();
+        FirstOrDefaultTest.<FirstOrDefaultTest>TestEmptyNotIList();
     }
 
     @Test

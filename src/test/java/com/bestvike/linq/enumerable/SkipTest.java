@@ -8,10 +8,13 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.Reflection;
 import com.bestvike.ref;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -26,6 +29,17 @@ import java.util.List;
 class SkipTest extends TestCase {
     private static <T> IEnumerable<T> GuaranteeNotIList(IEnumerable<T> source) {
         return source.select(x -> x);
+    }
+
+    private static IEnumerable<Object[]> DisposeSource_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(0, -1);
+        argsList.add(0, 0);
+        argsList.add(1, 0);
+        argsList.add(2, 1);
+        argsList.add(2, 2);
+        argsList.add(2, 3);
+        return argsList;
     }
 
     @Test
@@ -455,17 +469,9 @@ class SkipTest extends TestCase {
         }
     }
 
-    @Test
-    void DisposeSource() {
-        this.DisposeSource(0, -1);
-        this.DisposeSource(0, 0);
-        this.DisposeSource(1, 0);
-        this.DisposeSource(2, 1);
-        this.DisposeSource(2, 2);
-        this.DisposeSource(2, 3);
-    }
-
-    private void DisposeSource(int sourceCount, int count) {
+    @ParameterizedTest
+    @MethodSource("DisposeSource_TestData")
+    void DisposeSource(int sourceCount, int count) {
         ref<Integer> state = ref.init(0);
 
         IEnumerable<Integer> source = new DelegateIterator<>(

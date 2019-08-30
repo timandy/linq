@@ -38,20 +38,7 @@ class ToLinkedMapTest extends TestCase {
         }
     }
 
-    @Test
-    void ToDictionary_AlwaysCreateACopy() {
-        Map<Integer, Integer> source = new LinkedHashMap<>();
-        source.put(1, 1);
-        source.put(2, 2);
-        source.put(3, 3);
-        Map<Integer, Integer> result = Linq.of(source).toLinkedMap(key -> key.getKey(), val -> val.getValue());
-
-        assertIsType(LinkedHashMap.class, result);
-        assertNotSame(source, result);
-        assertEquals(source, result);
-    }
-
-    private <T> void RunToDictionaryOnAllCollectionTypes(T[] items, Action1<Map<T, T>> validation) {
+    private static <T> void RunToDictionaryOnAllCollectionTypes(T[] items, Action1<Map<T, T>> validation) {
         validation.apply(Linq.of(items).toLinkedMap(key -> key));
         validation.apply(Linq.of(items).toLinkedMap(key -> key, value -> value));
         validation.apply(Linq.of(items).toArray().toLinkedMap(key -> key));
@@ -65,8 +52,21 @@ class ToLinkedMapTest extends TestCase {
     }
 
     @Test
+    void ToDictionary_AlwaysCreateACopy() {
+        Map<Integer, Integer> source = new LinkedHashMap<>();
+        source.put(1, 1);
+        source.put(2, 2);
+        source.put(3, 3);
+        Map<Integer, Integer> result = Linq.of(source).toLinkedMap(key -> key.getKey(), val -> val.getValue());
+
+        assertIsType(LinkedHashMap.class, result);
+        assertNotSame(source, result);
+        assertEquals(source, result);
+    }
+
+    @Test
     void ToDictionary_WorkWithEmptyCollection() {
-        this.RunToDictionaryOnAllCollectionTypes(new Integer[0], resultDictionary -> {
+        RunToDictionaryOnAllCollectionTypes(new Integer[0], resultDictionary -> {
             assertNotNull(resultDictionary);
             assertEquals(0, resultDictionary.size());
         });
@@ -75,14 +75,14 @@ class ToLinkedMapTest extends TestCase {
     @Test
     void ToDictionary_ProduceCorrectDictionary() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
-        this.RunToDictionaryOnAllCollectionTypes(sourceArray, resultDictionary -> {
+        RunToDictionaryOnAllCollectionTypes(sourceArray, resultDictionary -> {
             assertEquals(sourceArray.length, resultDictionary.size());
             assertEquals(Linq.of(sourceArray), Linq.of(resultDictionary.keySet()));
             assertEquals(Linq.of(sourceArray), Linq.of(resultDictionary.values()));
         });
 
         String[] sourceStringArray = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
-        this.RunToDictionaryOnAllCollectionTypes(sourceStringArray, resultDictionary -> {
+        RunToDictionaryOnAllCollectionTypes(sourceStringArray, resultDictionary -> {
             assertEquals(sourceStringArray.length, resultDictionary.size());
             for (int i = 0; i < sourceStringArray.length; i++)
                 assertSame(sourceStringArray[i], resultDictionary.get(sourceStringArray[i]));

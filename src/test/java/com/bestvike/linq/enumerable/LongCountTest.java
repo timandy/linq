@@ -5,15 +5,28 @@ import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Created by 许崇雷 on 2019-05-20.
  */
 class LongCountTest extends TestCase {
+    private static IEnumerable<Object[]> LongCount_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[0]), null, 0L);
+        argsList.add(Linq.of(new int[]{3}), null, 1L);
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
+        argsList.add(Linq.of(new int[0]), isEvenFunc, 0L);
+        argsList.add(Linq.of(new int[]{4}), isEvenFunc, 1L);
+        argsList.add(Linq.of(new int[]{5}), isEvenFunc, 0L);
+        argsList.add(Linq.of(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2L);
+        argsList.add(Linq.of(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6L);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
@@ -30,27 +43,9 @@ class LongCountTest extends TestCase {
         assertEquals(q.longCount(), q.longCount());
     }
 
-    private IEnumerable<Object[]> LongCount_TestData() {
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.of(new int[0]), null, 0L});
-        lst.add(new Object[]{Linq.of(new int[]{3}), null, 1L});
-        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-        lst.add(new Object[]{Linq.of(new int[0]), isEvenFunc, 0L});
-        lst.add(new Object[]{Linq.of(new int[]{4}), isEvenFunc, 1L});
-        lst.add(new Object[]{Linq.of(new int[]{5}), isEvenFunc, 0L});
-        lst.add(new Object[]{Linq.of(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2L});
-        lst.add(new Object[]{Linq.of(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6L});
-        return Linq.of(lst);
-    }
-
-    @Test
-    void LongCount() {
-        for (Object[] objects : this.LongCount_TestData()) {
-            this.LongCount((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (long) objects[2]);
-        }
-    }
-
-    private void LongCount(IEnumerable<Integer> source, Predicate1<Integer> predicate, long expected) {
+    @ParameterizedTest
+    @MethodSource("LongCount_TestData")
+    void LongCount(IEnumerable<Integer> source, Predicate1<Integer> predicate, long expected) {
         if (predicate == null) {
             assertEquals(expected, source.longCount());
         } else {
@@ -58,14 +53,9 @@ class LongCountTest extends TestCase {
         }
     }
 
-    @Test
-    void LongCountRunOnce() {
-        for (Object[] objects : this.LongCount_TestData()) {
-            this.LongCountRunOnce((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (long) objects[2]);
-        }
-    }
-
-    private void LongCountRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, long expected) {
+    @ParameterizedTest
+    @MethodSource("LongCount_TestData")
+    void LongCountRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, long expected) {
         if (predicate == null) {
             assertEquals(expected, source.runOnce().longCount());
         } else {

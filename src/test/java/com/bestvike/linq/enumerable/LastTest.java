@@ -17,6 +17,24 @@ import java.util.Date;
  * Created by 许崇雷 on 2018-05-10.
  */
 class LastTest extends TestCase {
+    private static <T> void TestEmptyIList() {
+        IEnumerable<T> source = Linq.of(Collections.EMPTY_LIST);
+
+        assertNotNull(as(source, IList.class));
+        assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
+    }
+
+    private static <T> IEnumerable<T> EmptySource() {
+        return Linq.empty();
+    }
+
+    private static <T> void TestEmptyNotIList() {
+        IEnumerable<T> source = EmptySource();
+
+        assertNull(as(source, IList.class));
+        assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
@@ -33,19 +51,12 @@ class LastTest extends TestCase {
         assertEquals(q.last(), q.last());
     }
 
-    private <T> void TestEmptyIList() {
-        IEnumerable<T> source = Linq.of(Collections.EMPTY_LIST);
-
-        assertNotNull(as(source, IList.class));
-        assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
-    }
-
     @Test
     void EmptyIListT() {
-        this.<Integer>TestEmptyIList();
-        this.<String>TestEmptyIList();
-        this.<Date>TestEmptyIList();
-        this.<LastTest>TestEmptyIList();
+        LastTest.<Integer>TestEmptyIList();
+        LastTest.<String>TestEmptyIList();
+        LastTest.<Date>TestEmptyIList();
+        LastTest.<LastTest>TestEmptyIList();
     }
 
     @Test
@@ -75,23 +86,12 @@ class LastTest extends TestCase {
         assertEquals(expected, source.last());
     }
 
-    private <T> IEnumerable<T> EmptySource() {
-        return Linq.empty();
-    }
-
-    private <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = this.EmptySource();
-
-        assertNull(as(source, IList.class));
-        assertThrows(InvalidOperationException.class, () -> source.runOnce().last());
-    }
-
     @Test
     void EmptyNotIListT() {
-        this.<Integer>TestEmptyNotIList();
-        this.<String>TestEmptyNotIList();
-        this.<Date>TestEmptyNotIList();
-        this.<LastTest>TestEmptyNotIList();
+        LastTest.<Integer>TestEmptyNotIList();
+        LastTest.<String>TestEmptyNotIList();
+        LastTest.<Date>TestEmptyNotIList();
+        LastTest.<LastTest>TestEmptyNotIList();
     }
 
     @Test

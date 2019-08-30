@@ -15,9 +15,12 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
 
@@ -25,6 +28,103 @@ import java.math.BigDecimal;
  * Created by 许崇雷 on 2018-05-10.
  */
 class AverageTest extends TestCase {
+    private static IEnumerable<Object[]> NullableFloat_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.empty(), null);
+        argsList.add(Linq.singleton(Float.MIN_VALUE), Float.MIN_VALUE);
+        argsList.add(Linq.of(0f, 0f, 0f, 0f, 0f), 0f);
+        argsList.add(Linq.of(5.5f, 0f, null, null, null, 15.5f, 40.5f, null, null, -23.5f), 7.6f);
+        argsList.add(Linq.of(null, null, null, null, 45f), 45f);
+        argsList.add(Linq.of(null, null, null, null, null), null);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> Int_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.singleton(5), 5);
+        argsList.add(Linq.of(0, 0, 0, 0, 0), 0);
+        argsList.add(Linq.of(5, -10, 15, 40, 28), 15.6);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NullableInt_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.empty(), null);
+        argsList.add(Linq.singleton(-5), -5.0);
+        argsList.add(Linq.of(0, 0, 0, 0, 0), 0.0);
+        argsList.add(Linq.of(5, -10, null, null, null, 15, 40, 28, null, null), 15.6);
+        argsList.add(Linq.of(null, null, null, null, 50), 50.0);
+        argsList.add(Linq.of(null, null, null, null, null), null);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> Long_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.singleton(Long.MAX_VALUE), Long.MAX_VALUE);
+        argsList.add(Linq.of(0L, 0L, 0L, 0L, 0L), 0);
+        argsList.add(Linq.of(5L, -10L, 15L, 40L, 28L), 15.6);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NullableLong_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.empty(), null);
+        argsList.add(Linq.singleton(Long.MAX_VALUE), (double) Long.MAX_VALUE);
+        argsList.add(Linq.of(0L, 0L, 0L, 0L, 0L), 0.0);
+        argsList.add(Linq.of(5L, -10L, null, null, null, 15L, 40L, 28L, null, null), 15.6);
+        argsList.add(Linq.of(null, null, null, null, 50L), 50.0);
+        argsList.add(Linq.of(null, null, null, null, null), null);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> Double_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.singleton(Double.MAX_VALUE), Double.MAX_VALUE);
+        argsList.add(Linq.of(0.0, 0.0, 0.0, 0.0, 0.0), 0);
+        argsList.add(Linq.of(5.5, -10d, 15.5, 40.5, 28.5), 16);
+        argsList.add(Linq.of(5.58, Double.NaN, 30d, 4.55, 19.38), Double.NaN);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NullableDouble_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.empty(), null);
+        argsList.add(Linq.singleton(Double.MIN_VALUE), Double.MIN_VALUE);
+        argsList.add(Linq.of(0d, 0d, 0d, 0d, 0d), 0.0);
+        argsList.add(Linq.of(5.5d, 0d, null, null, null, 15.5d, 40.5d, null, null, -23.5d), 7.6d);
+        argsList.add(Linq.of(null, null, null, null, 45d), 45.0);
+        argsList.add(Linq.of(-23.5, 0d, Double.NaN, 54.3, 0.56), Double.NaN);
+        argsList.add(Linq.of(null, null, null, null, null), null);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> Decimal_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
+        argsList.add(Linq.of(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
+        argsList.add(Linq.of(m("5.5"), m("-10"), m("15.5"), m("40.5"), m("28.5")), m("16.0"));
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NullableDecimal_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.empty(), null);
+        argsList.add(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
+        argsList.add(Linq.of(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
+        argsList.add(Linq.of(m("5.5"), BigDecimal.ZERO, null, null, null, m("15.5"), m("40.5"), null, null, m("-23.5")), m("7.6"));
+        argsList.add(Linq.of(null, null, null, null, m("45")), m("45"));
+        argsList.add(Linq.of(null, null, null, null, null), null);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> Float_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.singleton(Float.MAX_VALUE), Float.MAX_VALUE);
+        argsList.add(Linq.of(0.0f, 0.0f, 0.0f, 0.0f, 0.0f), 0f);
+        argsList.add(Linq.of(5.5f, -10f, 15.5f, 40.5f, 28.5f), 16f);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -40,32 +140,16 @@ class AverageTest extends TestCase {
         assertEquals(q.averageLongNull(), q.averageLongNull());
     }
 
-    @Test
-    void NullableFoat() {
-        this.NullableFoat(Linq.empty(), null);
-        this.NullableFoat(Linq.singleton(Float.MIN_VALUE), Float.MIN_VALUE);
-        this.NullableFoat(Linq.of(0f, 0f, 0f, 0f, 0f), 0f);
-        this.NullableFoat(Linq.of(5.5f, 0f, null, null, null, 15.5f, 40.5f, null, null, -23.5f), 7.6f);
-        this.NullableFoat(Linq.of(null, null, null, null, 45f), 45f);
-        this.NullableFoat(Linq.of(null, null, null, null, null), null);
-    }
-
-    private void NullableFoat(IEnumerable<Float> source, Float expected) {
+    @ParameterizedTest
+    @MethodSource("NullableFloat_TestData")
+    void NullableFoat(IEnumerable<Float> source, Float expected) {
         assertEquals(expected, source.averageFloatNull());
         assertEquals(expected, source.averageFloatNull(x -> x));
     }
 
-    @Test
-    void NullableFoatRunOnce() {
-        this.NullableFoatRunOnce(Linq.empty(), null);
-        this.NullableFoatRunOnce(Linq.singleton(Float.MIN_VALUE), Float.MIN_VALUE);
-        this.NullableFoatRunOnce(Linq.of(0f, 0f, 0f, 0f, 0f), 0f);
-        this.NullableFoatRunOnce(Linq.of(5.5f, 0f, null, null, null, 15.5f, 40.5f, null, null, -23.5f), 7.6f);
-        this.NullableFoatRunOnce(Linq.of(null, null, null, null, 45f), 45f);
-        this.NullableFoatRunOnce(Linq.of(null, null, null, null, null), null);
-    }
-
-    private void NullableFoatRunOnce(IEnumerable<Float> source, Float expected) {
+    @ParameterizedTest
+    @MethodSource("NullableFloat_TestData")
+    void NullableFoatRunOnce(IEnumerable<Float> source, Float expected) {
         assertEquals(expected, source.runOnce().averageFloatNull());
         assertEquals(expected, source.runOnce().averageFloatNull(x -> x));
     }
@@ -110,26 +194,16 @@ class AverageTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> Linq.<Integer>empty().averageInt(selector));
     }
 
-    @Test
-    void Int() {
-        this.Int(Linq.singleton(5), 5);
-        this.Int(Linq.of(0, 0, 0, 0, 0), 0);
-        this.Int(Linq.of(5, -10, 15, 40, 28), 15.6);
-    }
-
-    private void Int(IEnumerable<Integer> source, double expected) {
+    @ParameterizedTest
+    @MethodSource("Int_TestData")
+    void Int(IEnumerable<Integer> source, double expected) {
         assertEquals(expected, source.averageInt());
         assertEquals(expected, source.averageInt(x -> x));
     }
 
-    @Test
-    void IntRunOnce() {
-        this.IntRunOnce(Linq.singleton(5), 5);
-        this.IntRunOnce(Linq.of(0, 0, 0, 0, 0), 0);
-        this.IntRunOnce(Linq.of(5, -10, 15, 40, 28), 15.6);
-    }
-
-    private void IntRunOnce(IEnumerable<Integer> source, double expected) {
+    @ParameterizedTest
+    @MethodSource("Int_TestData")
+    void IntRunOnce(IEnumerable<Integer> source, double expected) {
         assertEquals(expected, source.runOnce().averageInt());
         assertEquals(expected, source.runOnce().averageInt(x -> x));
     }
@@ -142,17 +216,9 @@ class AverageTest extends TestCase {
         assertEquals(expected, source.averageInt(e -> e.getItem2()));
     }
 
-    @Test
-    void NullableInt() {
-        this.NullableInt(Linq.empty(), null);
-        this.NullableInt(Linq.singleton(-5), -5.0);
-        this.NullableInt(Linq.of(0, 0, 0, 0, 0), 0.0);
-        this.NullableInt(Linq.of(5, -10, null, null, null, 15, 40, 28, null, null), 15.6);
-        this.NullableInt(Linq.of(null, null, null, null, 50), 50.0);
-        this.NullableInt(Linq.of(null, null, null, null, null), null);
-    }
-
-    private void NullableInt(IEnumerable<Integer> source, Double expected) {
+    @ParameterizedTest
+    @MethodSource("NullableInt_TestData")
+    void NullableInt(IEnumerable<Integer> source, Double expected) {
         assertEquals(expected, source.averageIntNull());
         assertEquals(expected, source.averageIntNull(x -> x));
     }
@@ -197,14 +263,9 @@ class AverageTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> Linq.<Long>empty().averageLong(selector));
     }
 
-    @Test
-    void Long() {
-        this.Long(Linq.singleton(Long.MAX_VALUE), Long.MAX_VALUE);
-        this.Long(Linq.of(0L, 0L, 0L, 0L, 0L), 0);
-        this.Long(Linq.of(5L, -10L, 15L, 40L, 28L), 15.6);
-    }
-
-    private void Long(IEnumerable<Long> source, double expected) {
+    @ParameterizedTest
+    @MethodSource("Long_TestData")
+    void Long(IEnumerable<Long> source, double expected) {
         assertEquals(expected, source.averageLong());
         assertEquals(expected, source.averageLong(x -> x));
     }
@@ -223,17 +284,9 @@ class AverageTest extends TestCase {
         assertThrows(ArithmeticException.class, () -> source.averageLong());
     }
 
-    @Test
-    void NullableLong() {
-        this.NullableLong(Linq.empty(), null);
-        this.NullableLong(Linq.singleton(Long.MAX_VALUE), (double) Long.MAX_VALUE);
-        this.NullableLong(Linq.of(0L, 0L, 0L, 0L, 0L), 0.0);
-        this.NullableLong(Linq.of(5L, -10L, null, null, null, 15L, 40L, 28L, null, null), 15.6);
-        this.NullableLong(Linq.of(null, null, null, null, 50L), 50.0);
-        this.NullableLong(Linq.of(null, null, null, null, null), null);
-    }
-
-    private void NullableLong(IEnumerable<Long> source, Double expected) {
+    @ParameterizedTest
+    @MethodSource("NullableLong_TestData")
+    void NullableLong(IEnumerable<Long> source, Double expected) {
         assertEquals(expected, source.averageLongNull());
         assertEquals(expected, source.averageLongNull(x -> x));
     }
@@ -278,15 +331,9 @@ class AverageTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> Linq.<Double>empty().averageDouble(selector));
     }
 
-    @Test
-    void Average_Double() {
-        this.Average_Double(Linq.singleton(Double.MAX_VALUE), Double.MAX_VALUE);
-        this.Average_Double(Linq.of(0.0, 0.0, 0.0, 0.0, 0.0), 0);
-        this.Average_Double(Linq.of(5.5, -10d, 15.5, 40.5, 28.5), 16);
-        this.Average_Double(Linq.of(5.58, Double.NaN, 30d, 4.55, 19.38), Double.NaN);
-    }
-
-    private void Average_Double(IEnumerable<Double> source, double expected) {
+    @ParameterizedTest
+    @MethodSource("Double_TestData")
+    void Average_Double(IEnumerable<Double> source, double expected) {
         assertEquals(expected, source.averageDouble());
         assertEquals(expected, source.averageDouble(x -> x));
     }
@@ -299,18 +346,9 @@ class AverageTest extends TestCase {
         assertEquals(expected, source.averageDouble(e -> e.getItem2()));
     }
 
-    @Test
-    void NullableDouble() {
-        this.NullableDouble(Linq.empty(), null);
-        this.NullableDouble(Linq.singleton(Double.MIN_VALUE), Double.MIN_VALUE);
-        this.NullableDouble(Linq.of(0d, 0d, 0d, 0d, 0d), 0.0);
-        this.NullableDouble(Linq.of(5.5d, 0d, null, null, null, 15.5d, 40.5d, null, null, -23.5d), 7.6d);
-        this.NullableDouble(Linq.of(null, null, null, null, 45d), 45.0);
-        this.NullableDouble(Linq.of(-23.5, 0d, Double.NaN, 54.3, 0.56), Double.NaN);
-        this.NullableDouble(Linq.of(null, null, null, null, null), null);
-    }
-
-    private void NullableDouble(IEnumerable<Double> source, Double expected) {
+    @ParameterizedTest
+    @MethodSource("NullableDouble_TestData")
+    void NullableDouble(IEnumerable<Double> source, Double expected) {
         assertEquals(expected, source.averageDoubleNull());
         assertEquals(expected, source.averageDoubleNull(x -> x));
     }
@@ -355,14 +393,9 @@ class AverageTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> Linq.<BigDecimal>empty().averageDecimal(selector));
     }
 
-    @Test
-    void Decimal() {
-        this.Decimal(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
-        this.Decimal(Linq.of(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
-        this.Decimal(Linq.of(m("5.5"), m("-10"), m("15.5"), m("40.5"), m("28.5")), m("16.0"));
-    }
-
-    private void Decimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
+    @ParameterizedTest
+    @MethodSource("Decimal_TestData")
+    void Decimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
         assertEquals(expected, source.averageDecimal());
         assertEquals(expected, source.averageDecimal(x -> x));
     }
@@ -375,17 +408,9 @@ class AverageTest extends TestCase {
         assertEquals(expected, source.averageDecimal(e -> e.getItem2()));
     }
 
-    @Test
-    void NullableDecimal() {
-        this.NullableDecimal(Linq.empty(), null);
-        this.NullableDecimal(Linq.singleton(BigDecimal.ZERO), BigDecimal.ZERO);
-        this.NullableDecimal(Linq.of(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO);
-        this.NullableDecimal(Linq.of(m("5.5"), BigDecimal.ZERO, null, null, null, m("15.5"), m("40.5"), null, null, m("-23.5")), m("7.6"));
-        this.NullableDecimal(Linq.of(null, null, null, null, m("45")), m("45"));
-        this.NullableDecimal(Linq.of(null, null, null, null, null), null);
-    }
-
-    private void NullableDecimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
+    @ParameterizedTest
+    @MethodSource("NullableDecimal_TestData")
+    void NullableDecimal(IEnumerable<BigDecimal> source, BigDecimal expected) {
         assertEquals(expected, source.averageDecimalNull());
         assertEquals(expected, source.averageDecimalNull(x -> x));
     }
@@ -437,14 +462,9 @@ class AverageTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> Linq.<Float>empty().averageFloat(selector));
     }
 
-    @Test
-    void Float_TestData() {
-        this.Float(Linq.singleton(Float.MAX_VALUE), Float.MAX_VALUE);
-        this.Float(Linq.of(0.0f, 0.0f, 0.0f, 0.0f, 0.0f), 0f);
-        this.Float(Linq.of(5.5f, -10f, 15.5f, 40.5f, 28.5f), 16f);
-    }
-
-    private void Float(IEnumerable<Float> source, float expected) {
+    @ParameterizedTest
+    @MethodSource("Float_TestData")
+    void Float(IEnumerable<Float> source, float expected) {
         assertEquals(expected, source.averageFloat());
         assertEquals(expected, source.averageFloat(x -> x));
     }

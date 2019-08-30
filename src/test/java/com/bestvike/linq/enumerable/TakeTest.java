@@ -7,9 +7,12 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.ref;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,6 +25,60 @@ import java.util.List;
 class TakeTest extends TestCase {
     private static <T> IEnumerable<T> GuaranteeNotIList(IEnumerable<T> source) {
         return source.select(x -> x);
+    }
+
+    private static IEnumerable<Object[]> LazySkipAllTakenForLargeNumbers_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(1000);
+        argsList.add(1000000);
+        argsList.add(Integer.MAX_VALUE);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> CountOfLazySkipTakeChain_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(0, 0, 0);
+        argsList.add(1, 1, 1);
+        argsList.add(0, Integer.MAX_VALUE, 100);
+        argsList.add(Integer.MAX_VALUE, 0, 0);
+        argsList.add(0xffff, 1, 0);
+        argsList.add(1, 0xffff, 99);
+        argsList.add(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
+        argsList.add(1, Integer.MAX_VALUE, 99); // Regression test: The max index is precisely Integer.MAX_VALUE.
+        argsList.add(0, 100, 100);
+        argsList.add(10, 100, 90);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> FirstAndLastOfLazySkipTakeChain_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[]{1, 2, 3, 4}), 1, 3, 2, 4);
+        argsList.add(Linq.of(new int[]{1}), 0, 1, 1, 1);
+        argsList.add(Linq.of(new int[]{1, 2, 3, 5, 8, 13}), 1, Integer.MAX_VALUE, 2, 13); // Regression test: The max index is precisely Integer.MAX_VALUE.
+        argsList.add(Linq.of(new int[]{1, 2, 3, 5, 8, 13}), 0, 2, 1, 2);
+        argsList.add(Linq.of(new int[]{1, 2, 3, 5, 8, 13}), 500, 2, null, null);
+        argsList.add(Linq.of(new int[]{}), 10, 8, null, null);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> ElementAtOfLazySkipTakeChain_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[]{1, 2, 3, 4, 5}), 1, 3, new int[]{-1, 0, 1, 2}, new Integer[]{null, 2, 3, 4});
+        argsList.add(Linq.of(new int[]{0xfefe, 7000, 123}), 0, 3, new int[]{-1, 0, 1, 2}, new Integer[]{null, 0xfefe, 7000, 123});
+        argsList.add(Linq.of(new int[]{0xfefe}), 100, 100, new int[]{-1, 0, 1, 2}, new Integer[]{null, null, null, null});
+        argsList.add(Linq.of(new int[]{0xfefe, 123, 456, 7890, 5555, 55}), 1, 10, new int[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, new Integer[]{null, 123, 456, 7890, 5555, 55, null, null, null, null, null, null, null});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> DisposeSource_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(0, -1);
+        argsList.add(0, 0);
+        argsList.add(1, 0);
+        argsList.add(2, 1);
+        argsList.add(2, 2);
+        argsList.add(2, 3);
+        return argsList;
     }
 
     @Test
@@ -413,14 +470,9 @@ class TakeTest extends TestCase {
         assertEquals(taken, taken);
     }
 
-    @Test
-    void LazySkipAllTakenForLargeNumbers() {
-        this.LazySkipAllTakenForLargeNumbers(1000);
-        this.LazySkipAllTakenForLargeNumbers(1000000);
-        this.LazySkipAllTakenForLargeNumbers(Integer.MAX_VALUE);
-    }
-
-    private void LazySkipAllTakenForLargeNumbers(int largeNumber) {
+    @ParameterizedTest
+    @MethodSource("LazySkipAllTakenForLargeNumbers_TestData")
+    void LazySkipAllTakenForLargeNumbers(int largeNumber) {
         assertEmpty(new FastInfiniteEnumerator<Integer>().take(largeNumber).skip(largeNumber));
         assertEmpty(new FastInfiniteEnumerator<Integer>().take(largeNumber).skip(largeNumber).skip(42));
         assertEmpty(new FastInfiniteEnumerator<Integer>().take(largeNumber).skip(largeNumber / 2).skip(largeNumber / 2 + 1));
@@ -437,38 +489,18 @@ class TakeTest extends TestCase {
         assertEquals(Linq.range(43, 100 - 42), Linq.of(taken.toList()));
     }
 
-    @Test
-    void CountOfLazySkipTakeChain() {
-        this.CountOfLazySkipTakeChain(0, 0, 0);
-        this.CountOfLazySkipTakeChain(1, 1, 1);
-        this.CountOfLazySkipTakeChain(0, Integer.MAX_VALUE, 100);
-        this.CountOfLazySkipTakeChain(Integer.MAX_VALUE, 0, 0);
-        this.CountOfLazySkipTakeChain(0xffff, 1, 0);
-        this.CountOfLazySkipTakeChain(1, 0xffff, 99);
-        this.CountOfLazySkipTakeChain(Integer.MAX_VALUE, Integer.MAX_VALUE, 0);
-        this.CountOfLazySkipTakeChain(1, Integer.MAX_VALUE, 99); // Regression test: The max index is precisely Integer.MAX_VALUE.
-        this.CountOfLazySkipTakeChain(0, 100, 100);
-        this.CountOfLazySkipTakeChain(10, 100, 90);
-    }
-
-    private void CountOfLazySkipTakeChain(int skip, int take, int expected) {
+    @ParameterizedTest
+    @MethodSource("CountOfLazySkipTakeChain_TestData")
+    void CountOfLazySkipTakeChain(int skip, int take, int expected) {
         IEnumerable<Integer> partition = NumberRangeGuaranteedNotCollectionType(1, 100).skip(skip).take(take);
         assertEquals(expected, partition.count());
         assertEquals(expected, partition.select(i -> i).count());
         assertEquals(expected, partition.select(i -> i).toArray()._getCount());
     }
 
-    @Test
-    void FirstAndLastOfLazySkipTakeChain() {
-        this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 4}), 1, 3, 2, 4);
-        this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1}), 0, 1, 1, 1);
-        this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 5, 8, 13}), 1, Integer.MAX_VALUE, 2, 13); // Regression test: The max index is precisely Integer.MAX_VALUE.
-        this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 5, 8, 13}), 0, 2, 1, 2);
-        this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 5, 8, 13}), 500, 2, null, null);
-        this.FirstAndLastOfLazySkipTakeChain(Linq.of(new int[]{}), 10, 8, null, null);
-    }
-
-    private void FirstAndLastOfLazySkipTakeChain(IEnumerable<Integer> source, int skip, int take, Integer first, Integer last) {
+    @ParameterizedTest
+    @MethodSource("FirstAndLastOfLazySkipTakeChain_TestData")
+    void FirstAndLastOfLazySkipTakeChain(IEnumerable<Integer> source, int skip, int take, Integer first, Integer last) {
         IEnumerable<Integer> partition = ForceNotCollection(source).skip(skip).take(take);
 
         assertEquals(first, partition.firstOrDefault());
@@ -477,15 +509,9 @@ class TakeTest extends TestCase {
         assertEquals(last, partition.elementAtOrDefault(partition.count() - 1));
     }
 
-    @Test
-    void ElementAtOfLazySkipTakeChain() {
-        this.ElementAtOfLazySkipTakeChain(Linq.of(new int[]{1, 2, 3, 4, 5}), 1, 3, new int[]{-1, 0, 1, 2}, new Integer[]{null, 2, 3, 4});
-        this.ElementAtOfLazySkipTakeChain(Linq.of(new int[]{0xfefe, 7000, 123}), 0, 3, new int[]{-1, 0, 1, 2}, new Integer[]{null, 0xfefe, 7000, 123});
-        this.ElementAtOfLazySkipTakeChain(Linq.of(new int[]{0xfefe}), 100, 100, new int[]{-1, 0, 1, 2}, new Integer[]{null, null, null, null});
-        this.ElementAtOfLazySkipTakeChain(Linq.of(new int[]{0xfefe, 123, 456, 7890, 5555, 55}), 1, 10, new int[]{-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}, new Integer[]{null, 123, 456, 7890, 5555, 55, null, null, null, null, null, null, null});
-    }
-
-    private void ElementAtOfLazySkipTakeChain(IEnumerable<Integer> source, int skip, int take, int[] indices, Integer[] expectedValues) {
+    @ParameterizedTest
+    @MethodSource("ElementAtOfLazySkipTakeChain_TestData")
+    void ElementAtOfLazySkipTakeChain(IEnumerable<Integer> source, int skip, int take, int[] indices, Integer[] expectedValues) {
         IEnumerable<Integer> partition = ForceNotCollection(source).skip(skip).take(take);
 
         assertEquals(indices.length, expectedValues.length);
@@ -494,17 +520,9 @@ class TakeTest extends TestCase {
         }
     }
 
-    @Test
-    void DisposeSource() {
-        this.DisposeSource(0, -1);
-        this.DisposeSource(0, 0);
-        this.DisposeSource(1, 0);
-        this.DisposeSource(2, 1);
-        this.DisposeSource(2, 2);
-        this.DisposeSource(2, 3);
-    }
-
-    private void DisposeSource(int sourceCount, int count) {
+    @ParameterizedTest
+    @MethodSource("DisposeSource_TestData")
+    void DisposeSource(int sourceCount, int count) {
         ref<Integer> state = ref.init(0);
 
         IEnumerable<Integer> source = new DelegateIterator<>(

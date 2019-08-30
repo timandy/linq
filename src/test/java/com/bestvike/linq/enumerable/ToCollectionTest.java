@@ -6,7 +6,10 @@ import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +23,38 @@ import java.util.Set;
  * Created by 许崇雷 on 2019-08-07.
  */
 class ToCollectionTest extends TestCase {
+    private static <T> void RunToCollectionOnAllCollectionTypes(T[] items, Action1<List<T>> validation) {
+        validation.apply(Linq.of(items).toCollection(new ArrayList<>(), List::add));
+        validation.apply(Linq.of(Arrays.asList(items)).toCollection(new ArrayList<>(), List::add));
+        validation.apply(new TestEnumerable<>(items).toCollection(new ArrayList<>(), List::add));
+        validation.apply(new TestReadOnlyCollection<>(items).toCollection(new ArrayList<>(), List::add));
+        validation.apply(new TestCollection<>(items).toCollection(new ArrayList<>(), List::add));
+    }
+
+    private static IEnumerable<Object[]> ToCollection_ArrayWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> ToCollection_ListWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> ToCollection_IListWhereSelect_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{}, new String[]{});
+        argsList.add(new int[]{1}, new String[]{"1"});
+        argsList.add(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
+        return argsList;
+    }
+
     @Test
     void ToCollection_AlwaysCreateACopy() {
         List<Integer> sourceList = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
@@ -29,17 +64,9 @@ class ToCollectionTest extends TestCase {
         assertEquals(sourceList, resultList);
     }
 
-    private <T> void RunToCollectionOnAllCollectionTypes(T[] items, Action1<List<T>> validation) {
-        validation.apply(Linq.of(items).toCollection(new ArrayList<>(), List::add));
-        validation.apply(Linq.of(Arrays.asList(items)).toCollection(new ArrayList<>(), List::add));
-        validation.apply(new TestEnumerable<>(items).toCollection(new ArrayList<>(), List::add));
-        validation.apply(new TestReadOnlyCollection<>(items).toCollection(new ArrayList<>(), List::add));
-        validation.apply(new TestCollection<>(items).toCollection(new ArrayList<>(), List::add));
-    }
-
     @Test
     void ToCollection_WorkWithEmptyCollection() {
-        this.RunToCollectionOnAllCollectionTypes(new Integer[0], resultList -> {
+        RunToCollectionOnAllCollectionTypes(new Integer[0], resultList -> {
             assertNotNull(resultList);
             assertEquals(0, resultList.size());
         });
@@ -48,13 +75,13 @@ class ToCollectionTest extends TestCase {
     @Test
     void ToCollection_ProduceCorrectList() {
         Integer[] sourceArray = new Integer[]{1, 2, 3, 4, 5, 6, 7};
-        this.RunToCollectionOnAllCollectionTypes(sourceArray, resultList -> {
+        RunToCollectionOnAllCollectionTypes(sourceArray, resultList -> {
             assertEquals(sourceArray.length, resultList.size());
             assertEquals(Linq.of(sourceArray), Linq.of(resultList));
         });
 
         String[] sourceStringArray = new String[]{"1", "2", "3", "4", "5", "6", "7", "8"};
-        this.RunToCollectionOnAllCollectionTypes(sourceStringArray, resultStringList -> {
+        RunToCollectionOnAllCollectionTypes(sourceStringArray, resultStringList -> {
             assertEquals(sourceStringArray.length, resultStringList.size());
             for (int i = 0; i < sourceStringArray.length; i++)
                 assertSame(sourceStringArray[i], resultStringList.get(i));
@@ -96,14 +123,9 @@ class ToCollectionTest extends TestCase {
         assertEquals(0, source.ToListTouched);
     }
 
-    @Test
-    void ToCollection_ArrayWhereSelect() {
-        this.ToCollection_ArrayWhereSelect(new int[]{}, new String[]{});
-        this.ToCollection_ArrayWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToCollection_ArrayWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-    }
-
-    private void ToCollection_ArrayWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToCollection_ArrayWhereSelect_TestData")
+    void ToCollection_ArrayWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         List<Integer> sourceList = new ArrayList<>(Linq.of(sourceIntegers).toList());
         List<String> convertedList = new ArrayList<>(Linq.of(convertedStrings).toList());
 
@@ -122,15 +144,9 @@ class ToCollectionTest extends TestCase {
         assertEquals(emptyStringsList, Linq.of(sourceIntegers).select(i -> i.toString()).where(s -> s == null).toCollection(new ArrayList<>(), List::add));
     }
 
-    @Test
-    void ToCollection_ListWhereSelect() {
-        this.ToCollection_ListWhereSelect(new int[]{}, new String[]{});
-        this.ToCollection_ListWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToCollection_ListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-
-    }
-
-    private void ToCollection_ListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToCollection_ListWhereSelect_TestData")
+    void ToCollection_ListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         List<Integer> sourceList = new ArrayList<>(Linq.of(sourceIntegers).toList());
         List<String> convertedList = new ArrayList<>(Linq.of(convertedStrings).toList());
 
@@ -149,14 +165,9 @@ class ToCollectionTest extends TestCase {
         assertEquals(emptyStringsList, Linq.of(sourceList).select(i -> i.toString()).where(s -> s == null).toCollection(new ArrayList<>(), List::add));
     }
 
-    @Test
-    void ToCollection_IListWhereSelect() {
-        this.ToCollection_IListWhereSelect(new int[]{}, new String[]{});
-        this.ToCollection_IListWhereSelect(new int[]{1}, new String[]{"1"});
-        this.ToCollection_IListWhereSelect(new int[]{1, 2, 3}, new String[]{"1", "2", "3"});
-    }
-
-    private void ToCollection_IListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
+    @ParameterizedTest
+    @MethodSource("ToCollection_IListWhereSelect_TestData")
+    void ToCollection_IListWhereSelect(int[] sourceIntegers, String[] convertedStrings) {
         List<Integer> sourceList = Collections.unmodifiableList(Linq.of(sourceIntegers).toList());
         List<String> convertedList = Collections.unmodifiableList(Linq.of(convertedStrings).toList());
 

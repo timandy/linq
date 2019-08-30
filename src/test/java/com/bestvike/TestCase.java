@@ -465,23 +465,6 @@ public class TestCase {
         }
     }
 
-    private static <T> String format(String message, IEnumerable<T> expected, IEnumerable<T> actual) {
-        String formatted = "";
-        if (message != null && !message.equals(""))
-            formatted = message + " ";
-        String expectedString = expected == null ? "null" : expected.toList().toString();
-        String actualString = actual == null ? "null" : actual.toList().toString();
-        if (expectedString.equals(actualString))
-            return formatted + "expected: " + formatClassAndValue(expected, expectedString) + " but was: " + formatClassAndValue(actual, actualString);
-        else
-            return formatted + "expected:<" + expectedString + "> but was:<" + actualString + ">";
-    }
-
-    private static String formatClassAndValue(Object value, String valueString) {
-        String className = value == null ? "null" : value.getClass().getName();
-        return className + "<" + valueString + ">";
-    }
-
 
     public static class TestCollection<T> implements ICollection<T> {
         public Object[] Items;
@@ -791,9 +774,7 @@ public class TestCase {
     }
 
     public static class ThrowsOnCurrentEnumerator extends TestEnumerator {
-        /// <summary>
-        /// A test enumerator that throws an InvalidOperationException when invoking Current after MoveNext has been called exactly once.
-        /// </summary>
+        // A test enumerator that throws an InvalidOperationException when invoking Current after MoveNext has been called exactly once.
         @Override
         public Integer current() {
             Integer current = super.current();
@@ -805,9 +786,7 @@ public class TestCase {
     }
 
     public static class ThrowsOnMoveNext extends TestEnumerator {
-        /// <summary>
-        /// A test enumerator that throws an InvalidOperationException when invoking MoveNext after MoveNext has been called exactly once.
-        /// </summary>
+        // A test enumerator that throws an InvalidOperationException when invoking MoveNext after MoveNext has been called exactly once.
         @Override
         public boolean moveNext() {
             boolean baseReturn = super.moveNext();
@@ -820,9 +799,7 @@ public class TestCase {
     }
 
     public static class ThrowsOnGetEnumerator extends TestEnumerator {
-        /// <summary>
-        /// A test enumerator that throws an InvalidOperationException when GetEnumerator is called for the first time.
-        /// </summary>
+        // A test enumerator that throws an InvalidOperationException when GetEnumerator is called for the first time.
         private int getEnumeratorCallCount;
 
         @Override
@@ -1065,6 +1042,7 @@ public class TestCase {
         }
     }
 
+    @SuppressWarnings("unused")
     public static class SkipTakeData {
         public static IEnumerable<Object[]> EnumerableData() {
             IEnumerable<Integer> sourceCounts = Linq.of(0, 1, 2, 3, 5, 8, 13, 55, 100, 250);

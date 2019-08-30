@@ -15,7 +15,7 @@ import java.util.Locale;
  * Created by 许崇雷 on 2019-06-20.
  */
 class ComparerTest extends TestCase {
-    {
+    static {
         CultureInfo.setCurrent(Locale.CHINA);
         assertSame(Locale.CHINA, CultureInfo.getCurrent());
         assertEquals(Locale.ROOT, CultureInfo.getInvariant());
@@ -43,7 +43,7 @@ class ComparerTest extends TestCase {
 
     @Test
     void testCreateWithIComparison() {
-        assertThrows(ArgumentNullException.class, () -> Comparer.create((IComparison) null));
+        assertThrows(ArgumentNullException.class, () -> Comparer.create((IComparison<Object>) null));
 
         Comparator<Object> objectComparator = Comparer.create((x, y) -> -1);
         assertTrue(objectComparator.compare(1, 2) < 0);

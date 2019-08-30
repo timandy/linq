@@ -8,9 +8,11 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -19,6 +21,33 @@ import java.util.Objects;
  * Created by 许崇雷 on 2018-05-10.
  */
 class DistinctTest extends TestCase {
+    private static IEnumerable<Object[]> SequencesWithDuplicates() {
+        ArgsList argsList = new ArgsList();
+        // Validate an array of different numeric data types.
+        argsList.add(Linq.of(new int[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10}));
+        argsList.add(Linq.of(new long[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10}));
+        argsList.add(Linq.of(new float[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10}));
+        argsList.add(Linq.of(new double[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10}));
+        argsList.add(Linq.of(m(1), m(1), m(1), m(2), m(3), m(5), m(5), m(6), m(6), m(10)));
+        // Try strings
+        argsList.add(Linq.of("add",
+                "add",
+                "subtract",
+                "multiply",
+                "divide",
+                "divide2",
+                "subtract",
+                "add",
+                "power",
+                "exponent",
+                "hello",
+                "class",
+                "namespace",
+                "namespace",
+                "namespace"));
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
@@ -165,42 +194,9 @@ class DistinctTest extends TestCase {
         assertEquals(Linq.of(expected), Linq.of(source).runOnce().distinct(new AnagramEqualityComparer()), new AnagramEqualityComparer());
     }
 
-    private IEnumerable<Object[]> SequencesWithDuplicates() {
-        List<Object[]> lst = new ArrayList<>();
-        // Validate an array of different numeric data types.
-        lst.add(new Object[]{Linq.of(new int[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.of(new long[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.of(new float[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.of(new double[]{1, 1, 1, 2, 3, 5, 5, 6, 6, 10})});
-        lst.add(new Object[]{Linq.of(m(1), m(1), m(1), m(2), m(3), m(5), m(5), m(6), m(6), m(10))});
-        // Try strings
-        lst.add(new Object[]{Linq.of("add",
-                "add",
-                "subtract",
-                "multiply",
-                "divide",
-                "divide2",
-                "subtract",
-                "add",
-                "power",
-                "exponent",
-                "hello",
-                "class",
-                "namespace",
-                "namespace",
-                "namespace")
-        });
-        return Linq.of(lst);
-    }
-
-    @Test
-    void FindDistinctAndValidate() {
-        for (Object[] objects : this.SequencesWithDuplicates()) {
-            this.FindDistinctAndValidate((IEnumerable<?>) objects[0]);
-        }
-    }
-
-    private <T> void FindDistinctAndValidate(IEnumerable<T> original) {
+    @ParameterizedTest
+    @MethodSource("SequencesWithDuplicates")
+    <T> void FindDistinctAndValidate(IEnumerable<T> original) {
         // Convert to list to avoid repeated enumerations of the enumerables.
         List<T> originalList = original.toList();
         List<T> distinctList = Linq.of(originalList).distinct().toList();

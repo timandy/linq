@@ -4,36 +4,31 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.ILookup;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by 许崇雷 on 2019-06-19.
  */
 class LookupDebugViewTest extends TestCase {
     private static IEnumerable<Object[]> DebuggerAttributesValid_Data() {
-        List<Object[]> lst = new ArrayList<>();
+        ArgsList argsList = new ArgsList();
         IEnumerable<Integer> source = Linq.of(new int[]{1});
-        lst.add(new Object[]{source.toLookup(i -> i)});
-        lst.add(new Object[]{source.toLookup(i -> i.toString(), i -> i)});
-        lst.add(new Object[]{source.toLookup(i -> Duration.ofSeconds(i), i -> i)});
-        lst.add(new Object[]{Linq.of(new String[]{null}).toLookup(x -> x)});
-        lst.add(new Object[]{Linq.of(new Integer[]{null}).toLookup(x -> x)});
-        return Linq.of(lst);
+        argsList.add(source.toLookup(i -> i));
+        argsList.add(source.toLookup(i -> i.toString(), i -> i));
+        argsList.add(source.toLookup(i -> Duration.ofSeconds(i), i -> i));
+        argsList.add(Linq.of(new String[]{null}).toLookup(x -> x));
+        argsList.add(Linq.of(new Integer[]{null}).toLookup(x -> x));
+        return argsList;
     }
 
-    @Test
-    void DebuggerAttributesValid() {
-        for (Object[] objects : DebuggerAttributesValid_Data()) {
-            this.DebuggerAttributesValid((ILookup<?, ?>) objects[0]);
-        }
-    }
-
-    private <TKey, TElement> void DebuggerAttributesValid(ILookup<TKey, TElement> lookup) {
+    @ParameterizedTest
+    @MethodSource("DebuggerAttributesValid_Data")
+    <TKey, TElement> void DebuggerAttributesValid(ILookup<TKey, TElement> lookup) {
         //count
         assertEquals("count = " + lookup.getCount(), DebugView.getDebuggerDisplay(lookup));
         //groupings

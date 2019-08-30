@@ -5,16 +5,62 @@ import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
 class CountTest extends TestCase {
+    private static IEnumerable<Object[]> Int_TestData() {
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[0]), null, 0);
+
+        argsList.add(Linq.of(new int[0]), isEvenFunc, 0);
+        argsList.add(Linq.of(new int[]{4}), isEvenFunc, 1);
+        argsList.add(Linq.of(new int[]{5}), isEvenFunc, 0);
+        argsList.add(Linq.of(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2);
+        argsList.add(Linq.of(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6);
+
+        argsList.add(RepeatedNumberGuaranteedNotCollectionType(0, 0), null, 0);
+        argsList.add(RepeatedNumberGuaranteedNotCollectionType(5, 1), null, 1);
+        argsList.add(RepeatedNumberGuaranteedNotCollectionType(5, 10), null, 10);
+        return argsList;
+    }
+
+    private static <T> IEnumerable<Object[]> EnumerateCollectionTypesAndCounts(int count, IEnumerable<T> enumerable) {
+        Stack<T> stack = new Stack<>();
+        enumerable.forEach(stack::push);
+
+        ArgsList argsList = new ArgsList();
+        argsList.add(count, enumerable);
+        argsList.add(count, enumerable.toArray());
+        argsList.add(count, Linq.of(enumerable.toList()));
+        argsList.add(count, Linq.of(stack));
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> CountsAndTallies() {
+        int count = 5;
+        IEnumerable<Integer> range = Linq.range(1, count);
+
+        ArgsList argsList = new ArgsList();
+        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range))
+            argsList.add(variant);
+        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range.select(i -> (float) i)))
+            argsList.add(variant);
+        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range.select(i -> (double) i)))
+            argsList.add(variant);
+        for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range.select(i -> m(i))))
+            argsList.add(variant);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -31,32 +77,9 @@ class CountTest extends TestCase {
         assertEquals(q.count(), q.count());
     }
 
-    private IEnumerable<Object[]> Int_TestData() {
-        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-
-        return Linq.of(
-                new Object[]{Linq.of(new int[0]), null, 0},
-
-                new Object[]{Linq.of(new int[0]), isEvenFunc, 0},
-                new Object[]{Linq.of(new int[]{4}), isEvenFunc, 1},
-                new Object[]{Linq.of(new int[]{5}), isEvenFunc, 0},
-                new Object[]{Linq.of(new int[]{2, 5, 7, 9, 29, 10}), isEvenFunc, 2},
-                new Object[]{Linq.of(new int[]{2, 20, 22, 100, 50, 10}), isEvenFunc, 6},
-
-                new Object[]{RepeatedNumberGuaranteedNotCollectionType(0, 0), null, 0},
-                new Object[]{RepeatedNumberGuaranteedNotCollectionType(5, 1), null, 1},
-                new Object[]{RepeatedNumberGuaranteedNotCollectionType(5, 10), null, 10}
-        );
-    }
-
-    @Test
-    void Int() {
-        for (Object[] objects : this.Int_TestData())
-            //noinspection unchecked
-            this.Int((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (int) objects[2]);
-    }
-
-    private void Int(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
+    @ParameterizedTest
+    @MethodSource("Int_TestData")
+    void Int(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         if (predicate == null) {
             assertEquals(expected, source.count());
         } else {
@@ -64,14 +87,9 @@ class CountTest extends TestCase {
         }
     }
 
-    @Test
-    void IntRunOnce() {
-        for (Object[] objects : this.Int_TestData())
-            //noinspection unchecked
-            this.IntRunOnce((IEnumerable<Integer>) objects[0], (Predicate1<Integer>) objects[1], (int) objects[2]);
-    }
-
-    private void IntRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
+    @ParameterizedTest
+    @MethodSource("Int_TestData")
+    void IntRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         if (predicate == null) {
             assertEquals(expected, source.runOnce().count());
         } else {
@@ -85,53 +103,15 @@ class CountTest extends TestCase {
         assertEquals(5, Linq.of(data).count());
     }
 
-    private <T> IEnumerable<Object[]> EnumerateCollectionTypesAndCounts(int count, IEnumerable<T> enumerable) {
-        Stack<T> stack = new Stack<>();
-        enumerable.forEach(stack::push);
-
-        return Linq.of(
-                new Object[]{count, enumerable},
-                new Object[]{count, enumerable.toArray()},
-                new Object[]{count, Linq.of(enumerable.toList())},
-                new Object[]{count, Linq.of(stack)}
-        );
-    }
-
-    private IEnumerable<Object[]> CountsAndTallies() {
-        int count = 5;
-        IEnumerable<Integer> range = Linq.range(1, count);
-
-        List<Object[]> list = new ArrayList<>();
-        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range))
-            list.add(variant);
-        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> (float) i)))
-            list.add(variant);
-        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> (double) i)))
-            list.add(variant);
-        for (Object[] variant : this.EnumerateCollectionTypesAndCounts(count, range.select(i -> m(i))))
-            list.add(variant);
-        return Linq.of(list);
-    }
-
-    @Test
-    void CountMatchesTally() {
-        for (Object[] objects : this.CountsAndTallies())
-            //noinspection unchecked
-            this.CountMatchesTally((int) objects[0], (IEnumerable) objects[1]);
-    }
-
-    private <T> void CountMatchesTally(int count, IEnumerable<T> enumerable) {
+    @ParameterizedTest
+    @MethodSource("CountsAndTallies")
+    <T> void CountMatchesTally(int count, IEnumerable<T> enumerable) {
         assertEquals(count, enumerable.count());
     }
 
-    @Test
-    void RunOnce() {
-        for (Object[] objects : this.CountsAndTallies())
-            //noinspection unchecked
-            this.RunOnce((int) objects[0], (IEnumerable) objects[1]);
-    }
-
-    private <T> void RunOnce(int count, IEnumerable<T> enumerable) {
+    @ParameterizedTest
+    @MethodSource("CountsAndTallies")
+    <T> void RunOnce(int count, IEnumerable<T> enumerable) {
         assertEquals(count, enumerable.runOnce().count());
     }
 

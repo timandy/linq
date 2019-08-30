@@ -18,6 +18,24 @@ import java.util.Date;
  * Created by 许崇雷 on 2018-05-10.
  */
 class FirstTest extends TestCase {
+    private static <T> void TestEmptyIList(Class<T> clazz) {
+        T[] source = ArrayUtils.empty(clazz);
+
+        assertNotNull(as(Linq.of(source), IList.class));
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).runOnce().first());
+    }
+
+    private static <T> IEnumerable<T> EmptySourceGeneric() {
+        return Linq.empty();
+    }
+
+    private static <T> void TestEmptyNotIList() {
+        IEnumerable<T> source = EmptySourceGeneric();
+
+        assertNull(as(source, IList.class));
+        assertThrows(InvalidOperationException.class, () -> source.runOnce().first());
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
@@ -34,19 +52,12 @@ class FirstTest extends TestCase {
         assertEquals(q.first(), q.first());
     }
 
-    private <T> void TestEmptyIList(Class<T> clazz) {
-        T[] source = ArrayUtils.empty(clazz);
-
-        assertNotNull(as(Linq.of(source), IList.class));
-        assertThrows(InvalidOperationException.class, () -> Linq.of(source).runOnce().first());
-    }
-
     @Test
     void EmptyIListT() {
-        this.TestEmptyIList(Integer.class);
-        this.TestEmptyIList(String.class);
-        this.TestEmptyIList(Date.class);
-        this.TestEmptyIList(FirstTest.class);
+        TestEmptyIList(Integer.class);
+        TestEmptyIList(String.class);
+        TestEmptyIList(Date.class);
+        TestEmptyIList(FirstTest.class);
     }
 
     @Test
@@ -76,23 +87,12 @@ class FirstTest extends TestCase {
         assertEquals(expected, Linq.of(source).first());
     }
 
-    private <T> IEnumerable<T> EmptySourceGeneric() {
-        return Linq.empty();
-    }
-
-    private <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = this.EmptySourceGeneric();
-
-        assertNull(as(source, IList.class));
-        assertThrows(InvalidOperationException.class, () -> source.runOnce().first());
-    }
-
     @Test
     void EmptyNotIListT() {
-        this.<Integer>TestEmptyNotIList();
-        this.<String>TestEmptyNotIList();
-        this.<Date>TestEmptyNotIList();
-        this.<FirstTest>TestEmptyNotIList();
+        FirstTest.<Integer>TestEmptyNotIList();
+        FirstTest.<String>TestEmptyNotIList();
+        FirstTest.<Date>TestEmptyNotIList();
+        FirstTest.<FirstTest>TestEmptyNotIList();
     }
 
     @Test

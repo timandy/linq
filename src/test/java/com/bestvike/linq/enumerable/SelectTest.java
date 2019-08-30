@@ -12,11 +12,14 @@ import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.exception.NotSupportedException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +35,42 @@ import java.util.concurrent.CompletableFuture;
  * Created by 许崇雷 on 2018-05-10.
  */
 class SelectTest extends TestCase {
+    private static IEnumerable<Object[]> MoveNextAfterDisposeData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[0]));
+        argsList.add(Linq.of(new int[1]));
+        argsList.add(Linq.range(1, 30));
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> RunSelectorDuringCountData() {
+        List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> transforms = Arrays.asList(
+                e -> e,
+                e -> ForceNotCollection(e),
+                e -> ForceNotCollection(e).skip(1),
+                e -> ForceNotCollection(e).where(i -> true),
+                e -> e.toArray().where(i -> true),
+                e -> Linq.of(e.toList()).where(i -> true),
+                e -> Linq.of(new LinkedList<>(e.toList())).where(i -> true),
+                e -> e.select(i -> i),
+                e -> e.take(e.count()),
+                e -> e.toArray(),
+                e -> Linq.of(e.toList()),
+                e -> Linq.of(new LinkedList<>(e.toList())) // Implements IList<T>.
+        );
+
+        Random r = new Random(0x984bf1a3);
+
+        ArgsList argsList = new ArgsList();
+        for (int i = 0; i <= 5; i++) {
+            IEnumerable<Integer> enumerable = Linq.range(1, i).select(a -> r.nextInt());
+            for (Func1<IEnumerable<Integer>, IEnumerable<Integer>> transform : transforms) {
+                argsList.add(transform.apply(enumerable));
+            }
+        }
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q1 = Linq.of(new String[]{"Alen", "Felix", null, null, "X", "Have Space", "Clinton", ""})
@@ -1070,14 +1109,9 @@ class SelectTest extends TestCase {
         assertEmpty(Linq.of(Linq.of(Arrays.asList(1, 2, 3, 4)).select(i -> i * 2).skip(8).toList()));
     }
 
-    @Test
-    void MoveNextAfterDispose() {
-        for (Object[] objects : this.MoveNextAfterDisposeData()) {
-            this.MoveNextAfterDispose((IEnumerable<Integer>) objects[0]);
-        }
-    }
-
-    private void MoveNextAfterDispose(IEnumerable<Integer> source) {
+    @ParameterizedTest
+    @MethodSource("MoveNextAfterDisposeData")
+    void MoveNextAfterDispose(IEnumerable<Integer> source) {
         // Select is specialized for a bunch of different types, so we want
         // to make sure this holds true for all of them.
         List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> identityTransforms = Arrays.asList(
@@ -1098,55 +1132,14 @@ class SelectTest extends TestCase {
         }
     }
 
-    private IEnumerable<Object[]> MoveNextAfterDisposeData() {
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.of(new int[0])});
-        lst.add(new Object[]{Linq.of(new int[1])});
-        lst.add(new Object[]{Linq.range(1, 30)});
-        return Linq.of(lst);
-    }
-
-    @Test
-    void RunSelectorDuringCount() {
-        for (Object[] objects : this.RunSelectorDuringCountData()) {
-            this.RunSelectorDuringCount((IEnumerable<Integer>) objects[0]);
-        }
-    }
-
-    private void RunSelectorDuringCount(IEnumerable<Integer> source) {
+    @ParameterizedTest
+    @MethodSource("RunSelectorDuringCountData")
+    void RunSelectorDuringCount(IEnumerable<Integer> source) {
         ref<Integer> timesRun = ref.init(0);
         IEnumerable<Integer> selected = source.select(i -> timesRun.value++);
         selected.count();
 
         assertEquals(source.count(), timesRun.value);
-    }
-
-    private IEnumerable<Object[]> RunSelectorDuringCountData() {
-        List<Func1<IEnumerable<Integer>, IEnumerable<Integer>>> transforms = Arrays.asList(
-                e -> e,
-                e -> ForceNotCollection(e),
-                e -> ForceNotCollection(e).skip(1),
-                e -> ForceNotCollection(e).where(i -> true),
-                e -> e.toArray().where(i -> true),
-                e -> Linq.of(e.toList()).where(i -> true),
-                e -> Linq.of(new LinkedList<>(e.toList())).where(i -> true),
-                e -> e.select(i -> i),
-                e -> e.take(e.count()),
-                e -> e.toArray(),
-                e -> Linq.of(e.toList()),
-                e -> Linq.of(new LinkedList<>(e.toList())) // Implements IList<T>.
-        );
-
-        Random r = new Random(0x984bf1a3);
-
-        List<Object[]> lst = new ArrayList<>();
-        for (int i = 0; i <= 5; i++) {
-            IEnumerable<Integer> enumerable = Linq.range(1, i).select(a -> r.nextInt());
-            for (Func1<IEnumerable<Integer>, IEnumerable<Integer>> transform : transforms) {
-                lst.add(new Object[]{transform.apply(enumerable)});
-            }
-        }
-        return Linq.of(lst);
     }
 
     @Test
@@ -1414,9 +1407,7 @@ class SelectTest extends TestCase {
         assertEquals("[#0: Fred, #1: Bill, #2: Eric, #3: Janet]", indexes.toString());
     }
 
-    /// <summary>
-    /// Test enumerator - throws InvalidOperationException from Current after MoveNext called once.
-    /// </summary>
+    // Test enumerator - throws InvalidOperationException from Current after MoveNext called once.
     private static class ThrowsOnCurrent extends TestEnumerator {
         @Override
         public Integer current() {

@@ -19,9 +19,12 @@ import com.bestvike.linq.adapter.enumerable.LongArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.ShortArrayEnumerable;
 import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,6 +34,24 @@ import java.util.LinkedList;
  * Created by 许崇雷 on 2019-06-17.
  */
 class FindLastIndexTest extends TestCase {
+    private static IEnumerable<Object[]> FindLastIndex_TestData() {
+        ArgsList argsList = new ArgsList();
+        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
+        argsList.add(Linq.empty(), isEvenFunc, -1);
+        argsList.add(Linq.singleton(4), isEvenFunc, 0);
+        argsList.add(Linq.singleton(5), isEvenFunc, -1);
+        argsList.add(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
+        argsList.add(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
+
+        Array<Integer> range = Linq.range(1, 10).toArray();
+        argsList.add(range, (Predicate1<Integer>) i -> i > 10, -1);
+        for (int j = 0; j <= 9; j++) {
+            int k = j; // Local copy for iterator
+            argsList.add(range, (Predicate1<Integer>) i -> i > k, 9);
+        }
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -48,45 +69,15 @@ class FindLastIndexTest extends TestCase {
         assertEquals(q.findLastIndex(predicate), q.findLastIndex(predicate));
     }
 
-    @Test
-    void FindLastIndex() {
-        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-        this.FindLastIndex(Linq.empty(), isEvenFunc, -1);
-        this.FindLastIndex(Linq.singleton(4), isEvenFunc, 0);
-        this.FindLastIndex(Linq.singleton(5), isEvenFunc, -1);
-        this.FindLastIndex(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.FindLastIndex(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
-
-        Array<Integer> range = Linq.range(1, 10).toArray();
-        this.FindLastIndex(range, i -> i > 10, -1);
-        for (int j = 0; j <= 9; j++) {
-            int k = j; // Local copy for iterator
-            this.FindLastIndex(range, i -> i > k, 9);
-        }
-    }
-
-    private void FindLastIndex(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
+    @ParameterizedTest
+    @MethodSource("FindLastIndex_TestData")
+    void FindLastIndex(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         assertEquals(expected, source.findLastIndex(predicate));
     }
 
-    @Test
-    void FindLastIndexRunOnce() {
-        Predicate1<Integer> isEvenFunc = TestCase::IsEven;
-        this.FindLastIndexRunOnce(Linq.empty(), isEvenFunc, -1);
-        this.FindLastIndexRunOnce(Linq.singleton(4), isEvenFunc, 0);
-        this.FindLastIndexRunOnce(Linq.singleton(5), isEvenFunc, -1);
-        this.FindLastIndexRunOnce(Linq.of(5, 9, 3, 7, 4), isEvenFunc, 4);
-        this.FindLastIndexRunOnce(Linq.of(5, 8, 9, 3, 7, 11), isEvenFunc, 1);
-
-        Array<Integer> range = Linq.range(1, 10).toArray();
-        this.FindLastIndexRunOnce(range, i -> i > 10, -1);
-        for (int j = 0; j <= 9; j++) {
-            int k = j; // Local copy for iterator
-            this.FindLastIndexRunOnce(range, i -> i > k, 9);
-        }
-    }
-
-    private void FindLastIndexRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
+    @ParameterizedTest
+    @MethodSource("FindLastIndex_TestData")
+    void FindLastIndexRunOnce(IEnumerable<Integer> source, Predicate1<Integer> predicate, int expected) {
         assertEquals(expected, source.runOnce().findLastIndex(predicate));
     }
 

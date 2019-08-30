@@ -7,19 +7,16 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.ref;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Created by 许崇雷 on 2018-05-17.
  */
 class TakeLastTest extends TestCase {
-    @Test
-    void TakeLast() {
-        for (Object[] objects : SkipTakeData.EnumerableData()) {
-            this.TakeLast((IEnumerable<Integer>) objects[0], (int) objects[1]);
-        }
-    }
-
-    private void TakeLast(IEnumerable<Integer> source, int count) {
+    @ParameterizedTest
+    @MethodSource("com.bestvike.TestCase$SkipTakeData#EnumerableData")
+    void TakeLast(IEnumerable<Integer> source, int count) {
         assertAll(Linq.of(TestCase.<Integer>IdentityTransforms()), transform -> {
             IEnumerable<Integer> equivalent = transform.apply(source);
 
@@ -44,14 +41,9 @@ class TakeLastTest extends TestCase {
         });
     }
 
-    @Test
-    void EvaluationBehavior() {
-        for (Object[] objects : SkipTakeData.EvaluationBehaviorData()) {
-            this.EvaluationBehavior((int) objects[0]);
-        }
-    }
-
-    private void EvaluationBehavior(int count) {
+    @ParameterizedTest
+    @MethodSource("com.bestvike.TestCase$SkipTakeData#EvaluationBehaviorData")
+    void EvaluationBehavior(int count) {
         ref<Integer> index = ref.init(0);
         int limit = count * 2;
 
@@ -82,14 +74,9 @@ class TakeLastTest extends TestCase {
         assertEquals(expected, index.value & Integer.MIN_VALUE);
     }
 
-    @Test
-    void RunOnce() {
-        for (Object[] objects : SkipTakeData.EnumerableData()) {
-            this.RunOnce((IEnumerable<Integer>) objects[0], (int) objects[1]);
-        }
-    }
-
-    private void RunOnce(IEnumerable<Integer> source, int count) {
+    @ParameterizedTest
+    @MethodSource("com.bestvike.TestCase$SkipTakeData#EnumerableData")
+    void RunOnce(IEnumerable<Integer> source, int count) {
         IEnumerable<Integer> expected = source.takeLast(count);
         assertEquals(expected, source.takeLast(count).runOnce());
     }

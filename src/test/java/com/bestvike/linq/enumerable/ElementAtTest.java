@@ -4,16 +4,28 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
 class ElementAtTest extends TestCase {
+    private static IEnumerable<Object[]> TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(NumberRangeGuaranteedNotCollectionType(9, 1), 0, 9);
+        argsList.add(NumberRangeGuaranteedNotCollectionType(9, 10), 9, 18);
+        argsList.add(NumberRangeGuaranteedNotCollectionType(-4, 10), 3, -1);
+
+        argsList.add(Linq.of(new int[]{-4}), 0, -4);
+        argsList.add(Linq.of(new int[]{9, 8, 0, -5, 10}), 4, 10);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345})
@@ -30,37 +42,15 @@ class ElementAtTest extends TestCase {
         assertEquals(q.elementAt(4), q.elementAt(4));
     }
 
-    private IEnumerable<Object[]> TestData() {
-        List<Object[]> lst = new ArrayList<>();
-
-        lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(9, 1), 0, 9});
-        lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(9, 10), 9, 18});
-        lst.add(new Object[]{NumberRangeGuaranteedNotCollectionType(-4, 10), 3, -1});
-
-        lst.add(new Object[]{Linq.of(new int[]{-4}), 0, -4});
-        lst.add(new Object[]{Linq.of(new int[]{9, 8, 0, -5, 10}), 4, 10});
-        return Linq.of(lst);
-    }
-
-    @Test
-    void ElementAt() {
-        for (Object[] objects : this.TestData()) {
-            this.ElementAt((IEnumerable<Integer>) objects[0], (int) objects[1], (Integer) objects[2]);
-        }
-    }
-
-    private void ElementAt(IEnumerable<Integer> source, int index, Integer expected) {
+    @ParameterizedTest
+    @MethodSource("TestData")
+    void ElementAt(IEnumerable<Integer> source, int index, Integer expected) {
         assertEquals(expected, source.elementAt(index));
     }
 
-    @Test
-    void ElementAtRunOnce() {
-        for (Object[] objects : this.TestData()) {
-            this.ElementAtRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer) objects[2]);
-        }
-    }
-
-    private void ElementAtRunOnce(IEnumerable<Integer> source, int index, Integer expected) {
+    @ParameterizedTest
+    @MethodSource("TestData")
+    void ElementAtRunOnce(IEnumerable<Integer> source, int index, Integer expected) {
         assertEquals(expected, source.runOnce().elementAt(index));
     }
 

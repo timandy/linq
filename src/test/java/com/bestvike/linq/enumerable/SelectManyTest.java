@@ -11,12 +11,14 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.ArgumentOutOfRangeException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +27,118 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 class SelectManyTest extends TestCase {
+    private static IEnumerable<Object[]> ParameterizedTestsData() {
+        ArgsList argsList = new ArgsList();
+        for (int i = 1; i <= 20; i++) {
+            int ii = i;
+            Func1<Integer, IEnumerable<Integer>> selector = n -> Linq.range(ii, n);
+            argsList.add(Linq.range(1, i), selector);
+        }
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> DisposeAfterEnumerationData() {
+        int[] lengths = {1, 2, 3, 5, 8, 13, 21, 34};
+
+        return Linq.of(lengths).selectMany(l -> Linq.of(lengths), (l1, l2) -> new Object[]{l1, l2});
+    }
+
+    private static IEnumerable<Object[]> ThrowOverflowExceptionOnConstituentLargeCounts_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(new int[]{Integer.MAX_VALUE, 1});
+        argsList.add(new int[]{2, Integer.MAX_VALUE - 1});
+        argsList.add(new int[]{123, 456, Integer.MAX_VALUE - 100000, 123456});
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> GetToArrayDataSources() {
+        ArgsList argsList = new ArgsList();
+        // Marker at the end
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(new Integer[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                        Linq.of(new int[]{3}),
+                }
+        });
+
+        // Marker at beginning
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.of(new int[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                        new TestEnumerable<>(new Integer[]{3}),
+                }
+        });
+
+        // Marker in middle
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(new Integer[]{0}),
+                        Linq.of(new int[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                }
+        });
+
+        // Non-marker in middle
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.of(new int[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        Linq.of(new int[]{2})
+                }
+        });
+
+        // Big arrays (marker in middle)
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(Linq.range(0, 100).toArray(Integer.class)),
+                        Linq.range(100, 100).toArray(),
+                        new TestEnumerable<>(Linq.range(200, 100).toArray(Integer.class)),
+                }
+        });
+
+        // Big arrays (non-marker in middle)
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.range(0, 100).toArray(),
+                        new TestEnumerable<>(Linq.range(100, 100).toArray(Integer.class)),
+                        Linq.range(200, 100).toArray(),
+                }
+        });
+
+        // Interleaved (first marker)
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        Linq.of(new int[]{0}),
+                        new TestEnumerable<>(new Integer[]{1}),
+                        Linq.of(new int[]{2}),
+                        new TestEnumerable<>(new Integer[]{3}),
+                        Linq.of(new int[]{4}),
+                }
+        });
+
+        // Interleaved (first non-marker)
+        argsList.add(new Object[]{
+                new IEnumerable[]{
+                        new TestEnumerable<>(new Integer[]{0}),
+                        Linq.of(new int[]{1}),
+                        new TestEnumerable<>(new Integer[]{2}),
+                        Linq.of(new int[]{3}),
+                        new TestEnumerable<>(new Integer[]{4}),
+                }
+        });
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> EvaluateSelectorOncePerItem_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(10);
+        return argsList;
+    }
+
     @Test
     void EmptySource() {
         assertEmpty(Linq.<StringWithIntArray>empty().selectMany(e -> Linq.of(Linq.of(e.total))));
@@ -338,14 +452,9 @@ class SelectManyTest extends TestCase {
         assertFalse(en != null && en.moveNext());
     }
 
-    @Test
-    void ParameterizedTests() {
-        for (Object[] objects : this.ParameterizedTestsData()) {
-            this.ParameterizedTests((IEnumerable<Integer>) objects[0], (Func1<Integer, IEnumerable<Integer>>) objects[1]);
-        }
-    }
-
-    private void ParameterizedTests(IEnumerable<Integer> source, Func1<Integer, IEnumerable<Integer>> selector) {
+    @ParameterizedTest
+    @MethodSource("ParameterizedTestsData")
+    void ParameterizedTests(IEnumerable<Integer> source, Func1<Integer, IEnumerable<Integer>> selector) {
         IEnumerable<Integer> expected = source.select(i -> selector.apply(i)).aggregate((l, r) -> l.concat(r));
         IEnumerable<Integer> actual = source.selectMany(selector);
 
@@ -355,25 +464,9 @@ class SelectManyTest extends TestCase {
         assertEquals(expected.toList(), actual.toList());
     }
 
-    private IEnumerable<Object[]> ParameterizedTestsData() {
-        List<Object[]> lst = new ArrayList<>();
-
-        for (int i = 1; i <= 20; i++) {
-            int ii = i;
-            Func1<Integer, IEnumerable<Integer>> selector = n -> Linq.range(ii, n);
-            lst.add(new Object[]{Linq.range(1, i), selector});
-        }
-        return Linq.of(lst);
-    }
-
-    @Test
-    void DisposeAfterEnumeration() {
-        for (Object[] objects : this.DisposeAfterEnumerationData()) {
-            this.DisposeAfterEnumeration((int) objects[0], (int) objects[1]);
-        }
-    }
-
-    private void DisposeAfterEnumeration(int sourceLength, int subLength) {
+    @ParameterizedTest
+    @MethodSource("DisposeAfterEnumerationData")
+    void DisposeAfterEnumeration(int sourceLength, int subLength) {
         ref<Integer> sourceState = ref.init(0);
         ref<Integer> subIndex = ref.init(0); // Index within the arrays the sub-collection is supposed to be at.
         int[] subState = new int[sourceLength];
@@ -430,32 +523,16 @@ class SelectManyTest extends TestCase {
         assertEquals(expectedCurrent, ee.current());
     }
 
-    private IEnumerable<Object[]> DisposeAfterEnumerationData() {
-        int[] lengths = {1, 2, 3, 5, 8, 13, 21, 34};
-
-        return Linq.of(lengths).selectMany(l -> Linq.of(lengths), (l1, l2) -> new Object[]{l1, l2});
-    }
-
-    @Test
-    void ThrowOverflowExceptionOnConstituentLargeCounts() {
-        this.ThrowOverflowExceptionOnConstituentLargeCounts(new int[]{Integer.MAX_VALUE, 1});
-        this.ThrowOverflowExceptionOnConstituentLargeCounts(new int[]{2, Integer.MAX_VALUE - 1});
-        this.ThrowOverflowExceptionOnConstituentLargeCounts(new int[]{123, 456, Integer.MAX_VALUE - 100000, 123456});
-    }
-
-    private void ThrowOverflowExceptionOnConstituentLargeCounts(int[] counts) {
+    @ParameterizedTest
+    @MethodSource("ThrowOverflowExceptionOnConstituentLargeCounts_TestData")
+    void ThrowOverflowExceptionOnConstituentLargeCounts(int[] counts) {
         IEnumerable<Integer> iterator = Linq.of(counts).selectMany(c -> Linq.range(1, c));
         assertThrows(ArithmeticException.class, () -> iterator.count());
     }
 
-    @Test
-    void CollectionInterleavedWithLazyEnumerables_ToArray() {
-        for (Object[] objects : this.GetToArrayDataSources()) {
-            this.CollectionInterleavedWithLazyEnumerables_ToArray((IEnumerable<Integer>[]) objects[0]);
-        }
-    }
-
-    private void CollectionInterleavedWithLazyEnumerables_ToArray(IEnumerable<Integer>[] arrays) {
+    @ParameterizedTest
+    @MethodSource("GetToArrayDataSources")
+    void CollectionInterleavedWithLazyEnumerables_ToArray(IEnumerable<Integer>[] arrays) {
         // See https://github.com/dotnet/corefx/issues/23680
 
         Array<Integer> results = Linq.of(arrays).selectMany(ar -> ar).toArray();
@@ -465,94 +542,9 @@ class SelectManyTest extends TestCase {
         }
     }
 
-    private IEnumerable<Object[]> GetToArrayDataSources() {
-        List<Object[]> lst = new ArrayList<>();
-        // Marker at the end
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        new TestEnumerable<>(new Integer[]{0}),
-                        new TestEnumerable<>(new Integer[]{1}),
-                        new TestEnumerable<>(new Integer[]{2}),
-                        Linq.of(new int[]{3}),
-                }
-        });
-
-        // Marker at beginning
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.of(new int[]{0}),
-                        new TestEnumerable<>(new Integer[]{1}),
-                        new TestEnumerable<>(new Integer[]{2}),
-                        new TestEnumerable<>(new Integer[]{3}),
-                }
-        });
-
-        // Marker in middle
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        new TestEnumerable<>(new Integer[]{0}),
-                        Linq.of(new int[]{1}),
-                        new TestEnumerable<>(new Integer[]{2}),
-                }
-        });
-
-        // Non-marker in middle
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.of(new int[]{0}),
-                        new TestEnumerable<>(new Integer[]{1}),
-                        Linq.of(new int[]{2})
-                }
-        });
-
-        // Big arrays (marker in middle)
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        new TestEnumerable<>(Linq.range(0, 100).toArray(Integer.class)),
-                        Linq.range(100, 100).toArray(),
-                        new TestEnumerable<>(Linq.range(200, 100).toArray(Integer.class)),
-                }
-        });
-
-        // Big arrays (non-marker in middle)
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.range(0, 100).toArray(),
-                        new TestEnumerable<>(Linq.range(100, 100).toArray(Integer.class)),
-                        Linq.range(200, 100).toArray(),
-                }
-        });
-
-        // Interleaved (first marker)
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        Linq.of(new int[]{0}),
-                        new TestEnumerable<>(new Integer[]{1}),
-                        Linq.of(new int[]{2}),
-                        new TestEnumerable<>(new Integer[]{3}),
-                        Linq.of(new int[]{4}),
-                }
-        });
-
-        // Interleaved (first non-marker)
-        lst.add(new Object[]{
-                new IEnumerable[]{
-                        new TestEnumerable<>(new Integer[]{0}),
-                        Linq.of(new int[]{1}),
-                        new TestEnumerable<>(new Integer[]{2}),
-                        Linq.of(new int[]{3}),
-                        new TestEnumerable<>(new Integer[]{4}),
-                }
-        });
-        return Linq.of(lst);
-    }
-
-    @Test
-    void EvaluateSelectorOncePerItem() {
-        this.EvaluateSelectorOncePerItem(10);
-    }
-
-    private void EvaluateSelectorOncePerItem(int count) {
+    @ParameterizedTest
+    @MethodSource("EvaluateSelectorOncePerItem_TestData")
+    void EvaluateSelectorOncePerItem(int count) {
         int[] timesCalledMap = new int[count];
 
         IEnumerable<Integer> source = Linq.range(0, 10);

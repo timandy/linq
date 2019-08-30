@@ -5,7 +5,10 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +17,20 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 class DefaultIfEmptyTest extends TestCase {
+    private static IEnumerable<Object[]> TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[0]), null, new Integer[]{null});
+        argsList.add(Linq.of(new int[0]), 0, new Integer[]{0});
+        argsList.add(Linq.of(new int[]{3}), 0, new Integer[]{3});
+        argsList.add(Linq.of(new int[]{3, -1, 0, 10, 15}), 0, new Integer[]{3, -1, 0, 10, 15});
+
+        argsList.add(Linq.of(new int[0]), -10, new Integer[]{-10});
+        argsList.add(Linq.of(new int[]{3}), 9, new Integer[]{3});
+        argsList.add(Linq.of(new int[]{3, -1, 0, 10, 15}), 9, new Integer[]{3, -1, 0, 10, 15});
+        argsList.add(Linq.empty(), 0, new Integer[]{0});
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsNonEmptyQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -29,28 +46,9 @@ class DefaultIfEmptyTest extends TestCase {
         assertEquals(q.defaultIfEmpty(88), q.defaultIfEmpty(88));
     }
 
-    private IEnumerable<Object[]> TestData() {
-        return Linq.of(
-                new Object[]{Linq.of(new int[0]), null, new Integer[]{null}},
-                new Object[]{Linq.of(new int[0]), 0, new Integer[]{0}},
-                new Object[]{Linq.of(new int[]{3}), 0, new Integer[]{3}},
-                new Object[]{Linq.of(new int[]{3, -1, 0, 10, 15}), 0, new Integer[]{3, -1, 0, 10, 15}},
-
-                new Object[]{Linq.of(new int[0]), -10, new Integer[]{-10}},
-                new Object[]{Linq.of(new int[]{3}), 9, new Integer[]{3}},
-                new Object[]{Linq.of(new int[]{3, -1, 0, 10, 15}), 9, new Integer[]{3, -1, 0, 10, 15}},
-                new Object[]{Linq.empty(), 0, new Integer[]{0}}
-        );
-    }
-
-    @Test
-    void DefaultIfEmpty() {
-        for (Object[] objects : this.TestData())
-            //noinspection unchecked
-            this.DefaultIfEmpty((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer[]) objects[2]);
-    }
-
-    private void DefaultIfEmpty(IEnumerable<Integer> source, Integer defaultValue, Integer[] expected) {
+    @ParameterizedTest
+    @MethodSource("TestData")
+    void DefaultIfEmpty(IEnumerable<Integer> source, Integer defaultValue, Integer[] expected) {
         IEnumerable<Integer> result;
         if (defaultValue == null) {
             result = source.defaultIfEmpty();
@@ -68,14 +66,9 @@ class DefaultIfEmptyTest extends TestCase {
         assertEquals(Linq.of(expected), result.toArray());
     }
 
-    @Test
-    void DefaultIfEmptyRunOnce() {
-        for (Object[] objects : this.TestData())
-            //noinspection unchecked
-            this.DefaultIfEmptyRunOnce((IEnumerable<Integer>) objects[0], (Integer) objects[1], (Integer[]) objects[2]);
-    }
-
-    private void DefaultIfEmptyRunOnce(IEnumerable<Integer> source, Integer defaultValue, Integer[] expected) {
+    @ParameterizedTest
+    @MethodSource("TestData")
+    void DefaultIfEmptyRunOnce(IEnumerable<Integer> source, Integer defaultValue, Integer[] expected) {
         if (defaultValue == null) {
             assertEquals(Linq.of(expected), source.runOnce().defaultIfEmpty());
         }

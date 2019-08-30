@@ -12,9 +12,12 @@ import com.bestvike.linq.ILookup;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +47,14 @@ class ToLookupTest extends TestCase {
             assertFalse(elEnumerator.moveNext());
         }
         assertEquals(num, lookup.getCount());
+    }
+
+    private static IEnumerable<Object[]> ApplyResultSelectorForGroup_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(1);
+        argsList.add(2);
+        argsList.add(3);
+        return argsList;
     }
 
     @Test
@@ -215,14 +226,9 @@ class ToLookupTest extends TestCase {
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 1000).toLookup(i -> i / 10, elementSelector, EqualityComparer.Default()));
     }
 
-    @Test
-    void ApplyResultSelectorForGroup() {
-        this.ApplyResultSelectorForGroup(1);
-        this.ApplyResultSelectorForGroup(2);
-        this.ApplyResultSelectorForGroup(3);
-    }
-
-    private void ApplyResultSelectorForGroup(int enumType) {
+    @ParameterizedTest
+    @MethodSource("ApplyResultSelectorForGroup_TestData")
+    void ApplyResultSelectorForGroup(int enumType) {
         //Create test data
         List<Role> roles = Arrays.asList(
                 new Role(1),

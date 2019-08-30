@@ -12,9 +12,12 @@ import com.bestvike.linq.IOrderedEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -27,6 +30,32 @@ import java.util.Set;
  * Created by 许崇雷 on 2018-05-10.
  */
 class OrderByTest extends TestCase {
+    private static IEnumerable<Object[]> SortsRandomizedEnumerableCorrectly_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(0);
+        argsList.add(1);
+        argsList.add(2);
+        argsList.add(3);
+        argsList.add(8);
+        argsList.add(16);
+        argsList.add(1024);
+        argsList.add(4096);
+        argsList.add(1_000_000);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> TakeOne_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[]{1}));
+        argsList.add(Linq.of(new int[]{1, 2}));
+        argsList.add(Linq.of(new int[]{2, 1}));
+        argsList.add(Linq.of(new int[]{1, 2, 3, 4, 5}));
+        argsList.add(Linq.of(new int[]{5, 4, 3, 2, 1}));
+        argsList.add(Linq.of(new int[]{4, 3, 2, 1, 5, 9, 8, 7, 6}));
+        argsList.add(Linq.of(new int[]{2, 4, 6, 8, 10, 5, 3, 7, 1, 9}));
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Tuple2<Integer, Integer>> q = Linq.of(new int[]{1, 6, 0, -1, 3})
@@ -344,20 +373,9 @@ class OrderByTest extends TestCase {
         assertEquals(expected, ordered);
     }
 
-    @Test
-    void SortsRandomizedEnumerableCorrectly() {
-        this.SortsRandomizedEnumerableCorrectly(0);
-        this.SortsRandomizedEnumerableCorrectly(1);
-        this.SortsRandomizedEnumerableCorrectly(2);
-        this.SortsRandomizedEnumerableCorrectly(3);
-        this.SortsRandomizedEnumerableCorrectly(8);
-        this.SortsRandomizedEnumerableCorrectly(16);
-        this.SortsRandomizedEnumerableCorrectly(1024);
-        this.SortsRandomizedEnumerableCorrectly(4096);
-        this.SortsRandomizedEnumerableCorrectly(1_000_000);
-    }
-
-    private void SortsRandomizedEnumerableCorrectly(int items) {
+    @ParameterizedTest
+    @MethodSource("SortsRandomizedEnumerableCorrectly_TestData")
+    void SortsRandomizedEnumerableCorrectly(int items) {
         Random r = new Random(42);
 
         Integer[] randomized = Linq.range(0, items).select(i -> r.nextInt()).toArray(Integer.class);
@@ -367,18 +385,9 @@ class OrderByTest extends TestCase {
         assertEquals(Linq.of(randomized), Linq.of(ordered));
     }
 
-    @Test
-    void TakeOne() {
-        this.TakeOne(Linq.of(new int[]{1}));
-        this.TakeOne(Linq.of(new int[]{1, 2}));
-        this.TakeOne(Linq.of(new int[]{2, 1}));
-        this.TakeOne(Linq.of(new int[]{1, 2, 3, 4, 5}));
-        this.TakeOne(Linq.of(new int[]{5, 4, 3, 2, 1}));
-        this.TakeOne(Linq.of(new int[]{4, 3, 2, 1, 5, 9, 8, 7, 6}));
-        this.TakeOne(Linq.of(new int[]{2, 4, 6, 8, 10, 5, 3, 7, 1, 9}));
-    }
-
-    private void TakeOne(IEnumerable<Integer> source) {
+    @ParameterizedTest
+    @MethodSource("TakeOne_TestData")
+    void TakeOne(IEnumerable<Integer> source) {
         int count = 0;
         for (int x : source.orderBy(i -> i).take(1)) {
             count++;

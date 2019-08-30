@@ -9,18 +9,55 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.RepeatInvokeException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by 许崇雷 on 2019-06-14.
  */
 class IndexOfTest extends TestCase {
+    private static IEnumerable<Object[]> Int_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[0]), 6, -1);
+        argsList.add(Linq.of(new int[]{8, 10, 3, 0, -8}), 6, -1);
+        argsList.add(Linq.of(new int[]{8, 10, 3, 0, -8}), 8, 0);
+        argsList.add(Linq.of(new int[]{8, 10, 3, 0, -8}), -8, 4);
+        argsList.add(Linq.of(new int[]{8, 0, 10, 3, 0, -8, 0}), 0, 1);
+
+        argsList.add(NumberRangeGuaranteedNotCollectionType(0, 0), 0, -1);
+        argsList.add(NumberRangeGuaranteedNotCollectionType(4, 5), 3, -1);
+        argsList.add(NumberRangeGuaranteedNotCollectionType(3, 5), 3, 0);
+        argsList.add(NumberRangeGuaranteedNotCollectionType(3, 5), 7, 4);
+        argsList.add(RepeatedNumberGuaranteedNotCollectionType(10, 3), 10, 0);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> String_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new String[]{null}), StringComparer.Ordinal, null, 0);
+        argsList.add(Linq.of("Bob", "Robert", "Tim"), null, "trboeR", -1);
+        argsList.add(Linq.of("Bob", "Robert", "Tim"), null, "Tim", 2);
+        argsList.add(Linq.of("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "trboeR", 1);
+        argsList.add(Linq.of("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "nevar", -1);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NullableInt_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(8, 0, 10, 3, 0, -8, 0), null, -1);
+        argsList.add(Linq.of(8, 0, 10, null, 3, 0, -8, 0), null, 3);
+
+        argsList.add(NullableNumberRangeGuaranteedNotCollectionType(3, 4), null, -1);
+        argsList.add(RepeatedNullableNumberGuaranteedNotCollectionType(null, 5), null, 0);
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(9999, 0, 888, -1, 66, -777, 1, 2, -12345)
@@ -37,65 +74,22 @@ class IndexOfTest extends TestCase {
         assertEquals(q.indexOf("X"), q.indexOf("X"));
     }
 
-    private IEnumerable<Object[]> Int_TestData() {
-        List<Object[]> results = new ArrayList<>();
-
-        results.add(new Object[]{Linq.of(new int[0]), 6, -1});
-        results.add(new Object[]{Linq.of(new int[]{8, 10, 3, 0, -8}), 6, -1});
-        results.add(new Object[]{Linq.of(new int[]{8, 10, 3, 0, -8}), 8, 0});
-        results.add(new Object[]{Linq.of(new int[]{8, 10, 3, 0, -8}), -8, 4});
-        results.add(new Object[]{Linq.of(new int[]{8, 0, 10, 3, 0, -8, 0}), 0, 1});
-
-        results.add(new Object[]{NumberRangeGuaranteedNotCollectionType(0, 0), 0, -1});
-        results.add(new Object[]{NumberRangeGuaranteedNotCollectionType(4, 5), 3, -1});
-        results.add(new Object[]{NumberRangeGuaranteedNotCollectionType(3, 5), 3, 0});
-        results.add(new Object[]{NumberRangeGuaranteedNotCollectionType(3, 5), 7, 4});
-        results.add(new Object[]{RepeatedNumberGuaranteedNotCollectionType(10, 3), 10, 0});
-
-        return Linq.of(results);
-    }
-
-    @Test
-    void Int() {
-        for (Object[] objects : this.Int_TestData())
-            //noinspection unchecked
-            this.Int((IEnumerable<Integer>) objects[0], (int) objects[1], (int) objects[2]);
-    }
-
-    private void Int(IEnumerable<Integer> source, int value, int expected) {
+    @ParameterizedTest
+    @MethodSource("Int_TestData")
+    void Int(IEnumerable<Integer> source, int value, int expected) {
         assertEquals(expected, source.indexOf(value));
         assertEquals(expected, source.indexOf(value, null));
     }
 
-    @Test
-    void IntRunOnce() {
-        for (Object[] objects : this.Int_TestData())
-            //noinspection unchecked
-            this.IntRunOnce((IEnumerable<Integer>) objects[0], (int) objects[1], (int) objects[2]);
-    }
-
-    private void IntRunOnce(IEnumerable<Integer> source, int value, int expected) {
+    @ParameterizedTest
+    @MethodSource("Int_TestData")
+    void IntRunOnce(IEnumerable<Integer> source, int value, int expected) {
         assertEquals(expected, source.runOnce().indexOf(value));
         assertEquals(expected, source.runOnce().indexOf(value, null));
     }
 
-    private IEnumerable<Object[]> String_TestData() {
-        return Linq.of(
-                new Object[]{Linq.of(new String[]{null}), StringComparer.Ordinal, null, 0},
-                new Object[]{Linq.of("Bob", "Robert", "Tim"), null, "trboeR", -1},
-                new Object[]{Linq.of("Bob", "Robert", "Tim"), null, "Tim", 2},
-                new Object[]{Linq.of("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "trboeR", 1},
-                new Object[]{Linq.of("Bob", "Robert", "Tim"), new AnagramEqualityComparer(), "nevar", -1}
-        );
-    }
-
-    @Test
-    void String() {
-        for (Object[] objects : this.String_TestData())
-            //noinspection unchecked
-            this.String((IEnumerable<String>) objects[0], (IEqualityComparer<String>) objects[1], (String) objects[2], (int) objects[3]);
-    }
-
+    @ParameterizedTest
+    @MethodSource("String_TestData")
     void String(IEnumerable<String> source, IEqualityComparer<String> comparer, String value, int expected) {
         if (comparer == null) {
             assertEquals(expected, source.indexOf(value));
@@ -103,37 +97,18 @@ class IndexOfTest extends TestCase {
         assertEquals(expected, source.indexOf(value, comparer));
     }
 
-    @Test
-    void StringRunOnce() {
-        for (Object[] objects : this.String_TestData())
-            //noinspection unchecked
-            this.StringRunOnce((IEnumerable<String>) objects[0], (IEqualityComparer<String>) objects[1], (String) objects[2], (int) objects[3]);
-    }
-
-    private void StringRunOnce(IEnumerable<String> source, IEqualityComparer<String> comparer, String value, int expected) {
+    @ParameterizedTest
+    @MethodSource("String_TestData")
+    void StringRunOnce(IEnumerable<String> source, IEqualityComparer<String> comparer, String value, int expected) {
         if (comparer == null) {
             assertEquals(expected, source.runOnce().indexOf(value));
         }
         assertEquals(expected, source.runOnce().indexOf(value, comparer));
     }
 
-    private IEnumerable<Object[]> NullableInt_TestData() {
-        return Linq.of(
-                new Object[]{Linq.of(8, 0, 10, 3, 0, -8, 0), null, -1},
-                new Object[]{Linq.of(8, 0, 10, null, 3, 0, -8, 0), null, 3},
-
-                new Object[]{NullableNumberRangeGuaranteedNotCollectionType(3, 4), null, -1},
-                new Object[]{RepeatedNullableNumberGuaranteedNotCollectionType(null, 5), null, 0});
-    }
-
-    @Test
-    void NullableInt() {
-        for (Object[] objects : this.NullableInt_TestData())
-            //noinspection unchecked
-            this.NullableInt((IEnumerable<Integer>) objects[0], (Integer) objects[1], (int) objects[2]);
-    }
-
-    private void NullableInt(IEnumerable<Integer> source, Integer value, int expected) {
+    @ParameterizedTest
+    @MethodSource("NullableInt_TestData")
+    void NullableInt(IEnumerable<Integer> source, Integer value, int expected) {
         assertEquals(expected, source.indexOf(value));
         assertEquals(expected, source.indexOf(value, null));
     }

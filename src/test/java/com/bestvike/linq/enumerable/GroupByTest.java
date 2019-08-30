@@ -881,9 +881,9 @@ class GroupByTest extends TestCase {
 
     //struct
     private static final class Tmp extends ValueType {
-        final String X;
+        private final String X;
 
-        Tmp(String x) {
+        private Tmp(String x) {
             this.X = x;
         }
     }

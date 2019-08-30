@@ -12,7 +12,7 @@ import java.util.Locale;
  * Created by 许崇雷 on 2019-04-30.
  */
 class StringComparerTest extends TestCase {
-    {
+    static {
         CultureInfo.setCurrent(Locale.CHINA);
         assertSame(Locale.CHINA, CultureInfo.getCurrent());
         assertEquals(Locale.ROOT, CultureInfo.getInvariant());

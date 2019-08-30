@@ -9,16 +9,45 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
  */
 class ExceptTest extends TestCase {
+    private static IEnumerable<Object[]> Int_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new int[0]), Linq.of(new int[0]), null, Linq.of(new int[0]));
+        argsList.add(Linq.of(new int[0]), Linq.of(new int[]{-6, -8, -6, 2, 0, 0, 5, 6}), null, Linq.of(new int[0]));
+        argsList.add(Linq.of(new int[]{1, 1, 1, 1, 1}), Linq.of(new int[]{2, 3, 4}), null, Linq.of(new int[]{1}));
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> String_TestData() {
+        IEqualityComparer<String> defaultComparer = EqualityComparer.Default();
+
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(new String[1]), Linq.of(), defaultComparer, Linq.of(new String[1]));
+        argsList.add(Linq.of(null, null, Empty), Linq.of(new String[1]), defaultComparer, Linq.of(Empty));
+        argsList.add(Linq.of(new String[2]), Linq.of(), defaultComparer, Linq.of(new String[1]));
+        argsList.add(Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), null, Linq.of("Bob", "Tim", "Robert", "Chris"));
+        argsList.add(Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), new AnagramEqualityComparer(), Linq.of("Tim", "Robert"));
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NullableInt_TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.of(-6, -8, -6, 2, 0, 0, 5, 6, null, null), Linq.of(), Linq.of(-6, -8, 2, 0, 5, 6, null));
+        argsList.add(Linq.of(1, 2, 2, 3, 4, 5), Linq.of(5, 3, 2, 6, 6, 3, 1, null, null), Linq.of(4));
+        argsList.add(Linq.of(2, 3, null, 2, null, 4, 5), Linq.of(1, 9, null, 4), Linq.of(2, 3, 5));
+        return argsList;
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
@@ -38,47 +67,17 @@ class ExceptTest extends TestCase {
         assertEquals(q1.except(q2), q1.except(q2));
     }
 
-    private IEnumerable<Object[]> Int_TestData() {
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.of(new int[0]), Linq.of(new int[0]), null, Linq.of(new int[0])});
-        lst.add(new Object[]{Linq.of(new int[0]), Linq.of(new int[]{-6, -8, -6, 2, 0, 0, 5, 6}), null, Linq.of(new int[0])});
-        lst.add(new Object[]{Linq.of(new int[]{1, 1, 1, 1, 1}), Linq.of(new int[]{2, 3, 4}), null, Linq.of(new int[]{1})});
-        return Linq.of(lst);
-    }
-
-    @Test
-    void Init() {
-        for (Object[] objects : this.Int_TestData()) {
-            this.Int((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEqualityComparer<Integer>) objects[2], (IEnumerable<Integer>) objects[3]);
-        }
-    }
-
-    private void Int(IEnumerable<Integer> first, IEnumerable<Integer> second, IEqualityComparer<Integer> comparer, IEnumerable<Integer> expected) {
+    @ParameterizedTest
+    @MethodSource("Int_TestData")
+    void Int(IEnumerable<Integer> first, IEnumerable<Integer> second, IEqualityComparer<Integer> comparer, IEnumerable<Integer> expected) {
         if (comparer == null) {
             assertEquals(expected, first.except(second));
         }
         assertEquals(expected, first.except(second, comparer));
     }
 
-    private IEnumerable<Object[]> String_TestData() {
-        IEqualityComparer<String> defaultComparer = EqualityComparer.Default();
-
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.of(new String[1]), Linq.of(), defaultComparer, Linq.of(new String[1])});
-        lst.add(new Object[]{Linq.of(null, null, Empty), Linq.of(new String[1]), defaultComparer, Linq.of(Empty)});
-        lst.add(new Object[]{Linq.of(new String[2]), Linq.of(), defaultComparer, Linq.of(new String[1])});
-        lst.add(new Object[]{Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), null, Linq.of("Bob", "Tim", "Robert", "Chris")});
-        lst.add(new Object[]{Linq.of("Bob", "Tim", "Robert", "Chris"), Linq.of("bBo", "shriC"), new AnagramEqualityComparer(), Linq.of("Tim", "Robert")});
-        return Linq.of(lst);
-    }
-
-    @Test
-    void String() {
-        for (Object[] objects : this.String_TestData()) {
-            this.String((IEnumerable<String>) objects[0], (IEnumerable<String>) objects[1], (IEqualityComparer<String>) objects[2], (IEnumerable<String>) objects[3]);
-        }
-    }
-
+    @ParameterizedTest
+    @MethodSource("String_TestData")
     void String(IEnumerable<String> first, IEnumerable<String> second, IEqualityComparer<String> comparer, IEnumerable<String> expected) {
         if (comparer == null) {
             assertEquals(expected, first.except(second));
@@ -86,33 +85,15 @@ class ExceptTest extends TestCase {
         assertEquals(expected, first.except(second, comparer));
     }
 
-    private IEnumerable<Object[]> NullableInt_TestData() {
-        List<Object[]> lst = new ArrayList<>();
-        lst.add(new Object[]{Linq.of(-6, -8, -6, 2, 0, 0, 5, 6, null, null), Linq.of(), Linq.of(-6, -8, 2, 0, 5, 6, null)});
-        lst.add(new Object[]{Linq.of(1, 2, 2, 3, 4, 5), Linq.of(5, 3, 2, 6, 6, 3, 1, null, null), Linq.of(4)});
-        lst.add(new Object[]{Linq.of(2, 3, null, 2, null, 4, 5), Linq.of(1, 9, null, 4), Linq.of(2, 3, 5)});
-        return Linq.of(lst);
-    }
-
-    @Test
-    void NullableInt() {
-        for (Object[] objects : this.NullableInt_TestData()) {
-            this.NullableInt((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEnumerable<Integer>) objects[2]);
-        }
-    }
-
-    private void NullableInt(IEnumerable<Integer> first, IEnumerable<Integer> second, IEnumerable<Integer> expected) {
+    @ParameterizedTest
+    @MethodSource("NullableInt_TestData")
+    void NullableInt(IEnumerable<Integer> first, IEnumerable<Integer> second, IEnumerable<Integer> expected) {
         assertEquals(expected, first.except(second));
     }
 
-    @Test
-    void NullableIntRunOnce() {
-        for (Object[] objects : this.NullableInt_TestData()) {
-            this.NullableIntRunOnce((IEnumerable<Integer>) objects[0], (IEnumerable<Integer>) objects[1], (IEnumerable<Integer>) objects[2]);
-        }
-    }
-
-    private void NullableIntRunOnce(IEnumerable<Integer> first, IEnumerable<Integer> second, IEnumerable<Integer> expected) {
+    @ParameterizedTest
+    @MethodSource("NullableInt_TestData")
+    void NullableIntRunOnce(IEnumerable<Integer> first, IEnumerable<Integer> second, IEnumerable<Integer> expected) {
         assertEquals(expected, first.runOnce().except(second.runOnce()));
     }
 

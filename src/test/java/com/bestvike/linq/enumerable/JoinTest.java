@@ -815,11 +815,11 @@ class JoinTest extends TestCase {
 
     //struct
     private static final class JoinRec extends ValueType {
-        final String name;
-        final int orderID;
-        final int total;
+        private final String name;
+        private final int orderID;
+        private final int total;
 
-        JoinRec(String name, int orderID, int total) {
+        private JoinRec(String name, int orderID, int total) {
             this.name = name;
             this.orderID = orderID;
             this.total = total;
