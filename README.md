@@ -34,7 +34,6 @@ In general, the more complex the operation you want to perform on the data, the 
 - More API and Tuple supported.
 - Support for converting between IEnumerable and Stream.
 - Android supported.
-- More than 2000 test cases passed.
 
 ![bestvike](logo.jpg "济南百思为科信息工程有限公司")
 

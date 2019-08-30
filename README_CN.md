@@ -34,7 +34,6 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 - 支持更多 API 和元组。
 - 支持 IEnumerable 和 Stream 互相转换。
 - 支持 Android。
-- 超过 2000 个测试用例。
 
 ![bestvike](logo.jpg "济南百思为科信息工程有限公司")
 
