@@ -54,6 +54,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Rename `Linq.asEnumerable()` to `Linq.of()`.
 - Rename `TupleMore` to `TupleN`.
 - Rename `Linq.of(CharSequence)` to `Linq.chars(CharSequence)`.
+- Update junit version to 5.x.
 - Update plugin version to latest.
 - Change the year of copyright.
 
