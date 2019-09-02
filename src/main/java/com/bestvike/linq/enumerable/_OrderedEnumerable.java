@@ -614,6 +614,8 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
     @Override
     protected int compareAnyKeys(int index1, int index2) {
+        assert this.keys != null;
+
         //noinspection unchecked
         int c = this.comparer.compare((TKey) this.keys[index1], (TKey) this.keys[index2]);
         if (c == 0) {

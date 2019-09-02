@@ -16,15 +16,18 @@ import java.util.List;
  * Created by 许崇雷 on 2018-04-28.
  */
 final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IArray<TElement> {
-    TKey key;
-    int hashCode;
+    final TKey key;
+    final int hashCode;
     Object[] elements;
     int count;
     Grouping<TKey, TElement> hashNext;
     Grouping<TKey, TElement> next;
     boolean fetched;
 
-    Grouping() {
+    Grouping(TKey key, int hashCode) {
+        this.key = key;
+        this.hashCode = hashCode;
+        this.elements = new Object[1];
     }
 
     void add(TElement element) {

@@ -43,10 +43,11 @@ final class SingleLinkedNode<TSource> {
         assert index >= 0 && index < this.getCount();
 
         SingleLinkedNode<TSource> node = this;
-        for (; index > 0; index--)
+        for (; index > 0; index--) {
             node = node.linked;
+            assert node != null;
+        }
 
-        assert node != null;
         return node;
     }
 

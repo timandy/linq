@@ -226,10 +226,7 @@ final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListPro
         if (this.count == this.groupings.length)
             this.resize();
         int index = hashCode % this.groupings.length;
-        Grouping<TKey, TElement> g = new Grouping<>();
-        g.key = key;
-        g.hashCode = hashCode;
-        g.elements = new Object[1];
+        Grouping<TKey, TElement> g = new Grouping<>(key, hashCode);
         g.hashNext = this.groupings[index];
         this.groupings[index] = g;
         if (this.lastGrouping == null) {
