@@ -357,6 +357,20 @@ class UnionTest extends TestCase {
     }
 
     @Test
+    void UnionFollowedBySelectOnEmptyEnumerableInvokesDispose() {
+        DisposeTrackingEnumerable<Integer> enum1 = new DisposeTrackingEnumerable<>();
+        DisposeTrackingEnumerable<Integer> enum2 = new DisposeTrackingEnumerable<>();
+        assertFalse(enum1.isEnumeratorDisposed());
+        assertFalse(enum2.isEnumeratorDisposed());
+
+        for (Integer ignored : enum1.union(enum2)) {
+        }
+
+        assertTrue(enum1.isEnumeratorDisposed());
+        assertTrue(enum2.isEnumeratorDisposed());
+    }
+
+    @Test
     void testUnion() {
         assertEquals(6, Linq.of(emps)
                 .union(Linq.of(badEmps))
