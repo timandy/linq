@@ -541,6 +541,19 @@ class GroupByTest extends TestCase {
         Array<IGrouping<String, Record>> groupedArray = Linq.of(source).groupBy(r -> r.Name).toArray();
         assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.of(source).groupBy(r -> r.Name), groupedArray);
+
+        Class<?> clazz = IGrouping.class;
+        IGrouping<String, Record>[] groupedArray2 = Linq.of(source).groupBy(r -> r.Name).toArray((Class<IGrouping<String, Record>>) clazz);
+        assertEquals(4, groupedArray2.length);
+        assertEquals(Linq.of(source).groupBy(r -> r.Name), Linq.of(groupedArray2));
+
+        Array<Record> groupingArray = Linq.of(source).groupBy(r -> r.Name).first().toArray();
+        assertEquals(2, groupingArray._getCount());
+        assertEquals(Linq.of(source).groupBy(r -> r.Name).first(), groupingArray);
+
+        Record[] groupingArray2 = Linq.of(source).groupBy(r -> r.Name).first().toArray(Record.class);
+        assertEquals(2, groupingArray2.length);
+        assertEquals(Linq.of(source).groupBy(r -> r.Name).first(), Linq.of(groupingArray2));
     }
 
     @Test
