@@ -461,6 +461,7 @@ class SelectManyTest extends TestCase {
         assertEquals(expected, actual);
         assertEquals(expected.count(), actual.count()); // SelectMany may employ an optimized Count implementation.
         assertEquals(expected.toArray(), actual.toArray());
+        assertEquals(Linq.of(expected.toArray(Integer.class)), Linq.of(actual.toArray(Integer.class)));
         assertEquals(expected.toList(), actual.toList());
     }
 
@@ -536,9 +537,11 @@ class SelectManyTest extends TestCase {
         // See https://github.com/dotnet/corefx/issues/23680
 
         Array<Integer> results = Linq.of(arrays).selectMany(ar -> ar).toArray();
+        Integer[] results2 = Linq.of(arrays).selectMany(ar -> ar).toArray(Integer.class);
 
         for (int i = 0; i < results._getCount(); i++) {
             assertEquals(i, results.get(i));
+            assertEquals(i, results2[i]);
         }
     }
 
