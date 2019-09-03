@@ -32,6 +32,11 @@ class RepeatTest extends TestCase {
         assertEquals(100, array._getCount());
         for (int i = 0; i < array._getCount(); i++)
             assertEquals(1, array.get(i));
+
+        Integer[] array2 = Linq.repeat(1, 100).toArray(Integer.class);
+        assertEquals(100, array2.length);
+        for (Integer integer : array2)
+            assertEquals(1, integer);
     }
 
     @Test
