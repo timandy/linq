@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -493,10 +494,12 @@ class ConcatTest extends TestCase {
             concats = concats.concat(arrays[i]);
         }
 
-        Integer[] results = concats.toArray(Integer.class);
+        Array<Integer> results = concats.toArray();
+        Integer[] results2 = concats.toArray(Integer.class);
 
-        for (int i = 0; i < results.length; i++) {
-            assertEquals((long) i, (long) results[i]);
+        for (int i = 0; i < results2.length; i++) {
+            assertEquals(i, results.get(i));
+            assertEquals(i, results2[i]);
         }
     }
 
