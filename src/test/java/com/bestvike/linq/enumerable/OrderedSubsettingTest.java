@@ -288,6 +288,7 @@ class OrderedSubsettingTest extends TestCase {
     @Test
     void ToArray() {
         assertEquals(Linq.range(10, 20), Linq.range(0, 100).shuffle().orderBy(i -> i).skip(10).take(20).toArray());
+        assertEquals(Linq.range(10, 20), Linq.of(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(10).take(20).toArray(Integer.class)));
     }
 
     @Test
@@ -312,7 +313,7 @@ class OrderedSubsettingTest extends TestCase {
     @Test
     void EmptyToArray() {
         assertEmpty(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toArray());
-        assertTrue(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toArray(Integer.class).length == 0);
+        assertEmpty(Linq.of(Linq.range(0, 100).shuffle().orderBy(i -> i).skip(100).toArray(Integer.class)));
     }
 
     @Test
@@ -329,6 +330,7 @@ class OrderedSubsettingTest extends TestCase {
     @Test
     void AttemptedMoreArray() {
         assertEquals(Linq.range(0, 20), Linq.range(0, 20).shuffle().orderBy(i -> i).take(30).toArray());
+        assertEquals(Linq.range(0, 20), Linq.of(Linq.range(0, 20).shuffle().orderBy(i -> i).take(30).toArray(Integer.class)));
     }
 
     @Test
@@ -344,6 +346,7 @@ class OrderedSubsettingTest extends TestCase {
     @Test
     void SingleElementToArray() {
         assertEquals(Linq.repeat(10, 1), Linq.range(0, 20).shuffle().orderBy(i -> i).skip(10).take(1).toArray());
+        assertEquals(Linq.repeat(10, 1), Linq.of(Linq.range(0, 20).shuffle().orderBy(i -> i).skip(10).take(1).toArray(Integer.class)));
     }
 
     @Test
@@ -410,6 +413,7 @@ class OrderedSubsettingTest extends TestCase {
     void SelectArray() {
         IEnumerable<Integer> source = Linq.range(0, 9).shuffle().orderBy(i -> i).skip(1).take(5).select(i -> i * 2);
         assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), source.toArray());
+        assertEquals(Linq.of(new int[]{2, 4, 6, 8, 10}), Linq.of(source.toArray(Integer.class)));
     }
 
     @Test
