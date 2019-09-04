@@ -57,6 +57,7 @@ class DefaultIfEmptyTest extends TestCase {
             assertEquals(expected.length, result.count());
             assertEquals(Linq.of(expected), Linq.of(result.toList()));
             assertEquals(Linq.of(expected), result.toArray());
+            assertEquals(Linq.of(expected), Linq.of(result.toArray(Integer.class)));
         }
         result = source.defaultIfEmpty(defaultValue);
         assertEquals(result, result);
@@ -64,6 +65,7 @@ class DefaultIfEmptyTest extends TestCase {
         assertEquals(expected.length, result.count());
         assertEquals(Linq.of(expected), Linq.of(result.toList()));
         assertEquals(Linq.of(expected), result.toArray());
+        assertEquals(Linq.of(expected), Linq.of(result.toArray(Integer.class)));
     }
 
     @ParameterizedTest
@@ -120,10 +122,15 @@ class DefaultIfEmptyTest extends TestCase {
         assertEquals("noel", notEmptyEnumerator.current());
 
         IEnumerable<String> emptyEnumerable = Linq.of(Linq.<String>empty()).defaultIfEmpty();
-        IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
-        assertTrue(emptyEnumerator.moveNext());
-        assertNull(emptyEnumerator.current());
-        assertFalse(emptyEnumerator.moveNext());
+        try (IEnumerator<String> e = emptyEnumerable.enumerator()) {
+            assertTrue(e.moveNext());
+            assertNull(e.current());
+            assertFalse(e.moveNext());
+        }
+
+        try (IEnumerator<String> e = emptyEnumerable.enumerator()) {
+            assertTrue(e.moveNext());
+        }
     }
 
     @Test
@@ -139,9 +146,10 @@ class DefaultIfEmptyTest extends TestCase {
         assertEquals("noel", notEmptyEnumerator.current());
 
         IEnumerable<String> emptyEnumerable = Linq.of(Linq.<String>empty()).defaultIfEmpty("N/A");
-        IEnumerator<String> emptyEnumerator = emptyEnumerable.enumerator();
-        assertTrue(emptyEnumerator.moveNext());
-        assertEquals("N/A", emptyEnumerator.current());
-        assertFalse(emptyEnumerator.moveNext());
+        try (IEnumerator<String> e = emptyEnumerable.enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals("N/A", e.current());
+            assertFalse(e.moveNext());
+        }
     }
 }
