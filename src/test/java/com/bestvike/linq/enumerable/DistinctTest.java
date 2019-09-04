@@ -225,6 +225,7 @@ class DistinctTest extends TestCase {
         Integer[] expected = {1, 2, null};
 
         assertEquals(Linq.of(expected), Linq.of(source).distinct().toArray());
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(source).distinct().toArray(Integer.class)));
     }
 
     @Test
@@ -259,6 +260,11 @@ class DistinctTest extends TestCase {
                 emps[3],
         };
         assertEquals(3, Linq.of(emps2).distinct().count());
+
+        IEnumerable<Employee> source = Linq.of(emps2).distinct();
+        IEnumerator<Employee> e1 = source.enumerator();
+        IEnumerator<Employee> e2 = source.enumerator();
+        assertNotSame(e1, e2);
     }
 
     @Test
