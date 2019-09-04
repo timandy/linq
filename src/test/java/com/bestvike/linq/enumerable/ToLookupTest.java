@@ -54,6 +54,7 @@ class ToLookupTest extends TestCase {
         argsList.add(1);
         argsList.add(2);
         argsList.add(3);
+        argsList.add(4);
         return argsList;
     }
 
@@ -243,11 +244,10 @@ class ToLookupTest extends TestCase {
         //Run actual test
         IEnumerable<RoleMetadata> grouping = memberships.groupBy(
                 m -> m.Role,
-                (role, mems) -> new RoleMetadata
-                        (
-                                role,
-                                mems.count(m -> m.CountMe),
-                                mems.count(m -> !m.CountMe)));
+                (role, mems) -> new RoleMetadata(
+                        role,
+                        mems.count(m -> m.CountMe),
+                        mems.count(m -> !m.CountMe)));
 
         IEnumerable<RoleMetadata> result;
         switch (enumType) {
@@ -256,6 +256,9 @@ class ToLookupTest extends TestCase {
                 break;
             case 2:
                 result = grouping.toArray();
+                break;
+            case 3:
+                result = Linq.of(grouping.toArray(RoleMetadata.class));
                 break;
             default:
                 result = grouping;
@@ -291,6 +294,9 @@ class ToLookupTest extends TestCase {
             }
         }
         assertEquals(2, n);
+
+        ILookup<Integer, Integer> lookup2 = Linq.range(0, 10).toLookup(x -> x);
+        assertEquals(10, lookup2.getCount());
     }
 
     @Test
