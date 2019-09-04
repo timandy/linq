@@ -4,6 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -231,6 +232,20 @@ class CastTest extends TestCase {
             enumerator.moveNext();
             fail("cast() fail");
         } catch (ClassCastException ignored) {
+        }
+
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).cast(Integer.class));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2, 3).cast(null));
+
+        IEnumerable<Integer> source = Linq.of(1, 2, 3).cast(Integer.class);
+        assertEquals(3, source.count());
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            e.moveNext();
+            assertEquals(1, e.current());
+        }
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            e.moveNext();
+            assertEquals(1, e.current());
         }
     }
 }
