@@ -4,6 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -131,5 +132,19 @@ class OfTypeTest extends TestCase {
         assertTrue(enumerator.moveNext());
         assertEquals(Integer.valueOf(5), enumerator.current());
         assertFalse(enumerator.moveNext());
+
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).ofType(Integer.class));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2, 3).ofType(null));
+
+        IEnumerable<Integer> source = Linq.of(1, 2, "3").ofType(Integer.class);
+        assertEquals(2, source.count());
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            e.moveNext();
+            assertEquals(1, e.current());
+        }
+        try (IEnumerator<Integer> e = source.enumerator()) {
+            e.moveNext();
+            assertEquals(1, e.current());
+        }
     }
 }
