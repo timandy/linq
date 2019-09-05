@@ -569,6 +569,11 @@ class GroupByTest extends TestCase {
         Array<IGrouping<String, Integer>> groupedArray = Linq.of(source).groupBy(r -> r.Name, e -> e.Score).toArray();
         assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.of(source).groupBy(r -> r.Name, e -> e.Score), groupedArray);
+
+        Class<?> clazz = IGrouping.class;
+        IGrouping<String, Integer>[] groupedArray2 = Linq.of(source).groupBy(r -> r.Name, e -> e.Score).toArray((Class<IGrouping<String, Integer>>) clazz);
+        assertEquals(4, groupedArray2.length);
+        assertEquals(Linq.of(source).groupBy(r -> r.Name, e -> e.Score), Linq.of(groupedArray2));
     }
 
     @Test
@@ -584,6 +589,11 @@ class GroupByTest extends TestCase {
         Array<IEnumerable<Record>> groupedArray = Linq.of(source).groupBy(r -> r.Name, (r, e) -> e).toArray();
         assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.of(source).groupBy(r -> r.Name, (r, e) -> e), groupedArray);
+
+        Class<?> clazz = IEnumerable.class;
+        IEnumerable<Record>[] groupedArray2 = Linq.of(source).groupBy(r -> r.Name, (r, e) -> e).toArray((Class<IEnumerable<Record>>) clazz);
+        assertEquals(4, groupedArray2.length);
+        assertEquals(Linq.of(source).groupBy(r -> r.Name, (r, e) -> e), Linq.of(groupedArray2));
     }
 
     @Test
@@ -599,6 +609,11 @@ class GroupByTest extends TestCase {
         Array<IEnumerable<Record>> groupedArray = Linq.of(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).toArray();
         assertEquals(4, groupedArray._getCount());
         assertEquals(Linq.of(source).groupBy(r -> r.Name, e -> e, (r, e) -> e), groupedArray);
+
+        Class<?> clazz = IEnumerable.class;
+        IEnumerable<Record>[] groupedArray2 = Linq.of(source).groupBy(r -> r.Name, e -> e, (r, e) -> e).toArray((Class<IEnumerable<Record>>) clazz);
+        assertEquals(4, groupedArray2.length);
+        assertEquals(Linq.of(source).groupBy(r -> r.Name, e -> e, (r, e) -> e), Linq.of(groupedArray2));
     }
 
     @Test
@@ -731,6 +746,7 @@ class GroupByTest extends TestCase {
     @Test
     void EmptyGroupingWithResultToArray() {
         assertEmpty(Linq.<Integer>empty().groupBy(i -> i, (x, y) -> x + y.count()).toArray());
+        assertEmpty(Linq.of(Linq.<Integer>empty().groupBy(i -> i, (x, y) -> x + y.count()).toArray(Integer.class)));
     }
 
     @Test
