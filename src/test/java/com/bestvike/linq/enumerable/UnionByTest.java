@@ -443,7 +443,6 @@ class UnionByTest extends TestCase {
         assertEquals(-1, unionByIterator2._getCount(true));
         assertEquals(4, unionByIterator2._getCount(false));
 
-
         Func1<Employee, Integer> selector = emp -> emp.deptno;
         IEnumerable<Employee> enumerable2 = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), selector)
@@ -455,6 +454,16 @@ class UnionByTest extends TestCase {
         assertEquals(4, unionByIterator22._toList().size());
         assertEquals(-1, unionByIterator22._getCount(true));
         assertEquals(4, unionByIterator22._getCount(false));
+
+        IEnumerable<Employee> source = Linq.of(emps)
+                .unionBy(Linq.of(badEmps), selector)
+                .unionBy(Linq.of(emps), selector);
+
+        IEnumerator<Employee> e1 = source.enumerator();
+        assertTrue(e1.moveNext());
+        IEnumerator<Employee> e2 = source.enumerator();
+        assertTrue(e2.moveNext());
+        assertNotSame(e1, e2);
     }
 
     @Test
@@ -471,7 +480,6 @@ class UnionByTest extends TestCase {
             }
         };
 
-
         IEnumerable<Employee> enumerable = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), emp -> emp.deptno, comparer)
                 .unionBy(Linq.of(emps), emp -> emp.deptno, comparer);
@@ -482,7 +490,6 @@ class UnionByTest extends TestCase {
         assertEquals(1, unionByIterator2._toList().size());
         assertEquals(-1, unionByIterator2._getCount(true));
         assertEquals(1, unionByIterator2._getCount(false));
-
 
         Func1<Employee, Integer> selector = emp -> emp.deptno;
         IEnumerable<Employee> enumerable2 = Linq.of(emps)
