@@ -11,6 +11,8 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -329,6 +331,10 @@ class JoinTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[Fred works in Sales, Eric works in Sales, Janet works in Sales, Bill works in Marketing]", ss);
+
+        IEnumerable<Tuple2<Integer, Integer>> source = Linq.of(1, 2, null).join(Linq.of(1, 3, null), x -> x, y -> y, Tuple::create);
+        assertEquals(1, source.count());
+        assertEquals(1, source.count());
     }
 
     @Test
@@ -387,6 +393,24 @@ class JoinTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[Fred works in Sales, Eric works in Sales, Janet works in Sales, null works in HR, Bill works in Marketing, null works in Manager]", ss);
+
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).leftJoin(Linq.of(1, 2), x -> x, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).leftJoin(null, x -> x, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).leftJoin(Linq.of(1, 2), null, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).leftJoin(Linq.of(1, 2), x -> x, null, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).leftJoin(Linq.of(1, 2), x -> x, y -> y, null));
+
+        IEnumerable<Tuple2<Integer, Integer>> source = Linq.of(1, 2, null).leftJoin(Linq.of(1, 3, null), x -> x, y -> y, Tuple::create);
+        assertEquals(3, source.count());
+        assertEquals(3, source.count());
+
+        try (IEnumerator<Tuple2<Integer, Integer>> e = source.enumerator()) {
+            for (int i = 0; i < 3; i++) {
+                assertTrue(e.moveNext());
+            }
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -511,6 +535,24 @@ class JoinTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[Fred works in Sales, Bill works in Marketing, Eric works in Sales, Janet works in Sales, Cedric works in null, Gates works in null]", ss);
+
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).rightJoin(Linq.of(1, 2), x -> x, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).rightJoin(null, x -> x, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).rightJoin(Linq.of(1, 2), null, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).rightJoin(Linq.of(1, 2), x -> x, null, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).rightJoin(Linq.of(1, 2), x -> x, y -> y, null));
+
+        IEnumerable<Tuple2<Integer, Integer>> source = Linq.of(1, 2, null).rightJoin(Linq.of(1, 3, null), x -> x, y -> y, Tuple::create);
+        assertEquals(3, source.count());
+        assertEquals(3, source.count());
+
+        try (IEnumerator<Tuple2<Integer, Integer>> e = source.enumerator()) {
+            for (int i = 0; i < 3; i++) {
+                assertTrue(e.moveNext());
+            }
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -635,6 +677,24 @@ class JoinTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[Fred works in Sales, Eric works in Sales, Janet works in Sales, null works in HR, Bill works in Marketing, null works in Manager, Cedric works in null, Gates works in null]", ss);
+
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).fullJoin(Linq.of(1, 2), x -> x, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).fullJoin(null, x -> x, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).fullJoin(Linq.of(1, 2), null, y -> y, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).fullJoin(Linq.of(1, 2), x -> x, null, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).fullJoin(Linq.of(1, 2), x -> x, y -> y, null));
+
+        IEnumerable<Tuple2<Integer, Integer>> source = Linq.of(1, 2, null).fullJoin(Linq.of(1, 3, null), x -> x, y -> y, Tuple::create);
+        assertEquals(5, source.count());
+        assertEquals(5, source.count());
+
+        try (IEnumerator<Tuple2<Integer, Integer>> e = source.enumerator()) {
+            for (int i = 0; i < 5; i++) {
+                assertTrue(e.moveNext());
+            }
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
@@ -770,10 +830,24 @@ class JoinTest extends TestCase {
         String ss = enumerable2.toList().toString();
         assertEquals("[Fred works in Sales, Bill works in Sales, Eric works in Sales, Janet works in Sales, Cedric works in Sales, Gates works in Sales, Fred works in HR, Bill works in HR, Eric works in HR, Janet works in HR, Cedric works in HR, Gates works in HR, Fred works in Marketing, Bill works in Marketing, Eric works in Marketing, Janet works in Marketing, Cedric works in Marketing, Gates works in Marketing, Fred works in Manager, Bill works in Manager, Eric works in Manager, Janet works in Manager, Cedric works in Manager, Gates works in Manager]", ss);
 
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).crossJoin(Linq.of(1, 2), Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).crossJoin(null, Tuple::create));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2).crossJoin(Linq.of(1, 2), null));
+
         IEnumerable<Integer> source = Linq.of(1, 2).crossJoin(Linq.of(0, 2, 3), (l, r) -> l * r);
         assertEquals(6, source.count());
         assertEquals(15, source.sumInt());
         assertEquals(15, source.sumInt());
+
+        IEnumerable<Integer> source2 = Linq.of(1, 2).crossJoin(Linq.of(3), (x, y) -> x * y);
+        try (IEnumerator<Integer> e = source2.enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals(3, e.current());
+            assertTrue(e.moveNext());
+            assertEquals(6, e.current());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     //struct
