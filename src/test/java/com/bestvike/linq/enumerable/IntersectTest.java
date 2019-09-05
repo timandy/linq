@@ -150,6 +150,16 @@ class IntersectTest extends TestCase {
         assertEquals(1, Linq.of(emps)
                 .intersect(Linq.of(emps2))
                 .count());
+
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).intersect(Linq.empty()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2, 3).intersect(null));
+
+        IEnumerable<Integer> source = Linq.of(1, 2, 3).intersect(Linq.singleton(1));
+        IEnumerator<Integer> e1 = source.enumerator();
+        assertTrue(e1.moveNext());
+        IEnumerator<Integer> e2 = source.enumerator();
+        assertTrue(e2.moveNext());
+        assertNotSame(e1, e2);
     }
 
     @Test
