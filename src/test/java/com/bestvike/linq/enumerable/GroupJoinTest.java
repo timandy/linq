@@ -8,8 +8,11 @@ import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
+import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -358,6 +361,17 @@ class GroupJoinTest extends TestCase {
                 .toList()
                 .toString();
         assertEquals("[[Fred, Eric, Janet] work(s) in Sales, [] work(s) in HR, [Bill] work(s) in Marketing, [] work(s) in Manager]", s);
+
+        IEnumerable<Tuple2<Department, Employee>> source = Linq.of(depts).concat(Linq.of(badDepts)).groupJoin(Linq.of(emps).concat(Linq.of(badEmps)),
+                dept -> dept.deptno,
+                emp -> emp.deptno,
+                (dept, emps) -> Tuple.create(dept, emps.firstOrDefault()));
+
+        IEnumerator<Tuple2<Department, Employee>> e1 = source.enumerator();
+        assertTrue(e1.moveNext());
+        IEnumerator<Tuple2<Department, Employee>> e2 = source.enumerator();
+        assertTrue(e2.moveNext());
+        assertNotSame(e1, e2);
     }
 
     @Test
