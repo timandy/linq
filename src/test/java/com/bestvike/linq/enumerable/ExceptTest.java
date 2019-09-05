@@ -153,6 +153,16 @@ class ExceptTest extends TestCase {
         IEnumerable<Integer> oneToFifty = Linq.range(1, 50);
         IEnumerable<Integer> fiftyOneToHundred = Linq.range(51, 50);
         assertTrue(oneToHundred.except(oneToFifty).sequenceEqual(fiftyOneToHundred));
+
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).except(Linq.empty()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(1, 2, 3).except(null));
+
+        IEnumerable<Integer> source = Linq.of(1, 2, 3).except(Linq.singleton(1));
+        IEnumerator<Integer> e1 = source.enumerator();
+        assertTrue(e1.moveNext());
+        IEnumerator<Integer> e2 = source.enumerator();
+        assertTrue(e2.moveNext());
+        assertNotSame(e1, e2);
     }
 
     @Test
