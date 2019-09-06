@@ -566,6 +566,14 @@ class ZipTest extends TestCase {
             assertEquals(Empty + (char) ('a' + i), zipped2.elementAt(i).getItem1());
             assertEquals(Empty + (char) ('1' + i), zipped2.elementAt(i).getItem2());
         }
+
+        IEnumerable<Tuple2<String, String>> source = e1.zip(e2);
+        try (IEnumerator<Tuple2<String, String>> e = source.enumerator()) {
+            for (int i = 0; i < 3; i++)
+                assertTrue(e.moveNext());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
     }
 
     @Test
