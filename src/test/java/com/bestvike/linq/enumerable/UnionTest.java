@@ -270,6 +270,7 @@ class UnionTest extends TestCase {
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo"};
 
         assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)).toArray());
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(first).union(Linq.of(second)).toArray(String.class)));
     }
 
     @Test
@@ -280,6 +281,7 @@ class UnionTest extends TestCase {
         String[] expected = {"Bob", "Robert", "Tim", "Matt", "miT", "ttaM", "Charlie", "Bbo", "Albert"};
 
         assertEquals(Linq.of(expected), Linq.of(first).union(Linq.of(second)).union(Linq.of(third)).toArray());
+        assertEquals(Linq.of(expected), Linq.of(Linq.of(first).union(Linq.of(second)).union(Linq.of(third)).toArray(String.class)));
     }
 
     @Test
@@ -376,6 +378,16 @@ class UnionTest extends TestCase {
                 .union(Linq.of(badEmps))
                 .union(Linq.of(emps))
                 .count());
+
+        IEnumerable<Employee> source = Linq.of(emps).union(Linq.of(badEmps));
+        IEnumerator<Employee> e1 = source.enumerator();
+        IEnumerator<Employee> e2 = source.enumerator();
+        assertNotSame(e1, e2);
+
+        IEnumerable<Employee> source2 = Linq.of(emps).union(Linq.of(badEmps)).union(Linq.of(emps));
+        IEnumerator<Employee> e3 = source2.enumerator();
+        IEnumerator<Employee> e4 = source2.enumerator();
+        assertNotSame(e3, e4);
     }
 
     @Test
