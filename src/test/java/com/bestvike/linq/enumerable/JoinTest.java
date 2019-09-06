@@ -403,11 +403,16 @@ class JoinTest extends TestCase {
         IEnumerable<Tuple2<Integer, Integer>> source = Linq.of(1, 2, null).leftJoin(Linq.of(1, 3, null), x -> x, y -> y, Tuple::create);
         assertEquals(3, source.count());
         assertEquals(3, source.count());
-
         try (IEnumerator<Tuple2<Integer, Integer>> e = source.enumerator()) {
             for (int i = 0; i < 3; i++) {
                 assertTrue(e.moveNext());
             }
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        IEnumerable<Tuple2<Integer, Integer>> source2 = Linq.<Integer>empty().leftJoin(Linq.of(1, 2), x -> x, y -> y, Tuple::create);
+        try (IEnumerator<Tuple2<Integer, Integer>> e = source2.enumerator()) {
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
         }
@@ -545,11 +550,16 @@ class JoinTest extends TestCase {
         IEnumerable<Tuple2<Integer, Integer>> source = Linq.of(1, 2, null).rightJoin(Linq.of(1, 3, null), x -> x, y -> y, Tuple::create);
         assertEquals(3, source.count());
         assertEquals(3, source.count());
-
         try (IEnumerator<Tuple2<Integer, Integer>> e = source.enumerator()) {
             for (int i = 0; i < 3; i++) {
                 assertTrue(e.moveNext());
             }
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        IEnumerable<Tuple2<Integer, Integer>> source2 = Linq.of(1, 2).rightJoin(Linq.<Integer>empty(), x -> x, y -> y, Tuple::create);
+        try (IEnumerator<Tuple2<Integer, Integer>> e = source2.enumerator()) {
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
         }
@@ -847,6 +857,12 @@ class JoinTest extends TestCase {
             assertEquals(6, e.current());
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
+        }
+
+        IEnumerable<Integer> source3 = Linq.of(1).crossJoin(Linq.of(2, 3), (x, y) -> x * y);
+        try (IEnumerator<Integer> e = source3.enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals(2, e.current());
         }
     }
 
