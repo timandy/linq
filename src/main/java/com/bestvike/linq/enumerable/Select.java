@@ -1067,13 +1067,18 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
 
     @Override
     public int _getCount(boolean onlyIfCheap) {
-        // In case someone uses Count() to force evaluation of
-        // the selector, run it provided `onlyIfCheap` is false.
         if (!onlyIfCheap) {
+            // In case someone uses Count() to force evaluation of
+            // the selector, run it provided `onlyIfCheap` is false.
+            int count = 0;
             try (IEnumerator<TSource> e = this.source.enumerator()) {
-                while (e.moveNext())
+                while (e.moveNext()) {
                     this.selector.apply(e.current());
+                    count = Math.addExact(count, 1);
+                }
             }
+
+            return count;
         }
 
         return this.source._getCount(onlyIfCheap);
