@@ -5,7 +5,9 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -49,5 +51,13 @@ class ToSetTest extends TestCase {
     @Test
     void ThrowOnNullSource() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).toSet());
+    }
+
+    @Test
+    void testToSet() {
+        assertEmpty(Linq.of(Linq.of().toSet()));
+
+        Set<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(1, 1, 2, 2, 3, 3))).toSet();
+        assertEquals(3, source.size());
     }
 }
