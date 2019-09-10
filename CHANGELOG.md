@@ -11,6 +11,9 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Fix `EnumerablePartition` error assert.
 - Fix inner enumerator of `CrossJoinIterator` and `SelectManyIterator` dispose twice.
 - Fix not check selector param for `sum` with selector.
+- Fix bug with `select(...).count()` on an IPartition.
+- Fix bug with `skip`, `take` on an empty IOrderedEnumerable.
+- Fix `union` and `unionBy` not close when break iterate.
 
 ### Features
 - Add `zip` Tuple api.
