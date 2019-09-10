@@ -354,6 +354,8 @@ class ToArrayGenericTest extends TestCase {
 
     @Test
     void testToArray() {
+        assertThrows(ArgumentNullException.class, () -> Linq.empty().toArray(null));
+
         Object[] source = {1, 2, 3};
         Object[] target = Linq.of(source).cast(Integer.class).toArray(Integer.class);
         assertEquals(3, target.length);
