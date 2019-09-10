@@ -399,7 +399,7 @@ abstract class AbstractOrderedEnumerable<TElement> implements IOrderedEnumerable
                 case 0:
                     this.buffer = new Buffer<>(AbstractOrderedEnumerable.this.source);
                     int count = this.buffer.count;
-                    if (count < this.minIdx) {
+                    if (count <= this.minIdx) {
                         this.close();
                         return false;
                     }
