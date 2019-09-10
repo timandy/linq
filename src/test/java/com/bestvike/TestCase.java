@@ -976,38 +976,6 @@ public class TestCase {
         }
     }
 
-    public static class DisposeTrackingEnumerable<T> implements IEnumerable<T> {
-        private boolean EnumeratorDisposed;
-
-        public boolean isEnumeratorDisposed() {
-            return this.EnumeratorDisposed;
-        }
-
-        @Override
-        public IEnumerator<T> enumerator() {
-            return new Enumerator<T>(this);
-        }
-
-        private static class Enumerator<T> extends AbstractEnumerator<T> {
-            private final DisposeTrackingEnumerable<T> enumerable;
-
-            private Enumerator(DisposeTrackingEnumerable<T> enumerable) {
-                this.enumerable = enumerable;
-            }
-
-            @Override
-            public boolean moveNext() {
-                return false;
-            }
-
-            @Override
-            public void close() {
-                this.enumerable.EnumeratorDisposed = true;
-                super.close();
-            }
-        }
-    }
-
     public static class ArrayIterable<T> implements Iterable<T> {
         private final T[] array;
 
