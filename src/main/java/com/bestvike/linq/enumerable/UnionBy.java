@@ -97,9 +97,9 @@ abstract class UnionByIterator<TSource, TKey> extends Iterator<TSource> implemen
         if (this.state == 1) {
             for (IEnumerable<TSource> enumerable = this.getEnumerable(0); enumerable != null; enumerable = this.getEnumerable(this.state - 1)) {
                 IEnumerator<TSource> enumerator = enumerable.enumerator();
+                this.setEnumerator(enumerator);
                 ++this.state;
                 if (enumerator.moveNext()) {
-                    this.setEnumerator(enumerator);
                     this.storeFirst();
                     return true;
                 }
