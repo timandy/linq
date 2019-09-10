@@ -1,6 +1,7 @@
 package com.bestvike;
 
 import com.bestvike.collections.generic.Array;
+import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Action0;
@@ -33,6 +34,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -186,6 +188,12 @@ public class TestCase {
         if (enumerable.count() != 0)
             return;
         fail("enumerable is empty");
+    }
+
+    protected static <T> void assertInRange(T actual, T low, T high) {
+        Comparator<T> comparer = Comparer.Default();
+        if (comparer.compare(low, actual) > 0 || comparer.compare(actual, high) > 0)
+            fail(String.format("%s should in range [%s, %s]", actual, low, high));
     }
 
     protected static <T> void assertIsAssignableFrom(Class<T> expectedType, Object obj) {
