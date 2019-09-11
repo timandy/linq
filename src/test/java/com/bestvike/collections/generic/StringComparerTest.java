@@ -44,7 +44,6 @@ class StringComparerTest extends TestCase {
         assertTrue(ignoreCaseLocalComparer.compare(null, "a") < 0);
         assertTrue(ignoreCaseLocalComparer.compare("a", null) > 0);
         assertTrue(ignoreCaseLocalComparer.compare("编辑", "测试") < 0);
-
     }
 
     @Test
