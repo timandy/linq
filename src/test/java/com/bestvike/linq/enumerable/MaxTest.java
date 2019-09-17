@@ -711,7 +711,7 @@ class MaxTest extends TestCase {
     @Test
     void Max_String_NullSelector_ThrowsArgumentNullException() {
         Func1<String, String> selector = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.<String>empty().maxNull(selector));
+        assertThrows(ArgumentNullException.class, () -> Linq.<String>empty().max(selector));
     }
 
     @Test
