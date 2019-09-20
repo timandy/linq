@@ -179,13 +179,13 @@ In general, the more complex the operation you want to perform on the data, the 
 <dependency>
     <groupId>com.bestvike</groupId>
     <artifactId>linq</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
 ## Gradle
 ```
-compile 'com.bestvike:linq:2.0.1'
+compile 'com.bestvike:linq:3.0.0'
 ```
 
 ## Usage

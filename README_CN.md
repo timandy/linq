@@ -179,13 +179,13 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 <dependency>
     <groupId>com.bestvike</groupId>
     <artifactId>linq</artifactId>
-    <version>2.0.1</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
 ## Gradle
 ```
-compile 'com.bestvike:linq:2.0.1'
+compile 'com.bestvike:linq:3.0.0'
 ```
 
 ## 用法
