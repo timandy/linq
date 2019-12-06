@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.ThreadCultureChange;
 import com.bestvike.ValueType;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.Comparer;
@@ -19,10 +20,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Set;
 
@@ -394,6 +397,104 @@ class OrderByTest extends TestCase {
             assertEquals(source.min(), x);
         }
         assertEquals(1, count);
+    }
+
+    @Test
+    public void CultureOrderBy() {
+        String[] source = new String[]{"Apple0", "�ble0", "Apple1", "�ble1", "Apple2", "�ble2"};
+
+        Locale dk = Locale.GERMANY;
+        Locale au = Locale.ENGLISH;
+
+        StringComparer comparerDk = StringComparer.create(Collator.getInstance(dk), false);
+        StringComparer comparerAu = StringComparer.create(Collator.getInstance(au), false);
+
+        // we don't provide a defined sorted result set because the Windows culture sorting
+        // provides a different result set to the Linux culture sorting. But as we're really just
+        // concerned that OrderBy default string ordering matches current culture then this
+        // should be sufficient
+        String[] resultDK = source.clone();
+        Arrays.sort(resultDK, comparerDk);
+        String[] resultAU = source.clone();
+        Arrays.sort(resultAU, comparerAu);
+
+        String[] check;
+
+        try (ThreadCultureChange ignored = new ThreadCultureChange(dk)) {
+            check = Linq.of(source).orderBy(x -> x).toArray(String.class);
+            assertEquals(Linq.of(resultDK), Linq.of(check), StringComparer.Ordinal);
+        }
+
+        try (ThreadCultureChange ignored = new ThreadCultureChange(au)) {
+            check = Linq.of(source).orderBy(x -> x).toArray(String.class);
+            assertEquals(Linq.of(resultAU), Linq.of(check), StringComparer.Ordinal);
+        }
+
+        try (ThreadCultureChange ignored = new ThreadCultureChange(dk)) // "dk" whilst GetEnumerator
+        {
+            IEnumerator<String> s = Linq.of(source).orderBy(x -> x).enumerator();
+            try (ThreadCultureChange ignored2 = new ThreadCultureChange(au)) // but "au" whilst accessing...
+            {
+                int idx = 0;
+                while (s.moveNext()) // sort is done on first MoveNext, so should have "au" sorting
+                {
+                    assertEquals(resultAU[idx++], s.current(), StringComparer.Ordinal);
+                }
+            }
+        }
+
+        try (ThreadCultureChange ignored = new ThreadCultureChange(au)) {
+            // "au" whilst GetEnumerator
+            IEnumerator<String> s = Linq.of(source).orderBy(x -> x).enumerator();
+
+            try (ThreadCultureChange ignored2 = new ThreadCultureChange(dk)) {
+                // but "dk" on first MoveNext
+                boolean moveNext = s.moveNext();
+                assertTrue(moveNext);
+
+                // ensure changing culture after MoveNext doesn't affect sort
+                try (ThreadCultureChange ignored3 = new ThreadCultureChange(au)) // "au" whilst GetEnumerator
+                {
+                    int idx = 0;
+                    while (moveNext) // sort is done on first MoveNext, so should have "dk" sorting
+                    {
+                        assertEquals(resultDK[idx++], s.current(), StringComparer.Ordinal);
+                        moveNext = s.moveNext();
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    public void CultureOrderByElementAt() {
+        String[] source = new String[]{"Apple0", "�ble0", "Apple1", "�ble1", "Apple2", "�ble2"};
+
+        Locale dk = Locale.GERMANY;
+        Locale au = Locale.ENGLISH;
+
+        StringComparer comparerDk = StringComparer.create(Collator.getInstance(dk), false);
+        StringComparer comparerAu = StringComparer.create(Collator.getInstance(au), false);
+
+        // we don't provide a defined sorted result set because the Windows culture sorting
+        // provides a different result set to the Linux culture sorting. But as we're really just
+        // concerned that OrderBy default string ordering matches current culture then this
+        // should be sufficient
+        String[] resultDK = source.clone();
+        Arrays.sort(resultDK, comparerDk);
+        String[] resultAU = source.clone();
+        Arrays.sort(resultAU, comparerAu);
+
+        IEnumerable<String> delaySortedSource = Linq.of(source).orderBy(x -> x);
+        for (int i = 0; i < source.length; ++i) {
+            try (ThreadCultureChange ignored = new ThreadCultureChange(dk)) {
+                assertEquals(resultDK[i], delaySortedSource.elementAt(i), StringComparer.Ordinal);
+            }
+
+            try (ThreadCultureChange ignored = new ThreadCultureChange(au)) {
+                assertEquals(resultAU[i], delaySortedSource.elementAt(i), StringComparer.Ordinal);
+            }
+        }
     }
 
     @Test

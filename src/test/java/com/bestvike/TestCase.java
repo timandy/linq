@@ -4,6 +4,7 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.collections.generic.StringComparer;
 import com.bestvike.function.Action0;
 import com.bestvike.function.Action1;
 import com.bestvike.function.Action2;
@@ -161,6 +162,14 @@ public class TestCase {
         if (equal(expected, actual))
             return;
         fail(String.format("should be %s, but %s", Values.toString(expected), Values.toString(actual)));
+    }
+
+    protected static void assertEquals(String expected, String actual, IEqualityComparer<String> comparer) {
+        if (comparer == null)
+            comparer = StringComparer.Ordinal;
+        if (comparer.equals(expected, actual))
+            return;
+        fail(String.format("should be %s, but %s", expected, actual));
     }
 
     protected static <T> void assertEquals(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer) {
