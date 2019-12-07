@@ -86,7 +86,7 @@ final class Debugger {
                     memberRef.value = Modifier.isStatic(method.getModifiers()) ? method.invoke(null) : method.invoke(obj);
                     return true;
                 } catch (Exception e) {
-                    throw new RuntimeException(e.getCause() != null ? e.getCause() : e);
+                    throw new RuntimeException(e);
                 }
             }
         } else {
@@ -96,7 +96,7 @@ final class Debugger {
                     memberRef.value = Modifier.isStatic(field.getModifiers()) ? field.get(null) : field.get(obj);
                     return true;
                 } catch (Exception e) {
-                    throw new RuntimeException(e.getCause() != null ? e.getCause() : e);
+                    throw new RuntimeException(e);
                 }
             }
         }
