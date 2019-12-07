@@ -1,5 +1,20 @@
 <!--变更日志-->
 
+# v3.1.0 Release notes
+
+### Features
+- Support custom debug view for any type by `DebuggerDisplay`, `DebuggerTypeProxy` annotation.
+
+### Changes
+- Rename `DebugView.getDebuggerTypeProxy(...)` to `DebugView.getDebuggerProxyObject(...)`.
+- Modify debugger display for types which is cheap to count the elements.
+
+# Links
+- Download [http://repo1.maven.org/maven2/com/bestvike/linq/3.1.0/](http://repo1.maven.org/maven2/com/bestvike/linq/3.1.0/)
+- Source code [https://github.com/timandy/linq/tree/v3.1.0](https://github.com/timandy/linq/tree/v3.1.0)
+
+---
+
 # v3.0.0 Release notes
 `This is the first stable version available for production.
 It is highly recommended to upgrade to this version if you have used a previous version.`
