@@ -5,6 +5,9 @@ import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
 import com.bestvike.linq.adapter.enumerator.ArrayEnumerator;
+import com.bestvike.linq.debug.DebuggerDisplay;
+import com.bestvike.linq.debug.DebuggerTypeProxy;
+import com.bestvike.linq.debug.GroupingDebugView;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
@@ -15,6 +18,8 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-04-28.
  */
+@DebuggerDisplay("Key = {getKey()}")
+@DebuggerTypeProxy(GroupingDebugView.class)
 final class Grouping<TKey, TElement> implements IGrouping<TKey, TElement>, IArray<TElement> {
     final TKey key;
     final int hashCode;

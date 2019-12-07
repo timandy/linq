@@ -2,6 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.debug.DebuggerDisplay;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 import com.bestvike.ref;
@@ -11,6 +12,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
+@DebuggerDisplay("{debuggerDisplay(),nq}")
 final class CopyPosition {//struct
     private final int row;
     private final int column;
@@ -37,6 +39,11 @@ final class CopyPosition {//struct
     public CopyPosition normalize(int endColumn) {
         assert this.column <= endColumn;
         return this.column == endColumn ? new CopyPosition(this.row + 1, 0) : this;
+    }
+
+    @SuppressWarnings("unused")
+    private String debuggerDisplay() {
+        return this.toString();
     }
 
     @Override

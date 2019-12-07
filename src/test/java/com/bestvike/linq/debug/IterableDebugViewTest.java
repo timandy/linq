@@ -13,14 +13,14 @@ class IterableDebugViewTest extends TestCase {
     @Test
     void GenericIterableDebugView_ThrowsForNullSource() {
         assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerDisplay(null));
-        assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerTypeProxy(null));
+        assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerProxyObject(null));
     }
 
     @Test
     void GenericIterableDebugView_ThrowsForEmptySource() {
         Iterable<Long> source = new CountIterable(0);
         assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
-        assertEquals(SR.EmptyIterable, DebugView.getDebuggerTypeProxy(source));
+        assertEquals(SR.EmptyIterable, DebugView.getDebuggerProxyObject(source));
     }
 
     @Test
@@ -28,10 +28,10 @@ class IterableDebugViewTest extends TestCase {
         Iterable<Long> source = new CountIterable(5);
         assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
         //
-        Object debuggerTypeProxy = DebugView.getDebuggerTypeProxy(source);
+        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(source);
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] values = (Object[]) debuggerTypeProxy;
         assertEquals(Linq.of(source).cast(Object.class).toArray(), Linq.of(values));
-        assertSame(debuggerTypeProxy, DebugView.getDebuggerTypeProxy(source));
+        assertSame(debuggerTypeProxy, DebugView.getDebuggerProxyObject(source));
     }
 }

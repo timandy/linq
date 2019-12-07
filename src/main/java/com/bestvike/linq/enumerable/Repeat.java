@@ -2,6 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.debug.DebuggerDisplay;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
@@ -29,6 +30,7 @@ public final class Repeat {
 }
 
 
+@DebuggerDisplay("Count = {count}")
 final class RepeatIterator<TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final int count;
 

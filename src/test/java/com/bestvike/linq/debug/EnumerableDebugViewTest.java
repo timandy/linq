@@ -14,25 +14,25 @@ class EnumerableDebugViewTest extends TestCase {
     @Test
     void GenericEnumerableDebugView_ThrowsForNullSource() {
         assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerDisplay(null));
-        assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerTypeProxy(null));
+        assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerProxyObject(null));
     }
 
     @Test
     void GenericEnumerableDebugView_ThrowsForEmptySource() {
         IEnumerable<Integer> source = Linq.range(10, 0);
-        assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
-        assertEquals(SR.EmptyEnumerable, DebugView.getDebuggerTypeProxy(source));
+        assertEquals("Count = 0", DebugView.getDebuggerDisplay(source));
+        assertEquals(SR.EmptyEnumerable, DebugView.getDebuggerProxyObject(source));
     }
 
     @Test
     void GenericEnumerableDebugView_NonEmptySource() {
         IEnumerable<Integer> source = Linq.range(10, 5);
-        assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 5", DebugView.getDebuggerDisplay(source));
         //
-        Object debuggerTypeProxy = DebugView.getDebuggerTypeProxy(source);
+        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(source);
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] values = (Object[]) debuggerTypeProxy;
         assertEquals(source.cast(Object.class).toArray(), Linq.of(values));
-        assertSame(debuggerTypeProxy, DebugView.getDebuggerTypeProxy(source));
+        assertSame(debuggerTypeProxy, DebugView.getDebuggerProxyObject(source));
     }
 }

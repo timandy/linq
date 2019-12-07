@@ -5,7 +5,7 @@ import com.bestvike.linq.ILookup;
 /**
  * Created by 许崇雷 on 2019-06-18.
  */
-final class LookupDebugView<TKey, TElement> implements IDebugView {
+public final class LookupDebugView<TKey, TElement> implements IDebugView {
     private final ILookup<TKey, TElement> lookup;
     private Object[] cachedGroupings;
 
@@ -14,12 +14,7 @@ final class LookupDebugView<TKey, TElement> implements IDebugView {
     }
 
     @Override
-    public String getDebuggerDisplay() {
-        return "count = " + this.getDebuggerMemberString(this.lookup.getCount());
-    }
-
-    @Override
-    public Object[] getDebuggerTypeProxy() {
+    public Object[] getProxyObject() {
         return this.cachedGroupings == null ?
                 (this.cachedGroupings = this.lookup.toArray().getArray())
                 : this.cachedGroupings;

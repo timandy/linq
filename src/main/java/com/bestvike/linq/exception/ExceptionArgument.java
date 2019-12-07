@@ -39,6 +39,7 @@ public enum ExceptionArgument {
     moveNext,
     newSize,
     next,
+    obj,
     options,
     other,
     startIndex,

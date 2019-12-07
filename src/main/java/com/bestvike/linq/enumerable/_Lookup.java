@@ -9,6 +9,9 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.IGrouping;
 import com.bestvike.linq.ILookup;
+import com.bestvike.linq.debug.DebuggerDisplay;
+import com.bestvike.linq.debug.DebuggerTypeProxy;
+import com.bestvike.linq.debug.LookupDebugView;
 import com.bestvike.linq.util.ArrayUtils;
 
 import java.util.ArrayList;
@@ -17,6 +20,8 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2018-05-02.
  */
+@DebuggerDisplay("Count = {getCount()}")
+@DebuggerTypeProxy(LookupDebugView.class)
 final class Lookup<TKey, TElement> implements ILookup<TKey, TElement>, IIListProvider<IGrouping<TKey, TElement>> {
     private final IEqualityComparer<TKey> comparer;
     private Grouping<TKey, TElement>[] groupings;

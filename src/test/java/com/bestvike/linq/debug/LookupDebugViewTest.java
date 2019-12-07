@@ -30,13 +30,13 @@ class LookupDebugViewTest extends TestCase {
     @MethodSource("DebuggerAttributesValid_Data")
     <TKey, TElement> void DebuggerAttributesValid(ILookup<TKey, TElement> lookup) {
         //count
-        assertEquals("count = " + lookup.getCount(), DebugView.getDebuggerDisplay(lookup));
+        assertEquals("Count = " + lookup.getCount(), DebugView.getDebuggerDisplay(lookup));
         //groupings
-        Object debuggerTypeProxy = DebugView.getDebuggerTypeProxy(lookup);
+        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(lookup);
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] groupings = (Object[]) debuggerTypeProxy;
         assertEquals(1, groupings.length);
         assertAll(Linq.of(groupings).zip(lookup, (l, r) -> Tuple.create(l, r)), tuple -> assertSame(tuple.getItem1(), tuple.getItem2()));
-        assertSame(groupings, DebugView.getDebuggerTypeProxy(lookup)); // The result should be cached, as Lookup is immutable.
+        assertSame(groupings, DebugView.getDebuggerProxyObject(lookup)); // The result should be cached, as Lookup is immutable.
     }
 }

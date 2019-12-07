@@ -6,6 +6,7 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.debug.DebuggerDisplay;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.ListUtils;
 import com.bestvike.out;
@@ -40,6 +41,7 @@ interface IPartition<TElement> extends IIListProvider<TElement> {
 }
 
 
+@DebuggerDisplay("Count = 0")
 final class EmptyPartition<TElement> extends Iterator<TElement> implements IPartition<TElement> {
     private static final IPartition INSTANCE = new EmptyPartition();
 
@@ -193,6 +195,7 @@ final class OrderedPartition<TElement> implements IPartition<TElement> {
 }
 
 
+@DebuggerDisplay("Count = {_getCount()}")
 final class ListPartition<TSource> extends Iterator<TSource> implements IPartition<TSource> {
     private final IArrayList<TSource> source;
     private final int minIndexInclusive;
@@ -281,7 +284,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
         return null;
     }
 
-    private int getCount() {
+    private int _getCount() {
         int count = this.source._getCount();
         if (count <= this.minIndexInclusive)
             return 0;
@@ -291,7 +294,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 
     @Override
     public TSource[] _toArray(Class<TSource> clazz) {
-        int count = this.getCount();
+        int count = this._getCount();
         if (count == 0)
             return ArrayUtils.empty(clazz);
 
@@ -303,7 +306,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 
     @Override
     public Object[] _toArray() {
-        int count = this.getCount();
+        int count = this._getCount();
         if (count == 0)
             return ArrayUtils.empty();
 
@@ -315,7 +318,7 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 
     @Override
     public List<TSource> _toList() {
-        int count = this.getCount();
+        int count = this._getCount();
         if (count == 0)
             return ListUtils.empty();
 
@@ -328,11 +331,12 @@ final class ListPartition<TSource> extends Iterator<TSource> implements IPartiti
 
     @Override
     public int _getCount(boolean onlyIfCheap) {
-        return this.getCount();
+        return this._getCount();
     }
 }
 
 
+@DebuggerDisplay("Count = {_getCount()}")
 final class IListPartition<TSource> extends Iterator<TSource> implements IPartition<TSource> {
     private final IList<TSource> source;
     private final int minIndexInclusive;

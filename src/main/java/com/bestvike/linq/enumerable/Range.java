@@ -2,6 +2,7 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.debug.DebuggerDisplay;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
@@ -30,6 +31,7 @@ public final class Range {
 }
 
 
+@DebuggerDisplay("Count = {countForDebugger()}")
 final class RangeIterator extends Iterator<Integer> implements IPartition<Integer> {
     private final int start;
     private final int end;
@@ -38,6 +40,11 @@ final class RangeIterator extends Iterator<Integer> implements IPartition<Intege
         assert count > 0;
         this.start = start;
         this.end = start + count;
+    }
+
+    @SuppressWarnings("unused")
+    private int countForDebugger() {
+        return this.end - this.start;
     }
 
     @Override

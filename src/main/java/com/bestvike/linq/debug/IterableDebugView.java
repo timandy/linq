@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-06-18.
  */
-final class IterableDebugView<TElement> implements IDebugView {
+public final class IterableDebugView<TElement> implements IDebugView {
     private final Iterable<TElement> iterable;
     private Object[] cachedValues;
 
@@ -17,12 +17,7 @@ final class IterableDebugView<TElement> implements IDebugView {
     }
 
     @Override
-    public String getDebuggerDisplay() {
-        return this.iterable.getClass().getName();
-    }
-
-    @Override
-    public Object getDebuggerTypeProxy() {
+    public Object getProxyObject() {
         if (this.cachedValues == null) {
             List<TElement> list = new ArrayList<>();
             for (TElement element : this.iterable)

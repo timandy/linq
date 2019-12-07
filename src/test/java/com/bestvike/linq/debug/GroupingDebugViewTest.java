@@ -29,12 +29,12 @@ class GroupingDebugViewTest extends TestCase {
     @MethodSource("DebuggerAttributesValid_Data")
     <TKey, TElement> void DebuggerAttributesValid(IGrouping<TKey, TElement> grouping, String keyString) {
         //key
-        assertEquals("key = " + keyString, DebugView.getDebuggerDisplay(grouping));
+        assertEquals("Key = " + keyString, DebugView.getDebuggerDisplay(grouping));
         //values
-        Object debuggerTypeProxy = DebugView.getDebuggerTypeProxy(grouping);
+        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(grouping);
         assertIsType(Object[].class, debuggerTypeProxy);
         Object[] values = (Object[]) debuggerTypeProxy;
         assertEquals(grouping.toArray(), Linq.of(values));
-        assertSame(debuggerTypeProxy, DebugView.getDebuggerTypeProxy(grouping));
+        assertSame(debuggerTypeProxy, DebugView.getDebuggerProxyObject(grouping));
     }
 }

@@ -7,6 +7,7 @@ import com.bestvike.function.Func1;
 import com.bestvike.function.IndexFunc2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
+import com.bestvike.linq.debug.DebuggerDisplay;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
@@ -222,6 +223,7 @@ final class SelectEnumerableIterator<TSource, TResult> extends Iterator<TResult>
 }
 
 
+@DebuggerDisplay("Count = {countForDebugger()}")
 final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final IArray<TSource> source;
     private final Func1<TSource, TResult> selector;
@@ -232,6 +234,11 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
         assert source._getCount() > 0; // Caller should check this beforehand and return a cached result
         this.source = source;
         this.selector = selector;
+    }
+
+    @SuppressWarnings("unused")
+    private int countForDebugger() {
+        return this.source._getCount();
     }
 
     @Override
@@ -349,6 +356,7 @@ final class SelectArrayIterator<TSource, TResult> extends Iterator<TResult> impl
 }
 
 
+@DebuggerDisplay("Count = {countForDebugger()}")
 final class SelectRangeIterator<TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final int start;
     private final int end;
@@ -362,6 +370,11 @@ final class SelectRangeIterator<TResult> extends Iterator<TResult> implements IP
         this.start = start;
         this.end = end;
         this.selector = selector;
+    }
+
+    @SuppressWarnings("unused")
+    private int countForDebugger() {
+        return this.end - this.start;
     }
 
     @Override
@@ -466,6 +479,7 @@ final class SelectRangeIterator<TResult> extends Iterator<TResult> implements IP
 }
 
 
+@DebuggerDisplay("Count = {count}")
 final class SelectRepeatIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final TSource element;
     private final int count;
@@ -578,6 +592,7 @@ final class SelectRepeatIterator<TSource, TResult> extends Iterator<TResult> imp
 }
 
 
+@DebuggerDisplay("Count = {countForDebugger()}")
 final class SelectListIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final IArrayList<TSource> source;
     private final Func1<TSource, TResult> selector;
@@ -588,6 +603,11 @@ final class SelectListIterator<TSource, TResult> extends Iterator<TResult> imple
         assert selector != null;
         this.source = source;
         this.selector = selector;
+    }
+
+    @SuppressWarnings("unused")
+    private int countForDebugger() {
+        return this.source._getCount();
     }
 
     @Override
@@ -725,6 +745,7 @@ final class SelectListIterator<TSource, TResult> extends Iterator<TResult> imple
 }
 
 
+@DebuggerDisplay("Count = {countForDebugger()}")
 final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final IList<TSource> source;
     private final Func1<TSource, TResult> selector;
@@ -735,6 +756,11 @@ final class SelectIListIterator<TSource, TResult> extends Iterator<TResult> impl
         assert selector != null;
         this.source = source;
         this.selector = selector;
+    }
+
+    @SuppressWarnings("unused")
+    private int countForDebugger() {
+        return this.source._getCount();
     }
 
     @Override
@@ -1086,6 +1112,7 @@ final class SelectIPartitionIterator<TSource, TResult> extends Iterator<TResult>
 }
 
 
+@DebuggerDisplay("Count = {_getCount()}")
 final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final IArrayList<TSource> source;
     private final Func1<TSource, TResult> selector;
@@ -1245,6 +1272,7 @@ final class SelectListPartitionIterator<TSource, TResult> extends Iterator<TResu
 }
 
 
+@DebuggerDisplay("Count = {_getCount()}")
 final class SelectIListPartitionIterator<TSource, TResult> extends Iterator<TResult> implements IPartition<TResult> {
     private final IList<TSource> source;
     private final Func1<TSource, TResult> selector;

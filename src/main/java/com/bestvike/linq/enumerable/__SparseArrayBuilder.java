@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.linq.IEnumerable;
+import com.bestvike.linq.debug.DebuggerDisplay;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.out;
 
@@ -9,6 +10,7 @@ import java.util.Objects;
 /**
  * Created by 许崇雷 on 2018-05-09.
  */
+@DebuggerDisplay("{debuggerDisplay(),nq}")
 final class Marker {//struct
     private final int count;
     private final int index;
@@ -26,6 +28,11 @@ final class Marker {//struct
 
     public int getIndex() {
         return this.index;
+    }
+
+    @SuppressWarnings("unused")
+    private String debuggerDisplay() {
+        return this.toString();
     }
 
     @Override
