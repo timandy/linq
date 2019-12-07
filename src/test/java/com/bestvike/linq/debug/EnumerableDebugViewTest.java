@@ -29,10 +29,10 @@ class EnumerableDebugViewTest extends TestCase {
         IEnumerable<Integer> source = Linq.range(10, 5);
         assertEquals("Count = 5", DebugView.getDebuggerDisplay(source));
         //
-        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(source);
-        assertIsType(Object[].class, debuggerTypeProxy);
-        Object[] values = (Object[]) debuggerTypeProxy;
+        Object proxyObject = DebugView.getDebuggerProxyObject(source);
+        assertIsType(Object[].class, proxyObject);
+        Object[] values = (Object[]) proxyObject;
         assertEquals(source.cast(Object.class).toArray(), Linq.of(values));
-        assertSame(debuggerTypeProxy, DebugView.getDebuggerProxyObject(source));
+        assertSame(proxyObject, DebugView.getDebuggerProxyObject(source));
     }
 }

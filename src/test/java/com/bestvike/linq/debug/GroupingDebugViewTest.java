@@ -31,10 +31,10 @@ class GroupingDebugViewTest extends TestCase {
         //key
         assertEquals("Key = " + keyString, DebugView.getDebuggerDisplay(grouping));
         //values
-        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(grouping);
-        assertIsType(Object[].class, debuggerTypeProxy);
-        Object[] values = (Object[]) debuggerTypeProxy;
+        Object proxyObject = DebugView.getDebuggerProxyObject(grouping);
+        assertIsType(Object[].class, proxyObject);
+        Object[] values = (Object[]) proxyObject;
         assertEquals(grouping.toArray(), Linq.of(values));
-        assertSame(debuggerTypeProxy, DebugView.getDebuggerProxyObject(grouping));
+        assertSame(proxyObject, DebugView.getDebuggerProxyObject(grouping));
     }
 }

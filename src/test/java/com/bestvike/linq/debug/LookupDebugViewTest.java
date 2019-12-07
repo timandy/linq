@@ -32,9 +32,9 @@ class LookupDebugViewTest extends TestCase {
         //count
         assertEquals("Count = " + lookup.getCount(), DebugView.getDebuggerDisplay(lookup));
         //groupings
-        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(lookup);
-        assertIsType(Object[].class, debuggerTypeProxy);
-        Object[] groupings = (Object[]) debuggerTypeProxy;
+        Object proxyObject = DebugView.getDebuggerProxyObject(lookup);
+        assertIsType(Object[].class, proxyObject);
+        Object[] groupings = (Object[]) proxyObject;
         assertEquals(1, groupings.length);
         assertAll(Linq.of(groupings).zip(lookup, (l, r) -> Tuple.create(l, r)), tuple -> assertSame(tuple.getItem1(), tuple.getItem2()));
         assertSame(groupings, DebugView.getDebuggerProxyObject(lookup)); // The result should be cached, as Lookup is immutable.

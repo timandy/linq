@@ -28,10 +28,10 @@ class IterableDebugViewTest extends TestCase {
         Iterable<Long> source = new CountIterable(5);
         assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
         //
-        Object debuggerTypeProxy = DebugView.getDebuggerProxyObject(source);
-        assertIsType(Object[].class, debuggerTypeProxy);
-        Object[] values = (Object[]) debuggerTypeProxy;
+        Object proxyObject = DebugView.getDebuggerProxyObject(source);
+        assertIsType(Object[].class, proxyObject);
+        Object[] values = (Object[]) proxyObject;
         assertEquals(Linq.of(source).cast(Object.class).toArray(), Linq.of(values));
-        assertSame(debuggerTypeProxy, DebugView.getDebuggerProxyObject(source));
+        assertSame(proxyObject, DebugView.getDebuggerProxyObject(source));
     }
 }
