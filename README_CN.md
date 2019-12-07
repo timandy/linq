@@ -166,7 +166,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 5. 在 `When rendering a node` 小节，选中 `Use following expression:` 并输入 `DebugView.getDebuggerDisplay(this)`。
     如果报错，按下 `Alt + Enter` 导入类。
 6. 选中 `Use list of expression:` 并在 `Name` 列输入 `**RESULT VIEW**`。
-    在 `Expression` 列输入`DebugView.getDebuggerTypeProxy(this)`。
+    在 `Expression` 列输入`DebugView.getDebuggerProxyObject(this)`。
     如果报错，按下 `Alt + Enter` 导入类。
     建议选中 `On-demand`，以便在必要时枚举序列。
 7. 如果你想查看 `Iterable` 实例的默认字段，选中 `Append default children`。

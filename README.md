@@ -166,7 +166,7 @@ In general, the more complex the operation you want to perform on the data, the 
 5. In the `When rendering a node` section, check `Use following expression:` and type `DebugView.getDebuggerDisplay(this)`.
     If you get an error, press `Alt + Enter` to import the class.
 6. Check `Use list of expression:` and type `**RESULT VIEW**` in the `Name` column.
-    Type `DebugView.getDebuggerTypeProxy(this)` in the `Expression` column.
+    Type `DebugView.getDebuggerProxyObject(this)` in the `Expression` column.
     If you get an error, press `Alt + Enter` to import the class.
     It is recommended to check `On-demand` to enumerate the sequence if necessary.
 7. If you want to see the default field of the `Iterable` instance, check `Append default children`.
