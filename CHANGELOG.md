@@ -6,6 +6,7 @@
 - Support custom debug view for any type by `DebuggerDisplay`, `DebuggerTypeProxy` annotation.
 
 ### Changes
+- Rename `DebugView.getDebuggerDisplay(...)` to `DebugView.getDebuggerDisplayText(...)`.
 - Rename `DebugView.getDebuggerTypeProxy(...)` to `DebugView.getDebuggerProxyObject(...)`.
 - Modify debugger display for types which is cheap to count the elements.
 
