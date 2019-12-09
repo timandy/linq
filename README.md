@@ -163,7 +163,7 @@ In general, the more complex the operation you want to perform on the data, the 
 2. Click the `Add` button.
 3. Type `IterableView` in `Renderer name`.
 4. Type `java.lang.Iterable` in `Apply renderer to objects of type (fully-qualified name):`.
-5. In the `When rendering a node` section, check `Use following expression:` and type `DebugView.getDebuggerDisplay(this)`.
+5. In the `When rendering a node` section, check `Use following expression:` and type `DebugView.getDebuggerDisplayText(this)`.
     If you get an error, press `Alt + Enter` to import the class.
 6. Check `Use list of expression:` and type `**RESULT VIEW**` in the `Name` column.
     Type `DebugView.getDebuggerProxyObject(this)` in the `Expression` column.

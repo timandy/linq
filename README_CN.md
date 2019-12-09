@@ -163,7 +163,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 2. 单击 `Add` 按钮。
 3. 在 `Renderer name` 输入 `IterableView`。
 4. 在 `Apply renderer to objects of type (fully-qualified name):` 输入 `java.lang.Iterable`。
-5. 在 `When rendering a node` 小节，选中 `Use following expression:` 并输入 `DebugView.getDebuggerDisplay(this)`。
+5. 在 `When rendering a node` 小节，选中 `Use following expression:` 并输入 `DebugView.getDebuggerDisplayText(this)`。
     如果报错，按下 `Alt + Enter` 导入类。
 6. 选中 `Use list of expression:` 并在 `Name` 列输入 `**RESULT VIEW**`。
     在 `Expression` 列输入`DebugView.getDebuggerProxyObject(this)`。
