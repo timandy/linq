@@ -15,11 +15,11 @@ public final class DebugView {
     private DebugView() {
     }
 
-    public static String getDebuggerDisplay(Object obj) {
+    public static String getDebuggerDisplayText(Object obj) {
         if (obj == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.obj);
 
-        return Debugger.getDebuggerDisplay(obj);
+        return Debugger.getDebuggerDisplayText(obj);
     }
 
     public static Object getDebuggerProxyObject(Object obj) {

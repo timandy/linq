@@ -29,7 +29,7 @@ class GroupingDebugViewTest extends TestCase {
     @MethodSource("DebuggerAttributesValid_Data")
     <TKey, TElement> void DebuggerAttributesValid(IGrouping<TKey, TElement> grouping, String keyString) {
         //key
-        assertEquals("Key = " + keyString, DebugView.getDebuggerDisplay(grouping));
+        assertEquals("Key = " + keyString, DebugView.getDebuggerDisplayText(grouping));
         //values
         Object proxyObject = DebugView.getDebuggerProxyObject(grouping);
         assertIsType(Object[].class, proxyObject);

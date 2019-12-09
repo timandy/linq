@@ -11,33 +11,36 @@ import org.junit.jupiter.api.Test;
 @SuppressWarnings("unused")
 class DebuggerTest extends TestCase {
     @Test
-    void testExpression() {
+    void testGetDebuggerDisplayText() {
+        Apple[] apples = new Apple[0];
+        assertEquals("Count = 0", Debugger.getDebuggerDisplayText(apples));
+
         LacksBrace lacksBrace = new LacksBrace();
-        assertThrows(InvalidOperationException.class, () -> Debugger.getDebuggerDisplay(lacksBrace));
+        assertThrows(InvalidOperationException.class, () -> Debugger.getDebuggerDisplayText(lacksBrace));
 
         StaticMethod staticMethod = new StaticMethod();
-        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplay(staticMethod));
+        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplayText(staticMethod));
 
         InstanceMethod instanceMethod = new InstanceMethod();
-        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplay(instanceMethod));
+        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplayText(instanceMethod));
 
         ErrorMethod errorMethod = new ErrorMethod();
-        assertThrows(RuntimeException.class, () -> Debugger.getDebuggerDisplay(errorMethod));
+        assertThrows(RuntimeException.class, () -> Debugger.getDebuggerDisplayText(errorMethod));
 
         NoMethod noMethod = new NoMethod();
-        assertThrows(InvalidOperationException.class, () -> Debugger.getDebuggerDisplay(noMethod));
+        assertThrows(InvalidOperationException.class, () -> Debugger.getDebuggerDisplayText(noMethod));
 
         StaticField staticField = new StaticField();
-        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplay(staticField));
+        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplayText(staticField));
 
         InstanceField instanceField = new InstanceField();
-        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplay(instanceField));
+        assertEquals("value=\"hello\"", Debugger.getDebuggerDisplayText(instanceField));
 
         NoField noField = new NoField();
-        assertThrows(InvalidOperationException.class, () -> Debugger.getDebuggerDisplay(noField));
+        assertThrows(InvalidOperationException.class, () -> Debugger.getDebuggerDisplayText(noField));
 
         Apple apple = new Apple("fuji", "red");
-        assertEquals("Style = fuji, Color = \"red\"", Debugger.getDebuggerDisplay(apple));
+        assertEquals("Style = fuji, Color = \"red\"", Debugger.getDebuggerDisplayText(apple));
     }
 
     @Test

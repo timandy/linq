@@ -12,21 +12,21 @@ import org.junit.jupiter.api.Test;
 class IterableDebugViewTest extends TestCase {
     @Test
     void GenericIterableDebugView_ThrowsForNullSource() {
-        assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerDisplay(null));
+        assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerDisplayText(null));
         assertThrows(ArgumentNullException.class, () -> DebugView.getDebuggerProxyObject(null));
     }
 
     @Test
     void GenericIterableDebugView_ThrowsForEmptySource() {
         Iterable<Long> source = new CountIterable(0);
-        assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
+        assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplayText(source));
         assertEquals(SR.EmptyIterable, DebugView.getDebuggerProxyObject(source));
     }
 
     @Test
     void GenericIterableDebugView_NonEmptySource() {
         Iterable<Long> source = new CountIterable(5);
-        assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
+        assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplayText(source));
         //
         Object proxyObject = DebugView.getDebuggerProxyObject(source);
         assertIsType(Object[].class, proxyObject);

@@ -30,7 +30,7 @@ class LookupDebugViewTest extends TestCase {
     @MethodSource("DebuggerAttributesValid_Data")
     <TKey, TElement> void DebuggerAttributesValid(ILookup<TKey, TElement> lookup) {
         //count
-        assertEquals("Count = " + lookup.getCount(), DebugView.getDebuggerDisplay(lookup));
+        assertEquals("Count = " + lookup.getCount(), DebugView.getDebuggerDisplayText(lookup));
         //groupings
         Object proxyObject = DebugView.getDebuggerProxyObject(lookup);
         assertIsType(Object[].class, proxyObject);

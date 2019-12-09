@@ -15,8 +15,8 @@ public final class GroupingDebugView<TKey, TElement> implements IDebugView {
 
     @Override
     public Object[] getProxyObject() {
-        return this.cachedValues == null ?
-                (this.cachedValues = this.grouping.toArray().getArray())
+        return this.cachedValues == null
+                ? (this.cachedValues = this.grouping.toArray().getArray())
                 : this.cachedValues;
     }
 }

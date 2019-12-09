@@ -6,12 +6,14 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.out;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by 许崇雷 on 2019-12-06.
@@ -20,15 +22,19 @@ final class Debugger {
     private Debugger() {
     }
 
-    static String getDebuggerDisplay(Object obj) {
+    static String getDebuggerDisplayText(Object obj) {
         // Get the DebuggerDisplay for obj
         Class<?> objType = obj.getClass();
         DebuggerDisplay debuggerDisplay = objType.getAnnotation(DebuggerDisplay.class);
         if (debuggerDisplay == null) {
-            if (obj instanceof ICollection)
-                return "Count = " + ((ICollection<?>) obj)._getCount();
+            if (objType.isArray())
+                return "Count = " + Array.getLength(obj);
             if (obj instanceof Collection)
                 return "Count = " + ((Collection<?>) obj).size();
+            if (obj instanceof Map)
+                return "Count = " + ((Map<?, ?>) obj).size();
+            if (obj instanceof ICollection)
+                return "Count = " + ((ICollection<?>) obj)._getCount();
             return objType.getName();
         }
 
@@ -153,6 +159,10 @@ final class Debugger {
             return debuggerTypeProxy.value();
         if (IEnumerable.class.isAssignableFrom(type))
             return EnumerableDebugView.class;
+        if (Collection.class.isAssignableFrom(type))
+            return CollectionDebugView.class;
+        if (Map.class.isAssignableFrom(type))
+            return MapDebugView.class;
         if (Iterable.class.isAssignableFrom(type))
             return IterableDebugView.class;
         return ObjectDebugView.class;

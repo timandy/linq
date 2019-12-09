@@ -15,8 +15,8 @@ public final class LookupDebugView<TKey, TElement> implements IDebugView {
 
     @Override
     public Object[] getProxyObject() {
-        return this.cachedGroupings == null ?
-                (this.cachedGroupings = this.lookup.toArray().getArray())
+        return this.cachedGroupings == null
+                ? (this.cachedGroupings = this.lookup.toArray().getArray())
                 : this.cachedGroupings;
     }
 }

@@ -15,13 +15,13 @@ import java.util.List;
 /**
  * Created by 许崇雷 on 2019-12-07.
  */
-class DebugViewTest extends TestCase {
+class LinqDebugViewTest extends TestCase {
     @Test
     void testCopyPosition() throws Exception {
         Constructor<?> ctor = Class.forName("com.bestvike.linq.enumerable.CopyPosition").getDeclaredConstructor(int.class, int.class);
         ctor.setAccessible(true);
         Object copyPosition = ctor.newInstance(1, 2);
-        assertEquals("[1, 2]", DebugView.getDebuggerDisplay(copyPosition));
+        assertEquals("[1, 2]", DebugView.getDebuggerDisplayText(copyPosition));
     }
 
     @Test
@@ -29,91 +29,91 @@ class DebugViewTest extends TestCase {
         Constructor<?> ctor = Class.forName("com.bestvike.linq.enumerable.Marker").getDeclaredConstructor(int.class, int.class);
         ctor.setAccessible(true);
         Object marker = ctor.newInstance(1, 2);
-        assertEquals("index: 2, count: 1", DebugView.getDebuggerDisplay(marker));
+        assertEquals("index: 2, count: 1", DebugView.getDebuggerDisplayText(marker));
     }
 
     @Test
     void testEmptyPartition() throws Exception {
         IEnumerable<Object> emptyPartition = Linq.empty();
         assertIsType(Class.forName("com.bestvike.linq.enumerable.EmptyPartition"), emptyPartition);
-        assertEquals("Count = 0", DebugView.getDebuggerDisplay(emptyPartition));
+        assertEquals("Count = 0", DebugView.getDebuggerDisplayText(emptyPartition));
     }
 
     @Test
     void testListPartition() throws Exception {
         IEnumerable<Integer> listPartition = Linq.of(1, 2, 3).skip(1);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.ListPartition"), listPartition);
-        assertEquals("Count = 2", DebugView.getDebuggerDisplay(listPartition));
+        assertEquals("Count = 2", DebugView.getDebuggerDisplayText(listPartition));
     }
 
     @Test
     void testIListPartition() throws Exception {
         IEnumerable<Integer> iListPartition = Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3))).skip(1);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.IListPartition"), iListPartition);
-        assertEquals("Count = 2", DebugView.getDebuggerDisplay(iListPartition));
+        assertEquals("Count = 2", DebugView.getDebuggerDisplayText(iListPartition));
     }
 
     @Test
     void testRange() throws Exception {
         IEnumerable<Integer> range = Linq.range(0, 3);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.RangeIterator"), range);
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(range));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(range));
     }
 
     @Test
     void testRepeat() throws Exception {
         IEnumerable<Integer> repeat = Linq.repeat(1, 3);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.RepeatIterator"), repeat);
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(repeat));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(repeat));
     }
 
     @Test
     void testSelectArray() throws Exception {
         IEnumerable<Integer> source = Linq.of(1, 2, 3).select(x -> x);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.SelectArrayIterator"), source);
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
     void testSelectRange() throws Exception {
         IEnumerable<Integer> source = Linq.range(0, 3).select(x -> x);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.SelectRangeIterator"), source);
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
     void testSelectRepeat() throws Exception {
         IEnumerable<Integer> source = Linq.repeat(1, 3).select(x -> x);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.SelectRepeatIterator"), source);
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
     void testSelectList() throws Exception {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3)).select(x -> x);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.SelectListIterator"), source);
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
     void testSelectIList() throws Exception {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3))).select(x -> x);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.SelectIListIterator"), source);
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
     void testSelectListPartition() throws Exception {
         IEnumerable<Integer> source = Linq.of(Arrays.asList(1, 2, 3)).skip(1).select(x -> x);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.SelectListPartitionIterator"), source);
-        assertEquals("Count = 2", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 2", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
     void testSelectIListPartition() throws Exception {
         IEnumerable<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(1, 2, 3))).skip(1).select(x -> x);
         assertIsType(Class.forName("com.bestvike.linq.enumerable.SelectIListPartitionIterator"), source);
-        assertEquals("Count = 2", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 2", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
@@ -121,7 +121,7 @@ class DebugViewTest extends TestCase {
         List<Integer> source = Arrays.asList(1, 2, 3);
         assertIsAssignableFrom(Collection.class, source);
         assertNull(source.getClass().getAnnotation(DebuggerDisplay.class));
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(source));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(source));
     }
 
     @Test
@@ -129,13 +129,6 @@ class DebugViewTest extends TestCase {
         IEnumerable<Integer> source = Linq.of(1, 2, 3);
         assertIsAssignableFrom(ICollection.class, source);
         assertNull(source.getClass().getAnnotation(DebuggerDisplay.class));
-        assertEquals("Count = 3", DebugView.getDebuggerDisplay(source));
-    }
-
-    @Test
-    void testObject() {
-        Object source = new Object();
-        assertEquals(source.getClass().getName(), DebugView.getDebuggerDisplay(source));
-        assertSame(source, DebugView.getDebuggerProxyObject(source));
+        assertEquals("Count = 3", DebugView.getDebuggerDisplayText(source));
     }
 }
