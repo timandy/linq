@@ -88,17 +88,17 @@ class DebuggerTest extends TestCase {
 
     @DebuggerDisplay("value={value}")
     private static class StaticField {
-        private static String value = "hello";
+        private static final String value = "hello";
     }
 
     @DebuggerDisplay("value={value}")
     private static class InstanceField {
-        private String value = "hello";
+        private final String value = "hello";
     }
 
     @DebuggerDisplay("value={value2}")
     private static class NoField {
-        private String value = "hello";
+        private final String value = "hello";
     }
 
     @DebuggerDisplay("Style = {getStyle(),nq}, Color = {color}")

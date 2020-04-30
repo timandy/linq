@@ -239,8 +239,8 @@ class LifecycleTest extends TestCase {
 
     private static final class LifecycleTrackingEnumerable<T> implements IEnumerable<T> {
         private final IEnumerable<T> source;
-        private AtomicInteger enumeratorCtorCalls = new AtomicInteger();
-        private AtomicInteger enumeratorDisposeCalls = new AtomicInteger();
+        private final AtomicInteger enumeratorCtorCalls = new AtomicInteger();
+        private final AtomicInteger enumeratorDisposeCalls = new AtomicInteger();
 
         LifecycleTrackingEnumerable(IEnumerable<T> source) {
             this.source = source;

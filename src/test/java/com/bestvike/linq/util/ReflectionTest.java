@@ -70,9 +70,9 @@ class ReflectionTest extends TestCase {
 
     private static class Bean extends Base {
         private static final int STATIC = Integer.MAX_VALUE;
-        public int pub;
-        protected String pro;
-        private String pri;
+        public final int pub;
+        protected final String pro;
+        private final String pri;
 
         private Bean(String pri, String pro, int score, String pri1, String pro1, int pub) {
             super(pri, pro, score);

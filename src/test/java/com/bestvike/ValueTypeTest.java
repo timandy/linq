@@ -18,18 +18,18 @@ import java.util.Objects;
  * Created by 许崇雷 on 2019-05-28.
  */
 class ValueTypeTest extends TestCase {
-    private NoFieldBean noFieldBean;
-    private NoFieldBean noFieldBeanExpected;
-    private OneFieldBean oneFieldBean;
-    private OneFieldBean oneFieldBeanExpected;
-    private TwoFieldBean twoFieldBean;
-    private TwoFieldBean twoFieldBeanExpected;
-    private MoreFieldBean nullMoreFieldBean;
-    private MoreFieldBean nullMoreFieldBeanExpected;
-    private MoreFieldBean emptyMoreFieldBean;
-    private MoreFieldBean emptyMoreFieldBeanExpected;
-    private MoreFieldBean moreFieldBean;
-    private MoreFieldBean moreFieldBeanExpected;
+    private final NoFieldBean noFieldBean;
+    private final NoFieldBean noFieldBeanExpected;
+    private final OneFieldBean oneFieldBean;
+    private final OneFieldBean oneFieldBeanExpected;
+    private final TwoFieldBean twoFieldBean;
+    private final TwoFieldBean twoFieldBeanExpected;
+    private final MoreFieldBean nullMoreFieldBean;
+    private final MoreFieldBean nullMoreFieldBeanExpected;
+    private final MoreFieldBean emptyMoreFieldBean;
+    private final MoreFieldBean emptyMoreFieldBeanExpected;
+    private final MoreFieldBean moreFieldBean;
+    private final MoreFieldBean moreFieldBeanExpected;
 
     {
         this.noFieldBean = new NoFieldBean();

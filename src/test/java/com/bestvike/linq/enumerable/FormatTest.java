@@ -21,7 +21,7 @@ import java.util.TimeZone;
  * Created by 许崇雷 on 2019-06-20.
  */
 class FormatTest extends TestCase {
-    private Formatter formatter;
+    private final Formatter formatter;
 
     {
         TimeZone.setDefault(TIME_ZONE);
