@@ -1,0 +1,55 @@
+# Workflow file of Github Actions
+
+name: build
+
+on:
+  push:
+    branches:
+      - master
+      - feature/*
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build-on-jdk-8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scm
+        uses: actions/checkout@v2
+      - name: Set up JDK 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: Set up Codecov
+        run: pip install --user codecov
+      - name: Build with Maven
+        run: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - name: Test with Maven
+        run: mvn test -B
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.6
+        with:
+          name: Codecov on jdk 8
+          fail_ci_if_error: true
+
+  build-on-jdk-11:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout scm
+        uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Set up Codecov
+        run: pip install --user codecov
+      - name: Build with Maven
+        run: mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - name: Test with Maven
+        run: mvn test -B
+      - name: Codecov
+        uses: codecov/codecov-action@v1.0.6
+        with:
+          name: Codecov on jdk 11
+          fail_ci_if_error: true
