@@ -75,12 +75,12 @@ final class LargeArrayBuilder<T> {//struct
     private static final int StartingCapacity = 4;
     private static final int ResizeLimit = 8;
 
-    private final int maxCapacity;                                      // The maximum capacity this builder can have.
-    private Object[] first;                                             // The first buffer we store items in. Resized until ResizeLimit.
-    private ArrayBuilder<Object[]> buffers = new ArrayBuilder<>();      // After ResizeLimit * 2, we store previous buffers we've filled out here.
-    private Object[] current;                                           // Current buffer we're reading into. If count <= ResizeLimit, this is first.
-    private int index;                                                  // Index into the current buffer.
-    private int count;                                                  // count of all of the items in this builder.
+    private final ArrayBuilder<Object[]> buffers = new ArrayBuilder<>();    // After ResizeLimit * 2, we store previous buffers we've filled out here.
+    private final int maxCapacity;                                          // The maximum capacity this builder can have.
+    private Object[] first;                                                 // The first buffer we store items in. Resized until ResizeLimit.
+    private Object[] current;                                               // Current buffer we're reading into. If count <= ResizeLimit, this is first.
+    private int index;                                                      // Index into the current buffer.
+    private int count;                                                      // count of all of the items in this builder.
 
     LargeArrayBuilder() {
         this(Integer.MAX_VALUE);
