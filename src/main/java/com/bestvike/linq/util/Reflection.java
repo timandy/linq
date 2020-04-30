@@ -36,7 +36,7 @@ public final class Reflection {
                 }
                 cls = cls.getSuperclass();
             }
-            return fields.toArray(new Field[fields.size()]);
+            return fields.toArray(new Field[0]);
         });
     }
 }

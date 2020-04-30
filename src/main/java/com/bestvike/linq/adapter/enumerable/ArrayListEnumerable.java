@@ -87,7 +87,7 @@ public final class ArrayListEnumerable<TSource> implements IArrayList<TSource> {
 
     @Override
     public TSource[] _toArray(Class<TSource> clazz) {
-        TSource[] array = ArrayUtils.newInstance(clazz, this.source.size());
+        TSource[] array = ArrayUtils.empty(clazz);
         return this.source.toArray(array);
     }
 
