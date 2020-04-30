@@ -1,7 +1,7 @@
 <!--自述文件-->
 # LINQ to Objects (Java)
 
-[![Build Status](https://travis-ci.org/timandy/linq.svg?branch=master)](https://travis-ci.org/timandy/linq)
+[![Build Status](https://github.com/timandy/linq/workflows/build/badge.svg)](https://github.com/timandy/linq/actions)
 [![Codecov](https://codecov.io/gh/timandy/linq/branch/master/graph/badge.svg)](https://codecov.io/gh/timandy/linq)
 [![Maven Central](https://img.shields.io/maven-central/v/com.bestvike/linq.svg)](https://search.maven.org/artifact/com.bestvike/linq)
 [![GitHub release](https://img.shields.io/github/release/timandy/linq.svg)](https://github.com/timandy/linq/releases/latest)
