@@ -89,7 +89,7 @@ class AnyTest extends TestCase {
 
     @ParameterizedTest
     @MethodSource("TestDataWithPredicate")
-    void Any(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
+    void Any_Predicate(IEnumerable<Integer> source, Predicate1<Integer> predicate, boolean expected) {
         if (predicate == null)
             assertEquals(expected, source.any());
         else

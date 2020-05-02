@@ -804,7 +804,7 @@ class WhereTest extends TestCase {
         int[] source = new int[]{1, 2, 3, 4, 5};
         IEnumerator<Integer> enumerator = Linq.of(source).where(value -> true).enumerator();
 
-        // The full .NET Framework throws a NotImplementedException.
+        // The .NET Framework throws a NotImplementedException.
         // See https://github.com/dotnet/corefx/pull/2959.
         assertThrows(NotSupportedException.class, () -> enumerator.reset());
     }

@@ -156,7 +156,7 @@ class OrderByDescendingTest extends TestCase {
     void OrderByExtremeComparer() {
         int[] outOfOrder = new int[]{7, 1, 0, 9, 3, 5, 4, 2, 8, 6};
 
-        // The full .NET Framework has a bug where the input is incorrectly ordered if the comparer
+        // The .NET Framework has a bug where the input is incorrectly ordered if the comparer
         // returns int.MaxValue or int.MinValue. See https://github.com/dotnet/corefx/pull/2240.
         IEnumerable<Integer> ordered = Linq.of(outOfOrder).orderByDescending(i -> i, new ExtremeComparer()).toArray();
         assertEquals(Linq.range(0, 10).reverse(), ordered);

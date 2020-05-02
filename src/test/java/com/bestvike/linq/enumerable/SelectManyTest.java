@@ -534,7 +534,7 @@ class SelectManyTest extends TestCase {
     @ParameterizedTest
     @MethodSource("GetToArrayDataSources")
     void CollectionInterleavedWithLazyEnumerables_ToArray(IEnumerable<Integer>[] arrays) {
-        // See https://github.com/dotnet/corefx/issues/23680
+        // See https://github.com/dotnet/runtime/issues/23389
 
         Array<Integer> results = Linq.of(arrays).selectMany(ar -> ar).toArray();
         Integer[] results2 = Linq.of(arrays).selectMany(ar -> ar).toArray(Integer.class);

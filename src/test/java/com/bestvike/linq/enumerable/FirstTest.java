@@ -25,12 +25,12 @@ class FirstTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).runOnce().first());
     }
 
-    private static <T> IEnumerable<T> EmptySourceGeneric() {
+    private static <T> IEnumerable<T> TestEmptyNotIList_EmptySource() {
         return Linq.empty();
     }
 
     private static <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = EmptySourceGeneric();
+        IEnumerable<T> source = TestEmptyNotIList_EmptySource();
 
         assertNull(as(source, IList.class));
         assertThrows(InvalidOperationException.class, () -> source.runOnce().first());

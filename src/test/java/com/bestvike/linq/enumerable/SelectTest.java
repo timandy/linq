@@ -744,8 +744,6 @@ class SelectTest extends TestCase {
         IEnumerable<Integer> result = Linq.of(source).select(selector);
         IEnumerator<Integer> enumerator = result.enumerator();
 
-        // The.NET full framework throws a NotImplementedException.
-        // See https://github.com/dotnet/corefx/pull/2959.
         assertThrows(NotSupportedException.class, () -> enumerator.reset());
     }
 

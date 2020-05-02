@@ -29,13 +29,13 @@ class ConcatTest extends TestCase {
         VerifyEqualsWorker(second.concat(first), second.concat(first));
     }
 
-    private static IEnumerable<Object[]> SameResultsWithQueryAndRepeatCallsInt_TestData() {
+    private static IEnumerable<Object[]> SameResultsWithQueryAndRepeatCalls_Int_TestData() {
         ArgsList argsList = new ArgsList();
         argsList.add(Linq.of(2, 3, 2, 4, 5), Linq.of(1, 9, 4));
         return argsList;
     }
 
-    private static IEnumerable<Object[]> SameResultsWithQueryAndRepeatCallsString_TestData() {
+    private static IEnumerable<Object[]> SameResultsWithQueryAndRepeatCalls_String_TestData() {
         ArgsList argsList = new ArgsList();
         argsList.add(Linq.of("AAA", "", "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice"), Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS"));
         return argsList;
@@ -253,15 +253,15 @@ class ConcatTest extends TestCase {
     }
 
     @ParameterizedTest
-    @MethodSource("SameResultsWithQueryAndRepeatCallsInt_TestData")
-    void SameResultsWithQueryAndRepeatCallsInt(IEnumerable<Integer> first, IEnumerable<Integer> second) {
+    @MethodSource("SameResultsWithQueryAndRepeatCalls_Int_TestData")
+    void SameResultsWithQueryAndRepeatCalls_Int(IEnumerable<Integer> first, IEnumerable<Integer> second) {
         // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
         SameResultsWithQueryAndRepeatCallsWorker(first, second);
     }
 
     @ParameterizedTest
-    @MethodSource("SameResultsWithQueryAndRepeatCallsString_TestData")
-    void SameResultsWithQueryAndRepeatCallsString(IEnumerable<String> first, IEnumerable<String> second) {
+    @MethodSource("SameResultsWithQueryAndRepeatCalls_String_TestData")
+    void SameResultsWithQueryAndRepeatCalls_String(IEnumerable<String> first, IEnumerable<String> second) {
         // workaround: xUnit type inference doesn't work if the input type is not T (like IEnumerable<T>)
         SameResultsWithQueryAndRepeatCallsWorker(first, second);
     }
@@ -486,7 +486,7 @@ class ConcatTest extends TestCase {
     @ParameterizedTest
     @MethodSource("GetToArrayDataSources")
     void CollectionInterleavedWithLazyEnumerables_ToArray(IEnumerable<Integer>[] arrays) {
-        // See https://github.com/dotnet/corefx/issues/23680
+        // See https://github.com/dotnet/runtime/issues/23389
 
         IEnumerable<Integer> concats = arrays[0];
 

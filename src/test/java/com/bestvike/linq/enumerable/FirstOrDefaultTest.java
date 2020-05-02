@@ -23,12 +23,12 @@ class FirstOrDefaultTest extends TestCase {
         assertEquals(expected, Linq.of(source).runOnce().firstOrDefault());
     }
 
-    private static <T> IEnumerable<T> EmptySourceGeneric() {
+    private static <T> IEnumerable<T> TestEmptyNotIList_EmptySource() {
         return Linq.empty();
     }
 
     private static <T> void TestEmptyNotIList() {
-        IEnumerable<T> source = EmptySourceGeneric();
+        IEnumerable<T> source = TestEmptyNotIList_EmptySource();
         T expected = null;
 
         assertNull(as(source, IList.class));
