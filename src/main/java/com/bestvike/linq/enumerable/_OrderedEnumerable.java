@@ -636,7 +636,7 @@ final class EnumerableSorter<TElement, TKey> extends AbstractEnumerableSorter<TE
 
     @Override
     protected void quickSort(Integer[] keys, int lo, int hi) {
-        Arrays.sort(keys, lo, hi - lo + 1, Comparer.create(this::compareAnyKeys)); // TODO #24115: Remove Create call when delegate-based overload is available
+        Arrays.sort(keys, lo, hi - lo + 1, Comparer.create(this::compareAnyKeys));
     }
 
     // Sorts the k elements between minIdx and maxIdx without sorting all elements
