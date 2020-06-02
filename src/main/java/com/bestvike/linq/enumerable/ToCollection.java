@@ -110,7 +110,7 @@ public final class ToCollection {
                 Map<TKey, TSource> map = new HashMap<>(initialize(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
-                    map.put(keySelector.apply(element), element);
+                    map.putIfAbsent(keySelector.apply(element), element);
                 }
                 return map;
             }
@@ -119,7 +119,7 @@ public final class ToCollection {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
-                    map.put(keySelector.apply(element), element);
+                    map.putIfAbsent(keySelector.apply(element), element);
                 }
             }
             return map;
@@ -129,7 +129,7 @@ public final class ToCollection {
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
                 TSource element = e.current();
-                map.put(keySelector.apply(element), element);
+                map.putIfAbsent(keySelector.apply(element), element);
             }
         }
         return map;
@@ -154,7 +154,7 @@ public final class ToCollection {
                 Map<TKey, TElement> map = new HashMap<>(initialize(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
-                    map.put(keySelector.apply(element), elementSelector.apply(element));
+                    map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
                 }
                 return map;
             }
@@ -163,7 +163,7 @@ public final class ToCollection {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
-                    map.put(keySelector.apply(element), elementSelector.apply(element));
+                    map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
                 }
             }
             return map;
@@ -173,7 +173,7 @@ public final class ToCollection {
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
                 TSource element = e.current();
-                map.put(keySelector.apply(element), elementSelector.apply(element));
+                map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
             }
         }
         return map;
@@ -196,7 +196,7 @@ public final class ToCollection {
                 Map<TKey, TSource> map = new LinkedHashMap<>(initialize(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
-                    map.put(keySelector.apply(element), element);
+                    map.putIfAbsent(keySelector.apply(element), element);
                 }
                 return map;
             }
@@ -205,7 +205,7 @@ public final class ToCollection {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
-                    map.put(keySelector.apply(element), element);
+                    map.putIfAbsent(keySelector.apply(element), element);
                 }
             }
             return map;
@@ -215,7 +215,7 @@ public final class ToCollection {
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
                 TSource element = e.current();
-                map.put(keySelector.apply(element), element);
+                map.putIfAbsent(keySelector.apply(element), element);
             }
         }
         return map;
@@ -240,7 +240,7 @@ public final class ToCollection {
                 Map<TKey, TElement> map = new LinkedHashMap<>(initialize(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
-                    map.put(keySelector.apply(element), elementSelector.apply(element));
+                    map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
                 }
                 return map;
             }
@@ -249,7 +249,7 @@ public final class ToCollection {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
-                    map.put(keySelector.apply(element), elementSelector.apply(element));
+                    map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
                 }
             }
             return map;
@@ -259,7 +259,7 @@ public final class ToCollection {
         try (IEnumerator<TSource> e = source.enumerator()) {
             while (e.moveNext()) {
                 TSource element = e.current();
-                map.put(keySelector.apply(element), elementSelector.apply(element));
+                map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
             }
         }
         return map;
