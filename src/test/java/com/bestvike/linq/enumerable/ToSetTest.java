@@ -5,9 +5,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -57,7 +55,40 @@ class ToSetTest extends TestCase {
     void testToSet() {
         assertEmpty(Linq.of(Linq.of().toSet()));
 
-        Set<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(1, 1, 2, 2, 3, 3))).toSet();
-        assertEquals(3, source.size());
+        //元素重复,保留第一个
+        NameScore[] source = new NameScore[]{
+                new NameScore("Chris", 50),
+                new NameScore("Bob", 95),
+                new NameScore("null", 55),
+                new NameScore("Chris", 100)
+        };
+        Set<NameScore> set = Linq.of(source).toSet();
+        assertSame(source[0], Linq.of(set).firstOrDefault(x -> x.Name.equals("Chris")));
+        assertEquals(3, set.size());
+    }
+
+
+    private static class NameScore {
+        private final String Name;
+        private final int Score;
+
+        private NameScore(String name, int score) {
+            this.Name = name;
+            this.Score = score;
+        }
+
+        @Override
+        public int hashCode() {
+            return Values.hashCode(this.Name);
+        }
+
+        @Override
+        public boolean equals(Object that) {
+            if (that == null)
+                return false;
+            if (that.getClass() != this.getClass())
+                return false;
+            return Values.equals(this.Name, ((NameScore) that).Name);
+        }
     }
 }

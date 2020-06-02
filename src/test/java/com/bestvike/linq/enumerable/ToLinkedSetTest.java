@@ -57,7 +57,45 @@ class ToLinkedSetTest extends TestCase {
     void testToLinkedSet() {
         assertEmpty(Linq.of(Linq.of().toLinkedSet()));
 
-        Set<Integer> source = Linq.of(new LinkedList<>(Arrays.asList(1, 1, 2, 2, 3, 3))).toLinkedSet();
-        assertEquals(3, source.size());
+        Set<Integer> intSource = Linq.of(new LinkedList<>(Arrays.asList(1, 1, 2, 2, 3, 3))).toLinkedSet();
+        assertEquals(3, intSource.size());
+
+        //元素重复,保留第一个
+        NameScore[] source = new NameScore[]{
+                new NameScore("Chris", 50),
+                new NameScore("Bob", 95),
+                new NameScore("null", 55),
+                new NameScore("Chris", 100)
+        };
+        Set<NameScore> set = Linq.of(source).toLinkedSet();
+        assertSame(source[0], Linq.of(set).elementAt(0));
+        assertSame(source[1], Linq.of(set).elementAt(1));
+        assertSame(source[2], Linq.of(set).elementAt(2));
+        assertEquals(3, set.size());
+    }
+
+
+    private static class NameScore {
+        private final String Name;
+        private final int Score;
+
+        private NameScore(String name, int score) {
+            this.Name = name;
+            this.Score = score;
+        }
+
+        @Override
+        public int hashCode() {
+            return Values.hashCode(this.Name);
+        }
+
+        @Override
+        public boolean equals(Object that) {
+            if (that == null)
+                return false;
+            if (that.getClass() != this.getClass())
+                return false;
+            return Values.equals(this.Name, ((NameScore) that).Name);
+        }
     }
 }
