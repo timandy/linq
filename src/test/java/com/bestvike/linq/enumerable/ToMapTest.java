@@ -173,7 +173,7 @@ class ToMapTest extends TestCase {
         Func1<Integer, String> keySelector = key -> null;
 
         Map<String, Integer> map = Linq.of(source).toMap(keySelector);
-        assertEquals(3, map.get(null));
+        assertEquals(1, map.get(null));
     }
 
     @Test
@@ -182,7 +182,7 @@ class ToMapTest extends TestCase {
         Func1<Integer, Integer> keySelector = key -> 1;
 
         Map<Integer, Integer> map = Linq.of(source).toMap(keySelector);
-        assertEquals(3, map.get(1));
+        assertEquals(1, map.get(1));
     }
 
     @Test
@@ -295,9 +295,9 @@ class ToMapTest extends TestCase {
         assertTrue(map.get(110).name.equals("Bill"));
         assertEquals(4, map.size());
 
-        //key 重复,保留最后一个
+        //key 重复,保留第一个
         Map<Integer, Employee> map2 = Linq.of(emps).toMap(emp -> emp.deptno);
-        assertEquals(emps[3], map2.get(10));
+        assertEquals(emps[0], map2.get(10));
         assertEquals(emps[1], map2.get(30));
         assertEquals(2, map2.size());
     }
@@ -308,9 +308,9 @@ class ToMapTest extends TestCase {
         assertTrue(map.get(110).equals("Bill"));
         assertEquals(4, map.size());
 
-        //key 重复,保留最后一个
+        //key 重复,保留第一个
         Map<Integer, String> map2 = Linq.of(emps).toMap(emp -> emp.deptno, emp -> emp.name);
-        assertEquals(emps[3].name, map2.get(10));
+        assertEquals(emps[0].name, map2.get(10));
         assertEquals(emps[1].name, map2.get(30));
         assertEquals(2, map2.size());
     }
