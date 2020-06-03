@@ -1,5 +1,23 @@
 <!--变更日志-->
 
+# v5.0.0 Release notes
+`Synchronize changes from .net 5.`
+
+### Features
+- None.
+
+### Changes
+- Improve performance of method `ArrayListEnumerable.toArray(Class<TSource> clazz)`.
+- Optimize allocation of hash sets to reduce the number of `resize` times. Effected methods `toMap`,`toLinkedMap`,`toSet`,`toLinkedSet`.
+- Keep first value for duplicated key. Effected methods `toMap`, `toLinkedMap`.
+- Add more test cases.
+
+# Links
+- Download [http://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/)
+- Source code [https://github.com/timandy/linq/tree/v5.0.0](https://github.com/timandy/linq/tree/v5.0.0)
+
+---
+
 # v3.1.0 Release notes
 
 ### Features
