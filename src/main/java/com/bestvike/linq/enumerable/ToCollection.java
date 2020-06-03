@@ -22,13 +22,17 @@ import java.util.Set;
  * Created by 许崇雷 on 2018-05-08.
  */
 public final class ToCollection {
-    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private static final int MAXIMUM_CAPACITY = 1 << 30;
 
     private ToCollection() {
     }
 
-    private static int initialize(int capacity) {
-        return (int) (capacity / DEFAULT_LOAD_FACTOR + 1f);
+    private static int initialCapacity(int capacity) {
+        if (capacity < 3)
+            return capacity + 1;
+        if (capacity < MAXIMUM_CAPACITY)
+            return (int) ((float) capacity / 0.75f + 1.0f);
+        return Integer.MAX_VALUE;
     }
 
     public static <TSource> TSource[] toArray(IEnumerable<TSource> source, Class<TSource> clazz) {
@@ -107,7 +111,7 @@ public final class ToCollection {
 
             if (collection instanceof IArrayList) {
                 IArrayList<TSource> list = (IArrayList<TSource>) collection;
-                Map<TKey, TSource> map = new HashMap<>(initialize(capacity));
+                Map<TKey, TSource> map = new HashMap<>(initialCapacity(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
                     map.putIfAbsent(keySelector.apply(element), element);
@@ -115,7 +119,7 @@ public final class ToCollection {
                 return map;
             }
 
-            Map<TKey, TSource> map = new HashMap<>(initialize(capacity));
+            Map<TKey, TSource> map = new HashMap<>(initialCapacity(capacity));
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
@@ -151,7 +155,7 @@ public final class ToCollection {
 
             if (collection instanceof IArrayList) {
                 IArrayList<TSource> list = (IArrayList<TSource>) collection;
-                Map<TKey, TElement> map = new HashMap<>(initialize(capacity));
+                Map<TKey, TElement> map = new HashMap<>(initialCapacity(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
                     map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
@@ -159,7 +163,7 @@ public final class ToCollection {
                 return map;
             }
 
-            Map<TKey, TElement> map = new HashMap<>(initialize(capacity));
+            Map<TKey, TElement> map = new HashMap<>(initialCapacity(capacity));
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
@@ -193,7 +197,7 @@ public final class ToCollection {
 
             if (collection instanceof IArrayList) {
                 IArrayList<TSource> list = (IArrayList<TSource>) collection;
-                Map<TKey, TSource> map = new LinkedHashMap<>(initialize(capacity));
+                Map<TKey, TSource> map = new LinkedHashMap<>(initialCapacity(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
                     map.putIfAbsent(keySelector.apply(element), element);
@@ -201,7 +205,7 @@ public final class ToCollection {
                 return map;
             }
 
-            Map<TKey, TSource> map = new LinkedHashMap<>(initialize(capacity));
+            Map<TKey, TSource> map = new LinkedHashMap<>(initialCapacity(capacity));
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
@@ -237,7 +241,7 @@ public final class ToCollection {
 
             if (collection instanceof IArrayList) {
                 IArrayList<TSource> list = (IArrayList<TSource>) collection;
-                Map<TKey, TElement> map = new LinkedHashMap<>(initialize(capacity));
+                Map<TKey, TElement> map = new LinkedHashMap<>(initialCapacity(capacity));
                 for (int i = 0; i < capacity; i++) {
                     TSource element = list.get(i);
                     map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
@@ -245,7 +249,7 @@ public final class ToCollection {
                 return map;
             }
 
-            Map<TKey, TElement> map = new LinkedHashMap<>(initialize(capacity));
+            Map<TKey, TElement> map = new LinkedHashMap<>(initialCapacity(capacity));
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext()) {
                     TSource element = e.current();
@@ -278,13 +282,13 @@ public final class ToCollection {
 
             if (collection instanceof IArrayList) {
                 IArrayList<TSource> list = (IArrayList<TSource>) collection;
-                Set<TSource> set = new HashSet<>(initialize(capacity));
+                Set<TSource> set = new HashSet<>(initialCapacity(capacity));
                 for (int i = 0; i < capacity; i++)
                     set.add(list.get(i));
                 return set;
             }
 
-            Set<TSource> set = new HashSet<>(initialize(capacity));
+            Set<TSource> set = new HashSet<>(initialCapacity(capacity));
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext())
                     set.add(e.current());
@@ -313,13 +317,13 @@ public final class ToCollection {
 
             if (collection instanceof IArrayList) {
                 IArrayList<TSource> list = (IArrayList<TSource>) collection;
-                Set<TSource> set = new LinkedHashSet<>(initialize(capacity));
+                Set<TSource> set = new LinkedHashSet<>(initialCapacity(capacity));
                 for (int i = 0; i < capacity; i++)
                     set.add(list.get(i));
                 return set;
             }
 
-            Set<TSource> set = new LinkedHashSet<>(initialize(capacity));
+            Set<TSource> set = new LinkedHashSet<>(initialCapacity(capacity));
             try (IEnumerator<TSource> e = source.enumerator()) {
                 while (e.moveNext())
                     set.add(e.current());
