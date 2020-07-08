@@ -11,6 +11,11 @@
 - Optimize allocation of hash sets to reduce the number of `resize` times. Effected methods `toMap`,`toLinkedMap`,`toSet`,`toLinkedSet`.
 - Keep first value for duplicated key. Effected methods `toMap`, `toLinkedMap`.
 
+### Tips
+- In order to reduce sorting time, methods `first(predicate)` and `firstOrDefault(predicate)` after `OrderedEnumerable` call the predicate once per element.
+So don't call side-effect methods in linq.
+see [https://github.com/dotnet/runtime/issues/31554](https://github.com/dotnet/runtime/issues/31554).
+
 # Links
 - Download [http://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/)
 - Source code [https://github.com/timandy/linq/tree/v5.0.0](https://github.com/timandy/linq/tree/v5.0.0)
