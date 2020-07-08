@@ -50,4 +50,22 @@ class ArrayTest extends TestCase {
         assertNotSame(source.getArray(), result.getArray());
         assertEquals(source, result);
     }
+
+    @Test
+    void testSize() {
+        Array<Integer> empty = Linq.<Integer>empty().toArray();
+        assertEquals(0, empty.size());
+
+        Array<Integer> source = Linq.of(0, 1).toArray();
+        assertEquals(2, source.size());
+    }
+
+    @Test
+    void testIsEmpty() {
+        Array<Integer> empty = Linq.<Integer>empty().toArray();
+        assertTrue(empty.isEmpty());
+
+        Array<Integer> source = Linq.of(0, 1).toArray();
+        assertFalse(source.isEmpty());
+    }
 }
