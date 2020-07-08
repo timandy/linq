@@ -14,6 +14,7 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.exception.InvalidOperationException;
 import com.bestvike.linq.util.ArgsList;
+import com.bestvike.ref;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
@@ -276,11 +277,109 @@ class OrderByTest extends TestCase {
     }
 
     @Test
+    void FirstWithPredicateOnOrdered() {
+        IEnumerable<Integer> orderBy = Linq.range(0, 10).shuffle().orderBy(i -> i);
+        IEnumerable<Integer> orderByDescending = Linq.range(0, 10).shuffle().orderByDescending(i -> i);
+        ref<Integer> counter = ref.init(0);
+
+        counter.value = 0;
+        assertEquals(0, orderBy.first(i -> {
+            counter.value++;
+            return true;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertEquals(9, orderBy.first(i -> {
+            counter.value++;
+            return i == 9;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertThrows(InvalidOperationException.class, () -> orderBy.first(i -> {
+            counter.value++;
+            return false;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertEquals(9, orderByDescending.first(i -> {
+            counter.value++;
+            return true;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertEquals(0, orderByDescending.first(i -> {
+            counter.value++;
+            return i == 0;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertThrows(InvalidOperationException.class, () -> orderByDescending.first(i -> {
+            counter.value++;
+            return false;
+        }));
+        assertEquals(10, counter.value);
+    }
+
+    @Test
     void FirstOrDefaultOnOrdered() {
         assertEquals(0, Linq.range(0, 10).shuffle().orderBy(i -> i).firstOrDefault());
         assertEquals(9, Linq.range(0, 10).shuffle().orderByDescending(i -> i).firstOrDefault());
         assertEquals(10, Linq.range(0, 100).shuffle().orderByDescending(i -> i.toString().length()).thenBy(i -> i).firstOrDefault());
         assertEquals(null, Linq.<Integer>empty().orderBy(i -> i).firstOrDefault());
+    }
+
+    @Test
+    void FirstOrDefaultWithPredicateOnOrdered() {
+        IEnumerable<Integer> orderBy = Linq.range(0, 10).shuffle().orderBy(i -> i);
+        IEnumerable<Integer> orderByDescending = Linq.range(0, 10).shuffle().orderByDescending(i -> i);
+        ref<Integer> counter = ref.init(0);
+
+        counter.value = 0;
+        assertEquals(0, orderBy.firstOrDefault(i -> {
+            counter.value++;
+            return true;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertEquals(9, orderBy.firstOrDefault(i -> {
+            counter.value++;
+            return i == 9;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertNull(orderBy.firstOrDefault(i -> {
+            counter.value++;
+            return false;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertEquals(9, orderByDescending.firstOrDefault(i -> {
+            counter.value++;
+            return true;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertEquals(0, orderByDescending.firstOrDefault(i -> {
+            counter.value++;
+            return i == 0;
+        }));
+        assertEquals(10, counter.value);
+
+        counter.value = 0;
+        assertNull(orderByDescending.firstOrDefault(i -> {
+            counter.value++;
+            return false;
+        }));
+        assertEquals(10, counter.value);
     }
 
     @Test
