@@ -22,4 +22,12 @@ public interface ICollection<T> extends IEnumerable<T> {
     Object[] _toArray();
 
     List<T> _toList();
+
+    default int size() {
+        return this._getCount();
+    }
+
+    default boolean isEmpty() {
+        return this._getCount() == 0;
+    }
 }
