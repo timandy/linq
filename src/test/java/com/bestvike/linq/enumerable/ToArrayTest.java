@@ -47,25 +47,18 @@ class ToArrayTest extends TestCase {
         return argsList;
     }
 
-    private static IEnumerable<Object[]> JustBelowPowersOfTwoLengths() {
-        return SmallPowersOfTwo().select(p -> new Object[]{p - 1});
-    }
-
-    private static IEnumerable<Object[]> PowersOfTwoLengths() {
-        return SmallPowersOfTwo().select(p -> new Object[]{p});
-    }
-
-    private static IEnumerable<Object[]> JustAbovePowersOfTwoLengths() {
-        return SmallPowersOfTwo().select(p -> new Object[]{p + 1});
-    }
-
-    private static IEnumerable<Integer> SmallPowersOfTwo() {
-        // By N being "small" we mean that allocating an array of
-        // size N doesn't come close to the risk of causing an OOME
-
-        final int MaxPower = 19;
-        return Linq.range(0, MaxPower)
-                .select(i -> 1 << i);// equivalent to pow(2, i)
+    private static IEnumerable<Object[]> ToArrayShouldWorkWithSpecialLengthLazyEnumerables_MemberData() {
+        // Return array sizes that should be small enough not to OOM
+        final int MaxPower = 18;
+        ArgsList argsList = new ArgsList();
+        argsList.add(1);
+        argsList.add(2);
+        for (int i = 2; i <= MaxPower; i++) {
+            argsList.add((i << i) - 1);
+            argsList.add((i << i));
+            argsList.add((i << i) + 1);
+        }
+        return argsList;
     }
 
     @Test
@@ -325,9 +318,7 @@ class ToArrayTest extends TestCase {
     }
 
     @ParameterizedTest
-    @MethodSource({"JustBelowPowersOfTwoLengths",
-            "PowersOfTwoLengths",
-            "JustAbovePowersOfTwoLengths"})
+    @MethodSource("ToArrayShouldWorkWithSpecialLengthLazyEnumerables_MemberData")
     void ToArrayShouldWorkWithSpecialLengthLazyEnumerables(int length) {
         assertTrue(length >= 0);
 
