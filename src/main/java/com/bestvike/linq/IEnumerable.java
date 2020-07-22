@@ -148,8 +148,8 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return AppendPrepend.append(this, element);
     }
 
-    default IEnumerable<TSource> asEnumerable() {
-        return this;
+    default <TResult> IEnumerable<TResult> asEnumerable() {
+        return (IEnumerable<TResult>) this;
     }
 
     default double averageInt() {

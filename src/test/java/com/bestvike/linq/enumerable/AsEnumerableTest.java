@@ -60,5 +60,10 @@ class AsEnumerableTest extends TestCase {
         IEnumerable<String> q = as.where(x -> !IsNullOrEmpty(x));
 
         assertEquals(q.asEnumerable(), q.asEnumerable());
+
+        assertIsType(CharSequence[].class, q.<CharSequence>asEnumerable().toArray(CharSequence.class));
+        assertEquals(q.asEnumerable(), Linq.of(q.<CharSequence>asEnumerable().toArray(CharSequence.class)));
+
+        assertThrows(ArrayStoreException.class, () -> q.<Integer>asEnumerable().toArray(Integer.class));
     }
 }
