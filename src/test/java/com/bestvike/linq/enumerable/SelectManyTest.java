@@ -350,8 +350,8 @@ class SelectManyTest extends TestCase {
 
     @Test
     void NullSourceWithResultSelector() {
-        StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
+        IEnumerable<StringWithIntArray> source = null;
+        assertThrows(NullPointerException.class, () -> source.selectMany(e -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test
@@ -368,20 +368,20 @@ class SelectManyTest extends TestCase {
 
     @Test
     void NullSource() {
-        StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany(e -> Linq.of(e.total)));
+        IEnumerable<StringWithIntArray> source = null;
+        assertThrows(NullPointerException.class, () -> source.selectMany(e -> Linq.of(e.total)));
     }
 
     @Test
     void NullSourceIndexedSelector() {
-        StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany((e, i) -> Linq.of(e.total)));
+        IEnumerable<StringWithIntArray> source = null;
+        assertThrows(NullPointerException.class, () -> source.selectMany((e, i) -> Linq.of(e.total)));
     }
 
     @Test
     void NullSourceIndexedSelectorWithResultSelector() {
-        StringWithIntArray[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.of(source).selectMany((e, i) -> Linq.of(e.total), (e, f) -> f.toString()));
+        IEnumerable<StringWithIntArray> source = null;
+        assertThrows(NullPointerException.class, () -> source.selectMany((e, i) -> Linq.of(e.total), (e, f) -> f.toString()));
     }
 
     @Test

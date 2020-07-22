@@ -81,34 +81,34 @@ class UnionTest extends TestCase {
 
     @Test
     void FirstNullCustomComparer() {
-        String[] first = null;
+        IEnumerable<String> first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second), new AnagramEqualityComparer()));
+        assertThrows(NullPointerException.class, () -> first.union(Linq.of(second), new AnagramEqualityComparer()));
     }
 
     @Test
     void SecondNullCustomComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
-        String[] second = null;
+        IEnumerable<String> second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second), new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(second, new AnagramEqualityComparer()));
     }
 
     @Test
     void FirstNullNoComparer() {
-        String[] first = null;
+        IEnumerable<String> first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second)));
+        assertThrows(NullPointerException.class, () -> first.union(Linq.of(second)));
     }
 
     @Test
     void SecondNullNoComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
-        String[] second = null;
+        IEnumerable<String> second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(Linq.of(second)));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).union(second));
     }
 
     @Test

@@ -283,8 +283,8 @@ class ConcatTest extends TestCase {
 
     @Test
     void FirstNull() {
-        assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null).concat(Linq.range(0, 0)));
-        assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null).concat(null)); // If both inputs are null, throw for "first" first
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).concat(Linq.range(0, 0)));
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).concat(null)); // If both inputs are null, throw for "first" first
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.collections.generic.Array;
 import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
@@ -152,14 +153,14 @@ class SplitTest extends TestCase {
 
     @Test
     void SplitInvalidSource() {
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, ','));
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, ',', StringSplitOptions.None));
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, new char[]{','}));
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, new char[]{','}, StringSplitOptions.None));
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, ","));
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, ",", StringSplitOptions.None));
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, new String[]{","}));
-        assertThrows(ArgumentNullException.class, () -> Linq.split(null, new String[]{","}, StringSplitOptions.None));
+        assertSame(Array.empty(), Linq.split(null, ','));
+        assertSame(Array.empty(), Linq.split(null, ',', StringSplitOptions.None));
+        assertSame(Array.empty(), Linq.split(null, new char[]{','}));
+        assertSame(Array.empty(), Linq.split(null, new char[]{','}, StringSplitOptions.None));
+        assertSame(Array.empty(), Linq.split(null, ","));
+        assertSame(Array.empty(), Linq.split(null, ",", StringSplitOptions.None));
+        assertSame(Array.empty(), Linq.split(null, new String[]{","}));
+        assertSame(Array.empty(), Linq.split(null, new String[]{","}, StringSplitOptions.None));
     }
 
     @Test

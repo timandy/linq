@@ -137,8 +137,8 @@ class ToArrayGenericTest extends TestCase {
 
     @Test
     void ToArray_ThrowArgumentNullExceptionWhenSourceIsNull() {
-        int[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toArray(Integer.class));
+        IEnumerable<Integer> source = null;
+        assertThrows(NullPointerException.class, () -> source.toArray(Integer.class));
     }
 
     // Generally the optimal approach. Anything that breaks this should be confirmed as not harming performance.

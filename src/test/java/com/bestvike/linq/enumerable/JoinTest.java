@@ -164,7 +164,7 @@ class JoinTest extends TestCase {
                 new CustomerRec("Robert", 99022)};
         IEnumerable<AnagramRec> inner = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(Linq.of(inner), e -> e.name, e -> e.name, JoinTest::createJoinRec));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(outer).join(inner, e -> e.name, e -> e.name, JoinTest::createJoinRec));
     }
 
     @Test

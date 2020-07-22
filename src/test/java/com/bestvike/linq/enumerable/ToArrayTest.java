@@ -6,7 +6,6 @@ import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
-import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -131,8 +130,8 @@ class ToArrayTest extends TestCase {
 
     @Test
     void ToArray_ThrowArgumentNullExceptionWhenSourceIsNull() {
-        int[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toArray());
+        IEnumerable<Integer> source = null;
+        assertThrows(NullPointerException.class, () -> source.toArray());
     }
 
     // Generally the optimal approach. Anything that breaks this should be confirmed as not harming performance.

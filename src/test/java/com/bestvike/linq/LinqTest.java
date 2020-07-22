@@ -100,7 +100,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((boolean[]) null));
+        assertEmpty(Linq.of((boolean[]) null));
     }
 
     @Test
@@ -119,7 +119,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((byte[]) null));
+        assertEmpty(Linq.of((byte[]) null));
     }
 
     @Test
@@ -138,7 +138,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((short[]) null));
+        assertEmpty(Linq.of((short[]) null));
     }
 
     @Test
@@ -157,7 +157,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((int[]) null));
+        assertEmpty(Linq.of((int[]) null));
     }
 
     @Test
@@ -176,7 +176,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((long[]) null));
+        assertEmpty(Linq.of((long[]) null));
     }
 
     @Test
@@ -196,7 +196,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((float[]) null));
+        assertEmpty(Linq.of((float[]) null));
     }
 
     @Test
@@ -216,7 +216,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((double[]) null));
+        assertEmpty(Linq.of((double[]) null));
     }
 
     @Test
@@ -235,7 +235,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((char[]) null));
+        assertEmpty(Linq.of((char[]) null));
     }
 
     @Test
@@ -249,7 +249,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Integer[]) null));
+        assertEmpty(Linq.of((Integer[]) null));
     }
 
     @Test
@@ -263,7 +263,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Array<Integer>) null));
+        assertEmpty(Linq.of((Array<Integer>) null));
     }
 
     @Test
@@ -280,7 +280,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((ArrayList<?>) null));
+        assertEmpty(Linq.of((ArrayList<?>) null));
     }
 
     @Test
@@ -297,7 +297,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((LinkedList<?>) null));
+        assertEmpty(Linq.of((LinkedList<?>) null));
     }
 
     @Test
@@ -314,7 +314,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Collection<?>) null));
+        assertEmpty(Linq.of((Collection<?>) null));
     }
 
     @Test
@@ -328,7 +328,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((IEnumerable<?>) null));
+        assertEmpty(Linq.of((IEnumerable<?>) null));
     }
 
     @Test
@@ -338,7 +338,7 @@ class LinqTest extends TestCase {
         assertSame(enumerator, source.enumerator());
 
         assertThrows(RepeatInvokeException.class, () -> source.enumerator());
-        assertThrows(ArgumentNullException.class, () -> Linq.of((IEnumerator<?>) null));
+        assertEmpty(Linq.of((IEnumerator<?>) null));
     }
 
     @Test
@@ -352,7 +352,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Iterable<?>) null));
+        assertEmpty(Linq.of((Iterable<?>) null));
     }
 
     @Test
@@ -367,7 +367,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Iterator<?>) null));
+        assertEmpty(Linq.of((Iterator<?>) null));
     }
 
     @Test
@@ -381,7 +381,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Stream<?>) null));
+        assertEmpty(Linq.of((Stream<?>) null));
     }
 
     @Test
@@ -395,7 +395,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Spliterator<?>) null));
+        assertEmpty(Linq.of((Spliterator<?>) null));
     }
 
     @Test
@@ -415,7 +415,7 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Enumeration<?>) null));
+        assertEmpty(Linq.of((Enumeration<?>) null));
 
         //append,prepend,concat
         IEnumerable<Integer> source2 = Linq.of(new Vector<>(Arrays.asList(1, 2, 3)).elements()).prepend(0).append(4).append(5).concat(Linq.range(6, 4));
@@ -447,12 +447,12 @@ class LinqTest extends TestCase {
             assertFalse(e.moveNext());
         }
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Map<?, ?>) null));
+        assertEmpty(Linq.of((Map<?, ?>) null));
     }
 
     @Test
     void testObject() {
-        assertNull(Linq.as(null));
+        assertEmpty(Linq.as(null));
         assertNull(Linq.as(new Object()));
 
         boolean[] booleans = {true, false, true};
@@ -531,7 +531,7 @@ class LinqTest extends TestCase {
 
     @Test
     void testChars() {
-        assertThrows(ArgumentNullException.class, () -> Linq.chars(null));
+        assertEmpty(Linq.chars(null));
 
         IEnumerable<Character> source = Linq.chars("123");
         char c = source.elementAt(1);
@@ -547,10 +547,10 @@ class LinqTest extends TestCase {
 
     @Test
     void testWords() {
-        assertThrows(ArgumentNullException.class, () -> Linq.words(null));
-        assertEquals(Linq.empty(), Linq.words(""));
-        assertEquals(Linq.empty(), Linq.words("\r"));
-        assertEquals(Linq.empty(), Linq.words("\r\n\n"));
+        assertEmpty(Linq.words(null));
+        assertEmpty(Linq.words(""));
+        assertEmpty(Linq.words("\r"));
+        assertEmpty(Linq.words("\r\n\n"));
         assertEquals(Linq.of("hello"), Linq.words("hello"));
         assertEquals(Linq.of("hello", "world"), Linq.words("hello\r\n\n\nworld"));
         assertEquals(Linq.of("hello", "world"), Linq.words("\r\n\n\nhello\r\n\n\nworld"));
@@ -572,10 +572,10 @@ class LinqTest extends TestCase {
 
     @Test
     void testLines() {
-        assertThrows(ArgumentNullException.class, () -> Linq.lines(null));
-        assertEquals(Linq.empty(), Linq.lines(""));
-        assertEquals(Linq.empty(), Linq.lines("\r"));
-        assertEquals(Linq.empty(), Linq.lines("\r\n\n"));
+        assertEmpty(Linq.lines(null));
+        assertEmpty(Linq.lines(""));
+        assertEmpty(Linq.lines("\r"));
+        assertEmpty(Linq.lines("\r\n\n"));
         assertEquals(Linq.of("hello"), Linq.lines("hello"));
         assertEquals(Linq.of("hello", "world"), Linq.lines("hello\r\n\n\nworld"));
         assertEquals(Linq.of("hello", "world"), Linq.lines("\r\n\n\nhello\r\n\n\nworld"));

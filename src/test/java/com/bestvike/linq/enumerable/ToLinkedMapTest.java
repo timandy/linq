@@ -144,8 +144,8 @@ class ToLinkedMapTest extends TestCase {
 
     @Test
     void ToDictionary_ThrowArgumentNullExceptionWhenSourceIsNullElementSelector() {
-        int[] source = null;
-        assertThrows(ArgumentNullException.class, () -> Linq.of(source).toLinkedMap(key -> key, e -> e));
+        IEnumerable<Integer> source = null;
+        assertThrows(NullPointerException.class, () -> source.toLinkedMap(key -> key, e -> e));
     }
 
     @Test

@@ -119,8 +119,8 @@ class CountTest extends TestCase {
     void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Character>) null).count());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Character>) null).count(i -> i != 0));
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Character[]) null).count());
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Character[]) null).count(i -> i != 0));
+        assertEquals(0, Linq.of((Character[]) null).count());
+        assertEquals(0, Linq.of((Character[]) null).count(i -> i != 0));
     }
 
     @Test

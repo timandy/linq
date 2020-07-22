@@ -84,34 +84,34 @@ class UnionByTest extends TestCase {
 
     @Test
     void FirstNullCustomComparer() {
-        String[] first = null;
+        IEnumerable<String> first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector, new AnagramEqualityComparer()));
+        assertThrows(NullPointerException.class, () -> first.unionBy(Linq.of(second), StringKeySelector, new AnagramEqualityComparer()));
     }
 
     @Test
     void SecondNullCustomComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
-        String[] second = null;
+        IEnumerable<String> second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector, new AnagramEqualityComparer()));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(second, StringKeySelector, new AnagramEqualityComparer()));
     }
 
     @Test
     void FirstNullNoComparer() {
-        String[] first = null;
+        IEnumerable<String> first = null;
         String[] second = {"ttaM", "Charlie", "Bbo"};
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector));
+        assertThrows(NullPointerException.class, () -> first.unionBy(Linq.of(second), StringKeySelector));
     }
 
     @Test
     void SecondNullNoComparer() {
         String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
-        String[] second = null;
+        IEnumerable<String> second = null;
 
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(Linq.of(second), StringKeySelector));
+        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(second, StringKeySelector));
     }
 
     @Test

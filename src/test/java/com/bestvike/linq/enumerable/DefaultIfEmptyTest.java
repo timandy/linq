@@ -4,7 +4,6 @@ import com.bestvike.TestCase;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
-import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.ArgsList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -96,8 +95,8 @@ class DefaultIfEmptyTest extends TestCase {
     void NullSource_ThrowsArgumentNullException() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).defaultIfEmpty());
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).defaultIfEmpty(42));
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Integer[]) null).defaultIfEmpty());
-        assertThrows(ArgumentNullException.class, () -> Linq.of((Integer[]) null).defaultIfEmpty(42));
+        assertEquals(Linq.singleton(null), Linq.of((Integer[]) null).defaultIfEmpty());
+        assertEquals(Linq.singleton(42), Linq.of((Integer[]) null).defaultIfEmpty(42));
     }
 
     @Test
