@@ -10,6 +10,7 @@
 - Improve performance of method `ArrayListEnumerable.toArray(Class<TSource> clazz)`.
 - Optimize allocation of hash sets to reduce the number of `resize` times. Effected methods `toMap`,`toLinkedMap`,`toSet`,`toLinkedSet`.
 - Keep first value for duplicated key. Effected methods `toMap`, `toLinkedMap`.
+- Return empty sequence instead of throw `ArgumentNullException` when source is null. Effected methods `of`, `as`, `chars`, `words`, `lines`, `split`.
 
 ### Tips
 - In order to reduce sorting time, methods `first(predicate)` and `firstOrDefault(predicate)` after `OrderedEnumerable` call the predicate once per element.
