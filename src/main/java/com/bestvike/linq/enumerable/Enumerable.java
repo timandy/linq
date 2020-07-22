@@ -24,8 +24,6 @@ import com.bestvike.linq.adapter.enumerable.SingletonEnumerable;
 import com.bestvike.linq.adapter.enumerable.SpliteratorEnumerable;
 import com.bestvike.linq.adapter.enumerable.StreamEnumerable;
 import com.bestvike.linq.adapter.enumerable.WordEnumerable;
-import com.bestvike.linq.exception.ExceptionArgument;
-import com.bestvike.linq.exception.ThrowHelper;
 
 import java.util.Collection;
 import java.util.Enumeration;
@@ -53,204 +51,138 @@ public final class Enumerable {
     }
 
     public static <TSource> IEnumerable<TSource> ofNullable(TSource item) {
-        return item == null ? empty() : singleton(item);
+        return item == null ? EmptyPartition.instance() : new SingletonEnumerable<>(item);
     }
 
     public static IEnumerable<Boolean> of(boolean[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new BooleanArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new BooleanArrayEnumerable(source);
     }
 
     public static IEnumerable<Byte> of(byte[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new ByteArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new ByteArrayEnumerable(source);
     }
 
     public static IEnumerable<Short> of(short[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new ShortArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new ShortArrayEnumerable(source);
     }
 
     public static IEnumerable<Integer> of(int[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new IntegerArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new IntegerArrayEnumerable(source);
     }
 
     public static IEnumerable<Long> of(long[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new LongArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new LongArrayEnumerable(source);
     }
 
     public static IEnumerable<Float> of(float[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new FloatArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new FloatArrayEnumerable(source);
     }
 
     public static IEnumerable<Double> of(double[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new DoubleArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new DoubleArrayEnumerable(source);
     }
 
     public static IEnumerable<Character> of(char[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new CharacterArrayEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new CharacterArrayEnumerable(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(TSource[] source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new GenericArrayEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new GenericArrayEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(List<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return source instanceof RandomAccess ? new ArrayListEnumerable<>(source) : new LinkedListEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : source instanceof RandomAccess ? new ArrayListEnumerable<>(source) : new LinkedListEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Collection<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new CollectionEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new CollectionEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(IEnumerable<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return source;
+        return source == null ? EmptyPartition.instance() : source;
     }
 
     public static <TSource> IEnumerable<TSource> of(IEnumerator<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new EnumeratorEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new EnumeratorEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Iterable<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new IterableEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new IterableEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Iterator<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new IteratorEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new IteratorEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Stream<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new StreamEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new StreamEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Spliterator<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new SpliteratorEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new SpliteratorEnumerable<>(source);
     }
 
     public static <TSource> IEnumerable<TSource> of(Enumeration<TSource> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new EnumerationEnumerable<>(source);
+        return source == null ? EmptyPartition.instance() : new EnumerationEnumerable<>(source);
     }
 
     public static <TKey, TValue> IEnumerable<Map.Entry<TKey, TValue>> of(Map<TKey, TValue> source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new CollectionEnumerable<>(source.entrySet());
+        return source == null ? EmptyPartition.instance() : new CollectionEnumerable<>(source.entrySet());
     }
 
     public static <TSource> IEnumerable<TSource> as(Object source) {
         if (source == null)
-            return null;
+            return EmptyPartition.instance();
         if (source instanceof boolean[])
-            return (IEnumerable<TSource>) of((boolean[]) source);
+            return (IEnumerable<TSource>) new BooleanArrayEnumerable((boolean[]) source);
         if (source instanceof byte[])
-            return (IEnumerable<TSource>) of((byte[]) source);
+            return (IEnumerable<TSource>) new ByteArrayEnumerable((byte[]) source);
         if (source instanceof short[])
-            return (IEnumerable<TSource>) of((short[]) source);
+            return (IEnumerable<TSource>) new ShortArrayEnumerable((short[]) source);
         if (source instanceof int[])
-            return (IEnumerable<TSource>) of((int[]) source);
+            return (IEnumerable<TSource>) new IntegerArrayEnumerable((int[]) source);
         if (source instanceof long[])
-            return (IEnumerable<TSource>) of((long[]) source);
+            return (IEnumerable<TSource>) new LongArrayEnumerable((long[]) source);
         if (source instanceof float[])
-            return (IEnumerable<TSource>) of((float[]) source);
+            return (IEnumerable<TSource>) new FloatArrayEnumerable((float[]) source);
         if (source instanceof double[])
-            return (IEnumerable<TSource>) of((double[]) source);
+            return (IEnumerable<TSource>) new DoubleArrayEnumerable((double[]) source);
         if (source instanceof char[])
-            return (IEnumerable<TSource>) of((char[]) source);
+            return (IEnumerable<TSource>) new CharacterArrayEnumerable((char[]) source);
         if (source instanceof Object[])
-            return of((TSource[]) source);
+            return new GenericArrayEnumerable<>((TSource[]) source);
         if (source instanceof List)
-            return of((List<TSource>) source);
+            return source instanceof RandomAccess ? new ArrayListEnumerable<>((List<TSource>) source) : new LinkedListEnumerable<>((List<TSource>) source);
         if (source instanceof Collection)
-            return of((Collection<TSource>) source);
+            return new CollectionEnumerable<>((Collection<TSource>) source);
         if (source instanceof IEnumerable)
-            return of((IEnumerable<TSource>) source);
+            return (IEnumerable<TSource>) source;
         if (source instanceof Iterable)
-            return of((Iterable<TSource>) source);
+            return new IterableEnumerable<>((Iterable<TSource>) source);
         if (source instanceof Stream)
-            return of((Stream<TSource>) source);
+            return new StreamEnumerable<>((Stream<TSource>) source);
         if (source instanceof IEnumerator)
-            return of((IEnumerator<TSource>) source);
+            return new EnumeratorEnumerable<>((IEnumerator<TSource>) source);
         if (source instanceof Iterator)
-            return of((Iterator<TSource>) source);
+            return new IteratorEnumerable<>((Iterator<TSource>) source);
         if (source instanceof Spliterator)
-            return of((Spliterator<TSource>) source);
+            return new SpliteratorEnumerable<>((Spliterator<TSource>) source);
         if (source instanceof Enumeration)
-            return of((Enumeration<TSource>) source);
+            return new EnumerationEnumerable<>((Enumeration<TSource>) source);
         if (source instanceof Map)
-            return (IEnumerable<TSource>) of((Map<?, ?>) source);
+            return (IEnumerable<TSource>) new CollectionEnumerable<>(((Map<?, ?>) source).entrySet());
         return null;
     }
 
     public static IEnumerable<Character> chars(CharSequence source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new CharEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new CharEnumerable(source);
     }
 
     public static IEnumerable<String> words(CharSequence source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new WordEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new WordEnumerable(source);
     }
 
     public static IEnumerable<String> lines(CharSequence source) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
-
-        return new LineEnumerable(source);
+        return source == null ? EmptyPartition.instance() : new LineEnumerable(source);
     }
 }
