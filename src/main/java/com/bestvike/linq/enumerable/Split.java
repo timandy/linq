@@ -20,10 +20,11 @@ public final class Split {
     }
 
     public static IEnumerable<String> split(CharSequence source, char separator, StringSplitOptions options) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (options == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.options);
+
+        if (source == null)
+            return Array.empty();
 
         boolean omitEmptyEntries = (options == StringSplitOptions.RemoveEmptyEntries);
         if (omitEmptyEntries && source.length() == 0)
@@ -39,10 +40,11 @@ public final class Split {
     }
 
     public static IEnumerable<String> split(CharSequence source, char[] separator, StringSplitOptions options) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (options == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.options);
+
+        if (source == null)
+            return Array.empty();
 
         boolean omitEmptyEntries = (options == StringSplitOptions.RemoveEmptyEntries);
         if (omitEmptyEntries && source.length() == 0)
@@ -77,10 +79,11 @@ public final class Split {
     }
 
     public static IEnumerable<String> split(CharSequence source, CharSequence separator, StringSplitOptions options) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (options == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.options);
+
+        if (source == null)
+            return Array.empty();
 
         boolean omitEmptyEntries = options == StringSplitOptions.RemoveEmptyEntries;
         if (omitEmptyEntries && source.length() == 0)
@@ -99,10 +102,11 @@ public final class Split {
     }
 
     public static IEnumerable<String> split(CharSequence source, CharSequence[] separator, StringSplitOptions options) {
-        if (source == null)
-            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (options == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.options);
+
+        if (source == null)
+            return Array.empty();
 
         boolean omitEmptyEntries = (options == StringSplitOptions.RemoveEmptyEntries);
         if (omitEmptyEntries && source.length() == 0)
