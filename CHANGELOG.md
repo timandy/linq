@@ -17,7 +17,7 @@ So don't call side-effect methods in linq.
 see [https://github.com/dotnet/runtime/issues/31554](https://github.com/dotnet/runtime/issues/31554).
 
 # Links
-- Download [http://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/)
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/](https://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/)
 - Source code [https://github.com/timandy/linq/tree/v5.0.0](https://github.com/timandy/linq/tree/v5.0.0)
 
 ---
@@ -33,7 +33,7 @@ see [https://github.com/dotnet/runtime/issues/31554](https://github.com/dotnet/r
 - Modify debugger display for types which is cheap to count the elements.
 
 # Links
-- Download [http://repo1.maven.org/maven2/com/bestvike/linq/3.1.0/](http://repo1.maven.org/maven2/com/bestvike/linq/3.1.0/)
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/3.1.0/](https://repo1.maven.org/maven2/com/bestvike/linq/3.1.0/)
 - Source code [https://github.com/timandy/linq/tree/v3.1.0](https://github.com/timandy/linq/tree/v3.1.0)
 
 ---
@@ -114,7 +114,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Predicate<T1, T2, ... TN> (T1...TN are contravariant)
 
 # Links
-- Download [http://repo1.maven.org/maven2/com/bestvike/linq/3.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/3.0.0/)
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/3.0.0/](https://repo1.maven.org/maven2/com/bestvike/linq/3.0.0/)
 - Source code [https://github.com/timandy/linq/tree/v3.0.0](https://github.com/timandy/linq/tree/v3.0.0)
 
 ---
@@ -129,7 +129,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Performance improvement.
 
 # Links
-- Download [http://repo1.maven.org/maven2/com/bestvike/linq/2.0.1/](http://repo1.maven.org/maven2/com/bestvike/linq/2.0.1/)
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/2.0.1/](https://repo1.maven.org/maven2/com/bestvike/linq/2.0.1/)
 - Source code [https://github.com/timandy/linq/tree/v2.0.1](https://github.com/timandy/linq/tree/v2.0.1)
 
 ---
@@ -149,7 +149,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Update plugin to latest version.
 
 # Links
-- Download [http://repo1.maven.org/maven2/com/bestvike/linq/2.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/2.0.0/)
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/2.0.0/](https://repo1.maven.org/maven2/com/bestvike/linq/2.0.0/)
 - Source code [https://github.com/timandy/linq/tree/v2.0.0](https://github.com/timandy/linq/tree/v2.0.0)
 
 ---
@@ -165,7 +165,7 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Update logo.
 
 # Links
-- Download [http://repo1.maven.org/maven2/com/bestvike/linq/1.0.1/](http://repo1.maven.org/maven2/com/bestvike/linq/1.0.1/)
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/1.0.1/](https://repo1.maven.org/maven2/com/bestvike/linq/1.0.1/)
 - Source code [https://github.com/timandy/linq/tree/v1.0.1](https://github.com/timandy/linq/tree/v1.0.1)
 
 ---
@@ -180,5 +180,5 @@ It is highly recommended to upgrade to this version if you have used a previous 
 - Add Tuple definitions.
 
 # Links
-- Download [http://repo1.maven.org/maven2/com/bestvike/linq/1.0.0/](http://repo1.maven.org/maven2/com/bestvike/linq/1.0.0/)
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/1.0.0/](https://repo1.maven.org/maven2/com/bestvike/linq/1.0.0/)
 - Source code [https://github.com/timandy/linq/tree/v1.0.0](https://github.com/timandy/linq/tree/v1.0.0)
