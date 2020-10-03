@@ -5,6 +5,7 @@
 
 ### Features
 - Add `size()` and `isEmpty()` methods for `ICollection` interface.
+- Add `StringSplitOptions.TrimEntries` for `split` method.
 
 ### Changes
 - Improve performance of method `ArrayListEnumerable.toArray(Class<TSource> clazz)`.
