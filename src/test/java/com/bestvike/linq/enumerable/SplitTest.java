@@ -35,64 +35,144 @@ class SplitTest extends TestCase {
         ArgsList argsList = new ArgsList();
         argsList.add("", ',', StringSplitOptions.None, new String[]{""});
         argsList.add("", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]);
+        argsList.add("", ',', StringSplitOptions.TrimEntries, new String[]{""});
+        argsList.add("", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[0]);
+
         argsList.add(",", ',', StringSplitOptions.None, new String[]{"", ""});
         argsList.add(",", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]);
+        argsList.add(",", ',', StringSplitOptions.TrimEntries, new String[]{"", ""});
+        argsList.add(",", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[0]);
+
         argsList.add(",,", ',', StringSplitOptions.None, new String[]{"", "", ""});
         argsList.add(",,", ',', StringSplitOptions.RemoveEmptyEntries, new String[0]);
+        argsList.add(",,", ',', StringSplitOptions.TrimEntries, new String[]{"", "", ""});
+        argsList.add(",,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[0]);
+
         argsList.add("ab", ',', StringSplitOptions.None, new String[]{"ab"});
         argsList.add("ab", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"ab"});
+        argsList.add("ab", ',', StringSplitOptions.TrimEntries, new String[]{"ab"});
+        argsList.add("ab", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"ab"});
+
         argsList.add("a,b", ',', StringSplitOptions.None, new String[]{"a", "b"});
         argsList.add("a,b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"});
+        argsList.add("a,b", ',', StringSplitOptions.TrimEntries, new String[]{"a", "b"});
+        argsList.add("a,b", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b"});
+
         argsList.add("a,", ',', StringSplitOptions.None, new String[]{"a", ""});
         argsList.add("a,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a"});
+        argsList.add("a,", ',', StringSplitOptions.TrimEntries, new String[]{"a", ""});
+        argsList.add("a,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a"});
+
         argsList.add(",b", ',', StringSplitOptions.None, new String[]{"", "b"});
         argsList.add(",b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"b"});
+        argsList.add(",b", ',', StringSplitOptions.TrimEntries, new String[]{"", "b"});
+        argsList.add(",b", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"b"});
+
         argsList.add(",a,b", ',', StringSplitOptions.None, new String[]{"", "a", "b"});
         argsList.add(",a,b", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"});
+        argsList.add(",a,b", ',', StringSplitOptions.TrimEntries, new String[]{"", "a", "b"});
+        argsList.add(",a,b", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b"});
+
         argsList.add("a,b,", ',', StringSplitOptions.None, new String[]{"a", "b", ""});
         argsList.add("a,b,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b"});
+        argsList.add("a,b,", ',', StringSplitOptions.TrimEntries, new String[]{"a", "b", ""});
+        argsList.add("a,b,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b"});
+
         argsList.add("a,b,c", ',', StringSplitOptions.None, new String[]{"a", "b", "c"});
         argsList.add("a,b,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c", ',', StringSplitOptions.TrimEntries, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
         argsList.add("a,,c", ',', StringSplitOptions.None, new String[]{"a", "", "c"});
         argsList.add("a,,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "c"});
+        argsList.add("a,,c", ',', StringSplitOptions.TrimEntries, new String[]{"a", "", "c"});
+        argsList.add("a,,c", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "c"});
+
         argsList.add(",a,b,c", ',', StringSplitOptions.None, new String[]{"", "a", "b", "c"});
         argsList.add(",a,b,c", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add(",a,b,c", ',', StringSplitOptions.TrimEntries, new String[]{"", "a", "b", "c"});
+        argsList.add(",a,b,c", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
         argsList.add("a,b,c,", ',', StringSplitOptions.None, new String[]{"a", "b", "c", ""});
         argsList.add("a,b,c,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a,b,c,", ',', StringSplitOptions.TrimEntries, new String[]{"a", "b", "c", ""});
+        argsList.add("a,b,c,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
         argsList.add(",a,b,c,", ',', StringSplitOptions.None, new String[]{"", "a", "b", "c", ""});
         argsList.add(",a,b,c,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add(",a,b,c,", ',', StringSplitOptions.TrimEntries, new String[]{"", "a", "b", "c", ""});
+        argsList.add(",a,b,c,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
         argsList.add("first,second", ',', StringSplitOptions.None, new String[]{"first", "second"});
         argsList.add("first,second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"});
+        argsList.add("first,second", ',', StringSplitOptions.TrimEntries, new String[]{"first", "second"});
+        argsList.add("first,second", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "second"});
+
         argsList.add("first,", ',', StringSplitOptions.None, new String[]{"first", ""});
         argsList.add("first,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first"});
+        argsList.add("first,", ',', StringSplitOptions.TrimEntries, new String[]{"first", ""});
+        argsList.add("first,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first"});
+
         argsList.add(",second", ',', StringSplitOptions.None, new String[]{"", "second"});
         argsList.add(",second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"second"});
+        argsList.add(",second", ',', StringSplitOptions.TrimEntries, new String[]{"", "second"});
+        argsList.add(",second", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"second"});
+
         argsList.add(",first,second", ',', StringSplitOptions.None, new String[]{"", "first", "second"});
         argsList.add(",first,second", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"});
+        argsList.add(",first,second", ',', StringSplitOptions.TrimEntries, new String[]{"", "first", "second"});
+        argsList.add(",first,second", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "second"});
+
         argsList.add("first,second,", ',', StringSplitOptions.None, new String[]{"first", "second", ""});
         argsList.add("first,second,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second"});
+        argsList.add("first,second,", ',', StringSplitOptions.TrimEntries, new String[]{"first", "second", ""});
+        argsList.add("first,second,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "second"});
+
         argsList.add("first,second,third", ',', StringSplitOptions.None, new String[]{"first", "second", "third"});
         argsList.add("first,second,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add("first,second,third", ',', StringSplitOptions.TrimEntries, new String[]{"first", "second", "third"});
+        argsList.add("first,second,third", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "second", "third"});
+
         argsList.add("first,,third", ',', StringSplitOptions.None, new String[]{"first", "", "third"});
         argsList.add("first,,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "third"});
+        argsList.add("first,,third", ',', StringSplitOptions.TrimEntries, new String[]{"first", "", "third"});
+        argsList.add("first,,third", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "third"});
+
         argsList.add(",first,second,third", ',', StringSplitOptions.None, new String[]{"", "first", "second", "third"});
         argsList.add(",first,second,third", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add(",first,second,third", ',', StringSplitOptions.TrimEntries, new String[]{"", "first", "second", "third"});
+        argsList.add(",first,second,third", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "second", "third"});
+
         argsList.add("first,second,third,", ',', StringSplitOptions.None, new String[]{"first", "second", "third", ""});
         argsList.add("first,second,third,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add("first,second,third,", ',', StringSplitOptions.TrimEntries, new String[]{"first", "second", "third", ""});
+        argsList.add("first,second,third,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "second", "third"});
+
         argsList.add(",first,second,third,", ',', StringSplitOptions.None, new String[]{"", "first", "second", "third", ""});
         argsList.add(",first,second,third,", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"first", "second", "third"});
+        argsList.add(",first,second,third,", ',', StringSplitOptions.TrimEntries, new String[]{"", "first", "second", "third", ""});
+        argsList.add(",first,second,third,", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first", "second", "third"});
+
         argsList.add("first,second,third", ' ', StringSplitOptions.None, new String[]{"first,second,third"});
         argsList.add("first,second,third", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"first,second,third"});
+        argsList.add("first,second,third", ' ', StringSplitOptions.TrimEntries, new String[]{"first,second,third"});
+        argsList.add("first,second,third", ' ', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"first,second,third"});
+
         argsList.add("Foo Bar Baz", ' ', StringSplitOptions.None, new String[]{"Foo", "Bar", "Baz"});
         argsList.add("Foo Bar Baz", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"Foo", "Bar", "Baz"});
+        argsList.add("Foo Bar Baz", ' ', StringSplitOptions.TrimEntries, new String[]{"Foo", "Bar", "Baz"});
+        argsList.add("Foo Bar Baz", ' ', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"Foo", "Bar", "Baz"});
+
         argsList.add("a", ',', StringSplitOptions.None, new String[]{"a"});
         argsList.add("a", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a"});
         argsList.add("a", ',', StringSplitOptions.TrimEntries, new String[]{"a"});
         argsList.add("a", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a"});
+
         argsList.add(" ", ',', StringSplitOptions.None, new String[]{" "});
         argsList.add(" ", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{" "});
         argsList.add(" ", ',', StringSplitOptions.TrimEntries, new String[]{""});
         argsList.add(" ", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[0]);
+
         argsList.add(" a,, b, c ", ',', StringSplitOptions.None, new String[]{" a", "", " b", " c "});
         argsList.add(" a,, b, c ", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{" a", " b", " c "});
         argsList.add(" a,, b, c ", ',', StringSplitOptions.TrimEntries, new String[]{"a", "", "b", "c"});
@@ -103,16 +183,33 @@ class SplitTest extends TestCase {
     private static IEnumerable<Object[]> SplitStringSeparatorData() {
         ArgsList argsList = new ArgsList();
         argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("a,b,c", "", StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("aaabaaabaaa", "aa", StringSplitOptions.None, new String[]{"", "ab", "ab", "a"});
-        argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with some spaces"});
         argsList.add("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", null, StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", null, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("a,b,c", "", StringSplitOptions.None, new String[]{"a,b,c"});
         argsList.add("a,b,c", "", StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", "", StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", "", StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("aaabaaabaaa", "aa", StringSplitOptions.None, new String[]{"", "ab", "ab", "a"});
         argsList.add("aaabaaabaaa", "aa", StringSplitOptions.RemoveEmptyEntries, new String[]{"ab", "ab", "a"});
+        argsList.add("aaabaaabaaa", "aa", StringSplitOptions.TrimEntries, new String[]{"", "ab", "ab", "a"});
+        argsList.add("aaabaaabaaa", "aa", StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"ab", "ab", "a"});
+
+        argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with some spaces"});
         argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with some spaces"});
+        argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.TrimEntries, new String[]{"this", "is", "a", "string", "with some spaces"});
+        argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with some spaces"});
+
+        argsList.add("Monday, Tuesday, Wednesday, Thursday, Friday", ",", StringSplitOptions.None, new String[]{"Monday", " Tuesday", " Wednesday", " Thursday", " Friday"});
+        argsList.add("Monday, Tuesday, Wednesday, Thursday, Friday", ",", StringSplitOptions.RemoveEmptyEntries, new String[]{"Monday", " Tuesday", " Wednesday", " Thursday", " Friday"});
         argsList.add("Monday, Tuesday, Wednesday, Thursday, Friday", ",", StringSplitOptions.TrimEntries, new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
-        argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.TrimEntries, new String[]{"Monday", "Tuesday", "", "Wednesday", "", "Thursday", "Friday"});
+        argsList.add("Monday, Tuesday, Wednesday, Thursday, Friday", ",", StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
+
+        argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.None, new String[]{"Monday", " Tuesday", "\r", " Wednesday", "\n", " Thursday", " Friday"});
         argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.RemoveEmptyEntries, new String[]{"Monday", " Tuesday", "\r", " Wednesday", "\n", " Thursday", " Friday"});
+        argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.TrimEntries, new String[]{"Monday", "Tuesday", "", "Wednesday", "", "Thursday", "Friday"});
         argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
         return argsList;
     }
@@ -120,23 +217,50 @@ class SplitTest extends TestCase {
     private static IEnumerable<Object[]> SplitCharArraySeparatorData() {
         ArgsList argsList = new ArgsList();
         argsList.add("a b c", null, StringSplitOptions.None, new String[]{"a", "b", "c"});
-        argsList.add("a b c", new char[0], StringSplitOptions.None, new String[]{"a", "b", "c"});
-        argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("a,b,c", new char[0], StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
-        argsList.add("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
-        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
-        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
-        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
         argsList.add("a b c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", null, StringSplitOptions.TrimEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", null, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
+        argsList.add("a b c", new char[0], StringSplitOptions.None, new String[]{"a", "b", "c"});
         argsList.add("a b c", new char[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new char[0], StringSplitOptions.TrimEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new char[0], StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
+        argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
         argsList.add("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", null, StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", null, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("a,b,c", new char[0], StringSplitOptions.None, new String[]{"a,b,c"});
         argsList.add("a,b,c", new char[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new char[0], StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new char[0], StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.TrimEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' '}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+
+        argsList.add("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.TrimEntries, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{' ', ','}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.None, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.TrimEntries, new String[]{"this", "", "is", "", "a", "", "string", "", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
         argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
+
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
         argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+
         argsList.add("this, is, a, string, with some spaces", new char[]{',', 's', 'a'}, StringSplitOptions.None, new String[]{"thi" /*s*/, "" /*,*/, " i" /*s*/, "" /*,*/, " " /*a*/, "" /*,*/, " " /*s*/, "tring" /*,*/, " with " /*s*/, "ome " /*s*/, "p" /*a*/, "ce" /*s*/, ""});
         argsList.add("this, is, a, string, with some spaces", new char[]{',', 's', 'a'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", " i", " ", " ", "tring", " with ", "ome ", "p", "ce"});
         argsList.add("this, is, a, string, with some spaces", new char[]{',', 's', 'a'}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "i", "", "", "", "", "tring", "with", "ome", "p", "ce", ""});
@@ -147,31 +271,65 @@ class SplitTest extends TestCase {
     private static IEnumerable<Object[]> SplitStringArraySeparatorData() {
         ArgsList argsList = new ArgsList();
         argsList.add("a b c", null, StringSplitOptions.None, new String[]{"a", "b", "c"});
-        argsList.add("a b c", new String[0], StringSplitOptions.None, new String[]{"a", "b", "c"});
-        argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("a,b,c", new String[0], StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("a,b,c", new String[]{null}, StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("a,b,c", new String[]{""}, StringSplitOptions.None, new String[]{"a,b,c"});
-        argsList.add("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
-        argsList.add("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
-        argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
-        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
-        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
         argsList.add("a b c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", null, StringSplitOptions.TrimEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", null, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
+        argsList.add("a b c", new String[0], StringSplitOptions.None, new String[]{"a", "b", "c"});
         argsList.add("a b c", new String[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new String[0], StringSplitOptions.TrimEntries, new String[]{"a", "b", "c"});
+        argsList.add("a b c", new String[0], StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
+
+        argsList.add("a,b,c", null, StringSplitOptions.None, new String[]{"a,b,c"});
         argsList.add("a,b,c", null, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", null, StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", null, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("a,b,c", new String[0], StringSplitOptions.None, new String[]{"a,b,c"});
         argsList.add("a,b,c", new String[0], StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[0], StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[0], StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("a,b,c", new String[]{null}, StringSplitOptions.None, new String[]{"a,b,c"});
         argsList.add("a,b,c", new String[]{null}, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{null}, StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{null}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("a,b,c", new String[]{""}, StringSplitOptions.None, new String[]{"a,b,c"});
         argsList.add("a,b,c", new String[]{""}, StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{""}, StringSplitOptions.TrimEntries, new String[]{"a,b,c"});
+        argsList.add("a,b,c", new String[]{""}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a,b,c"});
+
+        argsList.add("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.None, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.TrimEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" "}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this,", "is,", "a,", "string,", "with", "some", "spaces"});
+
+        argsList.add("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.TrimEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{" ", ", "}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+
+        argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.None, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.TrimEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
+
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
         argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "", "i", "", "", "a", "", "", "tring", "", "with", "", "ome", "", "pace", ""});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
+
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.None, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
         argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", ""});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+
         argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.None, new String[]{"thi" /*s*/, "" /*,*/, " i" /*s*/, "" /*,*/, " " /*a*/, "" /*,*/, " " /*s*/, "tring" /*,*/, " with " /*s*/, "ome " /*s*/, "p" /*a*/, "ce" /*s*/, ""});
         argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", " i", " ", " ", "tring", " with ", "ome ", "p", "ce"});
         argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "i", "", "", "", "", "tring", "with", "ome", "p", "ce", ""});
         argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+
         argsList.add("this, is, a, string, with some spaces, ", new String[]{",", " s"}, StringSplitOptions.None, new String[]{"this", " is", " a", "", "tring", " with", "ome", "paces", " "});
         argsList.add("this, is, a, string, with some spaces, ", new String[]{",", " s"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", " is", " a", "tring", " with", "ome", "paces", " "});
         argsList.add("this, is, a, string, with some spaces, ", new String[]{",", " s"}, StringSplitOptions.TrimEntries, new String[]{"this", "is", "a", "", "tring", "with", "ome", "paces", ""});
@@ -319,6 +477,135 @@ class SplitTest extends TestCase {
         assertEquals(Linq.empty(), Linq.split("", new String[]{null}, StringSplitOptions.RemoveEmptyEntries));
         assertEquals(Linq.empty(), Linq.split("", new String[]{""}, StringSplitOptions.RemoveEmptyEntries));
         assertEquals(Linq.empty(), Linq.split("", new String[]{" "}, StringSplitOptions.RemoveEmptyEntries));
+
+        assertEquals(Linq.of(""), Linq.split("", '\0', StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", ' ', StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", (String) null, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", "", StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", " ", StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", (char[]) null, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[0], StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{'\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{'\0', '\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{'\0', '\0', '\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{'\0', '\0', '\0', '\0', '\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{' ', ' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{' ', ' ', ' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", (String[]) null, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new String[0], StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new String[]{null}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new String[]{""}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split("", new String[]{" "}, StringSplitOptions.TrimEntries));
+
+        assertEquals(Linq.empty(), Linq.split("", '\0', StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", ' ', StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", (String) null, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", "", StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", " ", StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", (char[]) null, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[0], StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{'\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{'\0', '\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{'\0', '\0', '\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{'\0', '\0', '\0', '\0', '\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{' ', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", (String[]) null, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new String[0], StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new String[]{null}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new String[]{""}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split("", new String[]{" "}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+    }
+
+    @Test
+    void testSplitWhitespaceSource() {
+        assertEquals(Linq.of(" "), Linq.split(" ", '\0', StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", ' ', StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", (String) null, StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", "", StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", " ", StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", (char[]) null, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[0], StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0'}, StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0', '\0'}, StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0', '\0', '\0'}, StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0', '\0', '\0', '\0', '\0'}, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' '}, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' ', ' '}, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' ', ' ', ' '}, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", (String[]) null, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new String[0], StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", new String[]{null}, StringSplitOptions.None));
+        assertEquals(Linq.of(" "), Linq.split(" ", new String[]{""}, StringSplitOptions.None));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new String[]{" "}, StringSplitOptions.None));
+
+        assertEquals(Linq.of(" "), Linq.split(" ", '\0', StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", ' ', StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", (String) null, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", "", StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", " ", StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", (char[]) null, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[0], StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0'}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0', '\0'}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0', '\0', '\0'}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", new char[]{'\0', '\0', '\0', '\0', '\0'}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' '}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' ', ' '}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' ', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", (String[]) null, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new String[0], StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", new String[]{null}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of(" "), Linq.split(" ", new String[]{""}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new String[]{" "}, StringSplitOptions.RemoveEmptyEntries));
+
+        assertEquals(Linq.of(""), Linq.split(" ", '\0', StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", ' ', StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", (String) null, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", "", StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", " ", StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", (char[]) null, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[0], StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", new char[]{'\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", new char[]{'\0', '\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", new char[]{'\0', '\0', '\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", new char[]{'\0', '\0', '\0', '\0', '\0'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' ', ' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' ', ' ', ' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", (String[]) null, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new String[0], StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", new String[]{null}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of(""), Linq.split(" ", new String[]{""}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("", ""), Linq.split(" ", new String[]{" "}, StringSplitOptions.TrimEntries));
+
+        assertEquals(Linq.empty(), Linq.split(" ", '\0', StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", ' ', StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", (String) null, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", "", StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", " ", StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", (char[]) null, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[0], StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{'\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{'\0', '\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{'\0', '\0', '\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{'\0', '\0', '\0', '\0', '\0'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' ', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", (String[]) null, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new String[0], StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new String[]{null}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new String[]{""}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertEquals(Linq.empty(), Linq.split(" ", new String[]{" "}, StringSplitOptions.TrimAndRemoveEmptyEntries));
     }
 
     @Test
@@ -342,6 +629,24 @@ class SplitTest extends TestCase {
         assertEquals(1L, Linq.split(source, new char[]{'z', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries).longCount());
         assertEquals(1L, Linq.split(source, new char[]{'z', ' ', ' ', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries).longCount());
         assertEquals(1L, Linq.split(source, new String[]{"z"}, StringSplitOptions.RemoveEmptyEntries).longCount());
+
+        assertEquals(2L, Linq.split(source, 'z', StringSplitOptions.TrimEntries).longCount());
+        assertEquals(2L, Linq.split(source, "z", StringSplitOptions.TrimEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[0], StringSplitOptions.TrimEntries).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z'}, StringSplitOptions.TrimEntries).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z', ' '}, StringSplitOptions.TrimEntries).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z', ' ', ' '}, StringSplitOptions.TrimEntries).longCount());
+        assertEquals(2L, Linq.split(source, new char[]{'z', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimEntries).longCount());
+        assertEquals(2L, Linq.split(source, new String[]{"z"}, StringSplitOptions.TrimEntries).longCount());
+
+        assertEquals(1L, Linq.split(source, 'z', StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, "z", StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[0], StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z'}, StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new char[]{'z', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
+        assertEquals(1L, Linq.split(source, new String[]{"z"}, StringSplitOptions.TrimAndRemoveEmptyEntries).longCount());
     }
 
     @Test
@@ -355,6 +660,15 @@ class SplitTest extends TestCase {
                 assertFalse(e.moveNext());
             }
         };
+        Action1<IEnumerable<String>> assertSingleElement = source -> {
+            assertEquals(source.runOnce(), source.runOnce());
+            try (IEnumerator<String> e = source.enumerator()) {
+                assertTrue(e.moveNext());
+                assertFalse(e.moveNext());
+                assertFalse(e.moveNext());
+            }
+        };
+
         assertTwoElements.apply(Linq.split("abc ", ' ', StringSplitOptions.None));
         assertTwoElements.apply(Linq.split("abc ", " ", StringSplitOptions.None));
         assertTwoElements.apply(Linq.split("abc ", new char[0], StringSplitOptions.None));
@@ -364,15 +678,6 @@ class SplitTest extends TestCase {
         assertTwoElements.apply(Linq.split("abc ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.None));
         assertTwoElements.apply(Linq.split("abc ", new String[]{" "}, StringSplitOptions.None));
 
-
-        Action1<IEnumerable<String>> assertSingleElement = source -> {
-            assertEquals(source.runOnce(), source.runOnce());
-            try (IEnumerator<String> e = source.enumerator()) {
-                assertTrue(e.moveNext());
-                assertFalse(e.moveNext());
-                assertFalse(e.moveNext());
-            }
-        };
         assertSingleElement.apply(Linq.split("abc ", ' ', StringSplitOptions.RemoveEmptyEntries));
         assertSingleElement.apply(Linq.split("abc ", " ", StringSplitOptions.RemoveEmptyEntries));
         assertSingleElement.apply(Linq.split("abc ", new char[0], StringSplitOptions.RemoveEmptyEntries));
@@ -382,8 +687,28 @@ class SplitTest extends TestCase {
         assertSingleElement.apply(Linq.split("abc ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.RemoveEmptyEntries));
         assertSingleElement.apply(Linq.split("abc ", new String[]{" "}, StringSplitOptions.RemoveEmptyEntries));
 
+        assertTwoElements.apply(Linq.split("abc ", ' ', StringSplitOptions.TrimEntries));
+        assertTwoElements.apply(Linq.split("abc ", " ", StringSplitOptions.TrimEntries));
+        assertTwoElements.apply(Linq.split("abc ", new char[0], StringSplitOptions.TrimEntries));
+        assertTwoElements.apply(Linq.split("abc ", new char[]{' '}, StringSplitOptions.TrimEntries));
+        assertTwoElements.apply(Linq.split("abc ", new char[]{' ', ' '}, StringSplitOptions.TrimEntries));
+        assertTwoElements.apply(Linq.split("abc ", new char[]{' ', ' ', ' '}, StringSplitOptions.TrimEntries));
+        assertTwoElements.apply(Linq.split("abc ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimEntries));
+        assertTwoElements.apply(Linq.split("abc ", new String[]{" "}, StringSplitOptions.TrimEntries));
+
+        assertSingleElement.apply(Linq.split("abc ", ' ', StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", " ", StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", new char[0], StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", new char[]{' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", new char[]{' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", new char[]{' ', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", new char[]{' ', ' ', ' ', ' ', ' '}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+        assertSingleElement.apply(Linq.split("abc ", new String[]{" "}, StringSplitOptions.TrimAndRemoveEmptyEntries));
+
         assertEquals(Linq.of("thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", "", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.None));
         assertEquals(Linq.of("thi", "i", "tring", "with", "ome", "p", "ce", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.RemoveEmptyEntries));
+        assertEquals(Linq.of("thi", "", "", "i", "", "", "", "", "", "", "tring", "", "with", "", "ome", "", "p", "ce", "", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.TrimEntries));
+        assertEquals(Linq.of("thi", "i", "tring", "with", "ome", "p", "ce", "ų"), Linq.split("this, is, a, string, with some spaces ų", new char[]{',', ' ', 's', 'Ā', 'a'}, StringSplitOptions.TrimAndRemoveEmptyEntries));
     }
 
 
