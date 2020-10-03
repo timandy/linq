@@ -34,6 +34,7 @@ public enum ExceptionArgument {
     formatter,
     hasNext,
     iterable,
+    length,
     locale,
     match,
     moveNext,
@@ -43,4 +44,5 @@ public enum ExceptionArgument {
     options,
     other,
     startIndex,
+    value,
 }
