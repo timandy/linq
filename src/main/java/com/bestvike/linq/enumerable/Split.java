@@ -7,6 +7,8 @@ import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.StringSplitOptions;
 import com.bestvike.linq.util.Strings;
+import com.bestvike.linq.util.lang.IStringSpan;
+import com.bestvike.linq.util.lang.StringSpan;
 
 /**
  * Created by 许崇雷 on 2019-08-13.
@@ -26,13 +28,15 @@ public final class Split {
         if (source == null)
             return Array.empty();
 
-        boolean omitEmptyEntries = (options == StringSplitOptions.RemoveEmptyEntries);
+        boolean omitEmptyEntries = options.hasFlag(StringSplitOptions.RemoveEmptyEntries);
         if (omitEmptyEntries && source.length() == 0)
             return Array.empty();
 
+        IStringSpan candidate = StringSpan.asSpan(source);
+        boolean trimEntries = options.hasFlag(StringSplitOptions.TrimEntries);
         return omitEmptyEntries
-                ? new CharOmitEmptySplitIterator1(source, separator)
-                : new CharKeepEmptySplitIterator1(source, separator);
+                ? new CharOmitEmptySplitIterator1(candidate, separator, trimEntries)
+                : new CharKeepEmptySplitIterator1(candidate, separator, trimEntries);
     }
 
     public static IEnumerable<String> split(CharSequence source, char[] separator) {
@@ -46,31 +50,34 @@ public final class Split {
         if (source == null)
             return Array.empty();
 
-        boolean omitEmptyEntries = (options == StringSplitOptions.RemoveEmptyEntries);
+        boolean omitEmptyEntries = options.hasFlag(StringSplitOptions.RemoveEmptyEntries);
         if (omitEmptyEntries && source.length() == 0)
             return Array.empty();
 
-        switch (separator == null ? 0 : separator.length) {
-            case 0:
-                return omitEmptyEntries
-                        ? new CharOmitEmptySplitIterator0(source)
-                        : new CharKeepEmptySplitIterator0(source);
+        if (separator == null || separator.length == 0)
+            return omitEmptyEntries
+                    ? new CharOmitEmptySplitIterator0(source)
+                    : new CharKeepEmptySplitIterator0(source);
+
+        IStringSpan candidate = StringSpan.asSpan(source);
+        boolean trimEntries = options.hasFlag(StringSplitOptions.TrimEntries);
+        switch (separator.length) {
             case 1:
                 return omitEmptyEntries
-                        ? new CharOmitEmptySplitIterator1(source, separator[0])
-                        : new CharKeepEmptySplitIterator1(source, separator[0]);
+                        ? new CharOmitEmptySplitIterator1(candidate, separator[0], trimEntries)
+                        : new CharKeepEmptySplitIterator1(candidate, separator[0], trimEntries);
             case 2:
                 return omitEmptyEntries
-                        ? new CharOmitEmptySplitIterator2(source, separator[0], separator[1])
-                        : new CharKeepEmptySplitIterator2(source, separator[0], separator[1]);
+                        ? new CharOmitEmptySplitIterator2(candidate, separator[0], separator[1], trimEntries)
+                        : new CharKeepEmptySplitIterator2(candidate, separator[0], separator[1], trimEntries);
             case 3:
                 return omitEmptyEntries
-                        ? new CharOmitEmptySplitIterator3(source, separator[0], separator[1], separator[2])
-                        : new CharKeepEmptySplitIterator3(source, separator[0], separator[1], separator[2]);
+                        ? new CharOmitEmptySplitIterator3(candidate, separator[0], separator[1], separator[2], trimEntries)
+                        : new CharKeepEmptySplitIterator3(candidate, separator[0], separator[1], separator[2], trimEntries);
             default:
                 return omitEmptyEntries
-                        ? new CharOmitEmptySplitIteratorN(source, separator)
-                        : new CharKeepEmptySplitIteratorN(source, separator);
+                        ? new CharOmitEmptySplitIteratorN(candidate, separator, trimEntries)
+                        : new CharKeepEmptySplitIteratorN(candidate, separator, trimEntries);
         }
     }
 
@@ -85,16 +92,23 @@ public final class Split {
         if (source == null)
             return Array.empty();
 
-        boolean omitEmptyEntries = options == StringSplitOptions.RemoveEmptyEntries;
+        boolean omitEmptyEntries = options.hasFlag(StringSplitOptions.RemoveEmptyEntries);
         if (omitEmptyEntries && source.length() == 0)
             return Array.empty();
 
-        if (Strings.isNullOrEmpty(separator))
-            return new SingletonEnumerable<>(source.toString());
+        IStringSpan candidate = StringSpan.asSpan(source);
+        boolean trimEntries = options.hasFlag(StringSplitOptions.TrimEntries);
+        if (Strings.isNullOrEmpty(separator)) {
+            if (trimEntries)
+                candidate = candidate.trim();
+            return omitEmptyEntries && candidate.length() == 0
+                    ? Array.empty()
+                    : new SingletonEnumerable<>(candidate.toString());
+        }
 
         return omitEmptyEntries
-                ? new StringOmitEmptySplitIterator1(source, separator)
-                : new StringKeepEmptySplitIterator1(source, separator);
+                ? new StringOmitEmptySplitIterator1(candidate, separator, trimEntries)
+                : new StringKeepEmptySplitIterator1(candidate, separator, trimEntries);
     }
 
     public static IEnumerable<String> split(CharSequence source, CharSequence[] separator) {
@@ -108,7 +122,7 @@ public final class Split {
         if (source == null)
             return Array.empty();
 
-        boolean omitEmptyEntries = (options == StringSplitOptions.RemoveEmptyEntries);
+        boolean omitEmptyEntries = options.hasFlag(StringSplitOptions.RemoveEmptyEntries);
         if (omitEmptyEntries && source.length() == 0)
             return Array.empty();
 
@@ -117,9 +131,11 @@ public final class Split {
                     ? new CharOmitEmptySplitIterator0(source)
                     : new CharKeepEmptySplitIterator0(source);
 
+        IStringSpan candidate = StringSpan.asSpan(source);
+        boolean trimEntries = options.hasFlag(StringSplitOptions.TrimEntries);
         return omitEmptyEntries
-                ? new StringOmitEmptySplitIteratorN(source, separator)
-                : new StringKeepEmptySplitIteratorN(source, separator);
+                ? new StringOmitEmptySplitIteratorN(candidate, separator, trimEntries)
+                : new StringKeepEmptySplitIteratorN(candidate, separator, trimEntries);
     }
 }
 
@@ -172,18 +188,21 @@ final class CharKeepEmptySplitIterator0 extends AbstractIterator<String> {
 
 
 final class CharKeepEmptySplitIterator1 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char separator;
+    private final boolean trimEntries;
 
-    CharKeepEmptySplitIterator1(CharSequence source, char separator) {
+
+    CharKeepEmptySplitIterator1(IStringSpan source, char separator, boolean trimEntries) {
         assert source != null;
         this.source = source;
         this.separator = separator;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharKeepEmptySplitIterator1(this.source, this.separator);
+        return new CharKeepEmptySplitIterator1(this.source, this.separator, this.trimEntries);
     }
 
     @Override
@@ -202,14 +221,14 @@ final class CharKeepEmptySplitIterator1 extends AbstractIterator<String> {
         while (index < length) {
             char current = this.source.charAt(index);
             if (current == this.separator) {
-                this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+                this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
                 this.state = index + 2;
                 return true;
             }
             index++;
         }
         if (index == length) {
-            this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+            this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
             this.state = index + 2;
             return true;
         }
@@ -221,20 +240,22 @@ final class CharKeepEmptySplitIterator1 extends AbstractIterator<String> {
 
 
 final class CharKeepEmptySplitIterator2 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char separator0;
     private final char separator1;
+    private final boolean trimEntries;
 
-    CharKeepEmptySplitIterator2(CharSequence source, char separator0, char separator1) {
+    CharKeepEmptySplitIterator2(IStringSpan source, char separator0, char separator1, boolean trimEntries) {
         assert source != null;
         this.source = source;
         this.separator0 = separator0;
         this.separator1 = separator1;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharKeepEmptySplitIterator2(this.source, this.separator0, this.separator1);
+        return new CharKeepEmptySplitIterator2(this.source, this.separator0, this.separator1, this.trimEntries);
     }
 
     @Override
@@ -253,14 +274,14 @@ final class CharKeepEmptySplitIterator2 extends AbstractIterator<String> {
         while (index < length) {
             char current = this.source.charAt(index);
             if (current == this.separator0 || current == this.separator1) {
-                this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+                this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
                 this.state = index + 2;
                 return true;
             }
             index++;
         }
         if (index == length) {
-            this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+            this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
             this.state = index + 2;
             return true;
         }
@@ -272,22 +293,24 @@ final class CharKeepEmptySplitIterator2 extends AbstractIterator<String> {
 
 
 final class CharKeepEmptySplitIterator3 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char separator0;
     private final char separator1;
     private final char separator2;
+    private final boolean trimEntries;
 
-    CharKeepEmptySplitIterator3(CharSequence source, char separator0, char separator1, char separator2) {
+    CharKeepEmptySplitIterator3(IStringSpan source, char separator0, char separator1, char separator2, boolean trimEntries) {
         assert source != null;
         this.source = source;
         this.separator0 = separator0;
         this.separator1 = separator1;
         this.separator2 = separator2;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharKeepEmptySplitIterator3(this.source, this.separator0, this.separator1, this.separator2);
+        return new CharKeepEmptySplitIterator3(this.source, this.separator0, this.separator1, this.separator2, this.trimEntries);
     }
 
     @Override
@@ -306,14 +329,14 @@ final class CharKeepEmptySplitIterator3 extends AbstractIterator<String> {
         while (index < length) {
             char current = this.source.charAt(index);
             if (current == this.separator0 || current == this.separator1 || current == this.separator2) {
-                this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+                this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
                 this.state = index + 2;
                 return true;
             }
             index++;
         }
         if (index == length) {
-            this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+            this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
             this.state = index + 2;
             return true;
         }
@@ -325,20 +348,22 @@ final class CharKeepEmptySplitIterator3 extends AbstractIterator<String> {
 
 
 final class CharKeepEmptySplitIteratorN extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char[] separators;
+    private final boolean trimEntries;
     private ProbabilisticMap charMap;
 
-    CharKeepEmptySplitIteratorN(CharSequence source, char[] separators) {
+    CharKeepEmptySplitIteratorN(IStringSpan source, char[] separators, boolean trimEntries) {
         assert source != null;
         assert separators != null && separators.length > 3;
         this.source = source;
         this.separators = separators;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharKeepEmptySplitIteratorN(this.source, this.separators);
+        return new CharKeepEmptySplitIteratorN(this.source, this.separators, this.trimEntries);
     }
 
     @Override
@@ -360,14 +385,14 @@ final class CharKeepEmptySplitIteratorN extends AbstractIterator<String> {
         while (index < length) {
             char current = this.source.charAt(index);
             if (this.charMap.contains(current)) {
-                this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+                this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
                 this.state = index + 2;
                 return true;
             }
             index++;
         }
         if (index == length) {
-            this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+            this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
             this.state = index + 2;
             return true;
         }
@@ -429,18 +454,20 @@ final class CharOmitEmptySplitIterator0 extends AbstractIterator<String> {
 
 
 final class CharOmitEmptySplitIterator1 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char separator;
+    private final boolean trimEntries;
 
-    CharOmitEmptySplitIterator1(CharSequence source, char separator) {
+    CharOmitEmptySplitIterator1(IStringSpan source, char separator, boolean trimEntries) {
         assert !Strings.isNullOrEmpty(source);
         this.source = source;
         this.separator = separator;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharOmitEmptySplitIterator1(this.source, this.separator);
+        return new CharOmitEmptySplitIterator1(this.source, this.separator, this.trimEntries);
     }
 
     @Override
@@ -463,7 +490,15 @@ final class CharOmitEmptySplitIterator1 extends AbstractIterator<String> {
                     break;
                 index++;
             }
-            this.current = this.source.subSequence(beginIndex, index).toString();
+            IStringSpan span = this.source.subSequence(beginIndex, index);
+            if (this.trimEntries) {
+                span = span.trim();
+                if (span.length() == 0) {
+                    index++;
+                    continue;
+                }
+            }
+            this.current = span.toString();
             this.state = index + 1;
             return true;
         }
@@ -475,20 +510,22 @@ final class CharOmitEmptySplitIterator1 extends AbstractIterator<String> {
 
 
 final class CharOmitEmptySplitIterator2 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char separator0;
     private final char separator1;
+    private final boolean trimEntries;
 
-    CharOmitEmptySplitIterator2(CharSequence source, char separator0, char separator1) {
+    CharOmitEmptySplitIterator2(IStringSpan source, char separator0, char separator1, boolean trimEntries) {
         assert !Strings.isNullOrEmpty(source);
         this.source = source;
         this.separator0 = separator0;
         this.separator1 = separator1;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharOmitEmptySplitIterator2(this.source, this.separator0, this.separator1);
+        return new CharOmitEmptySplitIterator2(this.source, this.separator0, this.separator1, this.trimEntries);
     }
 
     @Override
@@ -511,7 +548,15 @@ final class CharOmitEmptySplitIterator2 extends AbstractIterator<String> {
                     break;
                 index++;
             }
-            this.current = this.source.subSequence(beginIndex, index).toString();
+            IStringSpan span = this.source.subSequence(beginIndex, index);
+            if (this.trimEntries) {
+                span = span.trim();
+                if (span.length() == 0) {
+                    index++;
+                    continue;
+                }
+            }
+            this.current = span.toString();
             this.state = index + 1;
             return true;
         }
@@ -523,22 +568,24 @@ final class CharOmitEmptySplitIterator2 extends AbstractIterator<String> {
 
 
 final class CharOmitEmptySplitIterator3 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char separator0;
     private final char separator1;
     private final char separator2;
+    private final boolean trimEntries;
 
-    CharOmitEmptySplitIterator3(CharSequence source, char separator0, char separator1, char separator2) {
+    CharOmitEmptySplitIterator3(IStringSpan source, char separator0, char separator1, char separator2, boolean trimEntries) {
         assert !Strings.isNullOrEmpty(source);
         this.source = source;
         this.separator0 = separator0;
         this.separator1 = separator1;
         this.separator2 = separator2;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharOmitEmptySplitIterator3(this.source, this.separator0, this.separator1, this.separator2);
+        return new CharOmitEmptySplitIterator3(this.source, this.separator0, this.separator1, this.separator2, this.trimEntries);
     }
 
     @Override
@@ -561,7 +608,15 @@ final class CharOmitEmptySplitIterator3 extends AbstractIterator<String> {
                     break;
                 index++;
             }
-            this.current = this.source.subSequence(beginIndex, index).toString();
+            IStringSpan span = this.source.subSequence(beginIndex, index);
+            if (this.trimEntries) {
+                span = span.trim();
+                if (span.length() == 0) {
+                    index++;
+                    continue;
+                }
+            }
+            this.current = span.toString();
             this.state = index + 1;
             return true;
         }
@@ -573,20 +628,22 @@ final class CharOmitEmptySplitIterator3 extends AbstractIterator<String> {
 
 
 final class CharOmitEmptySplitIteratorN extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final char[] separators;
+    private final boolean trimEntries;
     private ProbabilisticMap charMap;
 
-    CharOmitEmptySplitIteratorN(CharSequence source, char[] separators) {
+    CharOmitEmptySplitIteratorN(IStringSpan source, char[] separators, boolean trimEntries) {
         assert !Strings.isNullOrEmpty(source);
         assert separators != null && separators.length > 3;
         this.source = source;
         this.separators = separators;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new CharOmitEmptySplitIteratorN(this.source, this.separators);
+        return new CharOmitEmptySplitIteratorN(this.source, this.separators, this.trimEntries);
     }
 
     @Override
@@ -612,7 +669,15 @@ final class CharOmitEmptySplitIteratorN extends AbstractIterator<String> {
                     break;
                 index++;
             }
-            this.current = this.source.subSequence(beginIndex, index).toString();
+            IStringSpan span = this.source.subSequence(beginIndex, index);
+            if (this.trimEntries) {
+                span = span.trim();
+                if (span.length() == 0) {
+                    index++;
+                    continue;
+                }
+            }
+            this.current = span.toString();
             this.state = index + 1;
             return true;
         }
@@ -630,19 +695,21 @@ final class CharOmitEmptySplitIteratorN extends AbstractIterator<String> {
 
 
 final class StringKeepEmptySplitIterator1 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final CharSequence separator;
+    private final boolean trimEntries;
 
-    StringKeepEmptySplitIterator1(CharSequence source, CharSequence separator) {
+    StringKeepEmptySplitIterator1(IStringSpan source, CharSequence separator, boolean trimEntries) {
         assert source != null;
         assert !Strings.isNullOrEmpty(separator);
         this.source = source;
         this.separator = separator;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new StringKeepEmptySplitIterator1(this.source, this.separator);
+        return new StringKeepEmptySplitIterator1(this.source, this.separator, this.trimEntries);
     }
 
     @Override
@@ -663,14 +730,14 @@ final class StringKeepEmptySplitIterator1 extends AbstractIterator<String> {
         while (index < length) {
             char current = this.source.charAt(index);
             if (current == firstSepChar && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, this.separator, 1, currentSepLength - 1))) {
-                this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+                this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
                 this.state = index + currentSepLength + 1;
                 return true;
             }
             index++;
         }
         if (index == length) {
-            this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+            this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
             this.state = index + 2;
             return true;
         }
@@ -682,19 +749,21 @@ final class StringKeepEmptySplitIterator1 extends AbstractIterator<String> {
 
 
 final class StringKeepEmptySplitIteratorN extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final CharSequence[] separators;
+    private final boolean trimEntries;
 
-    StringKeepEmptySplitIteratorN(CharSequence source, CharSequence[] separators) {
+    StringKeepEmptySplitIteratorN(IStringSpan source, CharSequence[] separators, boolean trimEntries) {
         assert source != null;
         assert separators != null && separators.length > 0;
         this.source = source;
         this.separators = separators;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new StringKeepEmptySplitIteratorN(this.source, this.separators);
+        return new StringKeepEmptySplitIteratorN(this.source, this.separators, this.trimEntries);
     }
 
     @Override
@@ -717,7 +786,7 @@ final class StringKeepEmptySplitIteratorN extends AbstractIterator<String> {
                     continue;
                 int currentSepLength = separator.length();
                 if (current == separator.charAt(0) && currentSepLength <= length - index && (currentSepLength == 1 || SplitInternal.sequenceEqual(this.source, index + 1, separator, 1, currentSepLength - 1))) {
-                    this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+                    this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
                     this.state = index + currentSepLength + 1;
                     return true;
                 }
@@ -725,7 +794,7 @@ final class StringKeepEmptySplitIteratorN extends AbstractIterator<String> {
             index++;
         }
         if (index == length) {
-            this.current = index == beginIndex ? Strings.Empty : this.source.subSequence(beginIndex, index).toString();
+            this.current = index == beginIndex ? Strings.Empty : (this.trimEntries ? this.source.subSequence(beginIndex, index).trim().toString() : this.source.subSequence(beginIndex, index).toString());
             this.state = index + 2;
             return true;
         }
@@ -737,19 +806,21 @@ final class StringKeepEmptySplitIteratorN extends AbstractIterator<String> {
 
 
 final class StringOmitEmptySplitIterator1 extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final CharSequence separator;
+    private final boolean trimEntries;
 
-    StringOmitEmptySplitIterator1(CharSequence source, CharSequence separator) {
+    StringOmitEmptySplitIterator1(IStringSpan source, CharSequence separator, boolean trimEntries) {
         assert !Strings.isNullOrEmpty(source);
         assert !Strings.isNullOrEmpty(separator);
         this.source = source;
         this.separator = separator;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new StringOmitEmptySplitIterator1(this.source, this.separator);
+        return new StringOmitEmptySplitIterator1(this.source, this.separator, this.trimEntries);
     }
 
     @Override
@@ -774,7 +845,15 @@ final class StringOmitEmptySplitIterator1 extends AbstractIterator<String> {
                     break;
                 index++;
             }
-            this.current = this.source.subSequence(beginIndex, index).toString();
+            IStringSpan span = this.source.subSequence(beginIndex, index);
+            if (this.trimEntries) {
+                span = span.trim();
+                if (span.length() == 0) {
+                    index++;
+                    continue;
+                }
+            }
+            this.current = span.toString();
             this.state = index + 1;
             return true;
         }
@@ -786,19 +865,21 @@ final class StringOmitEmptySplitIterator1 extends AbstractIterator<String> {
 
 
 final class StringOmitEmptySplitIteratorN extends AbstractIterator<String> {
-    private final CharSequence source;
+    private final IStringSpan source;
     private final CharSequence[] separators;
+    private final boolean trimEntries;
 
-    StringOmitEmptySplitIteratorN(CharSequence source, CharSequence[] separators) {
+    StringOmitEmptySplitIteratorN(IStringSpan source, CharSequence[] separators, boolean trimEntries) {
         assert !Strings.isNullOrEmpty(source);
         assert separators != null && separators.length > 0;
         this.source = source;
         this.separators = separators;
+        this.trimEntries = trimEntries;
     }
 
     @Override
     public AbstractIterator<String> clone() {
-        return new StringOmitEmptySplitIteratorN(this.source, this.separators);
+        return new StringOmitEmptySplitIteratorN(this.source, this.separators, this.trimEntries);
     }
 
     @Override
@@ -833,7 +914,15 @@ final class StringOmitEmptySplitIteratorN extends AbstractIterator<String> {
                 }
                 index++;
             }
-            this.current = this.source.subSequence(beginIndex, index).toString();
+            IStringSpan span = this.source.subSequence(beginIndex, index);
+            if (this.trimEntries) {
+                span = span.trim();
+                if (span.length() == 0) {
+                    index++;
+                    continue;
+                }
+            }
+            this.current = span.toString();
             this.state = index + 1;
             return true;
         }

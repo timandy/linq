@@ -85,6 +85,18 @@ class SplitTest extends TestCase {
         argsList.add("first,second,third", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"first,second,third"});
         argsList.add("Foo Bar Baz", ' ', StringSplitOptions.None, new String[]{"Foo", "Bar", "Baz"});
         argsList.add("Foo Bar Baz", ' ', StringSplitOptions.RemoveEmptyEntries, new String[]{"Foo", "Bar", "Baz"});
+        argsList.add("a", ',', StringSplitOptions.None, new String[]{"a"});
+        argsList.add("a", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{"a"});
+        argsList.add("a", ',', StringSplitOptions.TrimEntries, new String[]{"a"});
+        argsList.add("a", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a"});
+        argsList.add(" ", ',', StringSplitOptions.None, new String[]{" "});
+        argsList.add(" ", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{" "});
+        argsList.add(" ", ',', StringSplitOptions.TrimEntries, new String[]{""});
+        argsList.add(" ", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[0]);
+        argsList.add(" a,, b, c ", ',', StringSplitOptions.None, new String[]{" a", "", " b", " c "});
+        argsList.add(" a,, b, c ", ',', StringSplitOptions.RemoveEmptyEntries, new String[]{" a", " b", " c "});
+        argsList.add(" a,, b, c ", ',', StringSplitOptions.TrimEntries, new String[]{"a", "", "b", "c"});
+        argsList.add(" a,, b, c ", ',', StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"a", "b", "c"});
         return argsList;
     }
 
@@ -98,6 +110,10 @@ class SplitTest extends TestCase {
         argsList.add("a,b,c", "", StringSplitOptions.RemoveEmptyEntries, new String[]{"a,b,c"});
         argsList.add("aaabaaabaaa", "aa", StringSplitOptions.RemoveEmptyEntries, new String[]{"ab", "ab", "a"});
         argsList.add("this, is, a, string, with some spaces", ", ", StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with some spaces"});
+        argsList.add("Monday, Tuesday, Wednesday, Thursday, Friday", ",", StringSplitOptions.TrimEntries, new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
+        argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.TrimEntries, new String[]{"Monday", "Tuesday", "", "Wednesday", "", "Thursday", "Friday"});
+        argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.RemoveEmptyEntries, new String[]{"Monday", " Tuesday", "\r", " Wednesday", "\n", " Thursday", " Friday"});
+        argsList.add("Monday, Tuesday,\r, Wednesday,\n, Thursday, Friday", ",", StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"});
         return argsList;
     }
 
@@ -121,6 +137,10 @@ class SplitTest extends TestCase {
         argsList.add("this, is, a, string, with some spaces", new char[]{',', ' '}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
         argsList.add("this, is, a, string, with some spaces", new char[]{',', ' ', 's', 'a'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', 's', 'a'}, StringSplitOptions.None, new String[]{"thi" /*s*/, "" /*,*/, " i" /*s*/, "" /*,*/, " " /*a*/, "" /*,*/, " " /*s*/, "tring" /*,*/, " with " /*s*/, "ome " /*s*/, "p" /*a*/, "ce" /*s*/, ""});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', 's', 'a'}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", " i", " ", " ", "tring", " with ", "ome ", "p", "ce"});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', 's', 'a'}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "i", "", "", "", "", "tring", "with", "ome", "p", "ce", ""});
+        argsList.add("this, is, a, string, with some spaces", new char[]{',', 's', 'a'}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
         return argsList;
     }
 
@@ -148,6 +168,14 @@ class SplitTest extends TestCase {
         argsList.add("this, is, a, string, with some spaces", new String[]{", ", " "}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", "is", "a", "string", "with", "some", "spaces"});
         argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "a", "tring", "with", "ome", "pace"});
         argsList.add("this, is, a, string, with some spaces", new String[]{",", " ", "s", "a"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.None, new String[]{"thi" /*s*/, "" /*,*/, " i" /*s*/, "" /*,*/, " " /*a*/, "" /*,*/, " " /*s*/, "tring" /*,*/, " with " /*s*/, "ome " /*s*/, "p" /*a*/, "ce" /*s*/, ""});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"thi", " i", " ", " ", "tring", " with ", "ome ", "p", "ce"});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.TrimEntries, new String[]{"thi", "", "i", "", "", "", "", "tring", "with", "ome", "p", "ce", ""});
+        argsList.add("this, is, a, string, with some spaces", new String[]{",", "s", "a"}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"thi", "i", "tring", "with", "ome", "p", "ce"});
+        argsList.add("this, is, a, string, with some spaces, ", new String[]{",", " s"}, StringSplitOptions.None, new String[]{"this", " is", " a", "", "tring", " with", "ome", "paces", " "});
+        argsList.add("this, is, a, string, with some spaces, ", new String[]{",", " s"}, StringSplitOptions.RemoveEmptyEntries, new String[]{"this", " is", " a", "tring", " with", "ome", "paces", " "});
+        argsList.add("this, is, a, string, with some spaces, ", new String[]{",", " s"}, StringSplitOptions.TrimEntries, new String[]{"this", "is", "a", "", "tring", "with", "ome", "paces", ""});
+        argsList.add("this, is, a, string, with some spaces, ", new String[]{",", " s"}, StringSplitOptions.TrimAndRemoveEmptyEntries, new String[]{"this", "is", "a", "tring", "with", "ome", "paces"});
         return argsList;
     }
 
