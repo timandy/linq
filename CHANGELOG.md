@@ -17,6 +17,8 @@
 - In order to reduce sorting time, methods `first(predicate)` and `firstOrDefault(predicate)` after `OrderedEnumerable` call the predicate once per element.
 So don't call side-effect methods in linq.
 see [https://github.com/dotnet/runtime/issues/31554](https://github.com/dotnet/runtime/issues/31554).
+- Don't reuse the lazy result of 'skipLast' and 'takeLast' when the source will be modified.
+see [https://github.com/dotnet/runtime/pull/42506](https://github.com/dotnet/runtime/pull/42506).
 
 # Links
 - Download [https://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/](https://repo1.maven.org/maven2/com/bestvike/linq/5.0.0/)
