@@ -12,8 +12,8 @@ import java.util.Comparator;
  * Created by 许崇雷 on 2017-07-18.
  */
 public final class Comparer<T> implements Comparator<T> {
-    private static final Comparer DEFAULT = new Comparer(null);
-    private static final Comparer DEFAULT_INVARIANT = new Comparer(CultureInfo.getInvariantCulture());
+    private static final Comparer<?> DEFAULT = new Comparer<>(null);
+    private static final Comparer<?> DEFAULT_INVARIANT = new Comparer<>(CultureInfo.getInvariantCulture());
 
     private final Collator collator;
 
@@ -23,12 +23,12 @@ public final class Comparer<T> implements Comparator<T> {
 
     public static <T> Comparator<T> Default() {
         //noinspection unchecked
-        return DEFAULT;
+        return (Comparator<T>) DEFAULT;
     }
 
     public static <T> Comparator<T> DefaultInvariant() {
         //noinspection unchecked
-        return DEFAULT_INVARIANT;
+        return (Comparator<T>) DEFAULT_INVARIANT;
     }
 
     public static <T> Comparator<T> create(Collator collator) {
@@ -55,10 +55,10 @@ public final class Comparer<T> implements Comparator<T> {
             return (this.collator == null ? CultureInfo.getCurrentCulture() : this.collator).compare((String) x, (String) y);
         if (x instanceof Comparable)
             //noinspection unchecked
-            return ((Comparable) x).compareTo(y);
+            return ((Comparable<T>) x).compareTo(y);
         if (y instanceof Comparable)
             //noinspection unchecked
-            return -((Comparable) y).compareTo(x);
+            return -((Comparable<T>) y).compareTo(x);
         ThrowHelper.throwImplementComparableException();
         return 0;
     }

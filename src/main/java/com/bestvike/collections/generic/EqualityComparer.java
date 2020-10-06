@@ -6,14 +6,14 @@ import java.util.Objects;
  * Created by 许崇雷 on 2017-07-18.
  */
 public final class EqualityComparer<T> implements IEqualityComparer<T> {
-    private static final EqualityComparer DEFAULT = new EqualityComparer();
+    private static final EqualityComparer<?> DEFAULT = new EqualityComparer<>();
 
     private EqualityComparer() {
     }
 
     public static <T> EqualityComparer<T> Default() {
         //noinspection unchecked
-        return DEFAULT;
+        return (EqualityComparer<T>) DEFAULT;
     }
 
     @Override

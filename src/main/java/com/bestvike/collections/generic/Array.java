@@ -14,7 +14,7 @@ import java.util.List;
  * Created by 许崇雷 on 2017-07-19.
  */
 public final class Array<T> implements IArray<T>, Cloneable {
-    private static final Array EMPTY = new Array(ArrayUtils.empty());
+    private static final Array<?> EMPTY = new Array<>(ArrayUtils.empty());
     private final Object[] elements;
 
     public Array(Object[] elements) {
@@ -25,7 +25,7 @@ public final class Array<T> implements IArray<T>, Cloneable {
 
     public static <T> Array<T> empty() {
         //noinspection unchecked
-        return EMPTY;
+        return (Array<T>) EMPTY;
     }
 
     @Override
