@@ -43,14 +43,14 @@ interface IPartition<TElement> extends IIListProvider<TElement> {
 
 @DebuggerDisplay("Count = 0")
 final class EmptyPartition<TElement> extends Iterator<TElement> implements IPartition<TElement> {
-    private static final IPartition INSTANCE = new EmptyPartition();
+    private static final IPartition<?> INSTANCE = new EmptyPartition<>();
 
     private EmptyPartition() {
     }
 
     public static <TElement> IPartition<TElement> instance() {
         //noinspection unchecked
-        return INSTANCE;
+        return (IPartition<TElement>) INSTANCE;
     }
 
     @Override

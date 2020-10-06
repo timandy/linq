@@ -116,16 +116,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Boolean curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -135,11 +135,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Boolean curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -172,16 +172,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Byte curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -191,11 +191,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Byte curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -228,16 +228,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Short curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -247,11 +247,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Short curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -284,16 +284,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Integer curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -303,11 +303,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Integer curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -340,16 +340,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Long curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -359,11 +359,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Long curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -396,16 +396,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Character curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -415,11 +415,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Character curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -452,16 +452,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Float curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -471,11 +471,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Float curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -508,16 +508,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (Double curX : x) {
                     if (!(itY.moveNext() && curX.equals(itY.current())))
                         return false;
@@ -527,11 +527,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (Double curX : x) {
                 if (!(itY.hasNext() && curX.equals(itY.next())))
                     return false;
@@ -634,16 +634,16 @@ public final class Values {
         }
         if (y instanceof IEnumerable) {
             if (y instanceof ICollection) {
-                ICollection listY = (ICollection) y;
+                ICollection<?> listY = (ICollection<?>) y;
                 if (x.length != listY._getCount())
                     return false;
             } else if (y instanceof IIListProvider) {
-                IIListProvider listY = (IIListProvider) y;
+                IIListProvider<?> listY = (IIListProvider<?>) y;
                 int lenY = listY._getCount(true);
                 if (lenY != -1 && x.length != lenY)
                     return false;
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (T curX : x) {
                     if (!(itY.moveNext() && equals(curX, itY.current())))
                         return false;
@@ -653,11 +653,11 @@ public final class Values {
         }
         if (y instanceof Iterable) {
             if (y instanceof Collection) {
-                Collection listY = (Collection) y;
+                Collection<?> listY = (Collection<?>) y;
                 if (x.length != listY.size())
                     return false;
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (T curX : x) {
                 if (!(itY.hasNext() && equals(curX, itY.next())))
                     return false;
@@ -779,18 +779,18 @@ public final class Values {
         if (y instanceof IEnumerable) {
             if (lenX != -1) {
                 if (y instanceof ICollection) {
-                    ICollection listY = (ICollection) y;
+                    ICollection<?> listY = (ICollection<?>) y;
                     if (lenX != listY._getCount())
                         return false;
                 } else if (y instanceof IIListProvider) {
-                    IIListProvider listY = (IIListProvider) y;
+                    IIListProvider<?> listY = (IIListProvider<?>) y;
                     int lenY = listY._getCount(true);
                     if (lenY != -1 && lenX != lenY)
                         return false;
                 }
             }
             try (IEnumerator<T> itX = x.enumerator();
-                 IEnumerator itY = ((IEnumerable) y).enumerator()) {
+                 IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 while (itX.moveNext()) {
                     if (!(itY.moveNext() && equals(itX.current(), itY.current())))
                         return false;
@@ -801,13 +801,13 @@ public final class Values {
         if (y instanceof Iterable) {
             if (lenX != -1) {
                 if (y instanceof Collection) {
-                    Collection listY = (Collection) y;
+                    Collection<?> listY = (Collection<?>) y;
                     if (lenX != listY.size())
                         return false;
                 }
             }
             try (IEnumerator<T> itX = x.enumerator()) {
-                Iterator itY = ((Iterable) y).iterator();
+                Iterator<?> itY = ((Iterable<?>) y).iterator();
                 while (itX.moveNext()) {
                     if (!(itY.hasNext() && equals(itX.current(), itY.next())))
                         return false;
@@ -921,17 +921,17 @@ public final class Values {
         if (y instanceof IEnumerable) {
             if (lenX != -1) {
                 if (y instanceof ICollection) {
-                    ICollection listY = (ICollection) y;
+                    ICollection<?> listY = (ICollection<?>) y;
                     if (lenX != listY._getCount())
                         return false;
                 } else if (y instanceof IIListProvider) {
-                    IIListProvider listY = (IIListProvider) y;
+                    IIListProvider<?> listY = (IIListProvider<?>) y;
                     int lenY = listY._getCount(true);
                     if (lenY != -1 && lenX != lenY)
                         return false;
                 }
             }
-            try (IEnumerator itY = ((IEnumerable) y).enumerator()) {
+            try (IEnumerator<?> itY = ((IEnumerable<?>) y).enumerator()) {
                 for (T curX : x) {
                     if (!(itY.moveNext() && equals(curX, itY.current())))
                         return false;
@@ -942,12 +942,12 @@ public final class Values {
         if (y instanceof Iterable) {
             if (lenX != -1) {
                 if (y instanceof Collection) {
-                    Collection listY = (Collection) y;
+                    Collection<?> listY = (Collection<?>) y;
                     if (lenX != listY.size())
                         return false;
                 }
             }
-            Iterator itY = ((Iterable) y).iterator();
+            Iterator<?> itY = ((Iterable<?>) y).iterator();
             for (T curX : x) {
                 if (!(itY.hasNext() && equals(curX, itY.next())))
                     return false;
@@ -959,7 +959,8 @@ public final class Values {
 
     private static <K, V> boolean equals(Map<K, V> x, Object y) {
         if (y instanceof Map) {
-            Map mapY = (Map) y;
+            //noinspection unchecked
+            Map<K, V> mapY = (Map<K, V>) y;
             if (x.size() != mapY.size())
                 return false;
             for (Map.Entry<K, V> entry : x.entrySet()) {

@@ -12,7 +12,7 @@ public final class Cast {
     private Cast() {
     }
 
-    public static <TResult> IEnumerable<TResult> ofType(IEnumerable source, Class<TResult> clazz) {
+    public static <TResult> IEnumerable<TResult> ofType(IEnumerable<?> source, Class<TResult> clazz) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (clazz == null)
@@ -21,7 +21,7 @@ public final class Cast {
         return new OfTypeIterator<>(source, clazz);
     }
 
-    public static <TResult> IEnumerable<TResult> cast(IEnumerable source, Class<TResult> clazz) {
+    public static <TResult> IEnumerable<TResult> cast(IEnumerable<?> source, Class<TResult> clazz) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (clazz == null)
@@ -33,11 +33,11 @@ public final class Cast {
 
 
 final class OfTypeIterator<TResult> extends AbstractIterator<TResult> {
-    private final IEnumerable source;
+    private final IEnumerable<?> source;
     private final Class<TResult> clazz;
-    private IEnumerator enumerator;
+    private IEnumerator<?> enumerator;
 
-    OfTypeIterator(IEnumerable source, Class<TResult> clazz) {
+    OfTypeIterator(IEnumerable<?> source, Class<TResult> clazz) {
         this.source = source;
         this.clazz = clazz;
     }
@@ -81,11 +81,11 @@ final class OfTypeIterator<TResult> extends AbstractIterator<TResult> {
 
 
 final class CastIterator<TResult> extends AbstractIterator<TResult> {
-    private final IEnumerable source;
+    private final IEnumerable<?> source;
     private final Class<TResult> clazz;
-    private IEnumerator enumerator;
+    private IEnumerator<?> enumerator;
 
-    CastIterator(IEnumerable source, Class<TResult> clazz) {
+    CastIterator(IEnumerable<?> source, Class<TResult> clazz) {
         this.source = source;
         this.clazz = clazz;
     }

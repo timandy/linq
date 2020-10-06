@@ -56,7 +56,7 @@ public final class ThrowHelper {
         throw new ArgumentException(SR.Argument_ImplementComparable);
     }
 
-    public static void throwTupleIncorrectTypeException(Class type, ExceptionArgument argument) {
+    public static void throwTupleIncorrectTypeException(Class<?> type, ExceptionArgument argument) {
         throw new ArgumentException(String.format(SR.ArgumentException_TupleIncorrectType, type), getArgumentString(argument));
     }
 

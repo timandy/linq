@@ -22,7 +22,7 @@ final class EnumerableHelpers {
         assert source != null;
 
         if (source instanceof ICollection) {
-            ICollection collection = (ICollection<T>) source;
+            ICollection<T> collection = (ICollection<T>) source;
             count.value = collection._getCount();
             return true;
         }
