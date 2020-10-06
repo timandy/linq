@@ -5,6 +5,7 @@ import com.bestvike.collections.generic.IEqualityComparer;
 /**
  * Created by 许崇雷 on 2017-09-05.
  */
+@SuppressWarnings("rawtypes")
 interface ITupleInternal extends ITuple {
     String toString(StringBuilder sb);
 

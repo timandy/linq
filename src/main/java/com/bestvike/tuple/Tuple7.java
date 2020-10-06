@@ -13,7 +13,7 @@ import java.util.Comparator;
 /**
  * Created by 许崇雷 on 2017-07-23.
  */
-@SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
+@SuppressWarnings({"EqualsWhichDoesntCheckParameterClass", "rawtypes"})
 public final class Tuple7<T1, T2, T3, T4, T5, T6, T7> implements IStructuralEquatable, IStructuralComparable, Comparable, ITupleInternal, ITuple {
     private final T1 item1;
     private final T2 item2;
