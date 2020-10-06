@@ -10,6 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by 许崇雷 on 2018-05-17.
  */
@@ -79,6 +83,23 @@ class TakeLastTest extends TestCase {
     void RunOnce(IEnumerable<Integer> source, int count) {
         IEnumerable<Integer> expected = source.takeLast(count);
         assertEquals(expected, source.takeLast(count).runOnce());
+    }
+
+    @Test
+    void List_ChangesAfterTakeLast_ChangesReflectedInResults() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        IEnumerable<Integer> e = Linq.of(list).takeLast(3);
+        list.remove(0);
+        list.remove(0);
+        assertEquals(Linq.of(5), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
+    }
+
+    @Test
+    void List_Skip_ChangesAfterTakeLast_ChangesReflectedInResults() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        IEnumerable<Integer> e = Linq.of(list).skip(1).takeLast(3);
+        list.remove(0);
+        assertEquals(Linq.of(4, 5), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
     }
 
     @Test

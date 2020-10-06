@@ -10,6 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by 许崇雷 on 2018-05-17.
  */
@@ -73,6 +77,23 @@ class SkipLastTest extends TestCase {
     void RunOnce(IEnumerable<Integer> source, int count) {
         IEnumerable<Integer> expected = source.skipLast(count);
         assertEquals(expected, source.skipLast(count).runOnce());
+    }
+
+    @Test
+    void List_ChangesAfterSkipLast_ChangesReflectedInResults() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        IEnumerable<Integer> e = Linq.of(list).skipLast(2);
+        list.remove(4);
+        list.remove(3);
+        assertEquals(Linq.of(1, 2, 3), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
+    }
+
+    @Test
+    void List_Skip_ChangesAfterSkipLast_ChangesReflectedInResults() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
+        IEnumerable<Integer> e = Linq.of(list).skip(1).skipLast(2);
+        list.remove(4);
+        assertEquals(Linq.of(2, 3), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
     }
 
     @Test
