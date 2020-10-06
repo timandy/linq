@@ -238,7 +238,7 @@ public final class Formatter {
             return;
         }
         if (obj instanceof BigDecimal) {
-            sb.append(this.decimalWithScale ? ((BigDecimal) obj).setScale(this.decimalScale, this.decimalRounding) : (BigDecimal) obj);
+            sb.append(this.decimalWithScale ? ((BigDecimal) obj).setScale(this.decimalScale, this.decimalRounding) : obj);
             return;
         }
         if (obj instanceof boolean[]) {
