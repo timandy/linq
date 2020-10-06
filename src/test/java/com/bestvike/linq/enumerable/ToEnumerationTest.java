@@ -340,7 +340,6 @@ class ToEnumerationTest extends TestCase {
         assertEquals(1, source.nextElement());
         assertFalse(source.hasMoreElements());
         assertThrows(NoSuchElementException.class, () -> source.nextElement());
-        //noinspection RedundantCast
         assertSame(source, ((EnumerableEnumeration<Integer>) source).asIterator());
 
         IEnumerable<Integer> source2 = Linq.of(new Vector<>(Collections.singletonList(1)).elements());

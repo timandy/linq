@@ -60,7 +60,6 @@ class StringEmptySpanTest extends TestCase {
     }
 
     @Test
-    @SuppressWarnings("SimplifiableJUnitAssertion")
     void testEquals() {
         IStringSpan source = StringSpan.Empty;
 
