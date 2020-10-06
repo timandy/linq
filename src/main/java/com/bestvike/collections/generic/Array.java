@@ -106,6 +106,7 @@ public final class Array<T> implements IArray<T>, Cloneable {
     }
 
     @Override
+    @SuppressWarnings("MethodDoesntCallSuperMethod")
     public Array<T> clone() {
         return new Array<>(ArrayUtils.clone(this.elements));
     }
