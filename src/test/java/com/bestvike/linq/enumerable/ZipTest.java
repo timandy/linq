@@ -662,6 +662,7 @@ class ZipTest extends TestCase {
     void testZip() {
         IEnumerable<String> e1 = Linq.of(Arrays.asList("a", "b", "c"));
         IEnumerable<String> e2 = Linq.of(Arrays.asList("1", "2", "3"));
+        IEnumerable<String> e3 = Linq.of(Arrays.asList("h", "i", "j"));
 
         IEnumerable<String> zipped = e1.zip(e2, (v0, v1) -> v0 + v1);
         assertEquals(3, zipped.count());
@@ -675,8 +676,25 @@ class ZipTest extends TestCase {
             assertEquals(Empty + (char) ('1' + i), zipped2.elementAt(i).getItem2());
         }
 
+        IEnumerable<Tuple3<String, String, String>> zipped3 = e1.zip(e2, e3);
+        assertEquals(3, zipped3.count());
+        for (int i = 0; i < 3; i++) {
+            assertEquals(Empty + (char) ('a' + i), zipped3.elementAt(i).getItem1());
+            assertEquals(Empty + (char) ('1' + i), zipped3.elementAt(i).getItem2());
+            assertEquals(Empty + (char) ('h' + i), zipped3.elementAt(i).getItem3());
+        }
+
+        //
         IEnumerable<Tuple2<String, String>> source = e1.zip(e2);
         try (IEnumerator<Tuple2<String, String>> e = source.enumerator()) {
+            for (int i = 0; i < 3; i++)
+                assertTrue(e.moveNext());
+            assertFalse(e.moveNext());
+            assertFalse(e.moveNext());
+        }
+
+        IEnumerable<Tuple3<String, String, String>> source2 = e1.zip(e2, e3);
+        try (IEnumerator<Tuple3<String, String, String>> e = source2.enumerator()) {
             for (int i = 0; i < 3; i++)
                 assertTrue(e.moveNext());
             assertFalse(e.moveNext());
@@ -688,6 +706,7 @@ class ZipTest extends TestCase {
     void testZipLengthNotMatch() {
         IEnumerable<String> e1 = Linq.of(Arrays.asList("a", "b"));
         IEnumerable<String> e2 = Linq.of(Arrays.asList("1", "2", "3"));
+        IEnumerable<String> e3 = Linq.of(Arrays.asList("h", "i"));
 
         IEnumerable<String> zipped1 = e1.zip(e2, (v0, v1) -> v0 + v1);
         assertEquals(2, zipped1.count());
@@ -699,6 +718,7 @@ class ZipTest extends TestCase {
         for (int i = 0; i < 2; i++)
             assertEquals(Empty + (char) ('1' + i) + (char) ('a' + i), zipped2.elementAt(i));
 
+        //
         IEnumerable<Tuple2<String, String>> zipped3 = e1.zip(e2);
         assertEquals(2, zipped3.count());
         for (int i = 0; i < 2; i++) {
@@ -711,6 +731,23 @@ class ZipTest extends TestCase {
         for (int i = 0; i < 2; i++) {
             assertEquals(Empty + (char) ('1' + i), zipped4.elementAt(i).getItem1());
             assertEquals(Empty + (char) ('a' + i), zipped4.elementAt(i).getItem2());
+        }
+
+        //
+        IEnumerable<Tuple3<String, String, String>> zipped5 = e1.zip(e2, e3);
+        assertEquals(2, zipped5.count());
+        for (int i = 0; i < 2; i++) {
+            assertEquals(Empty + (char) ('a' + i), zipped5.elementAt(i).getItem1());
+            assertEquals(Empty + (char) ('1' + i), zipped5.elementAt(i).getItem2());
+            assertEquals(Empty + (char) ('h' + i), zipped5.elementAt(i).getItem3());
+        }
+
+        IEnumerable<Tuple3<String, String, String>> zipped6 = e2.zip(e1, e3);
+        assertEquals(2, zipped6.count());
+        for (int i = 0; i < 2; i++) {
+            assertEquals(Empty + (char) ('1' + i), zipped6.elementAt(i).getItem1());
+            assertEquals(Empty + (char) ('a' + i), zipped6.elementAt(i).getItem2());
+            assertEquals(Empty + (char) ('h' + i), zipped6.elementAt(i).getItem3());
         }
     }
 }
