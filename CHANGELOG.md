@@ -6,6 +6,7 @@
 ### Features
 - Add `size()` and `isEmpty()` methods for `ICollection` interface.
 - Add `StringSplitOptions.TrimEntries` for `split` method.
+- Add `zip` api to cast three sequence into a Tuple3 sequence.
 
 ### Changes
 - Improve performance of method `ArrayListEnumerable.toArray(Class<TSource> clazz)`.
