@@ -71,6 +71,7 @@ import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.linq.util.ArrayUtils;
 import com.bestvike.linq.util.Formatter;
 import com.bestvike.tuple.Tuple2;
+import com.bestvike.tuple.Tuple3;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -1085,11 +1086,15 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Where.where(this, (IndexPredicate2<TSource>) predicate);
     }
 
+    default <TSecond, TResult> IEnumerable<TResult> zip(IEnumerable<? extends TSecond> second, Func2<? super TSource, ? super TSecond, ? extends TResult> resultSelector) {
+        return Zip.zip(this, (IEnumerable<TSecond>) second, (Func2<TSource, TSecond, TResult>) resultSelector);
+    }
+
     default <TSecond> IEnumerable<Tuple2<TSource, TSecond>> zip(IEnumerable<? extends TSecond> second) {
         return Zip.zip(this, (IEnumerable<TSecond>) second);
     }
 
-    default <TSecond, TResult> IEnumerable<TResult> zip(IEnumerable<? extends TSecond> second, Func2<? super TSource, ? super TSecond, ? extends TResult> resultSelector) {
-        return Zip.zip(this, (IEnumerable<TSecond>) second, (Func2<TSource, TSecond, TResult>) resultSelector);
+    default <TSecond, TThird> IEnumerable<Tuple3<TSource, TSecond, TThird>> zip(IEnumerable<? extends TSecond> second, IEnumerable<? extends TThird> third) {
+        return Zip.zip(this, (IEnumerable<TSecond>) second, (IEnumerable<TThird>) third);
     }
 }

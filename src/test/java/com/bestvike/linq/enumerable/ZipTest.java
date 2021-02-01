@@ -8,6 +8,7 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.tuple.Tuple;
 import com.bestvike.tuple.Tuple2;
+import com.bestvike.tuple.Tuple3;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -548,6 +549,113 @@ class ZipTest extends TestCase {
         Tuple2<Integer, Integer> t = Linq.of(new int[]{1, 2, 3}).zip(Linq.of(new int[]{2, 4, 6})).first();
         assertEquals(1, t.getItem1());
         assertEquals(2, t.getItem2());
+    }
+
+    @Test
+    void Zip3_FirstIsNull() {
+        IEnumerable<Integer> first = null;
+        IEnumerable<Integer> second = Linq.of(new int[]{4, 5, 6});
+        IEnumerable<Integer> third = Linq.of(new int[]{7, 8, 9});
+
+        assertThrows(NullPointerException.class, () -> first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_SecondIsNull() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
+        IEnumerable<Integer> second = null;
+        IEnumerable<Integer> third = Linq.of(new int[]{4, 5, 6});
+
+        assertThrows(ArgumentNullException.class, () -> first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ThirdIsNull() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
+        IEnumerable<Integer> second = Linq.of(new int[]{4, 5, 6});
+        IEnumerable<Integer> third = null;
+
+        assertThrows(ArgumentNullException.class, () -> first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ThirdEmpty() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
+        IEnumerable<Integer> second = Linq.of(new int[]{4, 5, 6});
+        IEnumerable<Integer> third = Linq.of(new int[0]);
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.empty();
+
+        assertEquals(expected, first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ImplicitTypeParameters() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
+        IEnumerable<Integer> second = Linq.of(new int[]{3, 4});
+        IEnumerable<Integer> third = Linq.of(new int[]{5, 6});
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.of(Tuple.create(1, 3, 5), Tuple.create(2, 4, 6));
+
+        assertEquals(expected, first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ExplicitTypeParameters() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
+        IEnumerable<Integer> second = Linq.of(new int[]{3, 4});
+        IEnumerable<Integer> third = Linq.of(new int[]{5, 6});
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.of(Tuple.create(1, 3, 5), Tuple.create(2, 4, 6));
+
+        assertEquals(expected, first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ThirdOneMore() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
+        IEnumerable<Integer> second = Linq.of(new int[]{3, 4});
+        IEnumerable<Integer> third = Linq.of(new int[]{5, 6, 7});
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.of(Tuple.create(1, 3, 5), Tuple.create(2, 4, 6));
+
+        assertEquals(expected, first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ThirdManyMore() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
+        IEnumerable<Integer> second = Linq.of(new int[]{3, 4});
+        IEnumerable<Integer> third = Linq.of(new int[]{5, 6, 7, 8});
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.of(Tuple.create(1, 3, 5), Tuple.create(2, 4, 6));
+
+        assertEquals(expected, first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ThirdOneLess() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
+        IEnumerable<Integer> second = Linq.of(new int[]{3, 4});
+        IEnumerable<Integer> third = Linq.of(new int[]{5});
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.of(Tuple.create(1, 3, 5));
+
+        assertEquals(expected, first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_ThirdManyLess() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2, 3});
+        IEnumerable<Integer> second = Linq.of(new int[]{3, 4, 5});
+        IEnumerable<Integer> third = Linq.of(new int[]{5});
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.of(Tuple.create(1, 3, 5));
+
+        assertEquals(expected, first.zip(second, third));
+    }
+
+    @Test
+    void Zip3_RunOnce() {
+        IEnumerable<Integer> first = Linq.of(new int[]{1, 2});
+        IEnumerable<Integer> second = Linq.of(new int[]{3, 4});
+        IEnumerable<Integer> third = Linq.of(new int[]{5, 6});
+        IEnumerable<Tuple3<Integer, Integer, Integer>> expected = Linq.of(Tuple.create(1, 3, 5), Tuple.create(2, 4, 6));
+
+        assertEquals(expected, first.runOnce().zip(second.runOnce(), third.runOnce()));
     }
 
     @Test
