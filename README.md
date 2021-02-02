@@ -185,7 +185,7 @@ In general, the more complex the operation you want to perform on the data, the 
 
 ## Gradle
 ```
-compile 'com.bestvike:linq:5.0.0'
+implementation 'com.bestvike:linq:5.0.0'
 ```
 
 ## Usage

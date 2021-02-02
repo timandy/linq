@@ -185,7 +185,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 
 ## Gradle
 ```
-compile 'com.bestvike:linq:5.0.0'
+implementation 'com.bestvike:linq:5.0.0'
 ```
 
 ## 用法
