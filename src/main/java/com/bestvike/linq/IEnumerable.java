@@ -1117,6 +1117,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ToCollection.toLinkedMap(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector);
     }
 
+    default <TKey, TElement> Map<TKey, TElement> toLinkedMap(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector, Func2<? super TElement,? super TElement,? extends TElement> resultElementSelector) {
+        return ToCollection.toLinkedMap(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector, (Func2< TElement, TElement, TElement>) resultElementSelector);
+    }
+
     default Set<TSource> toLinkedSet() {
         return ToCollection.toLinkedSet(this);
     }
@@ -1147,6 +1151,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default <TKey, TElement> Map<TKey, TElement> toMap(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector) {
         return ToCollection.toMap(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector);
+    }
+
+    default <TKey, TElement> Map<TKey, TElement> toMap(Func1<? super TSource, ? extends TKey> keySelector, Func1<? super TSource, ? extends TElement> elementSelector, Func2<? super TElement,? super TElement,? extends TElement> resultElementSelector) {
+        return ToCollection.toMap(this, (Func1<TSource, TKey>) keySelector, (Func1<TSource, TElement>) elementSelector, (Func2< TElement, TElement, TElement>) resultElementSelector);
     }
 
     default Set<TSource> toSet() {
