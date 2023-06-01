@@ -29,6 +29,12 @@ final class Set<TElement> {
             this.slots[i] = new Slot();
     }
 
+    // Constructs a set that compares items with the specified collection and comparer.
+    Set(IEnumerable<TElement> collection, IEqualityComparer<TElement> comparer) {
+        this(comparer);
+        this.unionWith(collection);
+    }
+
     // If value is not in set, add it and return true; otherwise return false
     public boolean add(TElement value) {
         int hashCode = this.internalGetHashCode(value);
