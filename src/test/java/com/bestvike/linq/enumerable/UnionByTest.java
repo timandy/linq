@@ -12,6 +12,7 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.HashSet;
+import com.bestvike.out;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -389,12 +390,12 @@ class UnionByTest extends TestCase {
         };
 
         IEnumerable<People> peoples = Linq.of(source1).unionBy(Linq.of(source2), x -> x.groupId).unionBy(Linq.of(source3), x -> x.groupId);
-        assertSame(UnionByIterator2.class, peoples.getClass());
+        assertSame(UnionByIterator.class, peoples.getClass());
         assertEquals(Linq.of(expect), peoples);
 
         Func1<People, Integer> groupSelector = x -> x.groupId;
         IEnumerable<People> peoples2 = Linq.of(source1).unionBy(Linq.of(source2), groupSelector).unionBy(Linq.of(source3), groupSelector);
-        assertSame(UnionByIteratorN.class, peoples2.getClass());
+        assertSame(UnionByIterator.class, peoples2.getClass());
         assertEquals(Linq.of(expect), peoples2);
     }
 
@@ -426,7 +427,7 @@ class UnionByTest extends TestCase {
         };
 
         IEnumerable<People> peoples = Linq.of(source1).unionBy(Linq.of(source2), x -> x.groupId).unionBy(Linq.of(source3), x -> x.id);
-        assertSame(UnionByIterator2.class, peoples.getClass());
+        assertSame(UnionByIterator.class, peoples.getClass());
         assertEquals(Linq.of(expect), peoples);
     }
 
@@ -436,24 +437,24 @@ class UnionByTest extends TestCase {
                 .unionBy(Linq.of(badEmps), emp -> emp.deptno)
                 .unionBy(Linq.of(emps), emp -> emp.deptno);
         assertEquals(4, enumerable.count());
-        UnionByIterator2<Employee, Integer> unionByIterator2 = (UnionByIterator2<Employee, Integer>) enumerable;
-        assertEquals(4, unionByIterator2._toArray(Employee.class).length);
-        assertEquals(4, unionByIterator2._toArray().length);
-        assertEquals(4, unionByIterator2._toList().size());
-        assertEquals(-1, unionByIterator2._getCount(true));
-        assertEquals(4, unionByIterator2._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator2 = (UnionByIterator<Employee, Integer>) enumerable;
+        assertEquals(4, unionByIterator2.toArray(Employee.class).length);
+        assertEquals(4, unionByIterator2.toArray().size());
+        assertEquals(4, unionByIterator2.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator2, out.init()));
+        assertEquals(4, unionByIterator2.count());
 
         Func1<Employee, Integer> selector = emp -> emp.deptno;
         IEnumerable<Employee> enumerable2 = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), selector)
                 .unionBy(Linq.of(emps), selector);
         assertEquals(4, enumerable2.count());
-        UnionByIteratorN<Employee, Integer> unionByIterator22 = (UnionByIteratorN<Employee, Integer>) enumerable2;
-        assertEquals(4, unionByIterator22._toArray(Employee.class).length);
-        assertEquals(4, unionByIterator22._toArray().length);
-        assertEquals(4, unionByIterator22._toList().size());
-        assertEquals(-1, unionByIterator22._getCount(true));
-        assertEquals(4, unionByIterator22._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator22 = (UnionByIterator<Employee, Integer>) enumerable2;
+        assertEquals(4, unionByIterator22.toArray(Employee.class).length);
+        assertEquals(4, unionByIterator22.toArray().size());
+        assertEquals(4, unionByIterator22.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator22, out.init()));
+        assertEquals(4, unionByIterator22.count());
 
         IEnumerable<Employee> source = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), selector)
@@ -484,24 +485,24 @@ class UnionByTest extends TestCase {
                 .unionBy(Linq.of(badEmps), emp -> emp.deptno, comparer)
                 .unionBy(Linq.of(emps), emp -> emp.deptno, comparer);
         assertEquals(1, enumerable.count());
-        UnionByIterator2<Employee, Integer> unionByIterator2 = (UnionByIterator2<Employee, Integer>) enumerable;
-        assertEquals(1, unionByIterator2._toArray(Employee.class).length);
-        assertEquals(1, unionByIterator2._toArray().length);
-        assertEquals(1, unionByIterator2._toList().size());
-        assertEquals(-1, unionByIterator2._getCount(true));
-        assertEquals(1, unionByIterator2._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator2 = (UnionByIterator<Employee, Integer>) enumerable;
+        assertEquals(1, unionByIterator2.toArray(Employee.class).length);
+        assertEquals(1, unionByIterator2.toArray().size());
+        assertEquals(1, unionByIterator2.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator2, out.init()));
+        assertEquals(1, unionByIterator2.count());
 
         Func1<Employee, Integer> selector = emp -> emp.deptno;
         IEnumerable<Employee> enumerable2 = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), selector, comparer)
                 .unionBy(Linq.of(emps), selector, comparer);
         assertEquals(1, enumerable2.count());
-        UnionByIteratorN<Employee, Integer> unionByIterator22 = (UnionByIteratorN<Employee, Integer>) enumerable2;
-        assertEquals(1, unionByIterator22._toArray(Employee.class).length);
-        assertEquals(1, unionByIterator22._toArray().length);
-        assertEquals(1, unionByIterator22._toList().size());
-        assertEquals(-1, unionByIterator22._getCount(true));
-        assertEquals(1, unionByIterator22._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator22 = (UnionByIterator<Employee, Integer>) enumerable2;
+        assertEquals(1, unionByIterator22.toArray(Employee.class).length);
+        assertEquals(1, unionByIterator22.toArray().size());
+        assertEquals(1, unionByIterator22.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator22, out.init()));
+        assertEquals(1, unionByIterator22.count());
     }
 
 

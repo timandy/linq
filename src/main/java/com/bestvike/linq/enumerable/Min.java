@@ -269,10 +269,15 @@ public final class Min {
     }
 
     public static <TSource> TSource min(IEnumerable<TSource> source) {
+        return min(source, (Comparator<TSource>) null);
+    }
+
+    public static <TSource> TSource min(IEnumerable<TSource> source, Comparator<TSource> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TSource> comparer = Comparer.Default();
         TSource value;
         try (IEnumerator<TSource> e = source.enumerator()) {
             if (!e.moveNext())
@@ -294,10 +299,15 @@ public final class Min {
     }
 
     public static <TSource> TSource minNull(IEnumerable<TSource> source) {
+        return minNull(source, (Comparator<TSource>) null);
+    }
+
+    public static <TSource> TSource minNull(IEnumerable<TSource> source, Comparator<TSource> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TSource> comparer = Comparer.Default();
         TSource value = null;
         try (IEnumerator<TSource> e = source.enumerator()) {
             do {
@@ -579,12 +589,17 @@ public final class Min {
     }
 
     public static <TSource, TResult> TResult min(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
+        return min(source, selector, null);
+    }
+
+    public static <TSource, TResult> TResult min(IEnumerable<TSource> source, Func1<TSource, TResult> selector, Comparator<TResult> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TResult> comparer = Comparer.Default();
         TResult value;
         try (IEnumerator<TSource> e = source.enumerator()) {
             if (!e.moveNext())
@@ -605,12 +620,17 @@ public final class Min {
     }
 
     public static <TSource, TResult> TResult minNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
+        return minNull(source, selector, null);
+    }
+
+    public static <TSource, TResult> TResult minNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector, Comparator<TResult> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TResult> comparer = Comparer.Default();
         TResult value = null;
         try (IEnumerator<TSource> e = source.enumerator()) {
             do {

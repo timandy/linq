@@ -14,26 +14,9 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-07.
  */
 final class EnumerableHelpers {
+    private static final int MaxArrayLength = 0x7fffffc7;// All attempts to allocate a larger array will fail.
+
     private EnumerableHelpers() {
-    }
-
-    // Tries to get the count of the enumerable cheaply.
-    public static <T> boolean tryGetCount(IEnumerable<T> source, out<Integer> count) {
-        assert source != null;
-
-        if (source instanceof ICollection) {
-            ICollection<T> collection = (ICollection<T>) source;
-            count.value = collection._getCount();
-            return true;
-        }
-
-        if (source instanceof IIListProvider) {
-            IIListProvider<T> provider = (IIListProvider<T>) source;
-            return (count.value = provider._getCount(true)) >= 0;
-        }
-
-        count.value = -1;
-        return false;
     }
 
     //Copies items from an enumerable to an array.
@@ -124,22 +107,12 @@ final class EnumerableHelpers {
 
                     while (en.moveNext()) {
                         if (count == arr.length) {
-                            // MaxArrayLength is defined in Array.MaxArrayLength and in gchelpers in CoreCLR.
-                            // It represents the maximum number of elements that can be in an array where
-                            // the size of the element is greater than one byte; a separate, slightly larger constant,
-                            // is used when the size of the element is one.
-                            final int MaxArrayLength = 0x7FEFFFFF;
                             // This is the same growth logic as in List<T>:
                             // If the array is currently empty, we make it a default size.  Otherwise, we attempt to
                             // double the size of the array.  Doubling will overflow once the size of the array reaches
                             // 2^30, since doubling to 2^31 is 1 larger than Int32.MaxValue.  In that case, we instead
                             // constrain the length to be MaxArrayLength (this overflow check works because of the
-                            // cast to uint).  Because a slightly larger constant is used when T is one byte in size, we
-                            // could then end up in a situation where arr.Length is MaxArrayLength or slightly larger, such
-                            // that we constrain newLength to be MaxArrayLength but the needed number of elements is actually
-                            // larger than that.  For that case, we then ensure that the newLength is large enough to hold
-                            // the desired capacity.  This does mean that in the very rare case where we've grown to such a
-                            // large size, each new element added after MaxArrayLength will end up doing a resize.
+                            // cast to uint).
                             int newLength = count << 1;
                             if (Integer.compareUnsigned(newLength, MaxArrayLength) > 0)
                                 newLength = MaxArrayLength <= count ? count + 1 : MaxArrayLength;

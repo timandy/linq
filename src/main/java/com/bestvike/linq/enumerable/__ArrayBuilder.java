@@ -7,7 +7,7 @@ import com.bestvike.linq.util.ArrayUtils;
  */
 final class ArrayBuilder<T> {//struct
     private static final int DefaultCapacity = 4;
-    private static final int MaxCoreClrArrayLength = 0x7fefffff; // For byte arrays the limit is slightly larger
+    private static final int MaxArrayLength = 0x7fffffc7;// All attempts to allocate a larger array will fail.
 
     private Object[] array;     // Starts out null, initialized on first Add.
     private int count;          // Number of items into array we're using.
@@ -81,8 +81,8 @@ final class ArrayBuilder<T> {//struct
         assert minimum > this.getCapacity();
         int capacity = this.getCapacity();
         int nextCapacity = capacity == 0 ? DefaultCapacity : 2 * capacity;
-        if (Integer.compareUnsigned(nextCapacity, MaxCoreClrArrayLength) > 0)
-            nextCapacity = Math.max(capacity + 1, MaxCoreClrArrayLength);
+        if (Integer.compareUnsigned(nextCapacity, MaxArrayLength) > 0)
+            nextCapacity = Math.max(capacity + 1, MaxArrayLength);
         nextCapacity = Math.max(nextCapacity, minimum);
         Object[] next = new Object[nextCapacity];
         if (this.count > 0)

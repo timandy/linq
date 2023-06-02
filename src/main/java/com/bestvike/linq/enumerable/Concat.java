@@ -149,13 +149,13 @@ final class Concat2Iterator<TSource> extends ConcatIterator<TSource> {
     public int _getCount(boolean onlyIfCheap) {
         out<Integer> firstCountRef = out.init();
         out<Integer> secondCountRef = out.init();
-        if (!EnumerableHelpers.tryGetCount(this.first, firstCountRef)) {
+        if (!Count.tryGetNonEnumeratedCount(this.first, firstCountRef)) {
             if (onlyIfCheap)
                 return -1;
             firstCountRef.value = this.first.count();
         }
 
-        if (!EnumerableHelpers.tryGetCount(this.second, secondCountRef)) {
+        if (!Count.tryGetNonEnumeratedCount(this.second, secondCountRef)) {
             if (onlyIfCheap)
                 return -1;
             secondCountRef.value = this.second.count();

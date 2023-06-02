@@ -10,6 +10,7 @@ import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.ArgsList;
+import com.bestvike.out;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -261,11 +262,11 @@ class DistinctByTest extends TestCase {
         };
         IEnumerable<Employee> enumerable = Linq.of(emps2).distinctBy(emp -> emp.deptno);
         DistinctByIterator<Employee, Integer> distinctIterator = (DistinctByIterator<Employee, Integer>) enumerable;
-        assertEquals(1, distinctIterator._toArray(Employee.class).length);
-        assertEquals(1, distinctIterator._toArray().length);
-        assertEquals(1, distinctIterator._toList().size());
-        assertEquals(-1, distinctIterator._getCount(true));
-        assertEquals(1, distinctIterator._getCount(false));
+        assertEquals(1, distinctIterator.toArray(Employee.class).length);
+        assertEquals(1, distinctIterator.toArray().size());
+        assertEquals(1, distinctIterator.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(distinctIterator, out.init()));
+        assertEquals(1, distinctIterator.count());
         assertEquals(1, enumerable.count());
 
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).distinctBy(x -> x));
@@ -300,11 +301,11 @@ class DistinctByTest extends TestCase {
 
         IEnumerable<Employee> enumerable = Linq.of(emps2).distinctBy(emp -> emp.empno, comparer);
         DistinctByIterator<Employee, Integer> distinctIterator = (DistinctByIterator<Employee, Integer>) enumerable;
-        assertEquals(1, distinctIterator._toArray(Employee.class).length);
-        assertEquals(1, distinctIterator._toArray().length);
-        assertEquals(1, distinctIterator._toList().size());
-        assertEquals(-1, distinctIterator._getCount(true));
-        assertEquals(1, distinctIterator._getCount(false));
+        assertEquals(1, distinctIterator.toArray(Employee.class).length);
+        assertEquals(1, distinctIterator.toArray().size());
+        assertEquals(1, distinctIterator.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(distinctIterator, out.init()));
+        assertEquals(1, distinctIterator.count());
         assertEquals(1, enumerable.count());
     }
 }

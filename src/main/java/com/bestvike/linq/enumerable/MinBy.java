@@ -339,12 +339,17 @@ public final class MinBy {
     }
 
     public static <TSource, TKey> TSource minBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
+        return minBy(source, keySelector, null);
+    }
+
+    public static <TSource, TKey> TSource minBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Comparator<TKey> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TKey> comparer = Comparer.Default();
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {
@@ -371,12 +376,17 @@ public final class MinBy {
     }
 
     public static <TSource, TKey> TSource minByNull(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
+        return minByNull(source, keySelector, null);
+    }
+
+    public static <TSource, TKey> TSource minByNull(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Comparator<TKey> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TKey> comparer = Comparer.Default();
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {

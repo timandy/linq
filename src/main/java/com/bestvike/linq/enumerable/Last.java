@@ -39,9 +39,21 @@ public final class Last {
         return tryGetLast(source, foundRef);
     }
 
+    public static <TSource> TSource lastOrDefault(IEnumerable<TSource> source, TSource defaultValue) {
+        out<Boolean> foundRef = out.init();
+        TSource last = tryGetLast(source, foundRef);
+        return foundRef.value ? last : defaultValue;
+    }
+
     public static <TSource> TSource lastOrDefault(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         out<Boolean> foundRef = out.init();
         return tryGetLast(source, predicate, foundRef);
+    }
+
+    public static <TSource> TSource lastOrDefault(IEnumerable<TSource> source, Predicate1<TSource> predicate, TSource defaultValue) {
+        out<Boolean> foundRef = out.init();
+        TSource last = tryGetLast(source, predicate, foundRef);
+        return foundRef.value ? last : defaultValue;
     }
 
     private static <TSource> TSource tryGetLast(IEnumerable<TSource> source, out<Boolean> found) {
