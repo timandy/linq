@@ -2,7 +2,6 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -133,17 +132,6 @@ final class Set<TElement> {
         try (IEnumerator<TElement> e = other.enumerator()) {
             while (e.moveNext())
                 this.add(e.current());
-        }
-    }
-
-    // Unions this set with an enumerable and selector.
-    public <TSource> void unionWith(IEnumerable<TSource> other, Func1<TSource, TElement> selector) {
-        assert other != null;
-        assert selector != null;
-
-        try (IEnumerator<TSource> e = other.enumerator()) {
-            while (e.moveNext())
-                this.add(selector.apply(e.current()));
         }
     }
 
