@@ -36,9 +36,21 @@ public final class First {
         return tryGetFirst(source, foundRef);
     }
 
+    public static <TSource> TSource firstOrDefault(IEnumerable<TSource> source, TSource defaultValue) {
+        out<Boolean> foundRef = out.init();
+        TSource first = tryGetFirst(source, foundRef);
+        return foundRef.value ? first : defaultValue;
+    }
+
     public static <TSource> TSource firstOrDefault(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
         out<Boolean> foundRef = out.init();
         return tryGetFirst(source, predicate, foundRef);
+    }
+
+    public static <TSource> TSource firstOrDefault(IEnumerable<TSource> source, Predicate1<TSource> predicate, TSource defaultValue) {
+        out<Boolean> foundRef = out.init();
+        TSource first = tryGetFirst(source, predicate, foundRef);
+        return foundRef.value ? first : defaultValue;
     }
 
     private static <TSource> TSource tryGetFirst(IEnumerable<TSource> source, out<Boolean> found) {

@@ -1,5 +1,7 @@
 package com.bestvike.linq.enumerable;
 
+import com.bestvike.Index;
+import com.bestvike.Range;
 import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.IndexPredicate2;
@@ -8,6 +10,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+import com.bestvike.out;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -23,25 +26,37 @@ public final class Take {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        if (count <= 0)
-            return EmptyPartition.instance();
+        return count <= 0
+                ? EmptyPartition.instance()
+                : takeIterator(source, count);
+    }
 
-        if (source instanceof IPartition) {
-            IPartition<TSource> partition = (IPartition<TSource>) source;
-            return partition._take(count);
-        }
+    public static <TSource> IEnumerable<TSource> take(IEnumerable<TSource> source, Range range) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (range == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.range);
 
-        if (source instanceof IList) {
-            if (source instanceof IArrayList) {
-                IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
-                return new ListPartition<>(sourceList, 0, count - 1);
+        Index start = range.getStart();
+        Index end = range.getEnd();
+        boolean isStartIndexFromEnd = start.isFromEnd();
+        boolean isEndIndexFromEnd = end.isFromEnd();
+        int startIndex = start.getValue();
+        int endIndex = end.getValue();
+        assert startIndex >= 0;
+        assert endIndex >= 0;
+
+        if (isStartIndexFromEnd) {
+            if (startIndex == 0 || (isEndIndexFromEnd && endIndex >= startIndex)) {
+                return EmptyPartition.instance();
             }
-
-            IList<TSource> sourceList = (IList<TSource>) source;
-            return new IListPartition<>(sourceList, 0, count - 1);
+        } else if (!isEndIndexFromEnd) {
+            return startIndex >= endIndex
+                    ? EmptyPartition.instance()
+                    : takeRangeIterator(source, startIndex, endIndex);
         }
 
-        return new EnumerablePartition<>(source, 0, count - 1);
+        return takeRangeFromEndIterator(source, isStartIndexFromEnd, startIndex, isEndIndexFromEnd, endIndex);
     }
 
     public static <TSource> IEnumerable<TSource> takeWhile(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
@@ -66,31 +81,93 @@ public final class Take {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        if (count <= 0)
-            return EmptyPartition.instance();
+        return count <= 0
+                ? EmptyPartition.instance()
+                : takeRangeFromEndIterator(source, true, count, true, 0);
+    }
+
+    private static <TSource> IEnumerable<TSource> takeIterator(IEnumerable<TSource> source, int count) {
+        assert source != null;
+        assert count > 0;
 
         if (source instanceof IPartition) {
             IPartition<TSource> partition = (IPartition<TSource>) source;
-            int length = partition._getCount(true);
-            if (length >= 0)
-                return length - count > 0 ? partition.skip(length - count) : partition;
-        } else if (source instanceof IList) {
+            return partition._take(count);
+        }
+
+        if (source instanceof IList) {
             if (source instanceof IArrayList) {
                 IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
-                int sourceCount = sourceList._getCount();
-                return sourceCount > count
-                        ? new ListPartition<>(sourceList, sourceCount - count, sourceCount)
-                        : new ListPartition<>(sourceList, 0, sourceCount);
+                return new ListPartition<>(sourceList, 0, count - 1);
             }
 
             IList<TSource> sourceList = (IList<TSource>) source;
-            int sourceCount = sourceList._getCount();
-            return sourceCount > count
-                    ? new IListPartition<>(sourceList, sourceCount - count, sourceCount)
-                    : new IListPartition<>(sourceList, 0, sourceCount);
+            return new IListPartition<>(sourceList, 0, count - 1);
         }
 
-        return new TakeLastIterator<>(source, count);
+        return new EnumerablePartition<>(source, 0, count - 1);
+    }
+
+    private static <TSource> IEnumerable<TSource> takeRangeIterator(IEnumerable<TSource> source, int startIndex, int endIndex) {
+        assert source != null;
+        assert startIndex >= 0 && startIndex < endIndex;
+
+        if (source instanceof IPartition) {
+            IPartition<TSource> partition = (IPartition<TSource>) source;
+            return takePartitionRange(partition, startIndex, endIndex);
+        }
+
+        if (source instanceof IList) {
+            if (source instanceof IArrayList) {
+                IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
+                return new ListPartition<>(sourceList, startIndex, endIndex - 1);
+            }
+
+            IList<TSource> sourceList = (IList<TSource>) source;
+            return new IListPartition<>(sourceList, startIndex, endIndex - 1);
+        }
+
+        return new EnumerablePartition<>(source, startIndex, endIndex - 1);
+    }
+
+    private static <TSource> IPartition<TSource> takePartitionRange(IPartition<TSource> partition, int startIndex, int endIndex) {
+        partition = endIndex == 0 ? EmptyPartition.instance() : partition._take(endIndex);
+        return startIndex == 0 ? partition : partition._skip(startIndex);
+    }
+
+    static <TSource> IEnumerable<TSource> takeRangeFromEndIterator(IEnumerable<TSource> source, boolean isStartIndexFromEnd, int startIndex, boolean isEndIndexFromEnd, int endIndex) {
+        assert source != null;
+        assert isStartIndexFromEnd || isEndIndexFromEnd;
+        assert isStartIndexFromEnd
+                ? startIndex > 0 && (!isEndIndexFromEnd || startIndex > endIndex)
+                : startIndex >= 0 && (isEndIndexFromEnd || startIndex < endIndex);
+
+        // Attempt to extract the count of the source enumerator,
+        // in order to convert fromEnd indices to regular indices.
+        // Enumerable counts can change over time, so it is very
+        // important that this check happens at enumeration time;
+        // do not move it outside of the iterator method.
+        out<Integer> countRef = out.init();
+        if (Count.tryGetNonEnumeratedCount(source, countRef)) {
+            startIndex = calculateStartIndex(isStartIndexFromEnd, startIndex, countRef.value);
+            endIndex = calculateEndIndex(isEndIndexFromEnd, endIndex, countRef.value);
+
+            return startIndex < endIndex
+                    ? takeRangeIterator(source, startIndex, endIndex)
+                    : EmptyPartition.instance();
+        }
+
+        return isStartIndexFromEnd
+                ? new TakeRangeStartIndexFromEndIterator<>(source, isStartIndexFromEnd, startIndex, isEndIndexFromEnd, endIndex)
+                : new TakeRangeEndIndexFromEndIterator<>(source, isStartIndexFromEnd, startIndex, isEndIndexFromEnd, endIndex);
+    }
+
+    static int calculateStartIndex(boolean isStartIndexFromEnd, int startIndex, int count) {
+        return Math.max(0, isStartIndexFromEnd ? count - startIndex : startIndex);
+    }
+
+    static int calculateEndIndex(boolean isEndIndexFromEnd, int endIndex, int count) {
+        return Math.min(count, isEndIndexFromEnd ? count - endIndex : endIndex);
     }
 }
 
@@ -192,27 +269,35 @@ final class TakeWhileIterator2<TSource> extends AbstractIterator<TSource> {
 }
 
 
-final class TakeLastIterator<TSource> extends AbstractIterator<TSource> {
+final class TakeRangeStartIndexFromEndIterator<TSource> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> source;
-    private final int count;
+    private final boolean isStartIndexFromEnd;
+    private final int startIndex;
+    private final boolean isEndIndexFromEnd;
+    private final int endIndex;
     private Queue<TSource> queue;
+    private int startIndexCalculated;
+    private int endIndexCalculated;
 
-    TakeLastIterator(IEnumerable<TSource> source, int count) {
-        assert source != null;
-        assert count > 0;
+    TakeRangeStartIndexFromEndIterator(IEnumerable<TSource> source, boolean isStartIndexFromEnd, int startIndex, boolean isEndIndexFromEnd, int endIndex) {
+        assert isStartIndexFromEnd;
         this.source = source;
-        this.count = count;
+        this.isStartIndexFromEnd = isStartIndexFromEnd;
+        this.startIndex = startIndex;
+        this.isEndIndexFromEnd = isEndIndexFromEnd;
+        this.endIndex = endIndex;
     }
 
     @Override
     public AbstractIterator<TSource> clone() {
-        return new TakeLastIterator<>(this.source, this.count);
+        return new TakeRangeStartIndexFromEndIterator<>(this.source, this.isStartIndexFromEnd, this.startIndex, this.isEndIndexFromEnd, this.endIndex);
     }
 
     @Override
     public boolean moveNext() {
         switch (this.state) {
             case 1:
+                int count;
                 try (IEnumerator<TSource> e = this.source.enumerator()) {
                     if (!e.moveNext()) {
                         this.close();
@@ -220,24 +305,29 @@ final class TakeLastIterator<TSource> extends AbstractIterator<TSource> {
                     }
                     this.queue = new ArrayDeque<>();
                     this.queue.add(e.current());
+                    count = 1;
                     while (e.moveNext()) {
-                        if (this.queue.size() < this.count) {
+                        if (count < this.startIndex) {
                             this.queue.add(e.current());
-                            continue;
+                            ++count;
+                        } else {
+                            do {
+                                this.queue.remove();
+                                this.queue.add(e.current());
+                                count = Math.addExact(count, 1);
+                            } while (e.moveNext());
+                            break;
                         }
-                        do {
-                            this.queue.remove();
-                            this.queue.add(e.current());
-                        } while (e.moveNext());
-                        break;
                     }
+                    assert this.queue.size() == Math.min(count, this.startIndex);
                 }
-                assert this.queue.size() <= this.count;
-                this.current = this.queue.remove();
+                this.startIndexCalculated = Take.calculateStartIndex(true, this.startIndex, count);
+                this.endIndexCalculated = Take.calculateEndIndex(this.isEndIndexFromEnd, this.endIndex, count);
+                assert this.endIndexCalculated - this.startIndexCalculated <= this.queue.size();
                 this.state = 2;
-                return true;
             case 2:
-                if (this.queue.size() > 0) {
+                if (this.startIndexCalculated < this.endIndexCalculated) {
+                    this.startIndexCalculated++;
                     this.current = this.queue.remove();
                     return true;
                 }
@@ -250,7 +340,83 @@ final class TakeLastIterator<TSource> extends AbstractIterator<TSource> {
 
     @Override
     public void close() {
-        this.queue = null;
+        if (this.queue != null) {
+            this.queue = null;
+        }
+        super.close();
+    }
+}
+
+
+final class TakeRangeEndIndexFromEndIterator<TSource> extends AbstractIterator<TSource> {
+    private final IEnumerable<TSource> source;
+    private final boolean isStartIndexFromEnd;
+    private final int startIndex;
+    private final boolean isEndIndexFromEnd;
+    private final int endIndex;
+    private Queue<TSource> queue;
+    private IEnumerator<TSource> enumerator;
+
+    TakeRangeEndIndexFromEndIterator(IEnumerable<TSource> source, boolean isStartIndexFromEnd, int startIndex, boolean isEndIndexFromEnd, int endIndex) {
+        assert !isStartIndexFromEnd && isEndIndexFromEnd;
+        this.source = source;
+        this.isStartIndexFromEnd = isStartIndexFromEnd;
+        this.startIndex = startIndex;
+        this.isEndIndexFromEnd = isEndIndexFromEnd;
+        this.endIndex = endIndex;
+    }
+
+    @Override
+    public AbstractIterator<TSource> clone() {
+        return new TakeRangeEndIndexFromEndIterator<>(this.source, this.isStartIndexFromEnd, this.startIndex, this.isEndIndexFromEnd, this.endIndex);
+    }
+
+    @Override
+    public boolean moveNext() {
+        switch (this.state) {
+            case 1:
+                this.enumerator = this.source.enumerator();
+                int count = 0;
+                while (count < this.startIndex && this.enumerator.moveNext()) {
+                    count++;
+                }
+                if (count != this.startIndex) {
+                    this.close();
+                    return false;
+                }
+                this.queue = new ArrayDeque<>();
+                while (this.enumerator.moveNext()) {
+                    if (this.queue.size() != this.endIndex) {
+                        this.queue.add(this.enumerator.current());
+                        continue;
+                    }
+                    this.queue.add(this.enumerator.current());
+                    this.current = this.queue.remove();
+                    this.state = 2;
+                    return true;
+                }
+                this.close();
+                return false;
+            case 2:
+                if (this.enumerator.moveNext()) {
+                    this.queue.add(this.enumerator.current());
+                    this.current = this.queue.remove();
+                    return true;
+                }
+                this.close();
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void close() {
+        if (this.enumerator != null) {
+            this.enumerator.close();
+            this.enumerator = null;
+            this.queue = null;
+        }
         super.close();
     }
 }

@@ -146,7 +146,7 @@ class IntersectByTest extends TestCase {
                 emps[3],
         };
         assertEquals(2, Linq.of(emps)
-                .intersectBy(Linq.of(emps2), emp -> emp.deptno)
+                .intersectBy(Linq.of(emps2).select(e -> e.deptno), emp -> emp.deptno)
                 .count());
 
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Object>) null).intersectBy(Linq.empty(), x -> x));
@@ -179,7 +179,7 @@ class IntersectByTest extends TestCase {
                 new Employee(150, "Theodore", 10)
         };
         assertEquals(1, Linq.of(emps)
-                .intersectBy(Linq.of(emps2), emp -> emp.deptno, comparer)
+                .intersectBy(Linq.of(emps2).select(e -> e.deptno), emp -> emp.deptno, comparer)
                 .count());
     }
 }

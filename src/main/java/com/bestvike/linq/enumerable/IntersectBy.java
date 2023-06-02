@@ -14,11 +14,11 @@ public final class IntersectBy {
     private IntersectBy() {
     }
 
-    public static <TSource, TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector) {
+    public static <TSource, TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> first, IEnumerable<TKey> second, Func1<TSource, TKey> keySelector) {
         return intersectBy(first, second, keySelector, null);
     }
 
-    public static <TSource, TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+    public static <TSource, TKey> IEnumerable<TSource> intersectBy(IEnumerable<TSource> first, IEnumerable<TKey> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         if (first == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.first);
         if (second == null)
@@ -33,13 +33,13 @@ public final class IntersectBy {
 
 final class IntersectByIterator<TSource, TKey> extends AbstractIterator<TSource> {
     private final IEnumerable<TSource> first;
-    private final IEnumerable<TSource> second;
+    private final IEnumerable<TKey> second;
     private final Func1<TSource, TKey> keySelector;
     private final IEqualityComparer<TKey> comparer;
     private Set<TKey> set;
     private IEnumerator<TSource> enumerator;
 
-    IntersectByIterator(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
+    IntersectByIterator(IEnumerable<TSource> first, IEnumerable<TKey> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer) {
         this.first = first;
         this.second = second;
         this.keySelector = keySelector;
@@ -55,8 +55,7 @@ final class IntersectByIterator<TSource, TKey> extends AbstractIterator<TSource>
     public boolean moveNext() {
         switch (this.state) {
             case 1:
-                this.set = new Set<>(this.comparer);
-                this.set.unionWith(this.second, this.keySelector);
+                this.set = new Set<>(this.second, this.comparer);
                 this.enumerator = this.first.enumerator();
                 this.state = 2;
             case 2:

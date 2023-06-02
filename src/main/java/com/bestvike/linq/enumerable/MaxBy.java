@@ -359,12 +359,17 @@ public final class MaxBy {
     }
 
     public static <TSource, TKey> TSource maxBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
+        return maxBy(source, keySelector, null);
+    }
+
+    public static <TSource, TKey> TSource maxBy(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Comparator<TKey> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TKey> comparer = Comparer.Default();
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {
@@ -391,12 +396,17 @@ public final class MaxBy {
     }
 
     public static <TSource, TKey> TSource maxByNull(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
+        return maxByNull(source, keySelector, null);
+    }
+
+    public static <TSource, TKey> TSource maxByNull(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Comparator<TKey> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (keySelector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TKey> comparer = Comparer.Default();
         TSource value;
         TKey key;
         try (IEnumerator<TSource> e = source.enumerator()) {

@@ -6,6 +6,7 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
+import com.bestvike.out;
 
 /**
  * Created by 许崇雷 on 2018-04-27.
@@ -82,5 +83,28 @@ public final class Count {
         }
 
         return count;
+    }
+
+    public static <TSource> boolean tryGetNonEnumeratedCount(IEnumerable<TSource> source, out<Integer> count) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            count.value = collection._getCount();
+            return true;
+        }
+
+        if (source instanceof IIListProvider) {
+            IIListProvider<TSource> provider = (IIListProvider<TSource>) source;
+            int c = provider._getCount(true);
+            if (c >= 0) {
+                count.value = c;
+                return true;
+            }
+        }
+
+        count.value = 0;
+        return false;
     }
 }

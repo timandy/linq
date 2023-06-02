@@ -1,5 +1,7 @@
 package com.bestvike.linq;
 
+import com.bestvike.Index;
+import com.bestvike.Range;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Action2;
@@ -23,6 +25,7 @@ import com.bestvike.linq.enumerable.AnyAll;
 import com.bestvike.linq.enumerable.AppendPrepend;
 import com.bestvike.linq.enumerable.Average;
 import com.bestvike.linq.enumerable.Cast;
+import com.bestvike.linq.enumerable.Chunk;
 import com.bestvike.linq.enumerable.Concat;
 import com.bestvike.linq.enumerable.Contains;
 import com.bestvike.linq.enumerable.Count;
@@ -237,6 +240,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Cast.cast(this, clazz);
     }
 
+    default IEnumerable<TSource[]> chunk(int size, Class<TSource> clazz) {
+        return Chunk.chunk(this, size, clazz);
+    }
+
     default IEnumerable<TSource> concat(IEnumerable<? extends TSource> second) {
         return Concat.concat(this, (IEnumerable<TSource>) second);
     }
@@ -289,7 +296,15 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ElementAt.elementAt(this, index);
     }
 
+    default TSource elementAt(Index index) {
+        return ElementAt.elementAt(this, index);
+    }
+
     default TSource elementAtOrDefault(int index) {
+        return ElementAt.elementAtOrDefault(this, index);
+    }
+
+    default TSource elementAtOrDefault(Index index) {
         return ElementAt.elementAtOrDefault(this, index);
     }
 
@@ -301,12 +316,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Except.except(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector) {
-        return ExceptBy.exceptBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector);
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector) {
+        return ExceptBy.exceptBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
-        return ExceptBy.exceptBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return ExceptBy.exceptBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default int findIndex(Predicate1<? super TSource> predicate) {
@@ -329,8 +344,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return First.firstOrDefault(this);
     }
 
+    default TSource firstOrDefault(TSource defaultValue) {
+        return First.firstOrDefault(this, defaultValue);
+    }
+
     default TSource firstOrDefault(Predicate1<? super TSource> predicate) {
         return First.firstOrDefault(this, (Predicate1<TSource>) predicate);
+    }
+
+    default TSource firstOrDefault(Predicate1<? super TSource> predicate, TSource defaultValue) {
+        return First.firstOrDefault(this, (Predicate1<TSource>) predicate, defaultValue);
     }
 
     default String format() {
@@ -413,12 +436,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Intersect.intersect(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector) {
-        return IntersectBy.intersectBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector);
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector) {
+        return IntersectBy.intersectBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
-        return IntersectBy.intersectBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return IntersectBy.intersectBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default <TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
@@ -461,8 +484,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Last.lastOrDefault(this);
     }
 
+    default TSource lastOrDefault(TSource defaultValue) {
+        return Last.lastOrDefault(this, defaultValue);
+    }
+
     default TSource lastOrDefault(Predicate1<? super TSource> predicate) {
         return Last.lastOrDefault(this, (Predicate1<TSource>) predicate);
+    }
+
+    default TSource lastOrDefault(Predicate1<? super TSource> predicate, TSource defaultValue) {
+        return Last.lastOrDefault(this, (Predicate1<TSource>) predicate, defaultValue);
     }
 
     default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
@@ -533,8 +564,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Max.max(this);
     }
 
+    default TSource max(Comparator<TSource> comparer) {
+        return Max.max(this, comparer);
+    }
+
     default TSource maxNull() {
         return Max.maxNull(this);
+    }
+
+    default TSource maxNull(Comparator<TSource> comparer) {
+        return Max.maxNull(this, comparer);
     }
 
     default int maxInt(IntFunc1<? super TSource> selector) {
@@ -581,8 +620,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Max.max(this, (Func1<TSource, TResult>) selector);
     }
 
+    default <TResult> TResult max(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Max.max(this, (Func1<TSource, TResult>) selector, comparer);
+    }
+
     default <TResult> TResult maxNull(Func1<? super TSource, ? extends TResult> selector) {
         return Max.maxNull(this, (Func1<TSource, TResult>) selector);
+    }
+
+    default <TResult> TResult maxNull(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Max.maxNull(this, (Func1<TSource, TResult>) selector, comparer);
     }
 
     default TSource maxByInt(IntFunc1<? super TSource> keySelector) {
@@ -629,8 +676,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return MaxBy.maxBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
+    default <TKey> TSource maxBy(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MaxBy.maxBy(this, (Func1<TSource, TKey>) keySelector, comparer);
+    }
+
     default <TKey> TSource maxByNull(Func1<? super TSource, ? extends TKey> keySelector) {
         return MaxBy.maxByNull(this, (Func1<TSource, TKey>) keySelector);
+    }
+
+    default <TKey> TSource maxByNull(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MaxBy.maxByNull(this, (Func1<TSource, TKey>) keySelector, comparer);
     }
 
     default int minInt() {
@@ -677,8 +732,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Min.min(this);
     }
 
+    default TSource min(Comparator<TSource> comparer) {
+        return Min.min(this, comparer);
+    }
+
     default TSource minNull() {
         return Min.minNull(this);
+    }
+
+    default TSource minNull(Comparator<TSource> comparer) {
+        return Min.minNull(this, comparer);
     }
 
     default int minInt(IntFunc1<? super TSource> selector) {
@@ -725,8 +788,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Min.min(this, (Func1<TSource, TResult>) selector);
     }
 
+    default <TResult> TResult min(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Min.min(this, (Func1<TSource, TResult>) selector, comparer);
+    }
+
     default <TResult> TResult minNull(Func1<? super TSource, ? extends TResult> selector) {
         return Min.minNull(this, (Func1<TSource, TResult>) selector);
+    }
+
+    default <TResult> TResult minNull(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Min.minNull(this, (Func1<TSource, TResult>) selector, comparer);
     }
 
     default TSource minByInt(IntFunc1<? super TSource> keySelector) {
@@ -773,8 +844,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return MinBy.minBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
+    default <TKey> TSource minBy(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MinBy.minBy(this, (Func1<TSource, TKey>) keySelector, comparer);
+    }
+
     default <TKey> TSource minByNull(Func1<? super TSource, ? extends TKey> keySelector) {
         return MinBy.minByNull(this, (Func1<TSource, TKey>) keySelector);
+    }
+
+    default <TKey> TSource minByNull(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MinBy.minByNull(this, (Func1<TSource, TKey>) keySelector, comparer);
     }
 
     default <TResult> IEnumerable<TResult> ofType(Class<TResult> clazz) {
@@ -877,8 +956,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Single.singleOrDefault(this);
     }
 
+    default TSource singleOrDefault(TSource defaultValue) {
+        return Single.singleOrDefault(this, defaultValue);
+    }
+
     default TSource singleOrDefault(Predicate1<? super TSource> predicate) {
         return Single.singleOrDefault(this, (Predicate1<TSource>) predicate);
+    }
+
+    default TSource singleOrDefault(Predicate1<? super TSource> predicate, TSource defaultValue) {
+        return Single.singleOrDefault(this, (Predicate1<TSource>) predicate, defaultValue);
     }
 
     default IEnumerable<TSource> skip(int count) {
@@ -979,6 +1066,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default IEnumerable<TSource> take(int count) {
         return Take.take(this, count);
+    }
+
+    default IEnumerable<TSource> take(Range range) {
+        return Take.take(this, range);
     }
 
     default IEnumerable<TSource> takeLast(int count) {

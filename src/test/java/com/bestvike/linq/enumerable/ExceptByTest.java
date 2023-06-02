@@ -144,7 +144,7 @@ class ExceptByTest extends TestCase {
                 emps[3],
         };
         assertEquals(1, Linq.of(emps)
-                .exceptBy(Linq.of(emps2), emp -> emp.deptno)
+                .exceptBy(Linq.of(emps2).select(e -> e.deptno), emp -> emp.deptno)
                 .count());
 
         IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
@@ -180,7 +180,7 @@ class ExceptByTest extends TestCase {
 
         Employee[] emps2 = {new Employee(150, "Theodore", 10)};
         assertEquals(0, Linq.of(emps)
-                .exceptBy(Linq.of(emps2), emp -> emp.deptno, comparer)
+                .exceptBy(Linq.of(emps2).select(e -> e.deptno), emp -> emp.deptno, comparer)
                 .count());
     }
 }

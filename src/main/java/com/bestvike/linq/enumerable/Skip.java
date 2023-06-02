@@ -9,9 +9,6 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 /**
  * Created by 许崇雷 on 2018-05-04.
  */
@@ -32,17 +29,7 @@ public final class Skip {
             return partition._skip(count);
         }
 
-        if (source instanceof IList) {
-            if (source instanceof IArrayList) {
-                IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
-                return new ListPartition<>(sourceList, count, Integer.MAX_VALUE);
-            }
-
-            IList<TSource> sourceList = (IList<TSource>) source;
-            return new IListPartition<>(sourceList, count, Integer.MAX_VALUE);
-        }
-
-        return new EnumerablePartition<>(source, count, -1);
+        return skipIterator(source, count);
     }
 
     public static <TSource> IEnumerable<TSource> skipWhile(IEnumerable<TSource> source, Predicate1<TSource> predicate) {
@@ -67,31 +54,26 @@ public final class Skip {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
 
-        if (count <= 0)
-            return source.skip(0);
+        return count <= 0
+                ? source.skip(0)
+                : Take.takeRangeFromEndIterator(source, false, 0, true, count);
+    }
 
-        if (source instanceof IPartition) {
-            IPartition<TSource> partition = (IPartition<TSource>) source;
-            int length = partition._getCount(true);
-            if (length >= 0)
-                return length - count > 0 ? partition.take(length - count) : EmptyPartition.instance();
-        } else if (source instanceof IList) {
+    private static <TSource> IEnumerable<TSource> skipIterator(IEnumerable<TSource> source, int count) {
+        assert source != null;
+        assert count >= 0;
+
+        if (source instanceof IList) {
             if (source instanceof IArrayList) {
                 IArrayList<TSource> sourceList = (IArrayList<TSource>) source;
-                int sourceCount = sourceList._getCount();
-                return sourceCount > count
-                        ? new ListPartition<>(sourceList, 0, sourceCount - count - 1)
-                        : EmptyPartition.instance();
+                return new ListPartition<>(sourceList, count, Integer.MAX_VALUE);
             }
 
             IList<TSource> sourceList = (IList<TSource>) source;
-            int sourceCount = sourceList._getCount();
-            return sourceCount > count
-                    ? new IListPartition<>(sourceList, 0, sourceCount - count - 1)
-                    : EmptyPartition.instance();
+            return new IListPartition<>(sourceList, count, Integer.MAX_VALUE);
         }
 
-        return new SkipLastIterator<>(source, count);
+        return new EnumerablePartition<>(source, count, -1);
     }
 }
 
@@ -202,65 +184,6 @@ final class SkipWhileIterator2<TSource> extends AbstractIterator<TSource> {
         if (this.enumerator != null) {
             this.enumerator.close();
             this.enumerator = null;
-        }
-        super.close();
-    }
-}
-
-
-final class SkipLastIterator<TSource> extends AbstractIterator<TSource> {
-    private final IEnumerable<TSource> source;
-    private final int count;
-    private IEnumerator<TSource> enumerator;
-    private Queue<TSource> queue;
-
-    SkipLastIterator(IEnumerable<TSource> source, int count) {
-        assert source != null;
-        assert count > 0;
-        this.source = source;
-        this.count = count;
-    }
-
-    @Override
-    public AbstractIterator<TSource> clone() {
-        return new SkipLastIterator<>(this.source, this.count);
-    }
-
-    @Override
-    public boolean moveNext() {
-        switch (this.state) {
-            case 1:
-                this.queue = new ArrayDeque<>();
-                this.enumerator = this.source.enumerator();
-                while (this.enumerator.moveNext()) {
-                    if (this.queue.size() == this.count) {
-                        this.current = this.queue.remove();
-                        this.state = 2;
-                        return true;
-                    }
-                    this.queue.add(this.enumerator.current());
-                }
-                this.close();
-                return false;
-            case 2:
-                this.queue.add(this.enumerator.current());
-                if (this.enumerator.moveNext()) {
-                    this.current = this.queue.remove();
-                    return true;
-                }
-                this.close();
-                return false;
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public void close() {
-        if (this.enumerator != null) {
-            this.enumerator.close();
-            this.enumerator = null;
-            this.queue = null;
         }
         super.close();
     }

@@ -273,10 +273,15 @@ public final class Max {
     }
 
     public static <TSource> TSource max(IEnumerable<TSource> source) {
+        return max(source, (Comparator<TSource>) null);
+    }
+
+    public static <TSource> TSource max(IEnumerable<TSource> source, Comparator<TSource> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TSource> comparer = Comparer.Default();
         TSource value;
         try (IEnumerator<TSource> e = source.enumerator()) {
             if (!e.moveNext())
@@ -298,10 +303,15 @@ public final class Max {
     }
 
     public static <TSource> TSource maxNull(IEnumerable<TSource> source) {
+        return maxNull(source, (Comparator<TSource>) null);
+    }
+
+    public static <TSource> TSource maxNull(IEnumerable<TSource> source, Comparator<TSource> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TSource> comparer = Comparer.Default();
         TSource value = null;
         try (IEnumerator<TSource> e = source.enumerator()) {
             do {
@@ -587,12 +597,17 @@ public final class Max {
     }
 
     public static <TSource, TResult> TResult max(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
+        return max(source, selector, null);
+    }
+
+    public static <TSource, TResult> TResult max(IEnumerable<TSource> source, Func1<TSource, TResult> selector, Comparator<TResult> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TResult> comparer = Comparer.Default();
         TResult value;
         try (IEnumerator<TSource> e = source.enumerator()) {
             if (!e.moveNext())
@@ -614,12 +629,17 @@ public final class Max {
     }
 
     public static <TSource, TResult> TResult maxNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector) {
+        return maxNull(source, selector, null);
+    }
+
+    public static <TSource, TResult> TResult maxNull(IEnumerable<TSource> source, Func1<TSource, TResult> selector, Comparator<TResult> comparer) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
         if (selector == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.selector);
+        if (comparer == null)
+            comparer = Comparer.Default();
 
-        Comparator<TResult> comparer = Comparer.Default();
         TResult value = null;
         try (IEnumerator<TSource> e = source.enumerator()) {
             do {

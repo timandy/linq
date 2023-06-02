@@ -106,8 +106,6 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
     }
 
     private Set<TSource> fillSet() {
-        Set<TSource> set = new Set<>(this.comparer);
-        set.unionWith(this.source);
-        return set;
+        return new Set<>(this.source, this.comparer);
     }
 }
