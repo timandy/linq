@@ -6,10 +6,13 @@ import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.ArgsList;
+import com.bestvike.out;
+import com.bestvike.ref;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -58,6 +61,32 @@ class CountTest extends TestCase {
             argsList.add(variant);
         for (Object[] variant : EnumerateCollectionTypesAndCounts(count, range.select(i -> m(i))))
             argsList.add(variant);
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NonEnumeratedCount_SupportedEnumerables() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(4, Linq.of(new int[]{1, 2, 3, 4}));
+        argsList.add(4, Linq.of(Arrays.asList(1, 2, 3, 4)));
+        argsList.add(4, new TestCollection<>(new Integer[]{1, 2, 3, 4}));
+        argsList.add(0, Linq.empty());
+        argsList.add(100, Linq.range(1, 100));
+        argsList.add(80, Linq.repeat(1, 80));
+        argsList.add(50, Linq.range(1, 50).select(x -> x + 1));
+        argsList.add(4, Linq.of(new int[]{1, 2, 3, 4}).select(x -> x + 1));
+        argsList.add(50, Linq.range(1, 50).select(x -> x + 1).select(x -> x - 1));
+        argsList.add(20, Linq.range(1, 20).reverse());
+        argsList.add(20, Linq.range(1, 20).orderBy(x -> -x));
+        argsList.add(20, Linq.range(1, 10).concat(Linq.range(11, 10)));
+        return argsList;
+    }
+
+    private static IEnumerable<Object[]> NonEnumeratedCount_UnsupportedEnumerables() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(Linq.range(1, 100).where(x -> x % 2 == 0));
+        argsList.add(Linq.range(1, 100).groupBy(x -> x % 2 == 0));
+        argsList.add(new TestCollection<>(new Integer[]{1, 2, 3, 4}).select(x -> x + 1));
+        argsList.add(Linq.range(1, 100).distinct());
         return argsList;
     }
 
@@ -127,6 +156,41 @@ class CountTest extends TestCase {
     void NullPredicate_ThrowsArgumentNullException() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).count(predicate));
+    }
+
+    @Test
+    void NonEnumeratedCount_NullSource_ThrowsArgumentNullException() {
+        assertThrows(ArgumentNullException.class, () -> {
+            out<Integer> countRef = out.init();
+            Count.tryGetNonEnumeratedCount(null, countRef);
+        });
+    }
+
+    @ParameterizedTest
+    @MethodSource("NonEnumeratedCount_SupportedEnumerables")
+    <T> void NonEnumeratedCount_SupportedEnumerables_ShouldReturnExpectedCount(int expectedCount, IEnumerable<T> source) {
+        out<Integer> actualCountRef = out.init();
+        assertTrue(Count.tryGetNonEnumeratedCount(source, actualCountRef));
+        assertEquals(expectedCount, actualCountRef.value);
+    }
+
+    @ParameterizedTest
+    @MethodSource("NonEnumeratedCount_UnsupportedEnumerables")
+    <T> void NonEnumeratedCount_UnsupportedEnumerables_ShouldReturnFalse(IEnumerable<T> source) {
+        out<Integer> actualCountRef = out.init();
+        assertFalse(Count.tryGetNonEnumeratedCount(source, actualCountRef));
+        assertEquals(0, actualCountRef.value);
+    }
+
+    @Test
+    void NonEnumeratedCount_ShouldNotEnumerateSource() {
+        ref<Boolean> isEnumerated = ref.init(false);
+
+        out<Integer> countRef = out.init();
+        IEnumerable<Integer> source = new InfiniteRepeatEnumerator<>(42, () -> isEnumerated.value = true);
+        assertFalse(Count.tryGetNonEnumeratedCount(source, countRef));
+        assertEquals(0, countRef.value);
+        assertFalse(isEnumerated.value);
     }
 
     @Test
