@@ -4,6 +4,7 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.collections.generic.StringComparer;
+import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -11,6 +12,8 @@ import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.ArgsList;
 import com.bestvike.out;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -22,6 +25,76 @@ import java.util.List;
  * Created by 许崇雷 on 2018-05-10.
  */
 class DistinctByTest extends TestCase {
+    private static <TSource, TKey> Object[] WrapArgs(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        return new Object[]{source, keySelector, comparer, expected};
+    }
+
+    private static IEnumerable<Object[]> TestData() {
+        ArgsList argsList = new ArgsList();
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                x -> x,
+                null,
+                Linq.range(0, 10)));
+
+        argsList.add(WrapArgs(
+                Linq.range(5, 10),
+                x -> true,
+                null,
+                Linq.singleton(5)));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 20),
+                x -> x % 5,
+                null,
+                Linq.range(0, 5)));
+
+        argsList.add(WrapArgs(
+                Linq.repeat(5, 20),
+                x -> x,
+                null,
+                Linq.repeat(5, 1)));
+
+        argsList.add(WrapArgs(
+                Linq.of("Bob", "bob", "tim", "Bob", "Tim"),
+                x -> x,
+                null,
+                Linq.of("Bob", "bob", "tim", "Tim")));
+
+        argsList.add(WrapArgs(
+                Linq.of("Bob", "bob", "tim", "Bob", "Tim"),
+                x -> x,
+                StringComparer.OrdinalIgnoreCase,
+                Linq.of("Bob", "tim")));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40)),
+                Tuple2::getItem2,
+                null,
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40))));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 20), Tuple.create("Harry", 40)),
+                Tuple2::getItem2,
+                null,
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Harry", 40))));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Bob", 20), Tuple.create("bob", 30), Tuple.create("Harry", 40)),
+                Tuple2::getItem1,
+                null,
+                Linq.of(Tuple.create("Bob", 20), Tuple.create("bob", 30), Tuple.create("Harry", 40))));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Bob", 20), Tuple.create("bob", 30), Tuple.create("Harry", 40)),
+                Tuple2::getItem1,
+                StringComparer.OrdinalIgnoreCase,
+                Linq.of(Tuple.create("Bob", 20), Tuple.create("Harry", 40))));
+
+        return argsList;
+    }
+
     private static IEnumerable<Object[]> SequencesWithDuplicates() {
         ArgsList argsList = new ArgsList();
         // Validate an array of different numeric data types.
@@ -50,6 +123,34 @@ class DistinctByTest extends TestCase {
     }
 
     @Test
+    public void SourceNull_ThrowsArgumentNullException() {
+        IEnumerable<String> first = null;
+
+        assertThrows(NullPointerException.class, () -> first.distinctBy(x -> x));
+        assertThrows(NullPointerException.class, () -> first.distinctBy(x -> x, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    public void KeySelectorNull_ThrowsArgumentNullException() {
+        IEnumerable<String> source = Linq.of("Bob", "Tim", "Robert", "Chris");
+        Func1<String, String> keySelector = null;
+        assertThrows(ArgumentNullException.class, () -> source.distinctBy(keySelector));
+        assertThrows(ArgumentNullException.class, () -> source.distinctBy(keySelector, new AnagramEqualityComparer()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("TestData")
+    <TSource, TKey> void HasExpectedOutput(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        assertEquals(expected, source.distinctBy(keySelector, comparer));
+    }
+
+    @ParameterizedTest
+    @MethodSource("TestData")
+    <TSource, TKey> void RunOnce_HasExpectedOutput(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        assertEquals(expected, source.runOnce().distinctBy(keySelector, comparer));
+    }
+
+    @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{0, 9999, 0, 888, -1, 66, -1, -777, 1, 2, -12345, 66, 66, -1, -1})
                 .where(x -> x > Integer.MIN_VALUE);
@@ -60,7 +161,7 @@ class DistinctByTest extends TestCase {
     @Test
     void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q = Linq.of(new String[]{"!@#$%^", "C", "AAA", "Calling Twice", "SoS"})
-                .where(x -> IsNullOrEmpty(x));
+                .where(TestCase::IsNullOrEmpty);
 
         assertEquals(q.distinctBy(x -> x), q.distinctBy(x -> x));
     }
@@ -163,20 +264,6 @@ class DistinctByTest extends TestCase {
         String[] expected = {"Bob", "Tim", "bBo", "miT", "Robert", "iTm"};
 
         assertEquals(Linq.of(expected), Linq.of(source).distinctBy(x -> x));
-    }
-
-    @Test
-    void NullSource() {
-        IEnumerable<String> source = null;
-
-        assertThrows(NullPointerException.class, () -> source.distinctBy(x -> x));
-    }
-
-    @Test
-    void NullSourceCustomComparer() {
-        IEnumerable<String> source = null;
-
-        assertThrows(NullPointerException.class, () -> source.distinctBy(x -> x, StringComparer.Ordinal));
     }
 
     @Test
