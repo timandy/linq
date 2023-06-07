@@ -61,9 +61,6 @@ class ExceptTest extends TestCase {
         IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
         IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
 
-        q1.except(q2);
-        q1.except(q2);
-
         assertEquals(q1.except(q2), q1.except(q2));
     }
 
