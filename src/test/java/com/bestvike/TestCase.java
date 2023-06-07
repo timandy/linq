@@ -4,6 +4,7 @@ import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.Comparer;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.collections.generic.IEqualityComparer;
+import com.bestvike.collections.generic.IList;
 import com.bestvike.collections.generic.StringComparer;
 import com.bestvike.function.Action0;
 import com.bestvike.function.Action1;
@@ -443,6 +444,22 @@ public class TestCase {
 
     protected static <T> IEnumerable<T> FlipIsCollection(IEnumerable<T> source) {
         return source instanceof ICollection ? ForceNotCollection(source) : Linq.of(source.toList());
+    }
+
+    protected static <T> List<T> Repeat(Func1<Integer, T> factory, int count) {
+        List<T> results = new ArrayList<>(count);
+        for (int index = 0; index < count; index++)
+            results.add(factory.apply(index));
+        return results;
+    }
+
+    protected static <T> IEnumerable<T> ListPartitionOrEmpty(IEnumerable<T> source) {// Or Empty
+        assertIsAssignableFrom(IList.class, source);
+        return source.skip(0);
+    }
+
+    protected static <T> IEnumerable<T> EnumerablePartitionOrEmpty(IEnumerable<T> source) {// Or Empty
+        return ForceNotCollection(source).skip(0);
     }
 
     private static boolean equal(Object expected, Object actual) {
