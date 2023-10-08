@@ -54,4 +54,36 @@ class ComparerTest extends TestCase {
     void testNotImplementComparable() {
         assertThrows(ArgumentException.class, () -> Comparer.Default().compare(depts[0], depts[1]));
     }
+
+    @Test
+    void testFloat() {
+        Comparator<Float> comparator = Comparer.Float();
+        assertEquals(0, comparator.compare(null, null));
+        assertEquals(1, comparator.compare(Float.NaN, null));
+        assertEquals(-1, comparator.compare(null, Float.NaN));
+        //
+        assertEquals(1, comparator.compare(1f, 0f));
+        assertEquals(0, comparator.compare(1f, 1f));
+        assertEquals(-1, comparator.compare(0f, 1f));
+        //
+        assertEquals(1, comparator.compare(0f, Float.NaN));
+        assertEquals(0, comparator.compare(Float.NaN, Float.NaN));
+        assertEquals(-1, comparator.compare(Float.NaN, 0f));
+    }
+
+    @Test
+    void testDouble() {
+        Comparator<Double> comparator = Comparer.Double();
+        assertEquals(0, comparator.compare(null, null));
+        assertEquals(1, comparator.compare(Double.NaN, null));
+        assertEquals(-1, comparator.compare(null, Double.NaN));
+        //
+        assertEquals(1, comparator.compare(1d, 0d));
+        assertEquals(0, comparator.compare(1d, 1d));
+        assertEquals(-1, comparator.compare(0d, 1d));
+        //
+        assertEquals(1, comparator.compare(0d, Double.NaN));
+        assertEquals(0, comparator.compare(Double.NaN, Double.NaN));
+        assertEquals(-1, comparator.compare(Double.NaN, 0d));
+    }
 }
