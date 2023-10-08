@@ -23,6 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -302,6 +303,51 @@ class MinTest extends TestCase {
         argsList.add(Linq.of(null, null, null, null, "aAa"), "aAa");
         argsList.add(Linq.of("ooo", "www", "www", "ooo", "ooo", "ppp"), "ooo");
         argsList.add(Linq.repeat(null, 5), null);
+        return argsList;
+    }
+
+    private static <TSource> Object[] WrapArgs(IEnumerable<TSource> source, Comparator<TSource> comparer, TSource expected) {
+        return new Object[]{source, comparer, expected};
+    }
+
+    private static IEnumerable<Object[]> Min_Generic_TestData() {
+        ArgsList argsList = new ArgsList();
+
+        argsList.add(WrapArgs(
+                Linq.<Integer>empty(),
+                null,
+                null));
+
+        argsList.add(WrapArgs(
+                Linq.<Integer>empty(),
+                (x, y) -> 0,
+                null));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                null,
+                0));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                (x, y) -> -x.compareTo(y),
+                9));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                (x, y) -> 0,
+                0));
+
+        argsList.add(WrapArgs(
+                Linq.of("Aardvark", "Zyzzyva", "Zebra", "Antelope"),
+                null,
+                "Aardvark"));
+
+        argsList.add(WrapArgs(
+                Linq.of("Aardvark", "Zyzzyva", "Zebra", "Antelope"),
+                (x, y) -> -x.compareTo(y),
+                "Zyzzyva"));
+
         return argsList;
     }
 
@@ -710,6 +756,34 @@ class MinTest extends TestCase {
     @Test
     void Min_Bool_EmptySource_ThrowsInvalodOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Boolean>empty().min());
+    }
+
+    @Test
+    void Min_Generic_NullSource_ThrowsArgumentNullException() {
+        IEnumerable<Integer> source = null;
+
+        assertThrows(NullPointerException.class, () -> source.min());
+        assertThrows(NullPointerException.class, () -> source.min((Comparator<Integer>) null));
+        assertThrows(NullPointerException.class, () -> source.min((x, y) -> 0));
+    }
+
+    @Test
+    void Min_Generic_EmptyStructSource_ThrowsInvalidOperationException() {
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().min());
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().min((Comparator<Integer>) null));
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().min((x, y) -> 0));
+    }
+
+    @ParameterizedTest
+    @MethodSource("Min_Generic_TestData")
+    <TSource> void Min_Generic_HasExpectedOutput(IEnumerable<TSource> source, Comparator<TSource> comparer, TSource expected) {
+        assertEquals(expected, source.minNull(comparer));
+    }
+
+    @ParameterizedTest
+    @MethodSource("Min_Generic_TestData")
+    <TSource> void Min_Generic_RunOnce_HasExpectedOutput(IEnumerable<TSource> source, Comparator<TSource> comparer, TSource expected) {
+        assertEquals(expected, source.runOnce().minNull(comparer));
     }
 
     @Test
