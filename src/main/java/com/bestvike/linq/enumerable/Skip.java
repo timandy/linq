@@ -56,7 +56,7 @@ public final class Skip {
 
         return count <= 0
                 ? source.skip(0)
-                : Take.takeRangeFromEndIterator(source, false, 0, true, count);
+                : new TakeRangeFromEndIterator<>(source, false, 0, true, count);
     }
 
     private static <TSource> IEnumerable<TSource> skipIterator(IEnumerable<TSource> source, int count) {
