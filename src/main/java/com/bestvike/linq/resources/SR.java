@@ -12,6 +12,7 @@ public final class SR {
     public static final String Arg_InvalidOperationException = "Operation is not valid due to the current state of the object.";
     public static final String Arg_NotSupportedException = "Specified method is not supported.";
     public static final String Arg_RepeatInvokeException = "Specified method cannot be invoked repeatedly.";
+    public static final String InvalidOperation_EmptyQueue = "Queue empty.";
 
     public static final String EmptyIterable = "Iteration yielded no results.";
     public static final String EmptyEnumerable = "Enumeration yielded no results.";
