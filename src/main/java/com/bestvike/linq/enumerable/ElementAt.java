@@ -2,14 +2,12 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.Index;
 import com.bestvike.collections.generic.IList;
+import com.bestvike.collections.generic.Queue;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.ThrowHelper;
 import com.bestvike.out;
-
-import java.util.ArrayDeque;
-import java.util.Queue;
 
 /**
  * Created by 许崇雷 on 2018-04-27.
@@ -115,17 +113,17 @@ public final class ElementAt {
         if (indexFromEnd > 0) {
             try (IEnumerator<TSource> e = source.enumerator()) {
                 if (e.moveNext()) {
-                    Queue<TSource> queue = new ArrayDeque<>();
-                    queue.add(e.current());
+                    Queue<TSource> queue = new Queue<>();
+                    queue.enqueue(e.current());
                     while (e.moveNext()) {
                         if (queue.size() == indexFromEnd) {
-                            queue.remove();
+                            queue.dequeue();
                         }
-                        queue.add(e.current());
+                        queue.enqueue(e.current());
                     }
 
                     if (queue.size() == indexFromEnd) {
-                        element.value = queue.remove();
+                        element.value = queue.dequeue();
                         return true;
                     }
                 }
