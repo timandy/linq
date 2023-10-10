@@ -3,6 +3,7 @@ package com.bestvike.linq.enumerable;
 import com.bestvike.Index;
 import com.bestvike.Range;
 import com.bestvike.TestCase;
+import com.bestvike.function.Func0;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -85,10 +87,10 @@ class TakeTest extends TestCase {
 
         assertEquals(q.take(9), q.take(9));
 
-        assertEquals(q.take(new Range(Index.fromStart(0),Index.fromStart(9))), q.take(new Range(Index.fromStart(0),Index.fromStart(9))));
-        assertEquals(q.take(^9..9), q.take(^9..9));
-        assertEquals(q.take(0..^0), q.take(0..^0));
-        assertEquals(q.take(^9..^0), q.take(^9..^0));
+        assertEquals(q.take(new Range(Index.Start, Index.fromStart(9))), q.take(new Range(Index.Start, Index.fromStart(9))));
+        assertEquals(q.take(new Range(Index.fromEnd(9), Index.fromStart(9))), q.take(new Range(Index.fromEnd(9), Index.fromStart(9))));
+        assertEquals(q.take(new Range(Index.Start, Index.End)), q.take(new Range(Index.Start, Index.End)));
+        assertEquals(q.take(new Range(Index.fromEnd(9), Index.End)), q.take(new Range(Index.fromEnd(9), Index.End)));
     }
 
     @Test
@@ -97,10 +99,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(q).take(9), Linq.of(q).take(9));
 
-        assertEquals(Linq.of(q).take(new Range(Index.fromStart(0),Index.fromStart(9))), Linq.of(q).take(new Range(Index.fromStart(0),Index.fromStart(9))));
-        assertEquals(Linq.of(q).take(^9..9), Linq.of(q).take(^9..9));
-        assertEquals(Linq.of(q).take(0..^0), Linq.of(q).take(0..^0));
-        assertEquals(Linq.of(q).take(^9..^0), Linq.of(q).take(^9..^0));
+        assertEquals(Linq.of(q).take(new Range(Index.Start, Index.fromStart(9))), Linq.of(q).take(new Range(Index.Start, Index.fromStart(9))));
+        assertEquals(Linq.of(q).take(new Range(Index.fromEnd(9), Index.fromStart(9))), Linq.of(q).take(new Range(Index.fromEnd(9), Index.fromStart(9))));
+        assertEquals(Linq.of(q).take(new Range(Index.Start, Index.End)), Linq.of(q).take(new Range(Index.Start, Index.End)));
+        assertEquals(Linq.of(q).take(new Range(Index.fromEnd(9), Index.End)), Linq.of(q).take(new Range(Index.fromEnd(9), Index.End)));
     }
 
     @Test
@@ -109,10 +111,10 @@ class TakeTest extends TestCase {
 
         assertEquals(q.take(7), q.take(7));
 
-        assertEquals(q.take(0..7), q.take(0..7));
-        assertEquals(q.take(^7..7), q.take(^7..7));
-        assertEquals(q.take(0..^0), q.take(0..^0));
-        assertEquals(q.take(^7..^0), q.take(^7..^0));
+        assertEquals(q.take(new Range(Index.Start, Index.fromStart(7))), q.take(new Range(Index.Start, Index.fromStart(7))));
+        assertEquals(q.take(new Range(Index.fromEnd(7), Index.fromStart(7))), q.take(new Range(Index.fromEnd(7), Index.fromStart(7))));
+        assertEquals(q.take(new Range(Index.Start, Index.End)), q.take(new Range(Index.Start, Index.End)));
+        assertEquals(q.take(new Range(Index.fromEnd(7), Index.End)), q.take(new Range(Index.fromEnd(7), Index.End)));
     }
 
     @Test
@@ -121,10 +123,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(q).take(7), Linq.of(q).take(7));
 
-        assertEquals(q.take(0..7), q.take(0..7));
-        assertEquals(q.take(^7..7), q.take(^7..7));
-        assertEquals(q.take(0..^0), q.take(0..^0));
-        assertEquals(q.take(^7..^0), q.take(^7..^0));
+        assertEquals(Linq.of(q).take(new Range(Index.Start, Index.fromStart(7))), Linq.of(q).take(new Range(Index.Start, Index.fromStart(7))));
+        assertEquals(Linq.of(q).take(new Range(Index.fromEnd(7), Index.fromStart(7))), Linq.of(q).take(new Range(Index.fromEnd(7), Index.fromStart(7))));
+        assertEquals(Linq.of(q).take(new Range(Index.Start, Index.End)), Linq.of(q).take(new Range(Index.Start, Index.End)));
+        assertEquals(Linq.of(q).take(new Range(Index.fromEnd(7), Index.End)), Linq.of(q).take(new Range(Index.fromEnd(7), Index.End)));
     }
 
     @Test
@@ -132,10 +134,10 @@ class TakeTest extends TestCase {
         int[] source = {};
         assertEmpty(Linq.of(source).take(5));
 
-        Assert.Empty(source.take(0..5));
-        Assert.Empty(source.take(^5..5));
-        Assert.Empty(source.take(0..^0));
-        Assert.Empty(source.take(^5..^0));
+        assertEmpty(Linq.of(source).take(new Range(Index.Start, Index.fromStart(5))));
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(5))));
+        assertEmpty(Linq.of(source).take(new Range(Index.Start, Index.End)));
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)));
     }
 
     @Test
@@ -143,10 +145,10 @@ class TakeTest extends TestCase {
         IEnumerable<Integer> source = NumberRangeGuaranteedNotCollectionType(0, 0);
         assertEmpty(source.take(5));
 
-        Assert.Empty(source.take(0..5));
-        Assert.Empty(source.take(^5..5));
-        Assert.Empty(source.take(0..^0));
-        Assert.Empty(source.take(^5..^0));
+        assertEmpty(source.take(new Range(Index.Start, Index.fromStart(5))));
+        assertEmpty(source.take(new Range(Index.fromEnd(5), Index.fromStart(5))));
+        assertEmpty(source.take(new Range(Index.Start, Index.End)));
+        assertEmpty(source.take(new Range(Index.fromEnd(5), Index.End)));
     }
 
     @Test
@@ -154,7 +156,7 @@ class TakeTest extends TestCase {
         int[] source = {2, 5, 9, 1};
         assertEmpty(Linq.of(source).take(-5));
 
-        Assert.Empty(source.take(^9..0));
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(9), Index.Start)));
     }
 
     @Test
@@ -162,7 +164,7 @@ class TakeTest extends TestCase {
         IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{2, 5, 9, 1}));
         assertEmpty(source.take(-5));
 
-        Assert.Empty(source.take(^9..0));
+        assertEmpty(source.take(new Range(Index.fromEnd(9), Index.Start)));
     }
 
     @Test
@@ -170,10 +172,10 @@ class TakeTest extends TestCase {
         int[] source = {2, 5, 9, 1};
         assertEmpty(Linq.of(source).take(0));
 
-        Assert.Empty(source.take(0..0));
-        Assert.Empty(source.take(^4..0));
-        Assert.Empty(source.take(0..^4));
-        Assert.Empty(source.take(^4..^4));
+        assertEmpty(Linq.of(source).take(new Range(Index.Start, Index.Start)));
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(4), Index.Start)));
+        assertEmpty(Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))));
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(4), Index.fromEnd(4))));
     }
 
     @Test
@@ -181,10 +183,10 @@ class TakeTest extends TestCase {
         IEnumerable<Integer> source = ForceNotCollection(Linq.of(new int[]{2, 5, 9, 1}));
         assertEmpty(source.take(0));
 
-        Assert.Empty(source.take(0..0));
-        Assert.Empty(source.take(^4..0));
-        Assert.Empty(source.take(0..^4));
-        Assert.Empty(source.take(^4..^4));
+        assertEmpty(source.take(new Range(Index.Start, Index.Start)));
+        assertEmpty(source.take(new Range(Index.fromEnd(4), Index.Start)));
+        assertEmpty(source.take(new Range(Index.Start, Index.fromEnd(4))));
+        assertEmpty(source.take(new Range(Index.fromEnd(4), Index.fromEnd(4))));
     }
 
     @Test
@@ -194,10 +196,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(expected), Linq.of(source).take(1));
 
-        assertEquals(expected, source.take(0..1));
-        assertEquals(expected, source.take(^4..1));
-        assertEquals(expected, source.take(0..^3));
-        assertEquals(expected, source.take(^4..^3));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(4), Index.fromStart(1))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.fromEnd(3))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(4), Index.fromEnd(3))));
     }
 
     @Test
@@ -207,10 +209,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(expected), source.take(1));
 
-        assertEquals(expected, source.take(0..1));
-        assertEquals(expected, source.take(^4..1));
-        assertEquals(expected, source.take(0..^3));
-        assertEquals(expected, source.take(^4..^3));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.fromEnd(4), Index.fromStart(1))));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.Start, Index.fromEnd(3))));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.fromEnd(4), Index.fromEnd(3))));
     }
 
     @Test
@@ -219,10 +221,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(source), Linq.of(source).take(source.length));
 
-        assertEquals(source, source.take(0..source.Length));
-        assertEquals(source, source.take(^source.Length..source.Length));
-        assertEquals(source, source.take(0..^0));
-        assertEquals(source, source.take(^source.Length..^0));
+        assertEquals(Linq.of(source), Linq.of(source).take(new Range(Index.Start, Index.fromStart(source.length))));
+        assertEquals(Linq.of(source), Linq.of(source).take(new Range(Index.fromEnd(source.length), Index.fromStart(source.length))));
+        assertEquals(Linq.of(source), Linq.of(source).take(new Range(Index.Start, Index.End)));
+        assertEquals(Linq.of(source), Linq.of(source).take(new Range(Index.fromEnd(source.length), Index.End)));
     }
 
     @Test
@@ -231,10 +233,10 @@ class TakeTest extends TestCase {
 
         assertEquals(source, source.take(source.count()));
 
-        assertEquals(source, source.take(0..source.Count()));
-        assertEquals(source, source.take(^source.Count()..source.Count()));
-        assertEquals(source, source.take(0..^0));
-        assertEquals(source, source.take(^source.Count()..^0));
+        assertEquals(source, source.take(new Range(Index.Start, Index.fromStart(source.count()))));
+        assertEquals(source, source.take(new Range(Index.fromEnd(source.count()), Index.fromStart(source.count()))));
+        assertEquals(source, source.take(new Range(Index.Start, Index.End)));
+        assertEquals(source, source.take(new Range(Index.fromEnd(source.count()), Index.End)));
     }
 
     @Test
@@ -244,10 +246,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(expected), Linq.of(source).take(3));
 
-        assertEquals(expected, source.take(0..3));
-        assertEquals(expected, source.take(^4..3));
-        assertEquals(expected, source.take(0..^1));
-        assertEquals(expected, source.take(^4..^1));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.fromStart(3))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(4), Index.fromStart(3))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.fromEnd(1))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(4), Index.fromEnd(1))));
     }
 
     @Test
@@ -257,10 +259,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(expected), Linq.of(source).runOnce().take(3));
 
-        assertEquals(expected, source.RunOnce().take(0..3));
-        assertEquals(expected, source.RunOnce().take(^4..3));
-        assertEquals(expected, source.RunOnce().take(0..^1));
-        assertEquals(expected, source.RunOnce().take(^4..^1));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().take(new Range(Index.Start, Index.fromStart(3))));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().take(new Range(Index.fromEnd(4), Index.fromStart(3))));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().take(new Range(Index.Start, Index.fromEnd(1))));
+        assertEquals(Linq.of(expected), Linq.of(source).runOnce().take(new Range(Index.fromEnd(4), Index.fromEnd(1))));
     }
 
     @Test
@@ -270,10 +272,10 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(expected), source.runOnce().take(3));
 
-        assertEquals(expected, source.RunOnce().take(0..3));
-        assertEquals(expected, source.RunOnce().take(^4..3));
-        assertEquals(expected, source.RunOnce().take(0..^1));
-        assertEquals(expected, source.RunOnce().take(^4..^1));
+        assertEquals(Linq.of(expected), source.runOnce().take(new Range(Index.Start, Index.fromStart(3))));
+        assertEquals(Linq.of(expected), source.runOnce().take(new Range(Index.fromEnd(4), Index.fromStart(3))));
+        assertEquals(Linq.of(expected), source.runOnce().take(new Range(Index.Start, Index.fromEnd(1))));
+        assertEquals(Linq.of(expected), source.runOnce().take(new Range(Index.fromEnd(4), Index.fromEnd(1))));
     }
 
     @Test
@@ -282,8 +284,8 @@ class TakeTest extends TestCase {
 
         assertEquals(Linq.of(source), Linq.of(source).take(source.length + 1));
 
-        assertEquals(source, source.take(0..(source.Length + 1)));
-        assertEquals(source, source.take(^(source.Length + 1)..(source.Length + 1)));
+        assertEquals(Linq.of(source), Linq.of(source).take(new Range(Index.Start, Index.fromStart(source.length + 1))));
+        assertEquals(Linq.of(source), Linq.of(source).take(new Range(Index.fromEnd(source.length + 1), Index.fromStart(source.length + 1))));
     }
 
     @Test
@@ -292,8 +294,8 @@ class TakeTest extends TestCase {
 
         assertEquals(source, source.take(source.count() + 1));
 
-        assertEquals(source, source.take(0..(source.Count() + 1)));
-        assertEquals(source, source.take(^(source.Count() + 1)..(source.Count() + 1)));
+        assertEquals(source, source.take(new Range(Index.Start, Index.fromStart(source.count() + 1))));
+        assertEquals(source, source.take(new Range(Index.fromEnd(source.count() + 1), Index.fromStart(source.count() + 1))));
     }
 
     @Test
@@ -301,10 +303,10 @@ class TakeTest extends TestCase {
         IEnumerable<Integer> source = null;
         assertThrows(NullPointerException.class, () -> source.take(5));
 
-        Assert.Throws<ArgumentNullException>("source", () => source.take(0..5));
-        Assert.Throws<ArgumentNullException>("source", () => source.take(^5..5));
-        Assert.Throws<ArgumentNullException>("source", () => source.take(0..^0));
-        Assert.Throws<ArgumentNullException>("source", () => source.take(^5..^0));
+        assertThrows(NullPointerException.class, () -> source.take(new Range(Index.Start, Index.fromStart(5))));
+        assertThrows(NullPointerException.class, () -> source.take(new Range(Index.fromEnd(5), Index.fromStart(5))));
+        assertThrows(NullPointerException.class, () -> source.take(new Range(Index.Start, Index.End)));
+        assertThrows(NullPointerException.class, () -> source.take(new Range(Index.fromEnd(5), Index.End)));
     }
 
     @Test
@@ -314,21 +316,21 @@ class TakeTest extends TestCase {
         IEnumerator<Integer> en1 = (IEnumerator<Integer>) iterator1;
         assertFalse(en1 != null && en1.moveNext());
 
-        var iterator2 = NumberRangeGuaranteedNotCollectionType(0, 3).take(0..2);
-        var en2 = iterator2 as IEnumerator<int>;
-        Assert.False(en2 != null && en2.MoveNext());
+        IEnumerable<Integer> iterator2 = NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.Start, Index.fromStart(2)));
+        IEnumerator<Integer> en2 = (IEnumerator<Integer>) iterator2;
+        assertFalse(en2 != null && en2.moveNext());
 
-        var iterator3 = NumberRangeGuaranteedNotCollectionType(0, 3).take(^3..2);
-        var en3 = iterator3 as IEnumerator<int>;
-        Assert.False(en3 != null && en3.MoveNext());
+        IEnumerable<Integer> iterator3 = NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.fromEnd(3), Index.fromStart(2)));
+        IEnumerator<Integer> en3 = (IEnumerator<Integer>) iterator3;
+        assertFalse(en3 != null && en3.moveNext());
 
-        var iterator4 = NumberRangeGuaranteedNotCollectionType(0, 3).take(0..^1);
-        var en4 = iterator4 as IEnumerator<int>;
-        Assert.False(en4 != null && en4.MoveNext());
+        IEnumerable<Integer> iterator4 = NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.Start, Index.fromEnd(1)));
+        IEnumerator<Integer> en4 = (IEnumerator<Integer>) iterator4;
+        assertFalse(en4 != null && en4.moveNext());
 
-        var iterator5 = NumberRangeGuaranteedNotCollectionType(0, 3).take(^3..^1);
-        var en5 = iterator5 as IEnumerator<int>;
-        Assert.False(en5 != null && en5.MoveNext());
+        IEnumerable<Integer> iterator5 = NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.fromEnd(3), Index.fromEnd(1)));
+        IEnumerator<Integer> en5 = (IEnumerator<Integer>) iterator5;
+        assertFalse(en5 != null && en5.moveNext());
     }
 
     @Test
@@ -337,21 +339,21 @@ class TakeTest extends TestCase {
         assertEquals(2, Linq.of(new int[]{1, 2, 3}).take(2).count());
         assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(0).count());
 
-        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(0..2).Count());
-        assertEquals(2, new[] { 1, 2, 3 }.take(0..2).Count());
-        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(0..0).Count());
+        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.Start, Index.fromStart(2))).count());
+        assertEquals(2, Linq.of(new int[]{1, 2, 3}).take(new Range(Index.Start, Index.fromStart(2))).count());
+        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.Start, Index.Start)).count());
 
-        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(^3..2).Count());
-        assertEquals(2, new[] { 1, 2, 3 }.take(^3..2).Count());
-        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(^3..0).Count());
+        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.fromEnd(3), Index.fromStart(2))).count());
+        assertEquals(2, Linq.of(new int[]{1, 2, 3}).take(new Range(Index.fromEnd(3), Index.fromStart(2))).count());
+        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.fromEnd(3), Index.Start)).count());
 
-        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(0..^1).Count());
-        assertEquals(2, new[] { 1, 2, 3 }.take(0..^1).Count());
-        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(0..^3).Count());
+        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.Start, Index.fromEnd(1))).count());
+        assertEquals(2, Linq.of(new int[]{1, 2, 3}).take(new Range(Index.Start, Index.fromEnd(1))).count());
+        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.Start, Index.fromEnd(3))).count());
 
-        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(^3..^1).Count());
-        assertEquals(2, new[] { 1, 2, 3 }.take(^3..^1).Count());
-        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(^3..^3).Count());
+        assertEquals(2, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.fromEnd(3), Index.fromEnd(1))).count());
+        assertEquals(2, Linq.of(new int[]{1, 2, 3}).take(new Range(Index.fromEnd(3), Index.fromEnd(1))).count());
+        assertEquals(0, NumberRangeGuaranteedNotCollectionType(0, 3).take(new Range(Index.fromEnd(3), Index.fromEnd(3))).count());
     }
 
     @Test
@@ -361,21 +363,21 @@ class TakeTest extends TestCase {
         IEnumerator<Integer> en1 = (IEnumerator<Integer>) iterator1;
         assertFalse(en1 != null && en1.moveNext());
 
-        var iterator2 = NumberRangeGuaranteedNotCollectionType(0, 3).ToList().take(0..2);
-        var en2 = iterator2 as IEnumerator<int>;
-        Assert.False(en2 != null && en2.MoveNext());
+        IEnumerable<Integer> iterator2 = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).take(new Range(Index.Start, Index.fromStart(2)));
+        IEnumerator<Integer> en2 = (IEnumerator<Integer>) iterator2;
+        assertFalse(en2 != null && en2.moveNext());
 
-        var iterator3 = NumberRangeGuaranteedNotCollectionType(0, 3).ToList().take(^3..2);
-        var en3 = iterator3 as IEnumerator<int>;
-        Assert.False(en3 != null && en3.MoveNext());
+        IEnumerable<Integer> iterator3 = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).take(new Range(Index.fromEnd(3), Index.fromStart(2)));
+        IEnumerator<Integer> en3 = (IEnumerator<Integer>) iterator3;
+        assertFalse(en3 != null && en3.moveNext());
 
-        var iterator4 = NumberRangeGuaranteedNotCollectionType(0, 3).ToList().take(0..^1);
-        var en4 = iterator4 as IEnumerator<int>;
-        Assert.False(en4 != null && en4.MoveNext());
+        IEnumerable<Integer> iterator4 = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).take(new Range(Index.Start, Index.fromEnd(1)));
+        IEnumerator<Integer> en4 = (IEnumerator<Integer>) iterator4;
+        assertFalse(en4 != null && en4.moveNext());
 
-        var iterator5 = NumberRangeGuaranteedNotCollectionType(0, 3).ToList().take(^3..^1);
-        var en5 = iterator5 as IEnumerator<int>;
-        Assert.False(en5 != null && en5.MoveNext());
+        IEnumerable<Integer> iterator5 = Linq.of(NumberRangeGuaranteedNotCollectionType(0, 3).toList()).take(new Range(Index.fromEnd(3), Index.fromEnd(1)));
+        IEnumerator<Integer> en5 = (IEnumerator<Integer>) iterator5;
+        assertFalse(en5 != null && en5.moveNext());
     }
 
     @Test
@@ -384,10 +386,10 @@ class TakeTest extends TestCase {
         int[] expected = new int[]{5, 6};
         assertEquals(Linq.of(expected), Linq.of(source).take(5).take(3).take(2).take(40));
 
-        assertEquals(expected, source.take(0..5).take(0..3).take(0..2).take(0..40));
-        assertEquals(expected, source.take(^4..5).take(^4..3).take(^3..2).take(^2..40));
-        assertEquals(expected, source.take(0..^0).take(0..^1).take(0..^1).take(0..^0));
-        assertEquals(expected, source.take(^4..^0).take(^4..^1).take(^3..^1).take(^2..^0));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.fromStart(5))).take(new Range(Index.Start, Index.fromStart(3))).take(new Range(Index.Start, Index.fromStart(2))).take(new Range(Index.Start, Index.fromStart(40))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(4), Index.fromStart(5))).take(new Range(Index.fromEnd(4), Index.fromStart(3))).take(new Range(Index.fromEnd(3), Index.fromStart(2))).take(new Range(Index.fromEnd(2), Index.fromStart(40))));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.End)).take(new Range(Index.Start, Index.fromEnd(1))).take(new Range(Index.Start, Index.fromEnd(1))).take(new Range(Index.Start, Index.End)));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(4), Index.End)).take(new Range(Index.fromEnd(4), Index.fromEnd(1))).take(new Range(Index.fromEnd(3), Index.fromEnd(1))).take(new Range(Index.fromEnd(2), Index.End)));
     }
 
     @Test
@@ -396,10 +398,10 @@ class TakeTest extends TestCase {
         int[] expected = new int[]{5, 6};
         assertEquals(Linq.of(expected), source.take(5).take(3).take(2));
 
-        assertEquals(expected, source.take(0..5).take(0..3).take(0..2));
-        assertEquals(expected, source.take(^4..5).take(^4..3).take(^3..2));
-        assertEquals(expected, source.take(0..^0).take(0..^1).take(0..^1));
-        assertEquals(expected, source.take(^4..^0).take(^4..^1).take(^3..^1));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.Start, Index.fromStart(5))).take(new Range(Index.Start, Index.fromStart(3))).take(new Range(Index.Start, Index.fromStart(2))));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.fromEnd(4), Index.fromStart(5))).take(new Range(Index.fromEnd(4), Index.fromStart(3))).take(new Range(Index.fromEnd(3), Index.fromStart(2))));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.Start, Index.End)).take(new Range(Index.Start, Index.fromEnd(1))).take(new Range(Index.Start, Index.fromEnd(1))));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.fromEnd(4), Index.End)).take(new Range(Index.fromEnd(4), Index.fromEnd(1))).take(new Range(Index.fromEnd(3), Index.fromEnd(1))));
     }
 
     @Test
@@ -408,10 +410,10 @@ class TakeTest extends TestCase {
         int[] expected = new int[]{3, 4, 5};
         assertEquals(Linq.of(expected), Linq.of(source).take(5).skip(2).skip(-4));
 
-        assertEquals(expected, source.take(0..5).Skip(2).Skip(-4));
-        assertEquals(expected, source.take(^6..5).Skip(2).Skip(-4));
-        assertEquals(expected, source.take(0..^1).Skip(2).Skip(-4));
-        assertEquals(expected, source.take(^6..^1).Skip(2).Skip(-4));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.fromStart(5))).skip(2).skip(-4));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(6), Index.fromStart(5))).skip(2).skip(-4));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.Start, Index.fromEnd(1))).skip(2).skip(-4));
+        assertEquals(Linq.of(expected), Linq.of(source).take(new Range(Index.fromEnd(6), Index.fromEnd(1))).skip(2).skip(-4));
     }
 
     @Test
@@ -420,10 +422,10 @@ class TakeTest extends TestCase {
         int[] expected = new int[]{3, 4, 5};
         assertEquals(Linq.of(expected), source.take(5).skip(2).skip(-4));
 
-        assertEquals(expected, source.take(0..5).Skip(2).Skip(-4));
-        assertEquals(expected, source.take(^6..5).Skip(2).Skip(-4));
-        assertEquals(expected, source.take(0..^1).Skip(2).Skip(-4));
-        assertEquals(expected, source.take(^6..^1).Skip(2).Skip(-4));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.Start, Index.fromStart(5))).skip(2).skip(-4));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.fromEnd(6), Index.fromStart(5))).skip(2).skip(-4));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.Start, Index.fromEnd(1))).skip(2).skip(-4));
+        assertEquals(Linq.of(expected), source.take(new Range(Index.fromEnd(6), Index.fromEnd(1))).skip(2).skip(-4));
     }
 
     @Test
@@ -435,29 +437,29 @@ class TakeTest extends TestCase {
         assertThrows(ArgumentOutOfRangeException.class, () -> taken0.elementAt(-1));
         assertThrows(ArgumentOutOfRangeException.class, () -> taken0.elementAt(3));
 
-        var taken1 = source.take(0..3);
-        assertEquals(1, taken1.ElementAt(0));
-        assertEquals(3, taken1.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken1.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken1.ElementAt(3));
+        IEnumerable<Integer> taken1 = Linq.of(source).take(new Range(Index.Start, Index.fromStart(3)));
+        assertEquals(1, taken1.elementAt(0));
+        assertEquals(3, taken1.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken1.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken1.elementAt(3));
 
-        var taken2 = source.take(^6..3);
-        assertEquals(1, taken2.ElementAt(0));
-        assertEquals(3, taken2.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken2.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken2.ElementAt(3));
+        IEnumerable<Integer> taken2 = Linq.of(source).take(new Range(Index.fromEnd(6), Index.fromStart(3)));
+        assertEquals(1, taken2.elementAt(0));
+        assertEquals(3, taken2.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken2.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken2.elementAt(3));
 
-        var taken3 = source.take(0..^3);
-        assertEquals(1, taken3.ElementAt(0));
-        assertEquals(3, taken3.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken3.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken3.ElementAt(3));
+        IEnumerable<Integer> taken3 = Linq.of(source).take(new Range(Index.Start, Index.fromEnd(3)));
+        assertEquals(1, taken3.elementAt(0));
+        assertEquals(3, taken3.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken3.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken3.elementAt(3));
 
-        var taken4 = source.take(^6..^3);
-        assertEquals(1, taken4.ElementAt(0));
-        assertEquals(3, taken4.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken4.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken4.ElementAt(3));
+        IEnumerable<Integer> taken4 = Linq.of(source).take(new Range(Index.fromEnd(6), Index.fromEnd(3)));
+        assertEquals(1, taken4.elementAt(0));
+        assertEquals(3, taken4.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken4.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken4.elementAt(3));
     }
 
     @Test
@@ -469,29 +471,29 @@ class TakeTest extends TestCase {
         assertThrows(ArgumentOutOfRangeException.class, () -> taken0.elementAt(-1));
         assertThrows(ArgumentOutOfRangeException.class, () -> taken0.elementAt(3));
 
-        var taken1 = source.take(0..3);
-        assertEquals(1, taken1.ElementAt(0));
-        assertEquals(3, taken1.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken1.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken1.ElementAt(3));
+        IEnumerable<Integer> taken1 = source.take(new Range(Index.Start, Index.fromStart(3)));
+        assertEquals(1, taken1.elementAt(0));
+        assertEquals(3, taken1.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken1.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken1.elementAt(3));
 
-        var taken2 = source.take(^6..3);
-        assertEquals(1, taken2.ElementAt(0));
-        assertEquals(3, taken2.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken2.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken2.ElementAt(3));
+        IEnumerable<Integer> taken2 = source.take(new Range(Index.fromEnd(6), Index.fromStart(3)));
+        assertEquals(1, taken2.elementAt(0));
+        assertEquals(3, taken2.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken2.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken2.elementAt(3));
 
-        var taken3 = source.take(0..^3);
-        assertEquals(1, taken3.ElementAt(0));
-        assertEquals(3, taken3.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken3.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken3.ElementAt(3));
+        IEnumerable<Integer> taken3 = source.take(new Range(Index.Start, Index.fromEnd(3)));
+        assertEquals(1, taken3.elementAt(0));
+        assertEquals(3, taken3.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken3.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken3.elementAt(3));
 
-        var taken4 = source.take(^6..^3);
-        assertEquals(1, taken4.ElementAt(0));
-        assertEquals(3, taken4.ElementAt(2));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken4.ElementAt(-1));
-        Assert.Throws<ArgumentOutOfRangeException>("index", () => taken4.ElementAt(3));
+        IEnumerable<Integer> taken4 = source.take(new Range(Index.fromEnd(6), Index.fromEnd(3)));
+        assertEquals(1, taken4.elementAt(0));
+        assertEquals(3, taken4.elementAt(2));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken4.elementAt(-1));
+        assertThrows(ArgumentOutOfRangeException.class, () -> taken4.elementAt(3));
     }
 
     @Test
@@ -503,29 +505,29 @@ class TakeTest extends TestCase {
         assertEquals(null, taken0.elementAtOrDefault(-1));
         assertEquals(null, taken0.elementAtOrDefault(3));
 
-        var taken1 = source.take(0..3);
-        assertEquals(1, taken1.ElementAtOrDefault(0));
-        assertEquals(3, taken1.ElementAtOrDefault(2));
-        assertEquals(0, taken1.ElementAtOrDefault(-1));
-        assertEquals(0, taken1.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken1 = Linq.of(source).take(new Range(Index.Start, Index.fromStart(3)));
+        assertEquals(1, taken1.elementAtOrDefault(0));
+        assertEquals(3, taken1.elementAtOrDefault(2));
+        assertEquals(null, taken1.elementAtOrDefault(-1));
+        assertEquals(null, taken1.elementAtOrDefault(3));
 
-        var taken2 = source.take(^6..3);
-        assertEquals(1, taken2.ElementAtOrDefault(0));
-        assertEquals(3, taken2.ElementAtOrDefault(2));
-        assertEquals(0, taken2.ElementAtOrDefault(-1));
-        assertEquals(0, taken2.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken2 = Linq.of(source).take(new Range(Index.fromEnd(6), Index.fromStart(3)));
+        assertEquals(1, taken2.elementAtOrDefault(0));
+        assertEquals(3, taken2.elementAtOrDefault(2));
+        assertEquals(null, taken2.elementAtOrDefault(-1));
+        assertEquals(null, taken2.elementAtOrDefault(3));
 
-        var taken3 = source.take(0..^3);
-        assertEquals(1, taken3.ElementAtOrDefault(0));
-        assertEquals(3, taken3.ElementAtOrDefault(2));
-        assertEquals(0, taken3.ElementAtOrDefault(-1));
-        assertEquals(0, taken3.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken3 = Linq.of(source).take(new Range(Index.Start, Index.fromEnd(3)));
+        assertEquals(1, taken3.elementAtOrDefault(0));
+        assertEquals(3, taken3.elementAtOrDefault(2));
+        assertEquals(null, taken3.elementAtOrDefault(-1));
+        assertEquals(null, taken3.elementAtOrDefault(3));
 
-        var taken4 = source.take(^6..^3);
-        assertEquals(1, taken4.ElementAtOrDefault(0));
-        assertEquals(3, taken4.ElementAtOrDefault(2));
-        assertEquals(0, taken4.ElementAtOrDefault(-1));
-        assertEquals(0, taken4.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken4 = Linq.of(source).take(new Range(Index.fromEnd(6), Index.fromEnd(3)));
+        assertEquals(1, taken4.elementAtOrDefault(0));
+        assertEquals(3, taken4.elementAtOrDefault(2));
+        assertEquals(null, taken4.elementAtOrDefault(-1));
+        assertEquals(null, taken4.elementAtOrDefault(3));
     }
 
     @Test
@@ -537,29 +539,29 @@ class TakeTest extends TestCase {
         assertEquals(null, taken0.elementAtOrDefault(-1));
         assertEquals(null, taken0.elementAtOrDefault(3));
 
-        var taken1 = source.take(0..3);
-        assertEquals(1, taken1.ElementAtOrDefault(0));
-        assertEquals(3, taken1.ElementAtOrDefault(2));
-        assertEquals(0, taken1.ElementAtOrDefault(-1));
-        assertEquals(0, taken1.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken1 = source.take(new Range(Index.Start, Index.fromStart(3)));
+        assertEquals(1, taken1.elementAtOrDefault(0));
+        assertEquals(3, taken1.elementAtOrDefault(2));
+        assertEquals(null, taken1.elementAtOrDefault(-1));
+        assertEquals(null, taken1.elementAtOrDefault(3));
 
-        var taken2 = source.take(^6..3);
-        assertEquals(1, taken2.ElementAtOrDefault(0));
-        assertEquals(3, taken2.ElementAtOrDefault(2));
-        assertEquals(0, taken2.ElementAtOrDefault(-1));
-        assertEquals(0, taken2.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken2 = source.take(new Range(Index.fromEnd(6), Index.fromStart(3)));
+        assertEquals(1, taken2.elementAtOrDefault(0));
+        assertEquals(3, taken2.elementAtOrDefault(2));
+        assertEquals(null, taken2.elementAtOrDefault(-1));
+        assertEquals(null, taken2.elementAtOrDefault(3));
 
-        var taken3 = source.take(0..^3);
-        assertEquals(1, taken3.ElementAtOrDefault(0));
-        assertEquals(3, taken3.ElementAtOrDefault(2));
-        assertEquals(0, taken3.ElementAtOrDefault(-1));
-        assertEquals(0, taken3.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken3 = source.take(new Range(Index.Start, Index.fromEnd(3)));
+        assertEquals(1, taken3.elementAtOrDefault(0));
+        assertEquals(3, taken3.elementAtOrDefault(2));
+        assertEquals(null, taken3.elementAtOrDefault(-1));
+        assertEquals(null, taken3.elementAtOrDefault(3));
 
-        var taken4 = source.take(^6..^3);
-        assertEquals(1, taken4.ElementAtOrDefault(0));
-        assertEquals(3, taken4.ElementAtOrDefault(2));
-        assertEquals(0, taken4.ElementAtOrDefault(-1));
-        assertEquals(0, taken4.ElementAtOrDefault(3));
+        IEnumerable<Integer> taken4 = source.take(new Range(Index.fromEnd(6), Index.fromEnd(3)));
+        assertEquals(1, taken4.elementAtOrDefault(0));
+        assertEquals(3, taken4.elementAtOrDefault(2));
+        assertEquals(null, taken4.elementAtOrDefault(-1));
+        assertEquals(null, taken4.elementAtOrDefault(3));
     }
 
     @Test
@@ -571,29 +573,29 @@ class TakeTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(0).first());
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).skip(5).take(10).first());
 
-        assertEquals(1, source.take(0..1).First());
-        assertEquals(1, source.take(0..4).First());
-        assertEquals(1, source.take(0..40).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..0).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(0..10).First());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(4))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(40))).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.Start, Index.Start)).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).skip(5).take(new Range(Index.Start, Index.fromStart(10))).first());
 
-        assertEquals(1, source.take(^5..1).First());
-        assertEquals(1, source.take(^5..4).First());
-        assertEquals(1, source.take(^5..40).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..0).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(^5..10).First());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(1))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(4))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(40))).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.fromEnd(5), Index.Start)).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).skip(5).take(new Range(Index.fromEnd(5), Index.fromStart(10))).first());
 
-        assertEquals(1, source.take(0..^4).First());
-        assertEquals(1, source.take(0..^1).First());
-        assertEquals(1, source.take(0..^0).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..^5).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(0..^5).First());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(1))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.End)).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.Start, Index.fromEnd(5))).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).skip(5).take(new Range(Index.Start, Index.fromEnd(5))).first());
 
-        assertEquals(1, source.take(^5..^4).First());
-        assertEquals(1, source.take(^5..^1).First());
-        assertEquals(1, source.take(^5..^0).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..^5).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(^10..^0).First());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(1))).first());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(5))).first());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).skip(5).take(new Range(Index.fromEnd(10), Index.End)).first());
     }
 
     @Test
@@ -605,29 +607,29 @@ class TakeTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> source.take(0).first());
         assertThrows(InvalidOperationException.class, () -> source.skip(5).take(10).first());
 
-        assertEquals(1, source.take(0..1).First());
-        assertEquals(1, source.take(0..4).First());
-        assertEquals(1, source.take(0..40).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..0).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(0..10).First());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(1))).first());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(4))).first());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(40))).first());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.Start, Index.Start)).first());
+        assertThrows(InvalidOperationException.class, () -> source.skip(5).take(new Range(Index.Start, Index.fromStart(10))).first());
 
-        assertEquals(1, source.take(^5..1).First());
-        assertEquals(1, source.take(^5..4).First());
-        assertEquals(1, source.take(^5..40).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..0).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(^5..10).First());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(1))).first());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(4))).first());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(40))).first());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.fromEnd(5), Index.Start)).first());
+        assertThrows(InvalidOperationException.class, () -> source.skip(5).take(new Range(Index.fromEnd(5), Index.fromStart(10))).first());
 
-        assertEquals(1, source.take(0..^4).First());
-        assertEquals(1, source.take(0..^1).First());
-        assertEquals(1, source.take(0..^0).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..^5).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(0..^5).First());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromEnd(4))).first());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromEnd(1))).first());
+        assertEquals(1, source.take(new Range(Index.Start, Index.End)).first());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.Start, Index.fromEnd(5))).first());
+        assertThrows(InvalidOperationException.class, () -> source.skip(5).take(new Range(Index.Start, Index.fromEnd(5))).first());
 
-        assertEquals(1, source.take(^5..^4).First());
-        assertEquals(1, source.take(^5..^1).First());
-        assertEquals(1, source.take(^5..^0).First());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..^5).First());
-        Assert.Throws<InvalidOperationException>(() => source.Skip(5).take(^10..^0).First());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromEnd(4))).first());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromEnd(1))).first());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.End)).first());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.fromEnd(5), Index.fromEnd(5))).first());
+        assertThrows(InvalidOperationException.class, () -> source.skip(5).take(new Range(Index.fromEnd(10), Index.End)).first());
     }
 
     @Test
@@ -639,29 +641,29 @@ class TakeTest extends TestCase {
         assertEquals(null, Linq.of(source).take(0).firstOrDefault());
         assertEquals(null, Linq.of(source).skip(5).take(10).firstOrDefault());
 
-        assertEquals(1, source.take(0..1).FirstOrDefault());
-        assertEquals(1, source.take(0..4).FirstOrDefault());
-        assertEquals(1, source.take(0..40).FirstOrDefault());
-        assertEquals(0, source.take(0..0).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(0..10).FirstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(4))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(40))).firstOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.Start, Index.Start)).firstOrDefault());
+        assertEquals(null, Linq.of(source).skip(5).take(new Range(Index.Start, Index.fromStart(10))).firstOrDefault());
 
-        assertEquals(1, source.take(^5..1).FirstOrDefault());
-        assertEquals(1, source.take(^5..4).FirstOrDefault());
-        assertEquals(1, source.take(^5..40).FirstOrDefault());
-        assertEquals(0, source.take(^5..0).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(^10..10).FirstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(1))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(4))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(40))).firstOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.fromEnd(5), Index.Start)).firstOrDefault());
+        assertEquals(null, Linq.of(source).skip(5).take(new Range(Index.fromEnd(10), Index.fromStart(10))).firstOrDefault());
 
-        assertEquals(1, source.take(0..^4).FirstOrDefault());
-        assertEquals(1, source.take(0..^1).FirstOrDefault());
-        assertEquals(1, source.take(0..^0).FirstOrDefault());
-        assertEquals(0, source.take(0..^5).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(0..^10).FirstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(1))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.End)).firstOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(5))).firstOrDefault());
+        assertEquals(null, Linq.of(source).skip(5).take(new Range(Index.Start, Index.fromEnd(10))).firstOrDefault());
 
-        assertEquals(1, source.take(^5..^4).FirstOrDefault());
-        assertEquals(1, source.take(^5..^1).FirstOrDefault());
-        assertEquals(1, source.take(^5..^0).FirstOrDefault());
-        assertEquals(0, source.take(^5..^5).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(^10..^0).FirstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(1))).firstOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)).firstOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(5))).firstOrDefault());
+        assertEquals(null, Linq.of(source).skip(5).take(new Range(Index.fromEnd(10), Index.End)).firstOrDefault());
     }
 
     @Test
@@ -673,29 +675,29 @@ class TakeTest extends TestCase {
         assertEquals(null, source.take(0).firstOrDefault());
         assertEquals(null, source.skip(5).take(10).firstOrDefault());
 
-        assertEquals(1, source.take(0..1).FirstOrDefault());
-        assertEquals(1, source.take(0..4).FirstOrDefault());
-        assertEquals(1, source.take(0..40).FirstOrDefault());
-        assertEquals(0, source.take(0..0).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(0..10).FirstOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(1))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(4))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(40))).firstOrDefault());
+        assertEquals(null, source.take(new Range(Index.Start, Index.Start)).firstOrDefault());
+        assertEquals(null, source.skip(5).take(new Range(Index.Start, Index.fromStart(10))).firstOrDefault());
 
-        assertEquals(1, source.take(^5..1).FirstOrDefault());
-        assertEquals(1, source.take(^5..4).FirstOrDefault());
-        assertEquals(1, source.take(^5..40).FirstOrDefault());
-        assertEquals(0, source.take(^5..0).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(^10..10).FirstOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(1))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(4))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(40))).firstOrDefault());
+        assertEquals(null, source.take(new Range(Index.fromEnd(5), Index.Start)).firstOrDefault());
+        assertEquals(null, source.skip(5).take(new Range(Index.fromEnd(10), Index.fromStart(10))).firstOrDefault());
 
-        assertEquals(1, source.take(0..^4).FirstOrDefault());
-        assertEquals(1, source.take(0..^1).FirstOrDefault());
-        assertEquals(1, source.take(0..^0).FirstOrDefault());
-        assertEquals(0, source.take(0..^5).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(0..^10).FirstOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromEnd(4))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromEnd(1))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.End)).firstOrDefault());
+        assertEquals(null, source.take(new Range(Index.Start, Index.fromEnd(5))).firstOrDefault());
+        assertEquals(null, source.skip(5).take(new Range(Index.Start, Index.fromEnd(10))).firstOrDefault());
 
-        assertEquals(1, source.take(^5..^4).FirstOrDefault());
-        assertEquals(1, source.take(^5..^1).FirstOrDefault());
-        assertEquals(1, source.take(^5..^0).FirstOrDefault());
-        assertEquals(0, source.take(^5..^5).FirstOrDefault());
-        assertEquals(0, source.Skip(5).take(^10..^0).FirstOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromEnd(4))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromEnd(1))).firstOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.End)).firstOrDefault());
+        assertEquals(null, source.take(new Range(Index.fromEnd(5), Index.fromEnd(5))).firstOrDefault());
+        assertEquals(null, source.skip(5).take(new Range(Index.fromEnd(10), Index.End)).firstOrDefault());
     }
 
     @Test
@@ -707,29 +709,29 @@ class TakeTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(0).last());
         assertThrows(InvalidOperationException.class, () -> Linq.empty().take(40).last());
 
-        assertEquals(1, source.take(0..1).Last());
-        assertEquals(5, source.take(0..5).Last());
-        assertEquals(5, source.take(0..40).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..0).Last());
-        Assert.Throws<InvalidOperationException>(() => Array.Empty<int>().take(0..40).Last());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.Start, Index.fromStart(5))).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.Start, Index.fromStart(40))).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.Start, Index.Start)).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().take(new Range(Index.Start, Index.fromStart(40))).last());
 
-        assertEquals(1, source.take(^5..1).Last());
-        assertEquals(5, source.take(^5..5).Last());
-        assertEquals(5, source.take(^5..40).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..0).Last());
-        Assert.Throws<InvalidOperationException>(() => Array.Empty<int>().take(^5..40).Last());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(1))).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(5))).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(40))).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.fromEnd(5), Index.Start)).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().take(new Range(Index.fromEnd(5), Index.fromStart(40))).last());
 
-        assertEquals(1, source.take(0..^4).Last());
-        assertEquals(5, source.take(0..^0).Last());
-        assertEquals(5, source.take(3..^0).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..^5).Last());
-        Assert.Throws<InvalidOperationException>(() => Array.Empty<int>().take(0..^0).Last());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.Start, Index.End)).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromStart(3), Index.End)).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.Start, Index.fromEnd(5))).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().take(new Range(Index.Start, Index.End)).last());
 
-        assertEquals(1, source.take(^5..^4).Last());
-        assertEquals(5, source.take(^5..^0).Last());
-        assertEquals(5, source.take(^5..^0).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..^5).Last());
-        Assert.Throws<InvalidOperationException>(() => Array.Empty<int>().take(^40..^0).Last());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)).last());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(5))).last());
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().take(new Range(Index.fromEnd(40), Index.End)).last());
     }
 
     @Test
@@ -741,29 +743,29 @@ class TakeTest extends TestCase {
         assertThrows(InvalidOperationException.class, () -> source.take(0).last());
         assertThrows(InvalidOperationException.class, () -> ForceNotCollection(Linq.empty()).take(40).last());
 
-        assertEquals(1, source.take(0..1).Last());
-        assertEquals(5, source.take(0..5).Last());
-        assertEquals(5, source.take(0..40).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..0).Last());
-        Assert.Throws<InvalidOperationException>(() => ForceNotCollection(Array.Empty<int>()).take(0..40).Last());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(1))).last());
+        assertEquals(5, source.take(new Range(Index.Start, Index.fromStart(5))).last());
+        assertEquals(5, source.take(new Range(Index.Start, Index.fromStart(40))).last());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.Start, Index.Start)).last());
+        assertThrows(InvalidOperationException.class, () -> ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.Start, Index.fromStart(40))).last());
 
-        assertEquals(1, source.take(^5..1).Last());
-        assertEquals(5, source.take(^5..5).Last());
-        assertEquals(5, source.take(^5..40).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..0).Last());
-        Assert.Throws<InvalidOperationException>(() => ForceNotCollection(Array.Empty<int>()).take(^5..40).Last());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(1))).last());
+        assertEquals(5, source.take(new Range(Index.fromEnd(5), Index.fromStart(5))).last());
+        assertEquals(5, source.take(new Range(Index.fromEnd(5), Index.fromStart(40))).last());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.fromEnd(5), Index.Start)).last());
+        assertThrows(InvalidOperationException.class, () -> ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.fromEnd(5), Index.fromStart(40))).last());
 
-        assertEquals(1, source.take(0..^4).Last());
-        assertEquals(5, source.take(0..^0).Last());
-        assertEquals(5, source.take(3..^0).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(0..^5).Last());
-        Assert.Throws<InvalidOperationException>(() => ForceNotCollection(Array.Empty<int>()).take(0..^0).Last());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromEnd(4))).last());
+        assertEquals(5, source.take(new Range(Index.Start, Index.End)).last());
+        assertEquals(5, source.take(new Range(Index.fromStart(3), Index.End)).last());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.Start, Index.fromEnd(5))).last());
+        assertThrows(InvalidOperationException.class, () -> ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.Start, Index.End)).last());
 
-        assertEquals(1, source.take(^5..^4).Last());
-        assertEquals(5, source.take(^5..^0).Last());
-        assertEquals(5, source.take(^5..^0).Last());
-        Assert.Throws<InvalidOperationException>(() => source.take(^5..^5).Last());
-        Assert.Throws<InvalidOperationException>(() => ForceNotCollection(Array.Empty<int>()).take(^40..^0).Last());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromEnd(4))).last());
+        assertEquals(5, source.take(new Range(Index.fromEnd(5), Index.End)).last());
+        assertEquals(5, source.take(new Range(Index.fromEnd(5), Index.End)).last());
+        assertThrows(InvalidOperationException.class, () -> source.take(new Range(Index.fromEnd(5), Index.fromEnd(5))).last());
+        assertThrows(InvalidOperationException.class, () -> ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.fromEnd(40), Index.End)).last());
     }
 
     @Test
@@ -775,29 +777,29 @@ class TakeTest extends TestCase {
         assertEquals(null, Linq.of(source).take(0).lastOrDefault());
         assertEquals(null, Linq.empty().take(40).lastOrDefault());
 
-        assertEquals(1, source.take(0..1).LastOrDefault());
-        assertEquals(5, source.take(0..5).LastOrDefault());
-        assertEquals(5, source.take(0..40).LastOrDefault());
-        assertEquals(0, source.take(0..0).LastOrDefault());
-        assertEquals(0, Array.Empty<int>().take(0..40).LastOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.Start, Index.fromStart(5))).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.Start, Index.fromStart(40))).lastOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.Start, Index.Start)).lastOrDefault());
+        assertEquals(null, Linq.<Integer>empty().take(new Range(Index.Start, Index.fromStart(40))).lastOrDefault());
 
-        assertEquals(1, source.take(^5..1).LastOrDefault());
-        assertEquals(5, source.take(^5..5).LastOrDefault());
-        assertEquals(5, source.take(^5..40).LastOrDefault());
-        assertEquals(0, source.take(^5..0).LastOrDefault());
-        assertEquals(0, Array.Empty<int>().take(^5..40).LastOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(1))).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(5))).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(40))).lastOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.fromEnd(5), Index.Start)).lastOrDefault());
+        assertEquals(null, Linq.<Integer>empty().take(new Range(Index.fromEnd(5), Index.fromStart(40))).lastOrDefault());
 
-        assertEquals(1, source.take(0..^4).LastOrDefault());
-        assertEquals(5, source.take(0..^0).LastOrDefault());
-        assertEquals(5, source.take(3..^0).LastOrDefault());
-        assertEquals(0, source.take(0..^5).LastOrDefault());
-        assertEquals(0, Array.Empty<int>().take(0..^0).LastOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.Start, Index.End)).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromStart(3), Index.End)).lastOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(5))).lastOrDefault());
+        assertEquals(null, Linq.<Integer>empty().take(new Range(Index.Start, Index.End)).lastOrDefault());
 
-        assertEquals(1, source.take(^5..^4).LastOrDefault());
-        assertEquals(5, source.take(^5..^0).LastOrDefault());
-        assertEquals(5, source.take(^40..^0).LastOrDefault());
-        assertEquals(0, source.take(^5..^5).LastOrDefault());
-        assertEquals(0, Array.Empty<int>().take(^40..^0).LastOrDefault());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)).lastOrDefault());
+        assertEquals(5, Linq.of(source).take(new Range(Index.fromEnd(40), Index.End)).lastOrDefault());
+        assertEquals(null, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(5))).lastOrDefault());
+        assertEquals(null, Linq.<Integer>empty().take(new Range(Index.fromEnd(40), Index.End)).lastOrDefault());
     }
 
     @Test
@@ -809,29 +811,29 @@ class TakeTest extends TestCase {
         assertEquals(null, source.take(0).lastOrDefault());
         assertEquals(null, ForceNotCollection(Linq.empty()).take(40).lastOrDefault());
 
-        assertEquals(1, source.take(0..1).LastOrDefault());
-        assertEquals(5, source.take(0..5).LastOrDefault());
-        assertEquals(5, source.take(0..40).LastOrDefault());
-        assertEquals(0, source.take(0..0).LastOrDefault());
-        assertEquals(0, ForceNotCollection(Array.Empty<int>()).take(0..40).LastOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(1))).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.Start, Index.fromStart(5))).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.Start, Index.fromStart(40))).lastOrDefault());
+        assertEquals(null, source.take(new Range(Index.Start, Index.Start)).lastOrDefault());
+        assertEquals(null, ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.Start, Index.fromStart(40))).lastOrDefault());
 
-        assertEquals(1, source.take(^5..1).LastOrDefault());
-        assertEquals(5, source.take(^5..5).LastOrDefault());
-        assertEquals(5, source.take(^5..40).LastOrDefault());
-        assertEquals(0, source.take(^5..0).LastOrDefault());
-        assertEquals(0, ForceNotCollection(Array.Empty<int>()).take(^5..40).LastOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(1))).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.fromEnd(5), Index.fromStart(5))).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.fromEnd(5), Index.fromStart(40))).lastOrDefault());
+        assertEquals(null, source.take(new Range(Index.fromEnd(5), Index.Start)).lastOrDefault());
+        assertEquals(null, ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.fromEnd(5), Index.fromStart(40))).lastOrDefault());
 
-        assertEquals(1, source.take(0..^4).LastOrDefault());
-        assertEquals(5, source.take(0..^0).LastOrDefault());
-        assertEquals(5, source.take(3..^0).LastOrDefault());
-        assertEquals(0, source.take(0..^5).LastOrDefault());
-        assertEquals(0, ForceNotCollection(Array.Empty<int>()).take(0..^0).LastOrDefault());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromEnd(4))).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.Start, Index.End)).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.fromStart(3), Index.End)).lastOrDefault());
+        assertEquals(null, source.take(new Range(Index.Start, Index.fromEnd(5))).lastOrDefault());
+        assertEquals(null, ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.Start, Index.End)).lastOrDefault());
 
-        assertEquals(1, source.take(^5..^4).LastOrDefault());
-        assertEquals(5, source.take(^5..^0).LastOrDefault());
-        assertEquals(5, source.take(^40..^0).LastOrDefault());
-        assertEquals(0, source.take(^5..^5).LastOrDefault());
-        assertEquals(0, ForceNotCollection(Array.Empty<int>()).take(^40..^0).LastOrDefault());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromEnd(4))).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.fromEnd(5), Index.End)).lastOrDefault());
+        assertEquals(5, source.take(new Range(Index.fromEnd(40), Index.End)).lastOrDefault());
+        assertEquals(null, source.take(new Range(Index.fromEnd(5), Index.fromEnd(5))).lastOrDefault());
+        assertEquals(null, ForceNotCollection(Linq.<Integer>empty()).take(new Range(Index.fromEnd(40), Index.End)).lastOrDefault());
     }
 
     @Test
@@ -845,34 +847,34 @@ class TakeTest extends TestCase {
         assertEmpty(Linq.of(source).take(0).toArray());
         assertEmpty(Linq.of(source).take(-10).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..5).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..6).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..40).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..4).ToArray());
-        assertEquals(1, source.take(0..1).ToArray().Single());
-        Assert.Empty(source.take(0..0).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.Start, Index.fromStart(5))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.Start, Index.fromStart(6))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.Start, Index.fromStart(40))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source).take(new Range(Index.Start, Index.fromStart(4))).toArray());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))).toArray().single());
+        assertEmpty(Linq.of(source).take(new Range(Index.Start, Index.Start)).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..5).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..6).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..40).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..4).ToArray());
-        assertEquals(1, source.take(^5..1).ToArray().Single());
-        Assert.Empty(source.take(^5..0).ToArray());
-        Assert.Empty(source.take(^15..0).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(5))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(6))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(40))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(4))).toArray());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(1))).toArray().single());
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(5), Index.Start)).toArray());
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(15), Index.Start)).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..^1).ToArray());
-        assertEquals(1, source.take(0..^4).ToArray().Single());
-        Assert.Empty(source.take(0..^5).ToArray());
-        Assert.Empty(source.take(0..^15).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.Start, Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source).take(new Range(Index.Start, Index.fromEnd(1))).toArray());
+        assertEquals(1, Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))).toArray().single());
+        assertEmpty(Linq.of(source).take(new Range(Index.Start, Index.fromEnd(5))).toArray());
+        assertEmpty(Linq.of(source).take(new Range(Index.Start, Index.fromEnd(15))).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^6..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^45..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..^1).ToArray());
-        assertEquals(1, source.take(^5..^4).ToArray().Single());
-        Assert.Empty(source.take(^5..^5).ToArray());
-        Assert.Empty(source.take(^15..^5).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.fromEnd(6), Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source).take(new Range(Index.fromEnd(45), Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(1))).toArray());
+        assertEquals(1, Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))).toArray().single());
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(5))).toArray());
+        assertEmpty(Linq.of(source).take(new Range(Index.fromEnd(15), Index.fromEnd(5))).toArray());
     }
 
     @Test
@@ -886,34 +888,34 @@ class TakeTest extends TestCase {
         assertEmpty(source.take(0).toArray());
         assertEmpty(source.take(-10).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..5).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..6).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..40).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..4).ToArray());
-        assertEquals(1, source.take(0..1).ToArray().Single());
-        Assert.Empty(source.take(0..0).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.Start, Index.fromStart(5))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.Start, Index.fromStart(6))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.Start, Index.fromStart(40))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.take(new Range(Index.Start, Index.fromStart(4))).toArray());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromStart(1))).toArray().single());
+        assertEmpty(source.take(new Range(Index.Start, Index.Start)).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..5).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..6).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..40).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..4).ToArray());
-        assertEquals(1, source.take(^5..1).ToArray().Single());
-        Assert.Empty(source.take(^5..0).ToArray());
-        Assert.Empty(source.take(^15..0).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.fromEnd(5), Index.fromStart(5))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.fromEnd(5), Index.fromStart(6))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.fromEnd(5), Index.fromStart(40))).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.take(new Range(Index.fromEnd(5), Index.fromStart(4))).toArray());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromStart(1))).toArray().single());
+        assertEmpty(source.take(new Range(Index.fromEnd(5), Index.Start)).toArray());
+        assertEmpty(source.take(new Range(Index.fromEnd(15), Index.Start)).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..^1).ToArray());
-        assertEquals(1, source.take(0..^4).ToArray().Single());
-        Assert.Empty(source.take(0..^5).ToArray());
-        Assert.Empty(source.take(0..^15).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.Start, Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.take(new Range(Index.Start, Index.fromEnd(1))).toArray());
+        assertEquals(1, source.take(new Range(Index.Start, Index.fromEnd(4))).toArray().single());
+        assertEmpty(source.take(new Range(Index.Start, Index.fromEnd(5))).toArray());
+        assertEmpty(source.take(new Range(Index.Start, Index.fromEnd(15))).toArray());
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^6..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^45..^0).ToArray());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..^1).ToArray());
-        assertEquals(1, source.take(^5..^4).ToArray().Single());
-        Assert.Empty(source.take(^5..^5).ToArray());
-        Assert.Empty(source.take(^15..^5).ToArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.fromEnd(5), Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.fromEnd(6), Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), source.take(new Range(Index.fromEnd(45), Index.End)).toArray());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.take(new Range(Index.fromEnd(5), Index.fromEnd(1))).toArray());
+        assertEquals(1, source.take(new Range(Index.fromEnd(5), Index.fromEnd(4))).toArray().single());
+        assertEmpty(source.take(new Range(Index.fromEnd(5), Index.fromEnd(5))).toArray());
+        assertEmpty(source.take(new Range(Index.fromEnd(15), Index.fromEnd(5))).toArray());
     }
 
     @Test
@@ -927,34 +929,34 @@ class TakeTest extends TestCase {
         assertEmpty(Linq.of(Linq.of(source).take(0).toList()));
         assertEmpty(Linq.of(Linq.of(source).take(-10).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..5).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..6).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..40).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..4).ToList());
-        assertEquals(1, source.take(0..1).ToList().Single());
-        Assert.Empty(source.take(0..0).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromStart(5))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromStart(6))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromStart(40))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromStart(4))).toList()));
+        assertEquals(1, Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))).toList()).single());
+        assertEmpty(Linq.of(Linq.of(source).take(new Range(Index.Start, Index.Start)).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..5).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..6).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..40).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..4).ToList());
-        assertEquals(1, source.take(^5..1).ToList().Single());
-        Assert.Empty(source.take(^5..0).ToList());
-        Assert.Empty(source.take(^15..0).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(5))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(6))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(40))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(4))).toList()));
+        assertEquals(1, Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(1))).toList()).single());
+        assertEmpty(Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.Start)).toList()));
+        assertEmpty(Linq.of(Linq.of(source).take(new Range(Index.fromEnd(15), Index.Start)).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..^1).ToList());
-        assertEquals(1, source.take(0..^4).ToList().Single());
-        Assert.Empty(source.take(0..^5).ToList());
-        Assert.Empty(source.take(0..^15).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.Start, Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromEnd(1))).toList()));
+        assertEquals(1, Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))).toList()).single());
+        assertEmpty(Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromEnd(5))).toList()));
+        assertEmpty(Linq.of(Linq.of(source).take(new Range(Index.Start, Index.fromEnd(15))).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^6..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^45..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..^1).ToList());
-        assertEquals(1, source.take(^5..^4).ToList().Single());
-        Assert.Empty(source.take(^5..^5).ToList());
-        Assert.Empty(source.take(^15..^5).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(6), Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(45), Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(1))).toList()));
+        assertEquals(1, Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))).toList()).single());
+        assertEmpty(Linq.of(Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(5))).toList()));
+        assertEmpty(Linq.of(Linq.of(source).take(new Range(Index.fromEnd(15), Index.fromEnd(5))).toList()));
     }
 
     @Test
@@ -968,34 +970,34 @@ class TakeTest extends TestCase {
         assertEmpty(Linq.of(source.take(0).toList()));
         assertEmpty(Linq.of(source.take(-10).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..5).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..6).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..40).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..4).ToList());
-        assertEquals(1, source.take(0..1).ToList().Single());
-        Assert.Empty(source.take(0..0).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.Start, Index.fromStart(5))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.Start, Index.fromStart(6))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.Start, Index.fromStart(40))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source.take(new Range(Index.Start, Index.fromStart(4))).toList()));
+        assertEquals(1, Linq.of(source.take(new Range(Index.Start, Index.fromStart(1))).toList()).single());
+        assertEmpty(Linq.of(source.take(new Range(Index.Start, Index.Start)).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..5).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..6).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..40).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..4).ToList());
-        assertEquals(1, source.take(^5..1).ToList().Single());
-        Assert.Empty(source.take(^5..0).ToList());
-        Assert.Empty(source.take(^15..0).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromStart(5))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromStart(6))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromStart(40))).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromStart(4))).toList()));
+        assertEquals(1, Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromStart(1))).toList()).single());
+        assertEmpty(Linq.of(source.take(new Range(Index.fromEnd(5), Index.Start)).toList()));
+        assertEmpty(Linq.of(source.take(new Range(Index.fromEnd(15), Index.Start)).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(0..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(0..^1).ToList());
-        assertEquals(1, source.take(0..^4).ToList().Single());
-        Assert.Empty(source.take(0..^5).ToList());
-        Assert.Empty(source.take(0..^15).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.Start, Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source.take(new Range(Index.Start, Index.fromEnd(1))).toList()));
+        assertEquals(1, Linq.of(source.take(new Range(Index.Start, Index.fromEnd(4))).toList()).single());
+        assertEmpty(Linq.of(source.take(new Range(Index.Start, Index.fromEnd(5))).toList()));
+        assertEmpty(Linq.of(source.take(new Range(Index.Start, Index.fromEnd(15))).toList()));
 
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^5..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^6..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4, 5 }, source.take(^45..^0).ToList());
-        assertEquals(new[] { 1, 2, 3, 4 }, source.take(^5..^1).ToList());
-        assertEquals(1, source.take(^5..^4).ToList().Single());
-        Assert.Empty(source.take(^5..^5).ToList());
-        Assert.Empty(source.take(^15..^5).ToList());
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.fromEnd(5), Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.fromEnd(6), Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4, 5}), Linq.of(source.take(new Range(Index.fromEnd(45), Index.End)).toList()));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromEnd(1))).toList()));
+        assertEquals(1, Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromEnd(4))).toList()).single());
+        assertEmpty(Linq.of(source.take(new Range(Index.fromEnd(5), Index.fromEnd(5))).toList()));
+        assertEmpty(Linq.of(source.take(new Range(Index.fromEnd(15), Index.fromEnd(5))).toList()));
     }
 
     @Test
@@ -1006,25 +1008,25 @@ class TakeTest extends TestCase {
         assertEquals(Linq.of(new int[]{6}), Linq.of(source).take(3).skip(2));
         assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(3).take(1));
 
-        assertEquals(new[] { 2 }, source.take(0..1));
-        assertEquals(new[] { 4 }, source.Skip(1).take(0..1));
-        assertEquals(new[] { 6 }, source.take(0..3).Skip(2));
-        assertEquals(new[] { 2 }, source.take(0..3).take(0..1));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{4}), Linq.of(source).skip(1).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{6}), Linq.of(source).take(new Range(Index.Start, Index.fromStart(3))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.Start, Index.fromStart(3))).take(new Range(Index.Start, Index.fromStart(1))));
 
-        assertEquals(new[] { 2 }, source.take(^5..1));
-        assertEquals(new[] { 4 }, source.Skip(1).take(^4..1));
-        assertEquals(new[] { 6 }, source.take(^5..3).Skip(2));
-        assertEquals(new[] { 2 }, source.take(^5..3).take(^4..1));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{4}), Linq.of(source).skip(1).take(new Range(Index.fromEnd(4), Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{6}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(3))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(3))).take(new Range(Index.fromEnd(4), Index.fromStart(1))));
 
-        assertEquals(new[] { 2 }, source.take(0..^4));
-        assertEquals(new[] { 4 }, source.Skip(1).take(0..^3));
-        assertEquals(new[] { 6 }, source.take(0..^2).Skip(2));
-        assertEquals(new[] { 2 }, source.take(0..^2).take(0..^2));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.Start, Index.fromEnd(4))));
+        assertEquals(Linq.of(new int[]{4}), Linq.of(source).skip(1).take(new Range(Index.Start, Index.fromEnd(3))));
+        assertEquals(Linq.of(new int[]{6}), Linq.of(source).take(new Range(Index.Start, Index.fromEnd(2))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.Start, Index.fromEnd(2))).take(new Range(Index.Start, Index.fromEnd(2))));
 
-        assertEquals(new[] { 2 }, source.take(^5..^4));
-        assertEquals(new[] { 4 }, source.Skip(1).take(^4..^3));
-        assertEquals(new[] { 6 }, source.take(^5..^2).Skip(2));
-        assertEquals(new[] { 2 }, source.take(^5..^2).take(^4..^2));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
+        assertEquals(Linq.of(new int[]{4}), Linq.of(source).skip(1).take(new Range(Index.fromEnd(4), Index.fromEnd(3))));
+        assertEquals(Linq.of(new int[]{6}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(2))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(2))).take(new Range(Index.fromEnd(4), Index.fromEnd(2))));
     }
 
     @Test
@@ -1035,25 +1037,25 @@ class TakeTest extends TestCase {
         assertEquals(Linq.of(new int[]{6}), Linq.of(source).take(3).skip(2));
         assertEquals(Linq.of(new int[]{2}), Linq.of(source).take(3).take(1));
 
-        assertEquals(new[] { 2 }, source.take(0..1));
-        assertEquals(new[] { 4 }, source.Skip(1).take(0..1));
-        assertEquals(new[] { 6 }, source.take(0..3).Skip(2));
-        assertEquals(new[] { 2 }, source.take(0..3).take(0..1));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{4}), source.skip(1).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{6}), source.take(new Range(Index.Start, Index.fromStart(3))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.Start, Index.fromStart(3))).take(new Range(Index.Start, Index.fromStart(1))));
 
-        assertEquals(new[] { 2 }, source.take(^5..1));
-        assertEquals(new[] { 4 }, source.Skip(1).take(^4..1));
-        assertEquals(new[] { 6 }, source.take(^5..3).Skip(2));
-        assertEquals(new[] { 2 }, source.take(^5..3).take(^4..1));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.fromEnd(5), Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{4}), source.skip(1).take(new Range(Index.fromEnd(4), Index.fromStart(1))));
+        assertEquals(Linq.of(new int[]{6}), source.take(new Range(Index.fromEnd(5), Index.fromStart(3))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.fromEnd(5), Index.fromStart(3))).take(new Range(Index.fromEnd(4), Index.fromStart(1))));
 
-        assertEquals(new[] { 2 }, source.take(0..^4));
-        assertEquals(new[] { 4 }, source.Skip(1).take(0..^3));
-        assertEquals(new[] { 6 }, source.take(0..^2).Skip(2));
-        assertEquals(new[] { 2 }, source.take(0..^2).take(0..^2));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.Start, Index.fromEnd(4))));
+        assertEquals(Linq.of(new int[]{4}), source.skip(1).take(new Range(Index.Start, Index.fromEnd(3))));
+        assertEquals(Linq.of(new int[]{6}), source.take(new Range(Index.Start, Index.fromEnd(2))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.Start, Index.fromEnd(2))).take(new Range(Index.Start, Index.fromEnd(2))));
 
-        assertEquals(new[] { 2 }, source.take(^5..^4));
-        assertEquals(new[] { 4 }, source.Skip(1).take(^4..^3));
-        assertEquals(new[] { 6 }, source.take(^5..^2).Skip(2));
-        assertEquals(new[] { 2 }, source.take(^5..^2).take(^4..^2));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
+        assertEquals(Linq.of(new int[]{4}), source.skip(1).take(new Range(Index.fromEnd(4), Index.fromEnd(3))));
+        assertEquals(Linq.of(new int[]{6}), source.take(new Range(Index.fromEnd(5), Index.fromEnd(2))).skip(2));
+        assertEquals(Linq.of(new int[]{2}), source.take(new Range(Index.fromEnd(5), Index.fromEnd(2))).take(new Range(Index.fromEnd(4), Index.fromEnd(2))));
     }
 
     @Test
@@ -1062,16 +1064,16 @@ class TakeTest extends TestCase {
         IEnumerable<Integer> taken1 = Linq.of(source).take(3);
         assertEquals(taken1, taken1);
 
-        var taken2 = source.take(0..3);
+        IEnumerable<Integer> taken2 = Linq.of(source).take(new Range(Index.Start, Index.fromStart(3)));
         assertEquals(taken2, taken2);
 
-        var taken3 = source.take(^5..3);
+        IEnumerable<Integer> taken3 = Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromStart(3)));
         assertEquals(taken3, taken3);
 
-        var taken4 = source.take(0..^2);
+        IEnumerable<Integer> taken4 = Linq.of(source).take(new Range(Index.Start, Index.fromEnd(2)));
         assertEquals(taken4, taken4);
 
-        var taken5 = source.take(^5..^2);
+        IEnumerable<Integer> taken5 = Linq.of(source).take(new Range(Index.fromEnd(5), Index.fromEnd(2)));
         assertEquals(taken5, taken5);
     }
 
@@ -1081,16 +1083,16 @@ class TakeTest extends TestCase {
         IEnumerable<Integer> taken1 = source.take(3);
         assertEquals(taken1, taken1);
 
-        var taken2 = source.take(0..3);
+        IEnumerable<Integer> taken2 = source.take(new Range(Index.Start, Index.fromStart(3)));
         assertEquals(taken2, taken2);
 
-        var taken3 = source.take(^5..3);
+        IEnumerable<Integer> taken3 = source.take(new Range(Index.fromEnd(5), Index.fromStart(3)));
         assertEquals(taken3, taken3);
 
-        var taken4 = source.take(0..^2);
+        IEnumerable<Integer> taken4 = source.take(new Range(Index.Start, Index.fromEnd(2)));
         assertEquals(taken4, taken4);
 
-        var taken5 = source.take(^5..^2);
+        IEnumerable<Integer> taken5 = source.take(new Range(Index.fromEnd(5), Index.fromEnd(2)));
         assertEquals(taken5, taken5);
     }
 
@@ -1101,9 +1103,9 @@ class TakeTest extends TestCase {
         assertEmpty(new FastInfiniteEnumerator<Integer>().take(largeNumber).skip(largeNumber).skip(42));
         assertEmpty(new FastInfiniteEnumerator<Integer>().take(largeNumber).skip(largeNumber / 2).skip(largeNumber / 2 + 1));
 
-        Assert.Empty(new FastInfiniteEnumerator<int>().take(0..largeNumber).Skip(largeNumber));
-        Assert.Empty(new FastInfiniteEnumerator<int>().take(0..largeNumber).Skip(largeNumber).Skip(42));
-        Assert.Empty(new FastInfiniteEnumerator<int>().take(0..largeNumber).Skip(largeNumber / 2).Skip(largeNumber / 2 + 1));
+        assertEmpty(new FastInfiniteEnumerator<Integer>().take(new Range(Index.Start, Index.fromStart(largeNumber))).skip(largeNumber));
+        assertEmpty(new FastInfiniteEnumerator<Integer>().take(new Range(Index.Start, Index.fromStart(largeNumber))).skip(largeNumber).skip(42));
+        assertEmpty(new FastInfiniteEnumerator<Integer>().take(new Range(Index.Start, Index.fromStart(largeNumber))).skip(largeNumber / 2).skip(largeNumber / 2 + 1));
     }
 
     @Test
@@ -1116,29 +1118,29 @@ class TakeTest extends TestCase {
         assertEquals(Linq.range(43, 100 - 42), taken1.toArray());
         assertEquals(Linq.range(43, 100 - 42), Linq.of(taken1.toList()));
 
-        var taken2 = NumberRangeGuaranteedNotCollectionType(1, 100).take(42..int.MaxValue);
-        assertEquals(Enumerable.Range(43, 100 - 42), taken2);
-        assertEquals(100 - 42, taken2.Count());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken2.ToArray());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken2.ToList());
+        IEnumerable<Integer> taken2 = NumberRangeGuaranteedNotCollectionType(1, 100).take(new Range(Index.fromStart(42), Index.fromStart(Integer.MAX_VALUE)));
+        assertEquals(Linq.range(43, 100 - 42), taken2);
+        assertEquals(100 - 42, taken2.count());
+        assertEquals(Linq.range(43, 100 - 42), taken2.toArray());
+        assertEquals(Linq.range(43, 100 - 42), Linq.of(taken2.toList()));
 
-        var taken3 = NumberRangeGuaranteedNotCollectionType(1, 100).take(^(100 - 42)..int.MaxValue);
-        assertEquals(Enumerable.Range(43, 100 - 42), taken3);
-        assertEquals(100 - 42, taken3.Count());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken3.ToArray());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken3.ToList());
+        IEnumerable<Integer> taken3 = NumberRangeGuaranteedNotCollectionType(1, 100).take(new Range(Index.fromEnd(100 - 42), Index.fromStart(Integer.MAX_VALUE)));
+        assertEquals(Linq.range(43, 100 - 42), taken3);
+        assertEquals(100 - 42, taken3.count());
+        assertEquals(Linq.range(43, 100 - 42), taken3.toArray());
+        assertEquals(Linq.range(43, 100 - 42), Linq.of(taken3.toList()));
 
-        var taken4 = NumberRangeGuaranteedNotCollectionType(1, 100).take(42..^0);
-        assertEquals(Enumerable.Range(43, 100 - 42), taken4);
-        assertEquals(100 - 42, taken4.Count());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken4.ToArray());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken4.ToList());
+        IEnumerable<Integer> taken4 = NumberRangeGuaranteedNotCollectionType(1, 100).take(new Range(Index.fromStart(42), Index.End));
+        assertEquals(Linq.range(43, 100 - 42), taken4);
+        assertEquals(100 - 42, taken4.count());
+        assertEquals(Linq.range(43, 100 - 42), taken4.toArray());
+        assertEquals(Linq.range(43, 100 - 42), Linq.of(taken4.toList()));
 
-        var taken5 = NumberRangeGuaranteedNotCollectionType(1, 100).take(^(100 - 42)..^0);
-        assertEquals(Enumerable.Range(43, 100 - 42), taken5);
-        assertEquals(100 - 42, taken5.Count());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken5.ToArray());
-        assertEquals(Enumerable.Range(43, 100 - 42), taken5.ToList());
+        IEnumerable<Integer> taken5 = NumberRangeGuaranteedNotCollectionType(1, 100).take(new Range(Index.fromEnd(100 - 42), Index.End));
+        assertEquals(Linq.range(43, 100 - 42), taken5);
+        assertEquals(100 - 42, taken5.count());
+        assertEquals(Linq.range(43, 100 - 42), taken5.toArray());
+        assertEquals(Linq.range(43, 100 - 42), Linq.of(taken5.toList()));
     }
 
     @ParameterizedTest
@@ -1151,34 +1153,31 @@ class TakeTest extends TestCase {
         assertEquals(expected, partition.select(i -> i).toArray()._getCount());
 
         int end;
-        try
-        {
-            end = checked(skip + take);
-        }
-        catch (OverflowException)
-        {
-            end = int.MaxValue;
+        try {
+            end = Math.addExact(skip, take);
+        } catch (ArithmeticException e) {
+            end = Integer.MAX_VALUE;
         }
 
-        var partition2 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(skip..end);
-        assertEquals(expected, partition2.Count());
-        assertEquals(expected, partition2.Select(i => i).Count());
-        assertEquals(expected, partition2.Select(i => i).ToArray().Length);
+        IEnumerable<Integer> partition2 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(new Range(Index.fromStart(skip), Index.fromStart(end)));
+        assertEquals(expected, partition2.count());
+        assertEquals(expected, partition2.select(i -> i).count());
+        assertEquals(expected, partition2.select(i -> i).toArray()._getCount());
 
-        var partition3 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(^Math.Max(totalCount - skip, 0)..end);
-        assertEquals(expected, partition3.Count());
-        assertEquals(expected, partition3.Select(i => i).Count());
-        assertEquals(expected, partition3.Select(i => i).ToArray().Length);
+        IEnumerable<Integer> partition3 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(new Range(Index.fromEnd(Math.max(totalCount - skip, 0)), Index.fromStart(end)));
+        assertEquals(expected, partition3.count());
+        assertEquals(expected, partition3.select(i -> i).count());
+        assertEquals(expected, partition3.select(i -> i).toArray()._getCount());
 
-        var partition4 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(skip..^Math.Max(totalCount - end, 0));
-        assertEquals(expected, partition4.Count());
-        assertEquals(expected, partition4.Select(i => i).Count());
-        assertEquals(expected, partition4.Select(i => i).ToArray().Length);
+        IEnumerable<Integer> partition4 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(new Range(Index.fromStart(skip), Index.fromEnd(Math.max(totalCount - end, 0))));
+        assertEquals(expected, partition4.count());
+        assertEquals(expected, partition4.select(i -> i).count());
+        assertEquals(expected, partition4.select(i -> i).toArray()._getCount());
 
-        var partition5 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(^Math.Max(totalCount - skip, 0)..^Math.Max(totalCount - end, 0));
-        assertEquals(expected, partition5.Count());
-        assertEquals(expected, partition5.Select(i => i).Count());
-        assertEquals(expected, partition5.Select(i => i).ToArray().Length);
+        IEnumerable<Integer> partition5 = NumberRangeGuaranteedNotCollectionType(1, totalCount).take(new Range(Index.fromEnd(Math.max(totalCount - skip, 0)), Index.fromEnd(Math.max(totalCount - end, 0))));
+        assertEquals(expected, partition5.count());
+        assertEquals(expected, partition5.select(i -> i).count());
+        assertEquals(expected, partition5.select(i -> i).toArray()._getCount());
     }
 
     @ParameterizedTest
@@ -1192,42 +1191,39 @@ class TakeTest extends TestCase {
         assertEquals(last, partition1.elementAtOrDefault(partition1.count() - 1));
 
         int end;
-        try
-        {
-            end = checked(skip + take);
-        }
-        catch (OverflowException)
-        {
-            end = int.MaxValue;
+        try {
+            end = Math.addExact(skip, take);
+        } catch (ArithmeticException e) {
+            end = Integer.MAX_VALUE;
         }
 
-        var partition2 = ForceNotCollection(source).take(skip..end);
+        IEnumerable<Integer> partition2 = ForceNotCollection(source).take(new Range(Index.fromStart(skip), Index.fromStart(end)));
 
-        assertEquals(first, partition2.FirstOrDefault());
-        assertEquals(first, partition2.ElementAtOrDefault(0));
-        assertEquals(last, partition2.LastOrDefault());
-        assertEquals(last, partition2.ElementAtOrDefault(partition2.Count() - 1));
+        assertEquals(first, partition2.firstOrDefault());
+        assertEquals(first, partition2.elementAtOrDefault(0));
+        assertEquals(last, partition2.lastOrDefault());
+        assertEquals(last, partition2.elementAtOrDefault(partition2.count() - 1));
 
-        var partition3 = ForceNotCollection(source).take(^Math.Max(source.Length - skip, 0)..end);
+        IEnumerable<Integer> partition3 = ForceNotCollection(source).take(new Range(Index.fromEnd(Math.max(source.count() - skip, 0)), Index.fromStart(end)));
 
-        assertEquals(first, partition3.FirstOrDefault());
-        assertEquals(first, partition3.ElementAtOrDefault(0));
-        assertEquals(last, partition3.LastOrDefault());
-        assertEquals(last, partition3.ElementAtOrDefault(partition3.Count() - 1));
+        assertEquals(first, partition3.firstOrDefault());
+        assertEquals(first, partition3.elementAtOrDefault(0));
+        assertEquals(last, partition3.lastOrDefault());
+        assertEquals(last, partition3.elementAtOrDefault(partition3.count() - 1));
 
-        var partition4 = ForceNotCollection(source).take(skip..^Math.Max(source.Length - end, 0));
+        IEnumerable<Integer> partition4 = ForceNotCollection(source).take(new Range(Index.fromStart(skip), Index.fromEnd(Math.max(source.count() - end, 0))));
 
-        assertEquals(first, partition4.FirstOrDefault());
-        assertEquals(first, partition4.ElementAtOrDefault(0));
-        assertEquals(last, partition4.LastOrDefault());
-        assertEquals(last, partition4.ElementAtOrDefault(partition4.Count() - 1));
+        assertEquals(first, partition4.firstOrDefault());
+        assertEquals(first, partition4.elementAtOrDefault(0));
+        assertEquals(last, partition4.lastOrDefault());
+        assertEquals(last, partition4.elementAtOrDefault(partition4.count() - 1));
 
-        var partition5 = ForceNotCollection(source).take(^Math.Max(source.Length - skip, 0)..^Math.Max(source.Length - end, 0));
+        IEnumerable<Integer> partition5 = ForceNotCollection(source).take(new Range(Index.fromEnd(Math.max(source.count() - skip, 0)), Index.fromEnd(Math.max(source.count() - end, 0))));
 
-        assertEquals(first, partition5.FirstOrDefault());
-        assertEquals(first, partition5.ElementAtOrDefault(0));
-        assertEquals(last, partition5.LastOrDefault());
-        assertEquals(last, partition5.ElementAtOrDefault(partition5.Count() - 1));
+        assertEquals(first, partition5.firstOrDefault());
+        assertEquals(first, partition5.elementAtOrDefault(0));
+        assertEquals(last, partition5.lastOrDefault());
+        assertEquals(last, partition5.elementAtOrDefault(partition5.count() - 1));
     }
 
     @ParameterizedTest
@@ -1241,37 +1237,30 @@ class TakeTest extends TestCase {
         }
 
         int end;
-        try
-        {
-            end = checked(skip + take);
-        }
-        catch (OverflowException)
-        {
-            end = int.MaxValue;
+        try {
+            end = Math.addExact(skip, take);
+        } catch (ArithmeticException e) {
+            end = Integer.MAX_VALUE;
         }
 
-        var partition2 = ForceNotCollection(source).take(skip..end);
-        for (int i = 0; i < indices.Length; i++)
-        {
-            assertEquals(expectedValues[i], partition2.ElementAtOrDefault(indices[i]));
+        IEnumerable<Integer> partition2 = ForceNotCollection(Linq.of(source)).take(new Range(Index.fromStart(skip), Index.fromStart(end)));
+        for (int i = 0; i < indices.length; i++) {
+            assertEquals(expectedValues[i], partition2.elementAtOrDefault(indices[i]));
         }
 
-        var partition3 = ForceNotCollection(source).take(^Math.Max(source.Length - skip, 0)..end);
-        for (int i = 0; i < indices.Length; i++)
-        {
-            assertEquals(expectedValues[i], partition3.ElementAtOrDefault(indices[i]));
+        IEnumerable<Integer> partition3 = ForceNotCollection(Linq.of(source)).take(new Range(Index.fromEnd(Math.max(source.length - skip, 0)), Index.fromStart(end)));
+        for (int i = 0; i < indices.length; i++) {
+            assertEquals(expectedValues[i], partition3.elementAtOrDefault(indices[i]));
         }
 
-        var partition4 = ForceNotCollection(source).take(skip..^Math.Max(source.Length - end, 0));
-        for (int i = 0; i < indices.Length; i++)
-        {
-            assertEquals(expectedValues[i], partition4.ElementAtOrDefault(indices[i]));
+        IEnumerable<Integer> partition4 = ForceNotCollection(Linq.of(source)).take(new Range(Index.fromStart(skip), Index.fromEnd(Math.max(source.length - end, 0))));
+        for (int i = 0; i < indices.length; i++) {
+            assertEquals(expectedValues[i], partition4.elementAtOrDefault(indices[i]));
         }
 
-        var partition5 = ForceNotCollection(source).take(^Math.Max(source.Length - skip, 0)..^Math.Max(source.Length - end, 0));
-        for (int i = 0; i < indices.Length; i++)
-        {
-            assertEquals(expectedValues[i], partition5.ElementAtOrDefault(indices[i]));
+        IEnumerable<Integer> partition5 = ForceNotCollection(Linq.of(source)).take(new Range(Index.fromEnd(Math.max(source.length - skip, 0)), Index.fromEnd(Math.max(source.length - end, 0))));
+        for (int i = 0; i < indices.length; i++) {
+            assertEquals(expectedValues[i], partition5.elementAtOrDefault(indices[i]));
         }
     }
 
@@ -1302,722 +1291,703 @@ class TakeTest extends TestCase {
         // Unlike Skip, Take can tell straightaway that it can return a sequence with no elements if count <= 0.
         // The enumerable it returns is a specialized empty iterator that has no connections to the source. Hence,
         // after MoveNext returns false under those circumstances, it won't invoke Dispose on our enumerator.
-        boolean isItertorNotEmpty0 = count>0;
+        boolean isItertorNotEmpty0 = count > 0;
         assertEquals(isItertorNotEmpty0, isIteratorDisposed[0]);
 
-        int end = Math.Max(0, count);
-        IEnumerator<int> iterator1 = source[1].take(0..end).GetEnumerator();
-        Assert.All(Enumerable.Range(0, Math.Min(sourceCount, Math.Max(0, count))), _ => Assert.True(iterator1.MoveNext()));
-        Assert.False(iterator1.MoveNext());
+        int end = Math.max(0, count);
+        IEnumerator<Integer> iterator1 = source.get(1).take(new Range(Index.Start, Index.fromStart(end))).enumerator();
+        assertAll(Linq.range(0, Math.min(sourceCount, Math.max(0, count))), x -> assertTrue(iterator1.moveNext()));
+        assertFalse(iterator1.moveNext());
         // When startIndex end and endIndex are both not from end and startIndex >= endIndex, Take(Range) returns an empty array.
-        bool isItertorNotEmpty1 = end != 0;
+        boolean isItertorNotEmpty1 = end != 0;
         assertEquals(isItertorNotEmpty1, isIteratorDisposed[1]);
 
-        int startIndexFromEnd = Math.Max(sourceCount, end);
-        int endIndexFromEnd = Math.Max(0, sourceCount - end);
+        int startIndexFromEnd = Math.max(sourceCount, end);
+        int endIndexFromEnd = Math.max(0, sourceCount - end);
 
-        IEnumerator<int> iterator2 = source[2].take(^startIndexFromEnd..end).GetEnumerator();
-        Assert.All(Enumerable.Range(0, Math.Min(sourceCount, Math.Max(0, count))), _ => Assert.True(iterator2.MoveNext()));
-        Assert.False(iterator2.MoveNext());
+        IEnumerator<Integer> iterator2 = source.get(2).take(new Range(Index.fromEnd(startIndexFromEnd), Index.fromStart(end))).enumerator();
+        assertAll(Linq.range(0, Math.min(sourceCount, Math.max(0, count))), x -> assertTrue(iterator2.moveNext()));
+        assertFalse(iterator2.moveNext());
         // When startIndex is ^0, Take(Range) returns an empty array.
-        bool isIteratorNotEmpty2 = startIndexFromEnd != 0;
+        boolean isIteratorNotEmpty2 = startIndexFromEnd != 0;
         assertEquals(isIteratorNotEmpty2, isIteratorDisposed[2]);
 
-        IEnumerator<int> iterator3 = source[3].take(0..^endIndexFromEnd).GetEnumerator();
-        Assert.All(Enumerable.Range(0, Math.Min(sourceCount, Math.Max(0, count))), _ => Assert.True(iterator3.MoveNext()));
-        Assert.False(iterator3.MoveNext());
-        Assert.True(isIteratorDisposed[3]);
+        IEnumerator<Integer> iterator3 = source.get(3).take(new Range(Index.Start, Index.fromEnd(endIndexFromEnd))).enumerator();
+        assertAll(Linq.range(0, Math.min(sourceCount, Math.max(0, count))), x -> assertTrue(iterator3.moveNext()));
+        assertFalse(iterator3.moveNext());
+        assertTrue(isIteratorDisposed[3]);
 
-        IEnumerator<int> iterator4 = source[4].take(^startIndexFromEnd..^endIndexFromEnd).GetEnumerator();
-        Assert.All(Enumerable.Range(0, Math.Min(sourceCount, Math.Max(0, count))), _ => Assert.True(iterator4.MoveNext()));
-        Assert.False(iterator4.MoveNext());
+        IEnumerator<Integer> iterator4 = source.get(4).take(new Range(Index.fromEnd(startIndexFromEnd), Index.fromEnd(endIndexFromEnd))).enumerator();
+        assertAll(Linq.range(0, Math.min(sourceCount, Math.max(0, count))), x -> assertTrue(iterator4.moveNext()));
+        assertFalse(iterator4.moveNext());
         // When startIndex is ^0,
         // or when startIndex and endIndex are both from end and startIndex <= endIndexFromEnd, Take(Range) returns an empty array.
-        bool isIteratorNotEmpty4 = startIndexFromEnd != 0 && startIndexFromEnd > endIndexFromEnd;
+        boolean isIteratorNotEmpty4 = startIndexFromEnd != 0 && startIndexFromEnd > endIndexFromEnd;
         assertEquals(isIteratorNotEmpty4, isIteratorDisposed[4]);
     }
 
 
-        [Fact]
-    public void DisposeSource_StartIndexFromEnd_ShouldDisposeOnFirstElement()
-    {
-            const int count = 5;
-        int state = 0;
-        var source = new DelegateIterator<int>(
-                moveNext: () => ++state <= count,
-            current: () => state,
-            dispose: () => state = -1);
+    @Test
+    void DisposeSource_StartIndexFromEnd_ShouldDisposeOnFirstElement() {
+        final int count = 5;
+        ref<Integer> state = ref.init(0);
+        IEnumerable<Integer> source = new DelegateIterator<>(
+                () -> ++state.value <= count,
+                () -> state.value,
+                () -> state.value = -1);
 
-        using var e = source.take(^3..).GetEnumerator();
-        Assert.True(e.MoveNext());
-        assertEquals(3, e.Current);
+        try (IEnumerator<Integer> e = source.take(Range.startAt(Index.fromEnd(3))).enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals(3, e.current());
 
-        assertEquals(-1, state);
-        Assert.True(e.MoveNext());
+            assertEquals(-1, state.value);
+            assertTrue(e.moveNext());
+        }
     }
 
-        [Fact]
-    public void DisposeSource_EndIndexFromEnd_ShouldDisposeOnCompletedEnumeration()
-    {
-            const int count = 5;
-        int state = 0;
-        var source = new DelegateIterator<int>(
-                moveNext: () => ++state <= count,
-            current: () => state,
-            dispose: () => state = -1);
+    @Test
+    void DisposeSource_EndIndexFromEnd_ShouldDisposeOnCompletedEnumeration() {
+        final int count = 5;
+        ref<Integer> state = ref.init(0);
+        IEnumerable<Integer> source = new DelegateIterator<>(
+                () -> ++state.value <= count,
+                () -> state.value,
+                () -> state.value = -1);
 
-        using var e = source.take(..^3).GetEnumerator();
+        try (IEnumerator<Integer> e = source.take(Range.endAt(Index.fromEnd(3))).enumerator()) {
+            assertTrue(e.moveNext());
+            assertEquals(4, state.value);
+            assertEquals(1, e.current());
 
-        Assert.True(e.MoveNext());
-        assertEquals(4, state);
-        assertEquals(1, e.Current);
+            assertTrue(e.moveNext());
+            assertEquals(5, state.value);
+            assertEquals(2, e.current());
 
-        Assert.True(e.MoveNext());
-        assertEquals(5, state);
-        assertEquals(2, e.Current);
-
-        Assert.False(e.MoveNext());
-        assertEquals(-1, state);
+            assertFalse(e.moveNext());
+        }
+        assertEquals(-1, state.value);
     }
 
-        [Fact]
-    public void OutOfBoundNoException()
-    {
-        Func<int[]> source = () => new[] { 1, 2, 3, 4, 5 };
+    @Test
+    void OutOfBoundNoException() {
+        Func0<IEnumerable<Integer>> source = () -> Linq.of(new int[]{1, 2, 3, 4, 5});
 
-        assertEquals(source(), source().take(0..6));
-        assertEquals(source(), source().take(0..int.MaxValue));
+        assertEquals(source.apply(), source.apply().take(new Range(Index.Start, Index.fromStart(6))));
+        assertEquals(source.apply(), source.apply().take(new Range(Index.Start, Index.fromStart(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, source().take(^10..4));
-        assertEquals(new int[] { 1, 2, 3, 4 }, source().take(^int.MaxValue..4));
-        assertEquals(source(), source().take(^10..6));
-        assertEquals(source(), source().take(^int.MaxValue..6));
-        assertEquals(source(), source().take(^10..int.MaxValue));
-        assertEquals(source(), source().take(^int.MaxValue..int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.apply().take(new Range(Index.fromEnd(10), Index.fromStart(4))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.apply().take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(4))));
+        assertEquals(source.apply(), source.apply().take(new Range(Index.fromEnd(10), Index.fromStart(6))));
+        assertEquals(source.apply(), source.apply().take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(6))));
+        assertEquals(source.apply(), source.apply().take(new Range(Index.fromEnd(10), Index.fromStart(Integer.MAX_VALUE))));
+        assertEquals(source.apply(), source.apply().take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(Integer.MAX_VALUE))));
 
-        Assert.Empty(source().take(0..^6));
-        Assert.Empty(source().take(0..^int.MaxValue));
-        Assert.Empty(source().take(4..^6));
-        Assert.Empty(source().take(4..^int.MaxValue));
-        Assert.Empty(source().take(6..^6));
-        Assert.Empty(source().take(6..^int.MaxValue));
-        Assert.Empty(source().take(int.MaxValue..^6));
-        Assert.Empty(source().take(int.MaxValue..^int.MaxValue));
+        assertEmpty(source.apply().take(new Range(Index.Start, Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.Start, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(4), Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(4), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(6), Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(6), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, source().take(^10..^1));
-        assertEquals(new int[] { 1, 2, 3, 4 }, source().take(^int.MaxValue..^1));
-        Assert.Empty(source().take(^0..^6));
-        Assert.Empty(source().take(^1..^6));
-        Assert.Empty(source().take(^6..^6));
-        Assert.Empty(source().take(^10..^6));
-        Assert.Empty(source().take(^int.MaxValue..^6));
-        Assert.Empty(source().take(^0..^int.MaxValue));
-        Assert.Empty(source().take(^1..^int.MaxValue));
-        Assert.Empty(source().take(^6..^int.MaxValue));
-        Assert.Empty(source().take(^int.MaxValue..^int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.apply().take(new Range(Index.fromEnd(10), Index.fromEnd(1))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), source.apply().take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(1))));
+        assertEmpty(source.apply().take(new Range(Index.End, Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(1), Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(10), Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(source.apply().take(new Range(Index.End, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(1), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(5), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
     }
 
-        [Fact]
-    public void OutOfBoundNoExceptionNotList()
-    {
-        var source = new[] { 1, 2, 3, 4, 5 };
+    @Test
+    void OutOfBoundNoExceptionNotList() {
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4, 5});
 
-        assertEquals(source, ForceNotCollection(source).take(0..6));
-        assertEquals(source, ForceNotCollection(source).take(0..int.MaxValue));
+        assertEquals(source, ForceNotCollection(source).take(new Range(Index.Start, Index.fromStart(6))));
+        assertEquals(source, ForceNotCollection(source).take(new Range(Index.Start, Index.fromStart(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, ForceNotCollection(source).take(^10..4));
-        assertEquals(new int[] { 1, 2, 3, 4 }, ForceNotCollection(source).take(^int.MaxValue..4));
-        assertEquals(source, ForceNotCollection(source).take(^10..6));
-        assertEquals(source, ForceNotCollection(source).take(^int.MaxValue..6));
-        assertEquals(source, ForceNotCollection(source).take(^10..int.MaxValue));
-        assertEquals(source, ForceNotCollection(source).take(^int.MaxValue..int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromStart(4))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ForceNotCollection(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(4))));
+        assertEquals(source, ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromStart(6))));
+        assertEquals(source, ForceNotCollection(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(6))));
+        assertEquals(source, ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromStart(Integer.MAX_VALUE))));
+        assertEquals(source, ForceNotCollection(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(Integer.MAX_VALUE))));
 
-        Assert.Empty(ForceNotCollection(source).take(0..^6));
-        Assert.Empty(ForceNotCollection(source).take(0..^int.MaxValue));
-        Assert.Empty(ForceNotCollection(source).take(4..^6));
-        Assert.Empty(ForceNotCollection(source).take(4..^int.MaxValue));
-        Assert.Empty(ForceNotCollection(source).take(6..^6));
-        Assert.Empty(ForceNotCollection(source).take(6..^int.MaxValue));
-        Assert.Empty(ForceNotCollection(source).take(int.MaxValue..^6));
-        Assert.Empty(ForceNotCollection(source).take(int.MaxValue..^int.MaxValue));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.Start, Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.Start, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(4), Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(4), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(6), Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(6), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, ForceNotCollection(source).take(^10..^1));
-        assertEquals(new int[] { 1, 2, 3, 4 }, ForceNotCollection(source).take(^int.MaxValue..^1));
-        Assert.Empty(ForceNotCollection(source).take(^0..^6));
-        Assert.Empty(ForceNotCollection(source).take(^1..^6));
-        Assert.Empty(ForceNotCollection(source).take(^6..^6));
-        Assert.Empty(ForceNotCollection(source).take(^10..^6));
-        Assert.Empty(ForceNotCollection(source).take(^int.MaxValue..^6));
-        Assert.Empty(ForceNotCollection(source).take(^0..^int.MaxValue));
-        Assert.Empty(ForceNotCollection(source).take(^1..^int.MaxValue));
-        Assert.Empty(ForceNotCollection(source).take(^6..^int.MaxValue));
-        Assert.Empty(ForceNotCollection(source).take(^int.MaxValue..^int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromEnd(1))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ForceNotCollection(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(1))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.End, Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(1), Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.End, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(1), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(5), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
     }
 
-        [Fact]
-    public void OutOfBoundNoExceptionListPartition()
-    {
-        var source = new[] { 1, 2, 3, 4, 5 };
+    @Test
+    void OutOfBoundNoExceptionListPartition() {
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4, 5});
 
-        assertEquals(source, ListPartitionOrEmpty(source).take(0..6));
-        assertEquals(source, ListPartitionOrEmpty(source).take(0..int.MaxValue));
+        assertEquals(source, ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(6))));
+        assertEquals(source, ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, ListPartitionOrEmpty(source).take(^10..4));
-        assertEquals(new int[] { 1, 2, 3, 4 }, ListPartitionOrEmpty(source).take(^int.MaxValue..4));
-        assertEquals(source, ListPartitionOrEmpty(source).take(^10..6));
-        assertEquals(source, ListPartitionOrEmpty(source).take(^int.MaxValue..6));
-        assertEquals(source, ListPartitionOrEmpty(source).take(^10..int.MaxValue));
-        assertEquals(source, ListPartitionOrEmpty(source).take(^int.MaxValue..int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(4))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(4))));
+        assertEquals(source, ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(6))));
+        assertEquals(source, ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(6))));
+        assertEquals(source, ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(Integer.MAX_VALUE))));
+        assertEquals(source, ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(Integer.MAX_VALUE))));
 
-        Assert.Empty(ListPartitionOrEmpty(source).take(0..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(0..^int.MaxValue));
-        Assert.Empty(ListPartitionOrEmpty(source).take(4..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(4..^int.MaxValue));
-        Assert.Empty(ListPartitionOrEmpty(source).take(6..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(6..^int.MaxValue));
-        Assert.Empty(ListPartitionOrEmpty(source).take(int.MaxValue..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(int.MaxValue..^int.MaxValue));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(4), Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(4), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, ListPartitionOrEmpty(source).take(^10..^1));
-        assertEquals(new int[] { 1, 2, 3, 4 }, ListPartitionOrEmpty(source).take(^int.MaxValue..^1));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^0..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^1..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^6..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^10..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^int.MaxValue..^6));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^0..^int.MaxValue));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^1..^int.MaxValue));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^6..^int.MaxValue));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^int.MaxValue..^int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(1))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(1))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.End, Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.End, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(5), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
     }
 
-        [Fact]
-    public void OutOfBoundNoExceptionEnumerablePartition()
-    {
-        var source = new[] { 1, 2, 3, 4, 5 };
+    @Test
+    void OutOfBoundNoExceptionEnumerablePartition() {
+        IEnumerable<Integer> source = Linq.of(new int[]{1, 2, 3, 4, 5});
 
-        assertEquals(source, EnumerablePartitionOrEmpty(source).take(0..6));
-        assertEquals(source, EnumerablePartitionOrEmpty(source).take(0..int.MaxValue));
+        assertEquals(source, EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(6))));
+        assertEquals(source, EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, EnumerablePartitionOrEmpty(source).take(^10..4));
-        assertEquals(new int[] { 1, 2, 3, 4 }, EnumerablePartitionOrEmpty(source).take(^int.MaxValue..4));
-        assertEquals(source, EnumerablePartitionOrEmpty(source).take(^10..6));
-        assertEquals(source, EnumerablePartitionOrEmpty(source).take(^int.MaxValue..6));
-        assertEquals(source, EnumerablePartitionOrEmpty(source).take(^10..int.MaxValue));
-        assertEquals(source, EnumerablePartitionOrEmpty(source).take(^int.MaxValue..int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(4))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(4))));
+        assertEquals(source, EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(6))));
+        assertEquals(source, EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(6))));
+        assertEquals(source, EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(Integer.MAX_VALUE))));
+        assertEquals(source, EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromStart(Integer.MAX_VALUE))));
 
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(0..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(0..^int.MaxValue));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(4..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(4..^int.MaxValue));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(6..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(6..^int.MaxValue));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(int.MaxValue..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(int.MaxValue..^int.MaxValue));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(4), Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(4), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
 
-        assertEquals(new int[] { 1, 2, 3, 4 }, EnumerablePartitionOrEmpty(source).take(^10..^1));
-        assertEquals(new int[] { 1, 2, 3, 4 }, EnumerablePartitionOrEmpty(source).take(^int.MaxValue..^1));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^0..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^1..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^6..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^10..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^int.MaxValue..^6));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^0..^int.MaxValue));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^1..^int.MaxValue));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^6..^int.MaxValue));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^int.MaxValue..^int.MaxValue));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(1))));
+        assertEquals(Linq.of(new int[]{1, 2, 3, 4}), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(1))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.End, Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(6))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.End, Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(5), Index.fromEnd(Integer.MAX_VALUE))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(Integer.MAX_VALUE), Index.fromEnd(Integer.MAX_VALUE))));
     }
 
-        [Fact]
-    public void MutableSource()
-    {
-        var source1 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query1 = source1.take(3);
-        source1.RemoveAt(0);
-        source1.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query1);
+    @Test
+    void MutableSource() {
+        List<Integer> source1 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query1 = Linq.of(source1).take(3);
+        source1.remove(0);
+        source1.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query1);
 
-        var source2 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query2 = source2.take(0..3);
-        source2.RemoveAt(0);
-        source2.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query2);
+        List<Integer> source2 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query2 = Linq.of(source2).take(new Range(Index.Start, Index.fromStart(3)));
+        source2.remove(0);
+        source2.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query2);
 
-        var source3 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query3 = source3.take(^6..3);
-        source3.RemoveAt(0);
-        source3.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query3);
+        List<Integer> source3 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query3 = Linq.of(source3).take(new Range(Index.fromEnd(6), Index.fromStart(3)));
+        source3.remove(0);
+        source3.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query3);
 
-        var source4 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query4 = source4.take(^6..^3);
-        source4.RemoveAt(0);
-        source4.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query4);
+        List<Integer> source4 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query4 = Linq.of(source4).take(new Range(Index.fromEnd(6), Index.fromEnd(3)));
+        source4.remove(0);
+        source4.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query4);
     }
 
-        [Fact]
-    public void MutableSourceNotList()
-    {
-        var source1 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query1 = ForceNotCollection(source1).Select(i => i).take(3);
-        source1.RemoveAt(0);
-        source1.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query1);
+    @Test
+    void MutableSourceNotList() {
+        List<Integer> source1 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query1 = ForceNotCollection(Linq.of(source1)).select(i -> i).take(3);
+        source1.remove(0);
+        source1.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query1);
 
-        var source2 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query2 = ForceNotCollection(source2).Select(i => i).take(0..3);
-        source2.RemoveAt(0);
-        source2.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query2);
+        List<Integer> source2 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query2 = ForceNotCollection(Linq.of(source2)).select(i -> i).take(new Range(Index.Start, Index.fromStart(3)));
+        source2.remove(0);
+        source2.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query2);
 
-        var source3 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query3 = ForceNotCollection(source3).Select(i => i).take(^6..3);
-        source3.RemoveAt(0);
-        source3.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query3);
+        List<Integer> source3 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query3 = ForceNotCollection(Linq.of(source3)).select(i -> i).take(new Range(Index.fromEnd(6), Index.fromStart(3)));
+        source3.remove(0);
+        source3.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query3);
 
-        var source4 = new List<int>() { 0, 1, 2, 3, 4 };
-        var query4 = ForceNotCollection(source4).Select(i => i).take(^6..^3);
-        source4.RemoveAt(0);
-        source4.InsertRange(2, new[] { -1, -2 });
-        assertEquals(new[] { 1, 2, -1 }, query4);
+        List<Integer> source4 = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        IEnumerable<Integer> query4 = ForceNotCollection(Linq.of(source4)).select(i -> i).take(new Range(Index.fromEnd(6), Index.fromEnd(3)));
+        source4.remove(0);
+        source4.addAll(2, Arrays.asList(-1, -2));
+        assertEquals(Linq.of(new int[]{1, 2, -1}), query4);
     }
 
-        [Fact]
-    public void NonEmptySource_ConsistencyWithCountable()
-    {
-        Func<int[]> source = () => new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_ConsistencyWithCountable() {
+        Func0<IEnumerable<Integer>> source = () -> Linq.of(new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 
         // Multiple elements in the middle.
-        assertEquals(source()[^9..5], source().take(^9..5));
-        assertEquals(source()[2..7], source().take(2..7));
-        assertEquals(source()[2..^4], source().take(2..^4));
-        assertEquals(source()[^7..^4], source().take(^7..^4));
+        assertEquals(Linq.of(1, 2, 3, 4), source.apply().take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6), source.apply().take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEquals(Linq.of(2, 3, 4, 5), source.apply().take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEquals(Linq.of(3, 4, 5), source.apply().take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        assertEquals(source()[^9..], source().take(^9..));
-        assertEquals(source()[2..], source().take(2..));
-        assertEquals(source()[..^4], source().take(..^4));
-        assertEquals(source()[..6], source().take(..6));
+        assertEquals(Linq.of(1, 2, 3, 4, 5, 6, 7, 8, 9), source.apply().take(Range.startAt(Index.fromEnd(9))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6, 7, 8, 9), source.apply().take(Range.startAt(Index.fromStart(2))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), source.apply().take(Range.endAt(Index.fromEnd(4))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), source.apply().take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source()[..], source().take(..));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), source.apply().take(Range.All));
 
         // Single element in the middle.
-        assertEquals(source()[^9..2], source().take(^9..2));
-        assertEquals(source()[2..3], source().take(2..3));
-        assertEquals(source()[2..^7], source().take(2..^7));
-        assertEquals(source()[^5..^4], source().take(^5..^4));
+        assertEquals(Linq.of(1), source.apply().take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEquals(Linq.of(2), source.apply().take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEquals(Linq.of(2), source.apply().take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEquals(Linq.of(5), source.apply().take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        assertEquals(source()[^10..1], source().take(^10..1));
-        assertEquals(source()[0..1], source().take(0..1));
-        assertEquals(source()[0..^9], source().take(0..^9));
-        assertEquals(source()[^10..^9], source().take(^10..^9));
+        assertEquals(Linq.of(0), source.apply().take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEquals(Linq.of(0), source.apply().take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(0), source.apply().take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEquals(Linq.of(0), source.apply().take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        assertEquals(source()[^1..10], source().take(^1..10));
-        assertEquals(source()[9..10], source().take(9..10));
-        assertEquals(source()[9..^0], source().take(9..^0));
-        assertEquals(source()[^1..^0], source().take(^1..^0));
+        assertEquals(Linq.of(9), source.apply().take(new Range(Index.fromEnd(1), Index.fromStart(10))));
+        assertEquals(Linq.of(9), source.apply().take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEquals(Linq.of(9), source.apply().take(new Range(Index.fromStart(9), Index.End)));
+        assertEquals(Linq.of(9), source.apply().take(new Range(Index.fromEnd(1), Index.End)));
 
         // No element.
-        assertEquals(source()[3..3], source().take(3..3));
-        assertEquals(source()[6..^4], source().take(6..^4));
-        assertEquals(source()[3..^7], source().take(3..^7));
-        assertEquals(source()[^3..7], source().take(^3..7));
-        assertEquals(source()[^6..^6], source().take(^6..^6));
+        assertEquals(Linq.empty(), source.apply().take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEquals(Linq.empty(), source.apply().take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEquals(Linq.empty(), source.apply().take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEquals(Linq.empty(), source.apply().take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEquals(Linq.empty(), source.apply().take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
     }
 
-        [Fact]
-    public void NonEmptySource_ConsistencyWithCountable_NotList()
-    {
-        int[] source = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_ConsistencyWithCountable_NotList() {
+        IEnumerable<Integer> source = Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         // Multiple elements in the middle.
-        assertEquals(source[^9..5], ForceNotCollection(source).take(^9..5));
-        assertEquals(source[2..7], ForceNotCollection(source).take(2..7));
-        assertEquals(source[2..^4], ForceNotCollection(source).take(2..^4));
-        assertEquals(source[^7..^4], ForceNotCollection(source).take(^7..^4));
+        assertEquals(Linq.of(1, 2, 3, 4), ForceNotCollection(source).take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6), ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEquals(Linq.of(2, 3, 4, 5), ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEquals(Linq.of(3, 4, 5), ForceNotCollection(source).take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        assertEquals(source[^9..], ForceNotCollection(source).take(^9..));
-        assertEquals(source[2..], ForceNotCollection(source).take(2..));
-        assertEquals(source[..^4], ForceNotCollection(source).take(..^4));
-        assertEquals(source[..6], ForceNotCollection(source).take(..6));
+        assertEquals(Linq.of(1, 2, 3, 4, 5, 6, 7, 8, 9), ForceNotCollection(source).take(Range.startAt(Index.fromEnd(9))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6, 7, 8, 9), ForceNotCollection(source).take(Range.startAt(Index.fromStart(2))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), ForceNotCollection(source).take(Range.endAt(Index.fromEnd(4))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), ForceNotCollection(source).take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source[..], ForceNotCollection(source).take(..));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), ForceNotCollection(source).take(Range.All));
 
         // Single element in the middle.
-        assertEquals(source[^9..2], ForceNotCollection(source).take(^9..2));
-        assertEquals(source[2..3], ForceNotCollection(source).take(2..3));
-        assertEquals(source[2..^7], ForceNotCollection(source).take(2..^7));
-        assertEquals(source[^5..^4], ForceNotCollection(source).take(^5..^4));
+        assertEquals(Linq.of(1), ForceNotCollection(source).take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEquals(Linq.of(2), ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEquals(Linq.of(2), ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEquals(Linq.of(5), ForceNotCollection(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        assertEquals(source[^10..1], ForceNotCollection(source).take(^10..1));
-        assertEquals(source[0..1], ForceNotCollection(source).take(0..1));
-        assertEquals(source[0..^9], ForceNotCollection(source).take(0..^9));
-        assertEquals(source[^10..^9], ForceNotCollection(source).take(^10..^9));
+        assertEquals(Linq.of(0), ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEquals(Linq.of(0), ForceNotCollection(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(0), ForceNotCollection(source).take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEquals(Linq.of(0), ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        assertEquals(source[^1..10], ForceNotCollection(source).take(^1..10));
-        assertEquals(source[9..10], ForceNotCollection(source).take(9..10));
-        assertEquals(source[9..^0], ForceNotCollection(source).take(9..^0));
-        assertEquals(source[^1..^0], ForceNotCollection(source).take(^1..^0));
+        assertEquals(Linq.of(9), ForceNotCollection(source).take(new Range(Index.fromEnd(1), Index.fromStart(10))));
+        assertEquals(Linq.of(9), ForceNotCollection(source).take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEquals(Linq.of(9), ForceNotCollection(source).take(new Range(Index.fromStart(9), Index.End)));
+        assertEquals(Linq.of(9), ForceNotCollection(source).take(new Range(Index.fromEnd(1), Index.End)));
 
         // No element.
-        assertEquals(source[3..3], ForceNotCollection(source).take(3..3));
-        assertEquals(source[6..^4], ForceNotCollection(source).take(6..^4));
-        assertEquals(source[3..^7], ForceNotCollection(source).take(3..^7));
-        assertEquals(source[^3..7], ForceNotCollection(source).take(^3..7));
-        assertEquals(source[^6..^6], ForceNotCollection(source).take(^6..^6));
+        assertEquals(Linq.empty(), ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEquals(Linq.empty(), ForceNotCollection(source).take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEquals(Linq.empty(), ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEquals(Linq.empty(), ForceNotCollection(source).take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEquals(Linq.empty(), ForceNotCollection(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
     }
 
-        [Fact]
-    public void NonEmptySource_ConsistencyWithCountable_ListPartition()
-    {
-        int[] source = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_ConsistencyWithCountable_ListPartition() {
+        IEnumerable<Integer> source = Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         // Multiple elements in the middle.
-        assertEquals(source[^9..5], ListPartitionOrEmpty(source).take(^9..5));
-        assertEquals(source[2..7], ListPartitionOrEmpty(source).take(2..7));
-        assertEquals(source[2..^4], ListPartitionOrEmpty(source).take(2..^4));
-        assertEquals(source[^7..^4], ListPartitionOrEmpty(source).take(^7..^4));
+        assertEquals(Linq.of(1, 2, 3, 4), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEquals(Linq.of(2, 3, 4, 5), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEquals(Linq.of(3, 4, 5), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        assertEquals(source[^9..], ListPartitionOrEmpty(source).take(^9..));
-        assertEquals(source[2..], ListPartitionOrEmpty(source).take(2..));
-        assertEquals(source[..^4], ListPartitionOrEmpty(source).take(..^4));
-        assertEquals(source[..6], ListPartitionOrEmpty(source).take(..6));
+        assertEquals(Linq.of(1, 2, 3, 4, 5, 6, 7, 8, 9), ListPartitionOrEmpty(source).take(Range.startAt(Index.fromEnd(9))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6, 7, 8, 9), ListPartitionOrEmpty(source).take(Range.startAt(Index.fromStart(2))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), ListPartitionOrEmpty(source).take(Range.endAt(Index.fromEnd(4))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), ListPartitionOrEmpty(source).take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source[..], ListPartitionOrEmpty(source).take(..));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), ListPartitionOrEmpty(source).take(Range.All));
 
         // Single element in the middle.
-        assertEquals(source[^9..2], ListPartitionOrEmpty(source).take(^9..2));
-        assertEquals(source[2..3], ListPartitionOrEmpty(source).take(2..3));
-        assertEquals(source[2..^7], ListPartitionOrEmpty(source).take(2..^7));
-        assertEquals(source[^5..^4], ListPartitionOrEmpty(source).take(^5..^4));
+        assertEquals(Linq.of(1), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEquals(Linq.of(2), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEquals(Linq.of(2), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEquals(Linq.of(5), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        assertEquals(source[^10..1], ListPartitionOrEmpty(source).take(^10..1));
-        assertEquals(source[0..1], ListPartitionOrEmpty(source).take(0..1));
-        assertEquals(source[0..^9], ListPartitionOrEmpty(source).take(0..^9));
-        assertEquals(source[^10..^9], ListPartitionOrEmpty(source).take(^10..^9));
+        assertEquals(Linq.of(0), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEquals(Linq.of(0), ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(0), ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEquals(Linq.of(0), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        assertEquals(source[^1..10], ListPartitionOrEmpty(source).take(^1..10));
-        assertEquals(source[9..10], ListPartitionOrEmpty(source).take(9..10));
-        assertEquals(source[9..^0], ListPartitionOrEmpty(source).take(9..^0));
-        assertEquals(source[^1..^0], ListPartitionOrEmpty(source).take(^1..^0));
+        assertEquals(Linq.of(9), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromStart(10))));
+        assertEquals(Linq.of(9), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEquals(Linq.of(9), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.End)));
+        assertEquals(Linq.of(9), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.End)));
 
         // No element.
-        assertEquals(source[3..3], ListPartitionOrEmpty(source).take(3..3));
-        assertEquals(source[6..^4], ListPartitionOrEmpty(source).take(6..^4));
-        assertEquals(source[3..^7], ListPartitionOrEmpty(source).take(3..^7));
-        assertEquals(source[^3..7], ListPartitionOrEmpty(source).take(^3..7));
-        assertEquals(source[^6..^6], ListPartitionOrEmpty(source).take(^6..^6));
+        assertEquals(Linq.empty(), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEquals(Linq.empty(), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEquals(Linq.empty(), ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEquals(Linq.empty(), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEquals(Linq.empty(), ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
     }
 
-        [Fact]
-    public void NonEmptySource_ConsistencyWithCountable_EnumerablePartition()
-    {
-        int[] source = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_ConsistencyWithCountable_EnumerablePartition() {
+        IEnumerable<Integer> source = Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         // Multiple elements in the middle.
-        assertEquals(source[^9..5], EnumerablePartitionOrEmpty(source).take(^9..5));
-        assertEquals(source[2..7], EnumerablePartitionOrEmpty(source).take(2..7));
-        assertEquals(source[2..^4], EnumerablePartitionOrEmpty(source).take(2..^4));
-        assertEquals(source[^7..^4], EnumerablePartitionOrEmpty(source).take(^7..^4));
+        assertEquals(Linq.of(1, 2, 3, 4), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEquals(Linq.of(2, 3, 4, 5), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEquals(Linq.of(3, 4, 5), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        assertEquals(source[^9..], EnumerablePartitionOrEmpty(source).take(^9..));
-        assertEquals(source[2..], EnumerablePartitionOrEmpty(source).take(2..));
-        assertEquals(source[..^4], EnumerablePartitionOrEmpty(source).take(..^4));
-        assertEquals(source[..6], EnumerablePartitionOrEmpty(source).take(..6));
+        assertEquals(Linq.of(1, 2, 3, 4, 5, 6, 7, 8, 9), EnumerablePartitionOrEmpty(source).take(Range.startAt(Index.fromEnd(9))));
+        assertEquals(Linq.of(2, 3, 4, 5, 6, 7, 8, 9), EnumerablePartitionOrEmpty(source).take(Range.startAt(Index.fromStart(2))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), EnumerablePartitionOrEmpty(source).take(Range.endAt(Index.fromEnd(4))));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5), EnumerablePartitionOrEmpty(source).take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source[..], EnumerablePartitionOrEmpty(source).take(..));
+        assertEquals(Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), EnumerablePartitionOrEmpty(source).take(Range.All));
 
         // Single element in the middle.
-        assertEquals(source[^9..2], EnumerablePartitionOrEmpty(source).take(^9..2));
-        assertEquals(source[2..3], EnumerablePartitionOrEmpty(source).take(2..3));
-        assertEquals(source[2..^7], EnumerablePartitionOrEmpty(source).take(2..^7));
-        assertEquals(source[^5..^4], EnumerablePartitionOrEmpty(source).take(^5..^4));
+        assertEquals(Linq.of(1), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEquals(Linq.of(2), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEquals(Linq.of(2), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEquals(Linq.of(5), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        assertEquals(source[^10..1], EnumerablePartitionOrEmpty(source).take(^10..1));
-        assertEquals(source[0..1], EnumerablePartitionOrEmpty(source).take(0..1));
-        assertEquals(source[0..^9], EnumerablePartitionOrEmpty(source).take(0..^9));
-        assertEquals(source[^10..^9], EnumerablePartitionOrEmpty(source).take(^10..^9));
+        assertEquals(Linq.of(0), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEquals(Linq.of(0), EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEquals(Linq.of(0), EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEquals(Linq.of(0), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        assertEquals(source[^1..10], EnumerablePartitionOrEmpty(source).take(^1..10));
-        assertEquals(source[9..10], EnumerablePartitionOrEmpty(source).take(9..10));
-        assertEquals(source[9..^0], EnumerablePartitionOrEmpty(source).take(9..^0));
-        assertEquals(source[^1..^0], EnumerablePartitionOrEmpty(source).take(^1..^0));
+        assertEquals(Linq.of(9), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromStart(10))));
+        assertEquals(Linq.of(9), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEquals(Linq.of(9), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.End)));
+        assertEquals(Linq.of(9), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.End)));
 
         // No element.
-        assertEquals(source[3..3], EnumerablePartitionOrEmpty(source).take(3..3));
-        assertEquals(source[6..^4], EnumerablePartitionOrEmpty(source).take(6..^4));
-        assertEquals(source[3..^7], EnumerablePartitionOrEmpty(source).take(3..^7));
-        assertEquals(source[^3..7], EnumerablePartitionOrEmpty(source).take(^3..7));
-        assertEquals(source[^6..^6], EnumerablePartitionOrEmpty(source).take(^6..^6));
+        assertEquals(Linq.empty(), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEquals(Linq.empty(), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEquals(Linq.empty(), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEquals(Linq.empty(), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEquals(Linq.empty(), EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
     }
 
-        [Fact]
-    public void NonEmptySource_DoNotThrowException()
-    {
-        Func<int[]> source = () => new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_DoNotThrowException() {
+        Func0<IEnumerable<Integer>> source = () -> Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-        Assert.Empty(source().take(3..2));
-        Assert.Empty(source().take(6..^5));
-        Assert.Empty(source().take(3..^8));
-        Assert.Empty(source().take(^6..^7));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
-        [Fact]
-    public void NonEmptySource_DoNotThrowException_NotList()
-    {
-        int[] source = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_DoNotThrowException_NotList() {
+        IEnumerable<Integer> source = Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-        Assert.Empty(ForceNotCollection(source).take(3..2));
-        Assert.Empty(ForceNotCollection(source).take(6..^5));
-        Assert.Empty(ForceNotCollection(source).take(3..^8));
-        Assert.Empty(ForceNotCollection(source).take(^6..^7));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
-        [Fact]
-    public void NonEmptySource_DoNotThrowException_ListPartition()
-    {
-        int[] source = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_DoNotThrowException_ListPartition() {
+        IEnumerable<Integer> source = Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-        Assert.Empty(ListPartitionOrEmpty(source).take(3..2));
-        Assert.Empty(ListPartitionOrEmpty(source).take(6..^5));
-        Assert.Empty(ListPartitionOrEmpty(source).take(3..^8));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^6..^7));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
-        [Fact]
-    public void NonEmptySource_DoNotThrowException_EnumerablePartition()
-    {
-        int[] source = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    @Test
+    void NonEmptySource_DoNotThrowException_EnumerablePartition() {
+        IEnumerable<Integer> source = Linq.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(3..2));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(6..^5));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(3..^8));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^6..^7));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
-        [Fact]
-    public void EmptySource_DoNotThrowException()
-    {
-        Func<int[]> source = () => new int[] { };
+    @Test
+    void EmptySource_DoNotThrowException() {
+        Func0<IEnumerable<Integer>> source = () -> Linq.of(Collections.emptyList());
 
         // Multiple elements in the middle.
-        Assert.Empty(source().take(^9..5));
-        Assert.Empty(source().take(2..7));
-        Assert.Empty(source().take(2..^4));
-        Assert.Empty(source().take(^7..^4));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        Assert.Empty(source().take(^9..));
-        Assert.Empty(source().take(2..));
-        Assert.Empty(source().take(..^4));
-        Assert.Empty(source().take(..6));
+        assertEmpty(source.apply().take(Range.startAt(Index.fromEnd(9))));
+        assertEmpty(source.apply().take(Range.startAt(Index.fromStart(2))));
+        assertEmpty(source.apply().take(Range.endAt(Index.fromEnd(4))));
+        assertEmpty(source.apply().take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source()[..], source().take(..));
+        assertEquals(Linq.empty(), source.apply().take(Range.All));
 
         // Single element in the middle.
-        Assert.Empty(source().take(^9..2));
-        Assert.Empty(source().take(2..3));
-        Assert.Empty(source().take(2..^7));
-        Assert.Empty(source().take(^5..^4));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        Assert.Empty(source().take(^10..1));
-        Assert.Empty(source().take(0..1));
-        Assert.Empty(source().take(0..^9));
-        Assert.Empty(source().take(^10..^9));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEmpty(source.apply().take(new Range(Index.Start, Index.fromStart(1))));
+        assertEmpty(source.apply().take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        Assert.Empty(source().take(^1..^10));
-        Assert.Empty(source().take(9..10));
-        Assert.Empty(source().take(9..^9));
-        Assert.Empty(source().take(^1..^9));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(1), Index.fromEnd(10))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(9), Index.fromEnd(9))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(1), Index.fromEnd(9))));
 
         // No element.
-        Assert.Empty(source().take(3..3));
-        Assert.Empty(source().take(6..^4));
-        Assert.Empty(source().take(3..^7));
-        Assert.Empty(source().take(^3..7));
-        Assert.Empty(source().take(^6..^6));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
 
         // Invalid range.
-        Assert.Empty(source().take(3..2));
-        Assert.Empty(source().take(6..^5));
-        Assert.Empty(source().take(3..^8));
-        Assert.Empty(source().take(^6..^7));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(source.apply().take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(source.apply().take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
-        [Fact]
-    public void EmptySource_DoNotThrowException_NotList()
-    {
-        int[] source = { };
+    @Test
+    void EmptySource_DoNotThrowException_NotList() {
+        IEnumerable<Integer> source = Linq.of(Collections.emptyList());
 
         // Multiple elements in the middle.
-        Assert.Empty(ForceNotCollection(source).take(^9..5));
-        Assert.Empty(ForceNotCollection(source).take(2..7));
-        Assert.Empty(ForceNotCollection(source).take(2..^4));
-        Assert.Empty(ForceNotCollection(source).take(^7..^4));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        Assert.Empty(ForceNotCollection(source).take(^9..));
-        Assert.Empty(ForceNotCollection(source).take(2..));
-        Assert.Empty(ForceNotCollection(source).take(..^4));
-        Assert.Empty(ForceNotCollection(source).take(..6));
+        assertEmpty(ForceNotCollection(source).take(Range.startAt(Index.fromEnd(9))));
+        assertEmpty(ForceNotCollection(source).take(Range.startAt(Index.fromStart(2))));
+        assertEmpty(ForceNotCollection(source).take(Range.endAt(Index.fromEnd(4))));
+        assertEmpty(ForceNotCollection(source).take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source[..], ForceNotCollection(source).take(..));
+        assertEquals(Linq.empty(), ForceNotCollection(source).take(Range.All));
 
         // Single element in the middle.
-        Assert.Empty(ForceNotCollection(source).take(^9..2));
-        Assert.Empty(ForceNotCollection(source).take(2..3));
-        Assert.Empty(ForceNotCollection(source).take(2..^7));
-        Assert.Empty(ForceNotCollection(source).take(^5..^4));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        Assert.Empty(ForceNotCollection(source).take(^10..1));
-        Assert.Empty(ForceNotCollection(source).take(0..1));
-        Assert.Empty(ForceNotCollection(source).take(0..^9));
-        Assert.Empty(ForceNotCollection(source).take(^10..^9));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        Assert.Empty(ForceNotCollection(source).take(^1..^10));
-        Assert.Empty(ForceNotCollection(source).take(9..10));
-        Assert.Empty(ForceNotCollection(source).take(9..^9));
-        Assert.Empty(ForceNotCollection(source).take(^1..^9));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(1), Index.fromEnd(10))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(9), Index.fromEnd(9))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(1), Index.fromEnd(9))));
 
         // No element.
-        Assert.Empty(ForceNotCollection(source).take(3..3));
-        Assert.Empty(ForceNotCollection(source).take(6..^4));
-        Assert.Empty(ForceNotCollection(source).take(3..^7));
-        Assert.Empty(ForceNotCollection(source).take(^3..7));
-        Assert.Empty(ForceNotCollection(source).take(^6..^6));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
 
         // Invalid range.
-        Assert.Empty(ForceNotCollection(source).take(3..2));
-        Assert.Empty(ForceNotCollection(source).take(6..^5));
-        Assert.Empty(ForceNotCollection(source).take(3..^8));
-        Assert.Empty(ForceNotCollection(source).take(^6..^7));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(ForceNotCollection(source).take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
-        [Fact]
-    public void EmptySource_DoNotThrowException_ListPartition()
-    {
-        int[] source = { };
+    @Test
+    void EmptySource_DoNotThrowException_ListPartition() {
+        IEnumerable<Integer> source = Linq.of(Collections.emptyList());
 
         // Multiple elements in the middle.
-        Assert.Empty(ListPartitionOrEmpty(source).take(^9..5));
-        Assert.Empty(ListPartitionOrEmpty(source).take(2..7));
-        Assert.Empty(ListPartitionOrEmpty(source).take(2..^4));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^7..^4));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        Assert.Empty(ListPartitionOrEmpty(source).take(^9..));
-        Assert.Empty(ListPartitionOrEmpty(source).take(2..));
-        Assert.Empty(ListPartitionOrEmpty(source).take(..^4));
-        Assert.Empty(ListPartitionOrEmpty(source).take(..6));
+        assertEmpty(ListPartitionOrEmpty(source).take(Range.startAt(Index.fromEnd(9))));
+        assertEmpty(ListPartitionOrEmpty(source).take(Range.startAt(Index.fromStart(2))));
+        assertEmpty(ListPartitionOrEmpty(source).take(Range.endAt(Index.fromEnd(4))));
+        assertEmpty(ListPartitionOrEmpty(source).take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source[..], ListPartitionOrEmpty(source).take(..));
+        assertEquals(Linq.empty(), ListPartitionOrEmpty(source).take(Range.All));
 
         // Single element in the middle.
-        Assert.Empty(ListPartitionOrEmpty(source).take(^9..2));
-        Assert.Empty(ListPartitionOrEmpty(source).take(2..3));
-        Assert.Empty(ListPartitionOrEmpty(source).take(2..^7));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^5..^4));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        Assert.Empty(ListPartitionOrEmpty(source).take(^10..1));
-        Assert.Empty(ListPartitionOrEmpty(source).take(0..1));
-        Assert.Empty(ListPartitionOrEmpty(source).take(0..^9));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^10..^9));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        Assert.Empty(ListPartitionOrEmpty(source).take(^1..^10));
-        Assert.Empty(ListPartitionOrEmpty(source).take(9..10));
-        Assert.Empty(ListPartitionOrEmpty(source).take(9..^9));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^1..^9));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(10))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.fromEnd(9))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(9))));
 
         // No element.
-        Assert.Empty(ListPartitionOrEmpty(source).take(3..3));
-        Assert.Empty(ListPartitionOrEmpty(source).take(6..^4));
-        Assert.Empty(ListPartitionOrEmpty(source).take(3..^7));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^3..7));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^6..^6));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
 
         // Invalid range.
-        Assert.Empty(ListPartitionOrEmpty(source).take(3..2));
-        Assert.Empty(ListPartitionOrEmpty(source).take(6..^5));
-        Assert.Empty(ListPartitionOrEmpty(source).take(3..^8));
-        Assert.Empty(ListPartitionOrEmpty(source).take(^6..^7));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(ListPartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
-        [Fact]
-    public void EmptySource_DoNotThrowException_EnumerablePartition()
-    {
-        int[] source = { };
+    @Test
+    void EmptySource_DoNotThrowException_EnumerablePartition() {
+        IEnumerable<Integer> source = Linq.of(Collections.emptyList());
 
         // Multiple elements in the middle.
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^9..5));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(2..7));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(2..^4));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^7..^4));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(5))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(7))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(4))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(7), Index.fromEnd(4))));
 
         // Range with default index.
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^9..));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(2..));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(..^4));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(..6));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(Range.startAt(Index.fromEnd(9))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(Range.startAt(Index.fromStart(2))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(Range.endAt(Index.fromEnd(4))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(Range.endAt(Index.fromStart(6))));
 
         // All.
-        assertEquals(source[..], EnumerablePartitionOrEmpty(source).take(..));
+        assertEquals(Linq.empty(), EnumerablePartitionOrEmpty(source).take(Range.All));
 
         // Single element in the middle.
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^9..2));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(2..3));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(2..^7));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^5..^4));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(9), Index.fromStart(2))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromStart(3))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(2), Index.fromEnd(7))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(5), Index.fromEnd(4))));
 
         // Single element at start.
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^10..1));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(0..1));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(0..^9));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^10..^9));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromStart(1))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromStart(1))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.Start, Index.fromEnd(9))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(10), Index.fromEnd(9))));
 
         // Single element at end.
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^1..^10));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(9..10));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(9..^9));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^1..^9));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(10))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.fromStart(10))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(9), Index.fromEnd(9))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(1), Index.fromEnd(9))));
 
         // No element.
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(3..3));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(6..^4));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(3..^7));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^3..7));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^6..^6));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(3))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(4))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(7))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(3), Index.fromStart(7))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(6))));
 
         // Invalid range.
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(3..2));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(6..^5));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(3..^8));
-        Assert.Empty(EnumerablePartitionOrEmpty(source).take(^6..^7));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromStart(2))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(6), Index.fromEnd(5))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromStart(3), Index.fromEnd(8))));
+        assertEmpty(EnumerablePartitionOrEmpty(source).take(new Range(Index.fromEnd(6), Index.fromEnd(7))));
     }
 
     @Test
@@ -2103,7 +2073,7 @@ class TakeTest extends TestCase {
         assertEquals(0, emptySource2.count());
         assertThrows(InvalidOperationException.class, () -> emptySource2.first());
         assertThrows(InvalidOperationException.class, () -> emptySource2.last());
-        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        assertIsType(EnumerablePartition.class, emptySource2.skip(2));
         try (IEnumerator<Integer> e = emptySource2.enumerator()) {
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
