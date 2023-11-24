@@ -85,7 +85,7 @@ class SkipLastTest extends TestCase {
         IEnumerable<Integer> e = Linq.of(list).skipLast(2);
         list.remove(4);
         list.remove(3);
-        assertEquals(Linq.of(1, 2, 3), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
+        assertEquals(Linq.of(1), Linq.of(e.toArray()));
     }
 
     @Test
@@ -93,7 +93,7 @@ class SkipLastTest extends TestCase {
         List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         IEnumerable<Integer> e = Linq.of(list).skip(1).skipLast(2);
         list.remove(4);
-        assertEquals(Linq.of(2, 3), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
+        assertEquals(Linq.of(2), Linq.of(e.toArray()));
     }
 
     @Test
