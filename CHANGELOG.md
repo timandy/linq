@@ -4,7 +4,7 @@
 `Synchronize changes from .net 6.`
 
 ### Features
-- Add type `Index` indicates a forward or reverse index`.
+- Add type `Index` indicates a forward or reverse index.
 - Add type `Range` indicates a range between start and end `Index`.
 - Add new method `chunk()` to support slicing by a fixed number of elements.
 - Add new overloads for `elementAt(Index)` and `elementAtOrDefault(Index)` methods to support get element by forward or reverse index.
