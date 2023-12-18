@@ -68,6 +68,7 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 - asEnumerable
 - average
 - cast
+- chunk
 - concat
 - contains
 - count
@@ -147,6 +148,20 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 ## IOrderedEnumerable(继承 IEnumerable) 的 API
 - thenBy
 - thenByDescending
+
+## Index 的 API
+- fromStart
+- fromEnd
+- getValue
+- isFromEnd
+- getOffset
+
+## Range 的 API
+- startAt
+- endAt
+- getStart
+- getEnd
+- getOffsetAndLength
 
 ## 元组类
 - Tuple1

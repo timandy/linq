@@ -68,6 +68,7 @@ In general, the more complex the operation you want to perform on the data, the 
 - asEnumerable
 - average
 - cast
+- chunk
 - concat
 - contains
 - count
@@ -147,6 +148,20 @@ In general, the more complex the operation you want to perform on the data, the 
 ## API of IOrderedEnumerable extends IEnumerable
 - thenBy
 - thenByDescending
+
+## API of Index
+- fromStart
+- fromEnd
+- getValue
+- isFromEnd
+- getOffset
+
+## API of Range
+- startAt
+- endAt
+- getStart
+- getEnd
+- getOffsetAndLength
 
 ## Tuple classes
 - Tuple1
