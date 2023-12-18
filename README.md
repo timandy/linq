@@ -194,13 +194,13 @@ In general, the more complex the operation you want to perform on the data, the 
 <dependency>
     <groupId>com.bestvike</groupId>
     <artifactId>linq</artifactId>
-    <version>5.0.0</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 
 ## Gradle
 ```
-implementation 'com.bestvike:linq:5.0.0'
+implementation 'com.bestvike:linq:6.0.0'
 ```
 
 ## Usage

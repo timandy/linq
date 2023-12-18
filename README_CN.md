@@ -194,13 +194,13 @@ LINQ 查询与 Stream API 相比也具有一定优势：
 <dependency>
     <groupId>com.bestvike</groupId>
     <artifactId>linq</artifactId>
-    <version>5.0.0</version>
+    <version>6.0.0</version>
 </dependency>
 ```
 
 ## Gradle
 ```
-implementation 'com.bestvike:linq:5.0.0'
+implementation 'com.bestvike:linq:6.0.0'
 ```
 
 ## 用法
