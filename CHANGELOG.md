@@ -1,5 +1,30 @@
 <!--变更日志-->
 
+# v6.0.0 Release notes
+`Synchronize changes from .net 6.`
+
+### Features
+- Add type `Index` indicates a forward or reverse index`.
+- Add type `Range` indicates a range between start and end `Index`.
+- Add new method `chunk()` to support slicing by a fixed number of elements.
+- Add new overloads for `elementAt(Index)` and `elementAtOrDefault(Index)` methods to support get element by forward or reverse index.
+- Add new overloads for `firstOrDefault()`, `lastOrDefault()` and `singleOrDefault()` methods to support return custom default value when sequence is empty.
+- Add new overloads for `max()`, `maxBy()`, `min()` and `minBy()` methods to support custom comparer.
+- Add new overloads for `take(Range)` method to support get elements between start and end `Index`.
+- Add new overloads for `toMap()` and `toLinkedMap()` methods to specify which key to keep when conflicting.
+
+### Changes
+- Modify first param type of methods `exceptBy(...)` and `intersectBy(...)` from `IEnumerable<? extends TSource>` to `IEnumerable<? extends TKey>`.
+
+### Tips
+- Now `skipLast()` and `takeLast()` methods support mutable sequence.
+
+# Links
+- Download [https://repo1.maven.org/maven2/com/bestvike/linq/6.0.0/](https://repo1.maven.org/maven2/com/bestvike/linq/6.0.0/)
+- Source code [https://github.com/timandy/linq/tree/v6.0.0](https://github.com/timandy/linq/tree/v6.0.0)
+
+---
+
 # v5.0.0 Release notes
 `Synchronize changes from .net 5.`
 
@@ -18,7 +43,7 @@
 - In order to reduce sorting time, methods `first(predicate)` and `firstOrDefault(predicate)` after `OrderedEnumerable` call the predicate once per element.
 So don't call side-effect methods in linq.
 See [https://github.com/dotnet/runtime/issues/31554](https://github.com/dotnet/runtime/issues/31554).
-- Don't reuse the lazy result of 'skipLast' and 'takeLast' when the source will be modified.
+- Don't reuse the lazy result of `skipLast` and `takeLast` when the source will be modified.
 See [https://github.com/dotnet/runtime/pull/42506](https://github.com/dotnet/runtime/pull/42506).
 
 # Links
