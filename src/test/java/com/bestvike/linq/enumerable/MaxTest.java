@@ -23,6 +23,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -275,6 +276,51 @@ class MaxTest extends TestCase {
         argsList.add(Linq.of(null, null, null, null, "aAa"), "aAa");
         argsList.add(Linq.of("ooo", "ccc", "ccc", "ooo", "ooo", "nnn"), "ooo");
         argsList.add(Linq.repeat(null, 5), null);
+        return argsList;
+    }
+
+    private static <TSource> Object[] WrapArgs(IEnumerable<TSource> source, Comparator<TSource> comparer, TSource expected) {
+        return new Object[]{source, comparer, expected};
+    }
+
+    private static IEnumerable<Object[]> Max_Generic_TestData() {
+        ArgsList argsList = new ArgsList();
+
+        argsList.add(WrapArgs(
+                Linq.<Integer>empty(),
+                null,
+                null));
+
+        argsList.add(WrapArgs(
+                Linq.<Integer>empty(),
+                (x, y) -> 0,
+                null));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                null,
+                9));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                (x, y) -> -x.compareTo(y),
+                0));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                (x, y) -> 0,
+                0));
+
+        argsList.add(WrapArgs(
+                Linq.of("Aardvark", "Zyzzyva", "Zebra", "Antelope"),
+                null,
+                "Zyzzyva"));
+
+        argsList.add(WrapArgs(
+                Linq.of("Aardvark", "Zyzzyva", "Zebra", "Antelope"),
+                (x, y) -> -x.compareTo(y),
+                "Aardvark"));
+
         return argsList;
     }
 
@@ -727,6 +773,34 @@ class MaxTest extends TestCase {
     @Test
     void Max_Boolean_EmptySource_ThrowsInvalidOperationException() {
         assertThrows(InvalidOperationException.class, () -> Linq.<Boolean>empty().max());
+    }
+
+    @Test
+    void Max_Generic_NullSource_ThrowsArgumentNullException() {
+        IEnumerable<Integer> source = null;
+
+        assertThrows(NullPointerException.class, () -> source.max());
+        assertThrows(NullPointerException.class, () -> source.max((Comparator<Integer>) null));
+        assertThrows(NullPointerException.class, () -> source.max((x, y) -> 0));
+    }
+
+    @Test
+    void Max_Generic_EmptyStructSource_ThrowsInvalidOperationException() {
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().max());
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().max((Comparator<Integer>) null));
+        assertThrows(InvalidOperationException.class, () -> Linq.<Integer>empty().max((x, y) -> 0));
+    }
+
+    @ParameterizedTest
+    @MethodSource("Max_Generic_TestData")
+    <TSource> void Max_Generic_HasExpectedOutput(IEnumerable<TSource> source, Comparator<TSource> comparer, TSource expected) {
+        assertEquals(expected, source.maxNull(comparer));
+    }
+
+    @ParameterizedTest
+    @MethodSource("Max_Generic_TestData")
+    <TSource> void Max_Generic_RunOnce_HasExpectedOutput(IEnumerable<TSource> source, Comparator<TSource> comparer, TSource expected) {
+        assertEquals(expected, source.runOnce().maxNull(comparer));
     }
 
     @Test

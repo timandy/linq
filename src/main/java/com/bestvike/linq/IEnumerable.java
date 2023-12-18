@@ -563,8 +563,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Max.max(this);
     }
 
+    default TSource max(Comparator<TSource> comparer) {
+        return Max.max(this, comparer);
+    }
+
     default TSource maxNull() {
         return Max.maxNull(this);
+    }
+
+    default TSource maxNull(Comparator<TSource> comparer) {
+        return Max.maxNull(this, comparer);
     }
 
     default int maxInt(IntFunc1<? super TSource> selector) {
@@ -611,8 +619,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Max.max(this, (Func1<TSource, TResult>) selector);
     }
 
+    default <TResult> TResult max(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Max.max(this, (Func1<TSource, TResult>) selector, comparer);
+    }
+
     default <TResult> TResult maxNull(Func1<? super TSource, ? extends TResult> selector) {
         return Max.maxNull(this, (Func1<TSource, TResult>) selector);
+    }
+
+    default <TResult> TResult maxNull(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Max.maxNull(this, (Func1<TSource, TResult>) selector, comparer);
     }
 
     default TSource maxByInt(IntFunc1<? super TSource> keySelector) {
@@ -659,8 +675,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return MaxBy.maxBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
+    default <TKey> TSource maxBy(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MaxBy.maxBy(this, (Func1<TSource, TKey>) keySelector, comparer);
+    }
+
     default <TKey> TSource maxByNull(Func1<? super TSource, ? extends TKey> keySelector) {
         return MaxBy.maxByNull(this, (Func1<TSource, TKey>) keySelector);
+    }
+
+    default <TKey> TSource maxByNull(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MaxBy.maxByNull(this, (Func1<TSource, TKey>) keySelector, comparer);
     }
 
     default int minInt() {
@@ -707,8 +731,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Min.min(this);
     }
 
+    default TSource min(Comparator<TSource> comparer) {
+        return Min.min(this, comparer);
+    }
+
     default TSource minNull() {
         return Min.minNull(this);
+    }
+
+    default TSource minNull(Comparator<TSource> comparer) {
+        return Min.minNull(this, comparer);
     }
 
     default int minInt(IntFunc1<? super TSource> selector) {
@@ -755,8 +787,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Min.min(this, (Func1<TSource, TResult>) selector);
     }
 
+    default <TResult> TResult min(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Min.min(this, (Func1<TSource, TResult>) selector, comparer);
+    }
+
     default <TResult> TResult minNull(Func1<? super TSource, ? extends TResult> selector) {
         return Min.minNull(this, (Func1<TSource, TResult>) selector);
+    }
+
+    default <TResult> TResult minNull(Func1<? super TSource, ? extends TResult> selector, Comparator<TResult> comparer) {
+        return Min.minNull(this, (Func1<TSource, TResult>) selector, comparer);
     }
 
     default TSource minByInt(IntFunc1<? super TSource> keySelector) {
@@ -803,8 +843,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return MinBy.minBy(this, (Func1<TSource, TKey>) keySelector);
     }
 
+    default <TKey> TSource minBy(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MinBy.minBy(this, (Func1<TSource, TKey>) keySelector, comparer);
+    }
+
     default <TKey> TSource minByNull(Func1<? super TSource, ? extends TKey> keySelector) {
         return MinBy.minByNull(this, (Func1<TSource, TKey>) keySelector);
+    }
+
+    default <TKey> TSource minByNull(Func1<? super TSource, ? extends TKey> keySelector, Comparator<TKey> comparer) {
+        return MinBy.minByNull(this, (Func1<TSource, TKey>) keySelector, comparer);
     }
 
     default <TResult> IEnumerable<TResult> ofType(Class<TResult> clazz) {
