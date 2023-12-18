@@ -1,5 +1,6 @@
 package com.bestvike.linq;
 
+import com.bestvike.Index;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Action2;
@@ -294,7 +295,15 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return ElementAt.elementAt(this, index);
     }
 
+    default TSource elementAt(Index index) {
+        return ElementAt.elementAt(this, index);
+    }
+
     default TSource elementAtOrDefault(int index) {
+        return ElementAt.elementAtOrDefault(this, index);
+    }
+
+    default TSource elementAtOrDefault(Index index) {
         return ElementAt.elementAtOrDefault(this, index);
     }
 
