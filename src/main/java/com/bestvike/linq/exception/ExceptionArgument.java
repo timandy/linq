@@ -46,6 +46,7 @@ public enum ExceptionArgument {
     obj,
     options,
     other,
+    range,
     start,
     startIndex,
     value,

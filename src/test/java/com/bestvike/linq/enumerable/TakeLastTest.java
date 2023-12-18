@@ -91,7 +91,7 @@ class TakeLastTest extends TestCase {
         IEnumerable<Integer> e = Linq.of(list).takeLast(3);
         list.remove(0);
         list.remove(0);
-        assertEquals(Linq.of(5), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
+        assertEquals(Linq.of(3, 4, 5), Linq.of(e.toArray()));
     }
 
     @Test
@@ -99,7 +99,7 @@ class TakeLastTest extends TestCase {
         List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5));
         IEnumerable<Integer> e = Linq.of(list).skip(1).takeLast(3);
         list.remove(0);
-        assertEquals(Linq.of(4, 5), Linq.of(e.toArray()));//Make sure the source is immutable. see https://github.com/dotnet/runtime/pull/42506
+        assertEquals(Linq.of(3, 4, 5), Linq.of(e.toArray()));
     }
 
     @Test

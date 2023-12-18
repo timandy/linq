@@ -1,6 +1,7 @@
 package com.bestvike.linq;
 
 import com.bestvike.Index;
+import com.bestvike.Range;
 import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.function.Action2;
@@ -1065,6 +1066,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default IEnumerable<TSource> take(int count) {
         return Take.take(this, count);
+    }
+
+    default IEnumerable<TSource> take(Range range) {
+        return Take.take(this, range);
     }
 
     default IEnumerable<TSource> takeLast(int count) {

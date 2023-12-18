@@ -564,7 +564,7 @@ class SkipTest extends TestCase {
         assertEquals(0, emptySource2.count());
         assertThrows(InvalidOperationException.class, () -> emptySource2.first());
         assertThrows(InvalidOperationException.class, () -> emptySource2.last());
-        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        assertIsType(EnumerablePartition.class, emptySource2.skip(2));
         try (IEnumerator<Integer> e = emptySource2.enumerator()) {
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
@@ -601,7 +601,7 @@ class SkipTest extends TestCase {
         assertEquals(0, emptySource2.count());
         assertThrows(InvalidOperationException.class, () -> emptySource2.first());
         assertThrows(InvalidOperationException.class, () -> emptySource2.last());
-        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        assertIsType(EnumerablePartition.class, emptySource2.skip(2));
         try (IEnumerator<Integer> e = emptySource2.enumerator()) {
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
@@ -638,7 +638,7 @@ class SkipTest extends TestCase {
         assertEquals(0, emptySource2.count());
         assertThrows(InvalidOperationException.class, () -> emptySource2.first());
         assertThrows(InvalidOperationException.class, () -> emptySource2.last());
-        assertIsType(Linq.empty().getClass(), emptySource2.skip(2));
+        assertIsType(EnumerablePartition.class, emptySource2.skip(2));
         try (IEnumerator<Integer> e = emptySource2.enumerator()) {
             assertFalse(e.moveNext());
             assertFalse(e.moveNext());
