@@ -47,6 +47,7 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
 
     @Override
     public boolean moveNext() {
+        TSource element;
         switch (this.state) {
             case 1:
                 this.enumerator = this.source.enumerator();
@@ -54,7 +55,7 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
                     this.close();
                     return false;
                 }
-                TSource element = this.enumerator.current();
+                element = this.enumerator.current();
                 this.set = new Set<>(this.comparer);
                 this.set.add(element);
                 this.current = element;
@@ -106,8 +107,6 @@ final class DistinctIterator<TSource> extends Iterator<TSource> implements IILis
     }
 
     private Set<TSource> fillSet() {
-        Set<TSource> set = new Set<>(this.comparer);
-        set.unionWith(this.source);
-        return set;
+        return new Set<>(this.source, this.comparer);
     }
 }
