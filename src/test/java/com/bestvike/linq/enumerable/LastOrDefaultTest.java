@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -36,6 +37,12 @@ class LastOrDefaultTest extends TestCase {
         assertEquals(expected, source.runOnce().lastOrDefault());
     }
 
+    private static <T> void TestEmptyIListDefault(T defaultValue) {
+        Array<T> source = Array.empty();
+        assertIsAssignableFrom(IList.class, source);
+        assertEquals(defaultValue, source.runOnce().lastOrDefault(defaultValue));
+    }
+
     @Test
     void SameResultsrepeatCallsIntQuery() {
         IEnumerable<Integer> q = Linq.of(new int[]{9999, 0, 888, -1, 66, -777, 1, 2, -12345})
@@ -61,12 +68,28 @@ class LastOrDefaultTest extends TestCase {
     }
 
     @Test
+    void EmptyIList() {
+        TestEmptyIListDefault(5); // int
+        TestEmptyIListDefault("Hello"); // string
+        TestEmptyIListDefault(new Date());
+    }
+
+    @Test
     void IListTOneElement() {
         IEnumerable<Integer> source = Linq.of(new int[]{5});
         int expected = 5;
 
         assertIsAssignableFrom(IList.class, source);
         assertEquals(expected, source.lastOrDefault());
+    }
+
+    @Test
+    void IListTOneElementDefault() {
+        int[] source = new int[]{5};
+        int expected = 5;
+
+        assertIsAssignableFrom(IList.class, Linq.of(source));
+        assertEquals(expected, Linq.of(source).lastOrDefault(4));
     }
 
     @Test
@@ -85,6 +108,24 @@ class LastOrDefaultTest extends TestCase {
 
         assertIsAssignableFrom(IList.class, source);
         assertEquals(expected, source.lastOrDefault());
+    }
+
+    @Test
+    void IListTManyElementsLastHasDefault() {
+        Integer[] source = {-10, 2, 4, 3, 0, 2, null};
+        Integer expected = null;
+
+        assertIsAssignableFrom(IList.class, Linq.of(source));
+        assertEquals(expected, Linq.of(source).lastOrDefault(5));
+    }
+
+    @Test
+    void IListTManyElementsLastIsHasDefault() {
+        Integer[] source = {-10, 2, 4, 3, 0, 2, null, 19};
+        Integer expected = 19;
+
+        assertIsAssignableFrom(IList.class, Linq.of(source));
+        assertEquals(expected, Linq.of(source).lastOrDefault(5));
     }
 
     @Test
@@ -131,12 +172,30 @@ class LastOrDefaultTest extends TestCase {
     }
 
     @Test
+    void OneElementIListTruePredicateDefault() {
+        int[] source = {4};
+        Predicate1<Integer> predicate = TestCase::IsEven;
+        int expected = 4;
+
+        assertEquals(expected, Linq.of(source).lastOrDefault(predicate, 5));
+    }
+
+    @Test
     void ManyElementsIListPredicateFalseForAll() {
         IEnumerable<Integer> source = Linq.of(new int[]{9, 5, 1, 3, 17, 21});
         Predicate1<Integer> predicate = TestCase::IsEven;
         Integer expected = null;
 
         assertEquals(expected, source.lastOrDefault(predicate));
+    }
+
+    @Test
+    void ManyElementsIListPredicateFalseForAllDefault() {
+        int[] source = {9, 5, 1, 3, 17, 21};
+        Predicate1<Integer> predicate = TestCase::IsEven;
+        int expected = 5;
+
+        assertEquals(expected, Linq.of(source).lastOrDefault(predicate, 5));
     }
 
     @Test

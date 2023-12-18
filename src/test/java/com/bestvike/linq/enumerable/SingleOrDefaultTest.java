@@ -45,6 +45,14 @@ class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
+    void EmptyIListDefault() {
+        Integer[] source = {};
+        int expected = 5;
+
+        assertEquals(expected, Linq.of(source).singleOrDefault(5));
+    }
+
+    @Test
     void SingleElementIList() {
         int[] source = {4};
         int expected = 4;
@@ -53,10 +61,25 @@ class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
+    void SingleElementIListDefault() {
+        int[] source = {4};
+        int expected = 4;
+
+        assertEquals(expected, Linq.of(source).singleOrDefault(5));
+    }
+
+    @Test
     void ManyElementIList() {
         int[] source = {4, 4, 4, 4, 4};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault());
+    }
+
+    @Test
+    void ManyElementIListDefault() {
+        int[] source = {4, 4, 4, 4, 4};
+
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault(5));
     }
 
     @Test
@@ -91,11 +114,27 @@ class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
+    void EmptySourceWithPredicateDefault() {
+        int[] source = {};
+        int expected = 5;
+
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0, 5));
+    }
+
+    @Test
     void SingleElementPredicateTrue() {
         int[] source = {4};
         int expected = 4;
 
         assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0));
+    }
+
+    @Test
+    void SingleElementPredicateTrueDefault() {
+        int[] source = {4};
+        int expected = 4;
+
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0, 5));
     }
 
     @Test
@@ -107,11 +146,27 @@ class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
+    void SingleElementPredicateFalseDefault() {
+        int[] source = {3};
+        int expected = 5;
+
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0, 5));
+    }
+
+    @Test
     void ManyElementsPredicateFalseForAll() {
         int[] source = {3, 1, 7, 9, 13, 19};
         Integer expected = null;
 
         assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0));
+    }
+
+    @Test
+    void ManyElementsPredicateFalseForAllDefault() {
+        int[] source = {3, 1, 7, 9, 13, 19};
+        int expected = 5;
+
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0, 5));
     }
 
     @Test
@@ -123,10 +178,25 @@ class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
+    void ManyElementsPredicateTrueForLastDefault() {
+        int[] source = {3, 1, 7, 9, 13, 19, 20};
+        int expected = 20;
+
+        assertEquals(expected, Linq.of(source).singleOrDefault(i -> i % 2 == 0, 5));
+    }
+
+    @Test
     void ManyElementsPredicateTrueForFirstAndFifth() {
         int[] source = {2, 3, 1, 7, 10, 13, 19, 9};
 
         assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault(i -> i % 2 == 0));
+    }
+
+    @Test
+    void ManyElementsPredicateTrueForFirstAndFifthDefault() {
+        int[] source = {2, 3, 1, 7, 10, 13, 19, 9};
+
+        assertThrows(InvalidOperationException.class, () -> Linq.of(source).singleOrDefault(i -> i % 2 == 0, 5));
     }
 
     @ParameterizedTest
@@ -149,10 +219,24 @@ class SingleOrDefaultTest extends TestCase {
     }
 
     @Test
+    void ThrowsOnNullSourceDefault() {
+        IEnumerable<Integer> source = null;
+        assertThrows(NullPointerException.class, () -> source.singleOrDefault(5));
+        assertThrows(NullPointerException.class, () -> source.singleOrDefault(i -> i % 2 == 0, 5));
+    }
+
+    @Test
     void ThrowsOnNullPredicate() {
         IEnumerable<Integer> source = Linq.empty();
         Predicate1<Integer> nullPredicate = null;
         assertThrows(ArgumentNullException.class, () -> source.singleOrDefault(nullPredicate));
+    }
+
+    @Test
+    void ThrowsOnNullPredicateDefault() {
+        int[] source = {};
+        Predicate1<Integer> nullPredicate = null;
+        assertThrows(ArgumentNullException.class, () -> Linq.of(source).singleOrDefault(nullPredicate, 5));
     }
 
     @Test

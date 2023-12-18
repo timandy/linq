@@ -1,6 +1,7 @@
 package com.bestvike.linq.enumerable;
 
 import com.bestvike.TestCase;
+import com.bestvike.collections.generic.Array;
 import com.bestvike.collections.generic.IList;
 import com.bestvike.function.Predicate1;
 import com.bestvike.linq.IEnumerable;
@@ -35,6 +36,18 @@ class FirstOrDefaultTest extends TestCase {
         assertEquals(expected, source.runOnce().firstOrDefault());
     }
 
+    private static <T> void TestEmptyIListDefault(T defaultValue) {
+        Array<T> source = Array.empty();
+        assertIsAssignableFrom(IList.class, source);
+        assertEquals(defaultValue, source.runOnce().firstOrDefault(defaultValue));
+    }
+
+    private static <T> void TestEmptyNotIListDefault(T defaultValue) {
+        IEnumerable<Object> source = Linq.empty();
+        assertNull(as(source, IList.class));
+        assertEquals(defaultValue, source.runOnce().firstOrDefault(defaultValue));
+    }
+
     @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> ieInt = Linq.range(0, 0);
@@ -60,12 +73,31 @@ class FirstOrDefaultTest extends TestCase {
     }
 
     @Test
+    void EmptyIListDefault() {
+        TestEmptyIListDefault(5); // int
+        TestEmptyIListDefault("Hello"); // string
+        TestEmptyIListDefault(new Date()); //DateTime
+        TestEmptyNotIListDefault(5); // int
+        TestEmptyNotIListDefault("Hello"); // string
+        TestEmptyNotIListDefault(new Date()); //DateTime
+    }
+
+    @Test
     void IListTOneElement() {
         int[] source = new int[]{5};
         int expected = 5;
 
         assertIsAssignableFrom(IList.class, Linq.of(source));
         assertEquals(expected, Linq.of(source).firstOrDefault());
+    }
+
+    @Test
+    void IListOneElementDefault() {
+        int[] source = new int[]{5};
+        int expected = 5;
+
+        assertIsAssignableFrom(IList.class, Linq.of(source));
+        assertEquals(expected, Linq.of(source).firstOrDefault(3));
     }
 
     @Test
@@ -130,12 +162,30 @@ class FirstOrDefaultTest extends TestCase {
     }
 
     @Test
+    void OneElementTruePredicateDefault() {
+        int[] source = {4};
+        Predicate1<Integer> predicate = TestCase::IsEven;
+        int expected = 4;
+
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate, 5));
+    }
+
+    @Test
     void ManyElementsPredicateFalseForAll() {
         int[] source = {9, 5, 1, 3, 17, 21};
         Predicate1<Integer> predicate = TestCase::IsEven;
         Integer expected = null;
 
         assertEquals(expected, Linq.of(source).firstOrDefault(predicate));
+    }
+
+    @Test
+    void ManyElementsPredicateFalseForAllDefault() {
+        int[] source = {9, 5, 1, 3, 17, 21};
+        Predicate1<Integer> predicate = TestCase::IsEven;
+        int expected = 5;
+
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate, 5));
     }
 
     @Test
@@ -148,12 +198,30 @@ class FirstOrDefaultTest extends TestCase {
     }
 
     @Test
+    void PredicateTrueOnlyForLastDefault() {
+        int[] source = {9, 5, 1, 3, 17, 21, 50};
+        Predicate1<Integer> predicate = TestCase::IsEven;
+        int expected = 50;
+
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate, 5));
+    }
+
+    @Test
     void PredicateTrueForSome() {
         int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
         Predicate1<Integer> predicate = TestCase::IsEven;
         int expected = 10;
 
         assertEquals(expected, Linq.of(source).firstOrDefault(predicate));
+    }
+
+    @Test
+    void PredicateTrueForSomeDefault() {
+        int[] source = {3, 7, 10, 7, 9, 2, 11, 17, 13, 8};
+        Predicate1<Integer> predicate = TestCase::IsEven;
+        int expected = 10;
+
+        assertEquals(expected, Linq.of(source).firstOrDefault(predicate, 5));
     }
 
     @Test
@@ -168,17 +236,20 @@ class FirstOrDefaultTest extends TestCase {
     @Test
     void NullSource() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).firstOrDefault());
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).firstOrDefault(5));
     }
 
     @Test
     void NullSourcePredicateUsed() {
         assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).firstOrDefault(i -> i != 2));
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Integer>) null).firstOrDefault(i -> i != 2, 5));
     }
 
     @Test
     void NullPredicate() {
         Predicate1<Integer> predicate = null;
         assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).firstOrDefault(predicate));
+        assertThrows(ArgumentNullException.class, () -> Linq.range(0, 3).firstOrDefault(predicate, 5));
     }
 
     @Test

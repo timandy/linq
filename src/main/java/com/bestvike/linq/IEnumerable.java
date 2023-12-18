@@ -343,8 +343,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return First.firstOrDefault(this);
     }
 
+    default TSource firstOrDefault(TSource defaultValue) {
+        return First.firstOrDefault(this, defaultValue);
+    }
+
     default TSource firstOrDefault(Predicate1<? super TSource> predicate) {
         return First.firstOrDefault(this, (Predicate1<TSource>) predicate);
+    }
+
+    default TSource firstOrDefault(Predicate1<? super TSource> predicate, TSource defaultValue) {
+        return First.firstOrDefault(this, (Predicate1<TSource>) predicate, defaultValue);
     }
 
     default String format() {
@@ -475,8 +483,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Last.lastOrDefault(this);
     }
 
+    default TSource lastOrDefault(TSource defaultValue) {
+        return Last.lastOrDefault(this, defaultValue);
+    }
+
     default TSource lastOrDefault(Predicate1<? super TSource> predicate) {
         return Last.lastOrDefault(this, (Predicate1<TSource>) predicate);
+    }
+
+    default TSource lastOrDefault(Predicate1<? super TSource> predicate, TSource defaultValue) {
+        return Last.lastOrDefault(this, (Predicate1<TSource>) predicate, defaultValue);
     }
 
     default <TInner, TKey, TResult> IEnumerable<TResult> leftJoin(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {
@@ -891,8 +907,16 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Single.singleOrDefault(this);
     }
 
+    default TSource singleOrDefault(TSource defaultValue) {
+        return Single.singleOrDefault(this, defaultValue);
+    }
+
     default TSource singleOrDefault(Predicate1<? super TSource> predicate) {
         return Single.singleOrDefault(this, (Predicate1<TSource>) predicate);
+    }
+
+    default TSource singleOrDefault(Predicate1<? super TSource> predicate, TSource defaultValue) {
+        return Single.singleOrDefault(this, (Predicate1<TSource>) predicate, defaultValue);
     }
 
     default IEnumerable<TSource> skip(int count) {
