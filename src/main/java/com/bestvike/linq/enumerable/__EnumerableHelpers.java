@@ -19,25 +19,6 @@ final class EnumerableHelpers {
     private EnumerableHelpers() {
     }
 
-    // Tries to get the count of the enumerable cheaply.
-    public static <T> boolean tryGetCount(IEnumerable<T> source, out<Integer> count) {
-        assert source != null;
-
-        if (source instanceof ICollection) {
-            ICollection<T> collection = (ICollection<T>) source;
-            count.value = collection._getCount();
-            return true;
-        }
-
-        if (source instanceof IIListProvider) {
-            IIListProvider<T> provider = (IIListProvider<T>) source;
-            return (count.value = provider._getCount(true)) >= 0;
-        }
-
-        count.value = -1;
-        return false;
-    }
-
     //Copies items from an enumerable to an array.
     public static <T> void copy(IEnumerable<T> source, Object[] array, int arrayIndex, int count) {
         assert source != null;

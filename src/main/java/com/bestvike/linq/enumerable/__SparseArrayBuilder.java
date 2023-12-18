@@ -130,7 +130,7 @@ final class SparseArrayBuilder<T> {//struct
 
     public boolean reserveOrAdd(IEnumerable<T> items) {
         out<Integer> itemCountRef = out.init();
-        if (EnumerableHelpers.tryGetCount(items, itemCountRef)) {
+        if (Count.tryGetNonEnumeratedCount(items, itemCountRef)) {
             int itemCount = itemCountRef.value;
             if (itemCount > 0) {
                 this.reserve(itemCount);

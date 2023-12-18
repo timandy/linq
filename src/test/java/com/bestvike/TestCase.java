@@ -20,6 +20,7 @@ import com.bestvike.linq.adapter.enumerator.GenericArrayEnumerator;
 import com.bestvike.linq.entity.Department;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.enumerable.AbstractEnumerator;
+import com.bestvike.linq.enumerable.AbstractIterator;
 import com.bestvike.linq.enumerable.Values;
 import com.bestvike.linq.exception.ExceptionArgument;
 import com.bestvike.linq.exception.InvalidOperationException;
@@ -1056,6 +1057,29 @@ public class TestCase {
         public Long next() {
             this.current++;
             return this.current;
+        }
+    }
+
+    public static class InfiniteRepeatEnumerator<T> extends AbstractIterator<T> {
+        private final T item;
+        private final Action0 callback;
+
+        public InfiniteRepeatEnumerator(T item, Action0 callback) {
+            this.item = item;
+            this.callback = callback;
+        }
+
+        @Override
+        public AbstractIterator<T> clone() {
+            return new InfiniteRepeatEnumerator<>(this.item, this.callback);
+        }
+
+        @Override
+        public boolean moveNext() {
+            if (this.callback != null)
+                this.callback.apply();
+            this.current = this.item;
+            return true;
         }
     }
 
