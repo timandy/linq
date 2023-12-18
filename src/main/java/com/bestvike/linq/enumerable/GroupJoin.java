@@ -62,6 +62,7 @@ final class GroupJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
 
     @Override
     public boolean moveNext() {
+        TOuter item;
         switch (this.state) {
             case 1:
                 this.outerEnumerator = this.outer.enumerator();
@@ -70,7 +71,7 @@ final class GroupJoinIterator<TOuter, TInner, TKey, TResult> extends AbstractIte
                     return false;
                 }
                 this.lookup = Lookup.createForJoin(this.inner, this.innerKeySelector, this.comparer);
-                TOuter item = this.outerEnumerator.current();
+                item = this.outerEnumerator.current();
                 this.current = this.resultSelector.apply(item, this.lookup.fetch(this.outerKeySelector.apply(item)));
                 this.state = 2;
                 return true;

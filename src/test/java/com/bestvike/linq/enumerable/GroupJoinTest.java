@@ -346,18 +346,18 @@ class GroupJoinTest extends TestCase {
     void testGroupJoin() {
         //左连接,empty dept 保留,bad Emp 被滤掉
         String s = Linq.of(depts).concat(Linq.of(badDepts)).groupJoin(Linq.of(emps).concat(Linq.of(badEmps)),
-                dept -> dept.deptno,
-                emp -> emp.deptno,
-                (dept, emps) -> {
-                    StringBuilder buf = new StringBuilder("[");
-                    int n = 0;
-                    for (Employee employee : emps) {
-                        if (n++ > 0)
-                            buf.append(", ");
-                        buf.append(employee.name);
-                    }
-                    return buf.append("] work(s) in ").append(dept.name).toString();
-                })
+                        dept -> dept.deptno,
+                        emp -> emp.deptno,
+                        (dept, emps) -> {
+                            StringBuilder buf = new StringBuilder("[");
+                            int n = 0;
+                            for (Employee employee : emps) {
+                                if (n++ > 0)
+                                    buf.append(", ");
+                                buf.append(employee.name);
+                            }
+                            return buf.append("] work(s) in ").append(dept.name).toString();
+                        })
                 .toList()
                 .toString();
         assertEquals("[[Fred, Eric, Janet] work(s) in Sales, [] work(s) in HR, [Bill] work(s) in Marketing, [] work(s) in Manager]", s);
