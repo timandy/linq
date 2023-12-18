@@ -32,6 +32,7 @@ public enum ExceptionArgument {
     condition,
     current,
     elements,
+    end,
     formatter,
     hasNext,
     iterable,
@@ -44,6 +45,7 @@ public enum ExceptionArgument {
     obj,
     options,
     other,
+    start,
     startIndex,
     value,
 }
