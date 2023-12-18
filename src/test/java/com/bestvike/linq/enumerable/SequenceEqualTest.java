@@ -10,6 +10,7 @@ import com.bestvike.linq.exception.ArgumentNullException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -196,6 +197,35 @@ class SequenceEqualTest extends TestCase {
         IEnumerable<Integer> second = null;
 
         assertThrows(ArgumentNullException.class, () -> first.sequenceEqual(second));
+    }
+
+    @Test
+    void ByteArrays_SpecialCasedButExpectedBehavior() {
+        assertThrows(NullPointerException.class, () -> ((IEnumerable<Byte>) null).sequenceEqual(Linq.empty()));
+        assertThrows(ArgumentNullException.class, () -> Linq.empty().sequenceEqual(null));
+
+        assertFalse(Linq.of(new byte[1]).sequenceEqual(Linq.of(new byte[0])));
+        assertFalse(Linq.of(new byte[0]).sequenceEqual(Linq.of(new byte[1])));
+
+        Random r = new Random();
+        for (int i = 0; i < 32; i++) {
+            byte[] arr = new byte[i];
+            r.nextBytes(arr);
+
+            byte[] same = arr.clone();
+            assertTrue(Linq.of(arr).sequenceEqual(Linq.of(same)));
+            assertTrue(Linq.of(same).sequenceEqual(Linq.of(arr)));
+            assertTrue(Linq.of(same).sequenceEqual(Linq.of(Linq.of(arr).toList())));
+            assertTrue(Linq.of(Linq.of(same).toList()).sequenceEqual(Linq.of(arr)));
+            assertTrue(Linq.of(Linq.of(same).toList()).sequenceEqual(Linq.of(Linq.of(arr).toList())));
+
+            if (i > 0) {
+                byte[] diff = arr.clone();
+                diff[diff.length - 1]++;
+                assertFalse(Linq.of(arr).sequenceEqual(Linq.of(diff)));
+                assertFalse(Linq.of(diff).sequenceEqual(Linq.of(arr)));
+            }
+        }
     }
 
     @Test
