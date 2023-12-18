@@ -315,6 +315,19 @@ class ToMapTest extends TestCase {
         assertEquals(2, map2.size());
     }
 
+    @Test
+    void testToMapWithResultElementSelector() {
+        Map<Integer, String> map = Linq.of(emps).toMap(emp -> emp.empno, emp -> emp.name, (x, y) -> x);
+        assertTrue(map.get(110).equals("Bill"));
+        assertEquals(4, map.size());
+
+        //key 重复,保留第一个
+        Map<Integer, String> map2 = Linq.of(emps).toMap(emp -> emp.deptno, emp -> emp.name, (x, y) -> y);
+        assertEquals(emps[3].name, map2.get(10));
+        assertEquals(emps[1].name, map2.get(30));
+        assertEquals(2, map2.size());
+    }
+
 
     private static class NameScore extends ValueType {
         private final String Name;

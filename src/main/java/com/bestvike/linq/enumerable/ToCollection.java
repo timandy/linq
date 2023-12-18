@@ -4,6 +4,7 @@ import com.bestvike.collections.generic.IArrayList;
 import com.bestvike.collections.generic.ICollection;
 import com.bestvike.function.Action2;
 import com.bestvike.function.Func1;
+import com.bestvike.function.Func2;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.exception.ExceptionArgument;
@@ -183,6 +184,52 @@ public final class ToCollection {
         return map;
     }
 
+    public static <TSource, TKey, TElement> Map<TKey, TElement> toMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TElement, TElement, TElement> resultElementSelector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (keySelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+        if (elementSelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.elementSelector);
+        if (resultElementSelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.resultElementSelector);
+
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            int capacity = collection._getCount();
+            if (capacity == 0)
+                return new HashMap<>();
+
+            if (collection instanceof IArrayList) {
+                IArrayList<TSource> list = (IArrayList<TSource>) collection;
+                Map<TKey, TElement> map = new HashMap<>(initialCapacity(capacity));
+                for (int i = 0; i < capacity; i++) {
+                    TSource element = list.get(i);
+                    map.merge(keySelector.apply(element), elementSelector.apply(element), resultElementSelector::apply);
+                }
+                return map;
+            }
+
+            Map<TKey, TElement> map = new HashMap<>(initialCapacity(capacity));
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
+                    map.merge(keySelector.apply(element), elementSelector.apply(element), resultElementSelector::apply);
+                }
+            }
+            return map;
+        }
+
+        Map<TKey, TElement> map = new HashMap<>();
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
+                map.merge(keySelector.apply(element), elementSelector.apply(element), resultElementSelector::apply);
+            }
+        }
+        return map;
+    }
+
     public static <TSource, TKey> Map<TKey, TSource> toLinkedMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector) {
         if (source == null)
             ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
@@ -264,6 +311,50 @@ public final class ToCollection {
             while (e.moveNext()) {
                 TSource element = e.current();
                 map.putIfAbsent(keySelector.apply(element), elementSelector.apply(element));
+            }
+        }
+        return map;
+    }
+
+    public static <TSource, TKey, TElement> Map<TKey, TElement> toLinkedMap(IEnumerable<TSource> source, Func1<TSource, TKey> keySelector, Func1<TSource, TElement> elementSelector, Func2<TElement, TElement, TElement> resultElementSelector) {
+        if (source == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.source);
+        if (keySelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.keySelector);
+        if (elementSelector == null)
+            ThrowHelper.throwArgumentNullException(ExceptionArgument.elementSelector);
+
+        if (source instanceof ICollection) {
+            ICollection<TSource> collection = (ICollection<TSource>) source;
+            int capacity = collection._getCount();
+            if (capacity == 0)
+                return new LinkedHashMap<>();
+
+            if (collection instanceof IArrayList) {
+                IArrayList<TSource> list = (IArrayList<TSource>) collection;
+                Map<TKey, TElement> map = new LinkedHashMap<>(initialCapacity(capacity));
+                for (int i = 0; i < capacity; i++) {
+                    TSource element = list.get(i);
+                    map.merge(keySelector.apply(element), elementSelector.apply(element), resultElementSelector::apply);
+                }
+                return map;
+            }
+
+            Map<TKey, TElement> map = new LinkedHashMap<>(initialCapacity(capacity));
+            try (IEnumerator<TSource> e = source.enumerator()) {
+                while (e.moveNext()) {
+                    TSource element = e.current();
+                    map.merge(keySelector.apply(element), elementSelector.apply(element), resultElementSelector::apply);
+                }
+            }
+            return map;
+        }
+
+        Map<TKey, TElement> map = new LinkedHashMap<>();
+        try (IEnumerator<TSource> e = source.enumerator()) {
+            while (e.moveNext()) {
+                TSource element = e.current();
+                map.merge(keySelector.apply(element), elementSelector.apply(element), resultElementSelector::apply);
             }
         }
         return map;
