@@ -22,6 +22,7 @@ public enum ExceptionArgument {
     selector,
     source,
     third,
+    size,
     //extension
     action,
     array,

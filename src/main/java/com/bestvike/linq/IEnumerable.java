@@ -23,6 +23,7 @@ import com.bestvike.linq.enumerable.AnyAll;
 import com.bestvike.linq.enumerable.AppendPrepend;
 import com.bestvike.linq.enumerable.Average;
 import com.bestvike.linq.enumerable.Cast;
+import com.bestvike.linq.enumerable.Chunk;
 import com.bestvike.linq.enumerable.Concat;
 import com.bestvike.linq.enumerable.Contains;
 import com.bestvike.linq.enumerable.Count;
@@ -235,6 +236,10 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
 
     default <TResult> IEnumerable<TResult> cast(Class<TResult> clazz) {
         return Cast.cast(this, clazz);
+    }
+
+    default IEnumerable<TSource[]> chunk(int size, Class<TSource> clazz) {
+        return Chunk.chunk(this, size, clazz);
     }
 
     default IEnumerable<TSource> concat(IEnumerable<? extends TSource> second) {
