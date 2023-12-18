@@ -4,12 +4,15 @@ import com.bestvike.TestCase;
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
 import com.bestvike.collections.generic.StringComparer;
+import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
 import com.bestvike.linq.util.ArgsList;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,6 +21,73 @@ import org.junit.jupiter.params.provider.MethodSource;
  * Created by 许崇雷 on 2018-05-10.
  */
 class ExceptByTest extends TestCase {
+    private static <TSource, TKey> Object[] WrapArgs(IEnumerable<TSource> first, IEnumerable<TKey> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        return new Object[]{first, second, keySelector, comparer, expected};
+    }
+
+    private static IEnumerable<Object[]> TestData() {
+        ArgsList argsList = new ArgsList();
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                Linq.range(0, 5),
+                x -> x,
+                null,
+                Linq.range(5, 5)));
+
+        argsList.add(WrapArgs(
+                Linq.repeat(5, 20),
+                Linq.empty(),
+                x -> x,
+                null,
+                Linq.repeat(5, 1)));
+
+        argsList.add(WrapArgs(
+                Linq.repeat(5, 20),
+                Linq.repeat(5, 3),
+                x -> x,
+                null,
+                Linq.empty()));
+
+        argsList.add(WrapArgs(
+                Linq.of("Bob", "Tim", "Robert", "Chris"),
+                Linq.of("bBo", "shriC"),
+                x -> x,
+                null,
+                Linq.of("Bob", "Tim", "Robert", "Chris")));
+
+        argsList.add(WrapArgs(
+                Linq.of("Bob", "Tim", "Robert", "Chris"),
+                Linq.of("bBo", "shriC"),
+                x -> x,
+                new AnagramEqualityComparer(),
+                Linq.of("Tim", "Robert")));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40)),
+                Linq.of(new int[]{15, 20, 40}),
+                Tuple2::getItem2,
+                null,
+                Linq.of(Tuple.create("Dick", 30))));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40)),
+                Linq.of("moT"),
+                Tuple2::getItem1,
+                null,
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40))));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40)),
+                Linq.of("moT"),
+                Tuple2::getItem1,
+                new AnagramEqualityComparer(),
+                Linq.of(Tuple.create("Dick", 30), Tuple.create("Harry", 40))));
+
+        return argsList;
+
+    }
+
     private static IEnumerable<Object[]> Int_TestData() {
         ArgsList argsList = new ArgsList();
         argsList.add(Linq.of(new int[0]), Linq.of(new int[0]), null, Linq.of(new int[0]));
@@ -47,6 +117,46 @@ class ExceptByTest extends TestCase {
     }
 
     @Test
+    void FirstNull_ThrowsArgumentNullException() {
+        IEnumerable<String> first = null;
+        IEnumerable<String> second = Linq.of("bBo", "shriC");
+
+        assertThrows(NullPointerException.class, () -> first.exceptBy(second, x -> x));
+        assertThrows(NullPointerException.class, () -> first.exceptBy(second, x -> x, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    void SecondNull_ThrowsArgumentNullException() {
+        IEnumerable<String> first = Linq.of("Bob", "Tim", "Robert", "Chris");
+        IEnumerable<String> second = null;
+
+        assertThrows(ArgumentNullException.class, () -> first.exceptBy(second, x -> x));
+        assertThrows(ArgumentNullException.class, () -> first.exceptBy(second, x -> x, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    void KeySelectorNull_ThrowsArgumentNullException() {
+        IEnumerable<String> first = Linq.of("Bob", "Tim", "Robert", "Chris");
+        IEnumerable<String> second = Linq.of("bBo", "shriC");
+        Func1<String, String> keySelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> first.exceptBy(second, keySelector));
+        assertThrows(ArgumentNullException.class, () -> first.exceptBy(second, keySelector, new AnagramEqualityComparer()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("TestData")
+    <TSource, TKey> void HasExpectedOutput(IEnumerable<TSource> first, IEnumerable<TKey> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        assertEquals(expected, first.exceptBy(second, keySelector, comparer));
+    }
+
+    @ParameterizedTest
+    @MethodSource("TestData")
+    <TSource, TKey> void RunOnce_HasExpectedOutput(IEnumerable<TSource> first, IEnumerable<TKey> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        assertEquals(expected, first.runOnce().exceptBy(second.runOnce(), keySelector, comparer));
+    }
+
+    @Test
     void SameResultsRepeatCallsIntQuery() {
         IEnumerable<Integer> q1 = Linq.of(2, 3, null, 2, null, 4, 5);
         IEnumerable<Integer> q2 = Linq.of(1, 9, null, 4);
@@ -58,9 +168,6 @@ class ExceptByTest extends TestCase {
     void SameResultsRepeatCallsStringQuery() {
         IEnumerable<String> q1 = Linq.of("AAA", Empty, "q", "C", "#", "!@#$%^", "0987654321", "Calling Twice");
         IEnumerable<String> q2 = Linq.of("!@#$%^", "C", "AAA", "", "Calling Twice", "SoS");
-
-        q1.exceptBy(q2, x -> x);
-        q1.exceptBy(q2, x -> x);
 
         assertEquals(q1.exceptBy(q2, x -> x), q1.exceptBy(q2, x -> x));
     }
@@ -96,24 +203,6 @@ class ExceptByTest extends TestCase {
     }
 
     @Test
-    void FirstNull_ThrowsArgumentNullException() {
-        IEnumerable<String> first = null;
-        IEnumerable<String> second = Linq.of("bBo", "shriC");
-
-        assertThrows(NullPointerException.class, () -> first.exceptBy(second, x -> x));
-        assertThrows(NullPointerException.class, () -> first.exceptBy(second, x -> x, new AnagramEqualityComparer()));
-    }
-
-    @Test
-    void SecondNull_ThrowsArgumentNullException() {
-        IEnumerable<String> first = Linq.of("Bob", "Tim", "Robert", "Chris");
-        IEnumerable<String> second = null;
-
-        assertThrows(ArgumentNullException.class, () -> first.exceptBy(second, x -> x));
-        assertThrows(ArgumentNullException.class, () -> first.exceptBy(second, x -> x, new AnagramEqualityComparer()));
-    }
-
-    @Test
     void ForcedToEnumeratorDoesntEnumerate() {
         IEnumerable<Integer> iterator = NumberRangeGuaranteedNotCollectionType(0, 3).exceptBy(Linq.range(0, 3), x -> x);
         // Don't insist on this behaviour, but check it's correct if it happens
@@ -144,7 +233,7 @@ class ExceptByTest extends TestCase {
                 emps[3],
         };
         assertEquals(1, Linq.of(emps)
-                .exceptBy(Linq.of(emps2), emp -> emp.deptno)
+                .exceptBy(Linq.of(emps2).select(e -> e.deptno), emp -> emp.deptno)
                 .count());
 
         IEnumerable<Integer> oneToHundred = Linq.range(1, 100);
@@ -180,7 +269,7 @@ class ExceptByTest extends TestCase {
 
         Employee[] emps2 = {new Employee(150, "Theodore", 10)};
         assertEquals(0, Linq.of(emps)
-                .exceptBy(Linq.of(emps2), emp -> emp.deptno, comparer)
+                .exceptBy(Linq.of(emps2).select(e -> e.deptno), emp -> emp.deptno, comparer)
                 .count());
     }
 }

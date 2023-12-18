@@ -306,12 +306,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Except.except(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector) {
-        return ExceptBy.exceptBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector);
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector) {
+        return ExceptBy.exceptBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
-        return ExceptBy.exceptBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
+    default <TKey> IEnumerable<TSource> exceptBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return ExceptBy.exceptBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default int findIndex(Predicate1<? super TSource> predicate) {
@@ -418,12 +418,12 @@ public interface IEnumerable<TSource> extends Iterable<TSource> {
         return Intersect.intersect(this, (IEnumerable<TSource>) second, (IEqualityComparer<TSource>) comparer);
     }
 
-    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector) {
-        return IntersectBy.intersectBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector);
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector) {
+        return IntersectBy.intersectBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector);
     }
 
-    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TSource> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
-        return IntersectBy.intersectBy(this, (IEnumerable<TSource>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
+    default <TKey> IEnumerable<TSource> intersectBy(IEnumerable<? extends TKey> second, Func1<? super TSource, ? extends TKey> keySelector, IEqualityComparer<? super TKey> comparer) {
+        return IntersectBy.intersectBy(this, (IEnumerable<TKey>) second, (Func1<TSource, TKey>) keySelector, (IEqualityComparer<TKey>) comparer);
     }
 
     default <TInner, TKey, TResult> IEnumerable<TResult> join(IEnumerable<? extends TInner> inner, Func1<? super TSource, ? extends TKey> outerKeySelector, Func1<? super TInner, ? extends TKey> innerKeySelector, Func2<? super TSource, ? super TInner, ? extends TResult> resultSelector) {

@@ -11,8 +11,14 @@ import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.Linq;
 import com.bestvike.linq.entity.Employee;
 import com.bestvike.linq.exception.ArgumentNullException;
+import com.bestvike.linq.util.ArgsList;
 import com.bestvike.linq.util.HashSet;
+import com.bestvike.out;
+import com.bestvike.tuple.Tuple;
+import com.bestvike.tuple.Tuple2;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * Created by 许崇雷 on 2018-05-10.
@@ -20,6 +26,125 @@ import org.junit.jupiter.api.Test;
 class UnionByTest extends TestCase {
     private static final Func1<Integer, Integer> IntKeySelector = x -> x;
     private static final Func1<String, String> StringKeySelector = x -> x;
+
+    private static <TSource, TKey> Object[] WrapArgs(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        return new Object[]{first, second, keySelector, comparer, expected};
+    }
+
+    private static IEnumerable<Object[]> TestData() {
+        ArgsList argsList = new ArgsList();
+        argsList.add(WrapArgs(
+                Linq.range(0, 7),
+                Linq.range(3, 7),
+                x -> x,
+                null,
+                Linq.range(0, 10)));
+
+        argsList.add(WrapArgs(
+                Linq.range(0, 10),
+                Linq.range(10, 10),
+                x -> x,
+                null,
+                Linq.range(0, 20)));
+
+        argsList.add(WrapArgs(
+                Linq.empty(),
+                Linq.range(0, 5),
+                x -> x,
+                null,
+                Linq.range(0, 5)));
+
+        argsList.add(WrapArgs(
+                Linq.repeat(5, 20),
+                Linq.empty(),
+                x -> x,
+                null,
+                Linq.repeat(5, 1)));
+
+        argsList.add(WrapArgs(
+                Linq.repeat(5, 20),
+                Linq.repeat(5, 3),
+                x -> x,
+                null,
+                Linq.repeat(5, 1)));
+
+        argsList.add(WrapArgs(
+                Linq.of("Bob", "Tim", "Robert", "Chris"),
+                Linq.of("bBo", "shriC"),
+                x -> x,
+                null,
+                Linq.of("Bob", "Tim", "Robert", "Chris", "bBo", "shriC")));
+
+        argsList.add(WrapArgs(
+                Linq.of("Bob", "Tim", "Robert", "Chris"),
+                Linq.of("bBo", "shriC"),
+                x -> x,
+                new AnagramEqualityComparer(),
+                Linq.of("Bob", "Tim", "Robert", "Chris")));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40), Tuple.create("Martin", 20)),
+                Linq.of(Tuple.create("Peter", 21), Tuple.create("John", 30), Tuple.create("Toby", 33)),
+                Tuple2::getItem2,
+                null,
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40), Tuple.create("Peter", 21), Tuple.create("Toby", 33))));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40), Tuple.create("Martin", 20)),
+                Linq.of(Tuple.create("Toby", 33), Tuple.create("Harry", 35), Tuple.create("tom", 67)),
+                Tuple2::getItem1,
+                null,
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40), Tuple.create("Martin", 20), Tuple.create("Toby", 33), Tuple.create("tom", 67))));
+
+        argsList.add(WrapArgs(
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40), Tuple.create("Martin", 20)),
+                Linq.of(Tuple.create("Toby", 33), Tuple.create("Harry", 35), Tuple.create("tom", 67)),
+                Tuple2::getItem1,
+                StringComparer.OrdinalIgnoreCase,
+                Linq.of(Tuple.create("Tom", 20), Tuple.create("Dick", 30), Tuple.create("Harry", 40), Tuple.create("Martin", 20), Tuple.create("Toby", 33))));
+
+        return argsList;
+    }
+
+    @Test
+    void FirstNull_ThrowsArgumentNullException() {
+        IEnumerable<String> first = null;
+        IEnumerable<String> second = Linq.of("bBo", "shriC");
+
+        assertThrows(NullPointerException.class, () -> first.unionBy(second, x -> x));
+        assertThrows(NullPointerException.class, () -> first.unionBy(second, x -> x, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    void SecondNull_ThrowsArgumentNullException() {
+        IEnumerable<String> first = Linq.of("Bob", "Tim", "Robert", "Chris");
+        IEnumerable<String> second = null;
+
+        assertThrows(ArgumentNullException.class, () -> first.unionBy(second, x -> x));
+        assertThrows(ArgumentNullException.class, () -> first.unionBy(second, x -> x, new AnagramEqualityComparer()));
+    }
+
+    @Test
+    void KeySelectorNull_ThrowsArgumentNullException() {
+        IEnumerable<String> first = Linq.of("Bob", "Tim", "Robert", "Chris");
+        IEnumerable<String> second = Linq.of("bBo", "shriC");
+        Func1<String, String> keySelector = null;
+
+        assertThrows(ArgumentNullException.class, () -> first.unionBy(second, keySelector));
+        assertThrows(ArgumentNullException.class, () -> first.unionBy(second, keySelector, new AnagramEqualityComparer()));
+    }
+
+    @ParameterizedTest
+    @MethodSource("TestData")
+    <TSource, TKey> void HasExpectedOutput(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        assertEquals(expected, first.unionBy(second, keySelector, comparer));
+    }
+
+    @ParameterizedTest
+    @MethodSource("TestData")
+    <TSource, TKey> void RunOnce_HasExpectedOutput(IEnumerable<TSource> first, IEnumerable<TSource> second, Func1<TSource, TKey> keySelector, IEqualityComparer<TKey> comparer, IEnumerable<TSource> expected) {
+        assertEquals(expected, first.runOnce().unionBy(second.runOnce(), keySelector, comparer));
+    }
 
     @Test
     void SameResultsRepeatCallsIntQuery() {
@@ -80,38 +205,6 @@ class UnionByTest extends TestCase {
 
         AnagramEqualityComparer comparer = new AnagramEqualityComparer();
         assertEquals(Linq.of(expected), Linq.of(first).runOnce().unionBy(Linq.of(second).runOnce(), StringKeySelector, comparer), comparer);
-    }
-
-    @Test
-    void FirstNullCustomComparer() {
-        IEnumerable<String> first = null;
-        String[] second = {"ttaM", "Charlie", "Bbo"};
-
-        assertThrows(NullPointerException.class, () -> first.unionBy(Linq.of(second), StringKeySelector, new AnagramEqualityComparer()));
-    }
-
-    @Test
-    void SecondNullCustomComparer() {
-        String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
-        IEnumerable<String> second = null;
-
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(second, StringKeySelector, new AnagramEqualityComparer()));
-    }
-
-    @Test
-    void FirstNullNoComparer() {
-        IEnumerable<String> first = null;
-        String[] second = {"ttaM", "Charlie", "Bbo"};
-
-        assertThrows(NullPointerException.class, () -> first.unionBy(Linq.of(second), StringKeySelector));
-    }
-
-    @Test
-    void SecondNullNoComparer() {
-        String[] first = {"Bob", "Robert", "Tim", "Matt", "miT"};
-        IEnumerable<String> second = null;
-
-        assertThrows(ArgumentNullException.class, () -> Linq.of(first).unionBy(second, StringKeySelector));
     }
 
     @Test
@@ -389,12 +482,12 @@ class UnionByTest extends TestCase {
         };
 
         IEnumerable<People> peoples = Linq.of(source1).unionBy(Linq.of(source2), x -> x.groupId).unionBy(Linq.of(source3), x -> x.groupId);
-        assertSame(UnionByIterator2.class, peoples.getClass());
+        assertSame(UnionByIterator.class, peoples.getClass());
         assertEquals(Linq.of(expect), peoples);
 
         Func1<People, Integer> groupSelector = x -> x.groupId;
         IEnumerable<People> peoples2 = Linq.of(source1).unionBy(Linq.of(source2), groupSelector).unionBy(Linq.of(source3), groupSelector);
-        assertSame(UnionByIteratorN.class, peoples2.getClass());
+        assertSame(UnionByIterator.class, peoples2.getClass());
         assertEquals(Linq.of(expect), peoples2);
     }
 
@@ -426,7 +519,7 @@ class UnionByTest extends TestCase {
         };
 
         IEnumerable<People> peoples = Linq.of(source1).unionBy(Linq.of(source2), x -> x.groupId).unionBy(Linq.of(source3), x -> x.id);
-        assertSame(UnionByIterator2.class, peoples.getClass());
+        assertSame(UnionByIterator.class, peoples.getClass());
         assertEquals(Linq.of(expect), peoples);
     }
 
@@ -436,24 +529,24 @@ class UnionByTest extends TestCase {
                 .unionBy(Linq.of(badEmps), emp -> emp.deptno)
                 .unionBy(Linq.of(emps), emp -> emp.deptno);
         assertEquals(4, enumerable.count());
-        UnionByIterator2<Employee, Integer> unionByIterator2 = (UnionByIterator2<Employee, Integer>) enumerable;
-        assertEquals(4, unionByIterator2._toArray(Employee.class).length);
-        assertEquals(4, unionByIterator2._toArray().length);
-        assertEquals(4, unionByIterator2._toList().size());
-        assertEquals(-1, unionByIterator2._getCount(true));
-        assertEquals(4, unionByIterator2._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator2 = (UnionByIterator<Employee, Integer>) enumerable;
+        assertEquals(4, unionByIterator2.toArray(Employee.class).length);
+        assertEquals(4, unionByIterator2.toArray().size());
+        assertEquals(4, unionByIterator2.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator2, out.init()));
+        assertEquals(4, unionByIterator2.count());
 
         Func1<Employee, Integer> selector = emp -> emp.deptno;
         IEnumerable<Employee> enumerable2 = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), selector)
                 .unionBy(Linq.of(emps), selector);
         assertEquals(4, enumerable2.count());
-        UnionByIteratorN<Employee, Integer> unionByIterator22 = (UnionByIteratorN<Employee, Integer>) enumerable2;
-        assertEquals(4, unionByIterator22._toArray(Employee.class).length);
-        assertEquals(4, unionByIterator22._toArray().length);
-        assertEquals(4, unionByIterator22._toList().size());
-        assertEquals(-1, unionByIterator22._getCount(true));
-        assertEquals(4, unionByIterator22._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator22 = (UnionByIterator<Employee, Integer>) enumerable2;
+        assertEquals(4, unionByIterator22.toArray(Employee.class).length);
+        assertEquals(4, unionByIterator22.toArray().size());
+        assertEquals(4, unionByIterator22.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator22, out.init()));
+        assertEquals(4, unionByIterator22.count());
 
         IEnumerable<Employee> source = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), selector)
@@ -484,24 +577,24 @@ class UnionByTest extends TestCase {
                 .unionBy(Linq.of(badEmps), emp -> emp.deptno, comparer)
                 .unionBy(Linq.of(emps), emp -> emp.deptno, comparer);
         assertEquals(1, enumerable.count());
-        UnionByIterator2<Employee, Integer> unionByIterator2 = (UnionByIterator2<Employee, Integer>) enumerable;
-        assertEquals(1, unionByIterator2._toArray(Employee.class).length);
-        assertEquals(1, unionByIterator2._toArray().length);
-        assertEquals(1, unionByIterator2._toList().size());
-        assertEquals(-1, unionByIterator2._getCount(true));
-        assertEquals(1, unionByIterator2._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator2 = (UnionByIterator<Employee, Integer>) enumerable;
+        assertEquals(1, unionByIterator2.toArray(Employee.class).length);
+        assertEquals(1, unionByIterator2.toArray().size());
+        assertEquals(1, unionByIterator2.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator2, out.init()));
+        assertEquals(1, unionByIterator2.count());
 
         Func1<Employee, Integer> selector = emp -> emp.deptno;
         IEnumerable<Employee> enumerable2 = Linq.of(emps)
                 .unionBy(Linq.of(badEmps), selector, comparer)
                 .unionBy(Linq.of(emps), selector, comparer);
         assertEquals(1, enumerable2.count());
-        UnionByIteratorN<Employee, Integer> unionByIterator22 = (UnionByIteratorN<Employee, Integer>) enumerable2;
-        assertEquals(1, unionByIterator22._toArray(Employee.class).length);
-        assertEquals(1, unionByIterator22._toArray().length);
-        assertEquals(1, unionByIterator22._toList().size());
-        assertEquals(-1, unionByIterator22._getCount(true));
-        assertEquals(1, unionByIterator22._getCount(false));
+        UnionByIterator<Employee, Integer> unionByIterator22 = (UnionByIterator<Employee, Integer>) enumerable2;
+        assertEquals(1, unionByIterator22.toArray(Employee.class).length);
+        assertEquals(1, unionByIterator22.toArray().size());
+        assertEquals(1, unionByIterator22.toList().size());
+        assertFalse(Count.tryGetNonEnumeratedCount(unionByIterator22, out.init()));
+        assertEquals(1, unionByIterator22.count());
     }
 
 

@@ -2,7 +2,6 @@ package com.bestvike.linq.enumerable;
 
 import com.bestvike.collections.generic.EqualityComparer;
 import com.bestvike.collections.generic.IEqualityComparer;
-import com.bestvike.function.Func1;
 import com.bestvike.linq.IEnumerable;
 import com.bestvike.linq.IEnumerator;
 import com.bestvike.linq.util.ArrayUtils;
@@ -27,6 +26,12 @@ final class Set<TElement> {
         this.slots = new Set.Slot[7];
         for (int i = 0; i < 7; i++)
             this.slots[i] = new Slot();
+    }
+
+    // Constructs a set that compares items with the specified collection and comparer.
+    Set(IEnumerable<TElement> collection, IEqualityComparer<TElement> comparer) {
+        this(comparer);
+        this.unionWith(collection);
     }
 
     // If value is not in set, add it and return true; otherwise return false
@@ -127,17 +132,6 @@ final class Set<TElement> {
         try (IEnumerator<TElement> e = other.enumerator()) {
             while (e.moveNext())
                 this.add(e.current());
-        }
-    }
-
-    // Unions this set with an enumerable and selector.
-    public <TSource> void unionWith(IEnumerable<TSource> other, Func1<TSource, TElement> selector) {
-        assert other != null;
-        assert selector != null;
-
-        try (IEnumerator<TSource> e = other.enumerator()) {
-            while (e.moveNext())
-                this.add(selector.apply(e.current()));
         }
     }
 
